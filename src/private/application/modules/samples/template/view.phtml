@@ -1,0 +1,46 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+?>
+
+<div class="eightcol">
+	
+	<h2>Items</h2>
+	<p>
+		<a class='action' href='samples/edit.html'>Edit items</a>
+	</p>
+	<hr/>
+
+	<?php foreach($this->samples as $entry) {
+		/* @var $entry Ajde_Model */ ?>
+		<?php if ($entry->hasNotEmpty('image')) { ?>
+		<?php echo $this->ACImage(array(
+			'filename' => 'public/images/uploads/' . $entry->getImage(),
+			'width' => 200,
+			'height' => 200,
+			'crop' => true,
+			'class' => 'right'
+		)); ?>
+		<?php } ?>
+		<h3><?php echo $this->escape( $entry->title ); ?></h3>
+		<p>
+			<em>Updated on <?php echo $this->escape( $entry->updated ); ?></em> :
+		</p>		
+		<p>
+			<?php echo _c( $entry->content ); ?>
+		</p>
+		<p>
+			€ <?php echo money_format('%!i', $entry->getUnitprice() * (1+$entry->getVATPercentage())); ?>
+		</p>
+		<?php echo $this->includeModule('shop/cart:add/html/samples:' . $entry); ?>		
+		<div class='clearfix'></div>
+		<hr/>
+	<?php } ?>
+
+</div>
+
+<aside class="fourcol last">
+	<h2>My cart</h2>
+	<div id='widget'>
+		<?php echo $this->includeModule('shop/cart:widget/html/quickcheckout'); ?>
+	</div>
+</aside>

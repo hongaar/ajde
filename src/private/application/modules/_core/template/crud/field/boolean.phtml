@@ -1,0 +1,16 @@
+<?php $field = $this->field; ?>
+
+<input
+	<?php echo $field->getHtmlAttributes(); ?>
+/>
+<input
+	type='checkbox'
+	class='autoUpdateCrud'
+	<?php
+	if ($field->getValue()) echo 'checked="checked"';
+	if ($this->id) echo 'id="'.$this->id.'"';
+	if ($field->hasReadonly() && $field->getReadonly() === true) {
+		echo ' disabled="disabled" ';	
+	}
+	?>
+/>

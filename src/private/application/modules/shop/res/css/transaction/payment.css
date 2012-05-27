@@ -1,0 +1,7 @@
+form.transactionPayment dd.provider label {
+	margin-right: 30px;
+}
+
+#postproxy {
+	display: none;
+}

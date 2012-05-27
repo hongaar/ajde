@@ -1,0 +1,85 @@
+a.deleteFileCrud {
+	color: #e43c3c;
+}
+
+div.filelist img.icon {
+	vertical-align: middle;
+}
+
+div.filebrowser {
+	margin-top: 10px;
+}
+
+div.browser {
+	background-color: #eee;
+	display: none;
+	max-height: 538px;
+	width: 700px;
+	overflow: auto;
+	margin-top: 5px;
+}
+
+div.browser > a {
+	background-color: white;
+	display: block;
+	float: left;
+	width: 330px;
+	height: 50px;
+	overflow: hidden;
+	margin: 7px 0 0 7px;
+	border: 1px solid silver;
+	position: relative;
+}
+
+div.browser > a:hover {
+	background-color: #F9F9F9;
+	cursor: pointer;
+}
+
+div.browser > a span.icon {
+	width: 33px;
+	height: 33px;
+	padding: 17px 0 0 17px;
+	margin-right: 5px;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+div.browser > a img.thumb {
+	vertical-align: middle;
+	margin-right: 5px;
+}
+
+div.browser > a.active {
+	background-color: #eee;
+	border: 1px solid #6FBE15;
+	outline: 2px solid #c6ed9a;
+}
+
+div.browser > a span.filename {
+	text-overflow: ellipsis;
+	max-width: 220px;
+	display: inline-block;
+	overflow: hidden;
+}
+
+div.browser > a span.preview {
+	display: none;
+	position: absolute;
+	right: 5px;
+	background-color: white;
+	padding: 15px 0 0 0;
+	color: gray;
+}
+
+div.browser > a.active span.preview {
+	background-color: #eee;
+}
+
+div.browser > a:hover span.preview {
+	display: inherit;
+}
+
+div.browser > a span.preview:hover {
+	text-decoration: underline;
+}

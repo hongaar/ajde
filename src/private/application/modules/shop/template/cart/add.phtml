@@ -1,0 +1,10 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+?>
+
+<?php echo $this->ACAjaxForm('shop/cart:add.json', null, 'addToCart'); ?>
+	<input type='hidden' name='entity' value='<?php echo _e($this->entity); ?>' />
+	<input type='hidden' name='entity_id' value='<?php echo _e($this->entity_id); ?>' />
+	<input type='number' name='qty' class='qty' value='1' />
+	<input type='submit' value='Add to shopping cart' />
+</form>

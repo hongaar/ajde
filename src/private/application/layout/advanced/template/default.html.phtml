@@ -1,0 +1,128 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+
+// Unify the user agent specific css rules
+$this->requireCssTop('core.reset');
+
+// Include jQuery 1.7
+$this->requireJsLibrary('jquery', '1.7');
+
+// Some JavaScript i18n
+$this->requireJsFirst('i18n.' . Ajde_Lang::getInstance()->getShortLang());
+
+// Alert bar
+$this->requireJsFirst('core.alert'); $this->requireCssFirst('core.alert');
+
+// Example styles
+$this->requireCssTop('core.1140');
+$this->requireGWebFont('Dosis', array(400, 700));
+$this->requireCss('default.mobile', 'html', null, Ajde_Document_Format_Html::RESOURCE_POSITION_LAST, 'media="only screen and (max-width: 767px)"');
+
+?>
+<!-- Inspired by HTML5 Boilerplate -->
+<!doctype html>
+<html
+	lang='<?php echo Ajde_Lang::getInstance()->getShortLang(); ?>'
+	id='<?php echo Config::get('ident'); ?>'
+	data-lifetime='<?php echo min(array(Config::get('cookieLifetime') > 0 ? Config::get('cookieLifetime') : 99999, Config::get('gcLifetime'))); ?>'
+	data-alert='<?php echo _e(Ajde_Session_Flash::get('alert')); ?>'
+>
+	<head>
+		
+		<!-- UTF-8 please (also in the headers, just to be sure) -->
+		<meta charset='utf-8'>
+		
+		<!-- Some content meta tags -->
+		<title><?php echo _e(Ajde::app()->getDocument()->getFullTitle()); ?></title>		
+		<meta name='description' content='<?php echo _e(Ajde::app()->getDocument()->getDescription()); ?>' />
+		<meta name='author' content='<?php echo _e(Config::get('author')); ?>' />
+		<?php echo Ajde::app()->getDocument()->getMeta(); ?>
+		
+		<!-- Mobile presentation meta tags -->
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width">
+		<meta http-equiv="cleartype" content="on">
+		
+		<!-- Define the root of the site -->
+		<base href='http://<?php echo Config::get('lang_root'); ?>' />
+		
+		<!-- require JavaScript and cookies -->		
+		<noscript>
+			<meta http-equiv="refresh" content="0;url=main/nojavascript.html?returnto=<?php echo urlencode((string) Ajde::app()->getRoute()); ?>" />
+		</noscript>				
+		<script defer="defer">
+			if (navigator.cookieEnabled === false) {
+				document.location.href='main/nocookies.html?returnto=<?php echo urlencode((string) Ajde::app()->getRoute()); ?>';
+			}
+		</script>
+		
+		<!-- Favicon and CSS -->
+		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+		<?php echo $this->getDocument()->getHead('css'); ?>
+		
+		<!-- Google Analytics -->
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-XXXXX-X']);
+			_gaq.push(['_trackPageview']);
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+	</head>
+	
+	<!-- Target older versions of IE with CSS classes -->
+	<!--[if lt IE 7 ]> <body class='ie6 oldie'> <![endif]-->
+	<!--[if IE 7 ]>    <body class='ie7 oldie'> <![endif]-->
+	<!--[if IE 8 ]>    <body class='ie8 oldie'> <![endif]-->
+	<!--[if IE 9 ]>    <body class='ie9'> <![endif]-->
+	<!--[if (gt IE 9)|!(IE)]><!--> <body> <!--<![endif]-->
+		
+		<!-- The content -->
+		<header class='container'>
+			<div class='row'>
+				<div class='twelvecol'>
+					<h4 class='branding'>Ajde Framework</h4>
+					<h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
+				</div>
+			</div>
+		</header>
+		
+		<div class='container'>
+			<div class='row'>
+				<nav class='twocol'>
+					<ul>
+						<li><a href='.'>Home</a></li>
+						<li><a href='samples'>Items</a></li>
+						<li><a href='shop/cart:edit'>Cart</a></li>
+						<li><a href='user'>User</a></li>
+					</ul>
+				</nav>				
+				<article class='tencol last'>
+					<?php echo $this->getDocument()->getBody(); ?>
+				</article>
+			</div>
+		</div>
+		
+		<footer class='container'>
+			<div class='row'>
+				<div class='twelvecol'>
+				</div>
+			</div>
+		</footer>
+		
+		<!-- The scripts -->
+		<?php echo $this->getDocument()->getScripts(); ?>
+		
+	</body>
+</html>
+
+<!-- Some debugging info -->
+<!--[<pre>
+	<?php $version = Config::get('version'); echo Config::get('ident') . ', v' . $version['number'] . ' (' . $version['name'] . ')'; ?> 
+	Cache <?php echo Ajde_Cache::getInstance()->isEnabled() ? 'enabled' : 'disabled' ?> 
+	Last modified on <?php echo date("r", Ajde_Cache::getInstance()->getLastModified()); ?> 
+</pre><![-->

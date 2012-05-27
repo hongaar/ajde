@@ -1,0 +1,11 @@
+<p>
+	Please <a href="http://www.activatejavascript.org/">enable Javascript</a> to view this website
+</p>
+<p>
+	<a href="//<?php echo Config::get('site_root'); echo $this->returnto; ?>">Try again</a>
+</p>
+<script>
+if (typeof history.replaceState !== 'undefined') {
+	history.replaceState('', 'root', '//<?php echo Config::get('site_root'); echo $this->returnto; ?>');
+}
+</script>

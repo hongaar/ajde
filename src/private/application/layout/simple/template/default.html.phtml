@@ -1,0 +1,64 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+
+// Unify the user agent specific css rules
+$this->requireCssTop('core.reset');
+
+// Include jQuery 1.7
+$this->requireJsLibrary('jquery', '1.7');
+
+?>
+<!-- Inspired by HTML5 Boilerplate -->
+<!doctype html>
+<html lang='<?php echo Ajde_Lang::getInstance()->getShortLang(); ?>' id='<?php echo Config::get('ident'); ?>'>
+	<head>
+		
+		<!-- UTF-8 please (also in the headers, just to be sure) -->
+		<meta charset='utf-8'>
+		
+		<!-- Some content meta tags -->
+		<title><?php echo _e(Ajde::app()->getDocument()->getFullTitle()); ?></title>		
+		<meta name='description' content='<?php echo _e(Ajde::app()->getDocument()->getDescription()); ?>' />
+		<meta name='author' content='<?php echo _e(Config::get('author')); ?>' />
+		<?php echo Ajde::app()->getDocument()->getMeta(); ?>
+		
+		<!-- Define the root of the site -->
+		<base href='http://<?php echo Config::get('lang_root'); ?>' />
+		
+		<!-- Favicon and CSS -->
+		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+		<?php echo $this->getDocument()->getHead('css'); ?>		
+	</head>
+	
+	<!-- Target older versions of IE with CSS classes -->
+	<!--[if lt IE 7 ]> <body class='ie6 oldie'> <![endif]-->
+	<!--[if IE 7 ]>    <body class='ie7 oldie'> <![endif]-->
+	<!--[if IE 8 ]>    <body class='ie8 oldie'> <![endif]-->
+	<!--[if IE 9 ]>    <body class='ie9'> <![endif]-->
+	<!--[if (gt IE 9)|!(IE)]><!--> <body> <!--<![endif]-->
+		
+		<!-- The content -->
+		<header>
+			<h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
+		</header>
+		
+		<div id="main">
+			<nav>
+				<ul>
+					<li><a href='.'>Home</a></li>
+				</ul>
+			</nav>
+			<article>
+				<?php echo $this->getDocument()->getBody(); ?>
+			</article>
+		</div>
+		
+		<footer>
+			<p></p>
+		</footer>
+		
+		<!-- The scripts -->
+		<?php echo $this->getDocument()->getScripts(); ?>
+		
+	</body>
+</html>

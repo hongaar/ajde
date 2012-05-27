@@ -1,0 +1,39 @@
+<h2><?php echo __('Register'); ?></h2>
+
+<?php echo $this->ACAjaxForm('user/register', 'registerform'); ?>
+	<input type="hidden" name="returnto" id="returnto" value="<?php echo $this->returnto; ?>" />
+	<dl class='form wide'>
+		<dt>&nbsp;</dt>
+		<dd class="status"><?php echo __('Please fill in your details') ?></dd>
+		
+		<dt><?php echo __(ucfirst($this->user->usernameField)); ?></dt>
+		<dd>
+			<input type="text" name="<?php echo $this->user->usernameField; ?>" placeholder="" required />
+		</dd>
+		
+		<dt><?php echo __(ucfirst($this->user->passwordField)); ?></dt>
+		<dd>
+			<input type="password" name="password" placeholder="****" required />
+		</dd>
+		
+		<dt><?php echo __('Verify') . ' ' . __($this->user->passwordField); ?></dt>
+		<dd>
+			<input type="password" name="passwordCheck" placeholder="****" required />
+		</dd>
+		
+		<dt><?php echo __('E-mail'); ?></dt>
+		<dd>
+			<input type="text" name="email" required />
+		</dd>
+		
+		<dt><?php echo __('Full name'); ?></dt>
+		<dd>
+			<input type="fullname" name="fullname" required />
+		</dd>
+			
+		<dd>
+			<input type="submit" value="<?php echo __('Register'); ?>" />
+		</dd>	
+	</dl>
+
+</form>

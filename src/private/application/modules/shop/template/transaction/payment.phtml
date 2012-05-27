@@ -1,0 +1,77 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+
+/* @var $transaction Ajde_Shop_Transaction */
+$transaction = $this->transaction;
+?>
+
+<h2>Payment</h2>
+
+<?php if ($transaction->hasLoaded() === false) { ?>
+	
+	<h4>Transaction not found</h4>
+	<p><a href='shop'>Back to shop</a></p>
+
+<?php } else { ?>
+
+	<?php echo $this->ACAjaxForm('shop/transaction:payment', null, 'transactionPayment'); ?>
+
+		<h4>Choose method</h4>
+		<dl class='form wide'>
+			<dt>Total payable amount</dt>
+			<dd><?php echo $transaction->getFormattedTotal(); ?></dd>
+			
+			<dt>&nbsp;</dt>
+			<dd><hr/></dd>
+			
+			<?php 
+			if ($transaction->payment_status == 'completed') {
+				echo '<dt></dt><dd>This transaction is already paid for.</dd></dl>';
+			} elseif ($transaction->payment_status != 'pending') { ?>
+			
+				<dt>&nbsp;</dt>
+				<dd>
+					<p>
+						Payment was already initiated for this transaction. If
+						you canceled your payment, you can now reset the payment
+						status of this transaction and try again.<br/>
+						<br/>
+						<a href="shop/transaction:resetPayment" class='action'>Reset payment</a> or go to the <a href="shop/transaction:view">overview of this transaction</a>
+					</p>
+				</dd>
+				
+				</dl>
+				
+			<?php } else { ?>
+			
+				<dt>&nbsp;</dt>
+				<dd class="status"><?php echo __('Please choose your method of payment') ?></dd>
+
+				<dt>Payment provider:</dt>
+				<dd class='provider'>
+					<?php foreach($transaction->getProviders() as $key => $provider) {
+						/* @var $provider Ajde_Shop_Transaction_Provider */ ?>
+					<input type='radio' name='provider' value='<?php echo _e($key); ?>' id='<?php echo _e($key); ?>' /><label for='<?php echo _e($key); ?>'>
+						<?php if ($provider->getLogo()) { ?>
+							<img src='<?php echo _e($provider->getLogo()); ?>' alt='<?php echo _e($provider->getName()); ?>' width='75' style='vertical-align: middle;' />
+						<?php } else { ?>
+							<?php echo _e($provider->getName()); ?>
+						<?php } ?>
+					</label>
+					<?php } ?>
+				</dd>
+				
+				</dl>
+
+				<div class='toolbar'>
+					<input type='submit' class='action' value='Pay &amp; complete order' />
+					<a href='shop/transaction:setup'>Edit shipping details</a>
+				</div>
+			
+			<?php } ?>		
+
+	</form>
+	
+	<div id="postproxy"></div>
+	
+<?php } ?>

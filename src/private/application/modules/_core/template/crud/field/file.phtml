@@ -1,0 +1,83 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+/* @var $field Ajde_Crud_Field_File */
+$field = $this->field;
+?>
+
+<div class='fileupload <?php if ($field->getValue()) { echo 'visuallyhidden'; } ?>'>
+	
+	<?php 
+	$options = array(
+		'saveDir' => $field->getSaveDir(),
+		'extensions' => $field->getExtensions(),
+		'multiple' => $field->getMultiple()
+	);
+	echo $this->ACAjaxUpload($field->getName(), $options); ?>
+	
+	<div class='filebrowser'>
+		<a href='javascript:void(0);' class='toggleFileBrowser'><?php echo _e('Choose existing'); ?></a>
+		<div class='browser'>
+			<?php
+			$filelist = Ajde_FS_Find::findFiles($field->getSaveDir(), "{*." . implode(',*.', $field->getExtensions()) . "}", GLOB_BRACE);
+			$exclude = preg_grep("/_[0-9]+x[0-9]+c?/i", $filelist);
+			foreach($filelist as $file) {
+				if (in_array($file, $exclude)) {
+					continue;
+				}
+				$extension = pathinfo($file, PATHINFO_EXTENSION);
+				echo "<a href='javascript:void(0);'>";										
+					if (in_array($extension, array('jpg', 'jpeg', 'png', 'gif'))) {
+						echo $this->ACImage(array(
+							'filename' => $file,
+							'width' => 50,
+							'height' => 50,
+							'crop' => true,
+							'class' => 'thumb'
+						));
+					} else {
+						echo "<span class='icon'><img class='icon' src='" . Ajde_Resource_FileIcon::_($extension) . "' /></span>";
+					}
+					echo "<span>";
+						echo "<span class='filename'>" . str_replace(Config::get('local_root') . '/' . $field->getSaveDir(), '', $file) . "</span>";
+						echo "<span class='preview' data-url='" . $this->escape(str_replace(Config::get('local_root') . '/', '', $file)) . "'>preview</span>";
+					echo "</span>";
+				echo "</a>";
+			}
+			?>
+			<div class='clearfix'></div>
+		</div>
+	</div>
+
+</div>
+
+<?php
+
+if ($field->getValue()) {
+	$extension = pathinfo($field->getValue(), PATHINFO_EXTENSION); ?>
+
+	<div class='filelist'>
+		
+		<input
+			<?php echo $field->getHtmlAttributes(); ?>
+		/>
+		
+		<?php
+		if (in_array($extension, array('jpg', 'jpeg', 'png', 'gif'))) {
+			echo $this->ACImage(array(
+					'filename' => $field->getSaveDir() . $field->getValue(),
+					'width' => 150,
+					'height' => 150,
+					'crop' => true
+				)); ?>
+			<br/>
+		<?php } ?>
+
+		<span>
+			<img class='icon' src='<?php echo Ajde_Resource_FileIcon::_($extension); ?> ' />
+			<?php echo $field->getValue(); ?>
+			<a href='#' class='deleteFileCrud'>delete</a> 
+		</span>
+			
+	</div>
+		
+<?php } ?>

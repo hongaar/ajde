@@ -1,0 +1,139 @@
+###### Optional directives not allowed in .htaccess
+
+# Reveal only the server name in header (httpd.conf) 
+#ServerTokens Prod
+
+# You might want to enable a PHP opcode cache (php.ini)
+# Zend Optimizer+:	http://www.zend.com/products/server/
+# XCache:			http://xcache.lighttpd.net/
+# APC:				http://php.net/manual/en/book.apc.php
+
+###### Ajde specific
+
+<IfModule mod_php5.c>
+	# PHP compatibility settings
+	php_flag short_open_tag off
+	php_flag magic_quotes_gpc off
+	php_flag register_globals off
+  
+	# Max upload size
+	php_value upload_max_filesize 15M
+                                               
+	# Force PHP errors
+	php_value display_errors 1
+	php_value display_startup_errors 1
+</IfModule>
+
+# Turn the RewriteEngine on, optionally specify the base path too
+RewriteEngine on
+
+# Do not rewrite traffic to the public/ directory
+RewriteRule ^[a-zA-Z]{2}?\/public\/(.*)$ public/$1 [L]
+
+# Do not rewrite images, JS, PHP or CSS files
+#RewriteRule \.(php|css|jpe?g|gif|png|js|pdf|ico)$ - [L]
+
+# Add a trailing slash if needed
+#RewriteCond %{REQUEST_URI} ^/[^\.]+[^/]$
+#RewriteRule ^(.*)$ http://%{HTTP_HOST}/$1/ [R=301,L]
+
+# Rewrite all traffic to index.php, exclude existing files
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.+)$ index.php?_route=$1 [QSA,L]
+
+# Error documents
+# Update to local path, i.e. /ajde/errordocument.php to prevent error:
+# 	'Additionally, a 404 Not Found error was encountered while trying to use an ErrorDocument to handle the request.'
+ErrorDocument 400 errordocument.php
+ErrorDocument 401 errordocument.php
+ErrorDocument 403 errordocument.php
+ErrorDocument 404 errordocument.php
+
+ErrorDocument 500 errordocument.php
+ErrorDocument 501 errordocument.php
+ErrorDocument 502 errordocument.php
+ErrorDocument 503 errordocument.php
+
+###### From HTML5 Boilerplate
+
+# Force the latest IE version, in various cases when it may fall back to IE7 mode
+<IfModule mod_setenvif.c>
+	<IfModule mod_headers.c>
+		BrowserMatch MSIE ie
+		Header set X-UA-Compatible "IE=Edge,chrome=1" env=ie
+	</IfModule>
+</IfModule>
+
+# MIME-types
+AddType video/ogg  ogg ogv
+AddType video/mp4  mp4
+AddType video/webm webm
+AddType image/svg+xml                 svg svgz 
+AddType application/vnd.ms-fontobject eot
+AddType font/ttf                      ttf
+AddType font/otf                      otf
+AddType font/x-woff                   woff
+AddType text/cache-manifest           manifest
+AddType image/vnd.microsoft.icon	  ico
+
+# Gzip compression
+<IfModule mod_deflate.c>
+	AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/x-javascript text/javascript application/javascript application/json 
+  	<FilesMatch "\.(ttf|otf|eot|svg)$" >
+    	SetOutputFilter DEFLATE
+	</FilesMatch>
+</IfModule>
+SetEnvIfNoCase Request_URI  \
+	\.(?:gif|jpe?g|png)$ no-gzip dont-vary
+SetEnvIfNoCase Request_URI  \
+	\.(?:exe|t?gz|zip|gz2|sit|rar)$ no-gzip dont-vary
+
+# Far-future expires headers
+<IfModule mod_expires.c>	
+	ExpiresActive on
+
+	ExpiresDefault                          "access plus 0 seconds"
+	ExpiresByType text/cache-manifest       "access plus 0 seconds"
+
+	ExpiresByType text/html                 "access"
+	ExpiresByType application/xhtml+xml		"access"
+	ExpiresByType application/json			"access"
+	ExpiresByType application/xml			"access"
+	ExpiresByType text/xml					"access"
+
+	ExpiresByType application/rss+xml       "access plus 1 hour"
+	ExpiresByType application/atom+xml      "access plus 1 hour"
+
+	ExpiresByType text/css                  "access plus 1 week"
+	ExpiresByType application/javascript    "access plus 1 week"
+	ExpiresByType text/javascript           "access plus 1 week"
+
+	ExpiresByType image/png                 "access plus 1 month"
+	ExpiresByType image/jpg                 "access plus 1 month"
+	ExpiresByType image/jpeg                "access plus 1 month"
+	ExpiresByType image/gif                 "access plus 1 month"
+	ExpiresByType video/ogg                 "access plus 1 month"
+	ExpiresByType audio/ogg                 "access plus 1 month"
+	ExpiresByType video/mp4                 "access plus 1 month"
+	ExpiresByType font/ttf                  "access plus 1 month"
+	ExpiresByType font/woff                 "access plus 1 month"
+	ExpiresByType image/svg+xml             "access plus 1 month"
+	ExpiresByType image/vnd.microsoft.icon  "access plus 1 month"
+</IfModule>
+
+<IfModule mod_headers.c>
+	Header unset X-Powered-By
+	Header set X-Ajde '1'
+</IfModule>
+
+# Without -MultiViews, Apache will give a 404 for a rewrite if a folder of the same name does not exist (e.g. '/blog/hello')
+Options -MultiViews
+ 
+# -Indexes will have Apache block users from browsing folders without a default document
+Options -Indexes
+
+# UTF-8 encoding for anything served text/plain or text/html
+AddDefaultCharset utf-8
+
+# Force utf-8 for a number of file formats
+AddCharset utf-8 .html .css .js .xml .json .rss

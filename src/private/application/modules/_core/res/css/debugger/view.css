@@ -1,0 +1,87 @@
+html{margin-bottom:10px !important}* html
+body{margin-bottom:10px !important}
+
+#ajdeDebugger {
+	position: fixed;
+	bottom: 0px;
+	overflow: hidden;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	background-color: white;
+	z-index: 999;
+}
+
+#ajdeDebuggerHeader {
+	height: 10px;
+	background-color: #9a0092;
+	cursor: pointer;
+}
+
+#ajdeDebugger.warning #ajdeDebuggerHeader {
+	background-color: #cc0000;
+}
+
+#ajdeDebuggerContent {
+	padding: 0 10px 0 10px;
+	overflow-y: scroll;
+	overflow-x: auto;
+	height: 0;
+}
+
+#ajdeDebuggerContent div.warn {
+	background-color: #cc0000;
+	color: white;
+	margin: 5px 0 5px 0;
+	padding: 5px 5px 5px 25px;
+	
+	background-repeat: no-repeat;
+	background-position: 5px center;
+	background-image: url('../../public/images/_core/warning_16.png');
+}
+
+#ajdeDebugger h4 {
+	font-size: 20px;
+	color: #005d9a;
+	margin: 10px 0 10px 0;
+}
+
+#ajdeDebugger dl {
+	margin-bottom: 50px;
+}
+
+#ajdeDebugger dl dt {
+	background: #005d9a;
+	color: #fff;
+	float: left;
+	clear: both;
+	font-weight: bold;
+	margin-right: 10px;
+	padding: 5px;
+	width: 100px;
+}
+
+#ajdeDebugger dl dd {
+	float: left;
+	margin: 2px 0;
+	padding: 5px 0;
+	color: black;
+}
+
+#ajdeDebugger dl dd.details {
+	display: none;
+	clear: both;
+}
+
+#ajdeDebugger table {
+	border: 1px solid silver;
+}
+
+	#ajdeDebugger table td, #ajdeDebugger table th {
+		padding: 2px;
+		color: black;
+	}
+	
+#ajdeDebuggerDump pre {
+	white-space: pre;
+} 

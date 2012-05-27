@@ -1,0 +1,7 @@
+______________________
+Ajde PHP Web Framework
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+
+The _core module is part of the core of Ajde as it provides front-end
+access to various Ajde_Components, such as debuggerm resources and forms.
+Don't remove this module as the Ajde core uses the resource component.

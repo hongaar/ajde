@@ -1,0 +1,20 @@
+<?php
+$field = $this->field;
+/* @var $field Ajde_Crud_Field_Enum */
+$options = $field->getValues(); ?>
+
+<select
+	<?php echo $field->getHtmlAttributes(); ?>
+>
+	<?php if (!$field->getIsRequired()) { ?>
+		<option value=''>(choose <?php echo strtolower($field->getLabel()); ?>)</option>
+	<?php } ?>
+	<?php foreach($options as $option) { ?>
+		<option value='<?php echo $option; ?>'			
+			<?php 
+			if ($option == $field->getValue()) { echo "selected='selected'"; }
+			elseif ($field->hasReadonly() && $field->getReadonly() === true) { echo ' disabled="disabled" '; }
+			?>				
+			><?php echo __($option); ?></option>
+	<?php } ?>
+</select>

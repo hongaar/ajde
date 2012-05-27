@@ -1,0 +1,6 @@
+<form class="ACForm <?php echo $this->extraClass; ?>" id="<?php echo $this->formId; ?>" action="<?php echo $this->formAction; ?>" method="post">
+	<input type='hidden' name='_token' value='<?php echo $this->formToken; ?>' />
+<?php if (!empty($this->innerXml)) { ?>
+	<?php echo $this->innerXml; ?>
+	</form>
+<?php } ?>

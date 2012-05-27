@@ -1,0 +1,30 @@
+<?php
+/* @var $crud Ajde_Crud */
+$crud = $this->crud;
+$editOptions = $crud->getOptions('edit');
+?>
+
+<?php echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrudEdit'); ?>
+	
+	<dl class='crudEdit'>
+		
+		<?php foreach($crud->getFields() as $field) {
+			if (isset($editOptions['show']) && (!in_array($field->getName(), $editOptions['show']))) { ?>
+				<div class='visuallyhidden'>
+			<?php }
+			echo $field->getHtml();
+			if (isset($editOptions['show']) && (!in_array($field->getName(), $editOptions['show']))) { ?>
+				</div>
+			<?php }
+		} ?>
+		
+		<dt>&nbsp;</dt>
+		<dd>
+			<button type="submit" class="button save">Save &amp; back</button>
+			<button type="submit" class="button apply">Apply</button>
+			<a href="javascript:void(null);" class='button cancel'>Cancel</a>
+		</dd>
+		
+		<div class='clearfix'></div>
+	</dl>
+</form>

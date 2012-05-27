@@ -1,0 +1,56 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ ?>
+
+<h2>Edit</h2>
+
+<?php
+	$fields = array(
+		'image' => array(
+			'type' => 'file',
+			'saveDir' => 'public/images/uploads/',
+			'extensions' => array('png', 'jpg', 'pdf', 'docx'),
+			'multiple' => false,
+			'label' => 'Plaatje',
+			'length' => 255,
+			'isRequired' => false,
+			'default' => '',
+			'isAutoIncrement' => false,
+			'help' => 'Please select an image, or drag and drop here'
+			),
+		'published' => array(
+			'type' => 'boolean',
+			'help' => 'Post is visible or not'
+		),
+		'title' => array(),
+		'sort' => array(
+			'type' => 'sort'
+		)
+	);
+	$list = array(
+		'buttons' => array(
+			'new' => true,
+			'edit' => true,
+			'view' => array(
+				'text' => 'View article',
+				'class' => 'view'
+			)
+		),
+		'main' => 'title',
+		'show' => array('title', 'updated', 'image', 'published', 'type', 'sort'),
+		'view' => array(
+			'orderBy' => 'sort'
+		)
+	);	
+	$options = array(
+		'fields'	=> $fields,
+		'list'		=> $list
+	);
+	
+	$crud = $this->ACCrudList('samples', $options);
+	
+	if (Ajde::app()->getRequest()->has('new')) {
+		$user = UserModel::getLoggedIn();
+		$crud->setOption('fields.user.value', $user->getPK());		
+	}
+	
+	echo $crud->output();
+?>

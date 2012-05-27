@@ -1,0 +1,48 @@
+/**
+ * Styles for Core.Alert
+ */
+ 
+#alert-wrapper {
+	position: fixed;
+	display: none;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: auto;
+	
+  background-color: transparent;
+  background-color: rgba(0, 95, 155, 0.8); 
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#CC005F9B,endColorstr=#CC005F9B);
+            zoom: 1;
+			
+	z-index: 998;	
+	cursor: pointer;
+}
+
+#alert-content {	
+	margin-top: 0.6em;
+	padding: 0 10px 0 10px;
+	
+	color: white;
+	
+	text-align: center;
+	font-size: 20px;
+	font-weight: 700;
+}
+
+#alert-wrapper.warning {
+  background-color: transparent;
+  background-color: rgba(255, 255, 255, 0.9);  
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#E5FFFFFF,endColorstr=#E5FFFFFF); 
+            zoom: 1;
+}
+#alert-wrapper.warning #alert-content { color: #FF3333; }
+
+#alert-wrapper.error {
+  background-color: transparent;
+  background-color: rgba(255, 51, 51, 0.89);  
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#E5FF3333,endColorstr=#E5FF3333); 
+            zoom: 1;
+}
+#alert-wrapper.error #alert-content { color: white; }
+	

@@ -1,0 +1,17 @@
+<?php $field = $this->field; ?>
+<dt title="<?php echo $field->getLabel(); ?>" class='<?php if ($field->getIsRequired() === true) { echo 'required'; } ?>'>
+	<?php echo __($field->getLabel()); ?>
+	<?php if ($field->getIsRequired() === true) :
+		echo $field->getHtmlRequired();
+	endif; ?>
+</dt>
+
+<dd>
+	<?php if ($field->hasHelp()) :
+		echo "<span class='help'>" . $field->getHelp() . "</span>";
+	endif; ?>
+	<?php if ($field->getIsPK() === true) :
+		echo $field->getHtmlPK();
+	endif; ?>
+	<?php echo $field->getInput(); ?>
+</dd>

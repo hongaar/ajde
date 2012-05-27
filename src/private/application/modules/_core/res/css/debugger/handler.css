@@ -1,0 +1,19 @@
+body {
+	font: 13px sans-serif;
+}
+
+a {
+	color: #005D9A;
+}
+
+a:hover {
+	color: #9A0092;
+}
+
+h2 {
+	color: #005D9A;
+}
+
+span > a {
+	color: #9A0092;
+}

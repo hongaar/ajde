@@ -1,0 +1,22 @@
+______________________
+Ajde PHP Web Framework
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+
+* CONFIGURATION
+ 
+Directories which have to be writable by the webserver:
+- private/shared/*
+
+* UNNECESSARY FILES AND DIRECTORIES
+
+Remove these files and directories to cleanup your Ajde install for production:
+- ./loadtest.php
+- ./phpinfo.php
+- ./test/*
+
+* ADDITIONAL LIBRARIES
+
+Those libraries are not included nor required for Ajde to work, but provide additional functionalities:
+- ./private/lib/Zend - Zend Framework (http://framework.zend.com/)
+- ./private/lib/AjdeX - Ajde extensions (http://code.google.com/p/ajde/)
+- ./test/simpletest - SimpleTest (http://simpletest.org/en/download.html)

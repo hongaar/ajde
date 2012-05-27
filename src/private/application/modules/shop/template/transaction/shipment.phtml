@@ -1,0 +1,36 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+?>
+
+<h4>Shipment</h4>
+
+<?php if ($this->transaction === false || ($this->transaction !== false && empty($this->transaction->shipment_country))) { ?>
+
+	<p>Shipment options will be available after you choose a country...</p>
+
+<?php } else { ?>
+
+<dl class='form wide'>
+	<dt>Choose shipment method:</dt>
+	<dd class='method'>
+		
+		<table>
+			<colgroup>
+				<col width="40" />
+				<col width="200" />
+				<col width="1*" />
+			</colgroup>
+		<?php foreach($this->shipment->getMethods() as $method) {
+			/* @var $method Ajde_Shop_Shipping_Method */ ?>
+			<tr>
+				<td><input type='radio' name='shipment_method' <?php if ($this->method == $method->getName()) { echo 'checked=\'checked\''; } ?> value='<?php echo _e($method->getName()); ?>' id='<?php echo _e($method->getName()); ?>' /></td>
+				<td><label for='<?php echo _e($method->getName()); ?>'><?php echo _e($method->getDescription()); ?></label></td>
+				<td><?php echo _e($method->getFormattedTotal()); ?></td>
+			</tr>
+		<?php } ?>
+		</table>
+		
+	</dd>		
+</dl>
+
+<?php } ?>

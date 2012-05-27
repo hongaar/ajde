@@ -1,0 +1,32 @@
+table.cart {
+	margin-bottom: 0.8em;
+	width: 100%;
+}
+
+table.cart tr {
+	border-bottom: 1px solid silver;
+}
+
+table.cart tr:last-child {
+	border-bottom: none;
+}
+
+table.cart th {
+	padding-bottom: 10px;
+	text-align: left;
+}
+
+table.cart td {
+	padding: 2px 0;
+	vertical-align: middle;
+}
+
+table.cart td.qty {
+	text-align: right;
+	padding-right: 5px;
+}
+
+table.cart tfoot td {
+	padding-top: 10px;
+	font-weight: bold;
+}

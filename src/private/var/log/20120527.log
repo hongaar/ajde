@@ -1,0 +1,19 @@
+
+
+20:23:32+02:00:
+Request /ajde-git/samples triggered:
+Uncaught PHP exception 90005: Unable to load VatModel in /mnt/hgfs/www/ajde-git/private/lib/Ajde/Core/Autoloader.php on line 195
+0. /mnt/hgfs/www/ajde-git/index.php on line 142
+1. /mnt/hgfs/www/ajde-git/private/lib/Ajde/Application/Application.php on line 111
+2. /mnt/hgfs/www/ajde-git/private/lib/Ajde/Controller/Controller.php on line 119
+3. /mnt/hgfs/www/ajde-git/private/application/modules/samples/SamplesController.php on line 30
+4. /mnt/hgfs/www/ajde-git/private/lib/Ajde/Controller/Controller.php on line 164
+5. /mnt/hgfs/www/ajde-git/private/lib/Ajde/Template/Template.php on line 134
+6. /mnt/hgfs/www/ajde-git/private/lib/Ajde/Template/Parser.php on line 75
+7. /mnt/hgfs/www/ajde-git/private/lib/Ajde/Template/Parser.php on line 81
+8. /mnt/hgfs/www/ajde-git/private/application/modules/samples/template/view.phtml on line 32
+9. /mnt/hgfs/www/ajde-git/private/application/modules/samples/model/SamplesModel.php on line 11
+10. /mnt/hgfs/www/ajde-git/private/lib/Ajde/Model/Model.php on line 323
+11. /mnt/hgfs/www/ajde-git/private/lib/Ajde/Model/Model.php on line 344
+12.  on line 
+Debug info - user agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.52 Safari/536.5 - referer: http://mancora/ajde-git/

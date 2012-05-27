@@ -1,0 +1,9 @@
+<h2><?php echo __('Logon'); ?></h2>
+
+<p class='status'><?php echo $this->clean($this->message); ?></p>
+
+<p>
+	Already logged on.
+	<hr/>
+	<a class='action' href="user/logoff?returnto=<?php echo isset($this->returnto) ? $this->returnto : Ajde::app()->getRoute(); ?>"><?php echo __('Login as a different user'); ?></a>
+</p>

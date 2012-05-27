@@ -1,0 +1,13 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+
+/* @var $provider Ajde_Shop_Transaction_Provider */
+$provider = $this->provider; 
+
+?>
+
+<form action="<?php echo $provider->getRedirectUrl(); ?>" method="post">
+	<?php foreach($provider->getRedirectParams() as $name => $value) { ?>
+		<input type='hidden' name="<?php echo _e($name); ?>" value="<?php echo _e($value); ?>" />
+	<?php } ?>
+</form>

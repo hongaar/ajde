@@ -1,0 +1,79 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+?>
+
+<h2>Shipping details</h2>
+
+<?php echo $this->ACAjaxForm('shop/transaction:setup', null, 'transactionSetup'); ?>
+
+	<h4>Your name and address</h4>
+	<dl class='form wide'>
+		<dt>&nbsp;</dt>
+		<dd class="status"><?php echo __('Please fill in your details') ?></dd>
+		
+		<dt>Full name</dt>
+		<dd>
+			<input type='text' name='name' required value='<?php echo _e($this->name); ?>' />
+		</dd>
+		
+		<dt>E-mail address</dt>
+		<dd>
+			<input type='text' name='email' required value='<?php echo _e($this->email); ?>' />
+		</dd>
+		
+		<dt>&nbsp;</dt>
+		<dd><hr/></dd>		
+		
+		<dt>Address</dt>
+		<dd>
+			<input type='text' name='shipment_address' required value='<?php echo _e($this->address); ?>' />
+		</dd>
+		
+		<dt>Zipcode</dt>
+		<dd>
+			<input type='text' name='shipment_zipcode' required value='<?php echo _e($this->zipcode); ?>' />
+		</dd>
+		
+		<dt>City</dt>
+		<dd>
+			<input type='text' name='shipment_city' required value='<?php echo _e($this->city); ?>' />
+		</dd>
+		
+		<dt>Region</dt>
+		<dd>
+			<input type='text' name='shipment_region' value='<?php echo _e($this->region); ?>' /> (optional)
+		</dd>
+		
+		<dt>Country</dt>
+		<dd>
+			<?php include 'countries.phtml'; ?>
+			<?php countryList($this->country, 'shipment_country', array('Netherlands')); ?>
+		</dd>
+		
+		<?php if ($this->user) { ?>
+		<dt></dt>
+		<dd>
+			<input type='checkbox' name='save_details' checked="checked" id='save_details' /><label for='save_details'>Save shipping details for next order</label>
+		</dd>
+		<?php } ?>		
+		
+		<dt>&nbsp;</dt>
+		<dd><hr/></dd>		
+		
+		<dt>Comment</dt>
+		<dd>
+			<textarea name='comment' rows="7" cols="50"><?php echo _e($this->comment); ?></textarea><br/>
+			 (optional)
+		</dd>
+	</dl>
+	
+	<div id='shipment'>
+		<?php echo $this->includeModule('shop/transaction:shipment'); ?>
+	</div>
+		
+	<div class='toolbar'>
+		<input type='submit' class='action' value='Proceed to payment' />
+		<a href='shop/transaction:view'>Transaction overview</a>
+	</div>
+	 
+</form>

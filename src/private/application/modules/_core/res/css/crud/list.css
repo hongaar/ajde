@@ -1,0 +1,139 @@
+table.crudList {
+    border-collapse: collapse;
+    border-top: 1px solid silver;
+	background-color: silver;
+	width: 100%;
+}
+
+table.crudList tr {
+	margin: 0;
+	margin-bottom: 1px;
+	min-height: 35px;
+	border-bottom: 1px solid silver;
+}
+
+table.crudList tbody tr {
+	cursor: pointer;
+}
+
+table.crudList th {
+	padding: 10px 10px 10px 5px;
+	background-color: #f1f1f1;
+	text-align: left;
+	border-right: 1px solid #ddd;
+}
+
+	table.crudList th.main {
+		width: 100%;
+	}
+	
+	table.crudList th:last-child {
+		border: none;
+	}
+
+table.crudList th select.filter {
+	margin-top: 10px;
+}
+
+table.crudList th select.filter option.select {
+	color: silver;
+}
+
+table.crudList td.toolbar {
+	padding-top: 8px;
+	height: 24px;
+}
+
+table.crudList td.toolbar .button.multiple {
+	display: none;
+}
+
+table.crudList td.toolbar .button.multiple.show {
+	display: inline-block;
+}
+
+table.crudList td {
+	padding: 11px 5px 8px 5px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    vertical-align: top;	
+	white-space: nowrap;
+	max-width: 350px;
+	background-color: white;
+	border-right: 1px solid #ddd;
+}
+
+	table.crudList td.main {
+		font-weight: bold;
+	}
+	
+	table.crudList td.sort {
+		vertical-align: middle;
+		text-align: center;
+		cursor: move;
+	}
+	
+	table.crudList td.sort span {
+		opacity: 0.4;
+		filter: alpha(opacity=40);
+	}
+	
+	table.crudList td.sort:hover span {
+		opacity: 1;
+		filter: alpha(opacity=100);
+	}
+	
+	table.crudList td.sortDisabled {
+		color: gray;
+	}
+	
+	table.crudList tr.tDnD_whileDrag td {
+		background-color: #99ccff !important;
+	}
+
+	table.crudList td:last-child, table.crudList tr.toolbar td {
+		border-right: none;
+	}
+
+	table.crudList td.linkedModel {
+		text-decoration: underline;
+	}
+	
+	table.crudList .buttons {
+		white-space: nowrap;
+		padding-top: 8px;
+	}
+	
+	table.crudList .buttons span {
+		margin-top: 3px;
+	}
+	
+	table.crudList th.buttons {
+		font-weight: normal;
+		padding-top: inherit;
+		padding-bottom: 5px;
+	}
+
+table.crudList tbody tr:nth-child(even) td {
+	background-color: #f9f9f9;
+}
+
+table.crudList tbody tr:hover td {
+	background-color: #eee;
+}
+
+table.crudList th a.order.asc,
+table.crudList th a.order.desc {
+	background-repeat: no-repeat;
+	background-position: 0 center;	
+	padding-left: 15px;
+}
+
+table.crudList th a.order.asc {
+	background-image: url('../../public/images/_core/crud/down_16.png');
+}
+
+table.crudList th a.order.desc {
+	background-image: url('../../public/images/_core/crud/up_16.png');
+}
+

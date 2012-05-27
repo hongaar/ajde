@@ -1,0 +1,117 @@
+dl.crudEdit {
+	margin-bottom:50px;
+}
+
+dl.crudEdit dt {
+	display: table-cell;	
+	float: left;
+	clear: left;
+	overflow: hidden;
+	
+	width: 200px;
+	min-height: 21px;
+	padding: 15px 15px 5px 10px;
+	margin: 0;
+	
+	font-weight: normal;
+	text-overflow: ellipsis;
+	text-align: right;
+	white-space: nowrap;
+}
+
+dl.crudEdit.small dt {
+	text-align: left;
+	padding: 10px 15px 0 10px;
+	min-height: 20px;
+}
+
+dl.crudEdit.small dd {
+	padding: 7px 10px 5px 10px;
+	width: 95%;
+}
+
+dl.crudEdit dt.required {
+	color: #e43c3c;
+	font-weight: bold;
+}
+
+dl.crudEdit dd {
+	float: left;
+	
+	width: 697px;
+	min-height: 21px;
+	
+	padding: 10px;
+	margin: 0;
+	
+	border-top: 1px solid silver;
+}
+
+dl.crudEdit dd input[type=text] {
+	width: 20em;
+	height: 15px;
+}
+
+dl.crudEdit dd input[type=number] {
+	width: 5em;
+}
+
+dl.crudEdit dd input[readonly],
+dl.crudEdit dd textarea[readonly]{
+	border: none;
+	background-color: #eee;
+}
+
+dl.crudEdit dd textarea {
+	width: 50em;
+	height: 20em;
+}
+
+dl.crudEdit dd span.help {
+	display: block;
+	float: right;
+	
+	max-width: 250px;
+	padding: 3px;
+	margin: 0 0 0 10px;
+	
+	font-size: 0.9em;
+	border: 1px solid silver;
+	background-color: #f1f1f1;
+	
+  opacity: 0.2; 
+  filter: alpha(opacity=20); 
+
+  -webkit-border-radius: 5px; 
+     -moz-border-radius: 5px; 
+          border-radius: 5px; 
+  
+  -moz-background-clip: padding; -webkit-background-clip: padding-box; background-clip: padding-box;
+  
+  -webkit-transition: all 0.3s ease-out;  
+     -moz-transition: all 0.3s ease-out;  
+      -ms-transition: all 0.3s ease-out;  
+       -o-transition: all 0.3s ease-out;  
+          transition: all 0.3s ease-out;
+
+}
+
+dl.crudEdit dd:hover span.help {
+	
+  opacity: 1; 
+  filter: alpha(opacity=100); 
+
+}
+
+/* VALIDATION */
+
+dl.crudEdit dd.validation_error {
+	background-color: #e43c3c;
+}
+
+dl.crudEdit dd.validation_error div.validation_message {
+	color: white;
+	margin-bottom: 5px;
+	text-transform: uppercase;
+	font-size: 0.7em;
+}

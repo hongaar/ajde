@@ -1,0 +1,65 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+
+/* @var $transaction Ajde_Shop_Transaction */
+$transaction = $this->transaction;
+?>
+
+<h2>Checkout</h2>
+
+<?php if ($transaction->hasLoaded()) { ?>
+
+	<h4>You have an unfinished transaction</h4>
+	
+	<?php if ($transaction->payment_status == 'pending') { ?>
+	
+		<?php if ($this->cart->hasItems()) { ?>
+			<p>Update this transaction in progress by replacing the items from your cart in the current transaction</p>	
+			<a class='action' href='shop/transaction:update'>Update transaction</a>
+		<?php } else { ?>
+			<p>You have no items in your shopping cart, but you can continue or cancel the current transaction</p>	
+			<a class='action' href='shop/transaction:view'>View transaction</a>
+		<?php } ?>
+			
+	<?php } else { ?>
+			
+		<p>There is a transaction in progress which can not be updated, as payment has already been initialized.</p>
+		<a class='action' href='shop/transaction:view'>View current status</a> or <a href='shop/transaction:startNew'>create a new order</a>
+			
+	<?php } ?>
+	
+<?php } else { ?>
+
+	<h4>Review your shopping cart</h4>
+	<?php echo $this->includeModule('shop/cart:widget'); ?>
+	<p><a class='action small' href="shop/cart:edit">Edit cart</a></p>
+
+	<hr/>
+
+	<?php if ($this->user) { ?>
+		<h4>You are currently logged in as <?php echo _e($this->user->getFullname()); ?></h4>
+		<p>We use your account info to pre-fill some details for your order.</p>
+		<p><a class='action small' href='shop/cart:switchUser?returnto=shop/checkout'>Switch user</a></p>
+	<?php } else { ?>
+		<h4>You are not currently logged in</h4>
+		<p>
+			We'll gladly take your order, but if you plan on coming back soon, please
+			take some time to register yourself so you won't need to fill out your
+			details in the future!
+		</p>
+		<p>
+			<a href='user/logon?returnto=shop/checkout' class='action small'>Login now</a> Or if you don't have an account yet: <a href='user/register?returnto=shop/checkout'>register for an account</a>.
+		</p>
+	<?php } ?>
+
+	<?php if ($this->cart->hasItems()) { ?>
+		<div class='toolbar'>
+			<a class='action' href='shop/transaction:setup'>Proceed with checkout</a>
+		</div>
+	<?php } else { ?>
+		<hr/>
+		<p>
+			<a class='action' href='shop'>Do some shopping first</a>
+		</p>
+	<?php } ?>
+<?php } ?>

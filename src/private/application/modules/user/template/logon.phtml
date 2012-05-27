@@ -1,0 +1,43 @@
+<div id='logon'>
+
+	<h2><?php echo __('Logon'); ?></h2>
+
+	<?php echo $this->ACAjaxForm('user/logon', 'loginform'); ?>
+		<input type="hidden" name="returnto" id="returnto" value="<?php echo $this->returnto; ?>" />
+		<dl class='form'>
+			<dd class="status"><?php echo $this->clean($this->message); ?></dd>
+
+			<dt><?php echo __(ucfirst($this->user->usernameField)); ?></dt>
+			<dd>
+				<input type="text" name="<?php echo $this->user->usernameField; ?>" placeholder="" required />
+			</dd>
+
+			<dt><?php echo __(ucfirst($this->user->passwordField)); ?></dt>
+			<dd>
+				<input type="password" name="password" placeholder="****" required />
+			</dd>
+
+			<dd>
+				<input type="checkbox" name="rememberme" id="rememberme" />
+				<label for="rememberme"><?php echo __('Remember me'); ?></label>
+			</dd>
+
+			<dd>
+				<input type="submit" value="<?php echo __('Logon'); ?>" />
+			</dd>	
+		</dl>
+	</form>
+	
+</div>
+
+<div id='register'>
+
+	<h2>No account?</h2>
+	<p>
+		Click the link below to register for an account:
+	</p>
+	<p>
+		<a class='action' href="user/register?returnto=<?php echo $this->returnto; ?>"><?php echo __('Register'); ?></a>
+	</p>
+
+</div>
