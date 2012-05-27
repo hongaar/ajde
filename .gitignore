@@ -1,1 +1,4 @@
 /nbproject/
+/src/private/var/*
+/src/private/log/*
+/src/public/images/uploads/
