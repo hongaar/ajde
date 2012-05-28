@@ -1,10 +1,10 @@
 <?php 
 
-class MainController extends Ajde_Controller
+class CreactorController extends Ajde_Controller
 {
 	function view()
 	{
-		Ajde::app()->getDocument()->setTitle("Project homepage");
+		Ajde::app()->getDocument()->setTitle("Homepage");
 		return $this->render();
 	}
 	
