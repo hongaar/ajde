@@ -28,6 +28,8 @@ AC.Crud.Edit.Text = function() {
 				{ name: 'tools',		items : [ 'Maximize', 'ShowBlocks','Source' ] }
 			];
 			
+			CKEDITOR.config.baseHref = document.getElementsByTagName('base')[0].href;
+			
 			addCKEditor($('form.ACCrudEdit textarea'));
 		}
 		

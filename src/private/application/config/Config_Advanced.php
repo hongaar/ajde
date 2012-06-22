@@ -43,6 +43,9 @@ class Config_Advanced
 									'404' => 'main/code404.html',
 									'401' => 'user/logon.html'
 								);		
+	public $browserSupport		= array(
+									
+								);
 	
 	// Security
 	public $autoEscapeString	= true;

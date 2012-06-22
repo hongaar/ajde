@@ -98,6 +98,8 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 		} elseif ($url) {
 			$this->addHeader("Location", 'http://' . Config::get('site_root') . $url);
 		}
+		// Don't load any content after Location header is set
+		Ajde::app()->getDocument()->setLayout(new Ajde_Layout('empty'));
 	}
 
 	public function addHeader($name, $value)
