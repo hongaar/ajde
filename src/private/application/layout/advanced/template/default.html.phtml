@@ -21,12 +21,7 @@ $this->requireCss('default.mobile', 'html', null, Ajde_Document_Format_Html::RES
 ?>
 <!-- Inspired by HTML5 Boilerplate -->
 <!doctype html>
-<html
-	lang='<?php echo Ajde_Lang::getInstance()->getShortLang(); ?>'
-	id='<?php echo Config::get('ident'); ?>'
-	data-lifetime='<?php echo min(array(Config::get('cookieLifetime') > 0 ? Config::get('cookieLifetime') : 99999, Config::get('gcLifetime'))); ?>'
-	data-alert='<?php echo _e(Ajde_Session_Flash::get('alert')); ?>'
->
+<html lang='<?php echo Ajde_Lang::getInstance()->getShortLang(); ?>' id='<?php echo Config::get('ident'); ?>' data-lifetime='<?php echo min(array(Config::get('cookieLifetime') > 0 ? Config::get('cookieLifetime') : 99999, Config::get('gcLifetime'))); ?>' data-alert='<?php echo _e(Ajde_Session_Flash::get('alert')); ?>'>
 	<head>
 		
 		<!-- UTF-8 please (also in the headers, just to be sure) -->
@@ -56,6 +51,11 @@ $this->requireCss('default.mobile', 'html', null, Ajde_Document_Format_Html::RES
 				document.location.href='main/nocookies.html?returnto=<?php echo urlencode((string) Ajde::app()->getRoute()); ?>';
 			}
 		</script>
+		
+		<!-- Make IE6-8 HTML5 compliant, somewhat... -->
+		<!--[if lt IE 9]>
+		<script src='public/js/lib/html5shiv.js'></script>
+		<![endif]-->
 		
 		<!-- Favicon and CSS -->
 		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
