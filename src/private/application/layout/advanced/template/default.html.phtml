@@ -72,6 +72,15 @@ $this->requireCss('default.mobile', 'html', null, Ajde_Document_Format_Html::RES
 				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 			})();
 		</script>
+		
+		<!-- Update my browser -->
+		<script type="text/javascript">
+		(function() {
+			var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
+			s.src = ('https:'==document.location.protocol?'https://':'http://') + 'updatemybrowser.org/umb.js';
+			var b = document.getElementsByTagName('script')[0]; b.parentNode.insertBefore(s, b);
+		})();
+		</script>
 	</head>
 	
 	<!-- Target older versions of IE with CSS classes -->
