@@ -4,3 +4,4 @@ nbproject/
 src/private/var/cache/*
 src/private/var/log/*
 src/public/images/uploads/*
+src/public/js/_core/crud/editor/ckeditor/lib/*
