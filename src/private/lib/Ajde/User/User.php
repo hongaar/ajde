@@ -94,7 +94,8 @@ abstract class Ajde_User extends Ajde_Model
 	public function logout()
 	{
 		// First destroy current session
-		session_regenerate_id();
+		// TODO: overhead to call session_regenerate_id? is it not required??
+		//session_regenerate_id();
 		$session = new Ajde_Session('user');
 		$session->destroy();
 		$cookie = new Ajde_Cookie(Config::get('ident') . '_user');

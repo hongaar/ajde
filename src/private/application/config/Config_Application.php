@@ -37,8 +37,7 @@ class Config_Application extends Config_Advanced
 	//public $cookieSecure;
 	//public $cookieHttponly;
 	
-	//public $cookieLifetime;
-	//public $gcLifetime;
+	//public $sessionLifetime;
 	
 	//public $compressResources;
 	//public $debug;

@@ -21,7 +21,7 @@ $this->requireCss('default.mobile', 'html', null, Ajde_Document_Format_Html::RES
 ?>
 <!-- Inspired by HTML5 Boilerplate -->
 <!doctype html>
-<html lang='<?php echo Ajde_Lang::getInstance()->getShortLang(); ?>' id='<?php echo Config::get('ident'); ?>' data-lifetime='<?php echo min(array(Config::get('cookieLifetime') > 0 ? Config::get('cookieLifetime') : 99999, Config::get('gcLifetime'))); ?>' data-alert='<?php echo _e(Ajde_Session_Flash::get('alert')); ?>'>
+<html lang='<?php echo Ajde_Lang::getInstance()->getShortLang(); ?>' id='<?php echo Config::get('ident'); ?>' data-lifetime='<?php echo (Config::get('sessionLifetime') == 0 ? 180 : Config::get('sessionLifetime')); ?>' data-alert='<?php echo _e(Ajde_Session_Flash::get('alert')); ?>'>
 	<head>
 		
 		<!-- UTF-8 please (also in the headers, just to be sure) -->

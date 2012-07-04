@@ -52,8 +52,7 @@ class Config_Simple
 	public $cookieHttponly		= true;
 	
 	// Session
-	public $cookieLifetime		= 0; // in minutes, 0 = session
-	public $gcLifetime			= 60; // PHP session garbage collection timeout in minutes
+	public $sessionLifetime		= 60; // in minutes
 	
 	// Performance
 	public $compressResources	= true;
