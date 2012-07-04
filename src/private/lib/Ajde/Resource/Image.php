@@ -49,7 +49,7 @@ class Ajde_Resource_Image extends Ajde_Resource
 		$array = array('s' => $this->_source, 'w' => $w, 'h' => $h, 'c' => $this->getCrop());
 		return $this->encodeFingerprint($array);
 	}
-	
+
 	public function getContents()
 	{
 		return $this->getImage();
@@ -105,27 +105,6 @@ class Ajde_Resource_Image extends Ajde_Resource
 			}
 		}
 		return $this->_image;
-	}
-	
-	public function resize($dim, $w_or_h) {
-		
-		$old_x=imageSX($this->getImageResource());
-		$old_y=imageSY($this->getImageResource());
-			
-		if ($w_or_h = "w") {
-			$thumb_w=$new_w;
-			$thumb_h=$old_y*($new_w/$old_x);
-		}
-		if ($w_or_h = "h") {
-			$thumb_w=$old_x*($new_h/$old_y);
-			$thumb_h=$new_h;
-		}
-		
-		$newimage = ImageCreateTrueColor($thumb_w,$thumb_h);
-		
-		$this->fastimagecopyresampled($newimage,$this->getImageResource(),0,0,0,0,$thumb_w,$thumb_h,$old_x,$old_y,5);
-		
-		$this->_image = $newimage;		
 	}
 	
 	public function getCalculatedDim()
@@ -216,63 +195,62 @@ class Ajde_Resource_Image extends Ajde_Resource
 			}
 		}
 	}
-	
-	public function crop($height, $width)
+		
+	public function resize($height, $width, $crop = true, $xCorrection = 0, $yCorrection = 0)
 	{
-		if ($this->imageInCache($width, $height, true)) {
+		if ($this->imageInCache($width, $height, $crop)) {
 			return;
 		}
 		
-		$old_x=imageSX($this->getImageResource());
-		$old_y=imageSY($this->getImageResource());
+		$oldWidth = imageSX($this->getImageResource());
+		$oldHeight = imageSY($this->getImageResource());
 				
 		if (empty($height)) {
-			$height = (int) (($old_y / $old_x) * $width);
+			$height = (int) (($oldHeight / $oldWidth) * $width);
 		}
 		if (empty($width)) {
-			$width = (int) (($old_x / $old_y) * $height);
+			$width = (int) (($oldWidth / $oldHeight) * $height);
 		}
 		
-		if ($this->imageInCache($width, $height, true)) {
+		if ($this->imageInCache($width, $height, $crop)) {
 			return;
 		}
 		
-		// no x or y correction
-		$x_o = 0; //intval($_GET["x"]);
-		$y_o = 0; //intval($_GET["y"]);
-		
-		$newimage=ImageCreateTrueColor($width,$height);
+		$newImage = ImageCreateTrueColor($width, $height);
 				
-		$thumb_w=$width;
-		$thumb_h=intval($old_y*($width/$old_x));
+		$newWidth = $width;
+		$newHeight = intval($oldHeight * ($width / $oldWidth));
 		
 		$x_offset = 0;
 		$y_offset = 0;
 		
-		if ($thumb_h < $height) {
-			$thumb_h=$height;
-			$thumb_w=intval($old_x*($height/$old_y));
+		$adjustWidth = (($crop === true) ? ($newHeight < $height) : ($newHeight > $height));
+		$offsetSign = -1;
 				
-			// hoogte kleiner dan breedte
-			$x_offset = intval(($thumb_w - $width) / 2);
-			//$x_offset = $x_offset * 2;
-						
-		} else {
-			
-			// hoogte groter
-			$y_offset = ($thumb_h - $height) / 2;
-			//$y_offset = $y_offset * 2;
-			
-		}
+		if ($adjustWidth) {
+			$newHeight = $height;
+			$newWidth = intval($oldWidth * ($height / $oldHeight));
+
+			// Correct for cropping left / right
+			$x_offset = $offsetSign * intval(($newWidth - $width) / 2);						
+		} else {			
+			// Correct for cropping top / bottom
+			$y_offset = $offsetSign * intval(($newHeight - $height) / 2);
+		}			
 		
-		$x_offset = $x_offset + $x_o;
-		$y_offset = $y_offset + $y_o;
+		$x_offset = $x_offset + $xCorrection;
+		$y_offset = $y_offset + $yCorrection;			
 		
-		$this->fastimagecopyresampled($newimage,$this->getImageResource(),-$x_offset,-$y_offset,0,0,$thumb_w,$thumb_h,$old_x,$old_y,5);
+		$this->fastimagecopyresampled($newImage, $this->getImageResource(), $x_offset, $y_offset, 0, 0, $newWidth, $newHeight, $oldWidth, $oldHeight, 5);
 		
-		$this->_image = $newimage;
+		$this->_image = $newImage;
 		
-		$this->saveCached($width, $height, true);
+		$this->saveCached($width, $height, $crop);
+	}
+	
+	public function crop($height, $width) 
+	{
+		return $this->resize($height, $width, true);
 	}
 	
 	public function save($target)

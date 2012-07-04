@@ -120,10 +120,6 @@ class _coreComponentController extends Ajde_Controller
 	public function imageHtml() {
 		/* @var $image Ajde_Resource_Image */
 		$image = $this->getImage();
-		
-		//$session = new Ajde_Session('AC.Image');
-		//$session->set($imageId, $image);
-				
 		$this->setAction('image/show');
 		$this->getView()->assign('href', $image->getLinkUrl());
 		$this->getView()->assign('width', $image->getWidth());
@@ -132,14 +128,12 @@ class _coreComponentController extends Ajde_Controller
 		return $this->render();
 	}
 	
-	public function imageBase64Html() {		
-		$image = $this->getImage();
-		
-		// TODO: add crop/resize option
-		$image->crop($image->getHeight(), $image->getWidth());		
-		
+	public function imageBase64Html() {
+		/* @var $image Ajde_Resource_Image */
+		$image = $this->getImage();		
+		$image->resize($image->getHeight(), $image->getWidth(), $image->getCrop());		
 		$this->setAction('image/base64');
-		$this->getView()->assign('image', $this->getImage());
+		$this->getView()->assign('image', $image->getBase64());
 		$this->getView()->assign('width', $this->getWidth());
 		$this->getView()->assign('height', $this->getHeight());
 		$this->getView()->assign('extraClass', $this->getExtraClass());
@@ -147,21 +141,10 @@ class _coreComponentController extends Ajde_Controller
 	}
 	
 	public function imageData() {
-		$fingerprint = Ajde::app()->getRequest()->getRaw('id');
-		$image = Ajde_Resource_Image::fromFingerprint($fingerprint);
-		
-		//$session = new Ajde_Session('AC.Image');
-		//if (!$session->has($imageId)) {
-			//Ajde::app()->getResponse()->redirectNotFound();
-		//}
-		
+		$fingerprint = Ajde::app()->getRequest()->getRaw('id');		
 		/* @var $image Ajde_Resource_Image */
-		//$image = $session->get($imageId);
-		//$image = $session->getOnce($imageId);
-				
-		// TODO: add crop/resize option
-		$image->crop($image->getHeight(), $image->getWidth());
-		
+		$image = Ajde_Resource_Image::fromFingerprint($fingerprint);
+		$image->resize($image->getHeight(), $image->getWidth(), $image->getCrop());		
 		Ajde::app()->getDocument()->setContentType($image->getMimeType());
 		$output = $image->getImage();
 		return $output;

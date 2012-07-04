@@ -84,6 +84,16 @@ class Ajde_Component_String extends Ajde_Component
 		}
 	}
 	
+	// http://www.php.net/manual/en/language.types.boolean.php#101180
+	public static function toBoolean ($val, $trueValues = array('yes', 'y', 'true'), $forceLowercase = true)
+	{
+		if (is_string($val)) {
+			return (in_array(($forceLowercase ? strtolower($val) : $val), $trueValues));
+		} else {
+			return (boolean) $val;
+		}
+	}
+	
 	public static function makePlural($count, $singular)
 	{
 		$count = (int) $count;
