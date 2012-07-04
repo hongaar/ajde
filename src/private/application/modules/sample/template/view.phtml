@@ -6,7 +6,7 @@
 	
 	<h2>Items</h2>
 	<p>
-		<a class='action' href='samples/edit.html'>Edit items</a>
+		<a class='action' href='sample/edit.html'>Edit items</a>
 	</p>
 	<hr/>
 
@@ -31,7 +31,7 @@
 		<p>
 			€ <?php echo money_format('%!i', $entry->getUnitprice() * (1+$entry->getVATPercentage())); ?>
 		</p>
-		<?php echo $this->includeModule('shop/cart:add/html/samples:' . $entry); ?>		
+		<?php echo $this->includeModule('shop/cart:add/html/sample:' . $entry); ?>		
 		<div class='clearfix'></div>
 		<hr/>
 	<?php } ?>

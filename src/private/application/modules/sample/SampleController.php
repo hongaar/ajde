@@ -1,6 +1,6 @@
 <?php 
 
-class SamplesController extends Ajde_Acl_Controller
+class SampleController extends Ajde_Acl_Controller
 {
 	protected $_allowedActions = array(
 		'view',
@@ -17,8 +17,8 @@ class SamplesController extends Ajde_Acl_Controller
     	Ajde_Model::register($this);		
 		// Direct object creation and chaining only from PHP 5.3!
 		// Use $blog = new BlogCollection() instead		
-		/* @var $samples SamplesCollection */
-		$samples = SamplesCollection::create()
+		/* @var $samples SampleCollection */
+		$samples = SampleCollection::create()
 			->orderBy('sort', Ajde_Query::ORDER_ASC)
 			->filter('published', 1);		
 		if ($this->hasId()) {
@@ -38,6 +38,7 @@ class SamplesController extends Ajde_Acl_Controller
 	
 	function xml()
 	{
+		Ajde_Model::register($this);		
 		$this->getView()->assign('test', "Hello World!");
 		return $this->render();
 	}

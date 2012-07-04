@@ -45,7 +45,7 @@
 		'list'		=> $list
 	);
 	
-	$crud = $this->ACCrudList('samples', $options);
+	$crud = $this->ACCrudList('sample', $options);
 	
 	if (Ajde::app()->getRequest()->has('new')) {
 		$user = UserModel::getLoggedIn();

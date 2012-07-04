@@ -1,6 +1,6 @@
 <?php
 
-class SamplesModel extends Ajde_Model
+class SampleModel extends Ajde_Model
 {
 	protected $_autoloadParents = true;
 	protected $_displayField = 'title';
