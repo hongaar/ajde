@@ -63,10 +63,11 @@ if ($field->getValue()) {
 		
 		<?php
 		if (in_array($extension, array('jpg', 'jpeg', 'png', 'gif'))) {
+			$thumbDim = $field->hasThumbDim() ? $field->getThumbDim() : array('width' => 150, 'height' => 150);
 			echo $this->ACImage(array(
 					'filename' => $field->getSaveDir() . $field->getValue(),
-					'width' => 150,
-					'height' => 150,
+					'width' => $thumbDim['width'],
+					'height' => $thumbDim['height'],
 					'crop' => true
 				)); ?>
 			<br/>
@@ -74,7 +75,7 @@ if ($field->getValue()) {
 
 		<span>
 			<img class='icon' src='<?php echo Ajde_Resource_FileIcon::_($extension); ?> ' />
-			<?php echo $field->getValue(); ?>
+			<a href='<?php echo $field->getSaveDir() . $field->getValue(); ?>' target='_blank'><?php echo $field->getValue(); ?></a>
 			<a href='#' class='deleteFileCrud'>delete</a> 
 		</span>
 			

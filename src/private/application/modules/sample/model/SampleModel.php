@@ -7,9 +7,9 @@ class SampleModel extends Ajde_Model
 	
 	public function getVATPercentage()
 	{
-		if (!$this->getVat() instanceof Ajde_Model) {
+		if ($this->hasVat() && !$this->getVat() instanceof Ajde_Model) {
 			$this->loadParents();
 		}
-		return (float) $this->getVat()->getPercentage() / 100;
+		return $this->hasVat() ? ((float) $this->getVat()->getPercentage() / 100) : 0;
 	}
 }

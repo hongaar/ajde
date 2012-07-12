@@ -1,5 +1,15 @@
 <?php $field = $this->field; ?>
 
-<input
-	<?php echo $field->getHtmlAttributes(); ?>
-/>
+<?php if ($field->getIsAutoUpdate() === true) { ?>
+	<?php echo $field->getValue(); 
+	$field->setValue(null); ?>
+	<div class='visuallyhidden'>
+		<input
+			<?php echo $field->getHtmlAttributes(); ?>
+		/>
+	</div>
+<?php } else { ?>
+	<input
+		<?php echo $field->getHtmlAttributes(); ?>
+	/>
+<?php } ?>

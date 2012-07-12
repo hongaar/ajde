@@ -1,0 +1,116 @@
+<?php
+/* @var $crud Ajde_Crud */
+$crud = $this->crud;
+$editOptions = $crud->getOptions('edit');
+?>
+
+<div class='crudLayout'>
+	
+	<?php
+	
+	echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrudEdit');
+	
+	?>
+	
+	<dl class='crudEdit block'>
+		
+		<dt>&nbsp;</dt>
+		<dd>
+			<button type="submit" class="button save">Save &amp; back</button>
+			<button type="submit" class="button apply">Apply</button>
+			<a href="javascript:void(null);" class='button cancel'>Cancel</a>
+		</dd>
+		
+		<div class='clearfix'></div>
+	</dl>
+	
+	<?php
+	
+	$pk = $crud->getModel()->getTable()->getPK();
+	$pkField = $crud->getField($pk);
+	
+	echo "<div class='visuallyhidden'>";
+	echo $pkField->getInput();
+	echo "</div>";	
+	
+	$rows = $crud->getOption('edit.layout.rows');	
+	foreach($rows as $row) {
+		$columns = $row['columns'];
+		?>
+
+		<div class='row'>
+			
+		<?php
+		foreach($columns as $key => $column) {
+			
+			// Styles
+			$width = isset($column['width']) ? $column['width'] . 'px' : '100%';
+			$alignment = issetor($column['align'], 'left');
+			$negIndent = '';
+			$posIndent = '';
+			if (isset($columns[$key + 1])) {
+				$nextCol = $columns[$key + 1];
+				if (isset($nextCol['align']) && $nextCol['align'] === 'right') {
+					$negIndent = 'margin-right: -' . $nextCol['width'] . 'px;';
+					$posIndent = 'margin-right: ' . $nextCol['width'] . 'px;';
+				}				
+			}
+			?>
+			
+			<div class='column' style='width: <?php echo $width; ?>; float: <?php echo $alignment; ?>; <?php echo $negIndent; ?>'>
+				<div style='<?php echo $posIndent; ?>;'>
+				
+			<?php
+			$blocks = $column['blocks'];
+			foreach($blocks as $block) {
+				$fieldsToShow = $block['show'];
+				$className = $block['class'];
+				?>
+
+				<dl class='crudEdit block <?php echo $className; ?>'>
+					
+					<?php if (isset($block['title'])) { ?>
+						<dt class='title'><?php echo $block['title']; ?></dt>
+					<?php } ?>
+
+					<?php foreach($fieldsToShow as $fieldName) {
+						$field = $crud->getField($fieldName);
+						if (isset($editOptions['show']) && (!in_array($field->getName(), $editOptions['show']))) { ?>
+							<div class='visuallyhidden'>
+						<?php }
+						echo $field->getHtml();
+						if (isset($editOptions['show']) && (!in_array($field->getName(), $editOptions['show']))) { ?>
+							</div>
+						<?php }
+					} ?>
+					
+				</dl>
+
+				<?php
+			} ?>
+				</div>
+			</div>
+			<?php
+		} ?>			
+		</div>
+		<?php
+	}
+	
+	?>
+		
+	<dl class='crudEdit block'>
+		
+		<dt>&nbsp;</dt>
+		<dd>
+			<button type="submit" class="button save">Save &amp; back</button>
+			<button type="submit" class="button apply">Apply</button>
+			<a href="javascript:void(null);" class='button cancel'>Cancel</a>
+		</dd>
+		
+		<div class='clearfix'></div>
+	</dl>
+
+
+	</form>
+
+</div>

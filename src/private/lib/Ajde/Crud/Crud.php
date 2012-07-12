@@ -17,6 +17,9 @@ class Ajde_Crud extends Ajde_Object_Standard
 			$modelName = $this->toCamelCase($model, true) . 'Model';
 			$this->_model = new $modelName();
 		}
+		if ($options instanceof Ajde_Crud_Options) {
+			$options = $options->getArray();
+		}
 		$this->setOptions($options);
 	}
 	
@@ -262,7 +265,7 @@ class Ajde_Crud extends Ajde_Object_Standard
 				$fieldClass = Ajde_Core_ExternalLibs::getClassname("Ajde_Crud_Field_" . ucfirst($fieldOptions['type']));				
 				$field = new $fieldClass($this, $fieldOptions);
 							
-				if ($this->getOperation() === 'edit') {
+				if ($this->getOperation() === 'edit') {					
 					if (!$field->hasValue() || $field->hasEmpty('value')) {
 						if ($this->isNew() && $field->hasNotEmpty('default')) {
 							$field->setValue($field->getDefault());
@@ -307,6 +310,12 @@ class Ajde_Crud extends Ajde_Object_Standard
 		return array_merge($fieldProperties, $fieldOptions);
 	}
 	
+	public function getFieldNames()
+	{
+		$model = $this->getModel();
+		return $model->getTable()->getFieldNames();
+	}
+	
 	public function getFieldLabels()
 	{
 		$model = $this->getModel();
@@ -335,6 +344,9 @@ class Ajde_Crud extends Ajde_Object_Standard
 	{
 		$defaultTemplate = new Ajde_Template(MODULE_DIR . '_core/', 'crud/' . $this->getOperation());
 		Ajde::app()->getDocument()->autoAddResources($defaultTemplate);
+		if ($this->getOperation() !== $this->getAction()) {
+			$defaultTemplate = new Ajde_Template(MODULE_DIR . '_core/', 'crud/' . $this->getAction());
+		}
 		if ($this->_hasCustomTemplate()) {			
 			$base = $this->_getCustomTemplateBase();
 			$action = $this->_getCustomTemplateAction();

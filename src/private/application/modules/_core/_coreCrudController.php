@@ -80,7 +80,11 @@ class _coreCrudController extends Ajde_Acl_Controller
 					isset($editOptions['action'])) {
 				$crud->setAction($editOptions['action']);
 			} else {
-				$crud->setAction('edit');
+				if ($crud->getOption('edit.layout')) {
+					$crud->setAction('edit/layout');
+				} else {
+					$crud->setAction('edit');
+				}
 			}
 		}
 		
@@ -232,10 +236,16 @@ class _coreCrudController extends Ajde_Acl_Controller
 			$model->loadByPK($id);
 		}
 		$model->populate($post);
+		
 		if (!$model->validate($crud->getOptions('fields'))) {
 			return array('operation' => $operation, 'success' => false, 'errors' => $model->getValidationErrors());
 		}
+//		if (!$model->autocorrect($crud->getOptions('fields'))) {
+//			return array('operation' => $operation, 'success' => false, 'errors' => $model->getAutocorrectErrors());
+//		}
+		
 		$success = $model->{$operation}();
+		
 		if ($success === true) {
 			// Destroy reference to crud instance
 			$session->destroy($crudId);

@@ -8,6 +8,12 @@ $fieldOptions = $crud->getOptions('fields');
 /* @var $crudView Ajde_Collection_View */
 $crudView = $crud->getCollection()->getView();
 $columnCount = 0;
+
+if (isset($listOptions['show'])) {
+	$fieldsToShow = $crud->getOption('list.show');
+} else {
+	$fieldsToShow = $crud->getFieldNames();
+}
 ?>
 
 <?php echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrudList'); ?>
@@ -19,8 +25,8 @@ $columnCount = 0;
 				<input type="hidden" name="view[orderBy]" value="<?php echo $crudView->getOrderBy(); ?>" />
 				<input type="hidden" name="view[orderDir]" value="<?php echo $crudView->getOrderDir(); ?>" />
 			</th>
-			<?php foreach($crud->getFields() as $field) {
-				if (isset($listOptions['show']) && (!in_array($field->getName(), $listOptions['show']))) { continue; }
+			<?php foreach($fieldsToShow as $fieldName) {
+				$field = $crud->getField($fieldName);
 				$columnCount++;
 				$orderDir = Ajde_Query::ORDER_ASC;
 				$class = ($crudView->getOrderBy() == $field->getName()) ? 'desc' : '';
@@ -72,11 +78,11 @@ $columnCount = 0;
 		?>
 		<tr id="row-<?php echo $model->getPK(); ?>">
 			<td><input type="checkbox" class="id" name="id[]" value="<?php echo $model->getPK(); ?>" /></td>
-			<?php foreach($model->values() as $fieldName => $value) {
+			<?php foreach($fieldsToShow as $fieldName) {				
+				
 				$field = $crud->getField($fieldName);
+				$value = $model->get($fieldName);				
 
-				if (isset($listOptions['show']) && (!in_array($fieldName, $listOptions['show']))) { continue; } ?>
-				<?php
 				// Sort
 				if ($crud->getField($fieldName) instanceof Ajde_Crud_Field_Sort) {
 					$this->requireJsPublic('_core/crud/jquery.tablednd.js', Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST);
@@ -114,8 +120,8 @@ $columnCount = 0;
 						if (in_array(strtolower($extension), array('jpg', 'jpeg', 'png', 'gif'))) {
 							echo $this->ACImage(array(
 								'filename' => $field->getSaveDir() . $value,
-								'width' => 75,
-								'height' => 75,
+								'width' => $crud->getOption('list.thumbDim.width', 75),
+								'height' => $crud->getOption('list.thumbDim.height', 75),
 								'crop' => true
 							));
 							//echo ' ' . $this->escape($value);

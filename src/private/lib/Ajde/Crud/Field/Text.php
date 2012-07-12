@@ -11,6 +11,9 @@ class Ajde_Crud_Field_Text extends Ajde_Crud_Field
 		if ($this->hasReadonly() && $this->getReadonly() === true) {
 			$attributes .= ' readonly="readonly" ';	
 		}
+		if ($this->hasEmphasis() && $this->getEmphasis() === true) {
+			$attributes .= ' class="emphasis" ';	
+		}
 		return $attributes;		
 	}
 }

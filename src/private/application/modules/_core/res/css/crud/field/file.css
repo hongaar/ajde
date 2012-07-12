@@ -61,6 +61,7 @@ div.browser > a span.filename {
 	max-width: 220px;
 	display: inline-block;
 	overflow: hidden;
+	white-space: nowrap;
 }
 
 div.browser > a span.preview {

@@ -34,7 +34,7 @@ class _coreComponentController extends Ajde_Controller
 			throw new Ajde_Controller_Exception("Resource type could not be loaded");
 		}
 		//$resource = call_user_func_array(array($className,"fromHash"), array($hash));
-		$resource = call_user_func_array(array($className,"fromFingerprint"), array($this->getFormat(), $fingerprint));
+		$resource = call_user_func_array(array($className, "fromFingerprint"), array($this->getFormat(), $fingerprint));
 		return $resource->getContents();
 	}
 	

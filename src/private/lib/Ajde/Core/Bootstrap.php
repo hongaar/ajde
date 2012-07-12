@@ -17,6 +17,8 @@ class Ajde_Core_Bootstrap
 		
 		foreach($cue as $className)
 		{
+			$timer = Ajde::app()->addTimer($className);
+			
 			// See if $className is a subclass of Ajde_Object
 			if (!method_exists($className, "__getPattern")) {
 				throw new Ajde_Exception("Class $className has no pattern
@@ -54,6 +56,8 @@ class Ajde_Core_Bootstrap
 				throw new Ajde_Exception("Bootstrap method in
 						$className returned FALSE", 90003);
 			}
+			
+			Ajde::app()->endTimer($timer);
 		}
 	}
 }

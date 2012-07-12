@@ -38,6 +38,7 @@ class Config_Application extends Config_Advanced
 	//public $cookieHttponly;
 	
 	//public $sessionLifetime;
+	//public $sessionSavepath;
 	
 	//public $compressResources;
 	//public $debug;

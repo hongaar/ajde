@@ -181,9 +181,7 @@ AC.Crud.List = function() {
 			};
 			var url = form.attr('action') + "?" + $.param(options);
 			var data = $(table).tableDnDSerialize();
-			
-			console.log(data);
-			
+						
 			// Add CSRF token
 			data = data + '&_token=' + form.find('input[name=\'_token\']').val();
 			

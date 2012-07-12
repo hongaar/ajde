@@ -25,7 +25,7 @@ AC.Crud.Edit = function() {
 			});
 			
 			var $window = $(window);
-			var $crudEdit = $('dl.crudEdit');
+			var $crudEdit = $('dl.crudEdit:not(.block)');
 			$(window).resize(function() {
 				if ($crudEdit.width() < 942 && !$crudEdit.hasClass('small')) {
 					$crudEdit.addClass('small');

@@ -15,7 +15,7 @@ SAMPLES.Blog.Edit = function() {
 			e.preventDefault();
 			var row = $(this).parents('tr');
 			var id = row.find('input[type=checkbox]').attr('value');
-			window.location.href = 'samples/view/' + id + '.html';
+			window.location.href = 'sample/view/' + id + '.html';
 			return false;
 		}
 		

@@ -10,7 +10,13 @@
 	
 	$('a.toggleFileBrowser').click(function(e) {
 		e.preventDefault();
-		$(this).next().slideToggle();
+		$browser = $(this).next();
+		$browser.slideToggle();
+		if ($browser.height() < 100) {
+			$(this).parent().css({height: '550px'});
+		} else {
+			$(this).parent().css({height: 'auto'});
+		}
 	});
 	
 	$('div.browser > a').click(function(e) {

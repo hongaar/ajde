@@ -78,6 +78,7 @@ define('AJDE', true);
 	define('LANG_DIR', 			APP_DIR.'lang/');
 	define('CACHE_DIR', 		VAR_DIR.'cache/');
 	define('LOG_DIR', 			VAR_DIR.'log/');
+	define('TMP_DIR', 			VAR_DIR.'tmp/');
 
 //	--------------------
 //	Configure the autoloader

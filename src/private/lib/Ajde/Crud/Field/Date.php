@@ -1,7 +1,7 @@
 <?php
 
 class Ajde_Crud_Field_Date extends Ajde_Crud_Field
-{
+{	
 	protected function prepare()
 	{
 		if (
@@ -9,15 +9,6 @@ class Ajde_Crud_Field_Date extends Ajde_Crud_Field
 				($this->getIsAutoUpdate())
 			) {
 			$this->setReadonly(true);
-		}
-	}
-	 
-	public function setValue($value)
-	{
-		if ( ($this->getIsAutoUpdate())) {
-			$this->set('value', null);
-		} else {
-			$this->set('value', $value);
 		}
 	}
 	
