@@ -10,9 +10,14 @@ class Ajde_Layout extends Ajde_Template
 		$base = LAYOUT_DIR.$this->getName() . '/';
 		$action = $this->getStyle();
 		if (!$format) {
-			$format = ( (Ajde_Http_Request::isAjax() && $this->exist($base, $action, 'ajax'))
-					|| Ajde::app()->getDocument()->getFormat() === 'ajax' )
-					? 'ajax' : 'html';
+			if ( (Ajde_Http_Request::isAjax() && $this->exist($base, $action, 'ajax'))
+					|| Ajde::app()->getDocument()->getFormat() === 'ajax' ) {
+				$format = 'ajax';
+			} else if (Ajde::app()->getDocument()->getFormat() === 'crud' ) {
+				$format = 'crud';
+			} else {
+				$format =  'html';
+			}
 		}
 		parent::__construct($base, $action, $format);
 	}

@@ -1,6 +1,6 @@
 <?php
 
-class Ajde_Crud_Field_Fk extends Ajde_Crud_Field
+class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
 {
 	/**
 	 *
@@ -62,5 +62,24 @@ class Ajde_Crud_Field_Fk extends Ajde_Crud_Field
 			$return[(string) $model] = $model->get($model->getDisplayField());
 		}
 		return $return;
+	}
+	
+	public function getChildren()
+	{		
+		if ($this->hasCrossReferenceTable()) {
+			$childPk = $this->getModel()->getTable()->getPK();
+			$parent = (string) $this->getCrud()->getModel()->getTable();
+			$parentId = $this->getCrud()->getModel()->getPK();			
+			$crossReferenceTable = $this->getCrossReferenceTable();
+			
+			$subQuery = new Ajde_Db_Function('(SELECT ' . $this->getName() . ' FROM ' . $crossReferenceTable . ' WHERE ' . $parent . ' = ' . (integer) $parentId . ')');
+			$collection = $this->getCollection();
+			$collection->reset();
+			$collection->addFilter(new Ajde_Filter_Where($childPk, Ajde_Filter::FILTER_IN, $subQuery));
+		} else {
+			$collection = $this->getCollection();
+			$collection->addFilter(new Ajde_Filter_Where((string) $this->_crud->getModel()->getTable(), Ajde_Filter::FILTER_EQUALS, (string) $this->_crud->getModel()));
+		}
+		return $collection;
 	}
 }

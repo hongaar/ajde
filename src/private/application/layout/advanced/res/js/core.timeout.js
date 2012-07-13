@@ -16,8 +16,12 @@ AC.Core.Timeout = function() {
 	var updateTimer;
 	var reloadTimer;
 	
+	var showAlerts = false;
+	
 	var showWarning = function() {
-		alert(i18n.timeoutWarning);
+		if (showAlerts) { 
+			alert(i18n.timeoutWarning);
+		}
 		updateTimer = setInterval(updateWarning, 1000);
 		updateWarning();
 	};
@@ -45,7 +49,9 @@ AC.Core.Timeout = function() {
 	var timeout = function() {
 		clearInterval(updateTimer);
 		warningHandler(i18n.timedout);
-		alert(i18n.timedout);
+		if (showAlerts) { 
+			alert(i18n.timedout);
+		}
 		setTimeout(function() {
 			//window.document.location.reload(true);
 		}, 10000);		

@@ -57,6 +57,7 @@ button.button {
 .button.save	{ background-image: url('../../public/images/icons/16/check_2.png'); }
 .button.apply	{ background-image: url('../../public/images/icons/16/save_diskette_floppy_disk.png'); }
 .button.new		{ background-image: url('../../public/images/icons/16/plus.png'); }
+.button.add		{ background-image: url('../../public/images/icons/16/opened.png'); }
 .button.edit	{ background-image: url('../../public/images/icons/16/pencil_edit.png'); }
 .button.cancel	{ background-image: url('../../public/images/icons/16/stop_2.png'); }
 .button.delete	{ background-image: url('../../public/images/icons/16/close_delete_2.png'); }
@@ -78,4 +79,8 @@ button.button {
   -webkit-box-shadow: 0 0 0 transparent; 
      -moz-box-shadow: 0 0 0 transparent; 
           box-shadow: 0 0 0 transparent; 
+}
+
+option[disabled] {
+	color: silver;
 }

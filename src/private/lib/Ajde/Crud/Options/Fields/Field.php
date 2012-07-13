@@ -124,7 +124,7 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 	public function setAdvancedFilter($advancedFilter) { return $this->_set('advancedFilter', $advancedFilter); }
 	
 	/**
-	 * Sets the display function of the model
+	 * Sets the display function of the model for the list view
 	 * 
 	 * @param string $function
 	 * @return Ajde_Crud_Options_Fields_Field 
@@ -136,7 +136,7 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 	 * 
 	 * @param type $width
 	 * @param type $height
-	 * @return Ajde_Crud_Options_List 
+	 * @return Ajde_Crud_Options_Fields_Field 
 	 */
 	public function setThumbDim($width, $height) { return $this->_set('thumbDim', array('width' => $width, 'height' => $height)); }
 	
@@ -147,4 +147,28 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 	 * @return Ajde_Crud_Options_Fields_Field 
 	 */
 	public function setEmphasis($emphasis) { return $this->_set('emphasis', $emphasis); }
+	
+	/**
+	 * Defines a many-to-many relationshop for fields with type 'multiple'
+	 * 
+	 * @param string $table
+	 * @return Ajde_Crud_Options_Fields_Field 
+	 */
+	public function setCrossReferenceTable($table) { return $this->_set('crossReferenceTable', $table); }	
+	
+	/**
+	 * Display the label?
+	 * 
+	 * @param boolean $display
+	 * @return Ajde_Crud_Options_Fields_Field 
+	 */
+	public function setShowLabel($display) { return $this->_set('showLabel', $display); }	
+	
+	/**
+	 * Sets the edit route for fields with type 'multiple'
+	 * 
+	 * @param string $route
+	 * @return Ajde_Crud_Options_Fields_Field 
+	 */
+	public function setEditRoute($route) { return $this->_set('editRoute', $route); }
 }

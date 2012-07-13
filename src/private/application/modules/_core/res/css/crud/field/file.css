@@ -6,6 +6,10 @@ div.filelist img.icon {
 	vertical-align: middle;
 }
 
+div.filelist a.imagePreview.img {
+	border-bottom: none !important;
+}
+
 div.filebrowser {
 	margin-top: 10px;
 }
@@ -16,7 +20,7 @@ div.browser {
 	max-height: 538px;
 	width: 700px;
 	overflow: auto;
-	margin-top: 5px;
+	margin-top: 10px;
 }
 
 div.browser > a {
@@ -68,7 +72,6 @@ div.browser > a span.preview {
 	display: none;
 	position: absolute;
 	right: 5px;
-	background-color: white;
 	padding: 15px 0 0 0;
 	color: gray;
 }

@@ -1,5 +1,7 @@
 <?php
 /* @var $this Ajde_Template_Parser_Phtml_Helper */
+$this->requireJsPublic('_core/crud/fancybox/jquery.fancybox.pack.js');
+$this->requireCssPublic('_core/crud/fancybox/jquery.fancybox.css');
 /* @var $field Ajde_Crud_Field_File */
 $field = $this->field;
 ?>
@@ -26,7 +28,7 @@ $field = $this->field;
 				}
 				$extension = pathinfo($file, PATHINFO_EXTENSION);
 				echo "<a href='javascript:void(0);'>";										
-					if (in_array($extension, array('jpg', 'jpeg', 'png', 'gif'))) {
+					if ($isImage = in_array($extension, array('jpg', 'jpeg', 'png', 'gif'))) {
 						echo $this->ACImage(array(
 							'filename' => $file,
 							'width' => 50,
@@ -39,7 +41,11 @@ $field = $this->field;
 					}
 					echo "<span>";
 						echo "<span class='filename'>" . str_replace(Config::get('local_root') . '/' . $field->getSaveDir(), '', $file) . "</span>";
-						echo "<span class='preview' data-url='" . $this->escape(str_replace(Config::get('local_root') . '/', '', $file)) . "'>preview</span>";
+						if ($isImage) {
+							echo "<span class='imagePreview preview' data-fancybox-group='preview" . ucfirst($field->getName()) . "' title='" . _e(str_replace(Config::get('local_root') . '/' . $field->getSaveDir(), '', $file)) . "' href='" . $this->escape(str_replace(Config::get('local_root') . '/', '', $file)) . "'>preview</span>";
+						} else {
+							echo "<span class='filePreview preview' href='" . $this->escape(str_replace(Config::get('local_root') . '/', '', $file)) . "'>preview</span>";
+						}
 					echo "</span>";
 				echo "</a>";
 			}
@@ -62,20 +68,26 @@ if ($field->getValue()) {
 		/>
 		
 		<?php
-		if (in_array($extension, array('jpg', 'jpeg', 'png', 'gif'))) {
-			$thumbDim = $field->hasThumbDim() ? $field->getThumbDim() : array('width' => 150, 'height' => 150);
-			echo $this->ACImage(array(
-					'filename' => $field->getSaveDir() . $field->getValue(),
-					'width' => $thumbDim['width'],
-					'height' => $thumbDim['height'],
-					'crop' => true
-				)); ?>
+		if ($isImage = in_array($extension, array('jpg', 'jpeg', 'png', 'gif'))) {
+			$thumbDim = $field->hasThumbDim() ? $field->getThumbDim() : array('width' => 150, 'height' => 150); ?>
+			<a class='imagePreview img' title='<?php echo _e($field->getValue()); ?>' href='<?php echo $field->getSaveDir() . $field->getValue(); ?>' target='_blank'>
+				<?php echo $this->ACImage(array(
+						'filename' => $field->getSaveDir() . $field->getValue(),
+						'width' => $thumbDim['width'],
+						'height' => $thumbDim['height'],
+						'crop' => true
+					)); ?>
+			</a>
 			<br/>
 		<?php } ?>
 
 		<span>
 			<img class='icon' src='<?php echo Ajde_Resource_FileIcon::_($extension); ?> ' />
-			<a href='<?php echo $field->getSaveDir() . $field->getValue(); ?>' target='_blank'><?php echo $field->getValue(); ?></a>
+			<?php if ($isImage) { ?>
+				<a class='imagePreview preview' title='<?php echo _e($field->getValue()); ?>' href='<?php echo $field->getSaveDir() . $field->getValue(); ?>' target='_blank'><?php echo $field->getValue(); ?></a>
+			<?php } else { ?>
+				<a class='filePreview preview' href='<?php echo $field->getSaveDir() . $field->getValue(); ?>' target='_blank'><?php echo $field->getValue(); ?></a>
+			<?php } ?>
 			<a href='#' class='deleteFileCrud'>delete</a> 
 		</span>
 			

@@ -8,10 +8,19 @@ AC.Crud.Edit = function() {
 	var warningHandler	= alert;
 	var errorHandler	= alert;
 	
+	var isIframe = false;
+	
 	return {
 		
 		init: function() {
 			var self = this;
+			
+			isIframe = (window.location != window.parent.location);
+			
+			if (isIframe) {
+				$('form.ACCrudEdit button.apply').hide();
+			}
+			
 			$('form.ACCrudEdit a.cancel').click(AC.Crud.Edit.cancelHandler);
 			$('form.ACCrudEdit button.save').click(AC.Crud.Edit.saveHandler);
 			$('form.ACCrudEdit button.apply').click(function(e) {
@@ -39,8 +48,12 @@ AC.Crud.Edit = function() {
 			// Deprecated
 		},
 		
-		cancelHandler: function() {			
-			window.location.href = window.location.pathname;
+		cancelHandler: function() {
+			if (isIframe) {
+				parent.$.fancybox.close();
+			} else {
+				window.location.href = window.location.pathname;
+			}
 		},
 		
 		saveHandler: function(e, returnTo) {
@@ -62,6 +75,7 @@ AC.Crud.Edit = function() {
 			
 			var options = {
 				operation	: 'save',
+				fromIframe	: (isIframe ? '1' : '0'),
 				crudId		: form.attr('id')					
 			};
 			
@@ -102,7 +116,7 @@ AC.Crud.Edit = function() {
 							$parent.prepend($message.fadeIn());
 							AC.Crud.Edit.equalizeForm();
 						}
-						$.scrollTo('.validation_error:first', 800, {axis: 'y'});
+						$.scrollTo($('.validation_error:first').prev(), 800, {axis: 'y'});
 					} else {
 						errorHandler(i18n.applicationError);
 					}
@@ -116,13 +130,15 @@ AC.Crud.Edit = function() {
 							
 							return;
 						}
-					}
-					if (data.operation === 'save') {
-						//$('dl.crudEdit > *', form[0]).css({backgroundColor:'orange'});
-						window.location.href = window.location.pathname + '?' + returnTo + '=' + data.id;
+					}					
+					if (isIframe) {
+						if (data.operation === 'save') {
+							parent.AC.Crud.Edit.Multiple.editSaved(data.id, data.displayField);
+						} else {
+							parent.AC.Crud.Edit.Multiple.newSaved(data.id, data.displayField);
+						}
 					} else {
-						//$('dl.crudEdit > *', form[0]).css({backgroundColor:'green'});
-						window.location.href = window.location.pathname + '?' + returnTo + '=' + data.id;						
+						window.location.href = window.location.pathname + '?' + returnTo + '=' + data.id;
 					}
 				}
 			}, 'json').error(function(jqXHR, message, exception) {

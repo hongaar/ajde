@@ -91,6 +91,17 @@ class _coreCrudController extends Ajde_Acl_Controller
 		if (!$crud->hasId()) {
 			$crud->setId(Ajde::app()->getRequest()->getParam('edit', false));
 		}
+		
+		$disable = Ajde::app()->getRequest()->getParam('disable', array());
+		$prefill = Ajde::app()->getRequest()->getParam('prefill', array());
+		foreach($prefill as $field => $value) {
+			$crud->setOption('fields.' . $field . '.value', $value);			
+		}
+		foreach($disable as $field => $value) {
+			if ($value) {
+				$crud->setOption('fields.' . $field . '.readonly', true);	
+			}
+		}
 			
 		$session = new Ajde_Session('AC.Crud');
 		$session->setModel($crud->getHash(), $crud);
@@ -129,13 +140,19 @@ class _coreCrudController extends Ajde_Acl_Controller
 			case 'sort':
 				return $this->sort($crudId, $id);
 				break;
+			case 'deleteMultiple':
+				return $this->deleteMultiple($crudId, $id);
+				break;
+			case 'addMultiple':
+				return $this->addMultiple($crudId, $id);
+				break;
 			default:
 				return array('operation' => $operation, 'success' => false);
 				break;
 		}
 	}
 	
-	public function delete($crudId, $id)
+	private function delete($crudId, $id)
 	{
 		$session = new Ajde_Session('AC.Crud');		
 		$crud = $session->getModel($crudId);
@@ -158,7 +175,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 			);
 	}
 	
-	public function sort($crudId, $id)
+	private function sort($crudId, $id)
 	{
 		$session = new Ajde_Session('AC.Crud');
 		/* @var $crud Ajde_Crud */
@@ -212,7 +229,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 		);
 	}
 	
-	public function save($crudId, $id)
+	private function save($crudId, $id)
 	{
 		$session = new Ajde_Session('AC.Crud');		
 		/* @var $crud Ajde_Crud */
@@ -250,9 +267,94 @@ class _coreCrudController extends Ajde_Acl_Controller
 			// Destroy reference to crud instance
 			$session->destroy($crudId);
 			
-			// Set flash alert
-			Ajde_Session_Flash::alert('Record ' . ($operation == 'insert' ? 'added' : 'saved'));
+			if (Ajde::app()->getRequest()->getParam('fromIframe', '0') != 1) {
+				// Set flash alert
+				Ajde_Session_Flash::alert('Record ' . ($operation == 'insert' ? 'added' : 'saved'));
+			}
 		}
-		return array('operation' => $operation, 'id' => $model->getPK(), 'success' => $success);
+		return array(
+			'operation' => $operation,
+			'id' => $model->getPK(),
+			'displayField' => $model->get($model->getDisplayField()),
+			'success' => $success);
+	}
+	
+	private function deleteMultiple($crudId, $id)
+	{
+		$session = new Ajde_Session('AC.Crud');		
+		/* @var $crud Ajde_Crud */
+		$crud = $session->getModel($crudId);
+		/* @var $model Ajde_Model */
+		$model = $crud->getModel();
+		
+		$parentId = Ajde::app()->getRequest()->getPostParam('parent_id');
+		$fieldName = Ajde::app()->getRequest()->getPostParam('field');
+		
+		// Get field properties
+		$fieldProperties = $crud->getOption('fields.' . $fieldName);
+		
+		$success = false;
+		if (isset($fieldProperties['crossReferenceTable'])) {
+			$parentField = (string) $model->getTable();
+			$sql = 'DELETE FROM '.$fieldProperties['crossReferenceTable'].' WHERE '.$parentField.' = ? AND '.$fieldName.' = ? LIMIT 1';
+			$statement = $model->getConnection()->prepare($sql);
+			$success = $statement->execute(array($parentId, $id));			
+		} else {
+			$childClass = ucfirst($fieldName) . 'Model';
+			$child = new $childClass();
+			/* @var $child Ajde_Model */
+			$child->loadByPK($id);
+			$success = $child->delete();
+		}
+						
+		return array(
+			'operation' => 'deleteMultiple',			
+			'success' => $success,
+			'message' => ucfirst($fieldName) . (isset($fieldProperties['crossReferenceTable']) ? ' disconnected' : ' deleted')
+		);
+	}
+	
+	private function addMultiple($crudId, $id)
+	{
+		$session = new Ajde_Session('AC.Crud');		
+		/* @var $crud Ajde_Crud */
+		$crud = $session->getModel($crudId);
+		/* @var $model Ajde_Model */
+		$model = $crud->getModel();
+		
+		$parentId = Ajde::app()->getRequest()->getPostParam('parent_id');
+		$fieldName = Ajde::app()->getRequest()->getPostParam('field');
+		
+		// Get field properties
+		$fieldProperties = $crud->getOption('fields.' . $fieldName);
+		
+		$success = false;
+		if (isset($fieldProperties['crossReferenceTable'])) {
+			// Already in there?
+			$parentField = (string) $model->getTable();
+			$sql = 'SELECT * FROM '.$fieldProperties['crossReferenceTable'].' WHERE '.$parentField.' = ? AND '.$fieldName.' = ? LIMIT 1';
+			$statement = $model->getConnection()->prepare($sql);
+			$success = $statement->execute(array($parentId, $id));			
+			$result = $statement->fetch(PDO::FETCH_ASSOC);	
+			if ($success === true && $result !== false && !empty($result)) {
+				return array(
+					'operation' => 'addMultiple',			
+					'success' => false,
+					'message' => ucfirst($fieldName) . ' already connected'
+				);
+			}			
+			
+			$sql = 'INSERT INTO '.$fieldProperties['crossReferenceTable'].' ('.$parentField.', '.$fieldName.') VALUES (?, ?)';
+			$statement = $model->getConnection()->prepare($sql);
+			$success = $statement->execute(array($parentId, $id));			
+		} else {
+			// Not possible
+		}
+						
+		return array(
+			'operation' => 'addMultiple',			
+			'success' => $success,
+			'message' => ucfirst($fieldName) . ' added'
+		);
 	}
 }

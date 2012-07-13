@@ -30,13 +30,25 @@ class SampleController extends Ajde_Acl_Controller
         return $this->render();
     }
 		
-	function edit()
+	public function edit()
 	{
 		Ajde_Model::register($this);
 		return $this->render();
 	}
 	
-	function xml()
+	public function distributor()
+	{
+		Ajde_Model::register($this);
+		return $this->render();
+	}
+	
+	public function download()
+	{
+		Ajde_Model::register($this);
+		return $this->render();
+	}
+	
+	public function xml()
 	{
 		Ajde_Model::register($this);		
 		$this->getView()->assign('test', "Hello World!");

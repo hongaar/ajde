@@ -1,5 +1,5 @@
 <?php
 
-class VatCollection extends Ajde_Collection
+class DownloadCollection extends Ajde_Collection
 {
 }

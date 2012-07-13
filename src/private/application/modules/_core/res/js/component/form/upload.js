@@ -37,7 +37,7 @@ AC.Form.Upload = function() {
 							if (elm.attr('data-multiple') == '0') {
 								$input.val(filename);
 								elm.find('.qq-uploader').remove();
-								elm.after($('<span/>').text(filename));
+								elm.after($('<span/>').html('<img class=\'icon\' src=\'public/images/icons/16/attachment.png\' style=\'vertical-align: middle;\' /> ' + filename));
 								elm.remove();
 							} else {
 								$input.val($input.val() + ($input.val() ? ':' : '') + filename);

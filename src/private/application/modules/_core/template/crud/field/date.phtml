@@ -1,7 +1,11 @@
 <?php $field = $this->field; ?>
 
-<?php if ($field->getIsAutoUpdate() === true) { ?>
-	<?php echo $field->getValue(); 
+<?php if ($field->getIsAutoUpdate() === true) {
+	if ($field->getValue() === 'CURRENT_TIMESTAMP') {
+		echo '(not saved)';
+	} else {
+		echo $field->getValue();
+	}
 	$field->setValue(null); ?>
 	<div class='visuallyhidden'>
 		<input

@@ -12,6 +12,7 @@ abstract class Ajde_Filter extends Ajde_Object_Standard
 	const FILTER_LESSOREQUAL= ' <= ';
 	const FILTER_LIKE		= ' LIKE ';
 	const FILTER_NOTLIKE	= ' NOT LIKE ';
+	const FILTER_IN			= ' IN ';	
 	
 	abstract public function prepare(Ajde_Db_Table $table = null);
 }

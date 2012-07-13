@@ -1,10 +1,12 @@
 <?php $field = $this->field; ?>
-<dt title="<?php echo $field->getLabel(); ?>" class='<?php if ($field->getIsRequired() === true) { echo 'required'; } ?>'>
-	<?php echo __($field->getLabel()); ?>
-	<?php if ($field->getIsRequired() === true) :
-		echo $field->getHtmlRequired();
-	endif; ?>
-</dt>
+<?php if (($field->hasShowLabel() && $field->getShowLabel() !== false) || !$field->hasShowLabel()) { ?>
+	<dt title="<?php echo $field->getLabel(); ?>" class='<?php if ($field->getIsRequired() === true) { echo 'required'; } ?>'>
+		<?php echo __($field->getLabel()); ?>
+		<?php if ($field->getIsRequired() === true) :
+			echo $field->getHtmlRequired();
+		endif; ?>
+	</dt>
+<?php } ?>
 
 <dd>
 	<?php if ($field->hasHelp()) :

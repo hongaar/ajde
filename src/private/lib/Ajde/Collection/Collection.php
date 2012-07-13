@@ -96,6 +96,9 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 		$this->_query = new Ajde_Query();
 		$this->_filters = array();	
 		$this->_filterValues = array();
+		$this->_items = null;
+		$this->_position = 0;
+		$this->_queryCount = null;
 		$this->_sqlInitialized = false;
 	}
 	

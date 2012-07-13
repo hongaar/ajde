@@ -1,6 +1,6 @@
 <?php
 
-class VatModel extends Ajde_Model
+class DistributorModel extends Ajde_Model
 {
-	protected $_displayField = 'description';
+	protected $_displayField = 'name';
 }

@@ -144,4 +144,13 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
 		return $attributes;
 	}
 	
+	/**
+	 *
+	 * @return Ajde_Crud
+	 */
+	public function getCrud()
+	{
+		return $this->_crud;
+	}
+	
 }

@@ -4,7 +4,7 @@ div.crudLayout div.row {
 
 div.crudLayout dl.crudEdit {
 	margin: 5px 5px 10px 5px;
-	padding: 0;
+	padding: 0 10px 0 0;
 }
 
 div.crudLayout dl.crudEdit.sidebar {
@@ -60,6 +60,10 @@ div.crudLayout dl.crudEdit.table dd {
 	padding: 6px 0 0 0;
 }
 
+div.crudLayout dl.crudEdit dd input[type=text] {
+	width: 100%;
+}
+
 div.crudLayout dl.crudEdit dd textarea {
 	width: 100%;
 }
@@ -86,16 +90,11 @@ div.crudLayout dl.crudEdit dd.validation_error div.validation_message {
 
 /* FILE BROWSER */
 
-div.crudLayout div.filebrowser {
+div.crudLayout dl.sidebar div.filebrowser {
 	position: relative;
 }
 
-div.crudLayout div.browser {
-	position: absolute;
-	right: 0;
-}
-
-div.crudLayout div.browser {
+div.crudLayout dl.sidebar div.browser {
 	position: absolute;
 	right: 0;
 }

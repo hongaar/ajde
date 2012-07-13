@@ -218,6 +218,7 @@ class Ajde_Crud extends Ajde_Object_Standard
 					$model->loadParents();
 				}
 			}
+			Ajde_Event::trigger($this->getModel(), 'afterCrudLoaded');
 		}
 		return $this->getModel();
 	}
@@ -248,40 +249,40 @@ class Ajde_Crud extends Ajde_Object_Standard
 	public function getFields()
 	{
 		if (!isset($this->_fields)) {
-			$model = $this->getModel();
-			$item = $this->getItem();
+			
 			$fields = array();
-
-			$fieldsArray = $model->getTable()->getFieldProperties();		
-			$parents = $item->getTable()->getParents();
+			$fieldsArray =  $this->getModel()->getTable()->getFieldProperties();		
+			$parents = $this->getItem()->getTable()->getParents();
 
 			foreach($fieldsArray as $fieldProperties) {
-				$fieldOptions = $this->getFieldOptions($fieldProperties['name'], $fieldProperties);
-				
+				$fieldOptions = $this->getFieldOptions($fieldProperties['name'], $fieldProperties);				
 				if (in_array($fieldOptions['name'], $parents)) {
 					$fieldOptions['type'] = 'fk';
 				}
-				
-				$fieldClass = Ajde_Core_ExternalLibs::getClassname("Ajde_Crud_Field_" . ucfirst($fieldOptions['type']));				
-				$field = new $fieldClass($this, $fieldOptions);
-							
-				if ($this->getOperation() === 'edit') {					
-					if (!$field->hasValue() || $field->hasEmpty('value')) {
-						if ($this->isNew() && $field->hasNotEmpty('default')) {
-							$field->setValue($field->getDefault());
-						} elseif (!$this->isNew()) {							
-							$field->setValue($item->get($field->getName()));
-						} else {
-							$field->setValue(false);
-						}
-					}
-				}
-				
+				$field = $this->createField($fieldOptions);
 				$fields[$field->getName()] = $field;
 			}
 			$this->_fields = $fields;
 		}
 		return $this->_fields;
+	}
+	
+	public function createField($fieldOptions)
+	{		
+		$fieldClass = Ajde_Core_ExternalLibs::getClassname("Ajde_Crud_Field_" . ucfirst($fieldOptions['type']));				
+		$field = new $fieldClass($this, $fieldOptions);
+		if ($this->getOperation() === 'edit') {					
+			if (!$field->hasValue() || $field->hasEmpty('value')) {
+				if ($this->isNew() && $field->hasNotEmpty('default')) {
+					$field->setValue($field->getDefault());
+				} elseif (!$this->isNew() && $this->getItem()->has($field->getName())) {
+					$field->setValue($this->getItem()->get($field->getName()));
+				} else {
+					$field->setValue(false);
+				}
+			}
+		}		
+		return $field;
 	}
 	
 	/**
@@ -290,7 +291,7 @@ class Ajde_Crud extends Ajde_Object_Standard
 	 * @return Ajde_Crud_Field
 	 * @throws Ajde_Exception 
 	 */
-	public function getField($fieldName)
+	public function getField($fieldName, $strict = true)
 	{
 		if (!isset($this->_fields)) {
 			$this->getFields();
@@ -298,8 +299,12 @@ class Ajde_Crud extends Ajde_Object_Standard
 		if (isset($this->_fields[$fieldName])) {
 			return $this->_fields[$fieldName];
 		} else {
-			// TODO:
-			throw new Ajde_Exception($fieldName . ' is not a field in ' . (string) $this->getModel()->getTable());
+			if ($strict === true) {
+				// TODO:
+				throw new Ajde_Exception($fieldName . ' is not a field in ' . (string) $this->getModel()->getTable());
+			} else {
+				return false;
+			}
 		}
 	}
 	

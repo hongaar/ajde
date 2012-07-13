@@ -1,32 +1,68 @@
 <?php
 /* @var $this Ajde_Template_Parser_Phtml_Helper */
-/* @var $field Ajde_Crud_Field_Fk */
+$this->requireJsPublic('_core/crud/fancybox/jquery.fancybox.pack.js');
+$this->requireCssPublic('_core/crud/fancybox/jquery.fancybox.css');
+/* @var $field Ajde_Crud_Field_Multiple */
 $field = $this->field;
-
-if ($field->getValue()) {
-	if ($field->getValue() instanceof Ajde_Model) {
-		$pk = $field->getValue()->getPK();
-	} else {
-		$pk = $field->getValue();
-	}
-} else {
-	$pk = null;
-}
-
 ?>
 
-<select
-	<?php echo $field->getHtmlAttributes(); ?>	
+<div
+	class='multiple'
+	data-edit-route='<?php echo $field->getEditRoute(); ?>'
+	data-field='<?php echo $field->getName(); ?>'
+	data-parent='<?php echo (string) $field->getCrud()->getModel()->getTable(); ?>'
+	data-parent-id='<?php echo $field->getCrud()->getModel()->getPK(); ?>'
 >
-	<?php if (!$field->getIsRequired() === true) { ?>
-		<option value=''>(none)</option>
+
+	<div class='multipleToolbar'>
+		<a href='javascript:void(null);' class='button new newMultiple' data-select='<?php echo $field->getName(); ?>'>New</a>
+		<?php if ($field->hasCrossReferenceTable()) { ?>
+			or connect existing:
+			<select name='<?php echo $field->getName(); ?>'>
+				<option value=''>(choose)</option>
+				<?php foreach($field->getValues() as $key => $option) { ?>							
+					<option value='<?php echo $key; ?>'>
+						<?php echo $option; ?>
+					</option>
+				<?php } ?>
+			</select>
+			<a href='javascript:void(null);' class='button add addMultiple'>Add</a>
+		<?php } ?>
+	</div>
+
+	<?php $this->requireCss('crud/list'); ?>
+
+	<table class='crudList multipleList'>
+		<thead>
+			<tr>
+				<th></th>
+				<th class='main'>Description</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class='template'>
+				<td></td>
+				<td class='main'></td>
+				<td class='buttons'>
+					<a href='javascript:void(null);' class='editMultiple' data-id=''>edit</a>
+					<a href='javascript:void(null);' class='deleteMultiple' data-id=''>delete</a>
+				</td>
+			</tr>
+	<?php foreach($field->getChildren() as $child) {
+		/* @var $child Ajde_Model */ ?>
+			<tr data-id='<?php echo $child->getPK(); ?>'>
+				<td><?php echo $child->getPK(); ?></td>
+				<td class='main'><?php echo $child->get($child->getDisplayField()); ?></td>
+				<td class='buttons'>
+					<a href='javascript:void(null);' class='editMultiple' data-id='<?php echo $child->getPK(); ?>'>edit</a>
+					<a href='javascript:void(null);' class='deleteMultiple' data-id='<?php echo $child->getPK(); ?>'>
+						<?php echo ($field->hasCrossReferenceTable()) ? 'disconnect' : 'delete'; ?>
+					</a>
+				</td>
+			</tr>	
 	<?php } ?>
-	<?php foreach($field->getValues() as $key => $option) { ?>							
-		<option value='<?php echo $key; ?>'
-			<?php 
-			if ($key == $pk) { echo "selected='selected'"; }
-			elseif ($field->hasReadonly() && $field->getReadonly() === true) { echo ' disabled="disabled" '; }
-			?>
-			><?php echo $option; ?></option>
-	<?php } ?>
-</select>
+		</tbody>
+	</table>
+	
+</div>
