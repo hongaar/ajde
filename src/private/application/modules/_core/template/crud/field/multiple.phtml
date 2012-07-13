@@ -1,0 +1,32 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+/* @var $field Ajde_Crud_Field_Fk */
+$field = $this->field;
+
+if ($field->getValue()) {
+	if ($field->getValue() instanceof Ajde_Model) {
+		$pk = $field->getValue()->getPK();
+	} else {
+		$pk = $field->getValue();
+	}
+} else {
+	$pk = null;
+}
+
+?>
+
+<select
+	<?php echo $field->getHtmlAttributes(); ?>	
+>
+	<?php if (!$field->getIsRequired() === true) { ?>
+		<option value=''>(none)</option>
+	<?php } ?>
+	<?php foreach($field->getValues() as $key => $option) { ?>							
+		<option value='<?php echo $key; ?>'
+			<?php 
+			if ($key == $pk) { echo "selected='selected'"; }
+			elseif ($field->hasReadonly() && $field->getReadonly() === true) { echo ' disabled="disabled" '; }
+			?>
+			><?php echo $option; ?></option>
+	<?php } ?>
+</select>
