@@ -12,6 +12,7 @@ $field = $this->field;
 	data-field='<?php echo $field->getName(); ?>'
 	data-parent='<?php echo (string) $field->getCrud()->getModel()->getTable(); ?>'
 	data-parent-id='<?php echo $field->getCrud()->getModel()->getPK(); ?>'
+	data-dynamic='<?php echo ($field->hasTableFields() ? '1' : '0'); ?>'
 >
 
 	<div class='multipleToolbar'>
@@ -19,10 +20,11 @@ $field = $this->field;
 		<?php if ($field->hasCrossReferenceTable()) { ?>
 			or connect existing:
 			<select name='<?php echo $field->getName(); ?>'>
-				<option value=''>(choose)</option>
-				<?php foreach($field->getValues() as $key => $option) { ?>							
-					<option value='<?php echo $key; ?>'>
-						<?php echo $option; ?>
+				<option value=''>(choose)</option>					
+				<?php foreach($field->getValues() as $model) { 
+					/* @var $model Ajde_Model */ ?>
+					<option value='<?php echo $model->getPK(); ?>'>
+						<?php echo $model->get($model->getDisplayField()); ?>
 					</option>
 				<?php } ?>
 			</select>
@@ -36,7 +38,12 @@ $field = $this->field;
 		<thead>
 			<tr>
 				<th></th>
-				<th class='main'>Description</th>
+				<th class='main'><?php echo $field->getModel()->getTable()->getFieldProperties($field->getModel()->getDisplayField(), 'label'); ?></th>
+				<?php if ($field->hasTableFields()) {
+					foreach ($field->getTableFields() as $extraField) { ?>
+						<th><?php echo $field->getModel()->getTable()->getFieldProperties($extraField['name'], 'label'); ?></th>
+					<?php } 
+				} ?>
 				<th></th>
 			</tr>
 		</thead>
@@ -44,24 +51,57 @@ $field = $this->field;
 			<tr class='template'>
 				<td></td>
 				<td class='main'></td>
+				<?php if ($field->hasTableFields()) {
+					foreach ($field->getTableFields() as $extraField) { ?>
+						<td></td>
+					<?php } 
+				} ?>
 				<td class='buttons'>
 					<a href='javascript:void(null);' class='editMultiple' data-id=''>edit</a>
 					<a href='javascript:void(null);' class='deleteMultiple' data-id=''>delete</a>
 				</td>
 			</tr>
-	<?php foreach($field->getChildren() as $child) {
-		/* @var $child Ajde_Model */ ?>
-			<tr data-id='<?php echo $child->getPK(); ?>'>
-				<td><?php echo $child->getPK(); ?></td>
-				<td class='main'><?php echo $child->get($child->getDisplayField()); ?></td>
-				<td class='buttons'>
-					<a href='javascript:void(null);' class='editMultiple' data-id='<?php echo $child->getPK(); ?>'>edit</a>
-					<a href='javascript:void(null);' class='deleteMultiple' data-id='<?php echo $child->getPK(); ?>'>
-						<?php echo ($field->hasCrossReferenceTable()) ? 'disconnect' : 'delete'; ?>
-					</a>
-				</td>
-			</tr>	
-	<?php } ?>
+			<?php foreach($field->getChildren() as $child) {
+				/* @var $child Ajde_Model */ ?>
+				<tr data-id='<?php echo $child->getPK(); ?>'>
+					<td><?php echo $child->getPK(); ?></td>
+					<td class='main'><?php echo $child->get($child->getDisplayField()); ?></td>
+					<?php if ($field->hasTableFields()) {
+						foreach ($field->getTableFields() as $extraField) { 
+							$value	= $child->get($extraField['name']);
+							$type	= $extraField['type'];
+							if ($type == 'file' && $value) { ?>
+								<td>
+									<?php
+									$extension = pathinfo($value, PATHINFO_EXTENSION);
+									if ($isImage = in_array($extension, array('jpg', 'jpeg', 'png', 'gif'))) {
+										$thumbDim = $field->hasThumbDim() ? $field->getThumbDim() : array('width' => 75, 'height' => 75); ?>
+										<a class='imagePreview img' title='<?php echo _e($value); ?>' href='<?php echo $extraField['saveDir'] . $value; ?>' target='_blank'>
+											<?php echo $this->ACImage(array(
+													'filename' => $extraField['saveDir'] . $value,
+													'width' => $thumbDim['width'],
+													'height' => $thumbDim['height'],
+													'crop' => true
+												)); ?>
+										</a>									
+									<?php } else { ?>
+										<img class='icon' src='<?php echo Ajde_Resource_FileIcon::_($extension); ?> ' />
+										<a class='filePreview preview' href='<?php echo $extraField['saveDir'] . $value; ?>' target='_blank'><?php echo $value; ?></a>
+									<?php } ?>
+								</td>
+							<?php } else { ?>
+								<td><?php echo $child->get($extraField['name']); ?></td>
+							<?php }
+						} 
+					} ?>
+					<td class='buttons'>
+						<a href='javascript:void(null);' class='editMultiple' data-id='<?php echo $child->getPK(); ?>'>edit</a>
+						<a href='javascript:void(null);' class='deleteMultiple' data-id='<?php echo $child->getPK(); ?>'>
+							<?php echo ($field->hasCrossReferenceTable()) ? 'disconnect' : 'delete'; ?>
+						</a>
+					</td>
+				</tr>	
+			<?php } ?>
 		</tbody>
 	</table>
 	

@@ -146,6 +146,9 @@ class _coreCrudController extends Ajde_Acl_Controller
 			case 'addMultiple':
 				return $this->addMultiple($crudId, $id);
 				break;
+			case 'getMultipleRow':
+				return $this->getMultipleRow($crudId);
+				break;
 			default:
 				return array('operation' => $operation, 'success' => false);
 				break;
@@ -330,6 +333,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 		
 		$success = false;
 		if (isset($fieldProperties['crossReferenceTable'])) {
+			
 			// Already in there?
 			$parentField = (string) $model->getTable();
 			$sql = 'SELECT * FROM '.$fieldProperties['crossReferenceTable'].' WHERE '.$parentField.' = ? AND '.$fieldName.' = ? LIMIT 1';
@@ -355,6 +359,61 @@ class _coreCrudController extends Ajde_Acl_Controller
 			'operation' => 'addMultiple',			
 			'success' => $success,
 			'message' => ucfirst($fieldName) . ' added'
+		);
+	}
+	
+	private function getMultipleRow($crudId)
+	{
+		$session = new Ajde_Session('AC.Crud');		
+		/* @var $crud Ajde_Crud */
+		$crud = $session->getModel($crudId);
+		/* @var $model Ajde_Model */
+		$model = $crud->getModel();
+		
+		// Get field properties
+		$id = Ajde::app()->getRequest()->getParam('id');
+		$fieldName = Ajde::app()->getRequest()->getParam('field');
+		$fieldProperties = $crud->getOption('fields.' . $fieldName);
+		
+		// Get child model
+		$modelName = ucfirst($fieldName) . 'Model';		
+		$child = new $modelName;	
+		/* @var $child Ajde_Model */
+		$child->loadByPK($id);
+		
+		$ret = array();
+		if (isset($fieldProperties['tableFields'])) {
+			foreach ($fieldProperties['tableFields'] as $extraField) { 
+				$value	= $child->get($extraField['name']);
+				$type	= $extraField['type'];
+				if ($type == 'file' && $value) {
+					$extension = pathinfo($value, PATHINFO_EXTENSION);
+						if ($isImage = in_array($extension, array('jpg', 'jpeg', 'png', 'gif'))) {
+							$thumbDim = isset($fieldProperties['thumbDim']) ? $fieldProperties['thumbDim'] : array('width' => 75, 'height' => 75);
+							$html = "<a class='imagePreview img' title='" . _e($value) . "' href='" . $extraField['saveDir'] . $value . "' target='_blank'>";
+							$image = new Ajde_Resource_Image($extraField['saveDir'] . $value);
+							$image->setWidth($thumbDim['width']);
+							$image->setHeight($thumbDim['height']);
+							$image->setCrop(true);							
+							$html = $html . "<img src='" . $image->getLinkUrl() . "' width='" . $thumbDim['width'] . "' height='" . $thumbDim['height'] . "' />";
+							$html = $html . "</a>";
+						} else {
+							$html = "<img class='icon' src='" . Ajde_Resource_FileIcon::_($extension) . "' />";
+							$html = $html . "<a class='filePreview preview' href='" . $extraField['saveDir'] . $value; "' target='_blank'>" . $value . "</a>";
+						}
+				 } else {
+					$html = $value;
+				 }
+				 $ret[] = $html;
+			}
+		}
+		
+		$success = true;
+		
+		return array(
+			'operation' => 'getMultipleRow',			
+			'success' => $success,
+			'data' => $ret
 		);
 	}
 }

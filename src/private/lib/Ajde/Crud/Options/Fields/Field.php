@@ -171,4 +171,28 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 	 * @return Ajde_Crud_Options_Fields_Field 
 	 */
 	public function setEditRoute($route) { return $this->_set('editRoute', $route); }
+	
+	/**
+	 * Adds a column to the cross reference table (for fields with type 'multiple')
+	 * 
+	 * @param string $field
+	 * @return Ajde_Crud_Options_Fields_Field 
+	 */
+	public function addTableField($field) {
+		$fields = ($this->has('tableFields') ? $this->get('tableFields') : array());
+		$fields[] = array('name' => $field, 'type' => 'text');
+		return $this->_set('tableFields', $fields);
+	}
+	
+	/**
+	 * Adds an image column to the cross reference table (for fields with type 'multiple')
+	 * 
+	 * @param string $field
+	 * @return Ajde_Crud_Options_Fields_Field 
+	 */
+	public function addTableFileField($field, $saveDir) {
+		$fields = ($this->has('tableFields') ? $this->get('tableFields') : array());
+		$fields[] = array('name' => $field, 'type' => 'file', 'saveDir' => $saveDir);
+		return $this->_set('tableFields', $fields);
+	}
 }

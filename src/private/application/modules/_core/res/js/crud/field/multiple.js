@@ -53,29 +53,70 @@ AC.Crud.Edit.Multiple = function() {
 						}
 		}, function(response) {
 			if (response.success === true) {
-				$lastrow = $(that).parent().next().find('tbody tr:last');
-				$newrow = $lastrow.clone();
-				$newrow.find('td:eq(0)').text(id);
-				$newrow.find('td:eq(1)').text(display);
-				$newrow.find('td:eq(2)').find('a').attr('data-id', id);
-				$newrow.find('td:eq(2)').find('a:eq(1)').text('disconnect');
-				$newrow.hide();
-				$newrow.insertAfter($lastrow);
-				$newrow.fadeIn();
+				addRow(id, display, that);
 				AC.Core.Alert.flash(response.message);
 			} else if (response.success === false) {
 				AC.Core.Alert.error(response.message);
 			}
 		});
+	};
+	
+	var getRowData = function(id, that, callback) {
+		var form = $(that).parents('form');			
+		var field = $(that).parents('div.multiple:eq(0)').attr('data-field');
+		form.find('input.operation').val('getMultipleRow');
+
+		var get = {
+			operation	: 'getMultipleRow',
+			crudId		: form.attr('id'),
+			id			: id,
+			field		: field
+		};
+		var url = form.attr('action') + "?" + $.param(get);
+
+		$.get(url, {}, function(response) {
+			callback(response);
+		}, 'json').error(function(jqXHR, message, exception) {
+			$('body').removeClass('loading');
+			errorHandler(i18n.requestError + ' (' + exception + ')');
+		});
 	}
+	
+	var addRow = function(id, display, that, data) {
+		data = data || {};
+		var dynamic = (!data.length && $(that).parents('div.multiple:eq(0)').attr('data-dynamic') == 1);
+		if (dynamic) {
+			getRowData(id, that, function(response) {
+				addRow(id, display, that, response.data);
+			});
+		} else {
+			$lastrow = $(that).parent().next().find('tbody tr:last');
+			$newrow = $lastrow.clone();				
+			$newrow.find('td:eq(0)').text(id);
+			$newrow.find('td:eq(1)').text(display);
+			var colCounter = 2;
+			for (var i in data) {
+				$newrow.find('td:eq(' + colCounter + ')').html(data[i]);
+				colCounter++;
+			}
+			$newrow.find('td:eq(' + colCounter + ')').find('a').attr('data-id', id);
+			$newrow.find('td:eq(' + colCounter + ')').find('a:eq(1)').text($(that).parent().find('.addMultiple').length ? 'disconnect' : 'delete');
+			$newrow.hide();
+			$newrow.insertAfter($lastrow);
+			$newrow.fadeIn();
+		}
+	};
 	
 	return {
 		
 		init: function() {
-			$('form.ACCrudEdit a.newMultiple').click(AC.Crud.Edit.Multiple.newHandler);
-			$('form.ACCrudEdit a.addMultiple').click(AC.Crud.Edit.Multiple.addHandler);
-			$('form.ACCrudEdit a.editMultiple').live('click', AC.Crud.Edit.Multiple.editHandler);
-			$('form.ACCrudEdit a.deleteMultiple').live('click', AC.Crud.Edit.Multiple.deleteHandler);
+			$('form.ACCrudEdit div.multiple a.newMultiple').click(AC.Crud.Edit.Multiple.newHandler);
+			$('form.ACCrudEdit div.multiple a.addMultiple').click(AC.Crud.Edit.Multiple.addHandler);
+			$('form.ACCrudEdit div.multiple a.editMultiple').live('click', AC.Crud.Edit.Multiple.editHandler);
+			$('form.ACCrudEdit div.multiple tbody tr').live('dblclick', AC.Crud.Edit.Multiple.editHandler);
+			$('form.ACCrudEdit div.multiple a.deleteMultiple').live('click', AC.Crud.Edit.Multiple.deleteHandler);
+			
+			$('form.ACCrudEdit div.multiple a.imagePreview').fancybox();
 		},
 		
 		newHandler: function(e) {
@@ -107,15 +148,7 @@ AC.Crud.Edit.Multiple = function() {
 				add(id, display, currentCrudAction);
 			} else {				
 				$.fancybox.close();
-				$lastrow = $(currentCrudAction).parent().next().find('tbody tr:last');
-				$newrow = $lastrow.clone();
-				$newrow.find('td:eq(0)').text(id);
-				$newrow.find('td:eq(1)').text(display);
-				$newrow.find('td:eq(2)').find('a').attr('data-id', id);
-				$newrow.find('td:eq(2)').find('a:eq(1)').text($(currentCrudAction).nextAll('.addMultiple').length ? 'disconnect' : 'delete');
-				$newrow.hide();
-				$newrow.insertAfter($lastrow);
-				$newrow.fadeIn();
+				addRow(id, display, currentCrudAction);				
 				AC.Core.Alert.flash($(currentCrudAction).parents('div.multiple:eq(0)').attr('data-field') + ' added');
 			}
 		},
@@ -146,11 +179,28 @@ AC.Crud.Edit.Multiple = function() {
 			});
 		},
 		
-		editSaved: function(id, display) {
-			$.fancybox.close();
-			$row = $(currentCrudAction).parents('tr:eq(0)');
-			$row.find('td:eq(1)').text(display);
-			AC.Core.Alert.flash($(currentCrudAction).parents('div.multiple:eq(0)').attr('data-field') + ' edited');
+		editSaved: function(id, display, data) {			
+			data = data || {};
+			var dynamic = (!data.length && $(currentCrudAction).parents('div.multiple:eq(0)').attr('data-dynamic') == 1);
+			if (dynamic) {
+				getRowData(id, currentCrudAction, function(response) {
+					AC.Crud.Edit.Multiple.editSaved(id, display, response.data);
+				});
+			} else {
+				$.fancybox.close();
+				if (!$(currentCrudAction).is('tr')) {
+					$row = $(currentCrudAction).parents('tr:eq(0)');
+				} else {
+					$row = $(currentCrudAction);
+				}
+				$row.find('td:eq(1)').text(display);
+				var colCounter = 2;
+				for (var i in data) {
+					$row.find('td:eq(' + colCounter + ')').html(data[i]);
+					colCounter++;
+				}
+				AC.Core.Alert.flash($(currentCrudAction).parents('div.multiple:eq(0)').attr('data-field') + ' edited');
+			}
 		},
 		
 		deleteHandler: function(e) {

@@ -14,6 +14,10 @@ class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
 	 */
 	private $_model;
 	
+	/**
+	 *
+	 * @return Ajde_Collection
+	 */
 	public function getCollection()
 	{
 		if (!isset($this->_collection)) {
@@ -23,6 +27,10 @@ class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
 		return $this->_collection;
 	}
 	
+	/**
+	 *
+	 * @return Ajde_Model 
+	 */
 	public function getModel()
 	{
 		if (!isset($this->_model)) {
@@ -57,11 +65,12 @@ class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
 		}
 		
 		$this->getCollection()->orderBy($this->getModel()->getDisplayField());
-		$return = array();
-		foreach($this->getCollection() as $model) {
-			$return[(string) $model] = $model->get($model->getDisplayField());
-		}
-		return $return;
+//		$return = array();
+//		foreach($this->getCollection() as $model) {
+//			$return[(string) $model] = $model->get($model->getDisplayField());
+//		}
+//		return $return;
+		return $this->getCollection();
 	}
 	
 	public function getChildren()

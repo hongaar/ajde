@@ -1,21 +1,5 @@
 ;$(document).ready(function() {
-	
-	// TODO: change this to custom fancybox lib
-	$.fancybox.transitions.slideIn = function() {
-        var endPos = F._getPosition(true);
-
-        endPos.left = (parseInt(endPos.left, 10) - 200) + 'px';
-        endPos.opacity = 0;
-        
-        F.wrap.css(endPos).show().animate({
-            left: '+=200px',
-            opacity: 1
-        }, {
-            duration: F.current.nextSpeed,
-            complete: F._afterZoomIn
-        });
-    };	
-	
+		
 	var updateChooseThis = function() {
 		var that = this;
 		$('div.fancybox-title a').unbind('click').click(function() {
@@ -52,6 +36,12 @@
 			$(this).parent().css({height: 'auto'});
 		}
 	});
+	
+	$('a.toggleFileBrowser').toggle(function() {
+		$(this).text('Close file browser');
+	}, function() {
+		$(this).text('Choose existing');
+	})
 	
 	$('div.browser > a').click(function(e) {
 		// Fired from preview link?

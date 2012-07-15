@@ -1,8 +1,4 @@
-<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ ?>
-
-<h2>Edit</h2>
-
-<?php	
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ 
 
 $options = new Ajde_Crud_Options();
 $options	
@@ -39,5 +35,11 @@ $options
 	->finished();
 
 $crud = $this->ACCrudList('download', $options);
+
+if ($crud->isNew()) {
+	echo '<h2>New download</h2>';
+} else {
+	echo '<h2>Edit download</h2>';
+}
 
 echo $crud->output();
