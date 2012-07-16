@@ -13,7 +13,16 @@
 			this.title = this.title + ' &gt; <a href=\'javascript:void(null);\' style=\'color: white\'>choose this</a>'
 		},
 		afterLoad: updateChooseThis,
-		afterShow: updateChooseThis
+		afterShow: updateChooseThis,
+		helpers: {
+			thumbs: {
+				width	: 50,
+				height	: 50,
+				source	: function(item) {
+					return $(item.element).parent().prev().attr('src');
+				}
+			}
+		}
 	});
 	$('div.filelist a.imagePreview').fancybox();
 	
