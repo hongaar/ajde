@@ -133,7 +133,7 @@ AC.Crud.Edit.Multiple = function() {
 			var editRoute = $(this).parents('div.multiple:eq(0)').attr('data-edit-route');
 			
 			$.fancybox.open({
-				href: editRoute + '?new&prefill[' + parent + ']=' + parentId + '&disable[' + parent + ']=1',
+				href: editRoute + '?new&prefill[' + parent + ']=' + parentId + '&hide[' + parent + ']=1',
 				type: 'iframe',
 				autoSize: false,				
 				maxWidth: 800,
@@ -170,7 +170,7 @@ AC.Crud.Edit.Multiple = function() {
 			var id = $(this).attr('data-id');
 			
 			$.fancybox.open({
-				href: editRoute + '?edit=' + id + '&disable[' + parent + ']=1',
+				href: editRoute + '?edit=' + id + '&hide[' + parent + ']=1',
 				type: 'iframe',
 				autoSize: false,				
 				maxWidth: 800,

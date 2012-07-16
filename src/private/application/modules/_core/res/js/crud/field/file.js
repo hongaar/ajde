@@ -1,5 +1,10 @@
 ;$(document).ready(function() {
-		
+	
+	// Lazyload
+	$('div.browser img').lazyload({
+		container: $("div.browser")
+	});
+	
 	var updateChooseThis = function() {
 		var that = this;
 		$('div.fancybox-title a').unbind('click').click(function() {
@@ -38,7 +43,9 @@
 	$('a.toggleFileBrowser').click(function(e) {
 		e.preventDefault();
 		$browser = $(this).next();
-		$browser.slideToggle();
+		$browser.slideToggle(function() {
+			$(this).trigger('scroll');
+		});		
 		if ($(this).parents('.block.sidebar').length && $browser.height() < 100) {
 			$(this).parent().css({height: '550px'});
 		} else if ($(this).parents('.block.sidebar').lengths) {

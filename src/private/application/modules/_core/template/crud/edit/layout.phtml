@@ -26,14 +26,8 @@ $editOptions = $crud->getOptions('edit');
 	
 	<?php
 	
-	$pk = $crud->getModel()->getTable()->getPK();
-	$pkField = $crud->getField($pk);
-	
-	echo "<div class='visuallyhidden'>";
-	echo $pkField->getInput();
-	echo "</div>";	
-	
 	$rows = $crud->getOption('edit.layout.rows');	
+	$fieldsShown = array();
 	foreach($rows as $row) {
 		$columns = $row['columns'];
 		?>
@@ -74,7 +68,8 @@ $editOptions = $crud->getOptions('edit');
 					<?php } ?>
 
 					<?php foreach($fieldsToShow as $fieldName) {
-												
+						
+						$fieldsShown[] = $fieldName;
 						$field = $crud->getField($fieldName, false);
 						if (!$field) {
 							// Dynamically create a text field and fill with value from Model (if available)
@@ -109,6 +104,14 @@ $editOptions = $crud->getOptions('edit');
 	}
 	
 	?>
+	
+	<div class='hidden'>
+	<?php foreach($crud->getFields() as $field) {
+		if (!in_array($field->getName(), $fieldsShown)) {
+			echo $field->getInput();
+		}
+	} ?>
+	</div>
 		
 	<dl class='crudEdit block'>
 		

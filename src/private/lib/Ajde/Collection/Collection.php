@@ -285,7 +285,7 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 		if (!$view->isEmpty('orderBy')) {
 			$oldOrderBy = $this->getQuery()->orderBy;
 			$this->getQuery()->orderBy = array();
-			$this->orderBy($view->getOrderBy(), $view->getOrderDir());
+			$this->orderBy((string) $this->getTable() . '.' . $view->getOrderBy(), $view->getOrderDir());
 			foreach($oldOrderBy as $orderBy) {
 				$this->orderBy($orderBy['field'], $orderBy['direction']);
 			}
@@ -295,7 +295,7 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 		if (!$view->isEmpty('filter')) {
 			foreach($view->getFilter() as $fieldName => $filterValue) {
 				if (!empty($filterValue)) {
-					$this->addFilter(new Ajde_Filter_Where($fieldName, Ajde_Filter::FILTER_EQUALS, $filterValue));
+					$this->addFilter(new Ajde_Filter_Where((string) $this->getTable() . '.' . $fieldName, Ajde_Filter::FILTER_EQUALS, $filterValue));
 				}
 			}
 		}
@@ -314,7 +314,7 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 			switch ($fieldProperties['type']) {
 				case Ajde_Db::FIELD_TYPE_TEXT:						
 				case Ajde_Db::FIELD_TYPE_ENUM:
-					$searchFilter->addFilter(new Ajde_Filter_Where($fieldName, Ajde_Filter::FILTER_LIKE, '%' . $text . '%', Ajde_Query::OP_OR));						
+					$searchFilter->addFilter(new Ajde_Filter_Where((string) $this->getTable() . '.' . $fieldName, Ajde_Filter::FILTER_LIKE, '%' . $text . '%', Ajde_Query::OP_OR));						
 					break;					
 				default:
 					break;

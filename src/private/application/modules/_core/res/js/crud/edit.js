@@ -4,9 +4,9 @@ if (typeof AC.Crud ==="undefined") {AC.Crud = function(){}};
 
 AC.Crud.Edit = function() {
 	
-	var infoHandler		= alert;
-	var warningHandler	= alert;
-	var errorHandler	= alert;
+	var infoHandler		= AC.Core.Alert.show;
+	var warningHandler	= AC.Core.Alert.warning;
+	var errorHandler	= AC.Core.Alert.error;
 	
 	var isIframe = false;
 	
@@ -109,6 +109,9 @@ AC.Crud.Edit = function() {
 						}
 						for(var i in data.errors) {
 							$parent = $(':input[name=' + i + ']').parents('dd');
+							if (!$parent.length) {
+								errorHandler('Field \'' + i + '\' has errors but is hidden');
+							}
 							$parent.addClass('validation_error');
 							firstError = data.errors[i][0];
 							$parent.attr('data-message', firstError);							

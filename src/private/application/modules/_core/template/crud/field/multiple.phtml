@@ -74,7 +74,7 @@ $field = $this->field;
 								<td>
 									<?php
 									$extension = pathinfo($value, PATHINFO_EXTENSION);
-									if ($isImage = in_array($extension, array('jpg', 'jpeg', 'png', 'gif'))) {
+									if ($isImage = in_array(strtolower($extension), array('jpg', 'jpeg', 'png', 'gif'))) {
 										$thumbDim = $field->hasThumbDim() ? $field->getThumbDim() : array('width' => 75, 'height' => 75); ?>
 										<a class='imagePreview img' title='<?php echo _e($value); ?>' href='<?php echo $extraField['saveDir'] . $value; ?>' target='_blank'>
 											<?php echo $this->ACImage(array(

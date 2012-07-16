@@ -8,15 +8,39 @@ $editOptions = $crud->getOptions('edit');
 	
 	<dl class='crudEdit'>
 		
-		<?php foreach($crud->getFields() as $field) {
-			if (isset($editOptions['show']) && (!in_array($field->getName(), $editOptions['show']))) { ?>
-				<div class='visuallyhidden'>
-			<?php }
-			echo $field->getHtml();
-			if (isset($editOptions['show']) && (!in_array($field->getName(), $editOptions['show']))) { ?>
-				</div>
-			<?php }
+		<?php
+		$fieldsShown = array();		
+		$fieldsToShow = $editOptions['show'];
+		
+		foreach($fieldsToShow as $fieldName) {
+			$fieldsShown[] = $fieldName;
+			$field = $crud->getField($fieldName, false);
+			if (!$field) {
+				// Dynamically create a text field and fill with value from Model (if available)
+				$field = $crud->createField($crud->getFieldOptions($fieldName, array(
+					'name' => $fieldName,
+					'type' => 'text',
+					'length' => 255,
+					'default' => '',
+					'label' => ucfirst($fieldName),
+					'isRequired' => false,
+					'isPK' => false,				
+					'isAutoIncrement' => false,
+					'isAutoUpdate' => false,
+					'value' => $crud->getModel()->{"has".ucfirst($fieldName)}() ? $crud->getModel()->{"get".ucfirst($fieldName)}() : false
+				)));
+			}
+			
+			echo $field->getHtml();			
 		} ?>
+		
+		<div class='hidden'>
+		<?php foreach($crud->getFields() as $field) {
+			if (!in_array($field->getName(), $fieldsShown)) {
+				echo $field->getInput();
+			}
+		} ?>
+		</div>
 		
 		<dt>&nbsp;</dt>
 		<dd>

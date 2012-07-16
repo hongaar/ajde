@@ -93,6 +93,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 		}
 		
 		$disable = Ajde::app()->getRequest()->getParam('disable', array());
+		$hide = Ajde::app()->getRequest()->getParam('hide', array());
 		$prefill = Ajde::app()->getRequest()->getParam('prefill', array());
 		foreach($prefill as $field => $value) {
 			$crud->setOption('fields.' . $field . '.value', $value);			
@@ -102,6 +103,11 @@ class _coreCrudController extends Ajde_Acl_Controller
 				$crud->setOption('fields.' . $field . '.readonly', true);	
 			}
 		}
+		foreach($hide as $field => $value) {
+			if ($value) {
+				$crud->setOption('fields.' . $field . '.hidden', true);	
+			}
+		}		
 			
 		$session = new Ajde_Session('AC.Crud');
 		$session->setModel($crud->getHash(), $crud);
@@ -297,13 +303,14 @@ class _coreCrudController extends Ajde_Acl_Controller
 		$fieldProperties = $crud->getOption('fields.' . $fieldName);
 		
 		$success = false;
+		$modelName = $crud->getOption('fields.' . $fieldName . '.modelName', $fieldName);
 		if (isset($fieldProperties['crossReferenceTable'])) {
 			$parentField = (string) $model->getTable();
-			$sql = 'DELETE FROM '.$fieldProperties['crossReferenceTable'].' WHERE '.$parentField.' = ? AND '.$fieldName.' = ? LIMIT 1';
+			$sql = 'DELETE FROM '.$fieldProperties['crossReferenceTable'].' WHERE '.$parentField.' = ? AND '.$modelName.' = ? LIMIT 1';
 			$statement = $model->getConnection()->prepare($sql);
 			$success = $statement->execute(array($parentId, $id));			
 		} else {
-			$childClass = ucfirst($fieldName) . 'Model';
+			$childClass = ucfirst($modelName) . 'Model';
 			$child = new $childClass();
 			/* @var $child Ajde_Model */
 			$child->loadByPK($id);
@@ -332,11 +339,12 @@ class _coreCrudController extends Ajde_Acl_Controller
 		$fieldProperties = $crud->getOption('fields.' . $fieldName);
 		
 		$success = false;
+		$modelName = $crud->getOption('fields.' . $fieldName . '.modelName', $fieldName);
 		if (isset($fieldProperties['crossReferenceTable'])) {
 			
 			// Already in there?
 			$parentField = (string) $model->getTable();
-			$sql = 'SELECT * FROM '.$fieldProperties['crossReferenceTable'].' WHERE '.$parentField.' = ? AND '.$fieldName.' = ? LIMIT 1';
+			$sql = 'SELECT * FROM '.$fieldProperties['crossReferenceTable'].' WHERE '.$parentField.' = ? AND '.$modelName.' = ? LIMIT 1';
 			$statement = $model->getConnection()->prepare($sql);
 			$success = $statement->execute(array($parentId, $id));			
 			$result = $statement->fetch(PDO::FETCH_ASSOC);	
@@ -348,7 +356,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 				);
 			}			
 			
-			$sql = 'INSERT INTO '.$fieldProperties['crossReferenceTable'].' ('.$parentField.', '.$fieldName.') VALUES (?, ?)';
+			$sql = 'INSERT INTO '.$fieldProperties['crossReferenceTable'].' ('.$parentField.', '.$modelName.') VALUES (?, ?)';
 			$statement = $model->getConnection()->prepare($sql);
 			$success = $statement->execute(array($parentId, $id));			
 		} else {
@@ -374,10 +382,11 @@ class _coreCrudController extends Ajde_Acl_Controller
 		$id = Ajde::app()->getRequest()->getParam('id');
 		$fieldName = Ajde::app()->getRequest()->getParam('field');
 		$fieldProperties = $crud->getOption('fields.' . $fieldName);
+		$modelName = $crud->getOption('fields.' . $fieldName . '.modelName', $fieldName);
 		
 		// Get child model
-		$modelName = ucfirst($fieldName) . 'Model';		
-		$child = new $modelName;	
+		$className = ucfirst($modelName) . 'Model';		
+		$child = new $className;	
 		/* @var $child Ajde_Model */
 		$child->loadByPK($id);
 		
@@ -388,7 +397,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 				$type	= $extraField['type'];
 				if ($type == 'file' && $value) {
 					$extension = pathinfo($value, PATHINFO_EXTENSION);
-						if ($isImage = in_array($extension, array('jpg', 'jpeg', 'png', 'gif'))) {
+						if ($isImage = in_array(strtolower($extension), array('jpg', 'jpeg', 'png', 'gif'))) {
 							$thumbDim = isset($fieldProperties['thumbDim']) ? $fieldProperties['thumbDim'] : array('width' => 75, 'height' => 75);
 							$html = "<a class='imagePreview img' title='" . _e($value) . "' href='" . $extraField['saveDir'] . $value . "' target='_blank'>";
 							$image = new Ajde_Resource_Image($extraField['saveDir'] . $value);

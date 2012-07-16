@@ -9,6 +9,9 @@ $this->requireCssPublic('_core/crud/fancybox/jquery.fancybox.css');
 $this->requireJsPublic('_core/crud/fancybox/helpers/jquery.fancybox-thumbs.js');
 $this->requireCssPublic('_core/crud/fancybox/helpers/jquery.fancybox-thumbs.css');
 
+// Lazyload
+$this->requireJsPublic('_core/crud/jquery.lazyload.min.js');
+
 /* @var $field Ajde_Crud_Field_File */
 $field = $this->field;
 ?>
@@ -35,14 +38,14 @@ $field = $this->field;
 				}
 				$extension = pathinfo($file, PATHINFO_EXTENSION);
 				echo "<a href='javascript:void(0);'>";										
-					if ($isImage = in_array($extension, array('jpg', 'jpeg', 'png', 'gif'))) {
-						echo $this->ACImage(array(
-							'filename' => $file,
-							'width' => 50,
-							'height' => 50,
-							'crop' => true,
-							'class' => 'thumb'
-						));
+					if ($isImage = in_array(strtolower($extension), array('jpg', 'jpeg', 'png', 'gif'))) {
+						// Don't use $this->ACImage() to support lazy loading
+						$image = new Ajde_Resource_Image($file);
+						$image->setWidth(50);
+						$image->setHeight(50);
+						$image->setCrop(true);							
+						echo "<img class='thumb' data-original='" . $image->getLinkUrl() . "' src='public/images/gray.gif' width='50' height='50' />";
+					
 					} else {
 						echo "<span class='icon'><img class='icon' src='" . Ajde_Resource_FileIcon::_($extension) . "' /></span>";
 					}
@@ -75,7 +78,7 @@ if ($field->getValue()) {
 		/>
 		
 		<?php
-		if ($isImage = in_array($extension, array('jpg', 'jpeg', 'png', 'gif'))) {
+		if ($isImage = in_array(strtolower($extension), array('jpg', 'jpeg', 'png', 'gif'))) {
 			$thumbDim = $field->hasThumbDim() ? $field->getThumbDim() : array('width' => 150, 'height' => 150); ?>
 			<a class='imagePreview img' title='<?php echo _e($field->getValue()); ?>' href='<?php echo $field->getSaveDir() . $field->getValue(); ?>' target='_blank'>
 				<?php echo $this->ACImage(array(

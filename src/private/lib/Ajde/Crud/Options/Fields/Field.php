@@ -108,6 +108,14 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 	public function setIsReadonly($isReadonly) { return $this->_set('readonly', $isReadonly); }
 	
 	/**
+	 * Sets the field value
+	 * 
+	 * @param string $value
+	 * @return Ajde_Crud_Options_Fields_Field 
+	 */
+	public function setValue($value) { return $this->_set('value', $value); }
+	
+	/**
 	 * Sets the allowed values
 	 * 
 	 * @param array $filter
@@ -171,6 +179,14 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 	 * @return Ajde_Crud_Options_Fields_Field 
 	 */
 	public function setEditRoute($route) { return $this->_set('editRoute', $route); }
+	
+	/**
+	 * Sets the model to use for fields with type 'multiple'
+	 * 
+	 * @param string $model
+	 * @return Ajde_Crud_Options_Fields_Field 
+	 */
+	public function setModelName($model) { return $this->_set('modelName', $model); }
 	
 	/**
 	 * Adds a column to the cross reference table (for fields with type 'multiple')

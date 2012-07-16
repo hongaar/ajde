@@ -15,13 +15,26 @@ class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
 	private $_model;
 	
 	/**
+	 * 
+	 * @return string 
+	 */	
+	public function getModelName()
+	{
+		if ($this->hasModelName()) {
+			return $this->get('modelName');
+		} else {
+			return $this->getName();
+		}
+	}
+	
+	/**
 	 *
 	 * @return Ajde_Collection
 	 */
 	public function getCollection()
 	{
 		if (!isset($this->_collection)) {
-			$collectionName = ucfirst($this->getName()) . 'Collection';
+			$collectionName = ucfirst($this->getModelName()) . 'Collection';
 			$this->_collection = new $collectionName;
 		}
 		return $this->_collection;
@@ -34,7 +47,7 @@ class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
 	public function getModel()
 	{
 		if (!isset($this->_model)) {
-			$modelName = ucfirst($this->getName()) . 'Model';
+			$modelName = ucfirst($this->getModelName()) . 'Model';
 			$this->_model = new $modelName;
 		}
 		return $this->_model;
@@ -81,6 +94,7 @@ class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
 			$parentId = $this->getCrud()->getModel()->getPK();			
 			$crossReferenceTable = $this->getCrossReferenceTable();
 			
+			// TODO: implement $this->getAdvancedFilter() filters in subquery
 			$subQuery = new Ajde_Db_Function('(SELECT ' . $this->getName() . ' FROM ' . $crossReferenceTable . ' WHERE ' . $parent . ' = ' . (integer) $parentId . ')');
 			$collection = $this->getCollection();
 			$collection->reset();
@@ -88,6 +102,20 @@ class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
 		} else {
 			$collection = $this->getCollection();
 			$collection->addFilter(new Ajde_Filter_Where((string) $this->_crud->getModel()->getTable(), Ajde_Filter::FILTER_EQUALS, (string) $this->_crud->getModel()));
+			
+			if ($this->hasAdvancedFilter()) {
+				$filters = $this->getAdvancedFilter();
+				$group = new Ajde_Filter_WhereGroup();
+				foreach($filters as $filter) {
+					if ($filter instanceof Ajde_Filter_Where) {
+						$group->addFilter($filter);
+					} else {
+						$this->getCollection()->addFilter($filter);
+					}		
+				}
+				$collection->addFilter($group);
+			}
+			
 		}
 		return $collection;
 	}
