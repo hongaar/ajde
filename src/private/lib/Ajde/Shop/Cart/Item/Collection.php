@@ -29,7 +29,7 @@ class Ajde_Shop_Cart_Item_Collection extends Ajde_Collection
 	
 	public function getFormattedTotal()
 	{
-		return Config::get('currency') . ' ' . $this->_format($this->getTotal());
+		return Config::get('currency') . '&nbsp;' . $this->_format($this->getTotal());
 	}
 		
 	public function getVATAmount()
@@ -44,7 +44,7 @@ class Ajde_Shop_Cart_Item_Collection extends Ajde_Collection
 	
 	public function getFormattedVATAmount()
 	{
-		return Config::get('currency') . ' ' . $this->_format($this->getVATAmount());
+		return Config::get('currency') . '&nbsp;' . $this->_format($this->getVATAmount());
 	}
 	
 	public function countQty()

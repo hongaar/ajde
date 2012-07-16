@@ -74,7 +74,7 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
 	
 	public function getFormattedTotal()
 	{
-		return Config::get('currency') . ' ' . $this->_format($this->getTotal());
+		return Config::get('currency') . '&nbsp;' . $this->_format($this->getTotal());
 	}
 	
 }

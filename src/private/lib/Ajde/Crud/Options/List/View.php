@@ -64,7 +64,7 @@ class Ajde_Crud_Options_List_View extends Ajde_Crud_Options
 	 * @param enum $dir (Ajde_Query::ORDER_ASC|Ajde_Query::ORDER_DESC)
 	 * @return Ajde_Crud_Options_List_View 
 	 */
-	public function setOrderDir($dir) { return $this->_set('dir', $dir); }
+	public function setOrderDir($dir) { return $this->_set('orderDir', $dir); }
 	
 	/**
 	 * Adds a filter

@@ -5,3 +5,7 @@ table.cart {
 table.cart td {
 	height: 20px;
 }
+
+table.cart td.price {
+	text-align: right;
+}

@@ -39,6 +39,7 @@ div.crudLayout dl.crudEdit.table dt {
 div.crudLayout dl.crudEdit dt.title {
 	font-size: 1.5em;
 	font-weight: normal;
+	width: auto;
 }
 
 div.crudLayout dl.crudEdit dt.required {
@@ -47,12 +48,20 @@ div.crudLayout dl.crudEdit dt.required {
 }
 
 div.crudLayout dl.crudEdit dd {
+	position: relative;
 	float: none;	
 	width: auto;
 	
 	border-top: none;
 	padding: 0 0 10px 0;
 	margin: 0;
+}
+
+div.crudLayout dl.crudEdit dd span.help {	
+	position: absolute;
+	right: 0;
+	top: -30px;
+	z-index: 999;
 }
 
 div.crudLayout dl.crudEdit.table dd {
@@ -70,6 +79,10 @@ div.crudLayout dl.crudEdit dd textarea {
 
 div.crudLayout dl.crudEdit.table dd span.help {
 	margin: 3px 0 0 10px;
+	position: relative;
+	right: auto;
+	top: auto;
+	z-index: inherit;
 }
 
 /* VALIDATION */
