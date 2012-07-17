@@ -32,7 +32,7 @@ AC.Crud.Edit.Text = function() {
 			
 			CKEDITOR.config.baseHref = document.getElementsByTagName('base')[0].href;
 			
-			addCKEditor($('form.ACCrudEdit textarea'));
+			addCKEditor($('form.ACCrudEdit textarea:not(.noRichText)'));
 		}
 		
 	};

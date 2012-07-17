@@ -77,4 +77,16 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
 		return Config::get('currency') . '&nbsp;' . $this->_format($this->getTotal());
 	}
 	
+	public function getOverviewHtml()
+	{
+		if ($this->hasLoaded()) {
+			$view = new Ajde_View(MODULE_DIR . 'shop/', 'transaction/view');
+			$view->assign('source', 'id');
+			$view->assign('transaction', $this);
+			return $view->render();
+		} else  {
+			return 'Transaction not found';
+		}		
+	}
+	
 }

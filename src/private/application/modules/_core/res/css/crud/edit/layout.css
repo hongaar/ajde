@@ -29,6 +29,7 @@ div.crudLayout dl.crudEdit dt {
 
 div.crudLayout dl.crudEdit.table dt {
 	display: table-cell;	
+	text-align: right;
 	float: left;
 	clear: left;
 	overflow: hidden;	

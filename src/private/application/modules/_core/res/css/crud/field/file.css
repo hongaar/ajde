@@ -16,6 +16,8 @@ div.filebrowser {
 
 div.browser {
 	background-color: #eee;
+	position: relative;
+	z-index: 1000;
 	display: none;
 	max-height: 538px;
 	width: 700px;

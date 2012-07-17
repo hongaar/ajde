@@ -381,10 +381,6 @@ class ShopTransactionController extends ShopController
 			$transaction->payment_status = 'requested';
 			$transaction->save();
 
-			$cart = new CartModel();
-			$cart->loadCurrent();
-			$cart->emptyItems();
-
 			if ($provider->usePostProxy()) {
 				$this->setAction('postproxy');
 				$proxy = $this->getView();
@@ -408,7 +404,11 @@ class ShopTransactionController extends ShopController
 	}
 	
 	public function complete()
-	{		
+	{
+		$cart = new CartModel();
+		$cart->loadCurrent();
+		$cart->emptyItems();
+		
 		$session = new Ajde_Session('AC.Shop');
 		$session->destroy();
 		
@@ -424,9 +424,19 @@ class ShopTransactionController extends ShopController
 	{
 		$providerName = $this->getId();
 		$provider = Ajde_Shop_Transaction_Provider::getProvider($providerName);
-		if ($provider->updatePayment()) {
+		$status = $provider->updatePayment();
+		if ($status['success'] === true) {
+			$transaction = $status['transaction'];
+			if (isset($transaction)) {
+				$this->mailUser($transaction);
+				$this->mailUpdateAdmin($transaction, 'Order completed');
+			}
 			$this->redirect('shop/transaction:complete');
 		} else {
+			$transaction = $status['transaction'];
+			if (isset($transaction)) {
+				$this->mailUpdateAdmin($transaction, 'Order refused');
+			}
 			$this->redirect('shop/transaction:refused');
 		}
 	}
@@ -437,5 +447,42 @@ class ShopTransactionController extends ShopController
 		$session->destroy();
 		
 		return $this->redirect('shop/cart');
+	}
+		
+	public function mailUpdateAdmin(TransactionModel $transaction, $subject = null)
+	{
+		$recipient = Config::get('email');
+		$mailer = new Ajde_Mailer();
+
+		$mailer->IsMail(); // use php mail()
+		$mailer->AddAddress($recipient, 'Site admin');
+		$mailer->From = $recipient;
+		$mailer->FromName = Config::get('sitename');
+		$mailer->Subject = (isset($subject) ? $subject : 'Transaction update');
+		$mailer->Body = $transaction->getOverviewHtml();
+		$mailer->IsHTML(true);
+		if (!$mailer->Send()) {
+			Ajde_Log::log('Mail to ' . $recipient . ' failed');
+		}
+	}
+	
+	public function mailUser(TransactionModel $transaction)
+	{
+		$mailer = new Ajde_Mailer();
+
+		$mailer->IsMail(); // use php mail()
+		$mailer->AddAddress($transaction->email, $transaction->name);
+		$mailer->From = Config::get('email');
+		$mailer->FromName = Config::get('sitename');
+		$mailer->Subject = 'Your order';
+		$mailer->Body = '<h2>Your order on ' . Config::get('sitename') . '</h2>' .
+			'<p>Thank you for shopping with us. We will ship your items as soon as possible if you chose for delivery.<br/>' .
+			'To view the status of your order, please click this link:</p>' .
+			'<p><a href=\'' . Config::get('site_root') . 'shop/transaction:view/' . $transaction->secret . '.html\'>View your order status</a></p>' .
+			'<p>Hope to welcome you again soon on <a href=\'' . Config::get('site_root') . '\'>' . Config::get('sitename') . '</a></p>';
+		$mailer->IsHTML(true);
+		if (!$mailer->Send()) {
+			Ajde_Log::log('Mail to ' . $transaction->email . ' failed');
+		}
 	}
 }

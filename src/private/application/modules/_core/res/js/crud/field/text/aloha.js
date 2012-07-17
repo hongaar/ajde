@@ -25,7 +25,7 @@ AC.Crud.Edit.Text = function() {
 		
 		init: function() {
 			//addAloha($('form.ACCrudEdit textarea'));
-			addAloha($('form.ACCrudEdit textarea'));
+			addAloha($('form.ACCrudEdit textarea:not(.noRichText)'));
 		}
 		
 	};

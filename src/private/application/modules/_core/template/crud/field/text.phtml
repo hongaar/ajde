@@ -6,6 +6,14 @@ $field = $this->field;
 <?php if (!$field->getLength()) { ?>
 
 <textarea
+	<?php if ($field->hasDisableRichText() && $field->getDisableRichText()) {
+		echo 'class=\'noRichText\'';
+	} ?>
+	style='<?php if ($field->hasTextInputHeight()) {
+		echo 'height: '. $field->getTextInputHeight() . 'em !important;';
+	} if ($field->hasTextInputWidth()) {
+		echo 'width: '. $field->getTextInputWidth() . 'em !important;';
+	} ?>'
 	name='<?php echo $field->getName(); ?>'
 	<?php if ($field->hasReadonly() && $field->getReadonly() === true) {
 		echo ' readonly="readonly" ';	

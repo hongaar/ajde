@@ -52,7 +52,7 @@ AC.Crud.Edit.Text = function() {
 	return {
 		
 		init: function() {
-			addWysiwyg($('form.ACCrudEdit textarea'));
+			addWysiwyg($('form.ACCrudEdit textarea:not(.noRichText)'));
 		}
 		
 	};
