@@ -96,9 +96,18 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
 									'PAYER_EMAIL: '		. $payer_email			. PHP_EOL .
 									'RECEIVER_EMAIL: '	. $receiver_email		. PHP_EOL .
 									'TXN_ID: '			. $txn_id				. PHP_EOL;										
-						$transaction->payment_details = $details;
-						$transaction->payment_status = 'completed';
-						$transaction->save();						
+						// update transaction only once
+						if ($transaction->payment_status != 'completed') {
+							$transaction->payment_details = $details;
+							$transaction->payment_status = 'completed';
+							$transaction->save();
+						} else {
+							$transaction = null;
+						}						
+						return array(
+							'success' => true,
+							'transaction' => $transaction
+						);
 					} else {
 						$transaction->payment_status = 'refused';
 						$transaction->save();		
@@ -117,5 +126,9 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
 			}
 			fclose ($fp);
 		}
+		return array(
+			'success' => false,
+			'transaction' => $transaction
+		);
 	}
 }

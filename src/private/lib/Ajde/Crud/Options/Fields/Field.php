@@ -181,6 +181,30 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 	public function setEditRoute($route) { return $this->_set('editRoute', $route); }
 	
 	/**
+	 * Disables rich text editing for text fields
+	 * 
+	 * @param boolean $disable
+	 * @return Ajde_Crud_Options_Fields_Field 
+	 */
+	public function setDisableRichText($disable) { return $this->_set('disableRichText', $disable); }
+	
+	/**
+	 * Sets the textarea height in em for text fields
+	 * 
+	 * @param integer $em
+	 * @return Ajde_Crud_Options_Fields_Field 
+	 */
+	public function setTextInputHeight($em) { return $this->_set('textInputHeight', $em); }
+	
+	/**
+	 * Sets the textarea width in em for text fields
+	 * 
+	 * @param integer $em
+	 * @return Ajde_Crud_Options_Fields_Field 
+	 */
+	public function setTextInputWidth($em) { return $this->_set('textInputWidth', $em); }
+	
+	/**
 	 * Sets the model to use for fields with type 'multiple'
 	 * 
 	 * @param string $model

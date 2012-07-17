@@ -155,6 +155,12 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 		}
 	}
 	
+	/**
+	 *
+	 * @param string $field
+	 * @param mixed $value
+	 * @return Ajde_Model | boolean 
+	 */
 	public function find($field, $value) {
 		foreach($this as $item) {
 			if ($item->{$field} == $value) {

@@ -12,7 +12,7 @@ AC.Core.Cookielaw = function() {
 		
 		init: function() {
 			EU.CookieManager.init({
-				expires:			20, // Define the expiry time for the cookie
+				expires:			365, // Define the expiry time for the cookie
 				cookie_prefix:		'EU_', // prefix for the cookie
 				optin_cookie_name:	'OPTIN', // cookie name
 				test:				false, 
@@ -20,7 +20,7 @@ AC.Core.Cookielaw = function() {
 				link:				'main/cookielaw.html', // Linkf or the page if you want to include a page for cookie information for user. 
 				message:			'The cookie settings on this website are set to \'<strong>allow all cookies</strong>\' to give you the very best experience.' +
 									' If you continue without changing these settings, you consent to this - but if you want, you can change your settings' +
-									' by clicking on the Change Settings link at any time.',
+									' now by clicking on the Change settings link.',
 				functionalList:		{ // Functionality list for all three levels. 
 										'strict': {
 											'will' : ['Remember what is in your shopping basket', 'Remember cookie access level.'],

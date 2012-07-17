@@ -408,7 +408,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 							$html = $html . "</a>";
 						} else {
 							$html = "<img class='icon' src='" . Ajde_Resource_FileIcon::_($extension) . "' />";
-							$html = $html . "<a class='filePreview preview' href='" . $extraField['saveDir'] . $value; "' target='_blank'>" . $value . "</a>";
+							$html = $html . " <a class='filePreview preview' href='" . $extraField['saveDir'] . $value . "' target='_blank'>" . $value . "</a>";
 						}
 				 } else {
 					$html = $value;

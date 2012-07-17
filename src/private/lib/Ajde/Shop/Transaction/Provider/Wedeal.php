@@ -87,44 +87,54 @@ class Ajde_Shop_Transaction_Provider_Wedeal extends Ajde_Shop_Transaction_Provid
 				"reference"		=> $secret,
 			)			
 		);
+		
+		// Pause a little before request is made to allow for processing on provider
+		// as this request will be made synchronously after payment
+		sleep(3);
+		
 		$res = $this->sendRequest($request);
 		
 		if ($res['success'] === true) {			
 			$response = $res['response']->paymentinfo;
-			
+			$count = (int) $res['response']->count;
+
 			// get transaction details
-			if ((int) $response->count == 0) {
+			if ($count == 0) {
 				$transaction->payment_status = 'refused';
 				$transaction->save();
-				Ajde_Log::log('iDeal callback didn\'t return any transaction for ' . $secret);
-				return false;
+				Ajde_Log::log('iDeal callback didn\'t return any transaction for ' . $secret);				
 			} elseif (self::isPaid((string) $response->state)) {				
 				if ((string) $response->id != $id) {
-					Ajde_Log::log('IDs don\'t match for iDeal callback of transaction ' . $secret);
-					return false;
+					Ajde_Log::log('IDs don\'t match for iDeal callback of transaction ' . $secret);					
+				} else {
+					$details =	'AMOUNT: '			. (string) $response->amount			. PHP_EOL .
+								'PAYER_NAME: '		. (string) $response->consumername		. PHP_EOL .
+								'PAYER_ACCOUNT: '	. (string) $response->consumeraccount	. PHP_EOL .
+								'PAYER_CITY: '		. (string) $response->consumercity		. PHP_EOL .
+								'PAYER_COUNTRY: '	. (string) $response->consumercountry	. PHP_EOL .
+								'WEDEAL_ID: '		. (string) $response->id;
+					$transaction->payment_details = $details;
+					$transaction->payment_status = 'completed';
+					$transaction->save();
+					return array(
+						'success' => true,
+						'transaction' => $transaction
+					);
 				}
-				$details =	'AMOUNT: '			. (string) $response->amount			. PHP_EOL .
-							'PAYER_NAME: '		. (string) $response->consumername		. PHP_EOL .
-							'PAYER_ACCOUNT: '	. (string) $response->consumeraccount	. PHP_EOL .
-							'PAYER_CITY: '		. (string) $response->consumercity		. PHP_EOL .
-							'PAYER_COUNTRY: '	. (string) $response->consumercountry	. PHP_EOL .
-							'WEDEAL_ID: '		. (string) $response->id;
-				$transaction->payment_details = $details;
-				$transaction->payment_status = 'completed';
-				$transaction->save();
-				return true;
 			} elseif (self::isRefused((string) $response->state)) {
 				$transaction->payment_status = 'refused';
 				$transaction->save();
 				Ajde_Log::log("iDeal payment refused with state " . (string) $response->state);
-				return false;
+			} else {
+				Ajde_Log::log("iDeal payment callback called with state " . (string) $response->state . " but no status change for transaction " . $secret . " detected");
 			}
-			Ajde_Log::log("iDeal payment callback called with state " . (string) $response->state . " but no status change for transaction " . $secret . " detected");
-			return false;
 		} else {
 			Ajde_Log::log("Wedeal::updatePayment() failed because: " . $res['response']);
-			return false;
 		}
+		return array(
+			'success' => false,
+			'transaction' => $transaction
+		);
 	}
 	
 	// Helpers	

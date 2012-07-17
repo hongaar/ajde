@@ -19,13 +19,13 @@
 			<tr>
 				<td><?php echo $item->getDescription(); ?></td>
 				<td class='qty'><?php echo $item->getQty(); ?> &#215;</td>
-				<td><?php echo $item->getFormattedUnitprice(); ?></td>
+				<td class='price'><?php echo $item->getFormattedUnitprice(); ?></td>
 			</tr>
 		<?php } ?>
 		<tfoot>
 			<tr>
 				<td colspan='2'><?php echo __('Total'); ?></td>			
-				<td><?php echo $this->items->getFormattedTotal(); ?></td>
+				<td class='price'><?php echo $this->items->getFormattedTotal(); ?></td>
 			</tr>
 		</tfoot>
 	<?php } ?>

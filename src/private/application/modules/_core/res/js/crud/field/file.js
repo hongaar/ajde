@@ -43,14 +43,15 @@
 	$('a.toggleFileBrowser').click(function(e) {
 		e.preventDefault();
 		$browser = $(this).next();
+		var that = this;
 		$browser.slideToggle(function() {
 			$(this).trigger('scroll');
+			if ($(that).parents('.block.sidebar').length && $browser.is(':visible')) {
+				$(that).parent().css({height: '550px'});
+			} else if ($(that).parents('.block.sidebar').length) {
+				$(that).parent().css({height: 'auto'});
+			}
 		});		
-		if ($(this).parents('.block.sidebar').length && $browser.height() < 100) {
-			$(this).parent().css({height: '550px'});
-		} else if ($(this).parents('.block.sidebar').length) {
-			$(this).parent().css({height: 'auto'});
-		}
 	});
 	
 	$('a.toggleFileBrowser').toggle(function() {
