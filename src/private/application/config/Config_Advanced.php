@@ -13,6 +13,7 @@ class Config_Advanced
 	public $sitename 			= null;	
 	public $description			= null;	
 	public $author				= null;
+	public $email				= null;
 	public $version 			= array(
 									'number' => null,
 									'name' => null
@@ -79,8 +80,8 @@ class Config_Advanced
 									'host' 		=> 'localhost',
 									'dbname'	=> 'ajde'
 									);
-	public $dbUser 				= 'ajde';
-	public $dbPassword 			= 'ajde';	
+	public $dbUser 				= 'ajde_user';
+	public $dbPassword 			= 'ajde_pass';	
 	public $textEditor			= 'ckeditor'; // Use this text editor for CRUD operations (aloha|jwysiwyg|ckeditor) 
 
 	// Custom libraries

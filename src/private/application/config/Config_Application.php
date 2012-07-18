@@ -9,6 +9,7 @@ class Config_Application extends Config_Advanced
 	public $sitename 			= 'Project name';
 	public $description			= 'Project description';	
 	public $author				= 'Author name';
+	public $email				= 'info@example.com';
 	public $version 			= array(
 									'number' => '0.1',
 									'name' => 'alpha'

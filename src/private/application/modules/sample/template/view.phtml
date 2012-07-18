@@ -29,10 +29,6 @@
 			<?php echo _c( $entry->content ); ?>
 		</p>
 		<p>
-			Strictly secret personal information: 
-				<?php echo _c( $entry->decrypt('encrypted_field')); ?>
-		</p>
-		<p>
 			€ <?php echo money_format('%!i', $entry->getUnitprice() * (1+$entry->getVATPercentage())); ?>
 		</p>
 		<?php echo $this->includeModule('shop/cart:add/html/sample:' . $entry); ?>		

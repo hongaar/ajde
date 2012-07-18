@@ -13,6 +13,7 @@ class Config_Simple
 	public $sitename 			= null;	
 	public $description			= null;	
 	public $author				= null;
+	public $email				= null;
 	public $version 			= array(
 									'number' => null,
 									'name' => null

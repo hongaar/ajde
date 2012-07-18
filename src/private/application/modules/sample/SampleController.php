@@ -16,9 +16,10 @@ class SampleController extends Ajde_Acl_Controller
     {
     	Ajde_Model::register($this);		
 		// Direct object creation and chaining only from PHP 5.3!
-		// Use $blog = new BlogCollection() instead		
+		// $samples = SampleCollection::create()
 		/* @var $samples SampleCollection */
-		$samples = SampleCollection::create()
+		$samples = new SampleCollection();
+		$samples
 			->orderBy('sort', Ajde_Query::ORDER_ASC)
 			->filter('published', 1);		
 		if ($this->hasId()) {

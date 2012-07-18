@@ -98,12 +98,17 @@ $options
 					->addBlock()
 						->setTitle('Metadata')
 						->setClass('sidebar')
-						->setShow(array('updated', 'published', 'url', 'optional_field', 'required_field', 'encrypted_field', 'user', 'sort'))
+						->setShow(array('updated', 'published', 'url', 'user', 'sort'))
 						->up()
 					->addBlock()
 						->setTitle('Media')
 						->setClass('sidebar')
 						->setShow(array('image', 'type'))
+						->up()
+					->addBlock()
+						->setTitle('Extra')
+						->setClass('sidebar')
+						->setShow(array('optional_field', 'required_field', 'encrypted_field'))
 		
 	->finished();
 
