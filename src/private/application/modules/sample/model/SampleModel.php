@@ -9,7 +9,13 @@ class SampleModel extends Ajde_Model
 		Ajde_Event::register($this, 'afterCrudLoaded', array($this, 'parseForCrud'));
 		parent::__construct();
 	}
-
+	
+	public function beforeSave()
+	{
+		if (!$this->isEncrypted('encrypted_field')) {
+			$this->encrypt('encrypted_field');
+		}
+	}
 
 	public function getVATPercentage()
 	{
