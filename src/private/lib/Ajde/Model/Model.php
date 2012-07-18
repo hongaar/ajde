@@ -429,4 +429,67 @@ class Ajde_Model extends Ajde_Object_Standard
 		$str = implode($this->values());
 		return md5($str);
 	}
+	
+	public function isEncrypted($field)
+	{
+		return substr_count($this->_decrypt($this->get($field)), '$$$ENCRYPTED$$$');
+	}
+	
+	public function encrypt($field)
+	{
+		$this->set($field, $this->_encrypt('$$$ENCRYPTED$$$' . $this->get($field)));
+		return $this->get($field);
+	}
+	
+	private function _encrypt($text) {		
+		return trim(
+			base64_encode(
+				gzdeflate(
+					mcrypt_encrypt(
+						MCRYPT_RIJNDAEL_256,
+						Config::get('secret'),
+						$text,
+						MCRYPT_MODE_ECB,
+						mcrypt_create_iv(
+							mcrypt_get_iv_size(
+								MCRYPT_RIJNDAEL_256,
+								MCRYPT_MODE_ECB
+							),
+							MCRYPT_RAND
+						)
+					),
+					9
+				)
+			)
+		);		
+	}
+
+	public function decrypt($field)
+	{		
+		if (!$this->isEncrypted($field)) {
+			return false;
+		}
+		$decrypted = $this->_decrypt($this->get($field));
+		$decrypted = str_replace('$$$ENCRYPTED$$$', '', $decrypted);
+		$this->set($field, $decrypted);
+		return $this->get($field);
+	}
+	
+	public function _decrypt($text) {
+		return trim(
+			mcrypt_decrypt(
+				MCRYPT_RIJNDAEL_256,
+				Config::get('secret'),
+				gzinflate(base64_decode($text)),
+				MCRYPT_MODE_ECB,
+				mcrypt_create_iv(
+					mcrypt_get_iv_size(
+						MCRYPT_RIJNDAEL_256,
+						MCRYPT_MODE_ECB
+					),
+					MCRYPT_RAND
+				)
+			)
+		); 
+	}
 }
