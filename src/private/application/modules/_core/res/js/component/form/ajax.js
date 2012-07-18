@@ -38,14 +38,15 @@ AC.Form.Ajax = function() {
 				dataType = 'json';
 			}
 			$('body').addClass('loading');
-			$(form).trigger('before');
-			$.ajax({
-				type: type,
-				url: url,
-				data: data,
-				success: success,
-				dataType: dataType
-			}).error(errorHandler);
+			if ($(form).triggerHandler('before') !== false) {
+				$.ajax({
+					type: type,
+					url: url,
+					data: data,
+					success: success,
+					dataType: dataType
+				}).error(errorHandler);
+			}
 			return false;	
 		},
 		
