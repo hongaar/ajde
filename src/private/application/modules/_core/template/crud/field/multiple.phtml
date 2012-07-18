@@ -18,7 +18,7 @@ $field = $this->field;
 	<div class='multipleToolbar'>
 		<a href='javascript:void(null);' class='button new newMultiple' data-select='<?php echo $field->getName(); ?>'>New</a>
 		<?php if ($field->hasCrossReferenceTable()) { ?>
-			or:
+			or &nbsp; 
 			<select name='<?php echo $field->getName(); ?>'>
 				<option value=''>(choose)</option>					
 				<?php foreach($field->getValues() as $model) { 

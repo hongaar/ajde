@@ -18,9 +18,9 @@ AC.Core.Cookielaw = function() {
 				test:				false, 
 				idle:				0, // Time in seconds of you want the initial popup to close automatically if user dont intract with it. 
 				link:				'main/cookielaw.html', // Linkf or the page if you want to include a page for cookie information for user. 
-				message:			'The cookie settings on this website are set to \'<strong>allow all cookies</strong>\' to give you the very best experience.' +
+				message:			'The cookie settings on this website are set to <strong>allow all cookies</strong> to give you the very best experience.' +
 									' If you continue without changing these settings, you consent to this - but if you want, you can change your settings' +
-									' now by clicking on the Change settings link.',
+									' by clicking the <strong>Change settings</strong> button.',
 				functionalList:		{ // Functionality list for all three levels. 
 										'strict': {
 											'will' : ['Remember what is in your shopping basket', 'Remember cookie access level.'],

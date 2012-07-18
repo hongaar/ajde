@@ -52,7 +52,9 @@ class Config_Advanced
 	public $autoCleanHtml		= true;
 	public $requirePostToken	= true;
 	public $postWhitelistRoutes	= array(
-									'shop/transaction:callback'
+									'shop/transaction:callback',
+									'shop/transaction:complete',
+									'shop/transaction:refused'
 									);
 	public $secret				= 'randomstring';
 	public $cookieDomain		= false;

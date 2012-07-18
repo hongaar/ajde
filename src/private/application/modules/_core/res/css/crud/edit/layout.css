@@ -7,6 +7,10 @@ div.crudLayout dl.crudEdit {
 	padding: 0 10px 0 0;
 }
 
+div.crudLayout dl.crudEdit.toolbar {
+	padding-right: 0;
+}
+
 div.crudLayout dl.crudEdit.sidebar {
 	border: 2px solid #eee;	
 	background-color: #F7F7F7;
@@ -34,7 +38,7 @@ div.crudLayout dl.crudEdit.table dt {
 	clear: left;
 	overflow: hidden;	
 	width: 150px;
-	padding: 8px 0 0 0;
+	padding: 8px 10px 0 0;
 }
 
 div.crudLayout dl.crudEdit dt.title {
@@ -56,13 +60,6 @@ div.crudLayout dl.crudEdit dd {
 	border-top: none;
 	padding: 0 0 10px 0;
 	margin: 0;
-}
-
-div.crudLayout dl.crudEdit dd span.help {	
-	position: absolute;
-	right: 0;
-	top: -30px;
-	z-index: 999;
 }
 
 div.crudLayout dl.crudEdit.table dd {

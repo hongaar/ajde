@@ -22,9 +22,9 @@
 	background-repeat: no-repeat;
 	background-position: 5px center;
 	
-  -webkit-border-radius: 5px; 
-     -moz-border-radius: 5px; 
-          border-radius: 5px; 
+  -webkit-border-radius: 3px; 
+     -moz-border-radius: 3px; 
+          border-radius: 3px; 
    -moz-background-clip: padding; -webkit-background-clip: padding-box; background-clip: padding-box; 
 }
 
@@ -66,6 +66,15 @@ button.button {
 .button.search	{ background-image: url('../../public/images/icons/16/search_lense.png'); }
 .button.view	{ background-image: url('../../public/images/icons/16/computer_monitor.png'); }
 .button.next.icon-right	{ background-image: url('../../public/images/_core/crud/next_21.png'); }
+
+.button.delete:hover, .button.delete:focus {
+	background-color: #e94615;
+	color: white;
+}
+
+.button.cancel {
+	float: right;
+}
 
 .button[disabled], .button.disabled {
 	border: 1px solid silver !important;

@@ -47,6 +47,17 @@ dl.crudEdit dd {
 	border-top: 1px solid silver;
 }
 
+dl.crudEdit dd.toolbar, div.crudLayout dl.crudEdit dd.toolbar {
+	padding: 15px 0;
+	border-bottom: 1px dashed #bbb;
+}
+
+dl.crudEdit dd.toolbar.last, div.crudLayout dl.crudEdit dd.toolbar.last {
+	border-bottom: none;
+	border-top: 1px dashed #bbb;
+}
+
+
 dl.crudEdit dd input[type=text] {
 	width: 20em;
 	height: 15px;
