@@ -7,6 +7,8 @@ $(document).ready(function() {
 	
 	var redirect = true;
 	
+	$('select[name=shipment_country]').jqCombo();
+	
 	$('form.transactionSetup').bind('result', function(event, data) {
 		if (data.success === false) {
 			$('dd.status').addClass('error');
@@ -34,7 +36,7 @@ $(document).ready(function() {
 		return true;
 	});
 	
-	$('select[name=\'shipment_country\']').on('change', function(e) {
+	$('select[name=shipment_country]').on('change', function(e) {
 		var self = this;
 		redirect = function() {
 			$('#shipment').trigger('refresh', {country: $(self).val()});
