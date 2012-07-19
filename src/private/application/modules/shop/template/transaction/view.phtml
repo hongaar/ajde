@@ -88,7 +88,7 @@ $transaction = $this->transaction;
 	<?php if ($this->source == 'session' && $transaction->payment_status == 'pending') { ?>
 	<div class='toolbar'>
 		<a href='shop/transaction:setup' class='action'>Continue with order</a>
-		<a href='shop/transaction:cancel'>Cancel transaction</a>
+		<a href='shop/transaction:cancel'>Cancel order</a>
 	</div>
 	<?php } elseif ($this->source == 'session' && $transaction->payment_status == 'refused') { ?>
 	<div class='toolbar'>
