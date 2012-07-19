@@ -85,7 +85,7 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
 			$view->assign('transaction', $this);
 			return $view->render();
 		} else  {
-			return 'Transaction not found';
+			return 'Order not found';
 		}		
 	}
 	

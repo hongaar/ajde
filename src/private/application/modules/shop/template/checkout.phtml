@@ -9,21 +9,21 @@ $transaction = $this->transaction;
 
 <?php if ($transaction->hasLoaded()) { ?>
 
-	<h4>You have an unfinished transaction</h4>
+	<h4>You have an unfinished order</h4>
 	
 	<?php if ($transaction->payment_status == 'pending') { ?>
 	
 		<?php if ($this->cart->hasItems()) { ?>
-			<p>Update this transaction in progress by replacing the items from your cart in the current transaction</p>	
-			<a class='action' href='shop/transaction:update'>Update transaction</a>
+			<p>Update this order in progress by replacing the items from your cart in the current order</p>	
+			<a class='action' href='shop/transaction:update'>Update order</a>
 		<?php } else { ?>
-			<p>You have no items in your shopping cart, but you can continue or cancel the current transaction</p>	
-			<a class='action' href='shop/transaction:view'>View transaction</a>
+			<p>You have no items in your shopping cart, but you can continue or cancel the current order</p>	
+			<a class='action' href='shop/transaction:view'>View order</a>
 		<?php } ?>
 			
 	<?php } else { ?>
 			
-		<p>There is a transaction in progress which can not be updated, as payment has already been initialized.</p>
+		<p>There is a order in progress which can not be updated, as payment has already been initialized.</p>
 		<a class='action' href='shop/transaction:view'>View current status</a> or <a href='shop/transaction:startNew'>create a new order</a>
 			
 	<?php } ?>

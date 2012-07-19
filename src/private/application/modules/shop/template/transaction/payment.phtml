@@ -9,7 +9,7 @@ $transaction = $this->transaction;
 
 <?php if ($transaction->hasLoaded() === false) { ?>
 	
-	<h4>Transaction not found</h4>
+	<h4>Order not found</h4>
 	<p><a href='shop'>Back to shop</a></p>
 
 <?php } else { ?>
@@ -32,11 +32,11 @@ $transaction = $this->transaction;
 				<dt>&nbsp;</dt>
 				<dd>
 					<p>
-						Payment was already initiated for this transaction. If
+						Payment was already initiated for this order. If
 						you canceled your payment, you can now reset the payment
 						status of this transaction and try again.<br/>
 						<br/>
-						<a href="shop/transaction:resetPayment" class='action'>Reset payment</a> or go to the <a href="shop/transaction:view">overview of this transaction</a>
+						<a href="shop/transaction:resetPayment" class='action'>Reset payment</a> or go to the <a href="shop/transaction:view">overview of this order</a>
 					</p>
 				</dd>
 				

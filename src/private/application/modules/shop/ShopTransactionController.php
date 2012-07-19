@@ -226,7 +226,7 @@ class ShopTransactionController extends ShopController
 				if (!$transaction->shipment_itemsqty > 0) {
 					return array(
 						'success' => false,
-						'message' => __("No items added to current transaction")
+						'message' => __("No items added to current order")
 					);
 				}
 				return array(
@@ -367,7 +367,7 @@ class ShopTransactionController extends ShopController
 		} else {			
 			return array(
 				'success' => false,
-				'message' => __('No current transaction found')
+				'message' => __('No current order found')
 			);
 		}		
 		
@@ -458,7 +458,7 @@ class ShopTransactionController extends ShopController
 		$mailer->AddAddress($recipient, 'Site admin');
 		$mailer->From = $recipient;
 		$mailer->FromName = Config::get('sitename');
-		$mailer->Subject = (isset($subject) ? $subject : 'Transaction update');
+		$mailer->Subject = (isset($subject) ? $subject : 'Order update');
 		$mailer->Body = $transaction->getOverviewHtml();
 		$mailer->IsHTML(true);
 		if (!$mailer->Send()) {
