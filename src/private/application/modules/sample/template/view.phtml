@@ -1,5 +1,6 @@
 <?php
 /* @var $this Ajde_Template_Parser_Phtml_Helper */
+$this->requireCss('view.mobile', 'html', null, Ajde_Document_Format_Html::RESOURCE_POSITION_LAST, 'media="only screen and (max-width: 767px)"');
 ?>
 
 <div class="eightcol">
@@ -12,6 +13,7 @@
 
 	<?php foreach($this->samples as $entry) {
 		/* @var $entry Ajde_Model */ ?>
+		<h3><?php echo $this->escape( $entry->title ); ?></h3>
 		<?php if ($entry->hasNotEmpty('image')) { ?>
 		<?php echo $this->ACImage(array(
 			'filename' => 'public/images/uploads/' . $entry->getImage(),
@@ -20,18 +22,19 @@
 			'crop' => true,
 			'class' => 'right'
 		)); ?>
-		<?php } ?>
-		<h3><?php echo $this->escape( $entry->title ); ?></h3>
-		<p>
-			<em>Updated on <?php echo $this->escape( $entry->updated ); ?></em> :
-		</p>		
+		<?php } ?>		
 		<p>
 			<?php echo _c( $entry->content ); ?>
 		</p>
 		<p>
 			€ <?php echo money_format('%!i', $entry->getUnitprice() * (1+$entry->getVATPercentage())); ?>
 		</p>
-		<?php echo $this->includeModule('shop/cart:add/html/sample:' . $entry); ?>		
+		<p>
+			<?php echo $this->includeModule('shop/cart:add/html/sample:' . $entry); ?>
+		</p>
+		<p>
+			<em>Updated: <?php echo $this->escape( $entry->updated ); ?></em>
+		</p>		
 		<div class='clearfix'></div>
 		<hr/>
 	<?php } ?>
