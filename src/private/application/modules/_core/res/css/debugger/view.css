@@ -37,7 +37,7 @@ body{margin-bottom:10px !important}
 	
 	background-repeat: no-repeat;
 	background-position: 5px center;
-	background-image: url('../../public/images/_core/warning_16.png');
+	background-image: url('../public/images/_core/warning_16.png');
 }
 
 #ajdeDebugger h4 {

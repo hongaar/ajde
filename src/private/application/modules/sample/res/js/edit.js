@@ -1,13 +1,12 @@
 ;
-if (typeof SAMPLES ==="undefined") {SAMPLES = function() {}};
-if (typeof SAMPLES.Blog ==="undefined") {SAMPLES.Blog = function() {}};
+if (typeof Application.Sample ==="undefined") {Application.Sample = function() {}};
 
-SAMPLES.Blog.Edit = function() {	
+Application.Sample.Edit = function() {	
 	
 	return {
 		
 		init: function() {
-			$('form.ACCrudList td.buttons a.button.view').live('click', SAMPLES.Blog.Edit.viewHandler);			
+			$('form.ACCrudList td.buttons a.button.view').live('click', Application.Sample.Edit.viewHandler);			
 		},
 		
 		viewHandler: function(e) {			
@@ -23,5 +22,5 @@ SAMPLES.Blog.Edit = function() {
 }();
 
 $(document).ready(function() {
-	SAMPLES.Blog.Edit.init();
+	Application.Sample.Edit.init();
 });

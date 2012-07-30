@@ -14,7 +14,11 @@ class Ajde_Resource_Image extends Ajde_Resource
 	
 	public function __construct($file)
 	{
-		$this->_source = $file;
+		if (file_exists($file)) {
+			$this->_source = $file;
+		} else {
+			$this->_source = PUBLIC_DIR . 'images/notfound.png';
+		}
 		$this->_type = $this->extension();
 	}
 	
