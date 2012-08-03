@@ -7,10 +7,22 @@ class MainController extends Ajde_Controller
 		Ajde::app()->getDocument()->setTitle("Project homepage");
 		return $this->render();
 	}
+
+	public function code403()
+	{
+		Ajde::app()->getDocument()->setTitle("403 Forbidden");
+		return $this->render();
+	}
 	
 	public function code404()
 	{
 		Ajde::app()->getDocument()->setTitle("404 Not Found");
+		return $this->render();
+	}
+
+	public function code500()
+	{
+		Ajde::app()->getDocument()->setTitle("500 Internal Server Error");
 		return $this->render();
 	}
 	

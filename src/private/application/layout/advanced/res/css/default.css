@@ -3,7 +3,13 @@
  * Example styles for advanced layout
  */
  
-@blue: #005F9B;
+@blue: #2891ba;
+@lightblue: #c0edff;
+
+@light: #f7f7f7;
+@silver: #d6d6d6;
+@em: #adadad;
+@gray: #555;
 
 /* clear syntax hightlighting errors in netbeans */
 body {}
@@ -211,3 +217,4 @@ footer {
 	margin-bottom: 50px;
 	text-align: right;
 }
+	-ms-box-sizing: border-box;

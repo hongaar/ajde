@@ -114,9 +114,9 @@ class Ajde_Cache extends Ajde_Object_Singleton
 		$document = Ajde::app()->getDocument();
 		
 		// Expires and Cache-Control
-		if ($document->getCacheControl() == Ajde_Document::CACHE_CONTROL_NOCACHE) {
+		if ($document->getCacheControl() == Ajde_Document::CACHE_CONTROL_NOCACHE || $this->isEnabled() == false) {
 			$response->addHeader('Expires', gmdate('D, d M Y H:i:s \G\M\T', time()));
-			$response->addHeader('Cache-Control', $document->getCacheControl() . ', max-age=0');
+			$response->addHeader('Cache-Control', Ajde_Document::CACHE_CONTROL_NOCACHE . ', max-age=0');
 		} else {
 			$response->addHeader('Expires', gmdate('D, d M Y H:i:s \G\M\T', time() + $document->getMaxAge()));
 			$response->addHeader('Cache-Control', $document->getCacheControl() . ', max-age=' . $document->getMaxAge());

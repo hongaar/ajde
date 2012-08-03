@@ -41,8 +41,10 @@ class Config_Advanced
 	public $timezone			= 'Europe/Amsterdam'; // 'UTC' for Greenwich Mean Time
 	public $layout 				= 'advanced';
 	public $responseCodeRoute	= array(
+									'401' => 'user/logon.html',
+									'403' => 'main/code403.html',
 									'404' => 'main/code404.html',
-									'401' => 'user/logon.html'
+									'500' => 'main/code500.html'									
 								);		
 	public $browserSupport		= array(
 									

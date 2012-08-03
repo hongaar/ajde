@@ -1,5 +1,6 @@
 ;
-if (typeof AC ==="undefined") { 		AC = function() {}; }
+if (typeof AC ==="undefined") { AC = function() {}; }
+if (typeof AC.Shortcut === 'undefined') {
 
 AC.Shortcut = {
 	/**
@@ -224,3 +225,5 @@ AC.Shortcut = {
 		else ele['on'+type] = false;
 	}
 };
+
+}; // prevent to instances

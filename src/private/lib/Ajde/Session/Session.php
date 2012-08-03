@@ -54,8 +54,14 @@ class Ajde_Session extends Ajde_Object_Standard
 			if (Config::getInstance()->debug === true) {
 				throw $exception;
 			} else {
-				Ajde_Exception_Log::logException($exception);	
-				Ajde_Http_Response::dieOnCode(Ajde_Http_Response::RESPONSE_TYPE_FORBIDDEN);
+				Ajde_Exception_Log::logException($exception);
+				// don't redirect for resource items, as they should have no side effect
+				// this makes it possible for i.e. web crawlers/error pages to view resources
+				$request = Ajde_Http_Request::fromGlobal();
+				$route = $request->initRoute();				
+				if (!in_array($route->getFormat(), array('css','js'))) {	
+					Ajde_Http_Response::dieOnCode(Ajde_Http_Response::RESPONSE_TYPE_FORBIDDEN);
+				}
 			}
 		} else {
 			$_SESSION['client'] = md5($_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] . Config::get('secret'));

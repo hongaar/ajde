@@ -317,7 +317,7 @@ class PhpClosure {
       $type = $warning["attributes"]["type"];
       $lineno = $warning["attributes"]["lineno"];
       $charno = $warning["attributes"]["charno"];
-      $line = addslashes($warning["attributes"]["line"]);
+      $line = trim(addslashes($warning["attributes"]["line"]));
       $result .= "window.console.$level('$type: $desc\\nLine: $lineno\\nChar: $charno\\nLine: $line');\r\n";
     }
     return $result;

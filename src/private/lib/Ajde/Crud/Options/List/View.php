@@ -74,6 +74,9 @@ class Ajde_Crud_Options_List_View extends Ajde_Crud_Options
 	 * @return Ajde_Crud_Options_List_View 
 	 */
 	public function addFilter($field, $value) {
+		if (!$this->hasFilter()) {
+			$this->setFilter(array());
+		}
 		$filter = $this->get('filter');
 		$filter[$field] = $value;
 		$this->set('filter', $filter);

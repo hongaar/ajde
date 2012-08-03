@@ -46,8 +46,13 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 		// Copied from Ajde_Application
 		$route = new Ajde_Core_Route($route);		
 		$document = Ajde_Document::fromRoute($route);
+
 		// replace document in Ajde_Application
 		Ajde::app()->setDocument($document);
+		
+		// replace route in Ajde_Application
+		Ajde::app()->setRoute($route);
+
 		$controller = Ajde_Controller::fromRoute($route);
 		$actionResult = $controller->invoke();
 		$document->setBody($actionResult);
