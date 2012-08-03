@@ -1,6 +1,13 @@
+# ignore windows files
 Thumbs.db
 desktop.ini
+
+# ignore IDE files
 nbproject/
+*.sublime-project
+*.sublime-workspace
+
+# ignore Ajde files
 src/private/var/cache/*
 src/private/var/log/*
 src/private/var/tmp/*
