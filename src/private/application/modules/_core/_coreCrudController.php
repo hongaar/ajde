@@ -230,6 +230,11 @@ class _coreCrudController extends Ajde_Acl_Controller
 				// TODO: implement parent recursive sorting
 			}
 		}
+
+		// Call afterSort once on model
+		if (method_exists($model, 'afterSort')) {
+			$model->afterSort();
+		}
 		
 		return array(
 			'operation' => 'sort',
