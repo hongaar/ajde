@@ -1,12 +1,12 @@
 <?php
-require_once 'lib/lessc.inc.php';
+require_once 'lib/less/lessc.inc.php';
 
 class Ajde_Document_Processor_Css_Less extends Ajde_Object_Static implements Ajde_Document_Processor
 {
 	// Not implemented
 	public static function preProcess(Ajde_Layout $layout) {}
 	public static function postCompress(Ajde_Resource_Local_Compressor $compressor) {}
-	
+
 	public static function preCompress(Ajde_Resource_Local_Compressor $compressor)
 	{
 		// Check type as this function can be called from Ajde_Event binding to
@@ -15,7 +15,7 @@ class Ajde_Document_Processor_Css_Less extends Ajde_Object_Static implements Ajd
 			$compressor->setContents(self::lessifyCss($compressor->getContents()));
 		}
 	}
-		
+
 	public static function postProcess(Ajde_Layout $layout)
 	{
 		$layout->setContents(self::lessifyCss($layout->getContents()));
@@ -35,5 +35,5 @@ class Ajde_Document_Processor_Css_Less extends Ajde_Object_Static implements Ajd
 		}
 		return $lesser;
 	}
-	
+
 }

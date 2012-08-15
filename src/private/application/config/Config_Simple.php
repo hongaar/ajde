@@ -5,20 +5,20 @@ class Config_Simple
 	/**
 	 * Please do not edit this configuration file, this makes it easier
 	 * to upgrade when defaults are changed or new values are introduced.
-	 * Instead, use Config_Application to override default values. 
+	 * Instead, use Config_Application to override default values.
 	 */
-		
+
 	// Site parameters, defined in Config_Application
 	public $ident				= null;
-	public $sitename 			= null;	
-	public $description			= null;	
+	public $sitename 			= null;
+	public $description			= null;
 	public $author				= null;
 	public $email				= null;
 	public $version 			= array(
 									'number' => null,
 									'name' => null
 									);
-									
+
 	// Routing
 	public $homepageRoute		= 'home.html';
 	public $defaultRouteParts	= array(
@@ -26,13 +26,13 @@ class Config_Simple
 									'controller' => null,
 									'action' => 'view',
 									'format' => 'html'
-									);       
+									);
 	public $aliases				= array(
 									'home.html' => 'main.html'
-									);											
+									);
 	public $routes				= array(
 									);
-									
+
 	// Front-end
 	public $titleFormat			= '%2$s - %1$s'; // %1$s is project title, %2$s is document title
 	public $lang 				= 'en_GB';
@@ -41,7 +41,7 @@ class Config_Simple
 	public $timezone			= 'Europe/Amsterdam'; // 'UTC' for Greenwich Mean Time
 	public $layout 				= 'simple';
 	public $responseCodeRoute	= array();
-	
+
 	// Security
 	public $autoEscapeString	= true;
 	public $autoCleanHtml		= true;
@@ -51,17 +51,17 @@ class Config_Simple
 	public $cookieDomain		= false;
 	public $cookieSecure		= false;
 	public $cookieHttponly		= true;
-	
+
 	// Session
 	public $sessionLifetime		= 60; // in minutes
 	public $sessionSavepath		= '/tmp'; // '~' gets replaced with local_root
-	
+
 	// Performance
 	public $compressResources	= true;
 	public $debug 				= false;
 	public $useCache			= true;
 	public $documentProcessors	= array();
-	
+
 	// Database
 	public $dbAdapter			= null;
 	public $dbDsn				= array(
@@ -70,7 +70,7 @@ class Config_Simple
 									);
 	public $dbUser 				= null;
 	public $dbPassword 			= null;
-	public $textEditor			= 'none'; // Use this text editor for CRUD operations (aloha|jwysiwyg|ckeditor) 
+	public $textEditor			= 'none'; // Use this text editor for CRUD operations (aloha|jwysiwyg|ckeditor)
 
 	// Custom libraries
 	public $registerNamespaces	= array();
@@ -81,9 +81,9 @@ class Config_Simple
 	public $currency			= null;
 	public $currencyCode		= null;
 	public $defaultVAT			= null;
-	
+
 	// Which modules should we call on bootstrapping?
-	public $bootstrap			= array(									
+	public $bootstrap			= array(
 									'Ajde_Exception_Handler'
 									);
 
@@ -96,5 +96,5 @@ class Config_Simple
 		$this->lang_root = $this->site_root;
 		date_default_timezone_set($this->timezone);
 	}
-	
+
 }

@@ -5,20 +5,20 @@ class Config_Advanced
 	/**
 	 * Please do not edit this configuration file, this makes it easier
 	 * to upgrade when defaults are changed or new values are introduced.
-	 * Instead, use Config_Application to override default values. 
+	 * Instead, use Config_Application to override default values.
 	 */
-		
+
 	// Site parameters, defined in Config_Application
 	public $ident				= null;
-	public $sitename 			= null;	
-	public $description			= null;	
+	public $sitename 			= null;
+	public $description			= null;
 	public $author				= null;
 	public $email				= null;
 	public $version 			= array(
 									'number' => null,
 									'name' => null
 									);
-									
+
 	// Routing
 	public $homepageRoute		= 'home.html';
 	public $defaultRouteParts	= array(
@@ -26,13 +26,13 @@ class Config_Advanced
 									'controller' => null,
 									'action' => 'view',
 									'format' => 'html'
-									);       
+									);
 	public $aliases				= array(
 									'home.html' => 'main.html'
-									);											
+									);
 	public $routes				= array(
 									);
-									
+
 	// Front-end
 	public $titleFormat			= '%2$s - %1$s'; // %1$s is project title, %2$s is document title
 	public $lang 				= 'en_GB';
@@ -44,12 +44,12 @@ class Config_Advanced
 									'401' => 'user/logon.html',
 									'403' => 'main/code403.html',
 									'404' => 'main/code404.html',
-									'500' => 'main/code500.html'									
-								);		
-	public $browserSupport		= array(
-									
+									'500' => 'main/code500.html'
 								);
-	
+	public $browserSupport		= array(
+
+								);
+
 	// Security
 	public $autoEscapeString	= true;
 	public $autoCleanHtml		= true;
@@ -63,19 +63,19 @@ class Config_Advanced
 	public $cookieDomain		= false;
 	public $cookieSecure		= false;
 	public $cookieHttponly		= true;
-	
+
 	// Session
 	public $sessionLifetime		= 60; // in minutes
 	public $sessionSavepath		= '/tmp'; // '~' gets replaced with local_root
-	
+
 	// Performance
 	public $compressResources	= true;
 	public $debug 				= false;
 	public $useCache			= true;
 	public $documentProcessors	= array(
-									'css'	=> array('Less')
+									'css'	=> array('Less', 'Maximizer')
 								  );
-	
+
 	// Database
 	public $dbAdapter			= 'mysql';
 	public $dbDsn				= array(
@@ -83,8 +83,8 @@ class Config_Advanced
 									'dbname'	=> 'ajde'
 									);
 	public $dbUser 				= 'ajde_user';
-	public $dbPassword 			= 'ajde_pass';	
-	public $textEditor			= 'ckeditor'; // Use this text editor for CRUD operations (aloha|jwysiwyg|ckeditor) 
+	public $dbPassword 			= 'ajde_pass';
+	public $textEditor			= 'ckeditor'; // Use this text editor for CRUD operations (aloha|jwysiwyg|ckeditor)
 
 	// Custom libraries
 	public $registerNamespaces	= array();
@@ -96,19 +96,19 @@ class Config_Advanced
 	public $currencyCode		= 'EUR';
 	public $defaultVAT			= 0.19;
 	public $shopSandboxPayment	= true;
-	
+
 		// PayPal
 		public $shopPaypalAccount			= 'info@example.com';
-		
+
 		// Wedeal
 		public $shopWedealUsername			= 'user';
 		public $shopWedealPassword			= 'pass';
 		public $shopWedealCallbackUsername	= 'user';
 		public $shopWedealCallbackPassword	= 'pass';
-		
-	
+
+
 	// Which modules should we call on bootstrapping?
-	public $bootstrap			= array(									
+	public $bootstrap			= array(
 									'Ajde_Exception_Handler',
 									'Ajde_Session',
 									'Ajde_Core_ExternalLibs',
@@ -125,5 +125,5 @@ class Config_Advanced
 		$this->lang_root = $this->site_root;
 		date_default_timezone_set($this->timezone);
 	}
-	
+
 }
