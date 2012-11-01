@@ -4,7 +4,7 @@ class Config {
 
 	// Redirect this class to the following config stage
 	// Default is 'auto' (chooses between 'dev' and 'live' based on remote_addrr
-	public static $stage			= 'live';
+	public static $stage			= 'auto';
 
 	// localhost and private networks, add your own dev machine if not in
 	// private network range!
