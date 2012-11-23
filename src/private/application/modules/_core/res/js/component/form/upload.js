@@ -22,7 +22,7 @@ AC.Form.Upload = function() {
 						elm.parents('form').find('button.save').attr('disabled', 'disabled');
 						// Disable upload button
 						if (elm.attr('data-multiple') == '0') {
-							elm.find('.qq-upload-button').hide();
+//							elm.find('.qq-upload-button').hide();
 						}
 					},
 					onProgress: function(id, fileName, loaded, total) {},
@@ -39,11 +39,11 @@ AC.Form.Upload = function() {
 //								elm.find('.qq-uploader').remove();								
 								elm.after($('<span/>')
 									.addClass('qq-filename')
-									.text(filename)
+									.text(filename + ' ')
 									.append($('<a/>')
 										.attr('href', 'javascript:void(null)')
-										.addClass('remove')
-										.text('verwijder')
+										.addClass('deleteFileCrud')
+										.text('delete')
 										.click(function() {
 											elm.trigger('resetUpload');
 											elm.find('.qq-upload-list').empty();
