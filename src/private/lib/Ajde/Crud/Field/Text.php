@@ -14,6 +14,9 @@ class Ajde_Crud_Field_Text extends Ajde_Crud_Field
 		if ($this->hasEmphasis() && $this->getEmphasis() === true) {
 			$attributes .= ' class="emphasis" ';	
 		}
+		if ($this->hasPlaceholder()) {
+			$attributes .= ' placeholder="' . $this->getPlaceholder() . '" ';	
+		}
 		return $attributes;		
 	}
 }

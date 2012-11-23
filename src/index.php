@@ -66,19 +66,24 @@ define('AJDE', true);
 //	--------------------
 //	Define paths
 //	--------------------
-	define('PRIVATE_DIR', 		'private/');
-	define('PUBLIC_DIR', 		'public/');
-	define('TEMPLATE_DIR', 		'template/');
-	define('APP_DIR', 			PRIVATE_DIR.'application/');
-	define('LIB_DIR', 			PRIVATE_DIR.'lib/');
-	define('VAR_DIR', 			PRIVATE_DIR.'var/');
-	define('CONFIG_DIR', 		APP_DIR.'config/');
-	define('LAYOUT_DIR', 		APP_DIR.'layout/');
-	define('MODULE_DIR', 		APP_DIR.'modules/');
-	define('LANG_DIR', 			APP_DIR.'lang/');
-	define('CACHE_DIR', 		VAR_DIR.'cache/');
-	define('LOG_DIR', 			VAR_DIR.'log/');
-	define('TMP_DIR', 			VAR_DIR.'tmp/');
+	define('PRIVATE_DIR',		'private/');
+	define('PUBLIC_DIR',		'public/');
+	define('TEMPLATE_DIR',		'template/');
+	define('APP_DIR',			PRIVATE_DIR.'application/');
+	define('LIB_DIR',			PRIVATE_DIR.'lib/');
+	define('VAR_DIR',			PRIVATE_DIR.'var/');
+	define('CONFIG_DIR',		APP_DIR.'config/');
+	define('LAYOUT_DIR',		APP_DIR.'layout/');
+	define('MODULE_DIR',		APP_DIR.'modules/');
+	define('LANG_DIR',			APP_DIR.'lang/');
+	define('CACHE_DIR',			VAR_DIR.'cache/');
+	define('LOG_DIR',			VAR_DIR.'log/');
+	define('TMP_DIR',			VAR_DIR.'tmp/');
+	
+//	--------------------
+//	Zend requires include path to be set to the LIB directory
+//	--------------------
+	set_include_path(get_include_path() . PATH_SEPARATOR . LIB_DIR);
 
 //	--------------------
 //	Configure the autoloader
