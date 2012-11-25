@@ -24,7 +24,13 @@ class Ajde_Db_PDO extends PDO
 		$log = array('query' => $query);
 		$start = microtime(true);
 		//if (!$cache->has($query)) {
+		
+		try {
         	$result = parent::query($query);
+		} catch (Exception $e) {
+			throw new Ajde_Db_Exception($e->getMessage());
+		}			
+			
 			//$cache->set($query, serialize($result));
 		//	$log['cache'] = false;			
 		//} else {
