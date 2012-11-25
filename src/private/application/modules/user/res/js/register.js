@@ -11,7 +11,7 @@ $(document).ready(function() {
 
 	$("input[name=password]").complexify({
 			minimumChars		: 8,
-			strengthScaleFactor	: 1,
+			strengthScaleFactor	: 0.7,
 			bannedPasswords		: complexify.banlist,
 			banmode				: 'loose',
 			preventSubmit		: false
