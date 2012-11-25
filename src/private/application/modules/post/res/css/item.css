@@ -1,0 +1,221 @@
+/*#!less*/
+
+.portfolio-item {
+
+	position: relative;
+
+	.title {
+		background-color: @black;
+		height: 100px;
+		padding: 30px 20px;
+
+		h2 {
+			color: @white;
+			font-size: 40px;
+			text-transform: uppercase;
+			margin-bottom: 10px;
+		}
+
+		h3 {
+			color: @white;
+			font-size: 25px;
+		}
+	}
+
+	.media-container {
+
+		position: relative;
+
+		width: 100%;
+		height: 562px;
+		overflow: hidden;
+
+		background-color: black;
+
+		.inner {
+			width: 100%;
+			height: 100%;
+
+			position: relative;
+		}
+
+		.media {
+			height: 562px;
+			overflow: hidden;
+		}
+
+		.media.image {
+			background-color: black;
+			background-position: center center;
+			background-repeat: no-repeat;
+			background-size: contain;
+		}
+	}
+
+	.sidebar {
+		float: left;
+		width: 200px;
+		padding: 20px;
+
+		.date {
+			margin-bottom: 20px;
+		}
+
+		.tags {
+
+		}
+	}
+
+	a.button {
+		position: absolute;
+		z-index: 1;
+
+		width: 60px;
+		height: 60px;
+
+		padding: 0;
+
+		display: block;
+
+		font-weight: normal;
+		font-family: 'Berta_Drug', sans-serif;
+
+        &.close {
+			font-size: 80px;
+			line-height: 13px;
+			text-indent: 7px;
+
+			color: @white;
+			top: 0;
+			right: 0;
+        }
+
+        &.prev, &.next {
+        	display: none;
+
+        	color: @white;
+			background-color: transparent;
+  			background-color: rgba(204, 204, 204, 0.6);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#99CCCCCC',endColorstr='#99CCCCCC');
+            zoom: 1;
+
+            top: 251px;
+
+            font-size: 55px;
+			line-height: 59px;
+			text-indent: 16px;
+        }
+
+        &.prev {
+			left: 0;
+        }
+
+        &.next {
+			right: 0;
+        }
+
+		&:hover {
+			background-color: fade(@jasper, 50%);
+			color: @white;
+		}
+	}
+
+	.description {
+		margin-left: 240px;
+		padding: 10px 20px;
+		min-height: 125px;
+
+		text-transform: uppercase;
+		word-spacing: 1px;
+		line-height: 25px;
+
+		h1, h2, h3 {
+			color: @black;
+			font-size: 1.3em;
+			font-weight: 700;
+			margin-bottom: 10px;
+			margin-top: 10px;
+		}
+
+		p {
+			margin-bottom: 20px;
+		}
+
+		form dl.form {
+			background-color: transparent;
+			border: none;
+
+			min-width: auto !important;
+			padding: 0 !important;
+
+			dd {
+				margin-bottom: 2px;
+			}
+		}
+
+		form input, form textarea, form button {
+			background-color: @jasper;
+			color: @white;
+			border: 2px solid @gray;
+			padding: 5px;
+			text-transform: uppercase;
+
+			width: 200px;
+
+			&:hover {
+				border: 2px solid white;
+			}
+
+			&:focus {
+				border: 2px solid white;
+				outline: none;
+			}
+		}
+
+		form textarea {
+			height: 100px;
+		}
+
+		form button {
+			width: 75px;
+			background-color: @black;
+			color: @white;
+		}
+	}
+
+	&.static {
+
+		.media-container {
+
+			height: 350px;
+			overflow: hidden;
+
+			.media {
+				height: 350px;
+				overflow: hidden;
+			}
+
+			.media.image {
+				background-size: cover;
+			}
+		}
+
+		.sidebar {
+
+			.custom {
+				text-transform: uppercase;
+				font-weight: 400;
+				color: @black;
+
+				line-height: 20px;
+
+				h1, h2, h3 {
+					color: @black;
+					font-size: 1.3em;
+					font-weight: 700;
+					margin-bottom: 20px;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,109 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ ?>
+
+<?php echo $this->includeModule('admin/menu'); ?>
+
+<h2>
+	Posts
+</h2>
+
+<?php
+
+$options = new Ajde_Crud_Options();
+$options
+	->selectFields()
+		->selectField('name')
+			->setEmphasis(true)
+			->up()
+		->selectField('media')
+			->setType('media')
+			->setThumbDim(266, 100)
+			->up()
+		->selectField('skip_image')
+			->setType('boolean')
+			->up()
+		->selectField('published')
+			->setType('boolean')
+			->setHelp('Item is visible or not')
+			->up()
+		->selectField('sort')
+			->setType('sort')
+			->up()
+		->selectField('url')
+			->setIsReadonly(true)
+			->setLabel('URL')
+			->up()
+		->selectField('media')
+			->setType('multiple')
+			->setEditRoute('admin/media.crud')
+			->addTableFileField('filename', 'public/images/uploads/')
+			->addTableField('sort')
+			->setShowLabel(false)
+			->up()
+		->selectField('tag')
+			->setType('multiple')
+			->setEditRoute('admin/tag.crud')
+			->setThumbDim(30, 30)
+			->setShowLabel(false)
+			->setCrossReferenceTable('portfolio_tag')
+			->up()
+		->selectField('added')
+			->setIsReadonly(true)
+			->up()
+		->up()
+	->selectList()
+		->selectButtons()
+			->setNew(true)
+			->setEdit(true)
+			->setCustom('view', 'View', 'view')
+			->up()
+		->setMain('name')
+		->setShow(array('media', 'name', 'added', 'published', 'sort'))
+		->setThumbDim(50, 50)
+		->selectView()
+			->setOrderBy('sort')
+			->up()
+		->up()
+	->selectEdit()
+		->setShow()
+		->selectLayout()
+			->addRow()
+				->addColumn()
+					->addBlock()
+						->setShow(array('name', 'subtitle', 'content'))
+						->up()
+					->addBlock()
+						->setTitle('Additional media')
+						->setShow(array('media'))
+						->up()
+					->up()
+				->addColumn()
+					->setWidth(350)
+					->setAlign('right')
+					->addBlock()
+						->setTitle('Featured image')
+						->setClass('sidebar')
+						->setShow(array('image', 'skip_image'))
+						->up()
+					->addBlock()
+						->setTitle('Tags')
+						->setClass('sidebar')
+						->setShow(array('tag'))
+						->up()
+					->addBlock()
+						->setTitle('Metadata')
+						->setClass('sidebar')
+						->setShow(array('added', 'updated', 'published', 'url', 'user', 'sort'))
+						->up()
+
+	->finished();
+
+$crud = $this->ACCrudList('post', $options);
+
+if (Ajde::app()->getRequest()->has('new')) {
+	$user = UserModel::getLoggedIn();
+	$crud->setOption('fields.user.value', $user->getPK());
+}
+
+echo $crud->output();
+
+?>

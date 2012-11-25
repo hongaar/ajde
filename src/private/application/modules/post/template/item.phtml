@@ -1,0 +1,99 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+$this->requireJsFirst('component/shortcut', 'html', MODULE_DIR . '_core/');
+$this->requireCss('item.inter', 'html', null, Ajde_Document_Format_Html::RESOURCE_POSITION_LAST, 'media="only screen and (max-height: 850px)"');
+$this->requireCss('item.small', 'html', null, Ajde_Document_Format_Html::RESOURCE_POSITION_LAST, 'media="only screen and (max-width: 767px)"');
+
+$item = $this->item;
+?>
+
+<div class='portfolio-item <?php if ($item->type == 'static') { echo 'static'; } ?>'>
+
+	<div class='title'>
+		<h2>
+			<?php echo $this->escape( $item->name ); ?>
+		</h2>
+		<h3>
+			<?php echo $this->escape( $item->subtitle ); ?>
+		</h3>
+	</div>
+
+	<div class='media-container'>
+		<a href='javascript:void(0);' class='button prev' title='Previous image'>&lt;</a>
+		<a href='javascript:void(0);' class='button next' title='Next image'>&gt;</a>
+		<div class='inner'>
+			<?php // CONTACT GOOGLE MAPS
+			if ($item->id == $contactId) { ?>
+				<div class='media embed'>
+					<iframe width="100%" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.nl/maps?f=d&amp;source=s_d&amp;saddr=&amp;daddr=Monnetlaan&amp;hl=nl&amp;geocode=&amp;aq=&amp;sll=52.073202,5.092592&amp;sspn=0.012121,0.031693&amp;mra=ls&amp;ie=UTF8&amp;t=m&amp;ll=52.073202,5.092592&amp;spn=0.004616,0.016093&amp;z=16&amp;output=embed"></iframe>
+				</div>
+			<?php } else if ($item->skip_image == '0') { ?>
+				<?php
+					$image = new Ajde_Resource_Image('public/images/uploads/' . $item->getImage());
+					$image->setWidth(750);
+					$image->setCrop(true);
+				?>
+				<div class='media image' style="
+					background-image: url('<?php echo $image->getLinkUrl(); ?>');
+				"></div>
+			<?php } ?>
+			<?php foreach($item->getMedia() as $media) {
+				if ($media->type == 'image') {
+						$image = new Ajde_Resource_Image('public/images/uploads/' . $media->getFilename());
+						$image->setWidth(750);
+						$image->setCrop(true);
+					?>
+					<div class='media image' style="
+						background-image: url('<?php echo $image->getLinkUrl(); ?>');
+					"></div>
+				<?php } else {
+						$parser = Jasper_Embed::fromCode($media->embed);
+					?>
+					<div class='media embed <?php echo str_replace('Jasper_Embed_', '', get_class($parser)); ?>'>
+						<?php echo $parser->getCode('100%', '100%'); ?>
+					</div>
+				<?php } ?>
+			<?php } ?>
+		</div>
+	</div>
+
+	<div class='sidebar'>
+
+		<?php if ($item->type == 'static') { ?>
+
+			<div class='custom'>
+				<?php echo _c( $item->sidebar ); ?>
+			</div>
+
+		<?php } else { ?>
+
+			<div class='date'>
+				<h4>
+					<?php echo _e($item->added); ?>
+				</h4>
+			</div>
+
+			<div class='tags'>
+				<ul class='tags'>
+				<?php foreach($item->getTags() as $tag) { ?>
+					<li>
+						<a href='portfolio.html?tag=<?php echo $tag->id; ?>'><?php echo _e($tag->name); ?></a>
+					</li>
+				<?php } ?>
+				</ul>
+			</div>
+
+		<?php } ?>
+
+	</div>
+
+	<a href='portfolio.html' rel='close' class='button close' title='Go back'>×<?php echo ' '; // insert space here for IE font line-height bug ?></a>
+
+	<div class='description'>
+		<?php echo _c( $item->content ); ?>
+		<?php if ($item->id == $contactId) {
+			include 'contact.phtml';
+		} ?>
+	</div>
+
+</div>

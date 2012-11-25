@@ -1,0 +1,378 @@
+/*#!less*/
+
+html {
+	overflow: hidden;
+}
+
+.portfolio-view {
+	position: relative;
+	height: auto;
+	width: auto;
+	z-index: 50;
+
+	overflow-x: scroll;
+	overflow-y: hidden;
+
+	.jspPane {
+		height: 100%;
+	}
+
+	.inner {
+		position: relative;
+		height: 100%;
+		width: 100%;
+		left: -10px;
+		top: -10px;
+
+		/* force scrollbar, done in view.js*/
+		/*min-width: 1141px;*/
+
+		-webkit-transition: all 0.5s ease-in-out;
+		-moz-transition: all 0.5s ease-in-out;
+		-o-transition: all 0.5s ease-in-out;
+		transition: all 0.5s ease-in-out;
+
+		-webkit-transition-property: -webkit-transform, left;
+		-moz-transition-property: -moz-transform, left;
+		-o-transition-property: -o-transform, left;
+		transition-property: transform, left;
+	}
+
+	&.matching .inner {
+		-webkit-transition-delay: 0.7s;
+		-moz-transition-delay: 0.7s;
+		-o-transition-delay: 0.7s;
+		transition-delay: 0.7s;
+	}
+
+	&.zooming-in .inner {
+		-webkit-transition-delay: 0;
+		-moz-transition-delay: 0;
+		-o-transition-delay: 0;
+		transition-delay: 0;
+	}
+
+	&.zoomed-in .inner {
+		-webkit-transition: all 0.75s ease-in-out;
+		-moz-transition: all 0.75s ease-in-out;
+		-o-transition: all 0.75s ease-in-out;
+		transition: all 0.75s ease-in-out;
+	}
+
+	.item {
+
+		display: block;
+		position: absolute;
+		box-sizing: border-box;
+		-ms-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+		overflow: hidden;
+		padding: 0;
+
+		.image {
+			width: 100%;
+			height: 100%;
+			display: block;
+			background-position: center center;
+			background-repeat: no-repeat;
+			background-size: cover;
+
+			border: 10px solid white;
+			box-sizing: border-box;
+			-ms-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			-webkit-box-sizing: border-box;
+		}
+
+		.description {
+			position: absolute;
+			top: 0;
+			left: 0;
+
+			width: 100%;
+			height: 100%;
+			display: block;
+
+			opacity: 0;
+			filter: alpha(opacity=0);
+
+			transition: all 0.3s ease-out;
+			-webkit-transition: all 0.3s ease-out;
+			-moz-transition: all 0.3s ease-out;
+			-o-transition: all 0.3s ease-out;
+
+			/* weird chrome bug... */
+			-webkit-transition-property: opacity, background-color;
+			-moz-transition-property: opacity, background-color;
+			-o-transition-property: opacity, background-color;
+			transition-property: opacity, background-color;
+
+			border: 10px solid white;
+			box-sizing: border-box;
+			-ms-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			-webkit-box-sizing: border-box;
+
+			padding: 20px;
+
+			background-color: fade(@white, 80%);
+
+			h3 {
+				color: @black;
+			}
+
+			summary {
+				color: @black;
+				position: absolute;
+				bottom: 20px;
+			}
+		}
+
+		&:hover, &:focus {
+
+			.description {
+				opacity: 1;
+				filter: alpha(opacity=100);
+			}
+		}
+
+		&:focus {
+
+			.description {
+				background-color: fade(@jasper, 50%);
+			}
+		}
+
+		&.target, &.target:hover {
+
+			.description {
+				display: none !important;
+			}
+		}
+
+		&.hasEmbed:after {
+			display: block;
+			position: absolute;
+
+			content: '►';
+			text-align: center;
+
+			color: @silver;
+			background-color: @black;
+
+			left: 50%;
+			top: 50%;
+
+			font-size: 40px;
+  			width: 55px;
+			height: 55px;
+			margin: -30px 0 0 -30px;
+			padding: 5px 0 0 5px;
+
+  			/*font-size: 60px;
+  			width: 75px;
+			height: 78px;
+			margin: -40px 0 0 -40px;
+			padding: 2px 0 0 5px;
+			-webkit-border-radius: 10px;
+          	border-radius: 10px;
+  			-moz-background-clip: padding; -webkit-background-clip: padding-box; background-clip: padding-box;*/
+
+			opacity: 0.5;
+			filter: alpha(opacity=50);
+
+		}
+	}
+
+	/** for keyboard nav **/
+
+	&:focus {
+
+		.jspHorizontalBar {
+			opacity: 1;
+		}
+	}
+
+	&:hover {
+
+		.jspHorizontalBar {
+			opacity: 0;
+		}
+	}
+
+	&.matching {
+
+		.inner {
+			left: 250px;
+		}
+
+		.item {
+			-webkit-transition: all 0.1s ease-in-out;
+			-moz-transition: all 0.1s ease-in-out;
+			-o-transition: all 0.1s ease-in-out;
+			transition: all 0.1s ease-in-out;
+
+			opacity: 0.2;
+			filter: alpha(opacity=20);
+
+			&.match {
+				opacity: 1;
+				filter: alpha(opacity=100);
+			}
+		}
+	}
+
+	&.zooming-in {
+
+		.item {
+			-webkit-transition: all 0.5s ease-in-out;
+			-moz-transition: all 0.5s ease-in-out;
+			-o-transition: all 0.5s ease-in-out;
+			transition: all 0.5s ease-in-out;
+
+			opacity: 0.3;
+			filter: alpha(opacity=0.3);
+
+			&.target {
+				opacity: 1;
+				filter: alpha(opacity=100);
+			}
+		}
+	}
+
+	&.zoomed-in {
+
+		.item {
+			opacity: 0.3;
+			filter: alpha(opacity=0.3);
+
+			&.target {
+				opacity: 1;
+				filter: alpha(opacity=100);
+			}
+		}
+	}
+
+	&.zooming-out {
+
+		.item {
+			-webkit-transition: all 0.75s ease-in-out;
+			-moz-transition: all 0.75s ease-in-out;
+			-o-transition: all 0.75s ease-in-out;
+			transition: all 0.75s ease-in-out;
+
+			opacity: 1;
+			filter: alpha(opacity=1);
+		}
+	}
+}
+
+body.resizing {
+	.portfolio-view {
+		.inner {
+			-webkit-transition: none;
+	     	-moz-transition: none;
+	       	-o-transition: none;
+	        transition: none;
+		}
+	}
+}
+
+/** ALWAYS SHOW TITLE WITH TOUCH, SAME AS IN VIEW.SMALL.CSS **/
+.portfolio-view.touch {
+
+	.item {
+
+		.description {
+			opacity: 1;
+			filter: alpha(opacity=100);
+
+			background-color: transparent;
+
+			padding: 5px;
+
+			h3 {
+				display: inline-block;
+				padding: 5px;
+
+				background-color: black;
+				color: white;
+				font-size: 13px;
+			}
+
+			summary {
+				display: none;
+			}
+		}
+
+		&:hover {
+
+			.description {
+				opacity: 1;
+				filter: alpha(opacity=100);
+			}
+		}
+
+		&.target, &.target:hover {
+
+			.description {
+				display: none !important;
+			}
+		}
+	}
+}
+
+.portfolio-filter {
+	z-index: 100;
+	position: absolute;
+	overflow: hidden;
+
+	width: 0;
+	border-bottom: 0px solid @jasper;
+
+	background-color: @jasper;
+
+	opacity: 0;
+	filter: alpha(opacity=0);
+
+	-webkit-transition: all 0.4s ease-in-out;
+	-moz-transition: all 0.4s ease-in-out;
+	-o-transition: all 0.4s ease-in-out;
+	transition: all 0.4s ease-in-out;
+
+	-webkit-transition-property: border, opacity, width;
+	-moz-transition-property: border, opacity, width;
+	-o-transition-property: border, opacity, width;
+	transition-property: border, opacity, width;
+
+	padding: 20px;
+
+	&:hover, &.fixed {
+		width: 200px;
+		border-bottom: 40px solid @jasper;
+
+		opacity: 0.8;
+		filter: alpha(opacity=0.8);
+
+
+	-webkit-transition-property: opacity, width;
+	-moz-transition-property: opacity, width;
+	-o-transition-property: opacity, width;
+	transition-property: opacity, width;
+
+	}
+
+	h3 {
+		color: @white;
+		margin-bottom: 20px;
+	}
+
+	ul a {
+		white-space: nowrap;
+
+		&.fixed {
+			background-color: @white;
+		}
+	}
+}

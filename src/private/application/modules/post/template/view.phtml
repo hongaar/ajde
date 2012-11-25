@@ -1,0 +1,55 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+$this->requireJsPublic('lib/jquery.transform-0.9.3.min.js');
+$this->requireJsPublic('lib/jquery-ui-1.8.22.custom.min.js');
+$this->requireJsFirst('component/shortcut', 'html', MODULE_DIR . '_core/');
+$this->requireCss('view.small', 'html', null, Ajde_Document_Format_Html::RESOURCE_POSITION_LAST, 'media="only screen and (max-width: 767px)"');
+
+/* @var $portfolio PortfolioCollection */
+$posts = $this->posts;
+?>
+
+<div class='portfolio-filter<?php if ($this->filter) { echo ' fixed'; } ?>'>
+	<h3>Tags</h3>
+	<ul class='tags'>
+		<?php foreach ($this->tags as $tag) {
+			/* @var $tag TagModel */ ?>
+			<li><a tabindex='-1' href='portfolio.html?tag=<?php echo $tag->id; ?>' data-id='<?php echo $tag->id; ?>' class='<?php if ($tag->id == $this->filter) { echo 'fixed'; } ?>'><?php echo _e($tag->name); ?></a></li>
+		<?php } ?>
+	</ul>
+</div>
+
+<div class='portfolio-view<?php if ($this->filter) { echo ' matching fixed'; } ?>'>
+	<div class='inner'>
+
+	<?php foreach($posts as $item) {
+		/* @var $item PortfolioModel */
+		$tags = '';
+		foreach($item->getTags() as $tag) {
+			$tags = $tags . '#'. $tag->id;
+		}
+		$tags = $tags . '#';
+		?>
+		<a class='item<?php if (substr_count($tags, '#'.$this->filter.'#') > 0) { echo ' match'; } ?><?php if (substr_count($item->types, 'embed') > 0) { echo ' hasEmbed'; } ?>' href='portfolio/item/<?php echo $item->getPK(); ?>.html' rel='ajax' style='top: <?php echo issetor($item->y, 0); ?>%; left: <?php echo issetor($item->x, 0); ?>px; width: <?php echo $item->w; ?>px; height: <?php echo $item->h; ?>%;' data-tags='<?php echo $tags; ?>'>
+
+			<?php if ($item->hasNotEmpty('image')) {
+				$image = new Ajde_Resource_Image('public/images/uploads/' . $item->getImage());
+				$image->setWidth(500);
+				$image->setHeight(500);
+				$image->setCrop(true);
+			} ?>
+			<span class='image' style="background-image: url('<?php echo $image->getLinkUrl(); ?>');"></span>
+
+			<span class='description'>
+				<h3><?php echo $this->escape( $item->name ); ?></h3>
+				<summary><?php
+					foreach($item->getTags() as $tag) {
+						echo _e($tag->name) . ' ';
+					}
+				?></summary>
+			</span>
+		</a>
+	<?php } ?>
+
+	</div>
+</div>

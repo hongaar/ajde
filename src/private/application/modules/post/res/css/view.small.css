@@ -1,0 +1,92 @@
+/*#!less*/
+
+#help {
+	display: none;
+}
+
+.portfolio-view {
+	overflow-x: scroll;
+}
+
+.portfolio-view {
+
+	.inner {
+		/* don't force scrollbar */
+		min-width: auto !important;
+
+		/* reset transform */
+		-webkit-transform: none !important;
+     	-moz-transform: none !important;
+     	-ms-transform: none !important;
+     	-o-transform: none !important;
+     	transform: none !important;
+	}
+
+	.item {
+
+		.description {
+			opacity: 1;
+			filter: alpha(opacity=100);
+
+			background-color: transparent;
+
+			padding: 5px;
+
+			h3 {
+				display: inline-block;
+				padding: 5px;
+
+				background-color: black;
+				color: white;
+				font-size: 13px;
+			}
+
+			summary {
+				display: none;
+			}
+		}
+
+		&:hover {
+
+			.description {
+				opacity: 1;
+				filter: alpha(opacity=100);
+			}
+		}
+
+		&.target, &.target:hover {
+
+			.description {
+				display: none !important;
+			}
+		}
+	}
+
+	&.matching {
+
+		.inner {
+			left: 0;
+		}
+	}
+}
+
+@media (orientation:landscape) and (max-height: 320px) {
+
+    /*.portfolio-view > * {
+    	display: none;
+    }
+
+    .portfolio-view:after {
+    	content: 'Please rotate your device or enlarge your browser window';
+    	display: block;
+
+    	font-family: 'Berta_Drug', sans-serif;
+		font-weight: normal;
+
+    	color: @gray;
+		font-size: 1.5em;
+		margin-bottom: 0.5em;
+
+		line-height: 2em;
+    }*/
+}
