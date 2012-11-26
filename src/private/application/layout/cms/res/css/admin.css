@@ -1,0 +1,25 @@
+/*#!less*/
+/**
+ * Example styles for admin layout
+ */
+
+nav ul {
+	margin: 0 0 20px 0;
+}
+
+nav li {
+	height: 2em;
+	display: inline-block;
+}
+
+nav a, nav a:active, nav a:visited {
+	font-size: 1.2em;
+	font-weight: 700;
+	text-decoration: none;
+	color: #9b0092;
+	border-bottom: 2px solid #f590ef;
+}
+
+nav a:hover {
+	border-color: #9b0092;
+}

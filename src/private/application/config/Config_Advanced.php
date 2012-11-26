@@ -59,7 +59,7 @@ class Config_Advanced
 									'shop/transaction:complete',
 									'shop/transaction:refused'
 									);
-	public $secret				= 'randomstring';
+	public $secret				= null; // set in Config_Application
 	public $cookieDomain		= false;
 	public $cookieSecure		= false;
 	public $cookieHttponly		= true;

@@ -7,9 +7,14 @@ class Ajde_Template extends Ajde_Object_Standard
 	
 	public function  __construct($base, $action, $format = 'html')
 	{
-		$this->setBase($base);
-		$this->setAction($action);
-		$this->setFormat($format);
+		$this->set('base', $base);
+		$this->set('action', $action);
+		$this->set('format', $format);
+		$this->setFileinfo();
+	}
+	
+	protected function setFileinfo()
+	{
 		if (($fileInfo = $this->getFileInfo()) === false) {
 			$exception = new Ajde_Exception(sprintf("Template file in %s,
 					for action %s with format %s not found",
@@ -21,6 +26,24 @@ class Ajde_Template extends Ajde_Object_Standard
 		
 		$this->setFilename($fileInfo['filename']);
 		$this->setParser($parser);
+	}
+	
+	public function setBase($base)
+	{
+		$this->set('base', $base);
+		$this->setFileinfo();
+	}
+	
+	public function setAction($action)
+	{
+		$this->set('action', $action);
+		$this->setFileinfo();
+	}
+	
+	public function setFormat($format)
+	{
+		$this->set('format', $format);
+		$this->setFileinfo();
 	}
 	
 	public function __fallback($method, $arguments)

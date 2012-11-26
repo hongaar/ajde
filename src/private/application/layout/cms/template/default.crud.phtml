@@ -1,0 +1,68 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+
+// Unify the user agent specific css rules
+$this->requireCssTop('core.reset');
+$this->requireCss('default');
+
+// Include jQuery 1.7
+$this->requireJsLibrary('jquery', '1.7');
+
+// Some JavaScript i18n
+$this->requireJsFirst('i18n.' . Ajde_Lang::getInstance()->getShortLang());
+
+// Alert bar
+$this->requireJsFirst('core.alert'); $this->requireCssFirst('core.alert');
+
+// Example styles
+$this->requireCssTop('core.1140');
+$this->requireGWebFont('Dosis', array(400, 700));
+
+?>
+<!-- Inspired by HTML5 Boilerplate -->
+<!doctype html>
+<html lang='<?php echo Ajde_Lang::getInstance()->getShortLang(); ?>' id='<?php echo Config::get('ident'); ?>' data-lifetime='<?php echo (Config::get('sessionLifetime') == 0 ? 180 : Config::get('sessionLifetime')); ?>' data-alert='<?php echo _e(Ajde_Session_Flash::get('alert')); ?>'>
+	<head>
+		
+		<!-- UTF-8 please (also in the headers, just to be sure) -->
+		<meta charset='utf-8'>
+		
+		<!-- Some content meta tags -->
+		<title><?php echo _e(Ajde::app()->getDocument()->getFullTitle()); ?></title>		
+		
+		<!-- Define the root of the site -->
+		<base href='http://<?php echo Config::get('lang_root'); ?>' />
+		
+		<!-- Favicon and CSS -->
+		<?php echo $this->getDocument()->getHead('css'); ?>
+		
+	</head>
+	
+	<!-- Target older versions of IE with CSS classes -->
+	<!--[if lt IE 7 ]> <body class='ie6 oldie'> <![endif]-->
+	<!--[if IE 7 ]>    <body class='ie7 oldie'> <![endif]-->
+	<!--[if IE 8 ]>    <body class='ie8 oldie'> <![endif]-->
+	<!--[if IE 9 ]>    <body class='ie9'> <![endif]-->
+	<!--[if (gt IE 9)|!(IE)]><!--> <body> <!--<![endif]-->
+		
+		<!-- The content -->		
+		<div class='container'>
+			<div class='row'>							
+				<div class='twelvecol'>
+					<?php echo $this->getDocument()->getBody(); ?>
+				</div>
+			</div>
+		</div>
+				
+		<!-- The scripts -->
+		<?php echo $this->getDocument()->getScripts(); ?>
+				
+	</body>
+</html>
+
+<!-- Some debugging info -->
+<!--[<pre>
+	<?php $version = Config::get('version'); echo Config::get('ident') . ', v' . $version['number'] . ' (' . $version['name'] . ')'; ?> 
+	Cache <?php echo Ajde_Cache::getInstance()->isEnabled() ? 'enabled' : 'disabled' ?> 
+	Last modified on <?php echo date("r", Ajde_Cache::getInstance()->getLastModified()); ?> 
+</pre><![-->

@@ -10,6 +10,7 @@ abstract class Ajde_User extends Ajde_Model
 	
 	const USERGROUP_USERS	= 1;
 	const USERGROUP_ADMINS	= 2;
+	const USERGROUP_EDITORS	= 3;
 	
 	public $defaultUserGroup = self::USERGROUP_USERS;
 	

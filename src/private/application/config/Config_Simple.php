@@ -47,7 +47,7 @@ class Config_Simple
 	public $autoCleanHtml		= true;
 	public $requirePostToken	= false;
 	public $postWhitelistRoutes = array();
-	public $secret				= 'randomstring';
+	public $secret				= null; // set in Config_Application
 	public $cookieDomain		= false;
 	public $cookieSecure		= false;
 	public $cookieHttponly		= true;

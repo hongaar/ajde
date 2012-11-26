@@ -1,7 +1,6 @@
 <?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ ?>
 
 <h2>
-	<a href='admin'>&lt;</a>
 	Media
 </h2>
 
@@ -37,7 +36,7 @@ $options
 			->setEdit(true)
 			->up()
 		->setMain('name')
-		->setShow(array('filename', 'name', 'portfolio', 'type', 'sort'))
+		->setShow(array('name', 'type', 'sort'))
 		->setThumbDim(50, 50)
 		->selectView()
 			->setOrderBy('sort')
@@ -53,7 +52,7 @@ $options
 						->up()
 					->addBlock()
 						->setTitle('Content')
-						->setShow(array('filename', 'embed'))
+						->setShow(array('pointer'))
 						->up()					
 					->up()
 				->addColumn()

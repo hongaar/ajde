@@ -1,19 +1,14 @@
 <?php
-require_once 'Config_Cms.php';
+require_once 'Config_Advanced.php';
 
-class Config_Application extends Config_Cms
+class Config_Cms extends Config_Advanced
 {
-	// Site parameters
-	public $ident				= 'project';
-	public $sitename 			= 'Project name';
-	public $description			= 'Project description';
-	public $author				= 'Author name';
-	public $email				= 'info@example.com';
-	public $version 			= array(
-									'number' => '0.1',
-									'name' => 'alpha'
-									);
-
+	//public $ident;
+	//public $sitename;
+	//public $description;
+	//public $author;
+	//public $email;
+	//public $version;
 
 	//public $homepageRoute;
 	//public $defaultRouteParts;
@@ -25,14 +20,14 @@ class Config_Application extends Config_Cms
 	//public $langAutodetect;
 	//public $langAdapter;
 	//public $timezone;
-	//public $layout;
+	public $layout						= 'cms';
 	//public $responseCodeRoute;
 
 	//public $autoEscapeString;
 	//public $autoCleanHtml;
 	//public $requirePostToken;
 	//public $postWhitelistRoutes;
-	public $secret				= 'randomstring';
+	//public $secret;
 	//public $cookieDomain;
 	//public $cookieSecure;
 	//public $cookieHttponly;

@@ -95,7 +95,7 @@ class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
 			$crossReferenceTable = $this->getCrossReferenceTable();
 			
 			// TODO: implement $this->getAdvancedFilter() filters in subquery
-			$subQuery = new Ajde_Db_Function('(SELECT ' . $this->getName() . ' FROM ' . $crossReferenceTable . ' WHERE ' . $parent . ' = ' . (integer) $parentId . ')');
+			$subQuery = new Ajde_Db_Function('(SELECT ' . $this->getModelName() . ' FROM ' . $crossReferenceTable . ' WHERE ' . $parent . ' = ' . (integer) $parentId . ')');
 			$collection = $this->getCollection();
 			$collection->reset();
 			$collection->addFilter(new Ajde_Filter_Where($childPk, Ajde_Filter::FILTER_IN, $subQuery));

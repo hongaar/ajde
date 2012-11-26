@@ -67,7 +67,11 @@ class PostController extends Ajde_Controller
 	
 	public function edit()
 	{
+		Ajde::app()->getDocument()->getLayout()->setAction('admin');
+		
 		Ajde_Model::register($this);
+		Ajde_Model::register('tag');
+		Ajde_Model::register('media');
 		
 		Ajde_Core_ExternalLibs::setOverride('Ajde_Crud_Field_Media', 'Ajde_Cms_Crud_Field_Media');
 		
