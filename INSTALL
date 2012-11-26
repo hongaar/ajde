@@ -3,7 +3,7 @@ Ajde PHP Web Framework
 ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 
 * CONFIGURATION
- 
+
 Directories which have to be writable by the webserver:
 - private/shared/*
 

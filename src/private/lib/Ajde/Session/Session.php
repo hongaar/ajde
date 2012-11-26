@@ -44,7 +44,12 @@ class Ajde_Session extends Ajde_Object_Standard
 		
 		// Strengthen session security with REMOTE_ADDR and HTTP_USER_AGENT
 		// @see http://shiflett.org/articles/session-hijacking
-		if (isset($_SESSION['client']) &&
+
+		// Ignore Google Chrome frame as it has a split personality
+		// @todo TODO: security issue!!
+		// @see http://www.chromium.org/developers/how-tos/chrome-frame-getting-started/understanding-chrome-frame-user-agent		
+		if (substr_count($_SERVER['HTTP_USER_AGENT'], 'chromeframe/') === 0 &&
+				isset($_SESSION['client']) &&
 				$_SESSION['client'] !== md5($_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] . Config::get('secret'))) {
 			// TODO: overhead to call session_regenerate_id? is it not required??
 			//session_regenerate_id();
@@ -58,7 +63,8 @@ class Ajde_Session extends Ajde_Object_Standard
 				// don't redirect for resource items, as they should have no side effect
 				// this makes it possible for i.e. web crawlers/error pages to view resources
 				$request = Ajde_Http_Request::fromGlobal();
-				$route = $request->initRoute();				
+				$route = $request->initRoute();	
+				Ajde::app()->setRequest($request);
 				if (!in_array($route->getFormat(), array('css','js'))) {	
 					Ajde_Http_Response::dieOnCode(Ajde_Http_Response::RESPONSE_TYPE_FORBIDDEN);
 				}

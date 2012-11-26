@@ -5,19 +5,19 @@ class Config {
 	// Redirect this class to the following config stage
 	// Default is 'auto' (chooses between 'dev' and 'live' based on remote_addrr
 	public static $stage			= 'auto';
-	
+
 	// localhost and private networks, add your own dev machine if not in
 	// private network range!
 	// @see http://en.wikipedia.org/wiki/Private_network
 	public static $local			= array(
 		'/127\.0\.0\.1/',
-		'/10\.[1-9]{1,3}\.[1-9]{1,3}\.[1-9]{1,3}/',
-		'/172\.[1-3][0-9]\.[1-9]{1,3}\.[1-9]{1,3}/',
-		'/192\.168\.[1-9]{1,3}\.[1-9]{1,3}/'
+		'/10\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/',
+		'/172\.[1-3][0-9]\.[0-9]{1,3}\.[0-9]{1,3}/',
+		'/192\.168\.[0-9]{1,3}\.[0-9]{1,3}/'
 	);
 
 	/**
-	 * 
+	 *
 	 * @return Config_Application
 	 */
 	public static function getInstance($stage = null) {
@@ -32,13 +32,13 @@ class Config {
 				$exceptionClass = class_exists('Ajde_Core_Autoloader_Exception') ? 'Ajde_Core_Autoloader_Exception' : 'Exception';
 				throw new $exceptionClass("Unable to load $className", 90005);
 			}
-			
+
 		}
 		return $instance[$stage];
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param string $param
 	 * @return mixed
 	 */
@@ -59,7 +59,7 @@ class Config {
 		}
 		return $stage;
 	}
-		
+
 	private static function _getAutoStage()
 	{
 		foreach(self::$local as $pattern)

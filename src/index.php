@@ -17,7 +17,7 @@ define('AJDE', true);
 	if (version_compare(PHP_VERSION, '5.2.3') < 0) {
 		die('<h3>Ajde requires PHP/5.2.3 or higher.<br>You are currently running PHP/'.phpversion().'.</h3><p>You should contact your host to see if they can upgrade your version of PHP.</p>');
 	}
-	
+
 //	--------------------
 //	Show errors before errorhandler is initialized in bootstrapping
 //	--------------------
@@ -30,14 +30,14 @@ define('AJDE', true);
 	ini_set('short_open_tag', 0);
 	ini_set('magic_quotes_gpc', 0);
 	ini_set('register_globals', 0);
-	
+
 	// Max upload size
 	ini_set('upload_max_filesize', '15M');
-	
+
 	// Force PHP errors
 	ini_set('display_errors', 1);
 	ini_set('display_startup_errors', 1);
-	
+
 	// Uncomment to hide uncatchable fatal errors
 	//ini_set('display_errors', 0);
 
@@ -45,7 +45,7 @@ define('AJDE', true);
 //	Try to catch fatal errors
 //	--------------------
 	function shutdown()
-	{		
+	{
 		if (($error = error_get_last()) && in_array($error['type'], array(E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR))) {
 			$exception = new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line']);
 			if (Config::get('debug') === true) {
@@ -53,7 +53,7 @@ define('AJDE', true);
 			} else {
 				// Use native PHP error log function, as Ajde_Exception_Log does not work
 				error_log($error['message'] . ', ' . $error['type'] . ', ' . $error['file'] . ', ' . $error['line']);
-				Ajde_Http_Response::dieOnCode(Ajde_Http_Response::RESPONSE_TYPE_SERVERERROR);				
+				Ajde_Http_Response::dieOnCode(Ajde_Http_Response::RESPONSE_TYPE_SERVERERROR);
 			}
 		}
 	}
@@ -65,20 +65,25 @@ define('AJDE', true);
 
 //	--------------------
 //	Define paths
-//	--------------------	
-	define('PRIVATE_DIR', 		'private/');
-	define('PUBLIC_DIR', 		'public/');
-	define('TEMPLATE_DIR', 		'template/');
-	define('APP_DIR', 			PRIVATE_DIR.'application/');
-	define('LIB_DIR', 			PRIVATE_DIR.'lib/');
-	define('VAR_DIR', 			PRIVATE_DIR.'var/');
-	define('CONFIG_DIR', 		APP_DIR.'config/');
-	define('LAYOUT_DIR', 		APP_DIR.'layout/');
-	define('MODULE_DIR', 		APP_DIR.'modules/');
-	define('LANG_DIR', 			APP_DIR.'lang/');
-	define('CACHE_DIR', 		VAR_DIR.'cache/');
-	define('LOG_DIR', 			VAR_DIR.'log/');
-	define('TMP_DIR', 			VAR_DIR.'tmp/');
+//	--------------------
+	define('PRIVATE_DIR',		'private/');
+	define('PUBLIC_DIR',		'public/');
+	define('TEMPLATE_DIR',		'template/');
+	define('APP_DIR',			PRIVATE_DIR.'application/');
+	define('LIB_DIR',			PRIVATE_DIR.'lib/');
+	define('VAR_DIR',			PRIVATE_DIR.'var/');
+	define('CONFIG_DIR',		APP_DIR.'config/');
+	define('LAYOUT_DIR',		APP_DIR.'layout/');
+	define('MODULE_DIR',		APP_DIR.'modules/');
+	define('LANG_DIR',			APP_DIR.'lang/');
+	define('CACHE_DIR',			VAR_DIR.'cache/');
+	define('LOG_DIR',			VAR_DIR.'log/');
+	define('TMP_DIR',			VAR_DIR.'tmp/');
+	
+//	--------------------
+//	Zend requires include path to be set to the LIB directory
+//	--------------------
+	set_include_path(get_include_path() . PATH_SEPARATOR . LIB_DIR);
 
 //	--------------------
 //	Configure the autoloader
@@ -89,7 +94,7 @@ define('AJDE', true);
 /*********************
  * GLOBAL FUNCTIONS
  *********************/
-	
+
 //	--------------------
 //	The only thing missing in PHP < 5.3
 //	In PHP 5.3 you can use: return $test ?: false;
@@ -104,7 +109,7 @@ define('AJDE', true);
 			return $else;
 		}
 	}
- 
+
 //	--------------------
 //	Global helper functions
 //	--------------------
@@ -115,15 +120,15 @@ define('AJDE', true);
 	function __($ident, $module = null) {
 		return Ajde_Lang::getInstance()->translate($ident, $module);
 	}
-	
+
 	function _e($var) {
 		return Ajde_Component_String::escape($var);
 	}
-	
+
 	function _c($var) {
 		return Ajde_Component_String::clean($var);
 	}
-	
+
 
 /*********************
  * LET'S RUN THINGS

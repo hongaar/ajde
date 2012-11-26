@@ -157,6 +157,14 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 	public function setEmphasis($emphasis) { return $this->_set('emphasis', $emphasis); }
 	
 	/**
+	 * Sets placeholder for this field
+	 * 
+	 * @param string $emphasis
+	 * @return Ajde_Crud_Options_Fields_Field 
+	 */
+	public function setPlaceholder($placeholder) { return $this->_set('placeholder', $placeholder); }
+	
+	/**
 	 * Defines a many-to-many relationshop for fields with type 'multiple'
 	 * 
 	 * @param string $table

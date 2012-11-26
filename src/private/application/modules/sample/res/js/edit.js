@@ -1,15 +1,16 @@
 ;
-if (typeof Application.Sample ==="undefined") {Application.Sample = function() {}};
+if (typeof Application === "undefined") {Application = function(){}};
+if (typeof Application.Sample === "undefined") {Application.Sample = function() {}};
 
-Application.Sample.Edit = function() {	
-	
+Application.Sample.Edit = function() {
+
 	return {
-		
+
 		init: function() {
-			$('form.ACCrudList td.buttons a.button.view').live('click', Application.Sample.Edit.viewHandler);			
+			$('form.ACCrudList td.buttons a.button.view').live('click', Application.Sample.Edit.viewHandler);
 		},
-		
-		viewHandler: function(e) {			
+
+		viewHandler: function(e) {
 			e.stopPropagation();
 			e.preventDefault();
 			var row = $(this).parents('tr');
@@ -17,7 +18,7 @@ Application.Sample.Edit = function() {
 			window.location.href = 'sample/view/' + id + '.html';
 			return false;
 		}
-		
+
 	};
 }();
 

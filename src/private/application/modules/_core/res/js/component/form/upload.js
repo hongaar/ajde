@@ -22,7 +22,7 @@ AC.Form.Upload = function() {
 						elm.parents('form').find('button.save').attr('disabled', 'disabled');
 						// Disable upload button
 						if (elm.attr('data-multiple') == '0') {
-							elm.find('.qq-upload-button').hide();
+//							elm.find('.qq-upload-button').hide();
 						}
 					},
 					onProgress: function(id, fileName, loaded, total) {},
@@ -35,10 +35,25 @@ AC.Form.Upload = function() {
 							var $input = $('input[name=' + elm.attr('data-name') + ']');
 							elm.parents('form').find('button.save').attr('disabled', null);
 							if (elm.attr('data-multiple') == '0') {
-								$input.val(filename);
-								elm.find('.qq-uploader').remove();
-								elm.after($('<span/>').html('<img class=\'icon\' src=\'public/images/icons/16/attachment.png\' style=\'vertical-align: middle;\' /> ' + filename));
-								elm.remove();
+								$input.val(filename).change();
+//								elm.find('.qq-uploader').remove();								
+								elm.after($('<span/>')
+									.addClass('qq-filename')
+									.text(filename + ' ')
+									.append($('<a/>')
+										.attr('href', 'javascript:void(null)')
+										.addClass('deleteFileCrud')
+										.text('delete')
+										.click(function() {
+											elm.trigger('resetUpload');
+											elm.find('.qq-upload-list').empty();
+											elm.show();
+											$(this).parent().remove();
+										})
+									)
+								);
+//								elm.remove();
+								elm.hide();
 							} else {
 								$input.val($input.val() + ($input.val() ? ':' : '') + filename);
 							}
@@ -643,10 +658,13 @@ qq.extend(qq.FileUploader.prototype, {
             
             var relatedTarget = document.elementFromPoint(e.clientX, e.clientY);
             // only fire when leaving document out
-            if ( ! relatedTarget || relatedTarget.nodeName == "HTML"){               
+           if ( ! relatedTarget || relatedTarget.nodeName == "HTML" || relatedTarget.nodeName == "BODY"){  
                 dropArea.style.display = 'none';                                            
             }
-        });                
+        });               
+		qq.attach(document, 'drop', function(e){
+			dropArea.style.display = 'none';    
+		});               
     },
     _onSubmit: function(id, fileName){
         qq.FileUploaderBasic.prototype._onSubmit.apply(this, arguments);
