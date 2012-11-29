@@ -101,22 +101,36 @@ class Ajde_Core_Route extends Ajde_Object_Standard
 	{
 		$matches = array();
 		$defaultRules = array(
-			array('%^([^\?/\.]+)/([^\?/\.]+):([^\?/\.]+)/?$%' => array('module', 'controller', 'action')),
-			array('%^([^/\.]+)/([^/\.]+):([^/\.]+)/([^/\.]+)/?$%' => array('module', 'controller', 'action', 'format')),
-			array('%^([^/\.]+)/([^/\.]+):([^/\.]+)/([^/\.]+)/([^/\.]+)/?$%' => array('module', 'controller', 'action', 'format', 'id')),
-			array('%^([^\?/\.]+)/([^\?/\.]+):([^\?/\.]+)\.([^/\.]+)$%' => array('module', 'controller', 'action', 'format')),
-			array('%^([^\?/\.]+)/([^\?/\.]+):([^\?/\.]+)/([^\?/\.]+)\.([^/\.]+)$%' => array('module', 'controller', 'action', 'id', 'format')),
+			// module/controller:view
+			array('%^([^/\.]+)/([^/\.]+):([^/\.]+)/?$%' => array('module', 'controller', 'action')),
+			// module/controller:view/html
+			array('%^([^/\.]+)/([^/?/\.]+):([^/?/\.]+)/([^/\.]+)/?$%' => array('module', 'controller', 'action', 'format')),
+			// module/controller:view/html/5
+			array('%^([^/\.]+)/([^/?/\.]+):([^/?/\.]+)/([^/\.]+)/([^/\.]+)/?$%' => array('module', 'controller', 'action', 'format', 'id')),
+			// module/controller:view.html
+			array('%^([^/\.]+)/([^/\.]+):([^/\.]+)\.([^/\.]+)$%' => array('module', 'controller', 'action', 'format')),
+			// module/controller:view/5.html
+			array('%^([^/\.]+)/([^/\.]+):([^/\.]+)/([^/\.]+)\.([^/\.]+)$%' => array('module', 'controller', 'action', 'id', 'format')),
 		
+			// module
 			array('%^([^/\.]+)/?$%' => array('module')),
-			array('%^([^\?/\.]+)/([0-9]+)/?$%' => array('module', 'id')),
-			array('%^([^\?/\.]+)/([^\?/\.]+)/?$%' => array('module', 'action')),			
+			// module/5
+			array('%^([^/\.]+)/([0-9]+)/?$%' => array('module', 'id')),
+			// module/view
+			array('%^([^/\.]+)/([^/\.]+)/?$%' => array('module', 'action')),			
+			// module/view/html
 			array('%^([^/\.]+)/([^/\.]+)/([^/\.]+)/?$%' => array('module', 'action', 'format')),
+			// module/view/html/5
 			array('%^([^/\.]+)/([^/\.]+)/([^/\.]+)/([^/\.]+)/?$%' => array('module', 'action', 'format', 'id')),
 			
+			// module.html
 			array('%^([^/\.]+)\.([^/\.]+)$%' => array('module', 'format')),
-			array('%^([^\?/\.]+)/([0-9]+)\.([^/\.]+)$%' => array('module', 'id', 'format')),
-			array('%^([^\?/\.]+)/([^\?/\.]+)\.([^/\.]+)$%' => array('module', 'action', 'format')),
-			array('%^([^\?/\.]+)/([^\?/\.]+)/([^\?/\.]+)\.([^/\.]+)$%' => array('module', 'action', 'id', 'format')),
+			// module/5.html
+			array('%^([^/\.]+)/([0-9]+)\.([^/\.]+)$%' => array('module', 'id', 'format')),
+			// module/view.html
+			array('%^([^/\.]+)/([^/\.]+)\.([^/\.]+)$%' => array('module', 'action', 'format')),
+			// module/view/5.html
+			array('%^([^/\.]+)/([^/\.]+)/([^/\.]+)\.([^/\.]+)$%' => array('module', 'action', 'id', 'format')),
 		);
 		
 		$configRules = Config::get('routes');

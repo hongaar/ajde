@@ -94,6 +94,7 @@ class _coreComponentController extends Ajde_Controller
 		
 		$saveDir = $options['saveDir'];
 		$allowedExtensions = $options['extensions'];
+		$overwrite = $options['overwrite'];
 		
 		// max file size in bytes
 		$max_upload = (int)(ini_get('upload_max_filesize'));
@@ -103,7 +104,18 @@ class _coreComponentController extends Ajde_Controller
 		$sizeLimit = $upload_mb * 1024 * 1024;
 		
 		$uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
-		$result = $uploader->handleUpload($saveDir);
+		$result = $uploader->handleUpload($saveDir, $overwrite);
+		
+		// delete old thumbnails if overwritten
+		if (isset($result['success']) && $result['success'] === true && $overwrite === true) {
+			$filename = pathinfo($result['filename'], PATHINFO_FILENAME);
+			$extension = pathinfo($result['filename'], PATHINFO_EXTENSION);
+			$filelist = Ajde_FS_Find::findFiles($saveDir, $filename . "_*." . $extension);
+			$thumbs = preg_grep("/_[0-9]+x[0-9]+c?/i", $filelist);
+			foreach($thumbs as $thumb) {
+				unlink($thumb);
+			}
+		}
 		
 		// Set content type to text/html for qqUploader bug 163
 		// @see https://github.com/valums/file-uploader/issues/163

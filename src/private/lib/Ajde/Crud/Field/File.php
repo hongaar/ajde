@@ -26,4 +26,12 @@ class Ajde_Crud_Field_File extends Ajde_Crud_Field
 		}
 		return parent::getExtensions();
 	}
+	
+	public function getOverwrite()
+	{
+		if (!$this->hasOverwrite()) {
+			$this->setOverwrite(false);
+		}
+		return parent::getOverwrite();
+	}
 }

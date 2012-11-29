@@ -12,6 +12,10 @@ $editOptions = $crud->getOptions('edit');
 		$fieldsShown = array();		
 		$fieldsToShow = $editOptions['show'];
 		
+		if ($fieldsToShow == '*' || !$fieldsToShow) {
+			$fieldsToShow = $crud->getFieldNames();
+		}
+		
 		foreach($fieldsToShow as $fieldName) {
 			$fieldsShown[] = $fieldName;
 			$field = $crud->getField($fieldName, false);

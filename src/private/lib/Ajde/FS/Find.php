@@ -24,4 +24,22 @@ class Ajde_FS_Find extends Ajde_Object_Static
 		}
 		return $return;
 	}
+	
+	/**
+	 *
+	 * @param array $array 
+	 * @return array
+	 */
+	public static function mkglobi($array) {
+		$ret = array();
+		foreach($array as $extension) {
+			$item = '';
+			for($i = 0; $i < strlen($extension); $i++) {
+				$letter = substr($extension, $i, 1);
+				$item = $item . '[' . strtolower($letter) . strtoupper($letter) . ']';
+			}
+			$ret[] = $item;
+		}
+		return $ret;
+	}
 }
