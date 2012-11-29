@@ -34,20 +34,30 @@ class Ajde_Component_String extends Ajde_Component
 		throw new Ajde_Component_Exception();	
 	}
 	
-	public static function escape(&$var, $key = null)
+	public static function escape($var)
 	{
-		if (isset($key)) {
-			// called from array_walk
-			if (is_array($var)) {
-				array_walk($var, array("Ajde_Component_String", "escape"));
-			} else {
-				$var = htmlspecialchars($var, ENT_QUOTES);
-			}			
+		if (is_array($var)) {
+			array_walk($var, array("Ajde_Component_String", "rescape"));
+			return $var;
 		} else {
-			return htmlspecialchars($var, ENT_QUOTES);
+			return self::_escape($var);
 		}
 	}
 	
+	private static function rescape(&$var, $key)
+	{
+		if (is_array($var)) {
+			array_walk($var, array("Ajde_Component_String", "rescape"));
+		} else {
+			$var = htmlspecialchars($var, ENT_QUOTES);
+		}	
+	}
+	
+	private static function _escape($var)
+	{
+		return htmlspecialchars($var, ENT_QUOTES);
+	}
+		
 	public static function clean($var)
 	{		
 		$clean = strip_tags($var, self::$_allowedTags);
