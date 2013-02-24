@@ -49,18 +49,28 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
 	
 	public static function encodeFingerprint($array)
 	{
-		return self::_rotUrl(serialize($array));
+		return self::_urlEncode(serialize($array));
 	}
 	
 	public static function decodeFingerprint($fingerprint)
 	{
-		return unserialize(self::_rotUrl($fingerprint));
+		return unserialize(self::_urlDecode($fingerprint));
+	}
+	
+	public static function _urlDecode($string) { 
+//		return self::_rotUrl($string);
+		return base64_decode($string);
+	}
+	
+	public static function _urlEncode($string) { 
+//		return self::_rotUrl($string);
+		return base64_encode($string);
 	}
 	
 	public static function _rotUrl($string) { 
 		return strtr($string, 
-			'./-:?=&%#{}"; ZQXJKVWPYRHGB abcdefghijklmnopqrstuv123456789ACDEFILMNOSTUwxyz', 
-			'ZQXJKVWPYRHGB ./-:?=&%#{}"; 123456789ACDEFILMNOSTUabcdefghijklmnopqrstuvwxyz'); 
+			'/-:?=&%#{}"; QXJKVWPYRHGB abcdefghijklmnopqrstuv123456789ACDEFILMNOSTUwxyz', 
+			'QXJKVWPYRHGB /-:?=&%#{}"; 123456789ACDEFILMNOSTUabcdefghijklmnopqrstuvwxyz'); 
 	}
 
 	public function getLinkCode()

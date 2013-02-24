@@ -133,6 +133,11 @@ class Ajde_Resource_Image extends Ajde_Resource
 		$this->save($this->getGeneratedFilename($width, $height, $crop));
 	}
 	
+	public function getOriginalFilename()
+	{
+		return $this->_source;
+	}
+	
 	public function getFilename()
 	{
 		return $this->getGeneratedFilename();

@@ -156,6 +156,8 @@ class _coreComponentController extends Ajde_Controller
 		$fingerprint = Ajde::app()->getRequest()->getRaw('id');		
 		/* @var $image Ajde_Resource_Image */
 		$image = Ajde_Resource_Image::fromFingerprint($fingerprint);
+		Ajde_Cache::getInstance()->addFile($image->getOriginalFilename());
+		
 		$image->resize($image->getHeight(), $image->getWidth(), $image->getCrop());		
 		Ajde::app()->getDocument()->setContentType($image->getMimeType());
 		$output = $image->getImage();
