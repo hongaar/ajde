@@ -20,7 +20,8 @@ class Config_Cms extends Config_Advanced
 	//public $langAutodetect;
 	//public $langAdapter;
 	//public $timezone;
-	public $layout						= 'cms';
+	//public $layout;
+	public $adminLayout						= 'cms';
 	//public $responseCodeRoute;
 
 	//public $autoEscapeString;

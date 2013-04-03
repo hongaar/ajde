@@ -9,6 +9,7 @@ class AdminController extends Ajde_Acl_Controller
 	 */
 	public function beforeInvoke()
 	{
+		Ajde::app()->getDocument()->setLayout(new Ajde_Layout('cms'));
 		return parent::beforeInvoke();
 	}
 	
@@ -26,7 +27,6 @@ class AdminController extends Ajde_Acl_Controller
 	 */
 	public function view()
 	{
-		Ajde::app()->getDocument()->getLayout()->setAction('admin');
 		return $this->render();
 	}
 	

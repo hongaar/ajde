@@ -2,7 +2,7 @@
 /* @var $this Ajde_Template_Parser_Phtml_Helper */
 
 // Unify the user agent specific css rules
-$this->requireCssTop('core.reset');
+$this->requireCssTop('bootstrap-cosmo');
 $this->requireCss('default');
 
 // Include jQuery 1.7
@@ -13,10 +13,6 @@ $this->requireJsFirst('i18n.' . Ajde_Lang::getInstance()->getShortLang());
 
 // Alert bar
 $this->requireJsFirst('core.alert'); $this->requireCssFirst('core.alert');
-
-// Example styles
-$this->requireCssTop('core.1140');
-$this->requireGWebFont('Dosis', array(400, 700));
 
 ?>
 <!-- Inspired by HTML5 Boilerplate -->
