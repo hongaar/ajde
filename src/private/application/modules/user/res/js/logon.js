@@ -2,12 +2,12 @@
 $(document).ready(function() {
 	$('#loginform').bind('result', function(event, data) {
 		if (data.success === false) {
-			$('dd.status').addClass('error');
-			$("dd.status").text(data.message);
+			$('.give-status').addClass('error');
+			$('.status-text').text(data.message);
 		} else {
-			if ($("#returnto").val()) {
+			if ($('#returnto').val()) {
 				$('body').addClass('loading');
-				window.location.href = $("#returnto").val();
+				window.location.href = $('#returnto').val();
 			} else {
 				$('body').addClass('loading');
 				window.location.reload(true);
@@ -15,12 +15,12 @@ $(document).ready(function() {
 		}
 	});
 	$('#loginform').bind('error', function(event) {
-		$('dd.status').addClass('error');
-		$("dd.status").text(i18n.requestError);
+		$('.give-status').addClass('error');
+		$('.status-text').text(i18n.requestError);
 	});
 	$('#loginform').bind('submit', function(event) {
-		$('dd.status').removeClass('error');
-		$("dd.status").text("Logging in...");
+//		$('.give-status').removeClass('error');
+//		$('.status-text').text('Logging in...');
 		return true;
 	});
 });

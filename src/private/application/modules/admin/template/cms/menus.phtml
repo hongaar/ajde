@@ -1,0 +1,12 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+?>
+
+<div class="row-fluid">
+	<div class="span3">
+		<?php echo $this->includeModule('admin/cms:menu'); ?>		
+	</div><!--/span-->
+	<div class="span9">
+		<h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
+	</div><!--/span-->
+</div><!--/row-->

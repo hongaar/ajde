@@ -1,6 +1,6 @@
 <?php 
 
-class AdminController extends Ajde_Acl_Controller
+class AdminCmsController extends Ajde_Acl_Controller
 {
 	/**
 	 * Optional function called before controller is invoked
@@ -27,12 +27,30 @@ class AdminController extends Ajde_Acl_Controller
 	 */
 	public function view()
 	{
-		Ajde::app()->getDocument()->setTitle("Admin dashboard");
+		Ajde::app()->getDocument()->setTitle("CMS");
 		return $this->render();
 	}
 	
 	public function menu()
 	{
+		return $this->render();
+	}
+	
+	public function nodes()
+	{
+		Ajde::app()->getDocument()->setTitle("Nodes");
+		return $this->render();
+	}
+	
+	public function media()
+	{
+		Ajde::app()->getDocument()->setTitle("Media");
+		return $this->render();
+	}
+	
+	public function menus()
+	{
+		Ajde::app()->getDocument()->setTitle("Menus");
 		return $this->render();
 	}
 }

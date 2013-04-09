@@ -1,43 +1,55 @@
-<div id='logon'>
-
-	<h2><?php echo __('Logon'); ?></h2>
-
-	<?php echo $this->ACAjaxForm('user/logon', 'loginform'); ?>
-		<input type="hidden" name="returnto" id="returnto" value="<?php echo $this->returnto; ?>" />
-		<dl class='form'>
-			<dd class="status"><?php echo $this->clean($this->message); ?></dd>
-
-			<dt><?php echo __(ucfirst($this->user->usernameField)); ?></dt>
-			<dd>
-				<input type="text" name="<?php echo $this->user->usernameField; ?>" placeholder="" required />
-			</dd>
-
-			<dt><?php echo __(ucfirst($this->user->passwordField)); ?></dt>
-			<dd>
-				<input type="password" name="password" placeholder="****" required />
-			</dd>
-
-			<dd>
-				<input type="checkbox" name="rememberme" id="rememberme" />
-				<label for="rememberme"><?php echo __('Remember me'); ?></label>
-			</dd>
-
-			<dd>
-				<input type="submit" value="<?php echo __('Logon'); ?>" />
-			</dd>	
-		</dl>
-	</form>
+<div class="row-fluid">
+	<div class="span8">
 	
-</div>
+		<?php echo $this->ACAjaxForm('user/logon', 'loginform', 'form-horizontal well'); ?>
+			<fieldset>
+				<legend><?php echo __('Please sign in'); ?></legend>
 
-<div id='register'>
+				<input type="hidden" name="returnto" id="returnto" value="<?php echo $this->returnto; ?>" />
 
-	<h2>No account?</h2>
-	<p>
-		Click the link below to register for an account:
-	</p>
-	<p>
-		<a class='action' href="user/register?returnto=<?php echo $this->returnto; ?>"><?php echo __('Register'); ?></a>
-	</p>
+				<div class="control-group">			
+					<div class="controls">
+						<p class="help-block"><?php echo $this->clean($this->message); ?></p>
+					</div>
+				</div>	
 
+				<div class="control-group give-status">
+					<label class="control-label" for="in_user"><?php echo __(ucfirst($this->user->usernameField)); ?></label>
+					<div class="controls">
+						<input type="text" id="in_user" name="<?php echo $this->user->usernameField; ?>" placeholder="" required />
+						<span class="help-inline status-text"></span>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label" for="in_pass"><?php echo __(ucfirst($this->user->passwordField)); ?></label>
+					<div class="controls">
+						<input type="password" name="password" placeholder="****" required />
+					</div>
+				</div>
+
+				<div class="control-group">
+					<div class="controls">
+						<label><input type="checkbox" name="rememberme" /> <?php echo __('Remember me'); ?></label>
+					</div>
+				</div>
+
+				<div class="form-actions">
+					<button class="btn btn-large btn-success" type="submit"><?php echo __('Logon'); ?></button>
+				</div>
+			</fieldset>
+		</form>
+	
+	</div><!--/span-->
+	<div class="span4">
+	
+		<h2>No account?</h2>
+		<p>
+			Click the link below to register for an account:
+		</p>
+		<p>
+			<a class='btn btn-primary' href="user/register?returnto=<?php echo $this->returnto; ?>"><?php echo __('Register'); ?></a>
+		</p>
+
+	</div>
 </div>

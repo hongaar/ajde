@@ -10,6 +10,12 @@ class UserController extends Ajde_User_Controller
 	);
 	protected $_logonRoute = 'user/logon/html';
 	
+	public function beforeInvoke()
+	{
+		Ajde::app()->getDocument()->setLayout(new Ajde_Layout('cms'));
+		return parent::beforeInvoke();
+	}
+	
 	// Default to profile
 	public function view()
 	{

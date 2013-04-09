@@ -1,3 +1,9 @@
 body {
 	padding-top: 80px;
 }
+
+@media (max-width: 979px) {
+	body {
+		padding-top: 0;
+	}
+}

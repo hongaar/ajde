@@ -21,6 +21,10 @@ AC.Form.Ajax = function() {
 		},
 		
 		submitHandler: function(postOrGet) {
+			// valid?
+			if ($(this).jqBootstrapValidation && $(this).find('input, select, textarea').jqBootstrapValidation('hasErrors')) {
+				return false;
+			}
 			var type = postOrGet.toUpperCase() || 'POST';
 			var url = $(this).attr('action');
 			var data = $(this).serialize();

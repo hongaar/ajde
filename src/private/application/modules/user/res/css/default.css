@@ -1,4 +1,4 @@
-dd.status, p.status {
+.status {
 	display: inline-block;
 	background-color: #eee;
 	border: 1px solid silver;
@@ -6,7 +6,7 @@ dd.status, p.status {
 	margin: 0 0 20px 0;
 }
 
-dd.status.error {
+.status.error {
 	background-color: #FF3333;
 	color: white;
 }

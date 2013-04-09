@@ -33,16 +33,16 @@ $(document).ready(function() {
 		
 	$('#registerform').bind('before', function() {
 		if (!$(this).data('valid')) {
-			$('dd.status').addClass('error');
-			$("dd.status").text('Please provide a more complex password');
+			$('.give-status').addClass('error');
+			$('.status-text').text('Please provide a more complex password');
 			return false;
 		}
 	});
 		
 	$('#registerform').bind('result', function(event, data) {
 		if (data.success === false) {
-			$('dd.status').addClass('error');
-			$("dd.status").text(data.message);
+			$('.give-status').addClass('error');
+			$('.status-text').text(data.message);
 		} else {
 			if (data.returnto !== false) {
 				window.location.href = data.returnto;
@@ -53,13 +53,13 @@ $(document).ready(function() {
 	});
 		
 	$('#registerform').bind('error', function(event) {
-		$('dd.status').addClass('error');
-		$("dd.status").text('Something went wrong');
+		$('.give-status').addClass('error');
+		$('.status-text').text('Something went wrong');
 	});
 	
 	$('#registerform').bind('submit', function(event) {
-		$('dd.status').removeClass('error');
-		$("dd.status").text('Registering...');
+		$('.give-status').removeClass('error');
+		$('.status-text').text('Registering...');
 		return true;
 	});
 	
