@@ -94,6 +94,7 @@ class _coreComponentController extends Ajde_Controller
 		
 		$saveDir = $options['saveDir'];
 		$allowedExtensions = $options['extensions'];
+		$overwrite = $options['overwrite'];
 		
 		// max file size in bytes
 		$max_upload = (int)(ini_get('upload_max_filesize'));
@@ -103,7 +104,18 @@ class _coreComponentController extends Ajde_Controller
 		$sizeLimit = $upload_mb * 1024 * 1024;
 		
 		$uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
-		$result = $uploader->handleUpload($saveDir);
+		$result = $uploader->handleUpload($saveDir, $overwrite);
+		
+		// delete old thumbnails if overwritten
+		if (isset($result['success']) && $result['success'] === true && $overwrite === true) {
+			$filename = pathinfo($result['filename'], PATHINFO_FILENAME);
+			$extension = pathinfo($result['filename'], PATHINFO_EXTENSION);
+			$filelist = Ajde_FS_Find::findFiles($saveDir, $filename . "_*." . $extension);
+			$thumbs = preg_grep("/_[0-9]+x[0-9]+c?/i", $filelist);
+			foreach($thumbs as $thumb) {
+				unlink($thumb);
+			}
+		}
 		
 		// Set content type to text/html for qqUploader bug 163
 		// @see https://github.com/valums/file-uploader/issues/163
@@ -122,8 +134,8 @@ class _coreComponentController extends Ajde_Controller
 		$image = $this->getImage();
 		$this->setAction('image/show');
 		$this->getView()->assign('href', $image->getLinkUrl());
-		$this->getView()->assign('width', $image->getWidth());
-		$this->getView()->assign('height', $image->getHeight());
+		$this->getView()->assign('width', $image->getWidth(false));
+		$this->getView()->assign('height', $image->getHeight(false));
 		$this->getView()->assign('extraClass', $this->getExtraClass());
 		return $this->render();
 	}
@@ -144,6 +156,8 @@ class _coreComponentController extends Ajde_Controller
 		$fingerprint = Ajde::app()->getRequest()->getRaw('id');		
 		/* @var $image Ajde_Resource_Image */
 		$image = Ajde_Resource_Image::fromFingerprint($fingerprint);
+		Ajde_Cache::getInstance()->addFile($image->getOriginalFilename());
+		
 		$image->resize($image->getHeight(), $image->getWidth(), $image->getCrop());		
 		Ajde::app()->getDocument()->setContentType($image->getMimeType());
 		$output = $image->getImage();

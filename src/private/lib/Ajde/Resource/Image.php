@@ -48,8 +48,8 @@ class Ajde_Resource_Image extends Ajde_Resource
 	
 	public function getFingerprint()
 	{
-		$w = $this->hasWidth() ? $this->getWidth() : null;
-		$h = $this->hasHeight() ? $this->getHeight() : null;
+		$w = $this->hasWidth() ? $this->getWidth(false) : null;
+		$h = $this->hasHeight() ? $this->getHeight(false) : null;
 		$array = array('s' => $this->_source, 'w' => $w, 'h' => $h, 'c' => $this->getCrop());
 		return $this->encodeFingerprint($array);
 	}
@@ -133,6 +133,11 @@ class Ajde_Resource_Image extends Ajde_Resource
 		$this->save($this->getGeneratedFilename($width, $height, $crop));
 	}
 	
+	public function getOriginalFilename()
+	{
+		return $this->_source;
+	}
+	
 	public function getFilename()
 	{
 		return $this->getGeneratedFilename();
@@ -170,11 +175,11 @@ class Ajde_Resource_Image extends Ajde_Resource
 		return $filename;
 	}
 	
-	public function getHeight()
+	public function getHeight($calculate = true)
 	{
 		if ($this->has('height') && !$this->isEmpty('height')) {
 			return $this->get('height');
-		} else {						
+		} else if ($calculate === true) {
 			$old_y=imageSY($this->getImageResource());
 			if ($this->has('width') && !$this->isEmpty('width')) {
 				$old_x=imageSX($this->getImageResource());
@@ -183,13 +188,14 @@ class Ajde_Resource_Image extends Ajde_Resource
 				return $old_y;				
 			}
 		}
+		return 0;
 	}
 	
-	public function getWidth()
+	public function getWidth($calculate = true)
 	{
 		if ($this->has('width') && !$this->isEmpty('width')) {
 			return $this->get('width');
-		} else {
+		} else if ($calculate === true) {
 			$old_x=imageSX($this->getImageResource());			
 			if ($this->has('height') && !$this->isEmpty('height')) {
 				$old_y=imageSY($this->getImageResource());
@@ -198,6 +204,7 @@ class Ajde_Resource_Image extends Ajde_Resource
 				return $old_x;				
 			}
 		}
+		return 0;
 	}
 		
 	public function resize($height, $width, $crop = true, $xCorrection = 0, $yCorrection = 0)

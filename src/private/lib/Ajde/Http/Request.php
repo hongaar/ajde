@@ -308,7 +308,9 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 			}
 			$this->_route = new Ajde_Core_Route($this->getRaw($routeKey));
 			foreach ($this->_route->values() as $part => $value) {
-				$this->set($part, $value);
+				if (!$this->hasNotEmpty($part)) {
+					$this->set($part, $value);
+				}
 			}
 		}
 		return $this->_route;
