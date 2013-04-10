@@ -1,3 +1,5 @@
+/*#!less*/
+
 body {
 	padding-top: 80px;
 }
@@ -6,8 +8,50 @@ body {
 	margin-bottom: 0.2em;
 }
 
+.menu-toggle {
+	margin: -19px -19px 0 0;
+}
+
+.row-fluid > div {
+	-webkit-transition: width 0.5s ease;
+    -moz-transition: width 0.5s ease;
+    -o-transition: width 0.5s ease;
+    transition: width 0.5s ease;
+	
+	&.no-animation {
+		-webkit-transition: none;
+		-moz-transition: none;
+		-o-transition: none;
+		transition: none;
+	}
+}
+
+.row-fluid .span0 {
+	width: 35px !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	overflow: hidden !important;	
+	
+	ul {
+		opacity: 0;
+		pointer-events: none;
+	}
+}
+
+.sidebar-nav {
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+
 @media (max-width: 979px) {
 	body {
 		padding-top: 0;
+	}
+}
+
+@media (max-width: 767px) {
+	.row-fluid .span0 {
+		height: 30px !important;
 	}
 }

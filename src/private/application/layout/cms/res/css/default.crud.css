@@ -1,0 +1,84 @@
+/*#!less*/
+
+table.crud {
+	
+    select, input {
+        margin-bottom: 0;
+        font-size: 0.8em;
+        color: #777;
+    }
+    
+    thead {
+        tr {
+           &.toolbar {
+                .delete {
+                    display: none;
+                    
+                    &.show {
+                        display: inline-block;
+                    }
+                }                
+            }
+            
+            th {
+                white-space: nowrap;
+                
+                &.main {
+                    width: 100%;
+                }
+            }
+        }
+    }
+    
+    tbody {
+        tr {
+            cursor: pointer;
+            
+            &.tDnD_whileDrag td {
+                background-color: #99ccff !important;
+            }
+            
+            td {
+                vertical-align: middle;
+                white-space: nowrap;
+                
+                &.main {
+                    font-weight: bold;
+                }
+                
+                &.sort {
+                    vertical-align: middle;
+                    text-align: center;
+                    cursor: move;
+                }
+
+                &.sort span {
+                    opacity: 0.4;
+                    filter: alpha(opacity=40);
+                }
+
+                &.sort:hover span {
+                    opacity: 1;
+                    filter: alpha(opacity=100);
+                }
+
+                &.sortDisabled {
+                    color: gray;
+                }                
+            }
+            
+            input.id {
+                margin: 0;
+            }
+        }
+    }
+    
+    tfoot {
+        .pagination .page {
+            width: 15px;
+        }
+        .pageSize {
+            width: 70px;
+        }
+    }
+}

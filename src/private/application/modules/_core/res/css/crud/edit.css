@@ -1,4 +1,4 @@
-dl.crudEdit {
+/* dl.crudEdit {
 	margin-bottom:50px;
 }
 
@@ -128,7 +128,7 @@ dl.crudEdit dd:hover span.help {
 
 }
 
-/* VALIDATION */
+
 
 dl.crudEdit dd.validation_error {
 	background-color: #e43c3c;
@@ -140,3 +140,5 @@ dl.crudEdit dd.validation_error div.validation_message {
 	text-transform: uppercase;
 	font-size: 0.7em;
 }
+
+*/

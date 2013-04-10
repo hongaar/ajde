@@ -25,6 +25,7 @@ AC.Crud.List = function() {
 			
 			$('form.ACCrudList td.buttons a.prev').live('click', AC.Crud.List.prevHandler);
 			$('form.ACCrudList td.buttons a.next').live('click', AC.Crud.List.nextHandler);
+            $('form.ACCrudList td.buttons a.page').live('click', AC.Crud.List.pageHandler);
 			$('form.ACCrudList td.buttons select.pageSize').live('change', AC.Crud.List.pageSizeHandler);
 			$('form.ACCrudList th a.order').live('click', AC.Crud.List.orderHandler);
 			$('form.ACCrudList th select.filter').live('change', AC.Crud.List.filterSelectHandler);
@@ -64,14 +65,14 @@ AC.Crud.List = function() {
 			e.stopPropagation();
 			var form = $(this).parents('form');
 			var data = form.serializeArray();
-			form.find('td.toolbar .button.multiple').removeClass('show');
+			form.find('td.toolbar .delete').removeClass('show');
 			form.find('input.toggleSelect').attr('checked', false); 
 			var count = 0;
 			for (elm in data) {
 				if (data[elm].name == 'id[]') {
 					form.find('input.toggleSelect').css('opacity', 0.45); 
 					form.find('input.toggleSelect').attr('checked', true); 
-					form.find('td.toolbar .button.multiple').addClass('show');
+					form.find('td.toolbar .delete').addClass('show');
 					count++;
 				}
 			}
@@ -225,6 +226,16 @@ AC.Crud.List = function() {
 			$page.val(parseInt($page.val()) + 1);
 			AC.Crud.List.updateView(this);
 		},
+                
+        pageHandler: function(e) {
+            if ($(this).hasClass('active')) {
+				return;
+			}
+			var form = $(this).parents('form');
+			var $page = form.find('input[name=\'view[page]\']');
+			$page.val(parseInt($(this).text()));
+			AC.Crud.List.updateView(this);
+        },
 		
 		pageSizeHandler: function(e) {
 			AC.Crud.List.resetPage(this);
@@ -295,7 +306,7 @@ AC.Crud.List = function() {
 			var url = document.location.href;
 			
 			$.get(url, data, function(response) {
-				form.html($(response).filter('form').html());
+				form.html($(response).find('form.ACCrudList').html());
 				form.find('tbody').css({opacity: 1});
 				AC.Crud.List.initMove();
 				if (typeof c == 'function') {

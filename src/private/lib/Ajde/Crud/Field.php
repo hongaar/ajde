@@ -136,12 +136,23 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
 	
 	public function getHtmlAttributes()
 	{
-		$attributes = '';
+		$attributes = array();
 		if (method_exists($this, '_getHtmlAttributes')) {
-			$attributes .= $this->_getHtmlAttributes();
+			$attributes = $this->_getHtmlAttributes();
 		}
-		$attributes .= ' name="' . $this->getName() . '" ';
-		return $attributes;
+		$attributes['name'] = $this->getName();
+        $attributes['id'] = 'in_' . $this->getName();
+        if (key_exists($attributes, 'class')) {
+            $attributes['class'] .= ' span12';
+        } else {
+            $attributes['class'] = 'span12';
+        }
+        
+        $text = '';
+        foreach ($attributes as $k => $v) {
+            $text .= $k . '="' . $v . '" ';
+        }
+		return $text;
 	}
 	
 	/**

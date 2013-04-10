@@ -8,7 +8,7 @@ class AdminNodeController extends AdminController
 		Ajde_Model::register('media');
 		Ajde_Model::register('tag');
 		
-		Ajde::app()->getDocument()->setTitle("Nodes overview");
+		Ajde::app()->getDocument()->setTitle("Nodes");
 		return $this->render();
 	}
 }

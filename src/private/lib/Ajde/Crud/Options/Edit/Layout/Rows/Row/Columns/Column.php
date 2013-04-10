@@ -40,6 +40,7 @@ class Ajde_Crud_Options_Edit_Layout_Rows_Row_Columns_Column extends Ajde_Crud_Op
 	 * 
 	 * @param integer $pixels
 	 * @return Ajde_Crud_Options_Edit_Layout_Rows_Row_Columns_Column
+     * @deprecated
 	 */
 	public function setWidth($pixels) { return $this->_set('width', $pixels); }
 	
@@ -48,6 +49,15 @@ class Ajde_Crud_Options_Edit_Layout_Rows_Row_Columns_Column extends Ajde_Crud_Op
 	 * 
 	 * @param enum $align ('left'|'right')
 	 * @return Ajde_Crud_Options_Edit_Layout_Rows_Row_Columns_Column
+     * @deprecated
 	 */
 	public function setAlign($alignment) { return $this->_set('align', $alignment); }
+    
+    /**
+	 * Sets the column span in columns (12-based)
+	 * 
+	 * @param integer $columns
+	 * @return Ajde_Crud_Options_Edit_Layout_Rows_Row_Columns_Column
+	 */
+	public function setSpan($columns) { return $this->_set('span', $columns); }
 }

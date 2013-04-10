@@ -14,11 +14,17 @@ $this->requireJsPublic('lib/bootstrap.min.js');
 // jqBootstrapValidation.js
 $this->requireJsPublic('lib/jqBootstrapValidation.js');
 
+// jQuery cookie
+$this->requireJsPublic('lib/jquery.cookie.js');
+
 // Some JavaScript i18n
 $this->requireJsFirst('i18n.' . Ajde_Lang::getInstance()->getShortLang());
 
 // Alert bar
 $this->requireJsFirst('core.alert'); $this->requireCssFirst('core.alert');
+
+// Additional CSS
+$this->requireCss('default.crud');
 
 ?>
 <!-- Inspired by HTML5 Boilerplate -->

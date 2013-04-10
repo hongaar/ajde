@@ -28,7 +28,7 @@ class NodeModel extends Ajde_Model
 		$this->added = new Ajde_Db_Function("NOW()");
 
 		// Sort
-		$collection = new PostCollection();
+		$collection = new NodeCollection();
 		$min = 9999;
 		foreach($collection as $item) {
 			$min = ($item->sort < $min) ? $item->sort : $min;

@@ -4,126 +4,102 @@ $crud = $this->crud;
 $editOptions = $crud->getOptions('edit');
 ?>
 
-<div class='crudLayout'>
-	
-	<?php
-	
-	echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrudEdit');
-	
-	?>
-	
-	<dl class='crudEdit toolbar'>
-		
-		<dd class='toolbar'>
-			<button type="submit" class="button save">Save &amp; back</button>
-			<button type="submit" class="button apply">Apply</button>
-			<a href="javascript:void(null);" class='button cancel'>Cancel</a>
-		</dd>
-		
-		<div class='clearfix'></div>
-	</dl>
-	
-	<?php
-	
-	$rows = $crud->getOption('edit.layout.rows');	
-	$fieldsShown = array();
-	foreach($rows as $row) {
-		$columns = $row['columns'];
-		?>
 
-		<div class='row'>
-			
-		<?php
-		foreach($columns as $key => $column) {
-			
-			// Styles
-			$width = isset($column['width']) ? $column['width'] . 'px' : '100%';
-			$alignment = issetor($column['align'], 'left');
-			$negIndent = '';
-			$posIndent = '';
-			if (isset($columns[$key + 1])) {
-				$nextCol = $columns[$key + 1];
-				if (isset($nextCol['align']) && $nextCol['align'] === 'right') {
-					$negIndent = 'margin-right: -' . $nextCol['width'] . 'px;';
-					$posIndent = 'margin-right: ' . $nextCol['width'] . 'px;';
-				}				
-			}
-			?>
-			
-			<div class='column' style='width: <?php echo $width; ?>; float: <?php echo $alignment; ?>; <?php echo $negIndent; ?>'>
-				<div style='<?php echo $posIndent; ?>;'>
-				
-			<?php
-			$blocks = $column['blocks'];
-			foreach($blocks as $block) {
-				$fieldsToShow = $block['show'];
-				$className = $block['class'];
-				?>
+<?php echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrudEdit form-horizontal');?>
 
-				<dl class='crudEdit block <?php echo $className; ?>'>
-					
-					<?php if (isset($block['title'])) { ?>
-						<dt class='title'><?php echo $block['title']; ?></dt>
-					<?php } ?>
+    <div class="form-actions">
 
-					<?php foreach($fieldsToShow as $fieldName) {
-						
-						$fieldsShown[] = $fieldName;
-						$field = $crud->getField($fieldName, false);
-						if (!$field) {
-							// Dynamically create a text field and fill with value from Model (if available)
-							$field = $crud->createField($crud->getFieldOptions($fieldName, array(
-								'name' => $fieldName,
-								'type' => 'text',
-								'length' => 255,
-								'default' => '',
-								'label' => ucfirst($fieldName),
-								'isRequired' => false,
-								'isPK' => false,				
-								'isAutoIncrement' => false,
-								'isAutoUpdate' => false,
-								'value' => $crud->getModel()->{"has".ucfirst($fieldName)}() ? $crud->getModel()->{"get".ucfirst($fieldName)}() : false
-							)));
-						}
-						
-						echo $field->getHtml();
-						
-					} ?>
-					<div class='clearfix'></div>
-				</dl>
+        <button type="submit" class="btn btn-success save">Save &amp; back</button>
+        <button type="submit" class="btn btn-primary apply">Apply</button>
+        <a href="javascript:void(null);" class='btn btn-danger pull-right cancel'>Cancel</a>
 
-				<?php
-			} ?>
-				</div>
-			</div>
-			<?php
-		} ?>			
-		</div>
-		<?php
-	}
-	
-	?>
-	
-	<div class='hidden'>
-	<?php foreach($crud->getFields() as $field) {
-		if (!in_array($field->getName(), $fieldsShown)) {
-			echo $field->getInput();
-		}
-	} ?>
-	</div>
-		
-	<dl class='crudEdit toolbar'>
-		
-		<dd class='toolbar last'>
-			<button type="submit" class="button save">Save &amp; back</button>
-			<button type="submit" class="button apply">Apply</button>
-			<a href="javascript:void(null);" class='button cancel'>Cancel</a>
-		</dd>
-		
-		<div class='clearfix'></div>
-	</dl>
+    </div>
+
+    <?php
+
+    $rows = $crud->getOption('edit.layout.rows');	
+    $fieldsShown = array();
+    foreach($rows as $row) {
+        $columns = $row['columns'];
+        ?>
+
+        <div class='row-fluid'>
+
+        <?php
+        foreach($columns as $key => $column) {
+
+            // Styles
+            $span = isset($column['span']) ? $column['span'] : '12';
+            ?>
+
+            <div class='column span<?php echo $span; ?>'>
+
+            <?php
+            $blocks = $column['blocks'];
+            foreach($blocks as $block) {
+                $fieldsToShow = $block['show'];
+                $className = $block['class'];
+                ?>
+
+                <fieldset class='<?php echo $className; ?>'>
+
+                    <?php if (isset($block['title'])) { ?>
+                        <div class="controls">
+                            <legend><?php echo $block['title']; ?></legend>
+                        </div>
+                    <?php } ?>
+
+                    <?php foreach($fieldsToShow as $fieldName) {
+
+                        $fieldsShown[] = $fieldName;
+                        $field = $crud->getField($fieldName, false);
+                        if (!$field) {
+                            // Dynamically create a text field and fill with value from Model (if available)
+                            $field = $crud->createField($crud->getFieldOptions($fieldName, array(
+                                'name' => $fieldName,
+                                'type' => 'text',
+                                'length' => 255,
+                                'default' => '',
+                                'label' => ucfirst($fieldName),
+                                'isRequired' => false,
+                                'isPK' => false,				
+                                'isAutoIncrement' => false,
+                                'isAutoUpdate' => false,
+                                'value' => $crud->getModel()->{"has".ucfirst($fieldName)}() ? $crud->getModel()->{"get".ucfirst($fieldName)}() : false
+                            )));
+                        }
+                        echo $field->getHtml();
+                    } ?>
+                        
+                </fieldset>
+
+                <?php
+            } ?>
+
+            </div> <!-- /span -->
+            <?php
+        } ?>			
+        </div> <!-- /row -->
+        <?php
+    }
+
+    ?>
+
+    <div class='hidden'>
+    <?php foreach($crud->getFields() as $field) {
+        if (!in_array($field->getName(), $fieldsShown)) {
+            echo $field->getInput();
+        }
+    } ?>
+    </div>
+
+    <div class="form-actions">
+
+        <button type="submit" class="btn btn-success save">Save &amp; back</button>
+        <button type="submit" class="btn btn-primary apply">Apply</button>
+        <a href="javascript:void(null);" class='btn btn-danger pull-right cancel'>Cancel</a>
+
+    </div>
 
 
-	</form>
-
-</div>
+</form>
