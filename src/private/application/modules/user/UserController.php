@@ -54,7 +54,7 @@ class UserController extends Ajde_User_Controller
 		} else {
 			$user = new UserModel();
 			$this->setAction('logon');
-			$message = Ajde::app()->getRequest()->getParam('message', 'Please login');
+//			$message = Ajde::app()->getRequest()->getParam('message', 'Please login');
 			$this->getView()->assign('message', $message);
 			$this->getView()->assign('user', $user);
 			$this->getView()->assign('returnto', Ajde::app()->getRequest()->getParam('returnto', $_SERVER['REDIRECT_STATUS'] == 200 ? 'user' : false));
@@ -81,7 +81,7 @@ class UserController extends Ajde_User_Controller
 		} else {
 			$return = array(
 				'success' => false,
-				'message' => __("Logon not successful")
+				'message' => __("We could not log you in with these credentials")
 			);			
 		}		
 		return $return;

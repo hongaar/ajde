@@ -16,7 +16,7 @@ abstract class Ajde_Acl_Controller extends Ajde_User_Controller
 			Ajde_Model::register($model);
 		}
 		if (!in_array($this->getAction(), $this->_allowedActions) && $this->hasAccess() === false) {
-			Ajde::app()->getRequest()->set('message', __('Please login to continue / No access'));
+			Ajde::app()->getRequest()->set('message', __('Not authorized. Please login to continue'));
 			Ajde::app()->getResponse()->dieOnCode(Ajde_Http_Response::RESPONSE_TYPE_UNAUTHORIZED);
 		} else {
 			return true;

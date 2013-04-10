@@ -7,6 +7,18 @@
 		<?php echo $this->includeModule('admin/cms:menu'); ?>		
 	</div><!--/span-->
 	<div class="span9">
-		<h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
+		
+		<div class="page-header">
+			<h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
+		</div>
+		
+		<p class="lead">
+			Nodes are content items on the site. They could be pages, blog posts, events or forms. Anything, really.
+		</p>
+		<p>
+			<a href="admin/node:view" class="btn btn-primary btn-large">Nodes overview &raquo;</a>
+			<a href="admin/node:new" class="btn btn-primary btn-large">Add node &raquo;</a>
+		</p>
+		
 	</div><!--/span-->
 </div><!--/row-->

@@ -2,6 +2,10 @@ body {
 	padding-top: 80px;
 }
 
+.hero-unit h1 {
+	margin-bottom: 0.2em;
+}
+
 @media (max-width: 979px) {
 	body {
 		padding-top: 0;

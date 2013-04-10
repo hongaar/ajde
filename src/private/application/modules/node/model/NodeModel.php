@@ -1,6 +1,6 @@
 <?php
 
-class PostModel extends Ajde_Model
+class NodeModel extends Ajde_Model
 {
 	protected $_autoloadParents = true;
 	protected $_displayField = 'name';

@@ -6,17 +6,20 @@ $(document).ready(function() {
 		61: 'Strong',
 		41: 'Average',
 		1: 'Too weak',
-		0: '&nbsp;'		
+		0: 'Unsafe password'		
 	}
 
 	$("input[name=password]").complexify({
 			minimumChars		: 8,
-			strengthScaleFactor	: 0.7,
+			strengthScaleFactor	: 0.5,
 			bannedPasswords		: complexify.banlist,
 			banmode				: 'loose',
 			preventSubmit		: false
 		}, function (valid, complexity) {
 			$(this).closest('form').data('valid', valid);
+			
+			if (!$(this).val().length) return;
+			
 			$('div.complexity .progress').css({'width':complexity + '%'});
 			if (!valid) {
 				$('div.complexity').removeClass('valid').addClass('invalid');
@@ -58,8 +61,8 @@ $(document).ready(function() {
 	});
 	
 	$('#registerform').bind('submit', function(event) {
-		$('.give-status').removeClass('error');
-		$('.status-text').text('Registering...');
+//		$('.give-status').removeClass('error');
+//		$('.status-text').text('Registering...');
 		return true;
 	});
 	
