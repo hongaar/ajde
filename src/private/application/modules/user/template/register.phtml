@@ -1,4 +1,4 @@
-<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ 
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */
 
 $this->requireJsPublic('lib/complexify/jquery.complexify.banlist.js');
 $this->requireJsPublic('lib/complexify/jquery.complexify.min.js');
@@ -12,12 +12,12 @@ $this->requireJsPublic('lib/complexify/jquery.complexify.min.js');
 	<dl class='form wide'>
 		<dt>&nbsp;</dt>
 		<dd class="status"><?php echo __('Please fill in your details') ?></dd>
-		
+
 		<dt><?php echo __(ucfirst($this->user->usernameField)); ?></dt>
 		<dd>
 			<input type="text" name="<?php echo $this->user->usernameField; ?>" placeholder="" required />
 		</dd>
-		
+
 		<dt><?php echo __(ucfirst($this->user->passwordField)); ?></dt>
 		<dd>
 			<input type="password" name="password" placeholder="****" required />
@@ -26,25 +26,25 @@ $this->requireJsPublic('lib/complexify/jquery.complexify.min.js');
 				<div class='class'></div>
 			</div>
 		</dd>
-		
+
 		<dt><?php echo __('Verify') . ' ' . __($this->user->passwordField); ?></dt>
 		<dd>
 			<input type="password" name="passwordCheck" placeholder="****" required />
 		</dd>
-		
+
 		<dt><?php echo __('E-mail'); ?></dt>
 		<dd>
-			<input type="text" name="email" required />
+			<input type="email" name="email" required />
 		</dd>
-		
+
 		<dt><?php echo __('Full name'); ?></dt>
 		<dd>
 			<input type="fullname" name="fullname" required />
 		</dd>
-			
+
 		<dd>
 			<input type="submit" value="<?php echo __('Register'); ?>" />
-		</dd>	
+		</dd>
 	</dl>
 
 </form>

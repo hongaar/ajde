@@ -62,6 +62,17 @@ class Config_Application extends Config_Advanced
 
 	//public $bootstrap;
 
+    public $apiKeys = array(
+        'google' => ''        
+    );
+
+	function __construct() {
+		parent::__construct();
+		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+			$this->sessionSavepath = '~/private/var/tmp'; // '~' gets replaced with local_root
+		}
+	}
+
 	public function getParentClass()
 	{
 		return strtolower(str_replace('Config_', '', get_parent_class('Config_Application')));

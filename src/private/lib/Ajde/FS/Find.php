@@ -31,6 +31,9 @@ class Ajde_FS_Find extends Ajde_Object_Static
 	 * @return array
 	 */
 	public static function mkglobi($array) {
+		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+			return $array;
+		}
 		$ret = array();
 		foreach($array as $extension) {
 			$item = '';

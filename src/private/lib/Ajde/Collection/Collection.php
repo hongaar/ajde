@@ -326,7 +326,11 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 					break;
 			}
 		}
-		$this->addFilter($searchFilter);		
+        if ($searchFilter->hasFilters()) {
+            $this->addFilter($searchFilter);
+        } else {
+            $this->addFilter(new Ajde_Filter_Where('true', '=', 'false'));
+        }
 	}
 	
 	public function getSql()

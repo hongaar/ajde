@@ -14,6 +14,11 @@ class Ajde_Filter_WhereGroup extends Ajde_Filter
 	{
 		$this->_filters[] = $filter;
 	}
+    
+    public function hasFilters()
+    {
+        return !empty($this->_filters);
+    }
 	
 	public function prepare(Ajde_Db_Table $table = null)
 	{

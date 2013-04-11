@@ -63,9 +63,18 @@ $field = $this->field;
 			</tr>
 			<?php foreach($field->getChildren() as $child) {
 				/* @var $child Ajde_Model */ ?>
+		                <?php $child->loadParents(); ?>
 				<tr data-id='<?php echo $child->getPK(); ?>'>
 					<td><?php echo $child->getPK(); ?></td>
-					<td class='main'><?php echo $child->get($child->getDisplayField()); ?></td>
+					<td class='main'>
+                        			<?php 
+                       				$value = $child->get($child->getDisplayField());
+                        			if ($value instanceof Ajde_Model && $value->hasLoaded()) {
+                        			    echo $value->get($value->getDisplayField());
+                        			} else {
+		                      	      echo $value;   
+                		     	   } ?>
+			                </td>
 					<?php if ($field->hasTableFields()) {
 						foreach ($field->getTableFields() as $extraField) { 
 							$value	= $child->get($extraField['name']);
@@ -90,7 +99,14 @@ $field = $this->field;
 									<?php } ?>
 								</td>
 							<?php } else { ?>
-								<td><?php echo $child->get($extraField['name']); ?></td>
+                                			<td>
+                                				<?php $value = $child->get($extraField['name']);
+                                				if ($value instanceof Ajde_Model && $value->hasLoaded()) {
+                                				    echo $value->get($value->getDisplayField());
+                                				} else {
+                                				    echo $value;
+                                				} ?>								
+                                			</td>
 							<?php }
 						} 
 					} ?>

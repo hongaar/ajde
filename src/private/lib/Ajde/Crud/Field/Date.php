@@ -1,7 +1,7 @@
 <?php
 
 class Ajde_Crud_Field_Date extends Ajde_Crud_Field
-{	
+{
 	protected function prepare()
 	{
 		if (
@@ -11,15 +11,18 @@ class Ajde_Crud_Field_Date extends Ajde_Crud_Field
 			$this->setReadonly(true);
 		}
 	}
-	
+
 	protected function _getHtmlAttributes()
 	{
 		$attributes = '';
-		$attributes .= ' type="text" ';
-		$attributes .= ' value="' . Ajde_Component_String::escape($this->getValue()) . '" ';
 		if ($this->hasReadonly() && $this->getReadonly() === true) {
-			$attributes .= ' readonly="readonly" ';	
-		}		
-		return $attributes;		
+			$attributes .= ' value="' . Ajde_Component_String::escape( $this->getValue() ) . '" ';
+			$attributes .= ' type="text" ';
+			$attributes .= ' readonly="readonly" ';
+		} else {
+			$attributes .= ' value="' . Ajde_Component_String::escape( date('Y-m-d', strtotime($this->getValue()) ) ) . '" ';
+			$attributes .= ' type="date" ';
+		}
+		return $attributes;
 	}
 }

@@ -11,6 +11,7 @@ div.filelist a.imagePreview.img {
 }
 
 div.filebrowser {
+	float: left;
 	margin-top: 10px;
 }
 
@@ -25,7 +26,8 @@ div.browser {
 	margin-top: 10px;
 }
 
-div.browser > a {
+div.browser > a,
+div.browser .results > a {
 	background-color: white;
 	display: block;
 	float: left;
@@ -37,12 +39,14 @@ div.browser > a {
 	position: relative;
 }
 
-div.browser > a:hover {
+div.browser > a:hover,
+div.browser .results > a:hover {
 	background-color: #F9F9F9;
 	cursor: pointer;
 }
 
-div.browser > a span.icon {
+div.browser > a span.icon,
+div.browser .results > a span.icon {
 	width: 33px;
 	height: 33px;
 	padding: 17px 0 0 17px;
@@ -51,18 +55,21 @@ div.browser > a span.icon {
 	vertical-align: middle;
 }
 
-div.browser > a img.thumb {
+div.browser > a img.thumb,
+div.browser .results > a img.thumb {
 	vertical-align: middle;
 	margin-right: 5px;
 }
 
-div.browser > a.active {
+div.browser > a.active,
+div.browser .results > a.active {
 	background-color: #eee;
 	border: 1px solid #6FBE15;
 	outline: 2px solid #c6ed9a;
 }
 
-div.browser > a span.filename {
+div.browser > a span.filename,
+div.browser .results > a span.filename {
 	text-overflow: ellipsis;
 	max-width: 220px;
 	display: inline-block;
@@ -70,7 +77,8 @@ div.browser > a span.filename {
 	white-space: nowrap;
 }
 
-div.browser > a span.preview {
+div.browser > a span.preview,
+div.browser .results > a span.preview {
 	display: none;
 	position: absolute;
 	right: 5px;
@@ -78,14 +86,28 @@ div.browser > a span.preview {
 	color: gray;
 }
 
-div.browser > a.active span.preview {
+div.browser > a.active span.preview,
+div.browser .results > a.active span.preview {
 	background-color: #eee;
 }
 
-div.browser > a:hover span.preview {
+div.browser > a:hover span.preview,
+div.browser .results > a:hover span.preview {
 	display: inherit;
 }
 
-div.browser > a span.preview:hover {
+div.browser > a span.preview:hover,
+div.browser .results > a span.preview:hover {
 	text-decoration: underline;
+}
+
+div.webbrowser {
+    float: left;
+    margin-top: 4px;
+}
+
+div.webbrowser input.webimage {
+    width: 250px !important;
+    margin: 10px;
+    padding: 2px;
 }
