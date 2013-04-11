@@ -142,7 +142,7 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
 		}
 		$attributes['name'] = $this->getName();
         $attributes['id'] = 'in_' . $this->getName();
-        if (key_exists($attributes, 'class')) {
+        if (key_exists('class', $attributes)) {
             $attributes['class'] .= ' span12';
         } else {
             $attributes['class'] = 'span12';

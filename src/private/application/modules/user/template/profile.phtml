@@ -1,11 +1,30 @@
-<h2>
-	Profile: <?php echo $this->clean($this->user->fullname); ?>
-</h2>
+<div class="row-fluid">
+	<div class="span2">
+		<div class="well sidebar-nav">
+            <a class="menu-toggle btn btn-normal pull-right"><i class="icon-resize-small"></i></a>
+            <ul class="nav nav-list">
+                <li class="nav-header">User account</li>
+                <li><a href="user/profile"><i class="icon-user"></i> Profile</a></li>
+                <li><a href="user/settings"><i class="icon-cog"></i> Settings</a></li>
+                <li class="divider"></li>
+                <li><a href="user/logoff"><i class="icon-share-alt"></i> Log off</a></li>
+            </ul>
+        </div><!--/.well -->
+	</div><!--/span-->
+	<div class="span10">
+		
+        <div class='page-header'>
+            <?php echo Ajde_Resource_Image_Gravatar::get($this->user->email, 90, 'identicon', 'g', true, array('class' => 'pull-left')); ?> &nbsp;
+            <h1> &nbsp; <?php echo $this->clean($this->user->fullname); ?></h1>
+        </div>
 
-<p>
-	E-mail address: <?php echo $this->clean($this->user->email); ?>
-</p>
+        <dl class="dl-horizontal">
+            <dt>E-mail address</dt>
+            <dd><?php echo $this->clean($this->user->email); ?></dd>
 
-<p>
-	<a class='btn btn-danger' href='user/logoff.html'>Log off</a>
-</p>
+            <dt>Full name</dt>
+            <dd><?php echo $this->clean($this->user->fullname); ?></dd>
+        </dl>
+    </div>
+</div>
+

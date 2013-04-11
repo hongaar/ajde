@@ -173,10 +173,17 @@ abstract class Ajde_User extends Ajde_Model
 		}
 	}
 	
-	public function checkChangeEmail($newEmail)
+	public function canChangeEmailTo($newEmail)
 	{
 		$values = array($newEmail, $this->getPK());
 		$sql = 'SELECT * FROM '.$this->_table.' WHERE email = ? AND id != ? LIMIT 1';
-		return $this->_load($sql, $values);
+		return !$this->_load($sql, $values);
+	}
+    
+    public function canChangeUsernameTo($newUsername)
+	{
+		$values = array($newUsername, $this->getPK());
+		$sql = 'SELECT * FROM '.$this->_table.' WHERE ' . $this->usernameField . ' = ? AND id != ? LIMIT 1';
+		return !$this->_load($sql, $values);
 	}
 }

@@ -38,6 +38,96 @@ class UserController extends Ajde_User_Controller
 		
 		return $this->render();
 	}
+    
+    // Settings
+	public function settingsHtml()
+	{
+		$user = $this->getLoggedInUser();
+		$this->getView()->assign('user', $user);
+		
+		return $this->render();
+	}
+    
+    public function settingsJson()
+	{
+		$user = $this->getLoggedInUser();
+        
+        if (!$user) {
+            $return = array(
+				'success' => false,
+				'message' => __("Not logged in")
+			);	
+        }
+		
+		$returnto		= 'user/profile';
+		
+		$username		= Ajde::app()->getRequest()->getPostParam($user->usernameField);
+		$password		= Ajde::app()->getRequest()->getPostParam('password');
+		$passwordCheck	= Ajde::app()->getRequest()->getPostParam('passwordCheck');
+		$email			= Ajde::app()->getRequest()->getPostParam('email', false);
+		$fullname		= Ajde::app()->getRequest()->getPostParam('fullname', false);
+		
+		$return = array(false);
+        
+		if (empty($username)) {
+			$return = array(
+				'success' => false,
+				'message' => __("Please provide a ".$user->usernameField)
+			);	
+		} else if (!$user->canChangeUsernameTo($username)) {
+			$return = array(
+				'success' => false,
+				'message' => __(ucfirst($user->usernameField) . " already exist")
+			);	
+		} else if ($password && $password !== $passwordCheck) {
+			$return = array(
+				'success' => false,
+				'message' => __("Passwords do not match")
+			);
+		} else if (empty($email)) {
+			$return = array(
+				'success' => false,
+				'message' => __("Please provide an e-mail address")
+			);
+		} else if (Ajde_Component_String::validEmail($email) === false) {
+			$return = array(			
+				'success' => false,
+				'message' => __('Please provide a valid e-mail address')
+			);
+		} else if (!$user->canChangeEmailTo($email)) {
+			$return = array(
+				'success' => false,
+				'message' => __("A user with this e-mail address already exist")
+			);	
+		} else if (empty($fullname)) {
+			$return = array(
+				'success' => false,
+				'message' => __("Please provide a full name")
+			);			
+		} else {
+            $user->set($user->usernameField, $username);
+			$user->set('email', $email);
+			$user->set('fullname', $fullname);
+            if ($password) {
+                $hash = $user->createHash($password);                
+                $user->set($user->passwordField, $hash);
+            }
+            if ($user->save()) {                
+                $user->login();
+                Ajde_Session_Flash::alert(__('Your settings have been saved'));
+                $return = array(
+                    'success' => true,
+                    'returnto' => $returnto
+                );
+			} else {
+				$return = array(
+					'success' => false,
+					'message' => __("Something went wrong")
+				);	
+			}			
+		}
+		return $return;
+	}
 	
 	// Logon
 	public function logonHtml()
@@ -74,6 +164,7 @@ class UserController extends Ajde_User_Controller
 		
 		if (false !== $user->loadByCredentials($username, $password)) {
 			$user->login();
+            Ajde_Session_Flash::alert(sprintf(__('Welcome back %s'), $user->fullname));
 			if ($rememberme === true) {
 				$user->storeCookie();
 			}
@@ -175,7 +266,7 @@ class UserController extends Ajde_User_Controller
 			$user->set('fullname', $fullname);
 			if ($user->add($username, $password)) {
 				$user->login();
-				Ajde_Session_Flash::alert(sprintf(__('Welcome %s, you are now logged in.'), $fullname));
+				Ajde_Session_Flash::alert(sprintf(__('Welcome %s, you are now logged in'), $fullname));
 				$return = array(
 					'success' => true,
 					'returnto' => $returnto

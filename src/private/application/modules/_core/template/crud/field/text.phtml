@@ -1,5 +1,5 @@
 <?php 
-/* @var $field Ajde_Crud_Field */
+/* @var $field Ajde_Crud_Field_Text */
 $field = $this->field;
 ?>
 
@@ -7,8 +7,10 @@ $field = $this->field;
 
 <textarea
 	<?php if ($field->hasDisableRichText() && $field->getDisableRichText()) {
-		echo 'class=\'noRichText\'';
-	} ?>
+		echo 'class=\'noRichText span12\'';
+	} else {
+        echo 'class=\'span12\'';
+    } ?>
 	style='<?php if ($field->hasTextInputHeight()) {
 		echo 'height: '. $field->getTextInputHeight() . 'em !important;';
 	} if ($field->hasTextInputWidth()) {

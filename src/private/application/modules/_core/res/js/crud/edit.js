@@ -57,7 +57,7 @@ AC.Crud.Edit = function() {
 		},
 		
 		saveHandler: function(e, returnTo) {
-			returnTo = returnTo || 'list';
+			returnTo = typeof(returnTo) === 'undefined' ? 'list' : returnTo;
 			var form = $(this).parents('form.ACCrudEdit');
 			var disableOnSave = 'button.save, button.apply, button.cancel';
 			
@@ -141,7 +141,13 @@ AC.Crud.Edit = function() {
 							parent.AC.Crud.Edit.Multiple.newSaved(data.id, data.displayField);
 						}
 					} else {
-						window.location.href = window.location.pathname + '?' + returnTo + '=' + data.id;
+                        if (returnTo) {
+                            window.location.href = window.location.pathname + '?' + returnTo + '=' + data.id;
+                        } else {
+                            $('body').removeClass('loading');
+                            form.find(disableOnSave).attr('disabled', null);
+                            AC.Core.Alert.flash('Record saved');
+                        }
 					}
 				}
 			}, 'json').error(function(jqXHR, message, exception) {

@@ -21,10 +21,14 @@ $this->requireJsPublic('lib/jquery.cookie.js');
 $this->requireJsFirst('i18n.' . Ajde_Lang::getInstance()->getShortLang());
 
 // Alert bar
-$this->requireJsFirst('core.alert'); $this->requireCssFirst('core.alert');
+$this->requireJsFirst('core.alert');
+$this->requireCssFirst('core.alert');
 
 // Additional CSS
 $this->requireCss('default.crud');
+
+// The user
+$user = UserModel::getLoggedIn();
 
 ?>
 <!-- Inspired by HTML5 Boilerplate -->
@@ -88,13 +92,16 @@ $this->requireCss('default.crud');
 					</button>
 					<a class="brand" href="admin"><?php echo Config::get('sitename'); ?></a>
 					<div class="nav-collapse collapse">
-						<?php if (UserModel::getLoggedIn()) { ?>
+						<?php if ($user) { ?>
 							<ul class="nav pull-right">
 								<li class="dropdown">
-									<a class="dropdown-toggle" data-toggle="dropdown" href="user"><?php echo UserModel::getLoggedIn()->getUsername(); ?> <b class="caret"></b></a>
+									<a class="dropdown-toggle" data-toggle="dropdown" href="user">
+                                        <?php echo Ajde_Resource_Image_Gravatar::get($user->getEmail(), 18, 'identicon', 'g', true); ?> &nbsp;
+                                        <?php echo $user->getUsername(); ?> <b class="caret"></b>
+                                    </a>
 									<ul class="dropdown-menu">
 										<li><a href="user">Profile</a></li>
-										<li><a href="#">Settings</a></li>
+										<li><a href="user/settings">Settings</a></li>
 										<li class="divider"></li>
 										<li><a href="user/logoff">Log out</a></li>
 									</ul>
@@ -120,7 +127,7 @@ $this->requireCss('default.crud');
 								</ul>
 							</li>
 							
-							<?php if (UserModel::getLoggedIn() && UserModel::getLoggedIn()->getUsergroup() == UserModel::USERGROUP_ADMINS) { ?>
+							<?php if ($user && $user->getUsergroup() == UserModel::USERGROUP_ADMINS) { ?>
 								<li class="dropdown">
 									<a class="dropdown-toggle" data-toggle="dropdown" href="admin/nodes">Meta management <b class="caret"></b></a>
 									<ul class="dropdown-menu">
@@ -129,7 +136,7 @@ $this->requireCss('default.crud');
 									</ul>
 								</li>
 							<?php } ?>
-							<li><a href="admin">View site</a></li>
+							<li><a href="./">View site</a></li>
 						</ul>
 					</div><!--/.nav-collapse -->
 				</div>

@@ -1,5 +1,21 @@
 /*#!less*/
 
+fieldset.crud {
+    input.emphasis[type=text] {
+        font-size: 1.5em;
+        height: auto;
+    }
+    
+    textarea {
+    	height: 20em;
+    }
+    
+    textarea.noRichText {
+    	height: 10em;
+    }
+
+}
+
 table.crud {
 	
     select, input {

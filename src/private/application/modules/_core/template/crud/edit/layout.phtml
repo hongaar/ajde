@@ -4,7 +4,6 @@ $crud = $this->crud;
 $editOptions = $crud->getOptions('edit');
 ?>
 
-
 <?php echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrudEdit form-horizontal');?>
 
     <div class="form-actions">
@@ -41,7 +40,7 @@ $editOptions = $crud->getOptions('edit');
                 $className = $block['class'];
                 ?>
 
-                <fieldset class='<?php echo $className; ?>'>
+                <fieldset class='crud <?php echo $className; ?>'>
 
                     <?php if (isset($block['title'])) { ?>
                         <div class="controls">
