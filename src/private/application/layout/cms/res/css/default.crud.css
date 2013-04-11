@@ -13,7 +13,33 @@ fieldset.crud {
     textarea.noRichText {
     	height: 10em;
     }
+    
+    &.sidebar {
+        
+    }
+    
+    &:last-child {
+        margin-bottom: 0;
+    }
 
+}
+
+@media (max-width: 1200px) {
+    .form-horizontal .form-actions {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+    
+    .form-horizontal .control-label {
+        float: none;
+        width: auto;
+        padding-top: 0;
+        text-align: left;
+    }
+    
+    .form-horizontal .controls {
+        margin-left: 0;
+    }
 }
 
 table.crud {
