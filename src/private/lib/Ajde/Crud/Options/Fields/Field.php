@@ -243,4 +243,14 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 		$fields[] = array('name' => $field, 'type' => 'file', 'saveDir' => $saveDir);
 		return $this->_set('tableFields', $fields);
 	}
+    
+    /**
+	 * Use an image for spatial field instead of Google Maps
+	 * 
+	 * @param boolean $image
+	 * @return Ajde_Crud_Options_Fields_Field 
+	 */
+    public function setUseImage($image) {
+        return $this->_set('useImage', $image);
+    }
 }

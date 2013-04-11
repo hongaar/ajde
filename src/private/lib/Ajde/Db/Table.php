@@ -31,11 +31,16 @@ class Ajde_Db_Table extends Ajde_Object_Standard
 			$fieldDefault			= $field['Default'];			
 			$fieldLabel				= !empty($field['Comment']) ? $field['Comment'] : $field['Field'];
 			
-			$fieldIsRequired		= $field['Null'] === 'NO';
-			$fieldIsPK				= $field['Key'] === 'PRI';
-			$fieldIsAutoIncrement	= $field['Extra'] === 'auto_increment';
-			$fieldIsAutoUpdate		= $field['Extra'] === 'on update CURRENT_TIMESTAMP'; 
+			$fieldIsRequired		= strtoupper($field['Null']) === 'NO';
+			$fieldIsPK				= strtoupper($field['Key']) === 'PRI';
+			$fieldIsAutoIncrement	= strtolower($field['Extra']) === 'auto_increment';
+			$fieldIsAutoUpdate		= strtolower($field['Extra']) === 'on update current_timestamp'; 
 			
+            // Fix for certain MySQL versions
+            if (strtolower($fieldDefault) === 'current_timestamp') {
+                $fieldIsAutoUpdate = true;
+            }
+            
 			$this->_fields[$fieldName] = array(
 				'name' => $fieldName,
 				'dbtype' => $fieldType,

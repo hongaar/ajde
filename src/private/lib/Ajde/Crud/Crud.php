@@ -207,6 +207,7 @@ class Ajde_Crud extends Ajde_Object_Standard
 	public function getItem()
 	{
 		if ($this->isNew()) {
+            Ajde_Event::trigger($this->getModel(), 'afterCrudLoaded');
 			return $this->getModel();
 		}
 		if (!$this->getModel()->getPK()) {

@@ -19,7 +19,7 @@ AC.Form.Upload = function() {
 					minSizeLimit: 0,
 					onSubmit: function(id, fileName) {
 						// Disable save button
-						elm.parents('form').find('button.save').attr('disabled', 'disabled');
+						elm.parents('form').find('button.save, button.apply').attr('disabled', 'disabled');
 						// Disable upload button
 						if (elm.attr('data-multiple') == '0') {
 //							elm.find('.qq-upload-button').hide();
@@ -29,11 +29,11 @@ AC.Form.Upload = function() {
 					onComplete: function(id, fileName, responseJSON) {
 						if (responseJSON.error) {
 							elm.find('.qq-upload-button').show();
-							elm.parents('form').find('button.save').attr('disabled', null);
+							elm.parents('form').find('button.save, button.apply').attr('disabled', null);
 						} else {
 							var filename = responseJSON.filename;
 							var $input = $('input[name=' + elm.attr('data-name') + ']');
-							elm.parents('form').find('button.save').attr('disabled', null);
+							elm.parents('form').find('button.save, button.apply').attr('disabled', null);
 							if (elm.attr('data-multiple') == '0') {
 								$input.val(filename).change();
 //								elm.find('.qq-uploader').remove();								
@@ -61,7 +61,7 @@ AC.Form.Upload = function() {
 					},
 					onCancel: function(id, fileName) {
 						elm.find('.qq-upload-button').show();
-						elm.parents('form').find('button.save').attr('disabled', null);
+						elm.parents('form').find('button.save, button.apply').attr('disabled', null);
 					},
 	                debug: false
 	            });          
