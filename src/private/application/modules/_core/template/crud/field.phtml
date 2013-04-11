@@ -16,14 +16,14 @@ $field = $this->field;
 
     <?php } ?>
 
-    <div class="controls">
-        <?php if ($field->hasHelp()) :
-            echo "<span class='help'>" . $field->getHelp() . "</span>";
-        endif; ?>
+    <div class="controls">        
         <?php if ($field->getIsPK() === true) :
             echo $field->getHtmlPK();
         endif; ?>
         <?php echo $field->getInput(); ?>
+        <?php if ($field->hasHelp()) :
+            echo "<span class='help-inline'>" . $field->getHelp() . "</span>";
+        endif; ?>
     </div>
         
 </div>

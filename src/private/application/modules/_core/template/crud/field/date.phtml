@@ -1,13 +1,19 @@
-<?php $field = $this->field; ?>
+<?php
+/* @var $field Ajde_Crud_Field_Date */
+$field = $this->field;
+?>
 
-<?php if ($field->getIsAutoUpdate() === true) {
+<?php if ($field->getIsAutoUpdate() === true || ($field->has('readonly') && $field->get('readonly')) ) {
 	if ($field->getValue() === 'CURRENT_TIMESTAMP') {
 		echo '(not saved)';
 	} else {
 		echo $field->getValue();
 	}
-	$field->setValue(null); ?>
-	<div class='visuallyhidden'>
+    if ($field->getIsAutoUpdate()) {
+        $field->setValue(null);
+    }
+    ?>
+	<div class='hidden'>
 		<input
 			<?php echo $field->getHtmlAttributes(); ?>
 		/>

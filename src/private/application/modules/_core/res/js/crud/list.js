@@ -157,7 +157,7 @@ AC.Crud.List = function() {
 					if (response.operation === 'delete' && response.success === true) {
 						for (elm in data) {
 							if (data[elm].name == 'id[]') {
-								form.find('input.id[value=' + data[elm].value + ']').parents('tr').css({backgroundColor:'red'}).fadeOut(function() {
+								form.find('input.id[value=' + data[elm].value + ']').parents('tr').fadeOut(function() {
 									$(this).remove();
 								});
 							}

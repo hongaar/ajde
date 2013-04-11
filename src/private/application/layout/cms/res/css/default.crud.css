@@ -24,6 +24,19 @@ fieldset.crud {
 
 }
 
+/** COLLAPSE FOR SIDEBAR AND SMALL SCREENS **/
+
+.form-horizontal .sidebar .control-label {
+    float: none;
+    width: auto;
+    padding-top: 0;
+    text-align: left;
+}
+
+.form-horizontal .sidebar .controls {
+    margin-left: 0;
+}
+
 @media (max-width: 1200px) {
     .form-horizontal .form-actions {
         padding-right: 10px;

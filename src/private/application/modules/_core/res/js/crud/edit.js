@@ -9,7 +9,7 @@ AC.Crud.Edit = function() {
 	var errorHandler	= AC.Core.Alert.error;
 	
 	var isIframe = false;
-    	var isDirty = false;
+    var isDirty = false;
 	
 	return {
 		
@@ -30,30 +30,17 @@ AC.Crud.Edit = function() {
 			});
 			
 			AC.Shortcut.add('Ctrl+S', AC.Crud.Edit.saveHandler);
-			$(window).load(function() {
-				self.equalizeForm();
-			});
-			
-			var $window = $(window);
-			var $crudEdit = $('dl.crudEdit:not(.block)');
-			$(window).resize(function() {
-				if ($crudEdit.width() < 942 && !$crudEdit.hasClass('small')) {
-					$crudEdit.addClass('small');
-				} else if ($crudEdit.width() > 941 && $crudEdit.hasClass('small')) {
-					$crudEdit.removeClass('small');
-				}
-			}).resize();
-        
+			        
             // Dirty handler for form input elements
-            $('dl.crudEdit :input').on('change', AC.Crud.Edit.setDirty);
+            $('form.ACCrudEdit :input').on('change', AC.Crud.Edit.setDirty);
 		},
             
         setDirty: function(e) {
-            $(this).parents('form.ACCrudEdit').find('.button.cancel')
+            $(this).parents('form.ACCrudEdit').find('.btn.cancel')
                     .text('Delete changes')
-                    .addClass('dirty');
+                    .addClass('btn-danger');
             isDirty = true;
-            $(window).bind("beforeunload", function(e) {
+            $(window).on("beforeunload", function(e) {
                 if (isDirty) {
                     return 'You have unsaved changes, are you sure you want to navigate away from this page?';
                 }
@@ -68,6 +55,7 @@ AC.Crud.Edit = function() {
 			if (isIframe) {
 				parent.$.fancybox.close();
 			} else {
+                $(window).off("beforeunload");
 				window.location.href = window.location.pathname;
 			}
 		},
@@ -84,7 +72,7 @@ AC.Crud.Edit = function() {
 			// TODO: HTML5 validation, should be deprecated?
 			if (form[0].checkValidity) {
 				if (form[0].checkValidity() === false) {
-					alert(i18n.formError);
+					errorHandler(i18n.formError);
 					return false;
 				};
 			}
@@ -124,18 +112,19 @@ AC.Crud.Edit = function() {
 							fn();
 						}
 						for(var i in data.errors) {
-							$parent = $(':input[name=' + i + ']').parents('dd');
+                            $input = $(':input[name=' + i + ']');
+							$parent = $input.parents('.control-group');
 							if (!$parent.length) {
 								errorHandler('Field \'' + i + '\' has errors but is hidden');
 							}
-							$parent.addClass('validation_error');
+							$parent.addClass('error');
 							firstError = data.errors[i][0];
-							$parent.attr('data-message', firstError);							
-							$message = $('<div></div>').html(firstError).addClass('validation_message').hide();
-							$parent.prepend($message.fadeIn());
+							$parent.data('message', firstError);
+//							$message = $('<span class="help-inline"></span>').html(firstError).hide();
+//							$input.after($message.fadeIn());
 							AC.Crud.Edit.equalizeForm();
 						}
-						$.scrollTo($('.validation_error:first').prev(), 800, {axis: 'y'});
+						$.scrollTo($('.control-group.error:first'), 800, { axis: 'y', offset: -70 });
 					} else {
 						errorHandler(i18n.applicationError);
 					}

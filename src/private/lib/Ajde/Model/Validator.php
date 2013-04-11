@@ -21,7 +21,8 @@ class Ajde_Model_Validator extends Ajde_Object_Standard
 				case Ajde_Db::FIELD_TYPE_DATE:				
 					$this->_model->addValidator($fieldName, new Ajde_Model_Validator_Date());
 					break;
-				case Ajde_Db::FIELD_TYPE_NUMERIC:			
+                case 'sort':
+                case Ajde_Db::FIELD_TYPE_NUMERIC:
 					$this->_model->addValidator($fieldName, new Ajde_Model_Validator_Numeric());
 					break;
 				case Ajde_Db::FIELD_TYPE_TEXT:

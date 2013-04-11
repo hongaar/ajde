@@ -16,7 +16,7 @@ $field = $this->field;
 >
 
 	<div class='multipleToolbar'>
-		<a href='javascript:void(null);' class='button new newMultiple' data-select='<?php echo $field->getName(); ?>'>New</a>
+		<a href='javascript:void(null);' class='btn btn-success new newMultiple' data-select='<?php echo $field->getName(); ?>'>New</a>
 		<?php if ($field->hasCrossReferenceTable()) { ?>
 			or &nbsp; 
 			<select name='<?php echo $field->getName(); ?>'>
@@ -28,13 +28,13 @@ $field = $this->field;
 					</option>
 				<?php } ?>
 			</select>
-			<a href='javascript:void(null);' class='button add addMultiple'>Add</a>
+			<a href='javascript:void(null);' class='btn btn-primary add addMultiple'>Add</a>
 		<?php } ?>
 	</div>
 
 	<?php $this->requireCss('crud/list'); ?>
 
-	<table class='crudList multipleList'>
+	<table class='table crudList multipleList'>
 		<thead>
 			<tr>
 				<th></th>
