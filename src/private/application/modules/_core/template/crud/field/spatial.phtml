@@ -1,0 +1,43 @@
+<?php 
+/* @var $field Ajde_Crud_Field */
+$field = $this->field;
+?>
+
+<input
+	<?php echo $field->getHtmlAttributes(); ?>
+/>
+
+<?php
+
+if ($field->hasUseImage() && $field->getUseImage()) {
+   
+    if (!$field->hasLayerImage()) {
+        throw new Ajde_Exception('Please set layerImage for this model in afterCrudLoaded hook');
+    }
+    
+    ?>
+    <div class="spatial image">
+    <?php    
+        echo $this->ACImage(array(
+            'filename' => $field->getLayerImage(),
+            'width' => 800,
+            'class' => 'spatial'
+        ));
+    ?>
+        <div class="spatialMarker"></div>
+    </div>
+    <?php
+    
+} else {
+    
+    $apiKey = Config::get('apiKeys');
+    $apiKey = $apiKey['google'];
+    ?>
+
+    <div class="spatial gmaps"></div>
+
+    <script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=<?php echo $apiKey; ?>&sensor=false">
+    </script>
+    
+<?php } ?>

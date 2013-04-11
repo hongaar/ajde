@@ -18,16 +18,16 @@ if ($field->getValue()) {
 
 <select
 	<?php echo $field->getHtmlAttributes(); ?>
-	<?php if (count($field->getValues()) > 20) { ?>
+	<?php if (false && count($field->getValues()) > 20) { ?>
 		class='jqCombo'
 	<?php } ?>
 >
 	<?php if (!$field->getIsRequired() === true) { ?>
 		<option value=''>(none)</option>
 	<?php } ?>
-	<?php foreach($field->getValues() as $key => $option) { ?>							
+	<?php foreach($field->getValues() as $key => $option) { ?>
 		<option value='<?php echo $key; ?>'
-			<?php 
+			<?php
 			if ($key == $pk) { echo "selected='selected'"; }
 			elseif ($field->hasReadonly() && $field->getReadonly() === true) { echo ' disabled="disabled" '; }
 			?>

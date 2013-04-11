@@ -9,6 +9,7 @@ AC.Crud.Edit = function() {
 	var errorHandler	= AC.Core.Alert.error;
 	
 	var isIframe = false;
+    	var isDirty = false;
 	
 	return {
 		
@@ -42,7 +43,22 @@ AC.Crud.Edit = function() {
 					$crudEdit.removeClass('small');
 				}
 			}).resize();
+        
+            // Dirty handler for form input elements
+            $('dl.crudEdit :input').on('change', AC.Crud.Edit.setDirty);
 		},
+            
+        setDirty: function(e) {
+            $(this).parents('form.ACCrudEdit').find('.button.cancel')
+                    .text('Delete changes')
+                    .addClass('dirty');
+            isDirty = true;
+            $(window).bind("beforeunload", function(e) {
+                if (isDirty) {
+                    return 'You have unsaved changes, are you sure you want to navigate away from this page?';
+                }
+            });            
+        },
 		
 		equalizeForm: function() {
 			// Deprecated
@@ -124,6 +140,7 @@ AC.Crud.Edit = function() {
 						errorHandler(i18n.applicationError);
 					}
 				} else {
+                    			isDirty = false;
 					if (typeof $(form[0]).data('onSave') === 'function') {
 						var fn = $(form[0]).data('onSave');
 						if (fn(data) === false) {

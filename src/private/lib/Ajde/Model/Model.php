@@ -1,15 +1,15 @@
 <?php
 
 class Ajde_Model extends Ajde_Object_Standard
-{	
+{
 	protected $_connection;
 	protected $_table;
-	
+
 	protected $_autoloadParents = false;
 	protected $_displayField = null;
-	
+
 	protected $_validators = array();
-	
+
 	public static function register($controller)
 	{
 		// Extend Ajde_Controller
@@ -23,17 +23,17 @@ class Ajde_Model extends Ajde_Object_Standard
 			self::registerAll();
 		} else {
 			Ajde_Core_Autoloader::addDir(MODULE_DIR.$controller.'/model/');
-		}		
+		}
 	}
-	
+
 	public static function registerAll()
 	{
 		$dirs = Ajde_FS_Find::findFiles(MODULE_DIR, '*/model');
 		foreach($dirs as $dir) {
 			Ajde_Core_Autoloader::addDir($dir . '/');
-		}		
+		}
 	}
-	
+
 	public static function extendController(Ajde_Controller $controller, $method, $arguments)
 	{
 		// Register getModel($name) function on Ajde_Controller
@@ -41,15 +41,15 @@ class Ajde_Model extends Ajde_Object_Standard
 			self::register($controller);
 			if (!isset($arguments[0])) {
 				$arguments[0] = $controller->getModule();
-			}			
+			}
 			return self::getModel($arguments[0]);
 		}
 		// TODO: if last triggered in event cueue, throw exception
 		// throw new Ajde_Exception("Call to undefined method ".get_class($controller)."::$method()", 90006);
 		// Now, we give other callbacks in event cueue chance to return
-		return null;  
+		return null;
 	}
-	
+
 	/**
 	 *
 	 * @param string $name
@@ -60,16 +60,16 @@ class Ajde_Model extends Ajde_Object_Standard
 		$modelName = ucfirst($name) . 'Model';
 		return new $modelName();
 	}
-	
+
 	public function __construct()
 	{
 		$tableNameCC = str_replace('Model', '', get_class($this));
 		$tableName = $this->fromCamelCase($tableNameCC);
 
-		$this->_connection = Ajde_Db::getInstance()->getConnection();	
-		$this->_table = Ajde_Db::getInstance()->getTable($tableName);		
+		$this->_connection = Ajde_Db::getInstance()->getConnection();
+		$this->_table = Ajde_Db::getInstance()->getTable($tableName);
 	}
-	
+
 	public function __set($name, $value) {
         $this->set($name, $value);
     }
@@ -81,14 +81,14 @@ class Ajde_Model extends Ajde_Object_Standard
     public function __isset($name) {
         return $this->has($name);
     }
-	
+
 	public function __toString() {
 		if (empty($this->_data)) {
 			return null;
 		}
-		return $this->getPK();		
+		return $this->getPK();
 	}
-	
+
 	public function __sleep()
 	{
 		return array('_autoloadParents', '_displayField', '_data');
@@ -98,9 +98,9 @@ class Ajde_Model extends Ajde_Object_Standard
 	{
 		$tableNameCC = str_replace('Model', '', get_class($this));
 		$tableName = $this->fromCamelCase($tableNameCC);
-		
-		$this->_connection = Ajde_Db::getInstance()->getConnection();	
-		$this->_table = Ajde_Db::getInstance()->getTable($tableName);	
+
+		$this->_connection = Ajde_Db::getInstance()->getConnection();
+		$this->_table = Ajde_Db::getInstance()->getTable($tableName);
 	}
 
 	public function isEmpty($key)
@@ -108,15 +108,15 @@ class Ajde_Model extends Ajde_Object_Standard
 		$value = (string) $this->get($key);
 		return empty($value);
 	}
-	
+
 	public function getPK()
 	{
 		if (empty($this->_data)) {
 			return null;
 		}
-		return $this->get($this->getTable()->getPK()); 
+		return $this->get($this->getTable()->getPK());
 	}
-	
+
 	public function getDisplayField()
 	{
 		if (isset($this->_displayField)) {
@@ -125,7 +125,7 @@ class Ajde_Model extends Ajde_Object_Standard
 			return current($this->getTable()->getFieldNames());
 		}
 	}
-	
+
 	/**
 	 * @return Ajde_Db_Adapter_Abstract
 	 */
@@ -133,7 +133,7 @@ class Ajde_Model extends Ajde_Object_Standard
 	{
 		return $this->_connection;
 	}
-	
+
 	/**
 	 * @return Ajde_Db_Table
 	 */
@@ -141,13 +141,13 @@ class Ajde_Model extends Ajde_Object_Standard
 	{
 		return $this->_table;
 	}
-	
+
 	public function populate($array)
 	{
 		// TODO: parse array and typecast to match fields settings
 		$this->_data = array_merge($this->_data, $array);
 	}
-	
+
 	public function getValues() {
 		$return = array();
 		foreach($this->_data as $k => $v) {
@@ -159,19 +159,19 @@ class Ajde_Model extends Ajde_Object_Standard
 		}
 		return $return;
 	}
-	
-	// Load model values	
+
+	// Load model values
 	public function loadByPK($value)
 	{
 		$pk = $this->getTable()->getPK();
 		return $this->loadByFields(array($pk => $value));
 	}
-	
+
 	public function loadByField($field, $value)
 	{
 		return $this->loadByFields(array($field => $value));
 	}
-	
+
 	public function loadByFields($array)
 	{
 		$sqlWhere = array();
@@ -179,16 +179,16 @@ class Ajde_Model extends Ajde_Object_Standard
 		foreach($array as $field => $value) {
 			$sqlWhere[] = $field . ' = ?';
 			$values[] = $value;
-		} 
+		}
 		$sql = 'SELECT * FROM '.$this->_table.' WHERE ' . implode(' AND ', $sqlWhere) . ' LIMIT 1';
 		return $this->_load($sql, $values);
 	}
-	
+
 	protected function _load($sql, $values)
 	{
 		$statement = $this->getConnection()->prepare($sql);
 		$statement->execute($values);
-		$result = $statement->fetch(PDO::FETCH_ASSOC);	
+		$result = $statement->fetch(PDO::FETCH_ASSOC);
 		if ($result === false || empty($result)) {
 			return false;
 		} else {
@@ -200,10 +200,10 @@ class Ajde_Model extends Ajde_Object_Standard
 			return true;
 		}
 	}
-		
+
 	/**
 	 *
-	 * @return boolean 
+	 * @return boolean
 	 */
 	public function save()
 	{
@@ -214,7 +214,7 @@ class Ajde_Model extends Ajde_Object_Standard
 
 		$sqlSet = array();
 		$values = array();
-		
+
 		foreach($this->getTable()->getFieldNames() as $field) {
 			// Don't save a field is it's empty or not set
 			if ($this->has($field)) {
@@ -225,6 +225,9 @@ class Ajde_Model extends Ajde_Object_Standard
 				} elseif(!$this->isEmpty($field)) {
 					if ($this->get($field) instanceof Ajde_Db_Function) {
 						$sqlSet[] = $field . ' = ' . (string) $this->get($field);
+                    } elseif ($this->getTable()->getFieldProperties($field, 'type') === Ajde_Db::FIELD_TYPE_SPATIAL) {
+                        $pointValues = explode(' ', (string) $this->get($field));
+                        $sqlSet[] = $field . ' = PointFromWKB(POINT(' . (double) $pointValues[0] . ',' . (double) $pointValues[1] . '))';
 					} else {
 						$sqlSet[] = $field . ' = ?';
 						$values[] = (string) $this->get($field);
@@ -238,7 +241,7 @@ class Ajde_Model extends Ajde_Object_Standard
 					// TODO: set to empty string or ignore?
 				}
 			}
-		} 
+		}
 		$values[] = $this->getPK();
 		$sql = 'UPDATE ' . $this->_table . ' SET ' . implode(', ', $sqlSet) . ' WHERE ' . $pk . ' = ?';
 		$statement = $this->getConnection()->prepare($sql);
@@ -248,7 +251,7 @@ class Ajde_Model extends Ajde_Object_Standard
 		}
 		return $return;
 	}
-	
+
 	public function insert($pkValue = null)
 	{
 		if (method_exists($this, 'beforeInsert')) {
@@ -269,6 +272,10 @@ class Ajde_Model extends Ajde_Object_Standard
 				if ($this->get($field) instanceof Ajde_Db_Function) {
 					$sqlFields[] = $field;
 					$sqlValues[] = (string) $this->get($field);
+                } elseif ($this->getTable()->getFieldProperties($field, 'type') === Ajde_Db::FIELD_TYPE_SPATIAL) {
+                    $sqlFields[] = $field;
+                    $pointValues = explode(' ', (string) $this->get($field));
+					$sqlValues[] = 'PointFromWKB(POINT(' . (double) $pointValues[0] . ',' . (double) $pointValues[1] . '))';
 				} else {
 					$sqlFields[] = $field;
 					$sqlValues[] = '?';
@@ -277,7 +284,7 @@ class Ajde_Model extends Ajde_Object_Standard
 			} else {
 				$this->set($field, null);
 			}
-		} 
+		}
 		$sql = 'INSERT INTO ' . $this->_table . ' (' . implode(', ', $sqlFields) . ') VALUES (' . implode(', ', $sqlValues) . ')';
 		$statement = $this->getConnection()->prepare($sql);
 		$return = $statement->execute($values);
@@ -289,16 +296,23 @@ class Ajde_Model extends Ajde_Object_Standard
 		}
 		return $return;
 	}
-	
+
 	public function delete()
 	{
+        if (method_exists($this, 'beforeDelete')) {
+			$this->beforeDelete();
+		}
 		$id = $this->getPK();
 		$pk = $this->getTable()->getPK();
 		$sql = 'DELETE FROM '.$this->_table.' WHERE '.$pk.' = ? LIMIT 1';
 		$statement = $this->getConnection()->prepare($sql);
-		return $statement->execute(array($id));
+		$return = $statement->execute(array($id));
+        if (method_exists($this, 'afterDelete')) {
+			$this->afterDelete();
+		}
+        return $return;
 	}
-	
+
 	public function hasParent($parent)
 	{
 		if (!$parent instanceof Ajde_Db_Table) {
@@ -308,24 +322,24 @@ class Ajde_Model extends Ajde_Object_Standard
 		$fk = $this->getTable()->getFK($fieldName);
 		return $fk;
 	}
-	
+
 	public function getParents()
 	{
 		return $this->getTable()->getParents();
 	}
-	
+
 	public function hasLoaded()
 	{
 		return !empty($this->_data);
 	}
-	
+
 	public function loadParents()
 	{
 		foreach($this->getParents() as $parentTableName) {
 			$this->loadParent($parentTableName);
 		}
 	}
-	
+
 	public function loadParent($parent)
 	{
 		if (empty($this->_data)) {
@@ -351,12 +365,12 @@ class Ajde_Model extends Ajde_Object_Standard
 		$parentModel->loadByPK($this->get($fk['field']));
 		$this->set((string) $parent, $parentModel);
 	}
-	
-	public function getAutoloadParents() 
+
+	public function getAutoloadParents()
 	{
 		return $this->_autoloadParents;
 	}
-	
+
 	public function addValidator($fieldName, Ajde_Model_ValidatorAbstract $validator)
 	{
 		$validator->setModel($this);
@@ -365,12 +379,12 @@ class Ajde_Model extends Ajde_Object_Standard
 		}
 		$this->_validators[$fieldName][] = $validator;
 	}
-	
+
 	public function getValidators()
 	{
 		return $this->_validators;
 	}
-	
+
 	public function getValidatorsFor($fieldName)
 	{
 		if (!isset($this->_validators[$fieldname])) {
@@ -378,7 +392,7 @@ class Ajde_Model extends Ajde_Object_Standard
 		}
 		return $this->_validators[$fieldName];
 	}
-	
+
 	public function validate($fieldOptions = array())
 	{
 		if (method_exists($this, 'beforeValidate')) {
@@ -390,31 +404,31 @@ class Ajde_Model extends Ajde_Object_Standard
 			if ($return = false) {
 				return false;
 			}
-		}	
-		
+		}
+
 		if (!$this->hasLoaded()) {
 			return false;
 		}
 		$errors		= array();
 		$validator	= $this->_getValidator();
-		
+
 		$valid = $validator->validate($fieldOptions);
 		if (!$valid) {
 			$errors = $validator->getErrors();
-		}		
+		}
 		$this->setValidationErrors($errors);
-		
+
 		if (method_exists($this, 'afterValidate')) {
 			$this->afterValidate();
-		}	
+		}
 		return $valid;
 	}
-	
+
 	public function getValidationErrors()
 	{
 		return parent::getValidationErrors();
 	}
-	
+
 	/**
 	 *
 	 * @return Ajde_Model_Validator
@@ -423,25 +437,25 @@ class Ajde_Model extends Ajde_Object_Standard
 	{
 		return new Ajde_Model_Validator($this);
 	}
-	
+
 	public function hash()
 	{
 		$str = implode($this->values());
 		return md5($str);
 	}
-	
+
 	public function isEncrypted($field)
 	{
 		return substr_count($this->_decrypt($this->get($field)), '$$$ENCRYPTED$$$');
 	}
-	
+
 	public function encrypt($field)
 	{
 		$this->set($field, $this->_encrypt('$$$ENCRYPTED$$$' . $this->get($field)));
 		return $this->get($field);
 	}
-	
-	private function _encrypt($text) {		
+
+	private function _encrypt($text) {
 		return trim(
 			base64_encode(
 				gzdeflate(
@@ -461,11 +475,11 @@ class Ajde_Model extends Ajde_Object_Standard
 					9
 				)
 			)
-		);		
+		);
 	}
 
 	public function decrypt($field)
-	{		
+	{
 		if (!$this->isEncrypted($field)) {
 			return false;
 		}
@@ -474,7 +488,7 @@ class Ajde_Model extends Ajde_Object_Standard
 		$this->set($field, $decrypted);
 		return $this->get($field);
 	}
-	
+
 	public function _decrypt($text) {
 		return trim(
 			mcrypt_decrypt(
@@ -490,6 +504,6 @@ class Ajde_Model extends Ajde_Object_Standard
 					MCRYPT_RAND
 				)
 			)
-		); 
+		);
 	}
 }

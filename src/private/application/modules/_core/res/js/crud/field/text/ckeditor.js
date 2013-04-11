@@ -11,13 +11,16 @@ AC.Crud.Edit.Text = function() {
 		// make sure no conflict with previous instances occur
 		CKEDITOR.instances = {};
 
-		elm.ckeditor( function() { /* callback code */ }, {
+		d = elm.ckeditor( function() {
+			elm.ckeditorGet().on('change', function() {
+				AC.Crud.Edit.setDirty.call(this.element.$);
+			});
+		}, {
 			toolbar : 'Ajde',
 			format_tags : 'p;h1;h2;h3;pre',
 			width : elm.width(),
 			height : elm.height()
 		});
-
 	};
 
 	return {
@@ -35,9 +38,10 @@ AC.Crud.Edit.Text = function() {
 
 			CKEDITOR.config.baseHref = document.getElementsByTagName('base')[0].href;
 			CKEDITOR.config.forcePasteAsPlainText = true;
+            CKEDITOR.config.extraPlugins = 'onchange';
 
 			// Optional configuration
-//			CKEDITOR.config.extraPlugins = 'autogrow'
+//			CKEDITOR.config.extraPlugins = 'autogrow';
 //			CKEDITOR.config.resize_enabled = false;
 //			CKEDITOR.config.autoGrow_maxHeight = '600';
 //			CKEDITOR.config.removePlugins = 'elementspath,contextmenu';

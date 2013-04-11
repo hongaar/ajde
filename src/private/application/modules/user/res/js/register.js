@@ -7,7 +7,7 @@ $(document).ready(function() {
 		41: 'Average',
 		1: 'Too weak',
 		0: 'Unsafe password'		
-	}
+	};
 
 	$("input[name=password]").complexify({
 			minimumChars		: 8,
