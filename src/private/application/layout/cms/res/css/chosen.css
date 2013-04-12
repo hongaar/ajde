@@ -1,0 +1,41 @@
+/* @group Base */
+.chzn-container {
+    margin-bottom: 0;
+    vertical-align: middle;
+    height: 30px;
+}
+
+.chzn-container .chzn-drop {
+  -webkit-box-shadow: 0;
+  -moz-box-shadow   : 0;
+  box-shadow        : 0;
+}
+/* @end */
+
+/* @group Single Chosen */
+.chzn-container-single .chzn-single {
+  background-color: #ffffff;
+  filter: none;
+  background-image: none;
+  -webkit-border-radius: 0;
+  -moz-border-radius   : 0;
+  border-radius        : 0;
+  -webkit-box-shadow: none;
+  -moz-box-shadow   : none;
+  box-shadow        : none;
+  padding: 1px 6px 4px 6px
+}
+
+.chzn-container-active .chzn-single-with-drop {
+  -webkit-box-shadow: none;
+  -moz-box-shadow   : none;
+  box-shadow        : none;
+  filter: none;
+  background-image: none;
+}
+
+.chzn-container .chzn-results .highlighted {
+    background-color: #0f82f5 !important;
+    filter: none !important;
+    background-image: none !important;
+}

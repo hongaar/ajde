@@ -1,6 +1,6 @@
 <?php
 /* @var $this Ajde_Template_Parser_Phtml_Helper */
-$this->requireJsPublic('lib/jqCombo.js');
+
 /* @var $field Ajde_Crud_Field_Fk */
 $field = $this->field;
 
@@ -17,10 +17,7 @@ if ($field->getValue()) {
 ?>
 
 <select
-	<?php echo $field->getHtmlAttributes(); ?>
-	<?php if (false && count($field->getValues()) > 20) { ?>
-		class='jqCombo'
-	<?php } ?>
+	<?php echo $field->getHtmlAttributes(); ?>	
 >
 	<?php if (!$field->getIsRequired() === true) { ?>
 		<option value=''>(none)</option>

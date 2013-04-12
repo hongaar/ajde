@@ -54,14 +54,17 @@ class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
 	}
 	
 	public function getValues()
-	{		
+	{
+        $collection = $this->getCollection();
+        $collection->reset();
+        
 		if ($this->hasFilter()) {
 			$filter = $this->getFilter();
 			$group = new Ajde_Filter_WhereGroup();
 			foreach($filter as $rule) {
 				$group->addFilter(new Ajde_Filter_Where($this->getModel()->getDisplayField(), Ajde_Filter::FILTER_EQUALS, $rule, Ajde_Query::OP_OR));
 			}
-			$this->getCollection()->addFilter($group);
+			$collection->addFilter($group);
 		}
 
 		if ($this->hasAdvancedFilter()) {
@@ -71,19 +74,19 @@ class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
 				if ($filter instanceof Ajde_Filter_Where) {
 					$group->addFilter($filter);
 				} else {
-					$this->getCollection()->addFilter($filter);
+					$collection->addFilter($filter);
 				}		
 			}
-			$this->getCollection()->addFilter($group);
+			$collection->addFilter($group);
 		}
 		
-		$this->getCollection()->orderBy($this->getModel()->getDisplayField());
+		$collection->orderBy($this->getModel()->getDisplayField());
 //		$return = array();
 //		foreach($this->getCollection() as $model) {
 //			$return[(string) $model] = $model->get($model->getDisplayField());
 //		}
 //		return $return;
-		return $this->getCollection();
+		return $collection;
 	}
 	
 	public function getChildren()

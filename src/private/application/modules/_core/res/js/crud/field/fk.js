@@ -12,7 +12,7 @@ AC.Crud.Edit.Fk = function() {
 	return {
 		
 		init: function() {
-			$('dl.crudEdit select.jqCombo').jqCombo();
+			//...
 		}
 		
 	};

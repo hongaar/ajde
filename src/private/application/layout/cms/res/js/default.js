@@ -5,7 +5,10 @@
 ;
 (function($) {
 	
-	var bootstrap = function() {		
+	var bootstrap = function() {	
+        
+        // Chosen
+        $("select.chosen").chosen();
 		
 		// Form validation with Twitter Bootstrap
 		$('form').attr('novalidate', 'novalidate');

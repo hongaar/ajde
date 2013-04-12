@@ -219,6 +219,14 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 	 * @return Ajde_Crud_Options_Fields_Field 
 	 */
 	public function setModelName($model) { return $this->_set('modelName', $model); }
+    
+    /**
+	 * Use a simple selector for fields with type 'multiple'
+	 * 
+	 * @param boolean $simple
+	 * @return Ajde_Crud_Options_Fields_Field 
+	 */
+	public function setSimpleSelector($simple) { return $this->_set('simpleSelector', $simple); }
 	
 	/**
 	 * Adds a column to the cross reference table (for fields with type 'multiple')

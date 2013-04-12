@@ -869,6 +869,9 @@
 		if (type === "radio") {
 			value = ($('input[name="' + $this.attr("name") + '"]:checked').length > 0 ? value : "");
 		}
+        if (value === null) {
+            value = [];
+        }
 		return value;
 	};
 

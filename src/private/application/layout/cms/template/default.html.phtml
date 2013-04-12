@@ -17,6 +17,11 @@ $this->requireJsPublic('lib/jqBootstrapValidation.js');
 // jQuery cookie
 $this->requireJsPublic('lib/jquery.cookie.js');
 
+// Chosen
+$this->requireJsPublic('lib/chosen/chosen.jquery.min.js');
+$this->requireCssPublic('lib/chosen/chosen.css');
+$this->requireCss('chosen');
+
 // Some JavaScript i18n
 $this->requireJsFirst('i18n.' . Ajde_Lang::getInstance()->getShortLang());
 
