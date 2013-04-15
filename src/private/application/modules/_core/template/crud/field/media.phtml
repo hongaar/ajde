@@ -15,24 +15,31 @@ $this->requireJsPublic('_core/crud/jquery.lazyload.min.js');
 /* @var $field Ajde_Crud_Field_File */
 $field = $this->field;
 
+$typeField = $field->getTypeField();
+$thumbField = $field->getThumbField();
+
 ?>
 
-<div class='fileupload <?php if ($field->getValue()) { echo 'hidden'; } ?>'>
+<div class='media <?php if ($field->getValue()) { echo 'hidden'; } ?>'
+     data-typefield='<?php echo _e($typeField); ?>'
+     data-thumbfield='<?php echo _e($thumbField); ?>'
+     >
     
-        <?php 
-        $options = array(
-            'saveDir' => $field->getSaveDir(),
-            'extensions' => $field->getExtensions(),
-            'multiple' => $field->getMultiple(),
-            'overwrite' => $field->getOverwrite()
-        );
-        echo $this->ACAjaxUpload($field->getName(), $options);
-
-        ?>
+    <?php 
+    $options = array(
+        'saveDir' => $field->getSaveDir(),
+        'extensions' => $field->getExtensions(),
+        'multiple' => $field->getMultiple(),
+        'overwrite' => $field->getOverwrite()
+    );
+    echo $this->ACAjaxUpload('_upload', $options);
+    ?>
     
     <div class='embed'>        
         <input type='text' name='_embed' class='span12' placeholder='or paste embed code here' />        
     </div>
+    
+    <div class='preview'></div>
         
 </div>
 

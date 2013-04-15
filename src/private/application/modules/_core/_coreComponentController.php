@@ -172,6 +172,23 @@ class _coreComponentController extends Ajde_Controller
 	 ************************/
     
     public function embedInfoJson() {
-        return array();
+        $raw = trim(Ajde::app()->getRequest()->getRaw('code'));
+		
+		$embed = Ajde_Embed::fromCode($raw);
+        
+        $embed->setWidth('100%');		
+        
+		$thumbnail = $embed->getThumbnail();
+		$code = $embed->getCode();
+		
+		if ($embed->getProvider()) {		
+			return array(
+				'success' => true,
+				'code' => $code,
+				'thumbnail' => $thumbnail
+			);			
+		} else {			
+			return array('success' => false);
+		}
     }
 }

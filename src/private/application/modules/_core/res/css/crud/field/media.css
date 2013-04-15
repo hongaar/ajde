@@ -22,3 +22,7 @@ div.filebrowser {
 .embed {
     margin-left: 140px;
 }
+
+.preview {
+    clear: both;
+}

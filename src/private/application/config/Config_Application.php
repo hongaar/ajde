@@ -62,7 +62,8 @@ class Config_Application extends Config_Cms
 	//public $bootstrap;
 
     public $apiKeys = array(
-        'google' => ''        
+        'google' => '',
+        'soundcloud' => ''
     );
 
 	function __construct() {

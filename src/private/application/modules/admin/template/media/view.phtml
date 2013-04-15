@@ -19,6 +19,10 @@ $options
 			->setEmphasis(true)
 			->up()
 		->selectField('type')
+            ->setIsReadonly(true)
+			->up()
+        ->selectField('thumbnail')
+            ->setIsReadonly(true)
 			->up()
 		->selectField('pointer')
 			->setType('media')
@@ -55,7 +59,7 @@ $options
 				->addColumn()
                     ->setSpan(8)
 					->addBlock()
-						->setShow(array('name', 'type'))
+						->setShow(array('name'))
 						->up()
 					->addBlock()
 						->setTitle('Content')
@@ -64,11 +68,17 @@ $options
 					->up()
 				->addColumn()
 					->setSpan(4)
-					->addBlock()
+                    ->addBlock()
 						->setTitle('Metadata')
 						->setClass('sidebar well')
 						->setShow(array('added', 'updated', 'user', 'sort'))
+						->up()	
+                    ->addBlock()
+                        ->setTitle('Media info')
+                        ->setClass('sidebar well')
+						->setShow(array('type', 'thumbnail'))
 						->up()					
+									
 		
 	->finished();
 
