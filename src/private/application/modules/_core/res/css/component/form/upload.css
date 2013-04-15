@@ -14,3 +14,10 @@ li.alert-error {
 .alert-error .qq-upload-failed-text {
     display: inline;
 }
+
+.qq-progress-bar {
+    border-radius: 0;
+    background: #0f82f5;
+    height: 5px;
+    margin-bottom: 10px;
+}

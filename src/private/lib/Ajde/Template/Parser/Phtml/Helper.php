@@ -227,6 +227,20 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	{
 		return Ajde_Component_Image::processStatic($this->getParser(), $attributes);
 	}
+    
+    /************************
+	 * Ajde_Component_Embed
+	 ************************/
+	
+	/**
+	 *
+	 * @param string $attributes
+	 * @return string
+	 */
+	public function ACEmbed($attributes)
+	{
+		return Ajde_Component_Embed::processStatic($this->getParser(), $attributes);
+	}
 	
 	/************************
 	 * Ajde_Component_Crud

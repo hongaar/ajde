@@ -455,9 +455,12 @@
 
               $controlGroup.find("input,textarea,select").each(function (i, el) {
                 var oldCount = errorsFound.length;
-                $.each($(el).triggerHandler("validation.validation", params), function (j, message) {
-                  errorsFound.push(message);
-                });
+                var errors = $(el).triggerHandler("validation.validation", params);
+                if (typeof errors !== 'undefined') {
+                    $.each(errors, function (j, message) {
+                      errorsFound.push(message);
+                    });
+                }
                 if (errorsFound.length > oldCount) {
                   $(el).attr("aria-invalid", "true");
                 } else {

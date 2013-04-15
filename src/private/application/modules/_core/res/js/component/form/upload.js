@@ -14,14 +14,19 @@ AC.Form.Upload = function() {
                     
 	                element: elm[0],
 	                request: {
-                        endpoint: '_core/component:formUpload.json'
-                    },
-	                params: {
-	                	'optionsId' : elm.attr('data-options')
-	                },
+                        endpoint: '_core/component:formUpload.json',
+                        params: {
+                            'optionsId' : elm.attr('data-options'),
+                            '_token' : elm.parents('form').find('input[name=_token]').val()
+                        }
+                    },	                
 	                allowedExtensions: [], 
 					sizeLimit: 0,   
 					minSizeLimit: 0,
+                    failedUploadTextDisplay: {
+                        mode: 'custom',
+                        maxChars: 100
+                    },
                     
                     /** STYLING **/
                     
@@ -60,14 +65,14 @@ AC.Form.Upload = function() {
                                 var $input = $('input[name=' + elm.attr('data-name') + ']');
                                 elm.parents('form').find('button.save, button.apply').attr('disabled', null);
                                 if (elm.attr('data-multiple') == '0') {
-                                    $input.val(filename).change();
+                                    $input.val(filename); //.change(); // triggers exception??
     //								elm.find('.qq-uploader').remove();								
                                     elm.after($('<span/>')
                                         .addClass('qq-filename')
                                         .text(filename + ' ')
                                         .append($('<a/>')
                                             .attr('href', 'javascript:void(null)')
-                                            .addClass('deleteFileCrud')
+                                            .addClass('deleteFileCrud btn btn-danger')
                                             .text('delete')
                                             .click(function() {
                                                 elm.trigger('resetUpload');
@@ -82,14 +87,14 @@ AC.Form.Upload = function() {
                                 } else {
                                     $input.val($input.val() + ($input.val() ? ':' : '') + filename);
                                 }
-                            }						
+                            }
                         },
                         onCancel: function(id, fileName) {
                             elm.find('.qq-upload-button').show();
                             elm.parents('form').find('button.save, button.apply').attr('disabled', null);
                         }
                     },
-	                debug: false
+	                debug: true
 	            });          
 			});
 		},

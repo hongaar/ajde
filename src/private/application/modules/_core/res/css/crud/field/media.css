@@ -1,0 +1,24 @@
+div.filelist img.icon {
+	vertical-align: middle;
+}
+
+div.filelist a.imagePreview.img {
+	border-bottom: none !important;
+    text-decoration: none !important;
+    margin-bottom: 10px;
+    display: block;
+}
+
+div.filebrowser {
+	float: left;
+	margin-top: 10px;
+}
+
+.ACAjaxUpload {
+    float: left;
+    margin-right: 10px;
+}
+
+.embed {
+    margin-left: 140px;
+}

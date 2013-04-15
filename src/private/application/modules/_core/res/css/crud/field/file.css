@@ -1,13 +1,12 @@
-a.deleteFileCrud {
-	color: #e43c3c;
-}
-
 div.filelist img.icon {
 	vertical-align: middle;
 }
 
 div.filelist a.imagePreview.img {
 	border-bottom: none !important;
+    text-decoration: none !important;
+    margin-bottom: 10px;
+    display: block;
 }
 
 div.filebrowser {

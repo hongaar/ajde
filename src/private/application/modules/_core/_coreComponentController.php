@@ -85,7 +85,10 @@ class _coreComponentController extends Ajde_Controller
 	
 	public function formUploadJson()
 	{
-		$optionsId = Ajde::app()->getRequest()->getParam('optionsId', array());
+        if (!Ajde::app()->getRequest()->hasPostParam('optionsId')) {
+            return array('error' => 'Something went wrong');
+        }
+		$optionsId = Ajde::app()->getRequest()->getPostParam('optionsId');
 		$session = new Ajde_Session('AC.Form');
 		$options = $session->get($optionsId);
 		
@@ -163,4 +166,12 @@ class _coreComponentController extends Ajde_Controller
 		$output = $image->getImage();
 		return $output;
 	}
+    
+    /************************
+	 * Ajde_Component_Embed
+	 ************************/
+    
+    public function embedInfoJson() {
+        return array();
+    }
 }

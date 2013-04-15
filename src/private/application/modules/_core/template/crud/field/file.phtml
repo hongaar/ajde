@@ -17,7 +17,7 @@ $field = $this->field;
 
 ?>
 
-<div class='fileupload <?php if ($field->getValue()) { echo 'visuallyhidden'; } ?>'>
+<div class='fileupload <?php if ($field->getValue()) { echo 'hidden'; } ?>'>
 	
 	<?php 
 	$options = array(
@@ -90,17 +90,20 @@ if ($field->getValue()) {
 						'crop' => true
 					)); ?>
 			</a>
-			<br/>
 		<?php } ?>
 
-		<span>
-			<img class='icon' src='<?php echo Ajde_Resource_FileIcon::_($extension); ?> ' />
+		<span>			
 			<?php if ($isImage) { ?>
-				<a class='imagePreview preview' title='<?php echo _e($field->getValue()); ?>' href='<?php echo $field->getSaveDir() . $field->getValue(); ?>' target='_blank'><?php echo $field->getValue(); ?></a>
+				<a class='imagePreview preview btn' title='<?php echo _e($field->getValue()); ?>' href='<?php echo $field->getSaveDir() . $field->getValue(); ?>' target='_blank'>
+                    <img class='icon' src='<?php echo Ajde_Resource_FileIcon::_($extension); ?> ' />
+                    <?php echo $field->getValue(); ?>
+                </a>
 			<?php } else { ?>
-				<a class='filePreview preview' href='<?php echo $field->getSaveDir() . $field->getValue(); ?>' target='_blank'><?php echo $field->getValue(); ?></a>
+				<a class='filePreview preview btn' href='<?php echo $field->getSaveDir() . $field->getValue(); ?>' target='_blank'>
+                    <?php echo $field->getValue(); ?>
+                </a>
 			<?php } ?>
-			<a href='#' class='deleteFileCrud'>delete</a> 
+			<a href='#' class='deleteFileCrud btn btn-danger'>delete</a> 
 		</span>
 			
 	</div>

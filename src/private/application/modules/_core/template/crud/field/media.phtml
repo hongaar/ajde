@@ -1,0 +1,79 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+
+// Fancybox
+$this->requireJsPublic('_core/crud/fancybox/jquery.fancybox.pack.js');
+$this->requireCssPublic('_core/crud/fancybox/jquery.fancybox.css');
+
+// Fancybox thumb helper
+$this->requireJsPublic('_core/crud/fancybox/helpers/jquery.fancybox-thumbs.js');
+$this->requireCssPublic('_core/crud/fancybox/helpers/jquery.fancybox-thumbs.css');
+
+// Lazyload
+$this->requireJsPublic('_core/crud/jquery.lazyload.min.js');
+
+/* @var $field Ajde_Crud_Field_File */
+$field = $this->field;
+
+?>
+
+<div class='fileupload <?php if ($field->getValue()) { echo 'hidden'; } ?>'>
+    
+        <?php 
+        $options = array(
+            'saveDir' => $field->getSaveDir(),
+            'extensions' => $field->getExtensions(),
+            'multiple' => $field->getMultiple(),
+            'overwrite' => $field->getOverwrite()
+        );
+        echo $this->ACAjaxUpload($field->getName(), $options);
+
+        ?>
+    
+    <div class='embed'>        
+        <input type='text' name='_embed' class='span12' placeholder='or paste embed code here' />        
+    </div>
+        
+</div>
+
+<?php
+
+if ($field->getValue()) {
+	$extension = pathinfo($field->getValue(), PATHINFO_EXTENSION); ?>
+
+	<div class='filelist'>
+		
+		<input
+			<?php echo $field->getHtmlAttributes(); ?>
+		/>
+		
+		<?php
+		if ($isImage = in_array(strtolower($extension), array('jpg', 'jpeg', 'png', 'gif'))) {
+			$thumbDim = $field->hasThumbDim() ? $field->getThumbDim() : array('width' => 150, 'height' => 150); ?>
+			<a class='imagePreview img' title='<?php echo _e($field->getValue()); ?>' href='<?php echo $field->getSaveDir() . $field->getValue(); ?>' target='_blank'>
+				<?php echo $this->ACImage(array(
+						'filename' => $field->getSaveDir() . $field->getValue(),
+						'width' => $thumbDim['width'],
+						'height' => $thumbDim['height'],
+						'crop' => true
+					)); ?>
+			</a>
+		<?php } ?>
+
+		<span>			
+			<?php if ($isImage) { ?>
+				<a class='imagePreview preview btn' title='<?php echo _e($field->getValue()); ?>' href='<?php echo $field->getSaveDir() . $field->getValue(); ?>' target='_blank'>
+                    <img class='icon' src='<?php echo Ajde_Resource_FileIcon::_($extension); ?> ' />
+                    <?php echo $field->getValue(); ?>
+                </a>
+			<?php } else { ?>
+				<a class='filePreview preview btn' href='<?php echo $field->getSaveDir() . $field->getValue(); ?>' target='_blank'>
+                    <?php echo $field->getValue(); ?>
+                </a>
+			<?php } ?>
+			<a href='#' class='deleteFileCrud btn btn-danger'>delete</a> 
+		</span>
+			
+	</div>
+		
+<?php } ?>

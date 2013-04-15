@@ -36,7 +36,7 @@
 		$filelist = $(this).parents('div.filelist');
 		$fileupload = $filelist.prev();
 		$filelist.remove();
-		$fileupload.removeClass('visuallyhidden');
+		$fileupload.removeClass('hidden');
 		return false;
 	});
 	
