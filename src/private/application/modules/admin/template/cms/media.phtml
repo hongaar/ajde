@@ -7,6 +7,18 @@
 		<?php echo $this->includeModule('admin/cms:menu'); ?>		
 	</div><!--/span-->
 	<div class="span10">
-		<h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
+		
+		<div class="page-header">
+			<h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
+		</div>
+		
+		<p class="lead">
+			Media are files and embeds.
+		</p>
+		<p>
+			<a href="admin/media:view" class="btn btn-primary btn-large">Media overview &raquo;</a>
+			<a href="admin/media:upload" class="btn btn-primary btn-large">Upload file &raquo;</a>
+		</p>
+		
 	</div><!--/span-->
 </div><!--/row-->

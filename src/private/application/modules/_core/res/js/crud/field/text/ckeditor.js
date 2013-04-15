@@ -18,7 +18,7 @@ AC.Crud.Edit.Text = function() {
 		}, {
 			toolbar : 'Ajde',
 			format_tags : 'p;h1;h2;h3;pre',
-			width : elm.width(),
+			width : elm.width() + 13,
 			height : elm.height()
 		});
 	};
