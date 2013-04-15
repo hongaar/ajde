@@ -42,7 +42,10 @@ class Config_Cms extends Config_Advanced
 	//public $documentProcessors;
 
 	//public $dbAdapter;
-	//public $dbDsn;
+	public $dbDsn				= array(
+									'host' 		=> 'localhost',
+									'dbname'	=> 'ajde_cms'
+									);
 	//public $dbUser;
 	//public $dbPassword;
 	//public $textEditor;
