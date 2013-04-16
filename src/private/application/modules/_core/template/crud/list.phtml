@@ -7,19 +7,21 @@ $fieldOptions = $crud->getOptions('fields');
 
 /* @var $crudView Ajde_Collection_View */
 $crudView = $crud->getCollection()->getView();
-$columnCount = 0;
 
 if (isset($listOptions['show'])) {
 	$fieldsToShow = $crud->getOption('list.show');
 } else {
 	$fieldsToShow = $crud->getFieldNames();
 }
+
+$columnCount = count($fieldsToShow);
+
 ?>
 
 <?php echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrudList'); ?>
-
-	<table class='table table-striped table-hover crud'>
-	<thead>
+    
+	<table class='table table-striped table-hover crud <?php echo $crudView->getViewType(); ?>'>
+	<thead>        
 		<tr>
 			<th width="10">
 				<input type="hidden" name="view[orderBy]" value="<?php echo $crudView->getOrderBy(); ?>" />
@@ -29,7 +31,6 @@ if (isset($listOptions['show'])) {
             $showFilters = false;
             foreach($fieldsToShow as $fieldName) {
 				$field = $crud->getField($fieldName);
-				$columnCount++;
 				$orderDir = Ajde_Query::ORDER_ASC;
 				$class = ($crudView->getOrderBy() == $field->getName()) ? 'desc' : '';
 				if ($crudView->getOrderBy() == $field->getName() &&
@@ -50,14 +51,18 @@ if (isset($listOptions['show'])) {
                     </a>					
 				</th>
 			<?php } ?>
-			<th class="buttons">
-				<?php if ($crud->getOption('list.search', true)) { ?>
-					<input type="search" name="view[search]" class="search-query" value="<?php echo $crudView->getSearch(); ?>" placeholder="<?php echo __("Search"); ?>"/>
-				<?php } ?>
-			</th>
+			<th></th>
 		</tr>
+        <tr>
+            <th></th>
+            <th colspan="<?php echo $columnCount + 1; ?>">
+                <?php if ($crud->getOption('list.search', true)) { ?>
+                    <input type="search" name="view[search]" class="span12 search" value="<?php echo $crudView->getSearch(); ?>" placeholder="<?php echo __("Search"); ?>"/>
+                <?php } ?>
+            </th>
+        </tr>
         <?php if ($showFilters) { ?>
-        <tr class="filters">
+        <tr class="filters <?php echo $crudView->getFilterVisible() ? 'visible' : ''; ?>">
             <th></th>
             <?php foreach($fieldsToShow as $fieldName) {
 				$field = $crud->getField($fieldName); ?>
@@ -80,7 +85,7 @@ if (isset($listOptions['show'])) {
         <?php } ?>
 		<tr class="toolbar">
 			<td><input type="checkbox" class="toggleSelect" /></td>
-			<td class="toolbar" colspan="<?php echo $columnCount + 1; ?>">
+			<td class="toolbar" colspan="<?php echo $columnCount; ?>">
 				<?php if ($crud->getOption('list.buttons.new', true)) { ?>
 					<a href="javascript:void(null);" class='btn btn-success new'>new</a>
 				<?php } ?>
@@ -88,6 +93,18 @@ if (isset($listOptions['show'])) {
 					<a href="javascript:void(null);" class='btn btn-danger delete'>delete selected</a>
 				<?php } ?>
 			</td>
+            <td>
+				<input type="hidden" name="view[viewType]" value="<?php echo $crudView->getViewType(); ?>" />
+				<input type="hidden" name="view[filterVisible]" value="<?php echo $crudView->getFilterVisible() ? '1' : '0'; ?>" />
+				
+				<div class="btn-group" data-toggle="buttons-radio">
+					<a href="javascript:void(null);" class='btn listView <?php echo $crudView->getViewType() === 'list' ? 'active' : ''; ?>' title='Show as list'><i class='icon-list'></i></a>
+					<a href="javascript:void(null);" class='btn gridView <?php echo $crudView->getViewType() === 'grid' ? 'active' : ''; ?>' title='Show as grid'><i class='icon-th'></i></a>
+				</div>
+				<?php if ($showFilters) { ?>
+					&nbsp; <a href="javascript:void(null);" class='btn filterToggle <?php echo $crudView->getFilterVisible() ? 'active' : ''; ?>' data-toggle="button" title='Toggle filters'><i class='icon-filter'></i></a>
+				<?php } ?>
+            </td>
 		</tr>
 	</thead>
 	<tbody>
@@ -134,18 +151,21 @@ if (isset($listOptions['show'])) {
 				} elseif ($crud->getField($fieldName) instanceof Ajde_Crud_Field_File) {  ?>
 					<td title="<?php echo $this->escape($value); ?>">
 						<?php
+						//echo $this->escape($value);
 						$extension = pathinfo($value, PATHINFO_EXTENSION);
 						if (in_array(strtolower($extension), array('jpg', 'jpeg', 'png', 'gif'))) {
-							echo $this->ACImage(array(
-								'filename' => $field->getSaveDir() . $value,
-								'width' => $crud->getOption('list.thumbDim.width', 75),
-								'height' => $crud->getOption('list.thumbDim.height', 75),
-								'crop' => true
-							));
-							//echo ' ' . $this->escape($value);
+							$filename = $field->getSaveDir() . $value;							
 						} else {
-							echo $this->escape($value);
-						}						
+							$filename = 'public/images/nothumb.png';
+						}
+						echo '<div class="thumbContainer">';
+						echo $this->ACImage(array(
+							'filename' => $filename,
+							'width' => $crud->getOption('list.thumbDim.width', 75),
+							'height' => $crud->getOption('list.thumbDim.height', 75),
+							'crop' => true
+						));
+						echo '</div>';
 						?>
 					</td>
 				<?php
@@ -167,7 +187,7 @@ if (isset($listOptions['show'])) {
                     <?php if ($crud->getOption('list.buttons.delete', true)) { ?>
                         <a href="javascript:void(null);" class='btn btn-danger delete'>delete</a>
                     <?php } ?>
-                    <?php if ($buttons = $crud->getOption('list.buttons')) { ?>
+                    <?php if ( $buttons = $crud->getOption('list.buttons') && is_array($buttons) && count($buttons) > 0 ) { ?>
                         <div class="btn-group">
                             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                                 More <span class="caret"></span>

@@ -18,69 +18,83 @@ $field = $this->field;
 $typeField = $field->getTypeField();
 $thumbField = $field->getThumbField();
 
+$crud = $field->getCrud();
+
 ?>
 
-<div class='media <?php if ($field->getValue()) { echo 'hidden'; } ?>'
+<div class='media'
      data-typefield='<?php echo _e($typeField); ?>'
      data-thumbfield='<?php echo _e($thumbField); ?>'
+	 data-savedir='<?php echo _e($field->getSaveDir()); ?>'
      >
-    
-    <?php 
-    $options = array(
-        'saveDir' => $field->getSaveDir(),
-        'extensions' => $field->getExtensions(),
-        'multiple' => $field->getMultiple(),
-        'overwrite' => $field->getOverwrite()
-    );
-    echo $this->ACAjaxUpload('_upload', $options);
-    ?>
-    
-    <div class='embed'>        
-        <input type='text' name='_embed' class='span12' placeholder='or paste embed code here' />        
-    </div>
-    
-    <div class='preview'></div>
-        
-</div>
-
-<?php
-
-if ($field->getValue()) {
-	$extension = pathinfo($field->getValue(), PATHINFO_EXTENSION); ?>
-
-	<div class='filelist'>
-		
+	
+	<div class='hidden'>
 		<input
 			<?php echo $field->getHtmlAttributes(); ?>
 		/>
-		
-		<?php
-		if ($isImage = in_array(strtolower($extension), array('jpg', 'jpeg', 'png', 'gif'))) {
-			$thumbDim = $field->hasThumbDim() ? $field->getThumbDim() : array('width' => 150, 'height' => 150); ?>
-			<a class='imagePreview img' title='<?php echo _e($field->getValue()); ?>' href='<?php echo $field->getSaveDir() . $field->getValue(); ?>' target='_blank'>
-				<?php echo $this->ACImage(array(
-						'filename' => $field->getSaveDir() . $field->getValue(),
-						'width' => $thumbDim['width'],
-						'height' => $thumbDim['height'],
-						'crop' => true
-					)); ?>
-			</a>
-		<?php } ?>
+    </div>
+	
+	<div class='uploadControls <?php if ($field->getValue()) { echo 'hidden'; } ?>'>
+    
+		<?php 
+		$options = array(
+			'saveDir' => $field->getSaveDir(),
+			'extensions' => $field->getExtensions(),
+			'multiple' => $field->getMultiple(),
+			'overwrite' => $field->getOverwrite()
+		);
+		echo $this->ACAjaxUpload('_upload', $options);
+		?>
 
-		<span>			
-			<?php if ($isImage) { ?>
-				<a class='imagePreview preview btn' title='<?php echo _e($field->getValue()); ?>' href='<?php echo $field->getSaveDir() . $field->getValue(); ?>' target='_blank'>
-                    <img class='icon' src='<?php echo Ajde_Resource_FileIcon::_($extension); ?> ' />
-                    <?php echo $field->getValue(); ?>
-                </a>
-			<?php } else { ?>
-				<a class='filePreview preview btn' href='<?php echo $field->getSaveDir() . $field->getValue(); ?>' target='_blank'>
-                    <?php echo $field->getValue(); ?>
-                </a>
-			<?php } ?>
-			<a href='#' class='deleteFileCrud btn btn-danger'>delete</a> 
-		</span>
-			
+		<div class='embed'>        
+			<input type='text' name='_embed' class='span12' placeholder='or paste embed code or URL here' />        
+		</div>
+    
 	</div>
+	
+    <div class='preview'>		
+		<?php if ($field->getValue()) {
+			
+			$extension = pathinfo($field->getValue(), PATHINFO_EXTENSION);
+			$type = $crud->getField($typeField)->getValue();
+			?>
+
+			<div class='pointerControls'>			
+				<?php if ($type === 'image') { ?>
+					<a class='imagePreview preview btn' title='<?php echo _e($field->getValue()); ?>' href='<?php echo $field->getSaveDir() . $field->getValue(); ?>' target='_blank'>
+						<img class='icon' src='<?php echo Ajde_Resource_FileIcon::_($extension); ?> ' />
+						<?php echo $field->getValue(); ?>
+					</a>
+				<?php } else if ($type === 'file') { ?>
+					<a class='filePreview preview btn' href='<?php echo $field->getSaveDir() . $field->getValue(); ?>' target='_blank'>
+						<img class='icon' src='<?php echo Ajde_Resource_FileIcon::_($extension); ?> ' />
+						<?php echo $field->getValue(); ?>
+					</a>
+				<?php } else { ?>
+					<a class='embedPreview preview btn' href='javascript:void(null);'>
+						Embedded source
+					</a>
+				<?php } ?>				
+				<a href='javascript:void(null);' class='replaceMedia btn btn-danger'>replace</a>
+			</div>
 		
-<?php } ?>
+			<?php
+		
+			if ($type === 'image') {
+				$thumbDim = $field->hasThumbDim() ? $field->getThumbDim() : array('width' => 750); ?>
+				<a class='imagePreview img' title='<?php echo _e($field->getValue()); ?>' href='<?php echo $field->getSaveDir() . $field->getValue(); ?>' target='_blank'>
+					<?php echo $this->ACImage(array(
+							'filename' => $field->getSaveDir() . $field->getValue(),
+							'width' => $thumbDim['width']
+						)); ?>
+				</a>
+			<?php } else if ($type === 'file') { 				
+			} else {
+				echo $field->getValue();
+			}
+		
+		} ?>
+
+	</div>
+        
+</div>

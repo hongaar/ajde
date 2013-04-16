@@ -65,7 +65,7 @@ AC.Form.Upload = function() {
                                 var $input = $('input[name=' + elm.attr('data-name') + ']');
                                 elm.parents('form').find('button.save, button.apply').attr('disabled', null);
                                 if (elm.attr('data-multiple') == '0') {
-                                    $input.val(filename); //.change(); // triggers exception??
+                                    $input.val(filename).change(); // calling .change() can trigger exception??
     //								elm.find('.qq-uploader').remove();								
                                     elm.after($('<span/>')
                                         .addClass('qq-filename')

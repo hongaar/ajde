@@ -10,12 +10,18 @@ AC.Crud.List = function() {
 
 	var searchTimer;
 	var afterUpdateViewCallback;
+	
+	var viewTypeClasses = 'list grid';
 
 	return {
 
 		init: function() {
 			$('form.ACCrudList tbody tr').live('click', AC.Crud.List.trHandler);
 			$('form.ACCrudList tbody tr').live('dblclick', AC.Crud.List.editHandler);
+            
+            $('form.ACCrudList thead a.listView').live('click', AC.Crud.List.activateListView);
+            $('form.ACCrudList thead a.gridView').live('click', AC.Crud.List.activateGridView);
+            $('form.ACCrudList thead a.filterToggle').live('click', AC.Crud.List.toggleFilters);
 
 			$('form.ACCrudList input.id').live('click', AC.Crud.List.checkboxHandler);
 			$('form.ACCrudList input.toggleSelect').live('click', AC.Crud.List.toggleSelectHandler);
@@ -26,7 +32,7 @@ AC.Crud.List = function() {
 
 			$('form.ACCrudList td.buttons a.prev').live('click', AC.Crud.List.prevHandler);
 			$('form.ACCrudList td.buttons a.next').live('click', AC.Crud.List.nextHandler);
-            		$('form.ACCrudList td.buttons a.page').live('click', AC.Crud.List.pageHandler);
+            $('form.ACCrudList td.buttons a.page').live('click', AC.Crud.List.pageHandler);
 			$('form.ACCrudList td.buttons select.pageSize').live('change', AC.Crud.List.pageSizeHandler);
 			$('form.ACCrudList th a.order').live('click', AC.Crud.List.orderHandler);
 			$('form.ACCrudList th select.filter').live('change', AC.Crud.List.filterSelectHandler);
@@ -324,7 +330,30 @@ AC.Crud.List = function() {
 
 		afterUpdateView: function(callback) {
 			afterUpdateViewCallback = callback;
-		}
+		},
+                
+        activateListView: function(e) {
+			var form = $(this).parents('form');
+			AC.Crud.List.activateView(this, 'list', form);
+        },
+                
+        activateGridView: function(e) {
+			var form = $(this).parents('form');
+			AC.Crud.List.activateView(this, 'grid', form);
+        },
+				
+		activateView: function(node, view, form) {
+//			form.find('table').removeClass(viewTypeClasses).addClass(view);
+			form.find('input[name=\'view[viewType]\']').val( view );
+			AC.Crud.List.updateView(node);
+		},
+                
+        toggleFilters: function(e) {
+			var form = $(this).parents('form');
+			
+			form.find('tr.filters').toggleClass('visible');
+			form.find('input[name=\'view[filterVisible]\']').val( $('tr.filters').hasClass('visible') ? '1' : '0' );
+        }
 
 	};
 }();

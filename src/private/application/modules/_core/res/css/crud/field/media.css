@@ -17,12 +17,32 @@ div.filebrowser {
 .ACAjaxUpload {
     float: left;
     margin-right: 10px;
+	position: absolute;
+}
+
+span.qq-filename {
+	display: block;
+	color: white;
+	height: 0;
+}
+
+span.qq-filename a {
+	float: left;
 }
 
 .embed {
     margin-left: 140px;
+	min-height: 40px;
 }
 
 .preview {
     clear: both;
+}
+
+.pointerControls {
+	min-height: 40px;
+}
+
+.preview .imagePreview.img img {
+	min-width: 100%;
 }

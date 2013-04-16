@@ -24,73 +24,78 @@ AC.Crud.Edit.Media = function() {
     };
     
     
-    
-
-    var onImageUpload = function(e) {
-        var filename = $(this).val();
-        $img = $('<img/>').attr('src', 'public/images/content/' + filename);
-        $('div.imagePreview').append($img);
-        setThumbnail('public/images/content/' + filename, false, filename);
-    };
-
-    var embedChangeTimer;
-    
+        
+	var $pointer;
+	var $preview;
     var $typefield;
     var $thumbfield;
+	
+	var saveDir;
+
+    var onImageUpload = function(e) {
+		var preview, thumb;
+        var filename = $(this).val();		
+		var type = isImage(filename) ? 'image' : 'file';
+		if (type === 'image') {
+			preview = "<img src='" + saveDir + filename + "' />";
+			thumb = filename;
+		} else {
+			preview = "<a href='" + saveDir + filename + "' target='_blank'>" + filename + "</a>";
+			thumb = '';
+		}
+		
+		update(filename, preview, type, thumb);
+    };
+	
+	var isImage = function(filename) {
+		var imageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+		for (var i = 0; i < imageExtensions.length; i++) {
+			if ( filename.indexOf('.' + imageExtensions[i]) === (filename.length - imageExtensions[i].length - 1) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+    var embedChangeTimer;
     
     var onEmbedChange = function(e) {
         var self = this;
         clearTimeout(embedChangeTimer);
         embedChangeTimer = setTimeout(function() {
             var code = $(self).val();
-
-            $.get('_core/component:embedInfo.json', { code: code }, function(data) {
-                if (data.success === true) {
-                    $typefield.val('embed');
-                    $('.preview').html(data.code);
-                    if (data.thumbnail) {
-                        $thumbfield.val(data.thumbnail);
-                    } else {
-                        $thumbfield.val('');
-                    }					
-                } else {
-                    $('.preview').html('Embed code not recognized');
-                    $thumbfield.val('');
-                    $typefield.val('unknown');
-                }
-            }, 'json');
+			
+			if (code) {
+				$('.preview').html('Looking up embed code or URL');			
+				$.get('_core/component:embedInfo.json', { code: code }, function(data) {
+					if (data.success === true) {
+						update(data.code, data.code, 'embed', data.thumbnail);
+					} else {
+						update('', 'Embed code not recognized', 'unknown', '');
+					}
+				}, 'json');
+			} else {
+				update('', '', 'unknown', '');
+			}
 
         }, 300);
     };
 
     var onImageReset = function(e) {
-        $('div.imagePreview').empty();		
-        $('input[name=image]').val('');
-        onThumbnailReset();
-    };
-    
-     // init images on edit
-    var emulateUploadComplete = function(name, filename) {
-        var $input = $('form.ACCrudEdit input[name=' + name + ']');
-        var elm = $input.next('div');
-        $input.val(filename).change();
-        elm.after($('<span/>')
-            .addClass('qq-filename')
-            .text(filename)
-            .append($('<a/>')
-                .attr('href', 'javascript:void(null)')
-                .addClass('remove')
-                .text('verwijder')
-                .click(function() {
-                    elm.trigger('resetUpload');
-                    elm.find('.qq-upload-list').empty();
-                    elm.show();
-                    $(this).parent().remove();
-                })
-            )
-        );
-        elm.hide();
-    }; 
+        update('', '', 'unknown', '');
+    };    
+	
+	var onReplaceMedia = function(e) {
+		$('.uploadControls').removeClass('hidden');
+		update('', '', 'unknown', '');
+	};
+	
+	var update = function(pointer, preview, type, thumbnail) {
+		$pointer.val(pointer);
+		$preview.html(preview);
+		$typefield.val(type);
+		$thumbfield.val(thumbnail);
+	};
     		
 	return {
 		
@@ -103,23 +108,18 @@ AC.Crud.Edit.Media = function() {
             $('form.ACCrudEdit input[name=_upload]').change(onImageUpload);
             $('form.ACCrudEdit input[name=_embed]').on('change keyup', onEmbedChange);
             $('form.ACCrudEdit input[name=_upload]').next('.ACAjaxUpload').bind('resetUpload', onImageReset);
-           
-            var filename;
-            if (filename = $('form.ACCrudEdit input[name=_files]').val()) {
-                if ($('select[name=type]').val() == 'image') {
-                    emulateUploadComplete('image', filename);
-                } else {
-                    emulateUploadComplete('files', filename);
-                }
-            }
-            
+			
+			$('form.ACCrudEdit a.replaceMedia').on('click', onReplaceMedia);
+                       
+			$pointer = $('.media .hidden :input:eq(0)')
+			$preview = $('.preview');			
             $typefield = $(':input[name=' + $('.media').data('typefield') + ']');
             $thumbfield = $(':input[name=' + $('.media').data('thumbfield') + ']');
-
-            // init embed on edit
-            if ($('form.ACCrudEdit input[name=embed]').val()) {
-                $('form.ACCrudEdit input[name=embed]').change();
-            }
+			
+			saveDir = $('.media').data('savedir');
+			
+			// Fancybox
+			$('a.imagePreview').fancybox();
 		}
 		
 	};

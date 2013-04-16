@@ -65,23 +65,50 @@ table.crud {
     
     thead {
         tr {
-           &.toolbar {
+            &.filters {
+                display: none;
+				
+				&.visible {
+					display: table-row;
+				}
+            }
+            
+            &.toolbar {
+				white-space: nowrap;
+				
                 .delete {
                     display: none;
-                    
+
                     &.show {
                         display: inline-block;
                     }
-                }                
+                }            
             }
-            
+
             th {
                 white-space: nowrap;
-                
+
                 &.main {
                     width: 100%;
                 }
+
+                input.search {
+                    font-size: 1.5em;
+                    line-height: 1.5em;
+                    height: auto;
+                    border: 1px solid #007fff;
+
+                    -moz-appearance:    textfield;
+                    -webkit-appearance: textfield;
+                    appearance: textfield;
+                }
             }
+			
+			td {
+				&:last-child {
+					text-align: right;
+				}
+			}
         }
     }
     
@@ -119,7 +146,17 @@ table.crud {
 
                 &.sortDisabled {
                     color: gray;
-                }                
+                }      
+				
+				.thumbContainer {
+					height: 30px;
+					overflow: hidden;
+					
+					img {
+						position: relative;
+						top: -200%;
+					}
+				}
             }
             
             input.id {
@@ -129,11 +166,130 @@ table.crud {
     }
     
     tfoot {
-        .pagination .page {
-            width: 15px;
-        }
-        .pageSize {
-            width: 70px;
-        }
+		tr {
+
+			td {
+				&:last-child {
+					text-align: right;
+				}
+				
+				.pagination {
+					margin: 0;
+
+					.page {
+						width: 15px;
+					}
+				}
+				.pageSize {
+					width: 70px;
+				}
+			}
+		}
     }
+	
+	/**** GRID VIEW ****/
+	
+	&.grid {
+		
+		thead {
+			display: block;
+			
+			tr {
+				width: 100%;
+				
+				th {
+					&:first-child {
+						padding: 15px;
+					}
+				}
+			}
+		}
+		
+		tbody {
+			display: block;
+			margin-left: 37px;
+			
+			tr {				
+				display: block;
+				width: 20%;
+				float: left;
+								
+				td {
+					display: block;
+					border: 0;
+					
+					&:first-child {
+						float: left;
+					}
+					
+					&.main {
+						font-size: 1.2em;
+					}
+					
+					&.buttons {
+						position: relative;
+						top: -8px;
+						opacity: 0;
+						background: transparent;
+					}
+					
+					&.sort, &.sortDisabled {
+						display: none;
+					}
+					
+					.thumbContainer {
+						height: auto;
+
+						img {
+							top: auto;
+						}
+					}					
+				}
+				
+				&:hover {
+					td {
+						&.buttons {
+							opacity: 1;
+						}
+					}
+				}
+			}
+		}
+		
+		tfoot {
+			clear: both;
+			display: block;
+			
+			tr {
+				width: 100%;
+				
+				td {
+					width: 50%;
+					
+					&:first-child {
+						padding: 15px;
+						width: auto;
+					}
+				}
+			}
+		}
+		
+	}
+}
+
+
+@media (max-width: 767px) {
+	
+	/**** GRID VIEW ****/
+	
+	table.crud.grid {
+				
+		tbody {
+			tr {				
+				width: 100%;
+			}
+		}
+		
+	}
+	
 }

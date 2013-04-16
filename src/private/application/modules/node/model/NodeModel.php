@@ -12,9 +12,7 @@ class NodeModel extends Ajde_Model
 	
 	public function beforeSave()
 	{
-//		if (!$this->isEncrypted('encrypted_field')) {
-//			$this->encrypt('encrypted_field');
-//		}
+		// ...
 	}
 
 	public function afterSort()
@@ -39,14 +37,6 @@ class NodeModel extends Ajde_Model
 	public function afterInsert()
 	{
 		// ...
-	}
-
-	public function getVATPercentage()
-	{
-		if ($this->hasVat() && !$this->getVat() instanceof Ajde_Model) {
-			$this->loadParents();
-		}
-		return $this->hasVat() ? ((float) $this->getVat()->getPercentage() / 100) : 0;
 	}
 	
 	public function parseForCrud(Ajde_Crud $crud)

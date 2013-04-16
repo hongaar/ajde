@@ -41,6 +41,7 @@ body {
 .sidebar-nav {
 	overflow: hidden;
 	white-space: nowrap;
+	margin-top: 110px;
 }
 
 
@@ -48,10 +49,30 @@ body {
 	body {
 		padding-top: 0;
 	}
+	
+	.nav-collapse .navbar-text {
+		display: none;
+	}
+	
+	.sidebar-nav {
+		padding: 5px 0 !important;
+	}
+	
+	.menu-toggle {
+		margin: -5px 0;
+	}
+	
+	.navbar-inverse .nav-collapse .nav>li>a, .navbar-inverse .nav-collapse .dropdown-menu a {
+		color: #fff !important;
+	}
 }
 
 @media (max-width: 767px) {
 	.row-fluid .span0 {
 		height: 30px !important;
+	}
+	
+	.sidebar-nav {
+		margin-top: auto;
 	}
 }

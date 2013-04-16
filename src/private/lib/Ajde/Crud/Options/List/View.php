@@ -25,6 +25,8 @@ class Ajde_Crud_Options_List_View extends Ajde_Crud_Options
 	public function getOrderDir()			{ return parent::getOrderDir(); }
 	public function getFilter()				{ return parent::getFilter(); }
 	
+	public function getViewType()			{ return parent::getViewType(); }
+	public function getFilterVisible()		{ return parent::getFilterVisible(); }
 	
 	/**
 	 * Sets the current page
@@ -65,6 +67,32 @@ class Ajde_Crud_Options_List_View extends Ajde_Crud_Options
 	 * @return Ajde_Crud_Options_List_View 
 	 */
 	public function setOrderDir($dir) { return $this->_set('orderDir', $dir); }
+	
+	
+	
+	
+	
+	/** UI ELEMENTS **/
+	
+	/**
+	 * Sets the list view
+	 * 
+	 * @param enum $type ('grid'|'list')
+	 * @return Ajde_Crud_Options_List_View 
+	 */
+	public function setViewType($type) { return $this->_set('viewType', $type); }
+	
+	/**
+	 * Whether or not the filters are visible
+	 * 
+	 * @param boolean $visible
+	 * @return Ajde_Crud_Options_List_View 
+	 */
+	public function setFilterVisible($visible) { return $this->_set('filterVisible', $visible); }
+	
+	
+	
+	
 	
 	/**
 	 * Adds a filter

@@ -1,22 +1,17 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.10deb1
+-- version 3.4.10.1deb1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 25, 2012 at 07:53 PM
--- Server version: 5.1.61
--- PHP Version: 5.3.5-1ubuntu7.7
+-- Generation Time: Apr 16, 2013 at 08:14 PM
+-- Server version: 5.5.29
+-- PHP Version: 5.3.10-1ubuntu3.6
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+SET time_zone = "+00:00";
 
 --
--- Database: `ajde`
+-- Database: `ajde_cms`
 --
 
 -- --------------------------------------------------------
@@ -63,14 +58,14 @@ CREATE TABLE IF NOT EXISTS `cart` (
   `client` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user` (`user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `cart`
 --
 
 INSERT INTO `cart` (`id`, `user`, `client`) VALUES
-(2, 1, '');
+(7, 2, '');
 
 -- --------------------------------------------------------
 
@@ -89,11 +84,6 @@ CREATE TABLE IF NOT EXISTS `cart_item` (
   KEY `cart` (`cart`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `cart_item`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -104,18 +94,30 @@ CREATE TABLE IF NOT EXISTS `media` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `sort` int(11) NOT NULL DEFAULT '999' COMMENT 'Ordering',
   `name` varchar(255) NOT NULL COMMENT 'Title',
-  `type` enum('image','embed') NOT NULL COMMENT 'Type',
-  `filename` varchar(255) DEFAULT NULL COMMENT 'Image',
-  `embed` text COMMENT 'Embed code / URL',
-  `portfolio` int(10) unsigned NOT NULL,
+  `type` enum('unknown','image','file','embed') NOT NULL DEFAULT 'unknown' COMMENT 'Type',
+  `pointer` text NOT NULL COMMENT 'Pointer',
+  `thumbnail` varchar(255) DEFAULT NULL COMMENT 'Thumbnail',
+  `icon` varchar(255) DEFAULT NULL COMMENT 'Icon',
+  `added` timestamp NULL DEFAULT NULL COMMENT 'Added',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Updated',
+  `user` int(10) unsigned NOT NULL COMMENT 'Owner',
   PRIMARY KEY (`id`),
-  KEY `portfolio` (`portfolio`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  KEY `user` (`user`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
 
 --
 -- Dumping data for table `media`
 --
 
+INSERT INTO `media` (`id`, `sort`, `name`, `type`, `pointer`, `thumbnail`, `icon`, `added`, `updated`, `user`) VALUES
+(19, 997, 'Casa', 'image', 'CasaBabilon Back.png', 'CasaBabilon Back.png', NULL, '2013-04-16 17:54:55', '2013-04-16 17:54:55', 2),
+(20, 996, 'neki', 'image', 'artworks-000041116269-hievf6-original.jpg', 'artworks-000041116269-hievf6-original.jpg', NULL, '2013-04-16 18:02:16', '2013-04-16 18:02:16', 2),
+(21, 995, 'belshof', 'image', 'belshof51.png', 'belshof51.png', NULL, '2013-04-16 18:02:23', '2013-04-16 18:02:23', 2),
+(22, 994, 'schotland', 'image', '78320_4612979892860_1495591108_o.jpg', '78320_4612979892860_1495591108_o.jpg', NULL, '2013-04-16 18:02:33', '2013-04-16 18:02:33', 2),
+(23, 993, 'jungle sometimes', 'image', '2013 New Years Jungle Snake Hd Wallpaper.jpg', '2013 New Years Jungle Snake Hd Wallpaper.jpg', NULL, '2013-04-16 18:02:45', '2013-04-16 18:02:45', 2),
+(24, 992, 'SoundCloudz', 'embed', '<iframe width="100%" height="166" scrolling="no" frameborder="no" src="http://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F38800594&amp;auto_play=true&amp;show_artwork=true&amp;color=000"></iframe>', 'artworks-000019457682-ybg1hx-t300x30077.jpg', NULL, '2013-04-16 18:06:56', '2013-04-16 18:06:56', 2),
+(25, 991, 'YouTubes', 'embed', '<iframe width=''100%'' height=''471'' src="http://www.youtube.com/embed/_jPaYnaKVDk?rel=0&amp;autoplay=1&amp;wmode=transparent" frameborder="0" allowfullscreen></iframe>', '065.jpg', NULL, '2013-04-16 18:07:02', '2013-04-16 18:07:02', 2),
+(26, 990, 'Vimeoz', 'embed', '<iframe src="http://player.vimeo.com/video/63804783?title=0&amp;byline=0&amp;portrait=0&amp;autoplay=1" width=''100%'' height=''471'' frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>', '434210943_640.jpg', NULL, '2013-04-16 18:07:21', '2013-04-16 18:07:21', 2);
 
 -- --------------------------------------------------------
 
@@ -125,120 +127,123 @@ CREATE TABLE IF NOT EXISTS `media` (
 
 CREATE TABLE IF NOT EXISTS `meta` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `posttype` int(10) unsigned NOT NULL COMMENT 'Posttype',
+  `nodetype` int(10) unsigned NOT NULL COMMENT 'Posttype',
   `name` varchar(255) NOT NULL COMMENT 'Name',
   `format` enum('string','int') NOT NULL COMMENT 'Format',
   PRIMARY KEY (`id`),
-  KEY `posttype` (`posttype`)
+  KEY `posttype` (`nodetype`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `meta`
---
-
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `post`
+-- Table structure for table `node`
 --
 
-CREATE TABLE IF NOT EXISTS `post` (
+CREATE TABLE IF NOT EXISTS `node` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `posttype` int(10) unsigned NOT NULL COMMENT 'Posttype',
+  `nodetype` int(10) unsigned NOT NULL COMMENT 'Posttype',
   `name` varchar(255) NOT NULL COMMENT 'Title',
   `subtitle` varchar(255) DEFAULT NULL COMMENT 'Subtitle',
-  `added` timestamp NULL DEFAULT NULL COMMENT 'Added on',
-  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Article updated on',
+  `added` timestamp NULL DEFAULT NULL COMMENT 'Added',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Updated',
   `content` text NOT NULL COMMENT 'Article',
   `description` text COMMENT 'Description',
-  `media` int(10) unsigned DEFAULT NULL COMMENT 'Featured media',
+  `media` int(10) unsigned DEFAULT NULL COMMENT 'Cover',
   `user` int(10) unsigned NOT NULL COMMENT 'Owner',
   `sort` int(11) NOT NULL DEFAULT '999' COMMENT 'Ordering',
   `published` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Published',
   PRIMARY KEY (`id`),
   KEY `user` (`user`),
-  KEY `media` (`media`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  KEY `media` (`media`),
+  KEY `posttype` (`nodetype`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=22 ;
 
 --
--- Dumping data for table `post`
+-- Dumping data for table `node`
 --
 
+INSERT INTO `node` (`id`, `nodetype`, `name`, `subtitle`, `added`, `updated`, `content`, `description`, `media`, `user`, `sort`, `published`) VALUES
+(15, 2, 'Testing', NULL, '2013-04-11 18:54:21', '2013-04-16 18:04:42', '<p>gfdgfd</p>\r\n', NULL, NULL, 3, 9998, 0),
+(16, 2, 'Welkom bij Vakadi', NULL, '2013-04-11 19:21:29', '2013-04-16 18:04:58', '<h2>Wist u dat...</h2>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas blandit libero massa, ac semper elit. Integer convallis enim sed erat ornare lobortis. Sed vitae augue mi, id pellentesque sapien. Cras non ipsum enim, vitae tincidunt risus. Quisque et tortor diam, vel rutrum quam. Quisque tortor dui, gravida vel tincidunt ut, euismod non erat. Nulla eget sem at nulla sagittis accumsan et eleifend dui.</p>\r\n', NULL, NULL, 2, 9994, 0),
+(17, 2, 'Wat doen wij', NULL, '2013-04-11 19:26:27', '2013-04-16 18:03:29', '<p>etst</p>\r\n', NULL, NULL, 2, 9997, 1),
+(18, 2, ' Wie zijn wij', NULL, '2013-04-11 19:26:37', '2013-04-16 18:03:29', '<p>fd</p>\r\n', NULL, NULL, 2, 9995, 1),
+(19, 2, 'Nieuwsbrief', NULL, '2013-04-11 19:26:43', '2013-04-16 18:03:29', '<p>test</p>\r\n', NULL, NULL, 2, 9993, 1),
+(20, 2, 'Downloads', NULL, '2013-04-11 19:26:49', '2013-04-16 18:03:29', '<p>fdfd</p>\r\n', NULL, NULL, 2, 9996, 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `posttype`
+-- Table structure for table `nodetype`
 --
 
-CREATE TABLE IF NOT EXISTS `posttype` (
+CREATE TABLE IF NOT EXISTS `nodetype` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `name` varchar(255) NOT NULL COMMENT 'Name',
+  `category` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
--- Dumping data for table `posttype`
+-- Dumping data for table `nodetype`
 --
 
+INSERT INTO `nodetype` (`id`, `name`, `category`) VALUES
+(1, 'page', NULL),
+(2, 'blog-item', NULL),
+(3, 'product', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `post_media`
+-- Table structure for table `node_media`
 --
 
-CREATE TABLE IF NOT EXISTS `post_media` (
-  `post` int(10) unsigned NOT NULL COMMENT 'Post',
+CREATE TABLE IF NOT EXISTS `node_media` (
+  `node` int(10) unsigned NOT NULL COMMENT 'Post',
   `media` int(10) unsigned NOT NULL COMMENT 'Media',
-  KEY `post` (`post`),
+  KEY `post` (`node`),
   KEY `media` (`media`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `post_media`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `post_meta`
+-- Table structure for table `node_meta`
 --
 
-CREATE TABLE IF NOT EXISTS `post_meta` (
+CREATE TABLE IF NOT EXISTS `node_meta` (
   `id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'ID',
-  `posttype` int(10) unsigned NOT NULL COMMENT 'Posttype',
+  `node` int(10) unsigned NOT NULL COMMENT 'Post',
   `meta` int(10) unsigned NOT NULL COMMENT 'Meta',
   `value` text NOT NULL COMMENT 'Value',
   PRIMARY KEY (`id`),
-  KEY `posttype` (`posttype`),
-  KEY `meta` (`meta`)
+  KEY `meta` (`meta`),
+  KEY `post` (`node`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `post_meta`
---
-
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `post_tag`
+-- Table structure for table `node_tag`
 --
 
-CREATE TABLE IF NOT EXISTS `post_tag` (
-  `post` int(10) unsigned NOT NULL COMMENT 'Post',
+CREATE TABLE IF NOT EXISTS `node_tag` (
+  `node` int(10) unsigned NOT NULL COMMENT 'Post',
   `tag` int(10) unsigned NOT NULL COMMENT 'Distributor',
   KEY `tag` (`tag`),
-  KEY `post` (`post`)
+  KEY `post` (`node`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `post_tag`
+-- Dumping data for table `node_tag`
 --
 
+INSERT INTO `node_tag` (`node`, `tag`) VALUES
+(18, 53),
+(20, 53),
+(20, 54),
+(20, 55);
 
 -- --------------------------------------------------------
 
@@ -264,11 +269,6 @@ CREATE TABLE IF NOT EXISTS `sample` (
   KEY `vat` (`vat`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `sample`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -280,14 +280,20 @@ CREATE TABLE IF NOT EXISTS `tag` (
   `name` varchar(255) NOT NULL COMMENT 'Name',
   `sort` varchar(11) NOT NULL DEFAULT '999' COMMENT 'Ordering',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=54 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=60 ;
 
 --
 -- Dumping data for table `tag`
 --
 
 INSERT INTO `tag` (`id`, `name`, `sort`) VALUES
-(53, 'Audio', '999');
+(53, 'Audio', '999'),
+(54, 'New one', '999'),
+(55, 'some tag', '999'),
+(56, 'another one', '999'),
+(57, 'dogs', '999'),
+(58, 'cats', '999'),
+(59, 'photography', '999');
 
 -- --------------------------------------------------------
 
@@ -327,11 +333,6 @@ CREATE TABLE IF NOT EXISTS `transaction` (
   KEY `user` (`user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `transaction`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -355,14 +356,16 @@ CREATE TABLE IF NOT EXISTS `user` (
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`),
   KEY `usergroup` (`usergroup`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`id`, `username`, `password`, `usergroup`, `email`, `fullname`, `address`, `zipcode`, `city`, `region`, `country`, `secret`) VALUES
-(1, 'joram', '$2a$10$81581f5349256bf96edc0uS5ceOfytTAmDb/UrgoKmxa5nu2rvZLa', 2, 'hongaar@gmail.com', 'Joram van den Boezem', NULL, NULL, NULL, NULL, NULL, '74706f5ea4d45d1f18eb0a20dd318bf51c0c1972');
+(2, 'admin', '$2a$10$0a58870584e946cff61c1ewcD/a4dbTvUH5ysrhqJweggm0hvLHda', 2, 'info@halfweeks.com', 'Administrator', NULL, NULL, NULL, NULL, NULL, 'f2e7095a84f4d8acb6050cbf96fc12ef10ca87a3'),
+(3, 'hongaar', '$2a$10$6e355e1df64dcb06de052uupiBtlcPKNnyUqKYbdakRKd04akcqqO', 1, 'hongaar@gmail.com', 'rood', NULL, NULL, NULL, NULL, NULL, '49fe8fea753aa1f6a41681fc0d0f4835bd5b51dd'),
+(4, 'test', '$2a$10$49ce3c9ec377625fa9f38uoAleiNP86slsoyMa23f5isZXzj0Kmxi', 1, 'rood@rood.nl', 'rood', NULL, NULL, NULL, NULL, NULL, '7cc0e5699254fdf0213f9405804c7e1c84d5966c');
 
 -- --------------------------------------------------------
 
@@ -399,11 +402,6 @@ CREATE TABLE IF NOT EXISTS `vat` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
--- Dumping data for table `vat`
---
-
-
---
 -- Constraints for dumped tables
 --
 
@@ -430,35 +428,42 @@ ALTER TABLE `cart_item`
 -- Constraints for table `media`
 --
 ALTER TABLE `media`
-  ADD CONSTRAINT `media_ibfk_1` FOREIGN KEY (`portfolio`) REFERENCES `post` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `media_ibfk_1` FOREIGN KEY (`user`) REFERENCES `user` (`id`);
 
 --
--- Constraints for table `post`
+-- Constraints for table `meta`
 --
-ALTER TABLE `post`
-  ADD CONSTRAINT `post_ibfk_2` FOREIGN KEY (`media`) REFERENCES `meta` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
-  ADD CONSTRAINT `post_ibfk_3` FOREIGN KEY (`user`) REFERENCES `user` (`id`);
+ALTER TABLE `meta`
+  ADD CONSTRAINT `meta_ibfk_2` FOREIGN KEY (`nodetype`) REFERENCES `nodetype` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `post_media`
+-- Constraints for table `node`
 --
-ALTER TABLE `post_media`
-  ADD CONSTRAINT `post_media_ibfk_1` FOREIGN KEY (`post`) REFERENCES `post` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `post_media_ibfk_2` FOREIGN KEY (`media`) REFERENCES `media` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `node`
+  ADD CONSTRAINT `node_ibfk_3` FOREIGN KEY (`user`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `node_ibfk_4` FOREIGN KEY (`media`) REFERENCES `media` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
+  ADD CONSTRAINT `node_ibfk_5` FOREIGN KEY (`nodetype`) REFERENCES `nodetype` (`id`);
 
 --
--- Constraints for table `post_meta`
+-- Constraints for table `node_media`
 --
-ALTER TABLE `post_meta`
-  ADD CONSTRAINT `post_meta_ibfk_3` FOREIGN KEY (`posttype`) REFERENCES `posttype` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `post_meta_ibfk_4` FOREIGN KEY (`meta`) REFERENCES `meta` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `node_media`
+  ADD CONSTRAINT `node_media_ibfk_2` FOREIGN KEY (`media`) REFERENCES `media` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `node_media_ibfk_3` FOREIGN KEY (`node`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `post_tag`
+-- Constraints for table `node_meta`
 --
-ALTER TABLE `post_tag`
-  ADD CONSTRAINT `post_tag_ibfk_2` FOREIGN KEY (`tag`) REFERENCES `tag` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `post_tag_ibfk_3` FOREIGN KEY (`post`) REFERENCES `post` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `node_meta`
+  ADD CONSTRAINT `node_meta_ibfk_4` FOREIGN KEY (`meta`) REFERENCES `meta` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `node_meta_ibfk_5` FOREIGN KEY (`node`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `node_tag`
+--
+ALTER TABLE `node_tag`
+  ADD CONSTRAINT `node_tag_ibfk_2` FOREIGN KEY (`tag`) REFERENCES `tag` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `node_tag_ibfk_3` FOREIGN KEY (`node`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `sample`
