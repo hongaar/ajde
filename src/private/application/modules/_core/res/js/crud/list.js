@@ -102,10 +102,10 @@ AC.Crud.List = function() {
 			form.find('input.toggleSelect').css('opacity', 1);
 			if (count > 0) {
 				form.find('input.id').attr('checked', false);
-				form.find('td.toolbar .button.multiple').removeClass('show');
+				form.find('td.toolbar .delete').removeClass('show');
 			} else {
 				form.find('input.id').attr('checked', true);
-				form.find('td.toolbar .button.multiple').addClass('show');
+				form.find('td.toolbar .delete').addClass('show');
 			}
 		},
 
