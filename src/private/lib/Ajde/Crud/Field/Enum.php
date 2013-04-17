@@ -2,6 +2,8 @@
 
 class Ajde_Crud_Field_Enum extends Ajde_Crud_Field
 {
+	private $_chosenTreshold = 0;
+	
 	public function getValues()
 	{
 		$return = array();
@@ -17,4 +19,12 @@ class Ajde_Crud_Field_Enum extends Ajde_Crud_Field
 		}
 		return $return;
 	}
+	
+	public function _getHtmlAttributes() {
+        $attributes = array();
+        if (count($this->getValues()) >= $this->_chosenTreshold) {
+            $attributes['class'] = 'chosen';
+        }
+        return $attributes;
+    }
 }

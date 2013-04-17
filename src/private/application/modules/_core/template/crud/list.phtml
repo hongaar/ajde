@@ -13,6 +13,7 @@ if (isset($listOptions['show'])) {
 } else {
 	$fieldsToShow = $crud->getFieldNames();
 }
+$gridFields = isset($listOptions['gridShow']) ? $crud->getOption('list.gridShow') : $fieldsToShow;
 
 $columnCount = count($fieldsToShow);
 
@@ -20,7 +21,7 @@ $columnCount = count($fieldsToShow);
 
 <?php echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrudList'); ?>
     
-	<table class='table table-striped table-hover crud <?php echo $crudView->getViewType(); ?>'>
+	<table class='table <?php if ($crudView->getViewType() == 'list') { echo 'table-striped'; } ?> table-hover crud <?php echo $crudView->getViewType(); ?>'>
 	<thead>        
 		<tr>
 			<th width="10">
@@ -116,7 +117,13 @@ $columnCount = count($fieldsToShow);
 			<?php foreach($fieldsToShow as $fieldName) {				
 				
 				$field = $crud->getField($fieldName);
-				$value = $model->get($fieldName);				
+				$value = $model->get($fieldName);			
+				
+				if (!in_array($fieldName, $gridFields)) {
+					$gridData = 'data-grid="hide"';
+				} else {
+					$gridData = ' ';
+				}
 
 				// Sort
 				if ($crud->getField($fieldName) instanceof Ajde_Crud_Field_Sort) {
@@ -135,21 +142,21 @@ $columnCount = count($fieldsToShow);
 				} elseif ($field->hasFunction()) {
 					$displayFunction = $field->getFunction();
 					$funcValue = $model->{$displayFunction}(); ?>
-					<td title="<?php echo $this->escape($funcValue); ?>" <?php if ($crud->getOption('list.main', false) == $field->getName()) { echo 'class=\'main\''; } ?>>
+					<td <?php echo $gridData; ?> title="<?php echo $this->escape($funcValue); ?>" <?php if ($crud->getOption('list.main', false) == $field->getName()) { echo 'class=\'main\''; } ?>>
 						<?php echo _e($funcValue); ?>
 					</td>
 				<?php
 				// Linked Model
 				} elseif ($value instanceof Ajde_Model && $value->hasLoaded()) { ?>
-					<td class="linkedModel" title="<?php echo $value->get($value->getDisplayField()); ?>"><?php echo $value->get($value->getDisplayField()); ?></td>
+					<td <?php echo $gridData; ?> class="linkedModel" title="<?php echo $value->get($value->getDisplayField()); ?>"><?php echo $value->get($value->getDisplayField()); ?></td>
 				<?php
 				// Boolean
 				} elseif ($field instanceof Ajde_Crud_Field_Boolean) { ?>
-					<td><?php echo $field->getHtmlList($value); ?></td>
+					<td <?php echo $gridData; ?>><?php echo $field->getHtmlList($value); ?></td>
 				<?php
 				// File
 				} elseif ($crud->getField($fieldName) instanceof Ajde_Crud_Field_File) {  ?>
-					<td title="<?php echo $this->escape($value); ?>">
+					<td <?php echo $gridData; ?> title="<?php echo $this->escape($value); ?>">
 						<?php
 						//echo $this->escape($value);
 						$extension = pathinfo($value, PATHINFO_EXTENSION);
@@ -171,7 +178,7 @@ $columnCount = count($fieldsToShow);
 				<?php
 				// Text value
 				} else { ?>
-					<td title="<?php echo $this->escape($value); ?>" <?php if ($crud->getOption('list.main', false) == $field->getName()) { echo 'class=\'main\''; } ?>>
+					<td <?php echo $gridData; ?> title="<?php echo $this->escape($value); ?>" <?php if ($crud->getOption('list.main', false) == $field->getName()) { echo 'class=\'main\''; } ?>>
 						<?php echo substr($this->escape($value), 0, 100); ?>
 						<?php if (strlen($this->escape($value)) > 100) { ?>
 							...
@@ -250,7 +257,7 @@ $columnCount = count($fieldsToShow);
 			</td>
 			<td class="buttons">
 				<span>
-					<?php echo __("Page size"); ?>:
+					<?php echo __("Show"); ?>
 				</span>
 				<select name="view[pageSize]" class="pageSize">
 					<?php foreach(array(5, 10, 25, 50, 100) as $pageSize) { ?>

@@ -47,6 +47,14 @@ class Ajde_Crud_Options_List extends Ajde_Crud_Options
 	public function setShow($fields)	{ return $this->_set('show', $fields); }
 	
 	/**
+	 * Sets which fields to show in grid view
+	 * 
+	 * @param array $fields
+	 * @return Ajde_Crud_Options_List
+	 */
+	public function setGridShow($fields) { return $this->_set('gridShow', $fields); }
+	
+	/**
 	 * Sets thumbnail dimensions of images
 	 * 
 	 * @param type $width

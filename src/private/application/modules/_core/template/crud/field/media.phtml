@@ -17,6 +17,7 @@ $field = $this->field;
 
 $typeField = $field->getTypeField();
 $thumbField = $field->getThumbField();
+$filenameField = $field->hasFilenameField() ? $field->getFilenameField() : '';
 
 $crud = $field->getCrud();
 
@@ -25,6 +26,7 @@ $crud = $field->getCrud();
 <div class='media'
      data-typefield='<?php echo _e($typeField); ?>'
      data-thumbfield='<?php echo _e($thumbField); ?>'
+	 data-filenamefield='<?php echo _e($filenameField); ?>'
 	 data-savedir='<?php echo _e($field->getSaveDir()); ?>'
      >
 	

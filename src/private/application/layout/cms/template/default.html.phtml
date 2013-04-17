@@ -124,7 +124,7 @@ $user = UserModel::getLoggedIn();
 						<ul class="nav">
 							<li><a href="admin">Dashboard</a></li>
 							<li class="dropdown">
-								<a class="dropdown-toggle" data-toggle="dropdown" href="admin/cms:nodes">Content management <b class="caret"></b></a>
+								<a class="dropdown-toggle" data-toggle="dropdown" href="admin/cms:nodes">Content <b class="caret"></b></a>
 								<ul class="dropdown-menu">
 									<li><a href="admin/cms:nodes">Nodes</a></li>
 									<li><a href="admin/cms:media">Media</a></li>
@@ -134,13 +134,14 @@ $user = UserModel::getLoggedIn();
 							
 							<?php if ($user && $user->getUsergroup() == UserModel::USERGROUP_ADMINS) { ?>
 								<li class="dropdown">
-									<a class="dropdown-toggle" data-toggle="dropdown" href="admin/nodes">Meta management <b class="caret"></b></a>
+									<a class="dropdown-toggle" data-toggle="dropdown" href="admin/nodes">Setup <b class="caret"></b></a>
 									<ul class="dropdown-menu">
-										<li><a href="admin/types">Node types</a></li>
-										<li><a href="admin/meta">Meta keys</a></li>
+										<li><a href="admin/setup:types">Node types</a></li>
+										<li><a href="admin/setup:meta">Meta keys</a></li>
 									</ul>
-								</li>
+								</li>								
 							<?php } ?>
+							<li><a href="#">Users</a></li>
 							<li><a href="./">View site</a></li>
 						</ul>
 					</div><!--/.nav-collapse -->

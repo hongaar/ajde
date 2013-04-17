@@ -17,6 +17,11 @@ class AdminCmsController extends AdminController
 		return $this->render();
 	}
 	
+	public function setupmenu()
+	{
+		return $this->render();
+	}
+	
 	public function nodes()
 	{
 		Ajde::app()->getDocument()->setTitle("Nodes");

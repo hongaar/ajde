@@ -281,4 +281,14 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     public function setThumbField($fieldname) {
         return $this->_set('thumbField', $fieldname);
     }
+	
+	/**
+	 * Filename db column for fields with type 'media'
+	 * 
+	 * @param string $fieldname
+	 * @return Ajde_Crud_Options_Fields_Field 
+	 */
+    public function setFilenameField($fieldname) {
+        return $this->_set('filenameField', $fieldname);
+    }
 }

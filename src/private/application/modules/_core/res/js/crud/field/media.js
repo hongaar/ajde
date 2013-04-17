@@ -29,6 +29,7 @@ AC.Crud.Edit.Media = function() {
 	var $preview;
     var $typefield;
     var $thumbfield;
+	var $filenamefield;
 	
 	var saveDir;
 
@@ -43,6 +44,10 @@ AC.Crud.Edit.Media = function() {
 			preview = "<a href='" + saveDir + filename + "' target='_blank'>" + filename + "</a>";
 			thumb = '';
 		}
+	
+		if (!$filenamefield.val()) {
+			$filenamefield.val(getFilename(filename));
+		}
 		
 		update(filename, preview, type, thumb);
     };
@@ -50,12 +55,16 @@ AC.Crud.Edit.Media = function() {
 	var isImage = function(filename) {
 		var imageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
 		for (var i = 0; i < imageExtensions.length; i++) {
-			if ( filename.indexOf('.' + imageExtensions[i]) === (filename.length - imageExtensions[i].length - 1) ) {
+			if ( filename.toLowerCase().indexOf('.' + imageExtensions[i] ) === (filename.length - imageExtensions[i].length - 1) ) {
 				return true;
 			}
 		}
 		return false;
-	}
+	};
+
+	var getFilename = function(filename) {
+		return filename.substr(0, filename.lastIndexOf('.'));
+	};
 
     var embedChangeTimer;
     
@@ -115,6 +124,7 @@ AC.Crud.Edit.Media = function() {
 			$preview = $('.preview');			
             $typefield = $(':input[name=' + $('.media').data('typefield') + ']');
             $thumbfield = $(':input[name=' + $('.media').data('thumbfield') + ']');
+			$filenamefield = $(':input[name=' + $('.media').data('filenamefield') + ']');
 			
 			saveDir = $('.media').data('savedir');
 			

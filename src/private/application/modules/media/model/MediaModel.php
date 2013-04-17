@@ -18,7 +18,7 @@ class MediaModel extends Ajde_Model
 
 		// Sort
 		$collection = new MediaCollection();
-		$min = 9999;
+		$min = 999;
 		foreach($collection as $item) {
 			$min = ($item->sort < $min) ? $item->sort : $min;
 		}

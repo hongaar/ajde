@@ -21,3 +21,26 @@ li.alert-error {
     height: 5px;
     margin-bottom: 10px;
 }
+
+.qq-upload-drop-area {
+	font-family: "Open Sans",Calibri,Candara,Arial,sans-serif;
+	border: 2px dotted #0F82F5;
+	outline: 10px solid white;
+	height: 200%;
+	background: #FFF;
+	height: 200px;
+	width: 400px !important;
+}
+
+.qq-upload-drop-area-active {
+	border-color: #41bb19;
+}
+
+.qq-upload-drop-area span {
+	display: block;
+	position: relative;
+	top: auto;
+	width: auto;
+	margin-top: auto;
+	font-size: 16px;
+}

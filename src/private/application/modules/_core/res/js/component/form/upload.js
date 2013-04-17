@@ -61,6 +61,7 @@ AC.Form.Upload = function() {
                                 elm.find('.qq-upload-button').show();
                                 elm.parents('form').find('button.save, button.apply').attr('disabled', null);
                             } else {
+								elm.trigger('completeUpload', [id, fileName, responseJSON]);
                                 var filename = responseJSON.filename;
                                 var $input = $('input[name=' + elm.attr('data-name') + ']');
                                 elm.parents('form').find('button.save, button.apply').attr('disabled', null);

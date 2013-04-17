@@ -1,0 +1,57 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ ?>
+
+<div class="row-fluid">
+	<div class="span2">
+		<?php echo $this->includeModule('admin/cms:setupmenu'); ?>		
+	</div><!--/span-->
+	<div class="span10">
+		
+		<div class="page-header">
+			<h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
+		</div>		
+		
+<?php
+
+$options = new Ajde_Crud_Options();
+$options
+	->selectFields()
+		->selectField('nodetype')
+			->up()
+		->selectField('name')
+			->setEmphasis(true)
+			->up()
+		->selectField('options')
+			->up()
+		->up()
+	->selectList()
+		->selectButtons()
+			->setNew(true)
+			->setEdit(true)
+			->up()
+		->setMain('name')
+		->setShow(array('name', 'nodetype'))
+		->selectView()
+			->setFilterVisible(true)
+			->up()
+		->up()
+	->selectEdit()
+		->setShow()
+		->selectLayout()
+			->addRow()
+				->addColumn()
+                    ->setSpan(12)
+					->addBlock()
+						->setShow(array('name', 'nodetype', 'type', 'options'))
+						->up()
+
+	->finished();
+
+$crud = $this->ACCrudList('meta', $options);
+
+echo $crud->output();
+
+?>
+
+		
+	</div><!--/span-->
+</div><!--/row-->

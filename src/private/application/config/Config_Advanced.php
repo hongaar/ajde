@@ -80,7 +80,7 @@ class Config_Advanced
 	public $dbAdapter			= 'mysql';
 	public $dbDsn				= array(
 									'host' 		=> 'localhost',
-									'dbname'	=> 'ajde'
+									'dbname'	=> 'ajde_cms'
 									);
 	public $dbUser 				= 'ajde_user';
 	public $dbPassword 			= 'ajde_pass';

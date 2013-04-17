@@ -117,9 +117,13 @@ table.crud {
             cursor: pointer;
             
             &.tDnD_whileDrag td {
-                background-color: #99ccff !important;
+                background-color: lighten(#0072e6, 45%);
             }
-            
+			
+			&.checked td {
+				background-color: lighten(#0072e6, 45%);
+			}
+			
             td {
                 vertical-align: middle;
                 white-space: nowrap;
@@ -146,7 +150,11 @@ table.crud {
 
                 &.sortDisabled {
                     color: gray;
-                }      
+                }
+				
+				&.buttons {
+					text-align: right;
+				}
 				
 				.thumbContainer {
 					height: 30px;
@@ -171,6 +179,12 @@ table.crud {
 			td {
 				&:last-child {
 					text-align: right;
+					white-space: nowrap;
+					
+					span {
+						font-size: 0.8em;
+						color: #777;
+					}
 				}
 				
 				.pagination {
@@ -211,12 +225,16 @@ table.crud {
 			
 			tr {				
 				display: block;
+				position: relative;
 				width: 20%;
 				float: left;
+				padding-bottom: 22px;
 								
 				td {
 					display: block;
 					border: 0;
+					overflow: hidden;
+					text-overflow: ellipsis;
 					
 					&:first-child {
 						float: left;
@@ -227,13 +245,17 @@ table.crud {
 					}
 					
 					&.buttons {
-						position: relative;
-						top: -8px;
+						position: absolute;
+						z-index: 99;
+						bottom: 12px;
+						right: 0;					
+						padding: 0;
 						opacity: 0;
-						background: transparent;
 					}
 					
-					&.sort, &.sortDisabled {
+					&.sort,
+					&.sortDisabled,
+					&[data-grid=hide] {
 						display: none;
 					}
 					
@@ -272,24 +294,6 @@ table.crud {
 					}
 				}
 			}
-		}
-		
+		}		
 	}
-}
-
-
-@media (max-width: 767px) {
-	
-	/**** GRID VIEW ****/
-	
-	table.crud.grid {
-				
-		tbody {
-			tr {				
-				width: 100%;
-			}
-		}
-		
-	}
-	
 }

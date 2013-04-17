@@ -86,6 +86,7 @@ AC.Crud.List = function() {
 			if (count == $('input.id').length || count == 0) {
 				form.find('input.toggleSelect').css('opacity', 1);
 			}
+			AC.Crud.List.updateCheckRows(this);
 		},
 
 		toggleSelectHandler: function() {
@@ -107,6 +108,18 @@ AC.Crud.List = function() {
 				form.find('input.id').attr('checked', true);
 				form.find('td.toolbar .delete').addClass('show');
 			}
+			AC.Crud.List.updateCheckRows(this);
+		},
+			
+		updateCheckRows: function(node) {
+			var form = $(node).parents('form');
+			form.find('input.id').each(function() {
+				if ($(this).is(':checked')) {
+					$(this).parents('tr').addClass('checked');
+				} else {
+					$(this).parents('tr').removeClass('checked');
+				}
+			});
 		},
 
 		newHandler: function() {

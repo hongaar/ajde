@@ -44,7 +44,6 @@ body {
 	margin-top: 110px;
 }
 
-
 @media (max-width: 979px) {
 	body {
 		padding-top: 0;
@@ -73,6 +72,17 @@ body {
 	}
 	
 	.sidebar-nav {
-		margin-top: auto;
+		margin-top: auto ;
+	}
+	
+	/**** CRUD GRID VIEW ****/	
+	table.crud.grid {
+				
+		tbody {
+			tr {				
+				width: 100% !important;
+			}
+		}
+		
 	}
 }

@@ -129,7 +129,7 @@ AC.Crud.Edit = function() {
 						errorHandler(i18n.applicationError);
 					}
 				} else {
-                    			isDirty = false;
+                    isDirty = false;
 					if (typeof $(form[0]).data('onSave') === 'function') {
 						var fn = $(form[0]).data('onSave');
 						if (fn(data) === false) {

@@ -14,7 +14,7 @@ class Ajde_Crud_Field_Fk extends Ajde_Crud_Field
 	 */
 	private $_model;
     
-    private $_chosenTreshold;
+    private $_chosenTreshold = 0;
 	
 	public function getCollection()
 	{

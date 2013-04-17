@@ -66,7 +66,8 @@ class Ajde_Resource_Image extends Ajde_Resource
 		} else {
 			ob_start();
 			switch ($this->_type) {
-				case "jpg": 
+				case "jpg":
+				case "jpeg":
 					imagejpeg($this->getImageResource());
 					break;
 				case "png":
@@ -97,7 +98,8 @@ class Ajde_Resource_Image extends Ajde_Resource
 	{
 		if (!isset($this->_image)) {
 			switch ($this->_type) {
-				case "jpg": 
+				case "jpg":
+				case "jpeg":
 					$this->_image = imagecreatefromjpeg($this->_source);
 					break;
 				case "png":
@@ -268,6 +270,7 @@ class Ajde_Resource_Image extends Ajde_Resource
 	{
 		switch ($this->_type) {
 			case "jpg": 
+			case "jpeg":
 				imagejpeg($this->_image, $target);
 				break;
 			case "png":
@@ -283,6 +286,7 @@ class Ajde_Resource_Image extends Ajde_Resource
 	{
 		switch ($this->_type) {
 			case "jpg": 
+			case "jpeg":
 				return "image/jpeg";
 				break;
 			case "png":
