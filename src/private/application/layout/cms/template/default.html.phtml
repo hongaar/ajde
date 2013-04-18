@@ -35,6 +35,11 @@ $this->requireCss('default.crud');
 // The user
 $user = UserModel::getLoggedIn();
 
+// Node types
+Ajde_Model::register('admin');
+$nodeTypes = new NodetypeCollection();
+$nodeTypes->orderBy('sort');
+
 ?>
 <!-- Inspired by HTML5 Boilerplate -->
 <!doctype html>
@@ -87,7 +92,7 @@ $user = UserModel::getLoggedIn();
 	<!--[if IE 9 ]>    <body class='ie9'> <![endif]-->
 	<!--[if (gt IE 9)|!(IE)]><!--> <body> <!--<![endif]-->
 		
-		<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar navbar-fixed-top">
 			<div class="navbar-inner">
 				<div class="container-fluid">
 					<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -127,6 +132,12 @@ $user = UserModel::getLoggedIn();
 								<a class="dropdown-toggle" data-toggle="dropdown" href="admin/cms:nodes">Content <b class="caret"></b></a>
 								<ul class="dropdown-menu">
 									<li><a href="admin/cms:nodes">Nodes</a></li>
+									<li class="divider"></li>
+									<?php foreach ($nodeTypes as $nodeType) {  
+										/* @var $nodeType NodetypeModel */ ?>
+									<li><a href="admin/node:view?view[filter][nodetype]=<?php echo $nodeType->getPK(); ?>"><?php echo _e($nodeType->getName()); ?></a></li>
+									<?php } ?>
+									<li class="divider"></li>
 									<li><a href="admin/cms:media">Media</a></li>
 									<li><a href="admin/cms:menus">Menus</a></li>
 								</ul>
@@ -139,9 +150,9 @@ $user = UserModel::getLoggedIn();
 										<li><a href="admin/setup:types">Node types</a></li>
 										<li><a href="admin/setup:meta">Meta keys</a></li>
 									</ul>
-								</li>								
+								</li>
+								<li><a href="admin/user:view">Users</a></li>
 							<?php } ?>
-							<li><a href="#">Users</a></li>
 							<li><a href="./">View site</a></li>
 						</ul>
 					</div><!--/.nav-collapse -->

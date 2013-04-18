@@ -14,16 +14,16 @@
 	<div class="span10">
 		
         <div class='page-header'>
-            <?php echo Ajde_Resource_Image_Gravatar::get($this->user->email, 90, 'identicon', 'g', true, array('class' => 'pull-left')); ?> &nbsp;
-            <h1> &nbsp; <?php echo $this->clean($this->user->fullname); ?></h1>
+            <?php echo Ajde_Resource_Image_Gravatar::get($this->user->getEmail(), 90, 'identicon', 'g', true, array('class' => 'pull-left')); ?> &nbsp;
+            <h1> &nbsp; <?php echo $this->clean($this->user->getFullname()); ?></h1>
         </div>
 
         <dl class="dl-horizontal">
             <dt>E-mail address</dt>
-            <dd><?php echo $this->clean($this->user->email); ?></dd>
+            <dd><?php echo $this->clean($this->user->getEmail()); ?></dd>
 
             <dt>Full name</dt>
-            <dd><?php echo $this->clean($this->user->fullname); ?></dd>
+            <dd><?php echo $this->clean($this->user->getFullname()); ?></dd>
         </dl>
     </div>
 </div>

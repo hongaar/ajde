@@ -45,18 +45,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 		$session = new Ajde_Session('AC.Crud');
 		$session->setModel($crud->getHash(), $crud);
 		
-		$viewSession = new Ajde_Session('AC.Crud.View');
-		$sessionName = $crud->getSessionName();
-		if ($viewSession->has($sessionName)) {
-			$crudView = $viewSession->get($sessionName);
-		} else {
-			$crudView = new Ajde_Collection_View($sessionName, $crud->getOption('list.view', array()));
-		}
-		$viewParams = Ajde::app()->getRequest()->getParam('view', array());
-		$crudView->setOptions($viewParams);
-		$viewSession->set($sessionName, $crudView);
-		
-		$crud->getCollection()->setView($crudView);
+		$crud->loadCollectionView();
 		
 		$view = $crud->getTemplate();		
 		$view->assign('crud', $crud);
@@ -107,7 +96,19 @@ class _coreCrudController extends Ajde_Acl_Controller
 			if ($value) {
 				$crud->setOption('fields.' . $field . '.hidden', true);	
 			}
-		}		
+		}
+		
+		// Hide mainfilter fields	
+		$crudView = $crud->loadCollectionView();
+		$mainFilter = $crudView->getMainFilter();
+		if ($mainFilter) {
+			$currentFilter = $crudView->getFilterForField($mainFilter);
+			$crud->setOption('fields.' . $mainFilter . '.value', $currentFilter);	
+			$crud->setOption('fields.' . $mainFilter . '.hidden', true);	
+		}
+		
+		// Reload Crud fields in case they were already loaded
+		$crud->loadFields();
 			
 		$session = new Ajde_Session('AC.Crud');
 		$session->setModel($crud->getHash(), $crud);
@@ -126,6 +127,13 @@ class _coreCrudController extends Ajde_Acl_Controller
 		}
 		
 		return $view->render();
+	}
+	
+	public function mainfilterHtml()
+	{
+		$crud = $this->getCrud();
+		$this->getView()->assign('crud', $crud);
+		return $this->render();
 	}
 	
 	public function commitJson()
@@ -267,6 +275,8 @@ class _coreCrudController extends Ajde_Acl_Controller
 			$model->loadByPK($id);
 		}
 		$model->populate($post);
+		
+		Ajde_Event::trigger($model, 'beforeCrudSave', array($crud));
 		
 		if (!$model->validate($crud->getOptions('fields'))) {
 			return array('operation' => $operation, 'success' => false, 'errors' => $model->getValidationErrors());

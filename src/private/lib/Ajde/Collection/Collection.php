@@ -275,7 +275,7 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 	{
 		if (!$this->hasView() && !isset($view)) {
 			// TODO:
-			throw new Ajde_Exception();
+			throw new Ajde_Exception('No view set');
 		}
 		
 		if (isset($view)) {

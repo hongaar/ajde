@@ -481,7 +481,7 @@ class Ajde_Model extends Ajde_Object_Standard
 	public function decrypt($field)
 	{
 		if (!$this->isEncrypted($field)) {
-			return false;
+			return $this->get($field);
 		}
 		$decrypted = $this->_decrypt($this->get($field));
 		$decrypted = str_replace('$$$ENCRYPTED$$$', '', $decrypted);

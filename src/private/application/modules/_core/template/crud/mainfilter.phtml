@@ -1,0 +1,58 @@
+<?php
+
+$crud = $this->crud;
+$crudView = $crud->loadCollectionView();
+
+$mainFilter = $crudView->getMainFilter();
+
+$filterField = $crud->getField($mainFilter);
+$filterFieldValues = $filterField->getValues();
+$currentFilter = $crudView->getFilterForField($mainFilter);
+
+$filteredBy = 'Choose';
+if (key_exists($currentFilter, $filterFieldValues)) {
+	$filteredBy = $filterFieldValues[$currentFilter];
+}
+
+$edit = Ajde::app()->getRequest()->has('edit');
+
+?>
+
+<<?php echo $edit ? 'span' : 'a href="#mainFilter" role="button" data-toggle="modal"'; ?>>
+	<span class='badge badge-info'>
+		<span class="mainFilterLabel"><?php echo $filteredBy; ?></span>
+		<?php if (!$edit) { ?>
+			<b class="caret"></b>
+		<?php } ?>
+	</span>
+</<?php echo $edit ? 'span' : 'a'; ?>>
+
+<!-- Modal -->
+<div id="mainFilter" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="mainFilter" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<h3 id="myModalLabel">Choose a <?php echo _e($filterField->getLabel()); ?></h3>
+	</div>
+	<div class="modal-body">
+
+		<?php if ( ! ($filterField instanceof Ajde_Crud_Field_Enum || $filterField instanceof Ajde_Crud_Field_Fk)) { ?>
+			<p>Field type is not supported by main filter</p>
+		<?php } else { ?>
+			
+			<div class='mainFilterButtons'>
+				<?php foreach($filterField->getValues() as $key => $option) { ?>
+					<a href='javascript:void(null);'
+					   data-name='<?php echo $filterField->getName(); ?>'
+					   data-value='<?php echo $key; ?>'
+					   class='btn <?php if ($key != $currentFilter) { echo 'btn-info'; } ?>'
+					   <?php if ($key == $currentFilter) { echo 'data-init="true"'; } ?>
+					><?php echo _e($option); ?></a>
+				<?php } ?>
+			</div>
+
+		<?php } ?>
+	</div>
+	<div class="modal-footer">
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+	</div>
+</div>

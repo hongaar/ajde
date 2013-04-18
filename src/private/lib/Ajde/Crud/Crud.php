@@ -207,7 +207,7 @@ class Ajde_Crud extends Ajde_Object_Standard
 	public function getItem()
 	{
 		if ($this->isNew()) {
-            Ajde_Event::trigger($this->getModel(), 'afterCrudLoaded');
+			$this->fireCrudLoadedOnModel($this->getModel());
 			return $this->getModel();
 		}
 		if (!$this->getModel()->getPK()) {
@@ -219,7 +219,7 @@ class Ajde_Crud extends Ajde_Object_Standard
 					$model->loadParents();
 				}
 			}
-			Ajde_Event::trigger($this->getModel(), 'afterCrudLoaded');
+			$this->fireCrudLoadedOnModel($this->getModel());
 		}
 		return $this->getModel();
 	}
@@ -247,25 +247,35 @@ class Ajde_Crud extends Ajde_Object_Standard
 		return $collection;
 	}
 	
+	public function fireCrudLoadedOnModel($model)
+	{
+		Ajde_Event::trigger($model, 'afterCrudLoaded');
+	}
+	
 	public function getFields()
 	{
-		if (!isset($this->_fields)) {
-			
-			$fields = array();
-			$fieldsArray =  $this->getModel()->getTable()->getFieldProperties();		
-			$parents = $this->getItem()->getTable()->getParents();
-
-			foreach($fieldsArray as $fieldProperties) {
-				$fieldOptions = $this->getFieldOptions($fieldProperties['name'], $fieldProperties);				
-				if (in_array($fieldOptions['name'], $parents)) {
-					$fieldOptions['type'] = 'fk';
-				}
-				$field = $this->createField($fieldOptions);
-				$fields[$field->getName()] = $field;
-			}
-			$this->_fields = $fields;
+		if (!isset($this->_fields)) {	
+			$this->loadFields();
 		}
 		return $this->_fields;
+	}
+	
+	public function loadFields()
+	{
+		$fields = array();
+		$fieldsArray =  $this->getModel()->getTable()->getFieldProperties();		
+		// TODO: changed getItem to getModel, any side effects?
+		$parents = $this->getModel()->getTable()->getParents();
+
+		foreach($fieldsArray as $fieldProperties) {
+			$fieldOptions = $this->getFieldOptions($fieldProperties['name'], $fieldProperties);				
+			if (in_array($fieldOptions['name'], $parents)) {
+				$fieldOptions['type'] = 'fk';
+			}
+			$field = $this->createField($fieldOptions);
+			$fields[$field->getName()] = $field;
+		}
+		return $this->_fields = $fields;
 	}
 	
 	public function createField($fieldOptions)
@@ -340,6 +350,30 @@ class Ajde_Crud extends Ajde_Object_Standard
 		} else {
 			return (string) $this->getModel()->getTable();
 		}
+	}
+	
+	/**
+	 * 
+	 * @param array $viewParams
+	 * @return Ajde_Collection_View
+	 */
+	public function loadCollectionView($viewParams = array())
+	{
+		$viewSession = new Ajde_Session('AC.Crud.View');
+		$sessionName = $this->getSessionName();
+		if ($viewSession->has($sessionName)) {
+			$crudView = $viewSession->get($sessionName);
+		} else {
+			$crudView = new Ajde_Collection_View($sessionName, $this->getOption('list.view', array()));
+		}
+		if (empty($viewParams)) {
+			$viewParams = Ajde::app()->getRequest()->getParam('view', array());
+		}
+		$crudView->setOptions($viewParams);
+		$viewSession->set($sessionName, $crudView);
+		
+		$this->getCollection()->setView($crudView);
+		return $crudView;
 	}
 		
 	/**

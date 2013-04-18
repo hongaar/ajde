@@ -12,7 +12,8 @@ class Ajde_Component_Crud extends Ajde_Component
 	{
 		return array(
 			'list' => 'list',
-			'edit' => 'edit'
+			'edit' => 'edit',
+			'mainfilter' => 'mainfilter'
 		);
 	}
 	
@@ -33,6 +34,10 @@ class Ajde_Component_Crud extends Ajde_Component
 			$crud->setAction('edit');
 			return $crud;
 			break;
+		case 'mainfilter':
+			$controller = Ajde_Controller::fromRoute(new Ajde_Core_Route('_core/crud:mainfilter'));
+			$controller->setCrud($this->attributes['crud']);
+			return $controller->invoke();
 		}		
 		// TODO:
 		throw new Ajde_Component_Exception();	

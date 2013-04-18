@@ -132,6 +132,14 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 	public function setAdvancedFilter($advancedFilter) { return $this->_set('advancedFilter', $advancedFilter); }
 	
 	/**
+	 * Sets the order field of the foreign table
+	 * 
+	 * @param string $field
+	 * @return Ajde_Crud_Options_Fields_Field 
+	 */
+	public function setOrderBy($field) { return $this->_set('orderBy', $field); }
+	
+	/**
 	 * Sets the display function of the model for the list view
 	 * 
 	 * @param string $function

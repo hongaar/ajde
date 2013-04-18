@@ -1,9 +1,25 @@
+<?php
+// Node types
+Ajde_Model::register('admin');
+$nodeTypes = new NodetypeCollection();
+$nodeTypes->orderBy('sort');
+?>
+
 <div class="well sidebar-nav">
 	<a class="menu-toggle btn btn-normal pull-right"><i class="icon-resize-small"></i></a>
 	<ul class="nav nav-list">
 		<li class="nav-header">Nodes</li>
-		<li><a href="admin/node:view"><i class="icon-list"></i> Node overview</a></li>
-		<li><a href="admin/node:view?new"><i class="icon-plus"></i> Create node</a></li>
+		<li><a href="admin/node:view?new&view[filter][nodetype]="><i class="icon-plus"></i> Create node</a></li>
+		<li><a href="admin/node:view?view[filter][nodetype]="><i class="icon-list"></i> Node overview</a></li>
+		<li class="divider"></li>
+		<?php foreach ($nodeTypes as $nodeType) {  
+			/* @var $nodeType NodetypeModel */ ?>
+		<li>
+			<a href="admin/node:view?view[filter][nodetype]=<?php echo $nodeType->getPK(); ?>">
+				<i><?php echo _e($nodeType->getName()); ?></i>
+			</a>
+		</li>
+		<?php } ?>
 		<li class="nav-header">Media</li>
 		<li><a href="admin/media:view"><i class="icon-th-large"></i> Media manager</a></li>        
 		<li><a href="admin/media:view?new"><i class="icon-plus"></i> New media</a></li>

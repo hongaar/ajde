@@ -58,10 +58,15 @@ class Ajde_Crud_Field_Fk extends Ajde_Crud_Field
 			$this->getCollection()->addFilter($group);
 		}
 		
-		$this->getCollection()->orderBy($this->getModel()->getDisplayField());
+		if ($this->hasOrderBy()) {
+			$this->getCollection()->orderBy($this->getOrderBy());
+		} else {
+			$this->getCollection()->orderBy($this->getModel()->getDisplayField());
+		}
 		$return = array();
 		foreach($this->getCollection() as $model) {
-			$return[(string) $model] = $model->get($model->getDisplayField());
+			$fn = 'get' . ucfirst($model->getDisplayField());
+			$return[(string) $model] = $model->{$fn}();
 		}
 		return $return;
 	}

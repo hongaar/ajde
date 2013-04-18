@@ -164,7 +164,7 @@ class UserController extends Ajde_User_Controller
 		
 		if (false !== $user->loadByCredentials($username, $password)) {
 			$user->login();
-            Ajde_Session_Flash::alert(sprintf(__('Welcome back %s'), $user->fullname));
+            Ajde_Session_Flash::alert(sprintf(__('Welcome back %s'), $user->getFullname()));
 			if ($rememberme === true) {
 				$user->storeCookie();
 			}

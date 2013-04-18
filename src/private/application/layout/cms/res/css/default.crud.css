@@ -1,5 +1,21 @@
 /*#!less*/
 
+.page-header h1 .badge {
+	line-height: inherit;
+	font-size: 0.7em;
+	display: inline;
+	height: 57px;
+	float: left;
+	margin-right: 10px;
+	position: relative;
+	top: -10px;
+	padding-top: 10px;
+	
+	.caret {
+		border-top: 4px solid #fff;
+	}
+}
+
 fieldset.crud {
     input.emphasis[type=text] {
         font-size: 1.5em;
@@ -120,8 +136,14 @@ table.crud {
                 background-color: lighten(#0072e6, 45%);
             }
 			
-			&.checked td {
-				background-color: lighten(#0072e6, 45%);
+			&.checked {
+				td {
+					background-color: lighten(#0072e6, 45%);
+					
+					&:first-child {
+						opacity: 1 !important;
+					}
+				}
 			}
 			
             td {
@@ -212,8 +234,11 @@ table.crud {
 				width: 100%;
 				
 				th {
+					width: 50%;
+					
 					&:first-child {
-						padding: 15px;
+						width: 0;
+						padding: 0;
 					}
 				}
 			}
@@ -228,27 +253,42 @@ table.crud {
 				position: relative;
 				width: 20%;
 				float: left;
-				padding-bottom: 22px;
+				padding-bottom: 1px;
+				
+				&:last-child {
+					padding-bottom: 10px;
+					
+					td.buttons {
+						bottom: 10px;
+					}
+				}
 								
 				td {
 					display: block;
 					border: 0;
 					overflow: hidden;
 					text-overflow: ellipsis;
+					margin-right: 1px;
 					
 					&:first-child {
-						float: left;
+						/*float: left;*/
+						position: absolute;
+						right: 0;
+						opacity: 0;
+						z-index: 99;
 					}
 					
 					&.main {
 						font-size: 1.2em;
+						background-color: black;
+						color: white;
 					}
 					
 					&.buttons {
 						position: absolute;
-						z-index: 99;
-						bottom: 12px;
-						right: 0;					
+						z-index: 100;
+						bottom: 1px;
+						right: 8px;					
 						padding: 0;
 						opacity: 0;
 					}
@@ -270,6 +310,9 @@ table.crud {
 				
 				&:hover {
 					td {
+						&:first-child {
+							opacity: 1;
+						}
 						&.buttons {
 							opacity: 1;
 						}
@@ -296,4 +339,10 @@ table.crud {
 			}
 		}		
 	}
+}
+
+.mainFilterButtons .btn {
+	font-size: 0.4em;
+	line-height: 1.3em;
+	margin-bottom: 10px;
 }

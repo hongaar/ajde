@@ -62,14 +62,14 @@ $this->requireJsPublic('lib/complexify/jquery.complexify.min.js');
 				<div class="control-group">
 					<label class="control-label" for="in_email"><?php echo __('E-mail'); ?></label>
 					<div class="controls">
-						<input type="text" name="email" required id="in_email" value='<?php echo $this->escape($this->user->email); ?>' />
+						<input type="text" name="email" required id="in_email" value='<?php echo $this->escape($this->user->getEmail()); ?>' />
 					</div>
 				</div>
 				
 				<div class="control-group">
 					<label class="control-label" for="in_name"><?php echo __('Full name'); ?></label>
 					<div class="controls">
-						<input type="text" name="fullname" required id="in_name" value='<?php echo $this->escape($this->user->fullname); ?>' />
+						<input type="text" name="fullname" required id="in_name" value='<?php echo $this->escape($this->user->getFullname()); ?>' />
 					</div>
 				</div>
 				

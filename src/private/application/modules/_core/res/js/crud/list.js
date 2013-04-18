@@ -60,12 +60,12 @@ AC.Crud.List = function() {
 
 		trHandler: function(e) {
 			e.stopPropagation();
-			e.preventDefault();
+			//e.preventDefault();
 			var row = $(this);
 			var checkbox = row.find('input[type=checkbox]');
 			checkbox.attr('checked', !checkbox.attr('checked'));
 			AC.Crud.List.checkboxHandler.call(checkbox, e);
-			return false;
+			//return false;
 		},
 
 		checkboxHandler: function(e) {
@@ -297,7 +297,7 @@ AC.Crud.List = function() {
 			AC.Crud.List.resetPage(this);
 			AC.Crud.List.updateView(this, c);
 		},
-
+			
 		resetPage: function(node) {
 			var form = $(node).parents('form');
 			var $page = form.find('input[name=\'view[page]\']');

@@ -1,0 +1,60 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ 
+
+$options = new Ajde_Crud_Options();
+$options
+	->selectFields()
+		->selectField('username')
+			->setEmphasis(true)
+			->up()
+		->selectField('password')
+			->setDisableRichText(true)
+			->setLength(255)
+			->setIsRequired(false)
+			->up()
+		->selectField('email')
+			->setFunction('emailLink')
+			->up()
+		->up()
+	->selectList()
+		->selectButtons()
+			->setNew(true)
+			->setEdit(true)
+			->up()
+		->setMain('username')
+		->setShow(array('username', 'usergroup', 'email', 'fullname'))
+		->up()
+	->selectEdit()
+		->setShow()
+		->selectLayout()
+			->addRow()
+				->addColumn()
+                    ->setSpan(12)
+					->addBlock()
+						->setShow(array('username', 'password', 'usergroup', 'email', 'fullname'))
+
+	->finished();
+
+$crud = $this->ACCrudList('user', $options);
+
+if (Ajde::app()->getRequest()->has('new')) {
+	$crud->setOption('fields.password.isRequired', true);
+}
+
+?>
+
+<div class="row-fluid">
+	<div class="span2">
+		<?php echo $this->includeModule('admin/cms:menu'); ?>		
+	</div><!--/span-->
+	<div class="span10">
+		
+		<div class="page-header">
+			<h1>
+				<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
+			</h1>
+		</div>		
+		
+		<?php echo $crud->output(); ?>
+		
+	</div><!--/span-->
+</div><!--/row-->

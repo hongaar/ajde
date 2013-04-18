@@ -18,7 +18,8 @@ class Ajde_Collection_View extends Ajde_Object_Standard
 			'orderDir'		=> Ajde_Query::ORDER_ASC,
 			
 			'viewType'		=> 'list',
-			'filterVisible' => false
+			'filterVisible' => false,
+			'mainFilter'	=> ''
 		);		
 		$options = array_merge($defaultOptions, $listOptions);
 		$this->setOptions($options);	
@@ -40,6 +41,7 @@ class Ajde_Collection_View extends Ajde_Object_Standard
 	
 	public function getViewType()			{ return parent::getViewType(); }
 	public function getFilterVisible()		{ return parent::getFilterVisible(); }
+	public function getMainFilter()			{ return parent::getMainFilter(); }
 	
 	public function getFilterForField($fieldName) {
 		$filters = $this->getFilter();

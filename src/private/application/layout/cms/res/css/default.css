@@ -27,7 +27,7 @@ body {
 }
 
 .row-fluid .span0 {
-	width: 35px !important;
+	width: 42px !important;
 	padding: 0 !important;
 	margin: 0 !important;
 	overflow: hidden !important;	
@@ -77,10 +77,29 @@ body {
 	
 	/**** CRUD GRID VIEW ****/	
 	table.crud.grid {
+		display: block;
+		
+		thead {
+			tr {			
+				&:first-child {
+					display: none;
+				}
+				
+				th {
+					width: 100% !important;
+					
+					&:first-child {
+						width: 0 !important;
+					}
+				}
+			}
+		}
 				
 		tbody {
+			margin-left: 0 !important;
+			
 			tr {				
-				width: 100% !important;
+				width: 50% !important;
 			}
 		}
 		

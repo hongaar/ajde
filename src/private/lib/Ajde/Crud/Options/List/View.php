@@ -27,6 +27,7 @@ class Ajde_Crud_Options_List_View extends Ajde_Crud_Options
 	
 	public function getViewType()			{ return parent::getViewType(); }
 	public function getFilterVisible()		{ return parent::getFilterVisible(); }
+	public function getMainFilter()			{ return parent::getMainFilter(); }
 	
 	/**
 	 * Sets the current page
@@ -89,6 +90,14 @@ class Ajde_Crud_Options_List_View extends Ajde_Crud_Options
 	 * @return Ajde_Crud_Options_List_View 
 	 */
 	public function setFilterVisible($visible) { return $this->_set('filterVisible', $visible); }
+	
+	/**
+	 * Enable the main list filter for this field
+	 * 
+	 * @param string $field
+	 * @return Ajde_Crud_Options_List_View 
+	 */
+	public function setMainFilter($field) { return $this->_set('mainFilter', $field); }
 	
 	
 	

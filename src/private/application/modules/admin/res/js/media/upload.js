@@ -1,9 +1,9 @@
 ;
-if (typeof AC === "undefined") {AC = function(){}};
-if (typeof AC.Admin === "undefined") {AC.Admin = function(){}};
-if (typeof AC.Admin.Media === "undefined") {AC.Admin.Media = function(){}};
+if (typeof App === "undefined") {App = function(){}};
+if (typeof App.Admin === "undefined") {App.Admin = function(){}};
+if (typeof App.Admin.Media === "undefined") {App.Admin.Media = function(){}};
 
-AC.Admin.Media.Upload = function() {
+App.Admin.Media.Upload = function() {
 		
 	var infoHandler		= AC.Core.Alert.show;
 	var warningHandler	= AC.Core.Alert.warning;
@@ -34,5 +34,5 @@ AC.Admin.Media.Upload = function() {
 }();
 
 $(document).ready(function() {
-	AC.Admin.Media.Upload.init();
+	App.Admin.Media.Upload.init();
 });

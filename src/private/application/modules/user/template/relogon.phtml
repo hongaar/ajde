@@ -4,13 +4,13 @@
 		<fieldset>
 			<legend><?php echo $this->clean($this->message); ?></legend>
 			
-			
 			<p>
 				Already logged on.
 			</p>
-			
+
 			<p>
-				<a class='btn btn-primary' href="user/logoff?returnto=<?php echo isset($this->returnto) ? $this->returnto : Ajde::app()->getRoute(); ?>"><?php echo __('Login as a different user'); ?></a>
+				<?php // Use $_GET['_route'] to avoid getting the current route, i.e. as with Ajde::app()->getRoute() ?>
+				<a class='btn btn-primary' href="user/logoff?returnto=<?php echo isset($this->returnto) ? $this->returnto : $_GET['_route']; ?>"><?php echo __('Login as a different user'); ?></a>
 			</p>
 		</fieldset>
 	

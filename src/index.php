@@ -116,15 +116,34 @@ define('AJDE', true);
 	function dump($var, $collapse = false) {
 		Ajde_Dump::dump($var, $collapse);
 	}
-
+	
+	/**
+	 * Translates the string with Ajde_Lang::translate
+	 * 
+	 * @param string $ident
+	 * @param string $module
+	 * @return string
+	 */
 	function __($ident, $module = null) {
 		return Ajde_Lang::getInstance()->translate($ident, $module);
 	}
-
+	
+	/**
+	 * Escapes the string with Ajde_Component_String::escape
+	 * 
+	 * @param string $var
+	 * @return string
+	 */
 	function _e($var) {
 		return Ajde_Component_String::escape($var);
 	}
-
+	
+	/**
+	 * Cleans the string with Ajde_Component_String::clean
+	 * 
+	 * @param string $var
+	 * @return string
+	 */
 	function _c($var) {
 		return Ajde_Component_String::clean($var);
 	}
