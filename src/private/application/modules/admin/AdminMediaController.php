@@ -10,7 +10,7 @@ class AdminMediaController extends AdminController
 	{
 		Ajde_Model::register('media');
 		
-		Ajde::app()->getDocument()->setTitle("Media");
+		Ajde::app()->getDocument()->setTitle("Media manager");
         $this->getView()->assign('extensions', $this->_extensions);
 		$this->getView()->assign('uploaddir', $this->_uploaddir);
 		return $this->render();

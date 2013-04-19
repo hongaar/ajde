@@ -7,6 +7,7 @@ class Ajde_Model extends Ajde_Object_Standard
 
 	protected $_autoloadParents = false;
 	protected $_displayField = null;
+	protected $_encrypedFields = array();
 
 	protected $_validators = array();
 
@@ -70,19 +71,39 @@ class Ajde_Model extends Ajde_Object_Standard
 		$this->_table = Ajde_Db::getInstance()->getTable($tableName);
 	}
 
-	public function __set($name, $value) {
-        $this->set($name, $value);
+	public function __set($name, $value)
+	{
+		$this->set($name, $value);
     }
+	
+	protected function _set($name, $value)
+	{
+		parent::_set($name, $value);
+		if ($this->isFieldEncrypted($name)) {			
+			parent::_set($name, $this->encrypt($name));
+		}
+	}
 
-    public function __get($name) {
+    public function __get($name)
+	{
         return $this->get($name);
     }
+	
+	protected function _get($name)
+	{
+		if ($this->isFieldEncrypted($name)) {
+			return $this->decrypt($name);
+		}
+        return parent::_get($name);
+	}
 
-    public function __isset($name) {
+    public function __isset($name)
+	{
         return $this->has($name);
     }
 
-	public function __toString() {
+	public function __toString()
+	{
 		if (empty($this->_data)) {
 			return null;
 		}
@@ -91,7 +112,7 @@ class Ajde_Model extends Ajde_Object_Standard
 
 	public function __sleep()
 	{
-		return array('_autoloadParents', '_displayField', '_data');
+		return array('_autoloadParents', '_displayField', '_encrypedFields', '_data');
 	}
 
 	public function __wakeup()
@@ -178,7 +199,11 @@ class Ajde_Model extends Ajde_Object_Standard
 		$values = array();
 		foreach($array as $field => $value) {
 			$sqlWhere[] = $field . ' = ?';
-			$values[] = $value;
+			if ($this->isFieldEncrypted($field)) {
+				$values[] = $this->doEncrypt($value);
+			} else {
+				$values[] = $value;
+			}
 		}
 		$sql = 'SELECT * FROM '.$this->_table.' WHERE ' . implode(' AND ', $sqlWhere) . ' LIMIT 1';
 		return $this->_load($sql, $values);
@@ -200,6 +225,43 @@ class Ajde_Model extends Ajde_Object_Standard
 			return true;
 		}
 	}
+	
+	/**
+	 * 
+	 * @param array $fields
+	 */
+	public function setEncryptedFields($fields)
+	{
+		$this->_encrypedFields = $fields;
+	}
+	
+	/**
+	 * 
+	 * @param string $field
+	 */
+	public function addEncryptedField($field)
+	{
+		$this->_encrypedFields[] = $field;
+	}
+	
+	/**
+	 * 
+	 * @return array
+	 */
+	public function getEncryptedFields()
+	{
+		return $this->_encrypedFields;
+	}
+	
+	/**
+	 * 
+	 * @param string $field
+	 * @return boolean
+	 */
+	public function isFieldEncrypted($field)
+	{
+		return in_array($field, $this->getEncryptedFields());
+	}
 
 	/**
 	 *
@@ -214,6 +276,13 @@ class Ajde_Model extends Ajde_Object_Standard
 
 		$sqlSet = array();
 		$values = array();
+			
+		// encryption
+		foreach($this->getEncryptedFields() as $field) {
+			if ($this->has($field)) {
+				parent::_set($field, $this->encrypt($field));
+			}
+		}
 
 		foreach($this->getTable()->getFieldNames() as $field) {
 			// Don't save a field is it's empty or not set
@@ -226,15 +295,15 @@ class Ajde_Model extends Ajde_Object_Standard
 					if ($this->get($field) instanceof Ajde_Db_Function) {
 						$sqlSet[] = $field . ' = ' . (string) $this->get($field);
                     } elseif ($this->getTable()->getFieldProperties($field, 'type') === Ajde_Db::FIELD_TYPE_SPATIAL) {
-                        $pointValues = explode(' ', (string) $this->get($field));
+                        $pointValues = explode(' ', (string) parent::_get($field));
                         $sqlSet[] = $field . ' = PointFromWKB(POINT(' . (double) $pointValues[0] . ',' . (double) $pointValues[1] . '))';
 					} else {
 						$sqlSet[] = $field . ' = ?';
-						$values[] = (string) $this->get($field);
+						$values[] = (string) parent::_get($field);
 					}
 				} elseif ($this->get($field) === 0 || $this->get($field) === '0') {
 					$sqlSet[] = $field . ' = ?';
-					$values[] = (string) $this->get($field);
+					$values[] = (string) parent::_get($field);
 				} else {
 					// Field is required but has an empty value..
 					// (shouldn't have passed validation)
@@ -266,6 +335,14 @@ class Ajde_Model extends Ajde_Object_Standard
 		$sqlFields = array();
 		$sqlValues = array();
 		$values = array();
+		
+		// encryption
+		foreach($this->getEncryptedFields() as $field) {
+			if ($this->has($field)) {
+				parent::_set($field, $this->encrypt($field));
+			}
+		}
+		
 		foreach($this->getTable()->getFieldNames() as $field) {
 			// Don't save a field is it's empty or not set
 			if ($this->has($field) && !$this->isEmpty($field)) {
@@ -274,15 +351,15 @@ class Ajde_Model extends Ajde_Object_Standard
 					$sqlValues[] = (string) $this->get($field);
                 } elseif ($this->getTable()->getFieldProperties($field, 'type') === Ajde_Db::FIELD_TYPE_SPATIAL) {
                     $sqlFields[] = $field;
-                    $pointValues = explode(' ', (string) $this->get($field));
+                    $pointValues = explode(' ', (string) parent::_get($field));
 					$sqlValues[] = 'PointFromWKB(POINT(' . (double) $pointValues[0] . ',' . (double) $pointValues[1] . '))';
 				} else {
 					$sqlFields[] = $field;
 					$sqlValues[] = '?';
-					$values[] = (string) $this->get($field);
+					$values[] = (string) parent::_get($field);
 				}
 			} else {
-				$this->set($field, null);
+				parent::_set($field, null);
 			}
 		}
 		$sql = 'INSERT INTO ' . $this->_table . ' (' . implode(', ', $sqlFields) . ') VALUES (' . implode(', ', $sqlValues) . ')';
@@ -319,7 +396,7 @@ class Ajde_Model extends Ajde_Object_Standard
 			// throws error if no table can be found
 			$parent = new Ajde_Db_Table($parent);
 		}
-		$fk = $this->getTable()->getFK($fieldName);
+		$fk = $this->getTable()->getFK($parent);
 		return $fk;
 	}
 
@@ -387,7 +464,7 @@ class Ajde_Model extends Ajde_Object_Standard
 
 	public function getValidatorsFor($fieldName)
 	{
-		if (!isset($this->_validators[$fieldname])) {
+		if (!isset($this->_validators[$fieldName])) {
 			$this->_validators[$fieldName] = array();
 		}
 		return $this->_validators[$fieldName];
@@ -401,7 +478,7 @@ class Ajde_Model extends Ajde_Object_Standard
 				// TODO:
 				throw new Ajde_Exception(sprintf("beforeValidate() must return either TRUE or FALSE"));
 			}
-			if ($return = false) {
+			if ($return === false) {
 				return false;
 			}
 		}
@@ -446,64 +523,30 @@ class Ajde_Model extends Ajde_Object_Standard
 
 	public function isEncrypted($field)
 	{
-		return substr_count($this->_decrypt($this->get($field)), '$$$ENCRYPTED$$$');
+		return substr_count(Ajde_Component_String::decrypt(parent::_get($field)), '$$$ENCRYPTED$$$');
 	}
 
 	public function encrypt($field)
 	{
-		$this->set($field, $this->_encrypt('$$$ENCRYPTED$$$' . $this->get($field)));
-		return $this->get($field);
+		if (!$this->isEmpty($field)) {
+			if ($this->isEncrypted($field)) {
+				return parent::_get($field);
+			}
+			return $this->doEncrypt(parent::_get($field));
+		}
 	}
-
-	private function _encrypt($text) {
-		return trim(
-			base64_encode(
-				gzdeflate(
-					mcrypt_encrypt(
-						MCRYPT_RIJNDAEL_256,
-						Config::get('secret'),
-						$text,
-						MCRYPT_MODE_ECB,
-						mcrypt_create_iv(
-							mcrypt_get_iv_size(
-								MCRYPT_RIJNDAEL_256,
-								MCRYPT_MODE_ECB
-							),
-							MCRYPT_RAND
-						)
-					),
-					9
-				)
-			)
-		);
+	
+	public function doEncrypt($string)
+	{
+		return Ajde_Component_String::encrypt('$$$ENCRYPTED$$$' . $string);
 	}
 
 	public function decrypt($field)
 	{
 		if (!$this->isEncrypted($field)) {
-			return $this->get($field);
+			return parent::_get($field);
 		}
-		$decrypted = $this->_decrypt($this->get($field));
-		$decrypted = str_replace('$$$ENCRYPTED$$$', '', $decrypted);
-		$this->set($field, $decrypted);
-		return $this->get($field);
-	}
-
-	public function _decrypt($text) {
-		return trim(
-			mcrypt_decrypt(
-				MCRYPT_RIJNDAEL_256,
-				Config::get('secret'),
-				gzinflate(base64_decode($text)),
-				MCRYPT_MODE_ECB,
-				mcrypt_create_iv(
-					mcrypt_get_iv_size(
-						MCRYPT_RIJNDAEL_256,
-						MCRYPT_MODE_ECB
-					),
-					MCRYPT_RAND
-				)
-			)
-		);
+		$decrypted = str_replace( '$$$ENCRYPTED$$$', '', Ajde_Component_String::decrypt(parent::_get($field)) );
+		return $decrypted;
 	}
 }

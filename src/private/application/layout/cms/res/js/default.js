@@ -8,7 +8,9 @@
 	var bootstrap = function() {	
         
         // Chosen
-        $("select.chosen").chosen();
+		setTimeout(function() {
+			$("select.chosen").chosen();
+		}, 100);
 		
 		// Form validation with Twitter Bootstrap
 		$('form').attr('novalidate', 'novalidate');

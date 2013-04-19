@@ -44,9 +44,15 @@ abstract class Ajde_Object_Magic extends Ajde_Object
 	 */
 	public function set($key, $value)
 	{
-		$this->_data[$key] = $value;
+		$this->_set($key, $value);
 	}
 	
+	protected function _set($key, $value)
+	{
+		$this->_data[$key] = $value;
+	}
+
+
 	public function remove($key)
 	{
 		unset($this->_data[$key]);
@@ -56,12 +62,17 @@ abstract class Ajde_Object_Magic extends Ajde_Object
 	{
 		if ($this->has($key))
 		{
-			return $this->_data[$key];
+			return $this->_get($key);
 		}
 		else
 		{
 			throw new Ajde_Exception("Parameter '$key' not set in class ".get_class($this)." when calling get('$key')", 90007);
 		}		
+	}
+	
+	protected function _get($key)
+	{
+		return $this->_data[$key];
 	}
 
 	public function has($key)

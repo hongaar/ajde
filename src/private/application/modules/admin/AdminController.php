@@ -10,6 +10,7 @@ class AdminController extends Ajde_Acl_Controller
 	public function beforeInvoke()
 	{
 		Ajde::app()->getDocument()->setLayout(new Ajde_Layout('cms'));
+		Ajde_Cache::getInstance()->disable();
 		return parent::beforeInvoke();
 	}
 	

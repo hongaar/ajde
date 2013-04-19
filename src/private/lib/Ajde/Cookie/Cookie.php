@@ -4,12 +4,14 @@ class Ajde_Cookie extends Ajde_Object_Standard
 {
 	protected $_namespace = null;
 	protected $_lifetime = 90;
+	protected $_secure = false;
 	
-	public function __construct($namespace = 'default')
+	public function __construct($namespace = 'default', $secure = false)
 	{
 		$this->_namespace = $namespace;
+		$this->_secure = $secure;
 		if (isset($_COOKIE[$this->_namespace])) {
-			$this->_data = unserialize($_COOKIE[$this->_namespace]);
+			$this->_data = $this->reader();
 		}
 	}
 	
@@ -47,7 +49,25 @@ class Ajde_Cookie extends Ajde_Object_Standard
 			// TODO:
 			throw new Ajde_Exception('It is not allowed to store a Model directly in a cookie, use Ajde_Cookie::setModel() instead.');
 		}
-		$this->_setcookie(serialize($this->values()), time() + (60 * 60 * 24 * $this->_lifetime));
+		$this->_setcookie($this->writer(), time() + (60 * 60 * 24 * $this->_lifetime));
+	}
+	
+	protected function reader()
+	{
+		if ($this->_secure) {
+			return unserialize(Ajde_Component_String::decrypt($_COOKIE[$this->_namespace]));
+		} else {
+			return unserialize($_COOKIE[$this->_namespace]);
+		}
+	}
+	
+	protected function writer()
+	{
+		if ($this->_secure) {
+			return Ajde_Component_String::encrypt(serialize($this->values()));
+		} else {
+			return serialize($this->values());
+		}
 	}
 	
 	protected function _setcookie($value, $lifetime)

@@ -41,6 +41,10 @@ class Ajde_Model_Validator extends Ajde_Object_Standard
 			if ($fieldProperties['isRequired'] === true && $fieldProperties['default'] == '') {
 				$this->_model->addValidator($fieldName, new Ajde_Model_Validator_Required());
 			}
+			
+			if ($fieldProperties['isUnique'] === true) {
+				$this->_model->addValidator($fieldName, new Ajde_Model_Validator_Unique());
+			}
 		}
 	}
 	

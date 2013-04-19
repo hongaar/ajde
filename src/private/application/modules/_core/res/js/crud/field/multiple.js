@@ -18,7 +18,7 @@ AC.Crud.Edit.Multiple = function() {
 		var parentId = $(options.that).parents('div.multiple:eq(0)').attr('data-parent-id');
 
 		if (!parentId) {
-			errorHandler('Please click \'apply\' before adding a ' + field);
+			errorHandler('Please click \'save\' before adding a ' + field);
 			return;
 		}
 
@@ -215,7 +215,7 @@ AC.Crud.Edit.Multiple = function() {
 							}
 			}, function(response) {
 				if (response.success === true) {
-					$(that).parents('tr:eq(0)').css({backgroundColor:'red'}).fadeOut(function() {
+					$(that).parents('tr:eq(0)').fadeOut(function() {
 						$(this).remove();
 					});
 					AC.Core.Alert.flash(response.message);

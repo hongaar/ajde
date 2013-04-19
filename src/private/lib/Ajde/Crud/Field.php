@@ -44,6 +44,7 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
 	public function getDefault()		{ return parent::getDefault(); }
 	public function getIsAutoIncrement(){ return parent::getIsAutoIncrement(); }
 	public function getIsAutoUpdate()	{ return parent::getIsAutoUpdate(); }
+	public function getIsUnique()		{ return parent::getIsUnique(); }
 
 	public function getValue()			{
 		if (parent::hasValue()) {

@@ -29,6 +29,10 @@ fieldset.crud {
     textarea.noRichText {
     	height: 10em;
     }
+	
+	span.validation-message {
+		color: #fff !important;
+	}
     
     &.sidebar {
         
@@ -38,6 +42,17 @@ fieldset.crud {
         margin-bottom: 0;
     }
 
+}
+
+.fancybox-skin {
+	background-color: #fff;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+}
+
+body.iframe .hideInIframe {
+	display: none;
 }
 
 /** COLLAPSE FOR SIDEBAR AND SMALL SCREENS **/

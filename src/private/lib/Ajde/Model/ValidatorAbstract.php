@@ -28,6 +28,7 @@ abstract class Ajde_Model_ValidatorAbstract extends Ajde_Object_Standard
 	public function getIsRequired()		{ return parent::getIsRequired(); }
 	public function getDefault()		{ return parent::getDefault(); }
 	public function getIsAutoIncrement(){ return parent::getIsAutoIncrement(); }
+	public function getIsUnique()		{ return parent::getIsUnique(); }
 	
 	public function getValue()
 	{

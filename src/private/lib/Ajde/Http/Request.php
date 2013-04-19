@@ -8,7 +8,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 	const TYPE_FLOAT 	= 4;
 	const TYPE_RAW	 	= 5;
 	
-	const FORM_MIN_TIME	= 2; 	// minimum time to have a post form returned (seconds)
+	const FORM_MIN_TIME	= 1; 	// minimum time to have a post form returned (seconds)
 	const FORM_MAX_TIME	= 3600;	// timeout of post forms (seconds) 
 	
 	/**

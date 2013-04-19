@@ -7,22 +7,19 @@ class UserModel extends Ajde_User
 	
 	public $defaultUserGroup = self::USERGROUP_USERS;
 	
-	public $decryptedFields = array(
-		'email', 'fullname', 'address', 'zipcode', 'city', 'region', 'country'
-	);
-	
 	public function __construct() {
+		parent::__construct();
 		Ajde_Event::register($this, 'afterCrudLoaded', 'parseForCrud');
 		Ajde_Event::register($this, 'beforeCrudSave', 'prepareCrudSave');
-		parent::__construct();
+		$this->setEncryptedFields(array(
+			'email', 'fullname', 'address', 'zipcode', 'city', 'region', 'country'
+		));
 	}
 	
-	public function beforeSave()
+	public function afterSave()
 	{
-		foreach($this->decryptedFields as $field) {
-			if ($this->has($field)) {
-				$this->encrypt($field);
-			}
+		if ($this->getPK() == $this->getLoggedIn()->getPK()) {
+			$this->login();
 		}
 	}
 	
@@ -34,12 +31,6 @@ class UserModel extends Ajde_User
 	public function parseForCrud(Ajde_Crud $crud)
 	{
 		$this->set($this->passwordField, '');
-
-		foreach($this->decryptedFields as $field) {
-			if ($this->has($field)) {
-				$this->decrypt($field);
-			}
-		}
 	}
 	
 	public function getEmail()

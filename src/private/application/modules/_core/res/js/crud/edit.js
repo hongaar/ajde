@@ -19,6 +19,8 @@ AC.Crud.Edit = function() {
 			isIframe = (window.location != window.parent.location);
 			
 			if (isIframe) {
+				$('body').addClass('iframe');
+				$('.expandInIframe').removeClass('span1 span2 span3 span4 span5 span6 span7 span8 span9 span10 span11').addClass('span12');
 				$('form.ACCrudEdit button.apply').hide();
 			}
 			
@@ -37,7 +39,7 @@ AC.Crud.Edit = function() {
             
         setDirty: function(e) {
             $(this).parents('form.ACCrudEdit').find('.btn.cancel')
-                    .text('Delete changes')
+                    .text('Discard changes')
                     .addClass('btn-danger');
             isDirty = true;
             $(window).on("beforeunload", function(e) {
@@ -88,7 +90,7 @@ AC.Crud.Edit = function() {
 			
 			// clean up errors
 			form.find(':input').parent().removeClass('validation_error');
-			form.find('div.validation_message').remove();
+			form.find('span.validation-message').remove();
 			AC.Crud.Edit.equalizeForm();
 			
 			// Set loading state and disable submit button
@@ -120,8 +122,8 @@ AC.Crud.Edit = function() {
 							$parent.addClass('error');
 							firstError = data.errors[i][0];
 							$parent.data('message', firstError);
-//							$message = $('<span class="help-inline"></span>').html(firstError).hide();
-//							$input.after($message.fadeIn());
+							$message = $('<span class="help-block badge badge-important validation-message"></span>').html(firstError).hide();
+							$input.after($message.fadeIn());
 							AC.Crud.Edit.equalizeForm();
 						}
 						$.scrollTo($('.control-group.error:first'), 800, { axis: 'y', offset: -70 });

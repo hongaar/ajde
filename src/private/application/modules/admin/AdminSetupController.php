@@ -2,11 +2,11 @@
 
 class AdminSetupController extends AdminController
 {	
-	public function types()
+	public function nodes()
 	{
 		Ajde_Model::register($this);
 		
-		Ajde::app()->getDocument()->setTitle("Node types");
+		Ajde::app()->getDocument()->setTitle("Setup nodes");
 		return $this->render();
 	}
 	
@@ -14,7 +14,15 @@ class AdminSetupController extends AdminController
 	{
 		Ajde_Model::register($this);
 		
-		Ajde::app()->getDocument()->setTitle("Meta keys");
+		Ajde::app()->getDocument()->setTitle("Setup fields");
+		return $this->render();
+	}
+	
+	public function menus()
+	{
+		Ajde_Model::register($this);
+		
+		Ajde::app()->getDocument()->setTitle("Setup menus");
 		return $this->render();
 	}
 }

@@ -181,6 +181,14 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 	public function setCrossReferenceTable($table) { return $this->_set('crossReferenceTable', $table); }	
 	
 	/**
+	 * Defines a sort field on the crossreference table
+	 * 
+	 * @param string $table
+	 * @return Ajde_Crud_Options_Fields_Field 
+	 */
+	public function setCrossReferenceSortField($field) { return $this->_set('crossReferenceSortField', $field); }	
+	
+	/**
 	 * Display the label?
 	 * 
 	 * @param boolean $display

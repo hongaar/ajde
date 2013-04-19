@@ -90,6 +90,7 @@ class Ajde_Session extends Ajde_Object_Standard
 		if (isset($key)) {
 			if ($this->has($key)) {
 				$_SESSION[$this->_namespace][$key] = null;
+				$this->remove($key);
 			}
 		} else {
 			$_SESSION[$this->_namespace] = null;

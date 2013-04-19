@@ -35,7 +35,7 @@ class Ajde_Crud_Options extends Ajde_Object_Standard
 		
 	protected function _set($key, $value)
 	{
-		$this->set($key, $value);
+		parent::_set($key, $value);
 		return $this;
 	}
 	

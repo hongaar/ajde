@@ -8,9 +8,11 @@ $editOptions = $crud->getOptions('edit');
 
     <div class="form-actions">
 
-        <button type="submit" class="btn btn-success save">Save &amp; back</button>
-        <button type="submit" class="btn btn-primary apply">Apply</button>
-        <a href="javascript:void(null);" class='btn pull-right cancel'>Cancel</a>
+        <div class="btn-group">
+			<button type="submit" class="btn btn-success save" title='Save changes and go back to overview'><i class='icon-ok icon-white'></i> Save &amp; back</button>
+			<button type="submit" class="btn btn-primary apply" title='Save changes'>Save</button>
+		</div>
+        <a href="javascript:void(null);" class='btn pull-right cancel' title='Go back to overview'>Back</a>
 
     </div>
 
@@ -93,10 +95,12 @@ $editOptions = $crud->getOptions('edit');
     </div>
 
     <div class="form-actions">
-
-        <button type="submit" class="btn btn-success save">Save &amp; back</button>
-        <button type="submit" class="btn btn-primary apply">Apply</button>
-        <a href="javascript:void(null);" class='btn pull-right cancel'>Cancel</a>
+		
+		<div class="btn-group">
+			<button type="submit" class="btn btn-success save" title='Save changes and go back to overview'><i class='icon-ok icon-white'></i> Save &amp; back</button>
+			<button type="submit" class="btn btn-primary apply" title='Save changes'>Save</button>
+		</div>
+        <a href="javascript:void(null);" class='btn pull-right cancel' title='Go back to overview'>Back</a>
 
     </div>
 

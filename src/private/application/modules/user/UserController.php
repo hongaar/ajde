@@ -12,7 +12,10 @@ class UserController extends Ajde_User_Controller
 	
 	public function beforeInvoke()
 	{
-		Ajde::app()->getDocument()->setLayout(new Ajde_Layout('cms'));
+		if (substr($_GET['_route'], 0, 5) == 'admin' || substr($_GET['returnto'], 0, 5) == 'admin' || (($user = $this->getLoggedInUser()) && $user->getUsergroup() != UserModel::USERGROUP_USERS)) {
+			Ajde::app()->getDocument()->setLayout(new Ajde_Layout('cms'));
+		}
+		Ajde_Cache::getInstance()->disable();
 		return parent::beforeInvoke();
 	}
 	
@@ -112,8 +115,7 @@ class UserController extends Ajde_User_Controller
                 $hash = $user->createHash($password);                
                 $user->set($user->passwordField, $hash);
             }
-            if ($user->save()) {                
-                $user->login();
+            if ($user->save()) {
                 Ajde_Session_Flash::alert(__('Your settings have been saved'));
                 $return = array(
                     'success' => true,

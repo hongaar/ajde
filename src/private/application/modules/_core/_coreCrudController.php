@@ -293,7 +293,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 			
 			if (Ajde::app()->getRequest()->getParam('fromIframe', '0') != 1) {
 				// Set flash alert
-				Ajde_Session_Flash::alert('Record ' . ($operation == 'insert' ? 'added' : 'saved'));
+				Ajde_Session_Flash::alert( 'Record ' . ($operation == 'insert' ? 'added' : 'saved') . ': ' . $model->get($model->getDisplayField()) );
 			}
 		}
 		return array(

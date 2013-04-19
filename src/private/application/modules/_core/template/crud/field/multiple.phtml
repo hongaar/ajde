@@ -43,9 +43,9 @@ $field = $this->field;
         <div class='multipleToolbar'>
             <a href='javascript:void(null);' class='btn btn-success new newMultiple' data-select='<?php echo $field->getName(); ?>'>New</a>
             <?php if ($field->hasCrossReferenceTable()) { ?>
-                or &nbsp; 
+				<span class="or">or</span>
                 <select name='<?php echo $field->getName(); ?>'>
-                    <option value=''>(choose)</option>					
+                    <option value=''>(choose existing)</option>					
                     <?php foreach($field->getValues() as $model) { 
                         /* @var $model Ajde_Model */ ?>
                         <option value='<?php echo $model->getPK(); ?>'>
@@ -53,16 +53,15 @@ $field = $this->field;
                         </option>
                     <?php } ?>
                 </select>
-                <a href='javascript:void(null);' class='btn btn-primary add addMultiple'>Add</a>
+                <a href='javascript:void(null);' class='btn add addMultiple'>Add</a>
             <?php } ?>
         </div>
 
         <?php $this->requireCss('crud/list'); ?>
 
-        <table class='table crudList multipleList'>
+        <table class='table table-striped table-hover crud multipleList'>
             <thead>
                 <tr>
-                    <th></th>
                     <th class='main'><?php echo $field->getModel()->getTable()->getFieldProperties($field->getModel()->getDisplayField(), 'label'); ?></th>
                     <?php if ($field->hasTableFields()) {
                         foreach ($field->getTableFields() as $extraField) { ?>
@@ -82,8 +81,10 @@ $field = $this->field;
                         <?php } 
                     } ?>
                     <td class='buttons'>
-                        <a href='javascript:void(null);' class='editMultiple' data-id=''>edit</a>
-                        <a href='javascript:void(null);' class='deleteMultiple' data-id=''>delete</a>
+						<div class='btn-group'>
+							<a href='javascript:void(null);' class='btn editMultiple' data-id=''>edit</a>
+							<a href='javascript:void(null);' class='btn btn-warning deleteMultiple' data-id=''>delete</a>
+						</div>
                     </td>
                 </tr>
                 <?php foreach($field->getChildren() as $child) {
@@ -136,10 +137,12 @@ $field = $this->field;
                             } 
                         } ?>
                         <td class='buttons'>
-                            <a href='javascript:void(null);' class='editMultiple' data-id='<?php echo $child->getPK(); ?>'>edit</a>
-                            <a href='javascript:void(null);' class='deleteMultiple' data-id='<?php echo $child->getPK(); ?>'>
-                                <?php echo ($field->hasCrossReferenceTable()) ? 'disconnect' : 'delete'; ?>
-                            </a>
+							<div class='btn-group'>
+								<a href='javascript:void(null);' class='btn editMultiple' data-id='<?php echo $child->getPK(); ?>'>edit</a>
+								<a href='javascript:void(null);' class='btn btn-warning deleteMultiple' data-id='<?php echo $child->getPK(); ?>'>
+									<?php echo ($field->hasCrossReferenceTable()) ? 'disconnect' : 'delete'; ?>
+								</a>
+							</div>
                         </td>
                     </tr>	
                 <?php } ?>

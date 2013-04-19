@@ -128,7 +128,7 @@ abstract class Ajde_User extends Ajde_Model
 	{
 		$hash = $this->getCookieHash();		
 		$cookieValue = $this->getPK() . ':' . $hash;
-		$cookie = new Ajde_Cookie(Config::get('ident') . '_user');
+		$cookie = new Ajde_Cookie(Config::get('ident') . '_user', true);
 		$cookie->setLifetime($this->cookieLifetime);
 		$cookie->set('auth', $cookieValue);
 		return true;
@@ -156,7 +156,7 @@ abstract class Ajde_User extends Ajde_Model
 	
 	public function verifyCookie()
 	{
-		$cookie = new Ajde_Cookie(Config::get('ident') . '_user');
+		$cookie = new Ajde_Cookie(Config::get('ident') . '_user', true);
 		if (!$cookie->has('auth')) {
 			return false;
 		}
@@ -167,7 +167,7 @@ abstract class Ajde_User extends Ajde_Model
 		}
 		if ($this->getCookieHash() === $hash) {
 			$this->login();
-			Ajde_Session_Flash::alert(sprintf(__('Welcome back %s, we automatically logged you in.'), $this->getFullname()));
+			Ajde_Session_Flash::alert(sprintf(__('Welcome back %s, we automatically logged you in'), $this->getFullname()));
 		} else {
 			return false;
 		}
@@ -175,6 +175,9 @@ abstract class Ajde_User extends Ajde_Model
 	
 	public function canChangeEmailTo($newEmail)
 	{
+		if ($this->isFieldEncrypted('email')) {
+			$newEmail = $this->doEncrypt($newEmail);
+		}
 		$values = array($newEmail, $this->getPK());
 		$sql = 'SELECT * FROM '.$this->_table.' WHERE email = ? AND id != ? LIMIT 1';
 		return !$this->_load($sql, $values);
@@ -182,6 +185,9 @@ abstract class Ajde_User extends Ajde_Model
     
     public function canChangeUsernameTo($newUsername)
 	{
+		if ($this->isFieldEncrypted($this->usernameField)) {
+			$newUsername = $this->doEncrypt($newUsername);
+		}
 		$values = array($newUsername, $this->getPK());
 		$sql = 'SELECT * FROM '.$this->_table.' WHERE ' . $this->usernameField . ' = ? AND id != ? LIMIT 1';
 		return !$this->_load($sql, $values);

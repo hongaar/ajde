@@ -35,6 +35,7 @@ class Ajde_Db_Table extends Ajde_Object_Standard
 			$fieldIsPK				= strtoupper($field['Key']) === 'PRI';
 			$fieldIsAutoIncrement	= strtolower($field['Extra']) === 'auto_increment';
 			$fieldIsAutoUpdate		= strtolower($field['Extra']) === 'on update current_timestamp'; 
+			$fieldIsUnique			= strtoupper($field['Key']) === 'UNI';
 			
             // Fix for certain MySQL versions
             if (strtolower($fieldDefault) === 'current_timestamp') {
@@ -51,7 +52,8 @@ class Ajde_Db_Table extends Ajde_Object_Standard
 				'isRequired' => $fieldIsRequired,
 				'isPK' => $fieldIsPK,				
 				'isAutoIncrement' => $fieldIsAutoIncrement,
-				'isAutoUpdate' => $fieldIsAutoUpdate				
+				'isAutoUpdate' => $fieldIsAutoUpdate,
+				'isUnique' => $fieldIsUnique
 			);
 		}
 	}

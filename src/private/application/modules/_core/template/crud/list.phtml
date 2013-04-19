@@ -68,12 +68,14 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 		<tr class="toolbar">
 			<td><input type="checkbox" class="toggleSelect" /></td>
 			<td class="toolbar" colspan="<?php echo $columnCount; ?>">
-				<?php if ($crud->getOption('list.buttons.new', true)) { ?>
-					<a href="javascript:void(null);" class='btn btn-success new'>new</a>
-				<?php } ?>
-				<?php if ($crud->getOption('list.buttons.delete', true)) { ?>
-					<a href="javascript:void(null);" class='btn btn-danger delete'>delete selected</a>
-				<?php } ?>
+				<div class="btn-group">
+					<?php if ($crud->getOption('list.buttons.new', true)) { ?>
+						<a href="javascript:void(null);" class='btn btn-success new'><i class="icon-plus icon-white"></i> new</a>
+					<?php } ?>
+					<?php if ($crud->getOption('list.buttons.delete', true)) { ?>
+						<a href="javascript:void(null);" class='btn btn-danger delete'>delete selected</a>
+					<?php } ?>
+				</div>
 			</td>
             <td>
 				<input type="hidden" name="view[viewType]" value="<?php echo $crudView->getViewType(); ?>" />

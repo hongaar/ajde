@@ -23,6 +23,14 @@ $options
 		->selectField('sort')
 			->setType('sort')
 			->up()
+		->selectField('meta')
+			->setType('multiple')
+			->setEditRoute('admin/setup:meta.crud')
+			->addTableField('type')
+			->setShowLabel(false)
+			->setCrossReferenceTable('nodetype_meta')
+			->setCrossReferenceSortField('sort')
+			->up()
 		->up()
 	->selectList()
 		->selectButtons()
@@ -45,6 +53,9 @@ $options
 					->addBlock()
 						->setShow(array('name', 'category'))
 						->up()
+					->addBlock()
+						->setShow(array('meta'))
+						->setTitle('Meta fields')
 
 	->finished();
 

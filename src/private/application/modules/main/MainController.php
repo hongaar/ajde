@@ -10,19 +10,19 @@ class MainController extends Ajde_Controller
 
 	public function code403()
 	{
-		Ajde::app()->getDocument()->setTitle("403 Forbidden");
+		Ajde::app()->getDocument()->setTitle("Forbidden");
 		return $this->render();
 	}
 	
 	public function code404()
 	{
-		Ajde::app()->getDocument()->setTitle("404 Not Found");
+		Ajde::app()->getDocument()->setTitle("Not Found");
 		return $this->render();
 	}
 
 	public function code500()
 	{
-		Ajde::app()->getDocument()->setTitle("500 Internal Server Error");
+		Ajde::app()->getDocument()->setTitle("Internal Server Error");
 		return $this->render();
 	}
 	
@@ -44,6 +44,11 @@ class MainController extends Ajde_Controller
 	}
 	
 	public function cookielaw()
+	{
+		return $this->render();
+	}
+	
+	public function disclaimer()
 	{
 		return $this->render();
 	}

@@ -9,8 +9,7 @@ $nodeTypes->orderBy('sort');
 	<a class="menu-toggle btn btn-normal pull-right"><i class="icon-resize-small"></i></a>
 	<ul class="nav nav-list">
 		<li class="nav-header">Nodes</li>
-		<li><a href="admin/node:view?new&view[filter][nodetype]="><i class="icon-plus"></i> Create node</a></li>
-		<li><a href="admin/node:view?view[filter][nodetype]="><i class="icon-list"></i> Node overview</a></li>
+		<li><a href="admin/node:view?new&view[filter][nodetype]="><i class="icon-plus"></i> Add</a></li>
 		<li class="divider"></li>
 		<?php foreach ($nodeTypes as $nodeType) {  
 			/* @var $nodeType NodetypeModel */ ?>
@@ -21,10 +20,10 @@ $nodeTypes->orderBy('sort');
 		</li>
 		<?php } ?>
 		<li class="nav-header">Media</li>
-		<li><a href="admin/media:view"><i class="icon-th-large"></i> Media manager</a></li>        
-		<li><a href="admin/media:view?new"><i class="icon-plus"></i> New media</a></li>
-        <li><a href="admin/media:upload"><i class="icon-circle-arrow-up"></i> Multiple files</a></li>
+		<li><a href="admin/media:view"><i class="icon-th-large"></i> Manager</a></li>        
+		<li><a href="admin/media:view?new"><i class="icon-plus"></i> Add</a></li>
+        <li><a href="admin/media:upload"><i class="icon-circle-arrow-up"></i> Upload files</a></li>
 		<li class="nav-header">Menus</li>
-		<li><a href="admin/menus:view"><i class="icon-bookmark"></i> Modify a menu</a></li>
+		<li><a href="admin/menus:view"><i class="icon-bookmark"></i> Editor</a></li>
 	</ul>
 </div><!--/.well -->

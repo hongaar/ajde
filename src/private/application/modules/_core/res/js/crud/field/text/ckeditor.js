@@ -46,8 +46,10 @@ AC.Crud.Edit.Text = function() {
 //			CKEDITOR.config.autoGrow_maxHeight = '600';
 //			CKEDITOR.config.removePlugins = 'elementspath,contextmenu';
 //			CKEDITOR.config.toolbarCanCollapse = false;
-
-			addCKEditor($('form.ACCrudEdit textarea:not(.noRichText)'));
+		
+			setTimeout(function() {
+				addCKEditor($('form.ACCrudEdit textarea:not(.noRichText)'));
+			}, 100);
 		}
 
 	};

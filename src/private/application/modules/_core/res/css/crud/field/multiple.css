@@ -6,6 +6,36 @@ table.multipleList {
 	width: 100%;
 }
 
+table.multipleList td {
+	vertical-align: middle;
+}
+
+table.multipleList td:first-child {
+	display: none;
+}
+
 table.multipleList tr.template {
 	display: none;
+}
+
+span.or {
+	position: relative;
+	width: 70px;
+	display: inline-block;
+	text-align: center;
+	margin: 0 5px;
+}
+
+span.or:before, span.or:after {
+	display: block;
+	position: absolute;
+	left: 0px;
+	content: '';
+	width: 20px;
+	top: 10px;
+	border-top: 1px solid #DDD;
+}
+
+span.or:after {
+	left: 50px;
 }

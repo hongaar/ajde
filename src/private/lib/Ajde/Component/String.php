@@ -333,4 +333,45 @@ class Ajde_Component_String extends Ajde_Component
 		$html .= substr($text, $position);
 		return $html;
 	}
+	
+	public static function encrypt($text) {
+		return trim(
+			base64_encode(
+				gzdeflate(
+					mcrypt_encrypt(
+						MCRYPT_RIJNDAEL_256,
+						Config::get('secret'),
+						$text,
+						MCRYPT_MODE_ECB,
+						mcrypt_create_iv(
+							mcrypt_get_iv_size(
+								MCRYPT_RIJNDAEL_256,
+								MCRYPT_MODE_ECB
+							),
+							MCRYPT_RAND
+						)
+					),
+					9
+				)
+			)
+		);
+	}
+	
+	public static function decrypt($text) {
+		return trim(
+			mcrypt_decrypt(
+				MCRYPT_RIJNDAEL_256,
+				Config::get('secret'),
+				gzinflate(base64_decode($text)),
+				MCRYPT_MODE_ECB,
+				mcrypt_create_iv(
+					mcrypt_get_iv_size(
+						MCRYPT_RIJNDAEL_256,
+						MCRYPT_MODE_ECB
+					),
+					MCRYPT_RAND
+				)
+			)
+		);
+	}
 }

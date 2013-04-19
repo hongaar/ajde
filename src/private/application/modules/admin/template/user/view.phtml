@@ -19,6 +19,7 @@ $options
 		->selectButtons()
 			->setNew(true)
 			->setEdit(true)
+			->setCustom('login', 'login', 'login')
 			->up()
 		->setMain('username')
 		->setShow(array('username', 'usergroup', 'email', 'fullname'))
@@ -43,10 +44,7 @@ if (Ajde::app()->getRequest()->has('new')) {
 ?>
 
 <div class="row-fluid">
-	<div class="span2">
-		<?php echo $this->includeModule('admin/cms:menu'); ?>		
-	</div><!--/span-->
-	<div class="span10">
+	<div class="span12">
 		
 		<div class="page-header">
 			<h1>
