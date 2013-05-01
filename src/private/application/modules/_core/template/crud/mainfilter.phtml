@@ -1,5 +1,6 @@
 <?php
 
+/* @var $crud Ajde_Crud */
 $crud = $this->crud;
 $crudView = $crud->loadCollectionView();
 
@@ -15,6 +16,12 @@ if (key_exists($currentFilter, $filterFieldValues)) {
 }
 
 $edit = Ajde::app()->getRequest()->has('edit');
+if ($edit) {
+	// Load id from querystring
+	$model = $crud->loadItem(Ajde::app()->getRequest()->getParam('edit', false));
+	$currentFilter = (string) $model->get($mainFilter);
+	$filteredBy = $filterFieldValues[$currentFilter];
+}
 
 ?>
 
@@ -31,7 +38,7 @@ $edit = Ajde::app()->getRequest()->has('edit');
 <div id="mainFilter" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="mainFilter" aria-hidden="true">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		<h3 id="myModalLabel">Choose a <?php echo _e($filterField->getLabel()); ?></h3>
+		<h3 id="myModalLabel">Choose a <?php echo _e(strtolower($filterField->getLabel())); ?></h3>
 	</div>
 	<div class="modal-body">
 

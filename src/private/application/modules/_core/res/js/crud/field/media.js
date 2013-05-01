@@ -32,6 +32,7 @@ AC.Crud.Edit.Media = function() {
 	var $filenamefield;
 	
 	var saveDir;
+	var lastCode;
 
     var onImageUpload = function(e) {
 		var preview, thumb;
@@ -74,7 +75,8 @@ AC.Crud.Edit.Media = function() {
         embedChangeTimer = setTimeout(function() {
             var code = $(self).val();
 			
-			if (code) {
+			if (code && code !== lastCode) {
+				lastCode = code;
 				$('.preview').html('Looking up embed code or URL');			
 				$.get('_core/component:embedInfo.json', { code: code }, function(data) {
 					if (data.success === true) {
@@ -84,7 +86,7 @@ AC.Crud.Edit.Media = function() {
 					}
 				}, 'json');
 			} else {
-				update('', '', 'unknown', '');
+//				update('', '', 'unknown', '');
 			}
 
         }, 300);
@@ -129,7 +131,7 @@ AC.Crud.Edit.Media = function() {
 			saveDir = $('.media').data('savedir');
 			
 			// Fancybox
-			$('a.imagePreview').fancybox();
+			$('a.imagePreview').fancybox({closeBtn: false});
 		}
 		
 	};

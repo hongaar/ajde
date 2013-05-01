@@ -14,21 +14,46 @@ class Ajde_Crud_Field_Fk extends Ajde_Crud_Field
 	 */
 	private $_model;
     
+	/**
+	 *
+	 * @var int 
+	 */
     private $_chosenTreshold = 0;
 	
+	/**
+	 * 
+	 * @return string 
+	 */	
+	public function getModelName()
+	{
+		if ($this->hasModelName()) {
+			return $this->get('modelName');
+		} else {
+			return $this->getName();
+		}
+	}
+	
+	/**
+	 *
+	 * @return Ajde_Collection
+	 */
 	public function getCollection()
 	{
 		if (!isset($this->_collection)) {
-			$collectionName = ucfirst($this->getName()) . 'Collection';
+			$collectionName = ucfirst($this->getModelName()) . 'Collection';
 			$this->_collection = new $collectionName;
 		}
 		return $this->_collection;
 	}
 	
+	/**
+	 *
+	 * @return Ajde_Model 
+	 */
 	public function getModel()
 	{
 		if (!isset($this->_model)) {
-			$modelName = ucfirst($this->getName()) . 'Model';
+			$modelName = ucfirst($this->getModelName()) . 'Model';
 			$this->_model = new $modelName;
 		}
 		return $this->_model;

@@ -30,12 +30,14 @@
 
 				<div class="control-group">
 					<div class="controls">
-						<label><input type="checkbox" name="rememberme" /> <?php echo __('Remember me'); ?></label>
+						<label class='checkbox'>
+							<input type="checkbox" name="rememberme" /> <?php echo __('Remember me'); ?>
+						</label>
 					</div>
 				</div>
 
 				<div class="form-actions">
-					<button class="btn btn-large btn-success" type="submit"><?php echo __('Logon'); ?></button>
+					<button class="btn btn-large btn-success" type="submit"><?php echo __('logon'); ?></button>
 				</div>
 			</fieldset>
 		</form>
@@ -48,7 +50,7 @@
 			Click the link below to register for an account:
 		</p>
 		<p>
-			<a class='btn btn-primary' href="user/register?returnto=<?php echo $this->returnto ? $this->returnto : $_GET['_route']; ?>"><?php echo __('Register'); ?></a>
+			<a class='btn btn-primary' href="user/register?returnto=<?php echo $this->returnto ? $this->returnto : $_GET['_route']; ?>"><?php echo __('register'); ?></a>
 		</p>
 
 	</div>

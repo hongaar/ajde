@@ -1,0 +1,19 @@
+.uploadButton {
+	position: relative;
+	z-index: 999;
+	min-width: 500px;
+}
+
+.uploadButton .qq-uploader {
+	position: absolute;
+	top: -15px;	
+}
+
+.uploadButton ul.qq-upload-list {
+	margin-top: 0 !important;
+}
+
+.uploadButton.loading i.icon-upload {
+	background-image: url('../../public/images/loading-cms.gif');
+	background-position: 0 0;
+}

@@ -433,14 +433,14 @@ class Ajde_Model extends Ajde_Object_Standard
 			// No value for FK field
 			return false;
 		}
-		$parentModelName = ucfirst((string) $parent) . 'Model';
+		$parentModelName = ucfirst(strtolower($fk['parent_table'])) . 'Model';
 		$parentModel = new $parentModelName();
 		if ($parentModel->getTable()->getPK() != $fk['parent_field']) {
 			// TODO:
 			throw new Ajde_Exception('Constraints on non primary key fields are currently not supported');
 		}
 		$parentModel->loadByPK($this->get($fk['field']));
-		$this->set((string) $parent, $parentModel);
+		$this->set($fk['field'], $parentModel);
 	}
 
 	public function getAutoloadParents()

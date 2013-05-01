@@ -49,7 +49,9 @@ class _coreComponentController extends Ajde_Controller
 		}
 		
 		// CSRF
-		Ajde::app()->getDocument()->getLayout()->requireTimeoutWarning();
+		if (Ajde::app()->getDocument()->getLayout()->getName() !== 'empty') {
+			Ajde::app()->getDocument()->getLayout()->requireTimeoutWarning();
+		}		
 		$formToken = Ajde::app()->getRequest()->getFormToken();		
 		$this->getView()->assign('formToken', $formToken);
 		

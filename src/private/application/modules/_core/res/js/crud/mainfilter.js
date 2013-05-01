@@ -18,6 +18,17 @@ AC.Crud.Mainfilter = function() {
 			} else {
 				$('#mainFilter').modal('show');
 			}
+		
+			// Prevent submit
+			var form = $('form.ACCrudEdit');
+			form.data('onBeforeSubmit', function() {
+				var name = $('#mainFilter a').data('name');
+				var current = form.find('select[name="' + name + '"]').val();
+				if (!current) {
+					errorHandler('Please choose a ' + name);
+					return false;
+				}
+			});
 		},
 
 		mainFilterHandler: function(e) {
@@ -41,12 +52,12 @@ AC.Crud.Mainfilter = function() {
 				AC.Crud.List.updateView(form.children(':eq(0)'));
 			} else {
 				// Do update the session
-				var data = {};
-				data['view[filter][' + name + ']'] = value;
-				var url = document.location.href;
-				$.get(url, data, function(response) {
-					// no feedback
-				}, 'html');
+//				var data = {};
+//				data['view[filter][' + name + ']'] = value;
+//				var url = document.location.href;
+//				$.get(url, data, function(response) {
+//					// no feedback
+//				}, 'html');
 			}
 		}
 

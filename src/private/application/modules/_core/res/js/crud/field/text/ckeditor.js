@@ -15,6 +15,12 @@ AC.Crud.Edit.Text = function() {
 			elm.ckeditorGet().on('change', function() {
 				AC.Crud.Edit.setDirty.call(this.element.$);
 			});
+			elm.ckeditorGet().on('focus', function() {
+				elm.nextAll('.cke_chrome').addClass('active');
+			});
+			elm.ckeditorGet().on('blur', function() {
+				elm.nextAll('.cke_chrome').removeClass('active');
+			});
 		}, {
 			toolbar : 'Ajde',
 			format_tags : 'p;h1;h2;h3;pre',
@@ -39,6 +45,9 @@ AC.Crud.Edit.Text = function() {
 			CKEDITOR.config.baseHref = document.getElementsByTagName('base')[0].href;
 			CKEDITOR.config.forcePasteAsPlainText = true;
             CKEDITOR.config.extraPlugins = 'onchange';
+			CKEDITOR.config.contentsCss = [CKEDITOR.basePath + 'contents.css', 'public/css/_core/crud/editor/ckeditor/style.css'];
+			CKEDITOR.config.removePlugins = 'elementspath';
+			CKEDITOR.config.resize_enabled = false;
 
 			// Optional configuration
 //			CKEDITOR.config.extraPlugins = 'autogrow';

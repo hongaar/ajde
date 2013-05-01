@@ -24,6 +24,13 @@ class AdminMediaController extends AdminController
 		return $this->render();
 	}
 	
+	public function uploadButtonHtml()
+	{		
+        $this->getView()->assign('extensions', $this->_extensions);
+		$this->getView()->assign('uploaddir', $this->_uploaddir);
+		return $this->render();
+	}
+	
 	public function uploadJson()
 	{
 		$filename = Ajde::app()->getRequest()->getPostParam('filename');

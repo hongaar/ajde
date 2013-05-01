@@ -28,6 +28,19 @@ class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
 	}
 	
 	/**
+	 * 
+	 * @return string 
+	 */	
+	public function getParentName()
+	{
+		if ($this->hasParent()) {
+			return $this->get('parent');
+		} else {
+			return (string) $this->_crud->getModel()->getTable();
+		}
+	}
+	
+	/**
 	 *
 	 * @return Ajde_Collection
 	 */
@@ -38,6 +51,26 @@ class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
 			$this->_collection = new $collectionName;
 		}
 		return $this->_collection;
+	}
+	
+	public function getSortField()
+	{
+		if ($this->hasTableFields()) {
+			foreach ($this->getTableFields() as $extraField) { 
+				if ($extraField['type'] == 'sort') {
+					return $extraField['name'];
+				}
+			}
+		}
+		return false;
+	}
+	
+	public function getSortBy()
+	{
+		if ($this->has('sortBy')) {
+			return $this->get('sortBy');
+		}
+		return false;
 	}
 	
 	/**
@@ -98,13 +131,26 @@ class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
 			$crossReferenceTable = $this->getCrossReferenceTable();
 			
 			// TODO: implement $this->getAdvancedFilter() filters in subquery
-			$subQuery = new Ajde_Db_Function('(SELECT ' . $this->getModelName() . ' FROM ' . $crossReferenceTable . ' WHERE ' . $parent . ' = ' . (integer) $parentId . ')');
+			
 			$collection = $this->getCollection();
 			$collection->reset();
-			$collection->addFilter(new Ajde_Filter_Where($childPk, Ajde_Filter::FILTER_IN, $subQuery));
+		
+			//$subQuery = new Ajde_Db_Function('(SELECT ' . $this->getModelName() . ' FROM ' . $crossReferenceTable . ' WHERE ' . $parent . ' = ' . (integer) $parentId . $orderBy . ')');
+			//$collection->addFilter(new Ajde_Filter_Where($childPk, Ajde_Filter::FILTER_IN, $subQuery));
+			
+			$collection->getQuery()->addSelect($crossReferenceTable . '.id AS crossId');
+			$collection->addFilter(new Ajde_Filter_Join($crossReferenceTable, $crossReferenceTable.'.'.$this->getModelName(), $this->getModelName().'.'.$childPk));
+			$collection->addFilter(new Ajde_Filter_Where($crossReferenceTable.'.'.$parent, Ajde_Filter::FILTER_EQUALS, (integer) $parentId));
+			
+			if ($this->getSortField()) {
+				$collection->orderBy($crossReferenceTable . '.' . $this->getSortField());
+			}
+			
+//			echo $collection->getEmulatedSql();
+			
 		} else {
 			$collection = $this->getCollection();
-			$collection->addFilter(new Ajde_Filter_Where((string) $this->_crud->getModel()->getTable(), Ajde_Filter::FILTER_EQUALS, (string) $this->_crud->getModel()));
+			$collection->addFilter(new Ajde_Filter_Where($this->getParentName(), Ajde_Filter::FILTER_EQUALS, (string) $this->_crud->getModel()));
 			
 			if ($this->hasAdvancedFilter()) {
 				$filters = $this->getAdvancedFilter();
@@ -118,6 +164,12 @@ class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
 				}
 				$collection->addFilter($group);
 			}
+			
+			if ($this->getSortField()) {
+				$collection->orderBy($this->getSortField());
+			}
+			
+//			echo $collection->getEmulatedSql();
 			
 		}
 		return $collection;

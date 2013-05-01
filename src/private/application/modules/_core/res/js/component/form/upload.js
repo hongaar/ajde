@@ -31,7 +31,7 @@ AC.Form.Upload = function() {
                     /** STYLING **/
                     
                     text: {
-                        uploadButton: '<i class="icon-upload"></i> Upload file'
+                        uploadButton: '<i class="icon-upload"></i> upload file'
                     },
                     template: '<div class="qq-uploader span12">' +
                                   '<pre class="qq-upload-drop-area span12"><span>{dragZoneText}</span></pre>' +
@@ -47,7 +47,11 @@ AC.Form.Upload = function() {
                     /** CALLBACKS **/
                     
                     callbacks: {
+						onError: function(id, fileName, errorReason) {
+							elm.trigger('errorUpload', [id, fileName, errorReason]);
+						},
                         onSubmit: function(id, fileName) {
+							elm.trigger('startUpload', [id, fileName]);
                             // Disable save button
                             elm.parents('form').find('button.save, button.apply').attr('disabled', 'disabled');
                             // Disable upload button

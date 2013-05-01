@@ -22,9 +22,26 @@ if ($mainFilter && in_array($mainFilter, $fieldsToShow)) {
 $gridFields = isset($listOptions['gridShow']) ? $crud->getOption('list.gridShow') : $fieldsToShow;
 $columnCount = count($fieldsToShow);
 
+// Disable multiple selection?
+if (Ajde::app()->getRequest()->has('multiple') && Ajde::app()->getRequest()->get('multiple') == '0') {
+	$disableMultiple = true;
+}
+
 echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList'); ?>
+
+	<div class="form-actions showInIframe">
+
+        <div class="btn-group">
+			<a href="javascript:void(null);" class="btn btn-success choose" title='Choose the selected item'>choose</a>
+		</div>
+        <a href="javascript:void(null);" class='btn pull-right cancel' title='Close the popup'>back</a>
+
+    </div>
     
-	<table class='table <?php if ($crudView->getViewType() == 'list') { echo 'table-striped'; } ?> table-hover crud <?php echo $crudView->getViewType(); ?>'>
+	<table
+		class='table <?php if ($crudView->getViewType() == 'list') { echo 'table-striped'; } ?> table-hover crud <?php echo $crudView->getViewType(); ?>'
+		data-disable-multiple='<?php if ($disableMultiple) { echo '1'; } ?>'
+	>
 	<thead>        
 		<tr>
 			<th width="10">
@@ -70,11 +87,43 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 			<td class="toolbar" colspan="<?php echo $columnCount; ?>">
 				<div class="btn-group">
 					<?php if ($crud->getOption('list.buttons.new', true)) { ?>
-						<a href="javascript:void(null);" class='btn btn-success new'><i class="icon-plus icon-white"></i> new</a>
+						<a href="javascript:void(null);" class='btn btn-success new hideInIframe'><i class="icon-plus icon-white"></i> new</a>
 					<?php } ?>
 					<?php if ($crud->getOption('list.buttons.delete', true)) { ?>
-						<a href="javascript:void(null);" class='btn btn-danger delete'>delete selected</a>
+						<a href="javascript:void(null);" class='btn btn-danger delete hideInIframe'>delete selected</a>
 					<?php } ?>
+					<?php if ( ($buttons = $crud->getOption('list.buttons.toolbarButtons')) && count($buttons) ) { ?>
+                        <div class="btn-group">
+							<?php if (count($buttons) == 1) {
+								$button = current($buttons); ?>
+								<?php if ($button['text'] instanceof Ajde_Core_Route) {
+									echo $this->includeModule($button['text']);
+								} else { ?>
+									<a href="javascript:void(null);" class='btn <?php echo $button['class']; ?>'>
+										<?php echo $button['text']; ?>
+									</a>							
+								<?php } ?>
+							<?php } else { ?>
+								<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+									More <span class="caret"></span>
+								</a>
+								<ul class="dropdown-menu pull-right">
+									<?php 
+									foreach($buttons as $button) { ?>
+										<li>
+											<?php if ($button['text'] instanceof Ajde_Core_Route) {
+												echo $this->includeModule($button['text']);
+											} else { ?>
+												<a href="javascript:void(null);" class='btn <?php echo $button['class']; ?>'>
+													<?php echo $button['text']; ?>
+												</a>							
+											<?php } ?>
+										</li>
+									<?php } ?>
+								</ul>
+							<?php } ?>
+                        </div>
+                    <?php } ?>
 				</div>
 			</td>
             <td>
@@ -193,20 +242,17 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 				<?php } ?>			
 			<?php } ?>
 			<td class='buttons'>
-                <div class="btn-group">
-					<?php $buttonCount = 0; ?>
-                    <?php if ($crud->getOption('list.buttons.edit', true)) { 
-						$buttonCount++; ?>
-                        <a href="javascript:void(null);" class='btn btn-primary edit'>edit</a>
+                <div class="btn-group hideInIframe">
+                    <?php if ($crud->getOption('list.buttons.edit', true)) { ?>
+                        <a href="javascript:void(null);" class='btn btn-primary edit'><i class='icon-pencil icon-white'></i></a>
                     <?php } ?>
-                    <?php if ($crud->getOption('list.buttons.delete', true)) {
-						$buttonCount++; ?>
-                        <a href="javascript:void(null);" class='btn btn-danger delete'>delete</a>
+                    <?php if ($crud->getOption('list.buttons.delete', true)) { ?>
+                        <a href="javascript:void(null);" class='btn btn-danger delete'><i class='icon-trash icon-white'></i></a>
                     <?php } ?>
-                    <?php if ( ($buttons = $crud->getOption('list.buttons')) && is_array($buttons) && count($buttons) > $buttonCount ) { ?>
+                    <?php if ( ($buttons = $crud->getOption('list.buttons.itemButtons')) && count($buttons) ) { ?>
                         <div class="btn-group">
-							<?php if (count($buttons) == $buttonCount + 1) {
-								next($buttons); next($buttons); $button = current($buttons); ?>
+							<?php if (count($buttons) == 1) {
+								$button = current($buttons); ?>
 								<a href="javascript:void(null);" class='btn <?php echo $button['class']; ?>'><?php echo $button['text']; ?></a>
 							<?php } else { ?>
 								<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -214,11 +260,9 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 								</a>
 								<ul class="dropdown-menu pull-right">
 									<?php 
-									foreach($buttons as $button) {
-										if (is_array($button)) { ?>
-											<li><a href="javascript:void(null);" class='<?php echo $button['class']; ?>'><?php echo $button['text']; ?></a></li>
-										<?php } 
-									} ?>
+									foreach($buttons as $button) { ?>
+										<li><a href="javascript:void(null);" class='<?php echo $button['class']; ?>'><?php echo $button['text']; ?></a></li>
+									<?php } ?>
 								</ul>
 							<?php } ?>
                         </div>

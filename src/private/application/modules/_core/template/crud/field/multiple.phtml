@@ -7,10 +7,10 @@ $field = $this->field;
 ?>
 
 <div
-	class='multiple'
+	class='multiple <?php if ($field->hasHideInIframe()) { echo 'hideInIframe'; } ?>'
 	data-edit-route='<?php echo $field->getEditRoute(); ?>'
 	data-field='<?php echo $field->getName(); ?>'
-	data-parent='<?php echo (string) $field->getCrud()->getModel()->getTable(); ?>'
+	data-parent='<?php echo $field->has('parent') ? $field->get('parent') : (string) $field->getCrud()->getModel()->getTable(); ?>'
 	data-parent-id='<?php echo $field->getCrud()->getModel()->getPK(); ?>'
 	data-dynamic='<?php echo ($field->hasTableFields() ? '1' : '0'); ?>'
     data-simple='<?php echo ($field->hasSimpleSelector() && $field->getSimpleSelector() ? '1' : '0'); ?>'
@@ -18,14 +18,15 @@ $field = $this->field;
     
     <?php if ($field->hasSimpleSelector() && $field->getSimpleSelector()) { ?>
         
-        <div class="controls-row">
-            <span class='span10'>
+        <div class="controls-row simple-selector">
+			<a href='javascript:void(null);' class='span2 btn btn-success new newMultiple' data-select='<?php echo $field->getName(); ?>'><i class='icon-plus icon-white'></i></a>
+            <div class='input'>
                 <?php $children = $field->getChildren();
                 $ids = array();
                 foreach($children as $child) {
                     $ids[] = $child->getPK();
                 } ?>            
-                <select class='chosen' style='width: 100%;' name='<?php echo $field->getName(); ?>' multiple='multiple' data-placeholder="<?php echo __('Choose some options'); ?>">
+                <select class='chosen' name='<?php echo $field->getName(); ?>[]' multiple='multiple' data-placeholder="<?php echo __('Choose some options'); ?>">
                     <?php foreach($field->getValues() as $model) { 
                         /* @var $model Ajde_Model */ ?>
                         <option value='<?php echo $model->getPK(); ?>' <?php if (in_array($model->getPK(), $ids)) { echo 'selected="selected"'; } ?> >
@@ -33,27 +34,45 @@ $field = $this->field;
                         </option>
                     <?php } ?>
                 </select>
-            </span>
-            <a href='javascript:void(null);' class='span2 btn btn-success new newMultiple' data-select='<?php echo $field->getName(); ?>'>New</a>
+            </div>           
         </div>
 
     
     <?php } else { // simple or advanced ?>
     
         <div class='multipleToolbar'>
-            <a href='javascript:void(null);' class='btn btn-success new newMultiple' data-select='<?php echo $field->getName(); ?>'>New</a>
+            <a href='javascript:void(null);' class='btn btn-success new newMultiple' data-select='<?php echo $field->getName(); ?>'><i class='icon-plus icon-white'></i></a>
             <?php if ($field->hasCrossReferenceTable()) { ?>
 				<span class="or">or</span>
-                <select name='<?php echo $field->getName(); ?>'>
-                    <option value=''>(choose existing)</option>					
-                    <?php foreach($field->getValues() as $model) { 
-                        /* @var $model Ajde_Model */ ?>
-                        <option value='<?php echo $model->getPK(); ?>'>
-                            <?php echo $model->get($model->getDisplayField()); ?>
-                        </option>
-                    <?php } ?>
-                </select>
-                <a href='javascript:void(null);' class='btn add addMultiple'>Add</a>
+				
+				<?php if ($field->has('usePopupSelector') && $field->get('usePopupSelector')) { 
+
+					$this->requireJs('crud/field/picker');
+					$this->requireCss('crud/field/picker');
+
+					$pickerMultiple = 1;
+					$pickerType = 'multiple';
+					include 'picker.phtml';
+
+					?>
+
+				<?php } else { ?>
+				
+					<div class='btn-group'>
+						<select class='chosen' name='<?php echo $field->getName(); ?>' data-placeholder="<?php echo __('Choose existing'); ?>">
+							<option value='' class='choose'></option>					
+							<?php foreach($field->getValues() as $model) { 
+								/* @var $model Ajde_Model */ ?>
+								<option value='<?php echo $model->getPK(); ?>'>
+									<?php echo $model->get($model->getDisplayField()); ?>
+								</option>
+							<?php } ?>
+						</select>
+						<a href='javascript:void(null);' class='btn add addMultiple'><i class='icon-ok icon-white'></i></a>
+					</div>
+				
+				<?php } ?>
+				
             <?php } ?>
         </div>
 
@@ -76,21 +95,44 @@ $field = $this->field;
                     <td></td>
                     <td class='main'></td>
                     <?php if ($field->hasTableFields()) {
-                        foreach ($field->getTableFields() as $extraField) { ?>
-                            <td></td>
+                        foreach ($field->getTableFields() as $extraField) {
+							if ($extraField['type'] == 'sort') {
+								$sortTable = $field->getCrud()->getModel()->getTable();
+								$pk = $sortTable->getPK();
+								if ($field->hasCrossReferenceTable()) {
+									$sortTable = $field->getCrossReferenceTable();
+									$pk = $field->getCrossReferenceTable() . '.id';
+								}
+								$this->requireJsPublic('_core/crud/jquery.tablednd.js', Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST); ?>						
+								<td class='sort'
+									data-table='<?php echo $sortTable; ?>'
+									data-field='<?php echo $extraField['name']; ?>'
+									data-pk='<?php echo $pk; ?>'
+								>
+									<span><img src='public/images/_core/crud/up_16.png'>&middot;&middot;&middot;<img src='public/images/_core/crud/down_16.png'></span>
+								</td>
+							<?php } else { ?>
+								<td></td>
+							<?php } ?>
                         <?php } 
                     } ?>
                     <td class='buttons'>
 						<div class='btn-group'>
-							<a href='javascript:void(null);' class='btn editMultiple' data-id=''>edit</a>
-							<a href='javascript:void(null);' class='btn btn-warning deleteMultiple' data-id=''>delete</a>
+							<a href='javascript:void(null);' class='btn editMultiple' data-id=''><i class='icon-pencil icon-white'></i></a>
+							<a href='javascript:void(null);' class='btn btn-<?php echo ($field->hasCrossReferenceTable()) ? 'warning' : 'danger'; ?> deleteMultiple' data-id=''>
+								<i class='icon-<?php echo ($field->hasCrossReferenceTable()) ? 'minus' : 'trash'; ?> icon-white'></i>
+							</a>
 						</div>
                     </td>
                 </tr>
                 <?php foreach($field->getChildren() as $child) {
                     /* @var $child Ajde_Model */ ?>
-                    <?php $child->loadParents(); ?>
-                    <tr data-id='<?php echo $child->getPK(); ?>'>
+                    <?php $child->loadParents(); 
+					$pk = $child->getPK();
+					if ($field->hasCrossReferenceTable()) {
+						$pk = $child->get('crossId');
+					} ?>
+                    <tr id="row-<?php echo $pk; ?>" data-id='<?php echo $child->getPK(); ?>'>
                         <td><?php echo $child->getPK(); ?></td>
                         <td class='main'>
                             <?php 
@@ -103,7 +145,7 @@ $field = $this->field;
                         </td>
                         <?php if ($field->hasTableFields()) {
                             foreach ($field->getTableFields() as $extraField) { 
-                                $value	= $child->get($extraField['name']);
+                                $value	= $child->has($extraField['name']) ? $child->get($extraField['name']) : false;
                                 $type	= $extraField['type'];
                                 if ($type == 'file' && $value) { ?>
                                     <td>
@@ -124,23 +166,39 @@ $field = $this->field;
                                             <a class='filePreview preview' href='<?php echo $extraField['saveDir'] . $value; ?>' target='_blank'><?php echo $value; ?></a>
                                         <?php } ?>
                                     </td>
+								<?php } else if ($type == 'file') { ?>
+									<td></td>
+								<?php } else if ($type == 'sort') {
+									$sortTable = $field->getCrud()->getModel()->getTable();
+									$pk = $sortTable->getPK();
+									if ($field->hasCrossReferenceTable()) {
+										$sortTable = $field->getCrossReferenceTable();
+										$pk = $field->getCrossReferenceTable() . '.id';
+									} ?>
+									<td class='sort'
+										data-table='<?php echo $sortTable; ?>'
+										data-field='<?php echo $extraField['name']; ?>'
+										data-pk='<?php echo $pk; ?>'
+									>
+										<span><img src='public/images/_core/crud/up_16.png'>&middot;&middot;&middot;<img src='public/images/_core/crud/down_16.png'></span>
+									</td>
                                 <?php } else { ?>
-                                                <td>
-                                                    <?php $value = $child->get($extraField['name']);
-                                                    if ($value instanceof Ajde_Model && $value->hasLoaded()) {
-                                                        echo $value->get($value->getDisplayField());
-                                                    } else {
-                                                        echo $value;
-                                                    } ?>								
-                                                </td>
+									<td>
+										<?php $value = $child->get($extraField['name']);
+										if ($value instanceof Ajde_Model && $value->hasLoaded()) {
+											echo $value->get($value->getDisplayField());
+										} else {
+											echo $value;
+										} ?>								
+									</td>
                                 <?php }
                             } 
                         } ?>
                         <td class='buttons'>
 							<div class='btn-group'>
-								<a href='javascript:void(null);' class='btn editMultiple' data-id='<?php echo $child->getPK(); ?>'>edit</a>
-								<a href='javascript:void(null);' class='btn btn-warning deleteMultiple' data-id='<?php echo $child->getPK(); ?>'>
-									<?php echo ($field->hasCrossReferenceTable()) ? 'disconnect' : 'delete'; ?>
+								<a href='javascript:void(null);' class='btn editMultiple' data-id='<?php echo $child->getPK(); ?>'><i class='icon-pencil icon-white'></i></a>
+								<a href='javascript:void(null);' class='btn btn-<?php echo ($field->hasCrossReferenceTable()) ? 'warning' : 'danger'; ?> deleteMultiple' data-id='<?php echo $child->getPK(); ?>'>
+									<i class='icon-<?php echo ($field->hasCrossReferenceTable()) ? 'minus' : 'trash'; ?> icon-white'></i>
 								</a>
 							</div>
                         </td>

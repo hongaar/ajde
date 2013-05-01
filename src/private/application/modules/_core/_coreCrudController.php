@@ -201,47 +201,91 @@ class _coreCrudController extends Ajde_Acl_Controller
 		
 		// Extra careful handling of parameters, as we are baking crude SQL here
 		
-		// Get and validate sort field
-		$sortField = Ajde::app()->getRequest()->getPostParam('field');
-		$field = $crud->getField($sortField); // throws exception when not found
-		
-		if (!is_array($id)) {
-			$id = array($id);
-		}
-		
-		// Make sure ids is a array of integers
-		$ids = array();
-		foreach($id as $elm) {
-			$ids[] = (int) $elm;
-		}
-		
-		// Get lowest current sort values
-		$idString = implode(', ', $ids);
-		$sql = "SELECT MIN(" . $sortField . ") AS min FROM " . (string) $model->getTable() . " WHERE " . $model->getTable()->getPK() . " IN (" . $idString . ")";
-		
-		$statement = $model->getConnection()->prepare($sql);
-		$statement->execute();
-		$result = $statement->fetch(PDO::FETCH_ASSOC);	
-		if ($result === false || empty($result)) {
-			$sortValue = 0;
-		} else {
-			$sortValue = $result['min'];
-		}
-		
-		$success = true;
-		foreach($ids as $id) {
-			$model->loadByPK($id);
-			$model->set($sortField, $sortValue);		
-			$success = $success * $model->save();
-			$sortValue++;
-			if ($field->has('sort_children')) {
-				// TODO: implement parent recursive sorting
+		if (Ajde::app()->getRequest()->hasPostParam('table')) {
+			
+			// Only allow alfanumeric, ., _ and - in table and field names
+			$sortField = preg_replace("/[^0-9a-zA-Z_\-\.]/i", '', Ajde::app()->getRequest()->getPostParam('field'));
+			$sortPK = preg_replace("/[^0-9a-zA-Z_\-\.]/i", '', Ajde::app()->getRequest()->getPostParam('pk'));
+			$sortTable = preg_replace("/[^0-9a-zA-Z_\-\.]/i", '', Ajde::app()->getRequest()->getPostParam('table'));
+			
+			if (!is_array($id)) {
+				$id = array($id);
 			}
-		}
 
-		// Call afterSort once on model
-		if (method_exists($model, 'afterSort')) {
-			$model->afterSort();
+			// Make sure ids is a array of integers
+			$ids = array();
+			foreach($id as $elm) {
+				if ($elm) {
+					$ids[] = (int) $elm;
+				}
+			}
+
+			// Get lowest current sort values
+			$idString = implode(', ', $ids);
+			$sql = "SELECT MIN(" . $sortField . ") AS min FROM " . $sortTable . " WHERE " . $sortPK . " IN (" . $idString . ")";
+
+			$statement = $model->getConnection()->prepare($sql);
+			$statement->execute();
+			$result = $statement->fetch(PDO::FETCH_ASSOC);	
+			if ($result === false || empty($result)) {
+				$sortValue = 0;
+			} else {
+				$sortValue = $result['min'];
+			}
+
+			$success = true;
+			foreach($ids as $id) {
+				$values = array($sortValue, $id);
+				$sql = "UPDATE " . $sortTable . " SET " . $sortField . " = ? WHERE " . $sortPK . " = ?";
+
+				$statement = $model->getConnection()->prepare($sql);
+				$success = $success * $statement->execute($values);
+				$sortValue++;
+			}
+		} else {
+			// Get and validate sort field
+			$sortField = Ajde::app()->getRequest()->getPostParam('field');
+			$sortTable = (string) $model->getTable();
+			$field = $crud->getField($sortField); // throws exception when not found
+			
+			if (!is_array($id)) {
+				$id = array($id);
+			}
+
+			// Make sure ids is a array of integers
+			$ids = array();
+			foreach($id as $elm) {
+				$ids[] = (int) $elm;
+			}
+
+			// Get lowest current sort values
+			$idString = implode(', ', $ids);
+			$sql = "SELECT MIN(" . $sortField . ") AS min FROM " . $sortTable . " WHERE " . $model->getTable()->getPK() . " IN (" . $idString . ")";
+
+			$statement = $model->getConnection()->prepare($sql);
+			$statement->execute();
+			$result = $statement->fetch(PDO::FETCH_ASSOC);	
+			if ($result === false || empty($result)) {
+				$sortValue = 0;
+			} else {
+				$sortValue = $result['min'];
+			}
+
+			$success = true;
+			foreach($ids as $id) {
+				$model->loadByPK($id);
+				$model->set($sortField, $sortValue);		
+				$success = $success * $model->save();
+				$sortValue++;
+				if ($field->has('sort_children')) {
+					// TODO: implement parent recursive sorting
+				}
+			}
+
+			// Call afterSort once on model
+			if (method_exists($model, 'afterSort')) {
+				$model->afterSort();
+			}
 		}
 		
 		return array(
@@ -277,7 +321,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 		$model->populate($post);
 		
 		Ajde_Event::trigger($model, 'beforeCrudSave', array($crud));
-		
+				
 		if (!$model->validate($crud->getOptions('fields'))) {
 			return array('operation' => $operation, 'success' => false, 'errors' => $model->getValidationErrors());
 		}
@@ -286,6 +330,19 @@ class _coreCrudController extends Ajde_Acl_Controller
 //		}
 		
 		$success = $model->{$operation}();
+		
+		// Multiple field SimpleSelector
+		foreach($post as $key => $value) {
+			if (is_array($value)) {
+				$fieldOptions = $crud->getOption('fields.' . $key);
+				if (isset($fieldOptions['crossReferenceTable'])) {
+					$this->deleteMultiple($crud, null, $model->getPK(), $key, true);
+					foreach($value as $item) {
+						$this->addMultiple($crud, $item, $model->getPK(), $key);
+					}
+				}
+			}
+		}
 		
 		if ($success === true) {
 			// Destroy reference to crud instance
@@ -303,16 +360,21 @@ class _coreCrudController extends Ajde_Acl_Controller
 			'success' => $success);
 	}
 	
-	private function deleteMultiple($crudId, $id)
+	private function deleteMultiple($crudId, $id, $parentId = null, $fieldName = null, $all = false)
 	{
-		$session = new Ajde_Session('AC.Crud');		
-		/* @var $crud Ajde_Crud */
-		$crud = $session->getModel($crudId);
+		/* @var $crud Ajde_Crud */		
+		if ($crudId instanceof Ajde_Crud) {
+			$crud = $crudId;
+		} else {
+			$session = new Ajde_Session('AC.Crud');		
+			$crud = $session->getModel($crudId);
+		}
+		
 		/* @var $model Ajde_Model */
 		$model = $crud->getModel();
 		
-		$parentId = Ajde::app()->getRequest()->getPostParam('parent_id');
-		$fieldName = Ajde::app()->getRequest()->getPostParam('field');
+		$parentId = isset($parentId) ? $parentId : Ajde::app()->getRequest()->getPostParam('parent_id');
+		$fieldName = isset($fieldName) ? $fieldName : Ajde::app()->getRequest()->getPostParam('field');
 		
 		// Get field properties
 		$fieldProperties = $crud->getOption('fields.' . $fieldName);
@@ -320,10 +382,17 @@ class _coreCrudController extends Ajde_Acl_Controller
 		$success = false;
 		$modelName = $crud->getOption('fields.' . $fieldName . '.modelName', $fieldName);
 		if (isset($fieldProperties['crossReferenceTable'])) {
-			$parentField = (string) $model->getTable();
-			$sql = 'DELETE FROM '.$fieldProperties['crossReferenceTable'].' WHERE '.$parentField.' = ? AND '.$modelName.' = ? LIMIT 1';
-			$statement = $model->getConnection()->prepare($sql);
-			$success = $statement->execute(array($parentId, $id));			
+			if ($all === true) {
+				$parentField = (string) $model->getTable();
+				$sql = 'DELETE FROM '.$fieldProperties['crossReferenceTable'].' WHERE '.$parentField.' = ?';
+				$statement = $model->getConnection()->prepare($sql);
+				$success = $statement->execute(array($parentId));		
+			} else {
+				$parentField = (string) $model->getTable();
+				$sql = 'DELETE FROM '.$fieldProperties['crossReferenceTable'].' WHERE '.$parentField.' = ? AND '.$modelName.' = ? LIMIT 1';
+				$statement = $model->getConnection()->prepare($sql);
+				$success = $statement->execute(array($parentId, $id));			
+			}
 		} else {
 			$childClass = ucfirst($modelName) . 'Model';
 			$child = new $childClass();
@@ -339,16 +408,21 @@ class _coreCrudController extends Ajde_Acl_Controller
 		);
 	}
 	
-	private function addMultiple($crudId, $id)
+	private function addMultiple($crudId, $id, $parentId = null, $fieldName = null)
 	{
-		$session = new Ajde_Session('AC.Crud');		
-		/* @var $crud Ajde_Crud */
-		$crud = $session->getModel($crudId);
+		/* @var $crud Ajde_Crud */		
+		if ($crudId instanceof Ajde_Crud) {
+			$crud = $crudId;
+		} else {
+			$session = new Ajde_Session('AC.Crud');		
+			$crud = $session->getModel($crudId);
+		}
+		
 		/* @var $model Ajde_Model */
 		$model = $crud->getModel();
 		
-		$parentId = Ajde::app()->getRequest()->getPostParam('parent_id');
-		$fieldName = Ajde::app()->getRequest()->getPostParam('field');
+		$parentId = isset($parentId) ? $parentId : Ajde::app()->getRequest()->getPostParam('parent_id');
+		$fieldName = isset($fieldName) ? $fieldName : Ajde::app()->getRequest()->getPostParam('field');
 		
 		// Get field properties
 		$fieldProperties = $crud->getOption('fields.' . $fieldName);
@@ -371,9 +445,35 @@ class _coreCrudController extends Ajde_Acl_Controller
 				);
 			}			
 			
-			$sql = 'INSERT INTO '.$fieldProperties['crossReferenceTable'].' ('.$parentField.', '.$modelName.') VALUES (?, ?)';
+			// Sql to use when no sorting
+			$endSql = ') VALUES (?, ?)';
+			$values = array($parentId, $id);
+			
+			// Sort fields?
+			if (isset($fieldProperties['tableFields'])) {
+				foreach ($fieldProperties['tableFields'] as $extraField) { 
+					if ($extraField['type'] == 'sort') {
+						// Get highest current sort value
+						$sql = "SELECT MAX(" . $extraField['name'] . ") AS max FROM " . $fieldProperties['crossReferenceTable'];
+
+						$statement = $model->getConnection()->prepare($sql);
+						$statement->execute();
+						$result = $statement->fetch(PDO::FETCH_ASSOC);	
+						if ($result === false || empty($result)) {
+							$sortValue = 999;
+						} else {
+							$sortValue = $result['max'] + 1;
+						}
+						$endSql = ', ' . $extraField['name'] . ') VALUES (?, ?, ?)';
+						$values[] = $sortValue;
+					}
+				}
+			}
+			
+			$sql = 'INSERT INTO ' . $fieldProperties['crossReferenceTable'] . ' (' . $parentField . ', ' . $modelName . $endSql;
 			$statement = $model->getConnection()->prepare($sql);
-			$success = $statement->execute(array($parentId, $id));			
+			$success = $statement->execute($values);
+			$lastId = $model->getConnection()->lastInsertId();
 		} else {
 			// Not possible
 		}
@@ -381,7 +481,8 @@ class _coreCrudController extends Ajde_Acl_Controller
 		return array(
 			'operation' => 'addMultiple',			
 			'success' => $success,
-			'message' => ucfirst($fieldName) . ' added'
+			'lastId' => $lastId,
+			'message' => $success ? ucfirst($fieldName) . ' added' : 'An error occured'
 		);
 	}
 	
@@ -408,24 +509,24 @@ class _coreCrudController extends Ajde_Acl_Controller
 		$ret = array();
 		if (isset($fieldProperties['tableFields'])) {
 			foreach ($fieldProperties['tableFields'] as $extraField) { 
-				$value	= $child->get($extraField['name']);
+				$value	= $child->has($extraField['name']) ? $child->get($extraField['name']) : false;
 				$type	= $extraField['type'];
 				if ($type == 'file' && $value) {
 					$extension = pathinfo($value, PATHINFO_EXTENSION);
-						if ($isImage = in_array(strtolower($extension), array('jpg', 'jpeg', 'png', 'gif'))) {
-							$thumbDim = isset($fieldProperties['thumbDim']) ? $fieldProperties['thumbDim'] : array('width' => 75, 'height' => 75);
-							$html = "<a class='imagePreview img' title='" . _e($value) . "' href='" . $extraField['saveDir'] . $value . "' target='_blank'>";
-							$image = new Ajde_Resource_Image($extraField['saveDir'] . $value);
-							$image->setWidth($thumbDim['width']);
-							$image->setHeight($thumbDim['height']);
-							$image->setCrop(true);							
-							$html = $html . "<img src='" . $image->getLinkUrl() . "' width='" . $thumbDim['width'] . "' height='" . $thumbDim['height'] . "' />";
-							$html = $html . "</a>";
-						} else {
-							$html = "<img class='icon' src='" . Ajde_Resource_FileIcon::_($extension) . "' />";
-							$html = $html . " <a class='filePreview preview' href='" . $extraField['saveDir'] . $value . "' target='_blank'>" . $value . "</a>";
-						}
-				 } else {
+					if ($isImage = in_array(strtolower($extension), array('jpg', 'jpeg', 'png', 'gif'))) {
+						$thumbDim = isset($fieldProperties['thumbDim']) ? $fieldProperties['thumbDim'] : array('width' => 75, 'height' => 75);
+						$html = "<a class='imagePreview img' title='" . _e($value) . "' href='" . $extraField['saveDir'] . $value . "' target='_blank'>";
+						$image = new Ajde_Resource_Image($extraField['saveDir'] . $value);
+						$image->setWidth($thumbDim['width']);
+						$image->setHeight($thumbDim['height']);
+						$image->setCrop(true);							
+						$html = $html . "<img src='" . $image->getLinkUrl() . "' width='" . $thumbDim['width'] . "' height='" . $thumbDim['height'] . "' />";
+						$html = $html . "</a>";
+					} else {
+						$html = "<img class='icon' src='" . Ajde_Resource_FileIcon::_($extension) . "' />";
+						$html = $html . " <a class='filePreview preview' href='" . $extraField['saveDir'] . $value . "' target='_blank'>" . $value . "</a>";
+					}
+				 } else if ($type == 'text') {
 					$html = $value;
 				 }
 				 $ret[] = $html;
@@ -437,6 +538,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 		return array(
 			'operation' => 'getMultipleRow',			
 			'success' => $success,
+			'displayField' => $child->get($child->getDisplayField()),
 			'data' => $ret
 		);
 	}

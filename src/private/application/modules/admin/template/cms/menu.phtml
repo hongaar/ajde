@@ -15,7 +15,7 @@ $nodeTypes->orderBy('sort');
 			/* @var $nodeType NodetypeModel */ ?>
 		<li>
 			<a href="admin/node:view?view[filter][nodetype]=<?php echo $nodeType->getPK(); ?>">
-				<i><?php echo _e($nodeType->getName()); ?></i>
+				<?php echo _e($nodeType->getName()); ?>
 			</a>
 		</li>
 		<?php } ?>
@@ -24,6 +24,8 @@ $nodeTypes->orderBy('sort');
 		<li><a href="admin/media:view?new"><i class="icon-plus"></i> Add</a></li>
         <li><a href="admin/media:upload"><i class="icon-circle-arrow-up"></i> Upload files</a></li>
 		<li class="nav-header">Menus</li>
-		<li><a href="admin/menus:view"><i class="icon-bookmark"></i> Editor</a></li>
+		<li><a href="admin/menu:view"><i class="icon-bookmark"></i> Editor</a></li>
+		<li class="nav-header">Tags</li>
+		<li><a href="admin/tag:view"><i class="icon-tag"></i> Manager</a></li>
 	</ul>
 </div><!--/.well -->

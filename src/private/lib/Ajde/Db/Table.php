@@ -70,7 +70,7 @@ class Ajde_Db_Table extends Ajde_Object_Standard
 	
 	public function getFK(Ajde_Db_Table $parent) {
 		$fk = Ajde_Db::getInstance()->getAdapter()->getForeignKey((string) $this, (string) $parent);
-		return array('field' => $fk['COLUMN_NAME'], 'parent_field' => $fk['REFERENCED_COLUMN_NAME']);		
+		return array('field' => $fk['COLUMN_NAME'], 'parent_table' => $fk['REFERENCED_TABLE_NAME'], 'parent_field' => $fk['REFERENCED_COLUMN_NAME']);
 	}
 	
 	public function getParents() {

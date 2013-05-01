@@ -74,8 +74,23 @@ class Ajde_Controller extends Ajde_Object_Standard
 			$moduleController = ucfirst($route->getModule()) . 'Controller';
 		}
 		if (!Ajde_Core_Autoloader::exists($moduleController)) {
-			$exception = new Ajde_Exception("Controller $moduleController for module {$route->getModule()} not found",
-					90008);
+			
+			// Prevent resursive 404 routing
+			if (isset(Config::getInstance()->responseCodeRoute[Ajde_Http_Response::RESPONSE_TYPE_NOTFOUND])) {
+				$notFoundRoute = new Ajde_Core_Route(Config::getInstance()->responseCodeRoute[Ajde_Http_Response::RESPONSE_TYPE_NOTFOUND]);
+				if ($route->buildRoute() == $notFoundRoute->buildRoute()) {
+					Ajde_Http_Response::setResponseType(404);
+					die('<h2>Ouch, something broke.</h2><p>This is serious. We tried to give you a nice error page, but even that failed.</p><button onclick="location.href=\'./\';">Go back to homepage</button>');
+				}
+			}		
+					
+			if (Ajde_Core_Autoloader::exists('Ajde_Exception')) {
+				$exception = new Ajde_Exception("Controller $moduleController for module {$route->getModule()} not found",
+						90008);
+			} else {
+				// Normal exception here to prevent [Class 'Ajde_Exception' not found] errors...
+				$exception = new Exception("Controller $moduleController for module {$route->getModule()} not found");
+			}
 			Ajde::routingError($exception);
 		}
 		$controller = new $moduleController($route->getAction(), $route->getFormat());

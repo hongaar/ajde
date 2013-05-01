@@ -33,6 +33,12 @@ fieldset.crud {
 	span.validation-message {
 		color: #fff !important;
 	}
+	
+	div.control-group {
+		&:last-child {
+/*			margin-bottom: 0;*/
+		}
+	}
     
     &.sidebar {
         
@@ -51,8 +57,27 @@ fieldset.crud {
 	border-radius: 0;
 }
 
-body.iframe .hideInIframe {
+.fancybox-title-float-wrap .child {
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	background: transparent;	
+}
+
+body .showInIframe {
 	display: none;
+}
+
+body.iframe {
+	.hideInIframe {
+		display: none !important;
+	}
+	.showInIframe {
+		display: block;
+	}
+	a.btn.showInIframe {
+		display: inline-block;
+	}
 }
 
 /** COLLAPSE FOR SIDEBAR AND SMALL SCREENS **/
@@ -88,6 +113,10 @@ body.iframe .hideInIframe {
 
 table.crud {
 	
+	td, th {
+		border-top: 0;
+	}
+	
     select, input {
         margin-bottom: 0;
         font-size: 0.8em;
@@ -113,7 +142,11 @@ table.crud {
                     &.show {
                         display: inline-block;
                     }
-                }            
+				}
+				
+				.uploadButton {
+					min-width: 300px;
+				}
             }
 
             th {

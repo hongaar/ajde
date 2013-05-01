@@ -181,14 +181,6 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 	public function setCrossReferenceTable($table) { return $this->_set('crossReferenceTable', $table); }	
 	
 	/**
-	 * Defines a sort field on the crossreference table
-	 * 
-	 * @param string $table
-	 * @return Ajde_Crud_Options_Fields_Field 
-	 */
-	public function setCrossReferenceSortField($field) { return $this->_set('crossReferenceSortField', $field); }	
-	
-	/**
 	 * Display the label?
 	 * 
 	 * @param boolean $display
@@ -203,6 +195,14 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 	 * @return Ajde_Crud_Options_Fields_Field 
 	 */
 	public function setEditRoute($route) { return $this->_set('editRoute', $route); }
+	
+	/**
+	 * Sets the list route for fields with type 'fk'
+	 * 
+	 * @param string $route
+	 * @return Ajde_Crud_Options_Fields_Field 
+	 */
+	public function setListRoute($route) { return $this->_set('listRoute', $route); }
 	
 	/**
 	 * Disables rich text editing for text fields
@@ -229,13 +229,29 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 	public function setTextInputWidth($em) { return $this->_set('textInputWidth', $em); }
 	
 	/**
-	 * Sets the model to use for fields with type 'multiple'
+	 * Sets the model to use for fields with type 'multiple' or 'fk'
 	 * 
 	 * @param string $model
 	 * @return Ajde_Crud_Options_Fields_Field 
 	 */
 	public function setModelName($model) { return $this->_set('modelName', $model); }
+	
+	/**
+	 * Sets the parent field if it is different from the model name for fields with type 'multiple'
+	 * 
+	 * @param string $field
+	 * @return Ajde_Crud_Options_Fields_Field 
+	 */
+	public function setParent($field) { return $this->_set('parent', $field); }
     
+	/**
+	 * Hide this field in iframe (when adding from multiple field)
+	 * 
+	 * @param boolean $hidden
+	 * @return Ajde_Crud_Options_Fields_Field 
+	 */
+	public function setHideInIframe($hidden) { return $this->_set('hideInIframe', $hidden); }
+	
     /**
 	 * Use a simple selector for fields with type 'multiple'
 	 * 
@@ -267,9 +283,33 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 		$fields[] = array('name' => $field, 'type' => 'file', 'saveDir' => $saveDir);
 		return $this->_set('tableFields', $fields);
 	}
+	
+	/**
+	 * Defines a sort field on the foreign table
+	 * 
+	 * @param string $table
+	 * @return Ajde_Crud_Options_Fields_Field 
+	 */
+	public function addSortField($field) {
+		$fields = ($this->has('tableFields') ? $this->get('tableFields') : array());
+		$fields[] = array('name' => $field, 'type' => 'sort');
+		$this->setSortBy($field);
+		return $this->_set('tableFields', $fields);	
+	}
+	
+	/**
+	 * Sort the foreign table by this field
+	 * 
+	 * @param string $table
+	 * @return Ajde_Crud_Options_Fields_Field 
+	 */
+	public function setSortBy($field) {
+		return $this->_set('sortBy', $field);
+	}	
     
     /**
-	 * Use an image for spatial field instead of Google Maps
+	 * Use an image for spatial field instead of Google Maps or
+	 * use an image in fk selected field (with setUsePopupSelector=true)
 	 * 
 	 * @param boolean $image
 	 * @return Ajde_Crud_Options_Fields_Field 
@@ -307,4 +347,14 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     public function setFilenameField($fieldname) {
         return $this->_set('filenameField', $fieldname);
     }
+	
+	/**
+	 * Use popup list selector for fk or multiple type fields
+	 * 
+	 * @param boolean $use
+	 * @return Ajde_Crud_Options_Fields_Field
+	 */
+	public function setUsePopupSelector($use) {
+		return $this->_set('usePopupSelector', $use);
+	}
 }

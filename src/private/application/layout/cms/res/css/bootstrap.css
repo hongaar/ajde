@@ -1,0 +1,24 @@
+textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	
+	border: 1px solid #eee;
+}
+
+.control-group.success input:focus, .control-group.success select:focus, .control-group.success textarea:focus {
+	border: auto;
+	border-color: rgba(55, 159, 21, 0.8);
+	outline: 0;
+	outline: thin dotted 9;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),0 0 8px rgba(55, 159, 21, 0.6);
+	-moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(55, 159, 21, 0.6);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),0 0 8px rgba(55, 159, 21, 0.6);
+}
+
+/* disable shadow around inputs */
+input, select, textarea, body .cke.active .cke_contents, body .chzn-container-active .chzn-choices {
+	-webkit-box-shadow: none !important;
+	-moz-box-shadow: none !important;
+	box-shadow: none !important;
+}

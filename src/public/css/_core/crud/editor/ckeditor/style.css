@@ -1,0 +1,15 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:300,500,700);
+
+body {
+	margin: 4px 6px;
+}
+
+p, h1, h2, h3, ul, ol {
+	margin-top: 0;
+}
+
+body, .cke_editable {
+	font-family: "Roboto",Calibri,Candara,Arial,sans-serif;
+	font-size: 14px;
+	font-weight: 300;
+}

@@ -1,12 +1,18 @@
 <?php
 /* @var $this Ajde_Template_Parser_Phtml_Helper */
 
+$this->requireGWebFont('Roboto', array(300, 500, 700));
+
 // Twitter bootstrap
 $this->requireCssPublic('bootstrap/bootstrap-cosmo.css', Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST);
 $this->requireCssPublic('bootstrap/bootstrap-responsive.css', Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST);
+$this->requireCss('bootstrap');
 
 // Include jQuery 1.7
 $this->requireJsLibrary('jquery', '1.7');
+
+// Fastclick
+$this->requireJsPublic('lib/fastclick.js');
 
 // Bootstrap.js
 $this->requireJsPublic('lib/bootstrap.min.js');
@@ -21,6 +27,9 @@ $this->requireJsPublic('lib/jquery.cookie.js');
 $this->requireJsPublic('lib/chosen/chosen.jquery.min.js');
 $this->requireCssPublic('lib/chosen/chosen.css');
 $this->requireCss('chosen');
+
+// CKEditor
+$this->requireCss('ckeditor');
 
 // Some JavaScript i18n
 $this->requireJsFirst('i18n.' . Ajde_Lang::getInstance()->getShortLang());
@@ -140,6 +149,7 @@ $nodeTypes->orderBy('sort');
 									<li class="divider"></li>
 									<li><a href="admin/cms:media">Media</a></li>
 									<li><a href="admin/cms:menus">Menus</a></li>
+									<li><a href="admin/cms:tags">Tags</a></li>
 								</ul>
 							</li>
 							

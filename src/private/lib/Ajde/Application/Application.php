@@ -136,7 +136,9 @@ class Ajde_Application extends Ajde_Object_Singleton
 		}
 		else
 		{
-			Ajde_Exception_Log::logException($exception);
+			if (Ajde_Core_Autoloader::exists('Ajde_Exception_Log')) {
+				Ajde_Exception_Log::logException($exception);
+			}
 			Ajde_Http_Response::redirectNotFound();
 		}
 	}

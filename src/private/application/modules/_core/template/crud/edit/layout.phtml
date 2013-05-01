@@ -2,23 +2,39 @@
 /* @var $crud Ajde_Crud */
 $crud = $this->crud;
 $editOptions = $crud->getOptions('edit');
-?>
 
-<?php echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudEdit form-horizontal');?>
+$topToolbarTreshold = 50;
 
+// Total fields
+$rows = $crud->getOption('edit.layout.rows');	
+$totalFields = 0;
+foreach($rows as $row) {
+	$columns = $row['columns'];
+	foreach($columns as $column) {
+		$blocks = $column['blocks'];
+		foreach($blocks as $block) {
+			$fieldsToShow = $block['show'];
+            $totalFields += count($fieldsToShow);
+		}
+	}
+}
+
+echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudEdit form-horizontal');?>
+
+	<?php if ($totalFields > $topToolbarTreshold) { ?>
     <div class="form-actions">
 
         <div class="btn-group">
-			<button type="submit" class="btn btn-success save" title='Save changes and go back to overview'><i class='icon-ok icon-white'></i> Save &amp; back</button>
-			<button type="submit" class="btn btn-primary apply" title='Save changes'>Save</button>
+			<button type="submit" class="btn btn-success save" title='Save changes and go back to overview'><i class='icon-ok icon-white'></i> save &amp; back</button>
+			<button type="submit" class="btn btn-primary apply" title='Save changes'>save</button>
 		</div>
-        <a href="javascript:void(null);" class='btn pull-right cancel' title='Go back to overview'>Back</a>
+        <a href="javascript:void(null);" class='btn pull-right cancel' title='Go back to overview'>back</a>
 
     </div>
+	<?php } ?>
 
     <?php
 
-    $rows = $crud->getOption('edit.layout.rows');	
     $fieldsShown = array();
     foreach($rows as $row) {
         $columns = $row['columns'];
@@ -97,10 +113,10 @@ $editOptions = $crud->getOptions('edit');
     <div class="form-actions">
 		
 		<div class="btn-group">
-			<button type="submit" class="btn btn-success save" title='Save changes and go back to overview'><i class='icon-ok icon-white'></i> Save &amp; back</button>
-			<button type="submit" class="btn btn-primary apply" title='Save changes'>Save</button>
+			<button type="submit" class="btn btn-success save" title='Save changes and go back to overview'><i class='icon-ok icon-white'></i> save &amp; back</button>
+			<button type="submit" class="btn btn-primary apply" title='Save changes'>save</button>
 		</div>
-        <a href="javascript:void(null);" class='btn pull-right cancel' title='Go back to overview'>Back</a>
+        <a href="javascript:void(null);" class='btn pull-right cancel' title='Go back to overview'>back</a>
 
     </div>
 

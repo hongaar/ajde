@@ -224,14 +224,16 @@ jQuery.tableDnD = {
             e = e.firstChild; // a table cell
         }
 
-        while (e.offsetParent){
+        while (e && e.offsetParent){
             left += e.offsetLeft;
             top  += e.offsetTop;
             e     = e.offsetParent;
         }
-
-        left += e.offsetLeft;
-        top  += e.offsetTop;
+	
+		if (e) {
+			left += e.offsetLeft;
+			top  += e.offsetTop;
+		}
 
         return {x:left, y:top};
     },
@@ -355,7 +357,7 @@ jQuery.tableDnD = {
             }
             jQuery.tableDnD.dragObject = null;
             var newOrder = jQuery.tableDnD.serialize();
-            if (config.onDrop && (jQuery.tableDnD.originalOrder != newOrder)) {
+            if (config.onDrop && (1 || jQuery.tableDnD.originalOrder != newOrder)) {
                 // Call the onDrop method if there is one
                 config.onDrop(jQuery.tableDnD.currentTable, droppedRow);
             }

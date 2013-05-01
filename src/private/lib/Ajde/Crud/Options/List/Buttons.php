@@ -43,12 +43,30 @@ class Ajde_Crud_Options_List_Buttons extends Ajde_Crud_Options
 	public function setEdit($show) { return $this->_set('edit', $show); }
 	
 	/**
-	 * Adds a custom button
+	 * Adds a custom button for every item in the list
 	 * 
 	 * @param name $name Identifier of the button
 	 * @param text $text Text to display
 	 * @param type $class Optional classname to add
 	 * @return Ajde_Crud_Options_List_Buttons 
 	 */
-	public function setCustom($name, $text, $class = null) { return $this->_set($name, array('text' => $text, 'class' => $class)); }
+	public function addItemButton($name, $text, $class = null) { 
+		$buttons = ($this->has('itemButtons') ? $this->get('itemButtons') : array());
+		$buttons[$name] = array('text' => $text, 'class' => isset($class) ? $class : $name);
+		return $this->_set('itemButtons', $buttons);
+	}
+	
+	/**
+	 * Adds a custom button to the list toolbar
+	 * 
+	 * @param name $name Identifier of the button
+	 * @param text $text Text to display
+	 * @param type $class Optional classname to add
+	 * @return Ajde_Crud_Options_List_Buttons 
+	 */
+	public function addToolbarButton($name, $text, $class = null) { 
+		$buttons = ($this->has('toolbarButtons') ? $this->get('toolbarButtons') : array());
+		$buttons[$name] = array('text' => $text, 'class' => isset($class) ? $class : $name);
+		return $this->_set('toolbarButtons', $buttons);
+	}
 }

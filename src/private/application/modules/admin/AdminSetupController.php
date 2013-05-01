@@ -15,6 +15,10 @@ class AdminSetupController extends AdminController
 		Ajde_Model::register($this);
 		
 		Ajde::app()->getDocument()->setTitle("Setup fields");
+		
+		$decorator = new Ajde_Crud_Cms_MetaDecorator();
+		$this->getView()->assign('decorator', $decorator);
+		
 		return $this->render();
 	}
 	

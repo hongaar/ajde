@@ -61,7 +61,7 @@ $crud = $field->getCrud();
 			$type = $crud->getField($typeField)->getValue();
 			?>
 
-			<div class='pointerControls'>			
+			<div class='btn-group pointerControls'>			
 				<?php if ($type === 'image') { ?>
 					<a class='imagePreview preview btn' title='<?php echo _e($field->getValue()); ?>' href='<?php echo $field->getSaveDir() . $field->getValue(); ?>' target='_blank'>
 						<img class='icon' src='<?php echo Ajde_Resource_FileIcon::_($extension); ?> ' />
@@ -74,10 +74,10 @@ $crud = $field->getCrud();
 					</a>
 				<?php } else { ?>
 					<a class='embedPreview preview btn' href='javascript:void(null);'>
-						Embedded source
+						embedded source
 					</a>
 				<?php } ?>				
-				<a href='javascript:void(null);' class='replaceMedia btn btn-danger'>replace</a>
+				<a href='javascript:void(null);' class='replaceMedia btn btn-warning'>replace</a>
 			</div>
 		
 			<?php

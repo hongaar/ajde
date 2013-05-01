@@ -6,10 +6,15 @@
 (function($) {
 	
 	var bootstrap = function() {	
+		
+		// Fastclick
+		new FastClick(document.body);
         
         // Chosen
 		setTimeout(function() {
-			$("select.chosen").chosen();
+			$("select.chosen").chosen({
+				allow_single_deselect: true
+			});
 		}, 100);
 		
 		// Form validation with Twitter Bootstrap

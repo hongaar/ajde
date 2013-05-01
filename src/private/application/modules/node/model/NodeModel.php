@@ -1,4 +1,4 @@
-<?php
+	<?php
 
 class NodeModel extends Ajde_Model
 {
@@ -26,12 +26,12 @@ class NodeModel extends Ajde_Model
 		$this->added = new Ajde_Db_Function("NOW()");
 
 		// Sort
-		$collection = new NodeCollection();
-		$min = 999;
-		foreach($collection as $item) {
-			$min = ($item->sort < $min) ? $item->sort : $min;
-		}
-		$this->sort = $min - 1;
+//		$collection = new NodeCollection();
+//		$min = 999;
+//		foreach($collection as $item) {
+//			$min = ($item->sort < $min) ? $item->sort : $min;
+//		}
+//		$this->sort = $min - 1;
 	}
 	
 	public function afterInsert()

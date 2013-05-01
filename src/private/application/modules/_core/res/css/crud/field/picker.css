@@ -1,0 +1,16 @@
+/*#!less*/
+
+div.picker div.controls-row {
+	a.btn {
+		width: 50px;
+		float: right !important;
+	}
+	
+	div.input {
+		margin-right: 62px;
+		
+		input {
+			width: 100%;
+		}
+	}
+}

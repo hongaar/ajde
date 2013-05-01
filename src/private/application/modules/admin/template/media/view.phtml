@@ -45,6 +45,7 @@ $options
 		->selectButtons()
 			->setNew(true)
 			->setEdit(true)
+			->addToolbarButton('upload', new Ajde_Core_Route('admin/media:uploadButton'))
 			->up()
 		->setMain('name')
 		->setShow(array('name', 'added', 'thumbnail'))

@@ -1,5 +1,44 @@
+/*#!less*/
+
+div.multiple div.controls-row {
+	a {
+		width: 50px;
+		float: right !important;
+	}
+	
+	div.input {
+		margin-right: 50px;
+		
+		select {
+			width: 100%;
+		}
+		
+		li.search-field input {
+			height: 16px !important;
+		}
+	}
+}
+
+div.multiple div.picker {
+	display: inline-block;
+	
+	div.input {
+		display: none;
+	}
+	
+	div.controls-row a.btn {
+		float: none !important;
+		width: auto;
+	}
+}
+
 div.multipleToolbar {
 	margin: 10px 0;
+	
+	.chzn-container .chzn-single {
+		height: 24px;
+		top: -1px;
+	}
 }
 
 table.multipleList {
@@ -8,6 +47,10 @@ table.multipleList {
 
 table.multipleList td {
 	vertical-align: middle;
+}
+
+table.multipleList th {
+	border-bottom: 1px solid #ddd;
 }
 
 table.multipleList td:first-child {

@@ -14,20 +14,47 @@ if ($field->getValue()) {
 	$pk = null;
 }
 
-?>
+if ($field->has('usePopupSelector') && $field->get('usePopupSelector')) { ?>
 
-<select
-	<?php echo $field->getHtmlAttributes(); ?>	
->
-	<?php if (!$field->getIsRequired() === true) { ?>
-		<option value=''>(none)</option>
-	<?php } ?>
-	<?php foreach($field->getValues() as $key => $option) { ?>
-		<option value='<?php echo $key; ?>'
-			<?php
-			if ($key == $pk) { echo "selected='selected'"; }
-			elseif ($field->hasReadonly() && $field->getReadonly() === true) { echo ' disabled="disabled" '; }
-			?>
-			><?php echo $option; ?></option>
-	<?php } ?>
-</select>
+	<select name="<?php echo $field->getName(); ?>" class="hide">
+		<option value=''></option>
+		<?php foreach($field->getValues() as $key => $option) { ?>
+			<option value='<?php echo $key; ?>'
+				<?php
+				if ($key == $pk) { echo "selected='selected'"; }
+				?>
+				><?php echo $option; ?></option>
+		<?php } ?>
+	</select>
+
+	<?php
+	
+	$this->requireJs('crud/field/picker');
+	$this->requireCss('crud/field/picker');
+	
+	$pickerMultiple = 0;
+	$pickerType = 'fk';
+	include 'picker.phtml';
+
+	?>
+
+<?php } else { ?>
+
+	<select
+		data-placeholder="Choose an option"
+		<?php echo $field->getHtmlAttributes(); ?>	
+	>
+		<?php if (!$field->getIsRequired() === true) { ?>
+			<option value=''></option>
+		<?php } ?>
+		<?php foreach($field->getValues() as $key => $option) { ?>
+			<option value='<?php echo $key; ?>'
+				<?php
+				if ($key == $pk) { echo "selected='selected'"; }
+				elseif ($field->hasReadonly() && $field->getReadonly() === true) { echo ' disabled="disabled" '; }
+				?>
+				><?php echo $option; ?></option>
+		<?php } ?>
+	</select>
+
+<?php } ?>

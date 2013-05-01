@@ -4,6 +4,14 @@ body {
 	padding-top: 80px;
 }
 
+.btn, input, textarea, select, .uneditable-input {
+	font-weight: 300;
+}
+
+select option.choose {
+	color: silver;
+}
+
 .hero-unit h1 {
 	margin-bottom: 0.2em;
 }
@@ -26,6 +34,13 @@ body {
 	}
 }
 
+body.iframe .row-fluid > div {
+	-webkit-transition: none;
+	-moz-transition: none;
+	-o-transition: none;
+	transition: none;
+}
+
 .row-fluid .span0 {
 	width: 42px !important;
 	padding: 0 !important;
@@ -42,6 +57,11 @@ body {
 	overflow: hidden;
 	white-space: nowrap;
 	margin-top: 110px;
+}
+
+/** cosmo fixes **/
+.control-group.success .checkbox, .control-group.success .radio, .control-group.success input, .control-group.success select, .control-group.success textarea {
+	color: inherit;
 }
 
 @media (max-width: 979px) {

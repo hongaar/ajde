@@ -53,7 +53,11 @@ AC.Crud.Edit.Multiple = function() {
 						}
 		}, function(response) {
 			if (response.success === true) {
-				addRow(id, display, that);
+				if (response.lastId) {
+					addRow(id, display, that, {}, response.lastId);
+				} else {
+					addRow(id, display, that);
+				}
 				AC.Core.Alert.flash(response.message);
 			} else if (response.success === false) {
 				AC.Core.Alert.error(response.message);
@@ -82,28 +86,39 @@ AC.Crud.Edit.Multiple = function() {
 		});
 	};
 
-	var addRow = function(id, display, that, data) {
+	var addRow = function(id, display, that, data, lastId) {
 		data = data || {};
 		var dynamic = (!data.length && $(that).parents('div.multiple:eq(0)').attr('data-dynamic') == 1);
-		if (dynamic) {
+		if (dynamic || display === false) {
 			getRowData(id, that, function(response) {
-				addRow(id, display, that, response.data);
+				addRow(id, response.displayField, that, response.data, lastId);
 			});
 		} else {
-			$lastrow = $(that).parent().next().find('tbody tr:last');
+			$lastrow = $(that).parents('.multipleToolbar').next().find('tbody tr:last');
 			$newrow = $lastrow.clone();
+			$newrow.removeClass('template');
 			$newrow.find('td:eq(0)').text(id);
 			$newrow.find('td:eq(1)').text(display);
 			var colCounter = 2;
 			for (var i in data) {
-				$newrow.find('td:eq(' + colCounter + ')').html(data[i]);
+				if (!$newrow.find('td:eq(' + colCounter + ')').hasClass('sort')) {
+					$newrow.find('td:eq(' + colCounter + ')').html(data[i]);
+				}
 				colCounter++;
 			}
 			$newrow.find('td:eq(' + colCounter + ')').find('a').attr('data-id', id);
-			$newrow.find('td:eq(' + colCounter + ')').find('a:eq(1)').text($(that).parent().find('.addMultiple').length ? 'disconnect' : 'delete');
+			if (lastId) {
+				$newrow.attr('id', 'row-' + lastId);
+			}
+			$newrow.attr('data-id', id);
+			$newrow.data('id', id);
 			$newrow.hide();
 			$newrow.insertAfter($lastrow);
-			$newrow.fadeIn();
+			$newrow.css('opacity', 1).fadeIn(function() {
+				$(this).css('display', 'table-row');
+			});
+			AC.Crud.Edit.Multiple.initMove();
+			AC.Crud.Edit.Multiple.initEmptyTable();
 		}
 	};
 
@@ -115,15 +130,47 @@ AC.Crud.Edit.Multiple = function() {
 			$('form.ACCrudEdit div.multiple a.editMultiple').live('click', AC.Crud.Edit.Multiple.editHandler);
 			$('form.ACCrudEdit div.multiple tbody tr').live('dblclick', AC.Crud.Edit.Multiple.editHandler);
 			$('form.ACCrudEdit div.multiple a.deleteMultiple').live('click', AC.Crud.Edit.Multiple.deleteHandler);
-
+			$('form.ACCrudEdit div.picker.multiple').bind('chosen', AC.Crud.Edit.Multiple.chosenHandler);
+			
 			$('form.ACCrudEdit div.multiple a.imagePreview').fancybox();
+			
+			AC.Crud.Edit.Multiple.initMove();
+			AC.Crud.Edit.Multiple.initEmptyTable();
+		},
+
+		initMove: function() {
+			if ($('form.ACCrudEdit table.multipleList tbody td.sort').length) {
+				$('form.ACCrudEdit table.multipleList tbody').tableDnD({
+					onDrop: AC.Crud.Edit.Multiple.onSortHandler,
+					serializeParamName: 'id',
+					serializeRegexp: /[^\-]*$/,
+					dragHandle: '.sort'
+				});
+			}
+		},
+			
+		initEmptyTable: function() {
+			$('form.ACCrudEdit table.multipleList').each(function() {
+				if ($(this).find('tbody tr:visible').length) {
+					$(this).find('thead').show();
+				} else {
+					$(this).find('thead').hide();
+				}
+			});
+		},
+			
+		chosenHandler: function(e, ids) {
+			var that = this;
+			for (elm in ids) {
+				add(ids[elm], false, this);
+			}
 		},
 
 		newHandler: function(e) {
 			var parentId = $(this).parents('div.multiple:eq(0)').attr('data-parent-id');
 			var field = $(this).parents('div.multiple:eq(0)').attr('data-field');
 			if (!parentId) {
-				errorHandler('Please click \'apply\' before adding a ' + field);
+				errorHandler('Please click \'save\' before adding a ' + field);
 				return;
 			}
 
@@ -138,12 +185,19 @@ AC.Crud.Edit.Multiple = function() {
 				autoSize: false,
 				maxWidth: 960,
 				width: '100%',
-				height: '100%'
+				height: '100%',
+				closeBtn: false
 			});
 		},
 
 		newSaved: function(id, display) {
-			if ($(currentCrudAction).nextAll('.addMultiple').length) {
+			if ($(currentCrudAction).parent().is('.simple-selector')) { // hasSimpleSelector
+				$select = $(currentCrudAction).parent().find('select.chosen');
+				$select.append('<option value="' + id + '" selected="selected">' + display + '</option>');
+				$select.trigger('change');
+				$select.trigger("liszt:updated");
+				$.fancybox.close();
+			} else if ($(currentCrudAction).nextAll('.addMultiple').length) { // hasCrossReferenceTable
 				$.fancybox.close();
 				add(id, display, currentCrudAction);
 			} else {
@@ -154,9 +208,9 @@ AC.Crud.Edit.Multiple = function() {
 		},
 
 		addHandler: function(e) {
-			var selected = $(this).prev().find('option:selected').val();
+			var selected = $(this).prevAll('select').find('option:selected').val();
 			if (!selected) {AC.Core.Alert.flash('Nothing selected');return;}
-			var display = $(this).prev().find('option:selected').text();
+			var display = $(this).prevAll('select').find('option:selected').text();
 
 			add(selected, display, this);
 		},
@@ -175,7 +229,8 @@ AC.Crud.Edit.Multiple = function() {
 				autoSize: false,
 				maxWidth: 960,
 				width: '100%',
-				height: '100%'
+				height: '100%',
+				closeBtn: false
 			});
 		},
 
@@ -204,7 +259,7 @@ AC.Crud.Edit.Multiple = function() {
 		},
 
 		deleteHandler: function(e) {
-			if ($(this).text().trim() === 'delete' && !confirm(i18n.confirmDelete + ' (1 item)')) {return;}
+			if ($(this).hasClass('btn-danger') && !confirm(i18n.confirmDelete + ' (1 item)')) {return;}
 
 			var that = this;
 			submit({
@@ -217,9 +272,41 @@ AC.Crud.Edit.Multiple = function() {
 				if (response.success === true) {
 					$(that).parents('tr:eq(0)').fadeOut(function() {
 						$(this).remove();
+						AC.Crud.Edit.Multiple.initEmptyTable();
 					});
 					AC.Core.Alert.flash(response.message);
 				}
+			});
+		},
+	
+		onSortHandler: function(table, row) {
+			var form = $(table).parents('form');
+			table = $(table);
+
+			form.find('input.operation').val('sort');
+
+			var options = {
+				operation	: 'sort',
+				crudId		: form.attr('id')
+			};
+			var url = form.attr('action') + "?" + $.param(options);
+			var data = table.tableDnDSerialize();
+
+			// Add CSRF token
+			data = data + '&_token=' + form.find('input[name=\'_token\']').val();
+
+			// Add sort table, pk field and fieldname
+			data = data + '&table=' + table.find('td.sort:eq(0)').attr('data-table');
+			data = data + '&pk=' + table.find('td.sort:eq(0)').attr('data-pk');
+			data = data + '&field=' + table.find('td.sort:eq(0)').attr('data-field');
+
+			$.post(url, data, function(response) {
+				if (response.operation === 'sort' && response.success === true) {
+					AC.Core.Alert.flash(response.message);
+				}
+			}, 'json').error(function(jqXHR, message, exception) {
+				$('body').removeClass('loading');
+				errorHandler(i18n.requestError + ' (' + exception + ')');
 			});
 		}
 

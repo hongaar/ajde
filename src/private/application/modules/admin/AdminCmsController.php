@@ -39,4 +39,10 @@ class AdminCmsController extends AdminController
 		Ajde::app()->getDocument()->setTitle("Menus");
 		return $this->render();
 	}
+	
+	public function tags()
+	{
+		Ajde::app()->getDocument()->setTitle("Tags");
+		return $this->render();
+	}
 }

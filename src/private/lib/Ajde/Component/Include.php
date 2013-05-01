@@ -14,6 +14,10 @@ class Ajde_Component_Include extends Ajde_Component
 			// TODO:
 			throw new Ajde_Component_Exception();
 		}
-		return Ajde_Controller::fromRoute(new Ajde_Core_Route($this->attributes['route']))->invoke();
+		$route = $this->attributes['route'];
+		if (!$route instanceof Ajde_Core_Route) {
+			$route = new Ajde_Core_Route($route);
+		}
+		return Ajde_Controller::fromRoute($route)->invoke();
 	}
 }
