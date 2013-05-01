@@ -1,6 +1,6 @@
 <?php
 
-class Ajde_Crud_Field_Fk extends Ajde_Crud_Field
+class Ajde_Crud_Field_Fk extends Ajde_Crud_Field_Enum
 {
 	/**
 	 *
@@ -13,12 +13,6 @@ class Ajde_Crud_Field_Fk extends Ajde_Crud_Field
 	 * @var Ajde_Model
 	 */
 	private $_model;
-    
-	/**
-	 *
-	 * @var int 
-	 */
-    private $_chosenTreshold = 0;
 	
 	/**
 	 * 
@@ -95,12 +89,4 @@ class Ajde_Crud_Field_Fk extends Ajde_Crud_Field
 		}
 		return $return;
 	}
-    
-    public function _getHtmlAttributes() {
-        $attributes = array();
-        if (count($this->getValues()) >= $this->_chosenTreshold) {
-            $attributes['class'] = 'chosen';
-        }
-        return $attributes;
-    }
 }

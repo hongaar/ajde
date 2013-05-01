@@ -5,14 +5,7 @@ $options
 	->selectFields()
 		->selectField('name')
 			->setEmphasis(true)
-			->up()
-		->selectField('required')
-			->setType('boolean')
-			->up()
-		->selectField('maxlength')
-			->setType('numeric')
-			->setIsRequired(true)
-			->up()
+			->up()		
 		->up()
 	->selectList()
 		->selectButtons()
@@ -33,16 +26,18 @@ $options
 						->up()
 					->addBlock()
 						->setTitle('Options')
-						->setShow(array('required'))
+						->setShow(array())
 						->up()
 					
 	->finished();
 
-/* @var $decorator Ajde_Crud_Cms_MetaDecorator */
+/* @var $decorator Ajde_Crud_Cms_Meta_Decorator */
 $decorator = $this->decorator;
 $decorator->setActiveBlock(1);
-$decorator->decorateCrudOptions($options);
+$decorator->setOptions($options);
+$decorator->decorate();
 
+var_dump($options->_stack['fields']);
 var_dump($options->_stack['edit']['layout']['rows'][0]['columns'][0]['blocks'][1]['show']);
 
 $crud = $this->ACCrudList('meta', $options);

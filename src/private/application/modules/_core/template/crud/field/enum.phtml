@@ -1,20 +1,47 @@
 <?php
 $field = $this->field;
 /* @var $field Ajde_Crud_Field_Enum */
-$options = $field->getValues(); ?>
+$options = $field->getValues();
 
-<select
-	<?php echo $field->getHtmlAttributes(); ?>
->
-	<?php if (!$field->getIsRequired()) { ?>
-		<option value=''>(choose <?php echo strtolower($field->getLabel()); ?>)</option>
-	<?php } ?>
-	<?php foreach($options as $option) { ?>
-		<option value='<?php echo $option; ?>'			
-			<?php 
-			if ($option == $field->getValue()) { echo "selected='selected'"; }
-			elseif ($field->hasReadonly() && $field->getReadonly() === true) { echo ' disabled="disabled" '; }
-			?>				
-			><?php echo __($option); ?></option>
-	<?php } ?>
-</select>
+if ($field->useRadio()) { ?>
+
+	<fieldset class='picker-container'>
+		<?php
+		$counter = 0;
+		if (!$field->getIsRequired()) { 
+			$counter++; ?>
+			<input type="radio" <?php echo $field->getHtmlAttributes(); ?> value="" /> 	
+			<label class="radio" for="radio_<?php echo $field->getName(); ?>"><span class="gray">None</span></label>
+		<?php } ?>		
+
+		<?php foreach($options as $option) {
+			$counter++; ?>
+			<input type="radio" <?php echo $field->getHtmlAttributes(); ?> value='<?php echo $option; ?>' <?php 
+				if ($option == $field->getValue()) { echo "checked='checked'"; }
+				elseif ($field->hasReadonly() && $field->getReadonly() === true) { echo ' disabled="disabled" '; } ?>				
+			/>
+			<label class="radio" for="radio_<?php echo $field->getName(); ?>_<?php echo $counter; ?>">
+				<?php echo $option; ?>
+			</label>
+		<?php } ?>
+	</fieldset>
+
+<?php } else { ?>
+
+	<select
+		<?php echo $field->getHtmlAttributes(); ?>
+	>
+		<?php if (!$field->getIsRequired()) { ?>
+			<option value=''>Choose <?php echo strtolower($field->getLabel()); ?>)</option>
+		<?php } ?>
+		<?php foreach($options as $option) { ?>
+			<option value='<?php echo $option; ?>'			
+				<?php 
+				if ($option == $field->getValue()) { echo "selected='selected'"; }
+				elseif ($field->hasReadonly() && $field->getReadonly() === true) { echo ' disabled="disabled" '; }
+				?>				
+				><?php echo __($option); ?></option>
+		<?php } ?>
+	</select>
+
+<?php } ?>

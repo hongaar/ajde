@@ -28,6 +28,11 @@ $this->requireJsPublic('lib/chosen/chosen.jquery.min.js');
 $this->requireCssPublic('lib/chosen/chosen.css');
 $this->requireCss('chosen');
 
+// Picker
+$this->requireJsPublic('lib/picker/jquery.fs.picker.min.js');
+$this->requireCssPublic('lib/picker/jquery.fs.picker.css');
+$this->requireCss('picker');
+
 // CKEditor
 $this->requireCss('ckeditor');
 
@@ -158,6 +163,7 @@ $nodeTypes->orderBy('sort');
 									<a class="dropdown-toggle" data-toggle="dropdown" href="admin/nodes">Setup <b class="caret"></b></a>
 									<ul class="dropdown-menu">
 										<li><a href="admin/setup:nodes">Nodes</a></li>
+										<li><a href="admin/setup:meta">Meta fields</a></li>
 										<li><a href="admin/setup:menus">Menus</a></li>
 									</ul>
 								</li>

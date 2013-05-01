@@ -17,6 +17,9 @@
 			});
 		}, 100);
 		
+		// Picker
+		$("input[type=radio], input[type=checkbox]").not('.nopicker').picker();
+		
 		// Form validation with Twitter Bootstrap
 		$('form').attr('novalidate', 'novalidate');
 		$('input, select, textarea').not('[type=submit]').jqBootstrapValidation({

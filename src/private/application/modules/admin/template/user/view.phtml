@@ -19,7 +19,7 @@ $options
 		->selectButtons()
 			->setNew(true)
 			->setEdit(true)
-			->setCustom('login', 'login', 'login')
+			->addItemButton('login', 'login')
 			->up()
 		->setMain('username')
 		->setShow(array('username', 'usergroup', 'email', 'fullname'))

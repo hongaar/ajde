@@ -23,7 +23,7 @@ AC.Crud.Mainfilter = function() {
 			var form = $('form.ACCrudEdit');
 			form.data('onBeforeSubmit', function() {
 				var name = $('#mainFilter a').data('name');
-				var current = form.find('select[name="' + name + '"]').val();
+				var current = form.find(':input[name="' + name + '"]').val();
 				if (!current) {
 					errorHandler('Please choose a ' + name);
 					return false;

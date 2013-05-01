@@ -38,6 +38,29 @@ if ($field->has('usePopupSelector') && $field->get('usePopupSelector')) { ?>
 
 	?>
 
+<?php } elseif ($field->useRadio()) { ?>
+	
+	<fieldset class='picker-container'>
+		<?php
+		$counter = 0;
+		if (!$field->getIsRequired()) { 
+			$counter++; ?>
+			<input type="radio" <?php echo $field->getHtmlAttributes(); ?> value="" /> 	
+			<label class="radio" for="radio_<?php echo $field->getName(); ?>"><span class="gray">None</span></label>
+		<?php } ?>		
+
+		<?php foreach($field->getValues() as $key => $option) {
+			$counter++; ?>
+			<input type="radio" <?php echo $field->getHtmlAttributes(); ?> value='<?php echo $key; ?>' <?php 
+				if ($key == $pk) { echo "checked='checked'"; }
+				elseif ($field->hasReadonly() && $field->getReadonly() === true) { echo ' disabled="disabled" '; } ?>				
+			/>
+			<label class="radio" for="radio_<?php echo $field->getName(); ?>_<?php echo $counter; ?>">
+				<?php echo $option; ?>
+			</label>
+		<?php } ?>
+	</fieldset>
+
 <?php } else { ?>
 
 	<select

@@ -13,6 +13,8 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
 	 * @var string
 	 */
 	protected $_type;
+	
+	protected $_useSpan = 12;
 
 	public function __construct(Ajde_Crud $crud, $fieldOptions) {
 		$explode = explode('_', get_class($this));
@@ -147,12 +149,16 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
 			$attributes = $this->_getHtmlAttributes();
 		}
 		$attributes['name'] = $this->getName();
-        $attributes['id'] = 'in_' . $this->getName();
-        if (key_exists('class', $attributes)) {
-            $attributes['class'] .= ' span12';
-        } else {
-            $attributes['class'] = 'span12';
-        }
+		if (!key_exists('id', $attributes)) {
+			$attributes['id'] = 'in_' . $this->getName();
+		}        
+		if ($this->_useSpan !== false) {
+			if (key_exists('class', $attributes)) {
+				$attributes['class'] .= ' span' . $this->_useSpan;
+			} else {
+				$attributes['class'] = 'span' . $this->_useSpan;
+			}
+		}
         
         $text = '';
         foreach ($attributes as $k => $v) {
