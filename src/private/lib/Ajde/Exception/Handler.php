@@ -58,7 +58,7 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 	public static function trace(Exception $exception, $output = self::EXCEPTION_TRACE_HTML)
 	{
 		if (Ajde::app()->hasDocument() && Ajde::app()->getDocument()->getFormat() == 'json') {
-			$output = self::EXCEPTION_TRACE_LOG;
+//			$output = self::EXCEPTION_TRACE_LOG;
 		}
 		if ($exception instanceof ErrorException) {
 			$type = "PHP Error " . self::getErrorType($exception->getSeverity());
@@ -143,7 +143,8 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 				$message = $style . $exceptionDump . $exceptionMessage . $traceMessage;
 				break;
 			case self::EXCEPTION_TRACE_LOG:
-				$message = 'Request ' . $_SERVER["REQUEST_URI"] . " triggered:" . PHP_EOL;
+				$message = 'UNCAUGHT EXCEPTION' . PHP_EOL;
+				$message .= 'Request ' . $_SERVER["REQUEST_URI"] . " triggered:" . PHP_EOL;
 				$message .= sprintf("%s: %s in %s on line %s",
 						$type,
 						$exception->getMessage(),

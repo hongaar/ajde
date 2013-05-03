@@ -30,7 +30,7 @@ abstract class Ajde_Crud_Cms_Meta_Type extends Ajde_Object_Standard
 	{
 		$options = $this->optionsFactory();
 		$options->setType('boolean');
-		$options->setLabel('Required');
+		$options->setIsRequired(true);
 		$this->addField('required', $options);
 	}
 	
@@ -38,6 +38,9 @@ abstract class Ajde_Crud_Cms_Meta_Type extends Ajde_Object_Standard
 	{
 		$options = $this->optionsFactory();
 		$options->setType('numeric');
+		$options->setIsRequired(true);
+		$options->setDefault(255);
+		$options->setHelp('hOI');
 		$this->addField('length', $options);
 	}
 }

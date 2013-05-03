@@ -321,7 +321,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 		$model->populate($post);
 		
 		Ajde_Event::trigger($model, 'beforeCrudSave', array($crud));
-				
+				throw new Exception('hoi');
 		if (!$model->validate($crud->getOptions('fields'))) {
 			return array('operation' => $operation, 'success' => false, 'errors' => $model->getValidationErrors());
 		}

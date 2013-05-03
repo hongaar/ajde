@@ -1,6 +1,7 @@
 ;
 $(document).ready(function() {
 	var height = 400;
+	var max = $(window).height() - 10;
 	
 	AC.Shortcut.add('Ctrl+1', function() { toggleSection('#ajdeDebuggerDump div'); });
 	AC.Shortcut.add('Ctrl+2', function() { toggleSection('#ajdeDebuggerRequest'); });
@@ -12,15 +13,29 @@ $(document).ready(function() {
 	AC.Shortcut.add('Ctrl+8', function() { toggleSection('#ajdeDebuggerQueries'); });
 	AC.Shortcut.add('Esc', toggleDebugger);
 	
-	$('#ajdeDebuggerHeader').click(showDebugger);
-	$('#ajdeDebuggerHeader').click(hideDebugger);
+	$('#ajdeDebuggerHeader').click(toggleDebugger);
 	$('#ajdeDebugger').dblclick(hideDebugger);
+		
+	// Ajax var_dump catcher
+	$(document).ajaxComplete(function(e, xhr, settings) {
+		if (xhr.responseText.indexOf('UNCAUGHT EXCEPTION') > -1 || xhr.responseText.indexOf('Exception thrown') > -1) {
+			$('#ajdeDebuggerDump').prev().html('Response contains <code>uncaught exception</code>');
+			$('#ajdeDebuggerDump').html(xhr.responseText).slideDown('slow');
+			showDebugger(true);
+		} else if (xhr.responseText.indexOf('xdebug-var-dump') > -1) {
+			$('#ajdeDebuggerDump').prev().html('Response contains <code>var_dump</code>');
+			$('#ajdeDebuggerDump').html(xhr.responseText).slideDown('slow');
+			showDebugger(true);
+		}
+	});
 	
 	function toggleDebugger() {
 		if (parseInt($('#ajdeDebuggerContent').css('height')) < height) {
 			showDebugger();
-		} else {
+		} else if (parseInt($('#ajdeDebuggerContent').css('height')) > height) {			
 			hideDebugger();
+		} else {
+			showDebugger(true);
 		}
 	}
 	
@@ -29,17 +44,17 @@ $(document).ready(function() {
 		$(ident).slideToggle('fast');
 	}
 	
-	function showDebugger() {
-		if (parseInt($('#ajdeDebuggerContent').css('height')) < height) {
-			$('#ajdeDebuggerContent').animate({height: height + 'px'}, 'fast', function() {
+	function showDebugger(fullscreen) {
+//		if (parseInt($('#ajdeDebuggerContent').css('height')) < height) {
+			$('#ajdeDebuggerContent').animate({height: (fullscreen ? max : height) + 'px'}, 'fast', function() {
 				$('#ajdeDebuggerContent').css({overflowY: 'scroll'});
 			});
-		}
+//		}
 	};
 	
 	function hideDebugger() {
-		if (parseInt($('#ajdeDebuggerContent').css('height')) == height) {
+//		if (parseInt($('#ajdeDebuggerContent').css('height')) == height) {
 			$('#ajdeDebuggerContent').animate({height: '0'}, 'fast');
-		}
+//		}
 	};
 });

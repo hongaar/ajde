@@ -42,8 +42,7 @@
 		});
 		if ($.cookie('collapsed-menu') == 1) {
 			$('.row-fluid > div').addClass('no-animation');
-			$('.menu-toggle').trigger('click');
-			
+			$('.menu-toggle').trigger('click');			
 		}
 	};
 

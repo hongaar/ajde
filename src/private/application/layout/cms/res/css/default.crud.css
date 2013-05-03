@@ -38,6 +38,24 @@ fieldset.crud {
 		&:last-child {
 /*			margin-bottom: 0;*/
 		}
+		
+		.help-inline {
+			padding-left: 0;
+			padding-top: 5px;
+			text-transform: uppercase;
+		}
+		
+		&.error {
+			.help-inline {
+				padding-top: 25px;
+			}
+		}
+		
+		&:not(.error) {
+			.validation-message {
+				display: none !important;
+			}
+		}
 	}
     
     &.sidebar {
@@ -47,6 +65,20 @@ fieldset.crud {
     &:last-child {
         margin-bottom: 0;
     }
+	
+	.picker-container {
+		.picker-radio:last-child {
+			position: relative;
+			overflow: visible;
+		}
+		
+		.validation-message {
+			display: inline;
+			position: absolute;
+			top: 14px;
+			left: 0;
+		}
+	}
 
 }
 

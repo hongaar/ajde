@@ -11,7 +11,7 @@ class Config_Slow extends Config_Application {
 	function __construct() {
 		parent::__construct();
 		$this->documentProcessors['css'] = array('Less');
-//		$this->documentProcessors['html'][] = 'Debugger';		
+		$this->documentProcessors['html'][] = 'Debugger';		
 //		$this->documentProcessors['html'][] = 'Compressor';
 	}
 	
