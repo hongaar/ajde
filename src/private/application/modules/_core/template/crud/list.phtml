@@ -202,7 +202,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 				} elseif ($field->hasFunction()) {
 					$displayFunction = $field->getFunction();
 					$funcValue = $model->{$displayFunction}(); ?>
-					<td <?php echo $gridData; ?> title="<?php echo _c($funcValue); ?>" <?php if ($crud->getOption('list.main', false) == $field->getName()) { echo 'class=\'main\''; } ?>>
+						<td <?php echo $gridData; ?> title="<?php echo _e(strip_tags($funcValue)); ?>" <?php if ($crud->getOption('list.main', false) == $field->getName()) { echo 'class=\'main\''; } ?>>
 						<?php echo $funcValue; ?>
 					</td>
 				<?php
