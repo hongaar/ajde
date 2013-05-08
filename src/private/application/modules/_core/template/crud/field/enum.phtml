@@ -10,13 +10,15 @@ if ($field->useRadio()) { ?>
 		$counter = 0;
 		if (!$field->getIsRequired()) { 
 			$counter++; ?>
-			<input type="radio" <?php echo $field->getHtmlAttributes(); ?> value="" /> 	
+			<input type="radio" <?php echo $field->getHtmlAttributes(); ?> id="radio_<?php echo $field->getName(); ?>" value="" 
+				<?php if (!$pk) { echo "checked='checked'"; } ?> 
+			/> 	
 			<label class="radio" for="radio_<?php echo $field->getName(); ?>"><span class="gray">None</span></label>
 		<?php } ?>		
 
 		<?php foreach($options as $option) {
 			$counter++; ?>
-			<input type="radio" <?php echo $field->getHtmlAttributes(); ?> value='<?php echo $option; ?>' <?php 
+			<input type="radio" <?php echo $field->getHtmlAttributes(); ?> id="radio_<?php echo $field->getName(); ?>_<?php echo $counter; ?>" value='<?php echo $option; ?>' <?php 
 				if ($option == $field->getValue()) { echo "checked='checked'"; }
 				elseif ($field->hasReadonly() && $field->getReadonly() === true) { echo ' disabled="disabled" '; } ?>				
 			/>

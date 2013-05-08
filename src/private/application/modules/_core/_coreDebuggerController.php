@@ -4,6 +4,10 @@ class _coreDebuggerController extends Ajde_Controller
 {
 	function view()
 	{
+		if (Ajde::app()->getRequest()->isAjax()) {
+			$this->setAction('ajax');
+		}
+		
 		// Grab the view to easily assign variables
 		$view = $this->getView();
 		

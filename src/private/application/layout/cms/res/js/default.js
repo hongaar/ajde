@@ -18,7 +18,7 @@
 		}, 100);
 		
 		// Picker
-		$("input[type=radio], input[type=checkbox]").not('.nopicker').picker();
+		$("input[type=radio], input[type=checkbox]").not('.nopicker').filter(':visible').picker();
 		
 		// Form validation with Twitter Bootstrap
 		$('form').attr('novalidate', 'novalidate');
@@ -43,6 +43,9 @@
 		if ($.cookie('collapsed-menu') == 1) {
 			$('.row-fluid > div').addClass('no-animation');
 			$('.menu-toggle').trigger('click');			
+			setTimeout(function() {
+				$(window).trigger('resize');
+			}, 0);
 		}
 	};
 

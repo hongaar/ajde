@@ -1,0 +1,66 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ 
+
+$options = new Ajde_Crud_Options();
+$options
+	->selectFields()
+		->selectField('name')
+			->setIsReadonly(true)
+			->up()
+		->up()
+	->selectList()
+		->selectButtons()
+			->setNew(false)
+			->setEdit(true)
+			->setDelete(false)
+			->setSelect(false)
+			->up()
+		->setShowHeader(false)
+		->setShowFooter(false)
+		->setSingleClickEdits(true)
+		->setMain('name')
+		->setShow(array('name'))
+		->selectView()
+			->setOrderBy('sort')
+			->up()
+		->up()
+	->selectEdit()
+		->setShow()
+		->selectLayout()
+			->addRow()
+				->addColumn()
+                    ->setSpan(12)
+					->addBlock()
+						->up()
+					->up()
+
+	->finished();
+
+/* @var $decorator Ajde_Crud_Cms_Meta_Decorator */
+$decorator = $this->decorator;
+$decorator->setOptions($options);
+$decorator->decorateInputs('settingpage_meta', 'settingpage', 'id', array(
+	new Ajde_Filter_Where('target', Ajde_Filter::FILTER_EQUALS, 'setting')
+));
+$crud = $this->ACCrudList('settingpage', $options);
+
+$crudOutput = $crud->output();
+
+if (Ajde::app()->getRequest()->has('edit')) {
+	Ajde::app()->getDocument()->setTitle($crud->getItem()->get('name'));
+}
+
+?>
+
+<div class="row-fluid">
+	<div class="span12">
+		
+		<div class="page-header">
+			<h1>
+				<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
+			</h1>
+		</div>		
+		
+		<?php echo $crudOutput; ?>
+		
+	</div><!--/span-->
+</div><!--/row-->

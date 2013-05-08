@@ -155,7 +155,7 @@ class Ajde_Document_Format_Html extends Ajde_Document
 		// TODO: another option, replace current resource
 		foreach($this->_resources as $positionArray) {
 			foreach($positionArray as $item) {
-				if ((string) $item == (string) $resource) {
+				if ((string) $item == (string) $resource) {		
 					return false;
 				}
 			}

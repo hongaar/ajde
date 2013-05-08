@@ -77,7 +77,7 @@ class Ajde_Application extends Ajde_Object_Singleton
 		$this->endTimer($timer);
 
 		// Bootstrap init
-		$timer = $this->addTimer('Run bootstrap cue');
+		$timer = $this->addTimer('Run bootstrap queue');
 			$bootstrap = new Ajde_Core_Bootstrap();
 			$bootstrap->run();
 		$this->endTimer($timer);
@@ -130,12 +130,9 @@ class Ajde_Application extends Ajde_Object_Singleton
 
 	public static function routingError(Ajde_Exception $exception)
 	{
-		if (Config::get("debug") === true)
-		{
+		if (Config::get("debug") === true) {
 			throw $exception;
-		}
-		else
-		{
+		} else {
 			if (Ajde_Core_Autoloader::exists('Ajde_Exception_Log')) {
 				Ajde_Exception_Log::logException($exception);
 			}

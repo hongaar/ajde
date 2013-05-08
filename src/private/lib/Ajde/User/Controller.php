@@ -45,8 +45,7 @@ abstract class Ajde_User_Controller extends Ajde_Controller
 			foreach($this->_registerUserModels as $model) {
 				Ajde_Model::register($model);
 			}	
-			$user = new UserModel();
-			$this->_user = $user->getLoggedIn();
+			$this->_user = UserModel::getLoggedIn();
 		}
 		return $this->_user;
 	}	

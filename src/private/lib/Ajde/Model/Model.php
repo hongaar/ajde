@@ -6,9 +6,14 @@ class Ajde_Model extends Ajde_Object_Standard
 	protected $_table;
 
 	protected $_autoloadParents = false;
+	
 	protected $_displayField = null;
 	protected $_encrypedFields = array();
-
+	
+	protected $_hasMeta = false;	
+	protected $_metaLookup = array();
+	protected $_metaValues = array();
+	
 	protected $_validators = array();
 
 	public static function register($controller)
@@ -222,8 +227,110 @@ class Ajde_Model extends Ajde_Object_Standard
 			if ($this->_autoloadParents === true) {
 				$this->loadParents();
 			}
+			if ($this->_hasMeta === true) {
+				$this->populateMeta();
+			}
 			return true;
 		}
+	}
+	
+	private function getMetaTable()
+	{
+		return $this->getTable() . '_meta';
+	}
+	
+	public function populateMeta()
+	{
+		foreach($this->getMetaValues() as $metaId => $value) {
+			$this->set('meta_' . $metaId, $value);
+		}	
+	}
+		
+	public function getMetaValues()
+	{
+		if (empty($this->_metaValues)) {
+			$meta = array();
+			if ($this->hasLoaded()) {
+				$sql = 'SELECT * FROM ' . $this->getMetaTable() . ' WHERE ' . $this->getTable() . ' = ?';
+				$statement = $this->getConnection()->prepare($sql);
+				$statement->execute(array($this->getPK()));			
+				$results = $statement->fetchAll(PDO::FETCH_ASSOC);	
+				foreach($results as $result) {
+					if (isset($meta[$result['meta']])) {
+						if (is_array($meta[$result['meta']])) {
+							$meta[$result['meta']][] = $result['value'];
+						} else {
+							$meta[$result['meta']] = array(
+								$meta[$result['meta']],
+								$result['value']
+							);
+						}
+					} else {
+						$meta[$result['meta']] = $result['value'];
+					}
+				}
+			}
+			$this->_metaValues = $meta;
+		}
+		return $this->_metaValues;
+	}
+	
+	private function fuzzyMetaName($name) {
+		return str_replace(' ', '_', strtolower($name));
+	}
+	
+	protected function lookupMetaName($name) {
+		if (empty($this->_metaLookup)) {
+			// We need to have the MetaModel here..
+			$this->registerAll();
+			$metaCollection = new MetaCollection();
+			$metaCollection->addFilter(new Ajde_Filter_Join($this->getMetaTable(), 'id', 'meta'));
+			var_dump($metaCollection->getEmulatedSql());
+			foreach($metaCollection as $meta) {
+				/* @var $meta MetaModel */
+				$this->_metaLookup[$this->fuzzyMetaName($meta->get('name'))] = $meta->getPK();
+			}
+		}
+		if (isset($this->_metaLookup[$this->fuzzyMetaName($name)])) {
+			return $this->_metaLookup[$this->fuzzyMetaName($name)];
+		}
+		return false;
+	}
+	
+	public function getMetaValue($metaId) {
+		if (!is_numeric($metaId)) {
+			$metaId = $this->lookupMetaName($metaId);
+		}			
+		$values = $this->getMetaValues();
+		if (isset($values[$metaId])) {
+			return $values[$metaId];
+		}
+		return false;
+	}
+	
+	public function saveMeta()
+	{
+		foreach($this->getValues() as $key => $value) {
+			if (substr($key, 0, 5) === 'meta_' && $value) {
+				$metaId = str_replace('meta_', '', $key);
+				$this->saveMetaValue($metaId, $value);
+			}
+		}		
+	}
+	
+	protected function saveMetaValue($metaId, $value)
+	{
+		// Delete old records
+		$sql = 'DELETE FROM ' . $this->getMetaTable() . ' WHERE ' . $this->getTable() . ' = ? AND meta = ?';
+		$statement = $this->getConnection()->prepare($sql);
+		$statement->execute(array($this->getPK(), $metaId));		
+				
+		// Insert new ones
+		$sql = 'INSERT INTO ' . $this->getMetaTable() . ' (' . $this->getTable() . ', meta, value) VALUES (?, ?, ?)';
+		$statement = $this->getConnection()->prepare($sql);
+		$statement->execute(array($this->getPK(), $metaId, $value));
+
+		$this->_metaValues[$metaId] = $value;
 	}
 	
 	/**
@@ -315,6 +422,9 @@ class Ajde_Model extends Ajde_Object_Standard
 		$sql = 'UPDATE ' . $this->_table . ' SET ' . implode(', ', $sqlSet) . ' WHERE ' . $pk . ' = ?';
 		$statement = $this->getConnection()->prepare($sql);
 		$return = $statement->execute($values);
+		if ($this->_hasMeta === true) {
+			$this->saveMeta();
+		}
 		if (method_exists($this, 'afterSave')) {
 			$this->afterSave();
 		}
@@ -367,6 +477,9 @@ class Ajde_Model extends Ajde_Object_Standard
 		$return = $statement->execute($values);
 		if (!isset($pkValue)) {
 			$this->set($pk, $this->getConnection()->lastInsertId());
+		}
+		if ($this->_hasMeta === true) {
+			$this->saveMeta();
 		}
 		if (method_exists($this, 'afterInsert')) {
 			$this->afterInsert();
@@ -548,5 +661,38 @@ class Ajde_Model extends Ajde_Object_Standard
 		}
 		$decrypted = str_replace( '$$$ENCRYPTED$$$', '', Ajde_Component_String::decrypt(parent::_get($field)) );
 		return $decrypted;
+	}
+	
+	// TREE SORT FUNCTIONS
+	
+	public function sortTree($collectionName, $parentField = 'parent', $levelField = 'level', $sortField = 'sort')
+	{
+		$collection = new $collectionName();
+		$collection->addFilter(new Ajde_Filter_Where($parentField, Ajde_Filter::FILTER_IS, null));
+		$collection->orderBy($sortField);
+		
+		// Start at root path
+		$this->_recurseChildren($collection, $collectionName, $parentField, $levelField, $sortField);	
+	}
+	
+	private function _recurseChildren($collection, $collectionName, $parentField, $levelField, $sortField) {
+		static $sort;
+		static $level;
+		foreach($collection as $item) {			
+			/* @var $menu MenuModel */
+			$sort++;
+			$item->set($sortField, $sort);
+			$item->set($levelField, $level);
+			$item->save();
+			// Look for children
+			$children = new $collectionName();
+			$children->addFilter(new Ajde_Filter_Where($parentField, Ajde_Filter::FILTER_EQUALS, $item->getPK()));
+			$children->orderBy($sortField);
+			if ($children->count()) {
+				$level++;
+				$this->_recurseChildren($children, $collectionName, $parentField, $levelField, $sortField);
+			}
+		}
+		$level--;
 	}
 }

@@ -27,6 +27,17 @@ class Ajde_Crud_Field_Fk extends Ajde_Crud_Field_Enum
 		}
 	}
 	
+	public function getValue()
+	{
+		$value = parent::getValue();
+		if (!$value instanceof Ajde_Model && !empty($value)) {
+			$model = $this->getModel();
+			$model->loadByPK($value);
+			$this->set('value', $model);
+		}
+		return parent::getValue();
+	}
+	
 	/**
 	 *
 	 * @return Ajde_Collection

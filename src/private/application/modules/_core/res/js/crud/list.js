@@ -70,7 +70,12 @@ AC.Crud.List = function() {
 		initPicker: function() {
 			if (isIframe) {
 				$('form.ACCrudList tbody tr').off('dblclick');
-				$('form.ACCrudList tbody tr').live('dblclick', AC.Crud.List.chooseHandler);
+				$('form.ACCrudList tbody tr').live('dblclick', function(e) {
+					var row = $(this);
+					var checkbox = row.find('input[type=checkbox]');
+					checkbox.attr('checked', true);
+					AC.Crud.List.chooseHandler.call(this);
+				});
 				if (disableMultiple) {
 					$('form.ACCrudList input.toggleSelect').css('visibility', 'hidden');
 				}
@@ -85,7 +90,7 @@ AC.Crud.List = function() {
 			}
 		},
 			
-		chooseHandler: function(e, returnTo) {
+		chooseHandler: function(e) {
 			var form = $(this).parents('form.ACCrudList');
 			var data = form.serializeArray();
 			var rows = [], id;
@@ -95,7 +100,7 @@ AC.Crud.List = function() {
 					rows.push(data[elm].value);					
 				}
 			}
-			
+
 			if (isIframe) {
 				parent.AC.Crud.Edit.Picker.chosen(rows);
 			}
@@ -107,9 +112,13 @@ AC.Crud.List = function() {
 			e.stopPropagation();
 			//e.preventDefault();
 			var row = $(this);
-			var checkbox = row.find('input[type=checkbox]');
-			checkbox.attr('checked', !checkbox.attr('checked'));
-			AC.Crud.List.checkboxHandler.call(checkbox, e);
+			if (row.parents('table').data('singleclick') == 1) {
+				AC.Crud.List.editHandler.call(this, e);
+			} else {
+				var checkbox = row.find('input[type=checkbox]');
+				checkbox.attr('checked', !checkbox.attr('checked'));
+				AC.Crud.List.checkboxHandler.call(checkbox, e);
+			}
 			//return false;
 		},
 

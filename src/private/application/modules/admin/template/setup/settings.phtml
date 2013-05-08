@@ -1,0 +1,74 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ ?>
+
+<div class="row-fluid">
+	<div class="span2">
+		<?php echo $this->includeModule('admin/cms:setupmenu'); ?>		
+	</div><!--/span-->
+	<div class="span10">
+		
+		<div class="page-header">
+			<h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
+		</div>		
+		
+<?php
+
+$options = new Ajde_Crud_Options();
+$options
+	->selectFields()
+		->selectField('name')
+			->setEmphasis(true)
+			->up()
+		->selectField('sort')
+			->setType('sort')
+			->up()
+		->selectField('meta')
+			->setType('multiple')
+			->setEditRoute('admin/setup:meta.crud')
+			->setShowLabel(false)
+			->setCrossReferenceTable('settingpage_meta')
+			->addTableField('type')
+			->addSortField('sort')
+			->addPrefillField('target', 'setting')
+			->setAdvancedFilter(array(
+				new Ajde_Filter_Where('target', Ajde_Filter::FILTER_EQUALS, 'setting')
+			))
+			->up()
+		->up()
+	->selectList()
+		->selectButtons()
+			->setNew(true)
+			->setEdit(true)
+//			->addItemButton('meta', 'meta')
+			->up()
+		->setMain('name')
+		->setShow(array('name', 'sort'))
+		->selectView()
+			->setOrderBy('sort')
+			->up()
+		->up()
+	->selectEdit()
+		->setShow()
+		->selectLayout()
+			->addRow()
+				->addColumn()
+                    ->setSpan(12)
+					->addBlock()
+						->setShow(array('name'))
+						->up()
+					->addBlock()
+						->setShow(array('meta'))
+						->setTitle('Meta fields')
+						->up()
+					->up()
+
+	->finished();
+
+$crud = $this->ACCrudList('settingpage', $options);
+
+echo $crud->output();
+
+?>
+
+		
+	</div><!--/span-->
+</div><!--/row-->

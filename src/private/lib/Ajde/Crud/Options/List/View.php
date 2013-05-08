@@ -27,7 +27,9 @@ class Ajde_Crud_Options_List_View extends Ajde_Crud_Options
 	
 	public function getViewType()			{ return parent::getViewType(); }
 	public function getFilterVisible()		{ return parent::getFilterVisible(); }
+	public function getDisableFilter()		{ return parent::getDisableFilter(); }
 	public function getMainFilter()			{ return parent::getMainFilter(); }
+	public function getMainFilterGrouper()	{ return parent::getMainFilterGrouper(); }
 	
 	/**
 	 * Sets the current page
@@ -62,6 +64,14 @@ class Ajde_Crud_Options_List_View extends Ajde_Crud_Options
 	public function setOrderBy($orderBy) { return $this->_set('orderBy', $orderBy); }
 	
 	/**
+	 * Sets the parent and sort fields for rendering a tree view
+	 * 
+	 * @param string $orderBy
+	 * @return Ajde_Crud_Options_List_View 
+	 */
+	public function setTreeView($parentField, $sortField) { return $this->_set('treeView', array('parent' => $parentField, 'sort' => $sortField)); }
+	
+	/**
 	 * Sets the ordering direction
 	 * 
 	 * @param enum $dir (Ajde_Query::ORDER_ASC|Ajde_Query::ORDER_DESC)
@@ -92,12 +102,28 @@ class Ajde_Crud_Options_List_View extends Ajde_Crud_Options
 	public function setFilterVisible($visible) { return $this->_set('filterVisible', $visible); }
 	
 	/**
+	 * Whether or not the filters can be toggled
+	 * 
+	 * @param boolean $disable
+	 * @return Ajde_Crud_Options_List_View 
+	 */
+	public function setDisableFilter($disable) { return $this->_set('disableFilter', $disable); }
+	
+	/**
 	 * Enable the main list filter for this field
 	 * 
 	 * @param string $field
 	 * @return Ajde_Crud_Options_List_View 
 	 */
 	public function setMainFilter($field) { return $this->_set('mainFilter', $field); }
+	
+	/**
+	 * Sets a main filter grouper
+	 * 
+	 * @param string $field
+	 * @return Ajde_Crud_Options_List_View 
+	 */
+	public function setMainFilterGrouper($field) { return $this->_set('mainFilterGrouper', $field); }
 	
 	
 	

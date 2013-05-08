@@ -47,7 +47,7 @@ $useImage = $field->has('useImage') && $field->get('useImage') === true;
 			<?php } else { ?>
 				<input type="text" readonly="readonly" value="<?php 
 					/* @var $value Ajde_Model */
-					$value = $field->getValue();				
+					$value = $field->getValue();		
 					if ($value instanceof Ajde_Model && $value->hasLoaded()) {
 						echo _e($field->getValue()->get($field->getValue()->getDisplayField()));
 					} else if ($value instanceof Ajde_Model || empty($value)) {

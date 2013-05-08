@@ -33,6 +33,9 @@ class Ajde_Crud_Field_Enum extends Ajde_Crud_Field
 	public function useRadio()
 	{
 		$radioEnabled = count($this->getValues()) < $this->_radioTreshold;
+		if ($this->getCrud()->getCollection()->getView()->getMainFilter() == $this->getName()) {
+			$radioEnabled = false;
+		}
 		if ($radioEnabled) {
 			$this->_useSpan = false;
 		}
@@ -40,14 +43,12 @@ class Ajde_Crud_Field_Enum extends Ajde_Crud_Field
 	}
 	
 	public function _getHtmlAttributes() {
-		static $counter;
-		$counter++;
         $attributes = array();
         if (count($this->getValues()) >= $this->_chosenTreshold) {
             $attributes['class'] = 'chosen';
         }
 		if ($this->useRadio()) {
-			$attributes['id'] = 'radio_' . $this->getName() . '_' . $counter;
+			$attributes['id'] = false;
 		}
         return $attributes;
     }

@@ -14,9 +14,16 @@ $field = $this->field;
 	data-parent-id='<?php echo $field->getCrud()->getModel()->getPK(); ?>'
 	data-dynamic='<?php echo ($field->hasTableFields() ? '1' : '0'); ?>'
     data-simple='<?php echo ($field->hasSimpleSelector() && $field->getSimpleSelector() ? '1' : '0'); ?>'
+	<?php 
+	if ($field->hasPrefillField()) { ?>
+	data-prefill='<?php echo implode(',', array_keys($field->getPrefillField())); ?>'
+		<?php foreach ($field->getPrefillField() as $fieldName => $value) { ?>
+			data-prefill-<?php echo $fieldName; ?>='<?php echo _e($value); ?>'
+		<?php }
+	} ?>
 >
     
-    <?php if ($field->hasSimpleSelector() && $field->getSimpleSelector()) { ?>
+    <?php if ($field->hasSimpleSelector() && $field->getSimpleSelector()) { // simple ?>
         
         <div class="controls-row simple-selector">
 			<a href='javascript:void(null);' class='span2 btn btn-success new newMultiple' data-select='<?php echo $field->getName(); ?>'><i class='icon-plus icon-white'></i></a>
@@ -38,7 +45,7 @@ $field = $this->field;
         </div>
 
     
-    <?php } else { // simple or advanced ?>
+    <?php } else { // advanced ?>
     
         <div class='multipleToolbar'>
             <a href='javascript:void(null);' class='btn btn-success new newMultiple' data-select='<?php echo $field->getName(); ?>'><i class='icon-plus icon-white'></i></a>
@@ -78,7 +85,7 @@ $field = $this->field;
 
         <?php $this->requireCss('crud/list'); ?>
 
-        <table class='table table-striped table-hover crud multipleList'>
+        <table class='table table-striped table-hover crud multipleList <?php if ($field->hasHideMainColumn() && $field->getHideMainColumn()) { echo 'hideMainColumn'; }?>'>
             <thead>
                 <tr>
                     <th class='main'><?php echo $field->getModel()->getTable()->getFieldProperties($field->getModel()->getDisplayField(), 'label'); ?></th>

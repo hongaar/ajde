@@ -40,20 +40,20 @@ class Ajde_Crud_Cms_Meta_Decorator extends Ajde_Object_Standard
 		$this->options = $crudOptions;
 	}
 	
-	public function decorate()
-	{		
-		foreach($this->meta->getTypes() as $name => $type) {
-			/* @var $type Ajde_Crud_Cms_Meta_Type */
-			foreach ($type->getFields() as $key => $field) {
-				$this->fields[$key] = $field;
-			}
-		}
-		
-		foreach ($this->fields as $key => $field) {
+	public function decorateOptions()
+	{			
+		foreach ($this->meta->getFields() as $key => $field) {
 			/* @var $field Ajde_Crud_Options_Fields_Field */
 			$this->addField($key, $field->values());
-		}
-		
+		}		
+	}
+	
+	public function decorateInputs($crossReferenceTable, $crossReferenceField, $parentField, $filters = array())
+	{
+		foreach ($this->meta->getMetaFields($crossReferenceTable, $crossReferenceField, $parentField, $filters) as $key => $field) {
+			/* @var $field Ajde_Crud_Options_Fields_Field */
+			$this->addField($key, $field->values());
+		}	
 	}
 		
 	protected function addField($key, $options)

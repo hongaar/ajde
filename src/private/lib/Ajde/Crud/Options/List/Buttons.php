@@ -43,6 +43,14 @@ class Ajde_Crud_Options_List_Buttons extends Ajde_Crud_Options
 	public function setEdit($show) { return $this->_set('edit', $show); }
 	
 	/**
+	 * Shows checkboxes
+	 * 
+	 * @param boolean $show
+	 * @return Ajde_Crud_Options_List_Buttons 
+	 */
+	public function setSelect($show) { return $this->_set('select', $show); }
+	
+	/**
 	 * Adds a custom button for every item in the list
 	 * 
 	 * @param name $name Identifier of the button

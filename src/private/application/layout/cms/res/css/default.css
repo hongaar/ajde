@@ -5,7 +5,7 @@ body {
 }
 
 .btn, input, textarea, select, .uneditable-input {
-	font-weight: 300;
+	font-weight: 300 !important;
 }
 
 select option.choose {

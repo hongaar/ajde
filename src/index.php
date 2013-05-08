@@ -113,8 +113,8 @@ define('AJDE', true);
 //	--------------------
 //	Global helper functions
 //	--------------------
-	function dump($var, $collapse = false) {
-		Ajde_Dump::dump($var, $collapse);
+	function dump($var, $expand = true) {
+		Ajde_Dump::dump($var, $expand);
 	}
 	
 	/**

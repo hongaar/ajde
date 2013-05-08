@@ -3,7 +3,22 @@
 $field = $this->field;
 ?>
    
-<div class="control-group <?php if ($field->hasHidden() && $field->getHidden() === true) { echo 'hidden'; } ?>">
+<div
+	class="control-group
+	<?php if (
+			($field->hasHidden() && $field->getHidden() === true)
+//			|| $field->hasShowOnlyWhen()
+			) { echo 'hidden'; } ?>
+	<?php if ($field->hasShowOnlyWhen()) {
+		echo 'dynamic" ';
+		$showOnlyWhens = $field->getShowOnlyWhen();
+		foreach($showOnlyWhens as $key => $showOnlyWhen) {
+			echo 'data-show-' . $key . '="|' . implode('|', $showOnlyWhen) . '|"';
+		}
+	} else {
+		echo '"';
+	} ?>
+>
 
     <?php if (($field->hasShowLabel() && $field->getShowLabel() !== false) || !$field->hasShowLabel()) { ?>
         <label class='control-label' for='in_<?php echo $field->getName(); ?>' title='<?php echo $field->getLabel(); ?>' class='<?php if ($field->getIsRequired() === true) { echo 'required'; } ?>'>

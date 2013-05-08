@@ -1,0 +1,8 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+
+if (isset($this->dump)) {
+	foreach($this->dump as $source => $var) {
+		var_dump($var[0]);
+	}
+}

@@ -54,20 +54,21 @@
 
         $('div.spatial.image').each(function() {
 
-            var input = $(this).prev();
-
+            var self = this;
+			var input = $(this).prev();			
             var $marker = $(this).find('.spatialMarker');
+			
             function placeMarker(x, y) {
-                $marker.css({
-                    top: y + 'px',
-                    left: x + 'px'
+                $marker.css({                    
+                    left: (x * $(self).width()) + 'px',
+					top: (y * $(self).height()) + 'px'
                 }).show();
             }
 
             $(this).on('click', function(e) {
                 var offset = $(this).offset();
-                var x = e.pageX - offset.left;
-                var y = e.pageY - offset.top;
+                var x = (e.pageX - offset.left) / $(this).width();
+                var y = (e.pageY - offset.top) / $(this).height();
                 input.val(x + ' ' + y);
                 placeMarker(x, y);
             });

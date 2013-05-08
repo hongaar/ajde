@@ -60,7 +60,7 @@ AC.Crud.Edit.Multiple = function() {
 				}
 				AC.Core.Alert.flash(response.message);
 			} else if (response.success === false) {
-				AC.Core.Alert.error(response.message);
+				AC.Core.Alert.warning(response.message);
 			}
 		});
 	};
@@ -91,6 +91,10 @@ AC.Crud.Edit.Multiple = function() {
 		var dynamic = (!data.length && $(that).parents('div.multiple:eq(0)').attr('data-dynamic') == 1);
 		if (dynamic || display === false) {
 			getRowData(id, that, function(response) {
+				if (!response.data.length) {
+					// prevent inf. loop
+					response.data = [false];
+				}
 				addRow(id, response.displayField, that, response.data, lastId);
 			});
 		} else {
@@ -122,6 +126,32 @@ AC.Crud.Edit.Multiple = function() {
 		}
 	};
 
+	var makePrefillQS = function(elm, key, value) {
+		var prefills = $(elm).parents('div.multiple:eq(0)').data('prefill')
+		if (prefills) {
+			var ret = '';
+			prefills = prefills.split(',');
+			for (var i in prefills) {
+				ret += key + '[' + prefills[i] + ']=';
+				if (value === 1) {
+					ret += '1&';
+				} else {
+					ret += $(elm).parents('div.multiple:eq(0)').data('prefill-' + prefills[i]) + '&';
+				}
+			}
+			return ret;
+		}
+		return '';
+	};
+
+	var getPrefillFields = function(elm) {
+		return makePrefillQS(elm, 'prefill', true);
+	};
+
+	var getHiddenFields = function(elm) {
+		return makePrefillQS(elm, 'hide', 1);
+	};
+
 	return {
 
 		init: function() {
@@ -132,7 +162,7 @@ AC.Crud.Edit.Multiple = function() {
 			$('form.ACCrudEdit div.multiple a.deleteMultiple').live('click', AC.Crud.Edit.Multiple.deleteHandler);
 			$('form.ACCrudEdit div.picker.multiple').bind('chosen', AC.Crud.Edit.Multiple.chosenHandler);
 			
-			$('form.ACCrudEdit div.multiple a.imagePreview').fancybox();
+			$('form.ACCrudEdit div.multiple a.imagePreview').fancybox({closeBtn: false});
 			
 			AC.Crud.Edit.Multiple.initMove();
 			AC.Crud.Edit.Multiple.initEmptyTable();
@@ -180,7 +210,7 @@ AC.Crud.Edit.Multiple = function() {
 			var editRoute = $(this).parents('div.multiple:eq(0)').attr('data-edit-route');
 
 			$.fancybox.open({
-				href: editRoute + '?new&prefill[' + parent + ']=' + parentId + '&hide[' + parent + ']=1',
+				href: editRoute + '?new&prefill[' + parent + ']=' + parentId + '&hide[' + parent + ']=1&' + getPrefillFields(this) + getHiddenFields(this),
 				type: 'iframe',
 				autoSize: false,
 				maxWidth: 960,
@@ -197,7 +227,7 @@ AC.Crud.Edit.Multiple = function() {
 				$select.trigger('change');
 				$select.trigger("liszt:updated");
 				$.fancybox.close();
-			} else if ($(currentCrudAction).nextAll('.addMultiple').length) { // hasCrossReferenceTable
+			} else if ($(currentCrudAction).parent().find('.addMultiple, .picker.multiple').length) { // hasCrossReferenceTable
 				$.fancybox.close();
 				add(id, display, currentCrudAction);
 			} else {
@@ -224,7 +254,7 @@ AC.Crud.Edit.Multiple = function() {
 			var id = $(this).attr('data-id');
 
 			$.fancybox.open({
-				href: editRoute + '?edit=' + id + '&hide[' + parent + ']=1',
+				href: editRoute + '?edit=' + id + '&hide[' + parent + ']=1&' + getPrefillFields(this) + getHiddenFields(this),
 				type: 'iframe',
 				autoSize: false,
 				maxWidth: 960,
@@ -239,6 +269,10 @@ AC.Crud.Edit.Multiple = function() {
 			var dynamic = (!data.length && $(currentCrudAction).parents('div.multiple:eq(0)').attr('data-dynamic') == 1);
 			if (dynamic) {
 				getRowData(id, currentCrudAction, function(response) {
+					if (!response.data.length) {
+						// prevent inf. loop
+						response.data = [false];
+					}
 					AC.Crud.Edit.Multiple.editSaved(id, display, response.data);
 				});
 			} else {

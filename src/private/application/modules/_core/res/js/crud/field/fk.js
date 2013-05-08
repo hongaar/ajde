@@ -33,7 +33,9 @@ AC.Crud.Edit.Fk = function() {
 	return {
 		
 		init: function() {
-			$('form.ACCrudEdit div.picker.fk a.imagePreview').fancybox();
+			if ($.fn.fancybox) {
+				$('form.ACCrudEdit div.picker.fk a.imagePreview').fancybox({closeBtn: false});
+			}
 			$('form.ACCrudEdit div.picker.fk').bind('chosen', this.chosenHandler);
 		},
 			

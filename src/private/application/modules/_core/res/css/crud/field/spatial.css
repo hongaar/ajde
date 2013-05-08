@@ -4,7 +4,7 @@ div.spatial {
 }
 
 div.spatial img, img.spatial {
-    max-width: inherit;
+    /*max-width: inherit;*/
 }
 
 div.spatialMarker {

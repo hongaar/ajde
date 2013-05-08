@@ -5,7 +5,7 @@ class Ajde_Dump extends Ajde_Object_Static
 	public static $dump = array();
 	public static $warn = array();
 	
-	public static function dump($var, $collapse = false) {
+	public static function dump($var, $expand = true) {
 		$i = 0;
 		$line = null;
 		foreach(debug_backtrace() as $item) {
@@ -19,7 +19,7 @@ class Ajde_Dump extends Ajde_Object_Static
 			if ($i == 2) { break; }
 			$i++;
 		}
-		self::$dump[$source] = array($var, $collapse);
+		self::$dump[$source] = array($var, $expand);
 	}
 	
 	public static function warn($message) {

@@ -51,6 +51,14 @@ AC.Crud.Mainfilter = function() {
 			if (AC.Crud.List) {
 				AC.Crud.List.updateView(form.children(':eq(0)'));
 			} else {
+				// Call dynamic fields update
+				AC.Crud.Edit.dynamicFields.call(form.filter('.ACCrudEdit').find('select[name="' + name + '"]'));
+			
+				// Refresh?
+//				if ($('#mainFilter').data('refresh') == 1) {
+//					window.location.reload(true);
+//				}
+				
 				// Do update the session
 //				var data = {};
 //				data['view[filter][' + name + ']'] = value;

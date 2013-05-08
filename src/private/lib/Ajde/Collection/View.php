@@ -19,7 +19,9 @@ class Ajde_Collection_View extends Ajde_Object_Standard
 			
 			'viewType'		=> 'list',
 			'filterVisible' => false,
-			'mainFilter'	=> ''
+			'disableFilter' => false,
+			'mainFilter'	=> '',
+			'mainFilterGrouper' => ''
 		);		
 		$options = array_merge($defaultOptions, $listOptions);
 		$this->setOptions($options);	
@@ -41,7 +43,9 @@ class Ajde_Collection_View extends Ajde_Object_Standard
 	
 	public function getViewType()			{ return parent::getViewType(); }
 	public function getFilterVisible()		{ return parent::getFilterVisible(); }
+	public function getDisableFilter()		{ return parent::getDisableFilter(); }
 	public function getMainFilter()			{ return parent::getMainFilter(); }
+	public function getMainFilterGrouper()	{ return parent::getMainFilterGrouper(); }
 	
 	public function getFilterForField($fieldName) {
 		$filters = $this->getFilter();

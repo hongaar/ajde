@@ -10,6 +10,10 @@ class AdminNodeController extends AdminController
 		Ajde_Model::register('tag');
 		
 		Ajde::app()->getDocument()->setTitle("Nodes");
+		
+		$decorator = new Ajde_Crud_Cms_Meta_Decorator();
+		$this->getView()->assign('decorator', $decorator);
+		
 		return $this->render();
 	}
 }

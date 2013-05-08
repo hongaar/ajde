@@ -39,6 +39,46 @@ class Ajde_Crud_Options_List extends Ajde_Crud_Options
 	public function setMain($fieldname)	{ return $this->_set('main', $fieldname); }	
 	
 	/**
+	 * Show the search box
+	 * 
+	 * @param boolean $show
+	 * @return Ajde_Crud_Options_List
+	 */
+	public function setSearch($show)	{ return $this->_set('search', $show); }
+	
+	/**
+	 * Shows the column names
+	 * 
+	 * @param boolean $show
+	 * @return Ajde_Crud_Options_List
+	 */
+	public function setShowColumnNames($show)	{ return $this->_set('showColumnNames', $show); }	
+	
+	/**
+	 * Shows the table header
+	 * 
+	 * @param boolean $show
+	 * @return Ajde_Crud_Options_List
+	 */
+	public function setShowHeader($show)	{ return $this->_set('showHeader', $show); }
+	
+	/**
+	 * Shows the table header
+	 * 
+	 * @param boolean $show
+	 * @return Ajde_Crud_Options_List
+	 */
+	public function setShowFooter($show)	{ return $this->_set('showFooter', $show); }
+	
+	/**
+	 * Single click on table row goes into edit mode
+	 * 
+	 * @param boolean $singleClick
+	 * @return Ajde_Crud_Options_List
+	 */
+	public function setSingleClickEdits($singleClick)	{ return $this->_set('singleClickEdits', $singleClick); }
+	
+	/**
 	 * Sets which fields to show
 	 * 
 	 * @param array $fields

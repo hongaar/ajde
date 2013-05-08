@@ -252,6 +252,26 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 	 */
 	public function setHideInIframe($hidden) { return $this->_set('hideInIframe', $hidden); }
 	
+	/**
+	 * Shows this field only when another field has a certain value
+	 * 
+	 * @param string $field
+	 * @param mixed $value
+	 * @return Ajde_Crud_Options_Fields_Field 
+	 */
+	public function addShowOnlyWhen($field, $value) {
+		if (!is_array($value)) {
+			$value = array($value);
+		}
+		$showOnlyWhen = ($this->has('showOnlyWhen') ? $this->get('showOnlyWhen') : array());
+		if (isset($showOnlyWhen[$field])) {
+			$showOnlyWhen[$field] = array_merge($showOnlyWhen[$field], $value);
+		} else {
+			$showOnlyWhen[$field] = $value;
+		}		
+		return $this->_set('showOnlyWhen', $showOnlyWhen);	
+	}
+	
     /**
 	 * Use a simple selector for fields with type 'multiple'
 	 * 
@@ -259,6 +279,16 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 	 * @return Ajde_Crud_Options_Fields_Field 
 	 */
 	public function setSimpleSelector($simple) { return $this->_set('simpleSelector', $simple); }
+	
+	/**
+	 * Hides the main column (for fields with type 'multiple')
+	 * 
+	 * @param boolean $hide
+	 * @return Ajde_Crud_Options_Fields_Field 
+	 */
+	public function setHideMainColumn($hide) {
+		return $this->_set('hideMainColumn', $hide);
+	}
 	
 	/**
 	 * Adds a column to the cross reference table (for fields with type 'multiple')
@@ -306,6 +336,19 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 	public function setSortBy($field) {
 		return $this->_set('sortBy', $field);
 	}	
+	
+	/**
+	 * Prefills the foreign record with this value when adding/editing
+	 * 
+	 * @param string $field
+	 * @param string $value
+	 * @return Ajde_Crud_Options_Fields_Field 
+	 */
+	public function addPrefillField($field, $value) {
+		$fields = ($this->has('prefillField') ? $this->get('prefillField') : array());
+		$fields[$field] = $value;
+		return $this->_set('prefillField', $fields);
+	}
     
     /**
 	 * Use an image for spatial field instead of Google Maps or
@@ -317,6 +360,16 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     public function setUseImage($image) {
         return $this->_set('useImage', $image);
     }
+	
+	/**
+	 * Use this image for spatial field instead of Google Maps
+	 * 
+	 * @param string $image
+	 * @return Ajde_Crud_Options_Fields_Field 
+	 */
+    public function setLayerImage($image) {
+        return $this->_set('layerImage', $image);
+	}
     
     /**
 	 * Type db column for fields with type 'media'

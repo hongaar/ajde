@@ -3,11 +3,25 @@
 class NodeModel extends Ajde_Model
 {
 	protected $_autoloadParents = true;
-	protected $_displayField = 'name';
+	protected $_displayField = 'title';
+	protected $_hasMeta = true;
 	
 	public function __construct() {
-		Ajde_Event::register($this, 'afterCrudLoaded', array($this, 'parseForCrud'));
 		parent::__construct();
+		$this->registerEvents();
+	}
+	
+	public function __wakeup()
+	{
+		parent::__wakeup();
+		$this->registerEvents();
+	}
+	
+	public function registerEvents()
+	{
+		if (!Ajde_Event::has($this, 'afterCrudSave', 'postCrudSave')) {
+			Ajde_Event::register($this, 'afterCrudSave', 'postCrudSave');
+		}
 	}
 	
 	public function beforeSave()
@@ -15,9 +29,21 @@ class NodeModel extends Ajde_Model
 		// ...
 	}
 
+	public function getTreeName()
+	{
+		$ret = _c($this->title);
+		$ret = str_repeat('<span class="tree-spacer"></span>', $this->get('level')) . $ret;
+		return $ret;
+	}
+	
 	public function afterSort()
 	{
-		// ...
+		$this->sortTree('NodeCollection');
+	}
+	
+	public function postCrudSave(Ajde_Controller $controller, Ajde_Crud $crud)
+	{
+		$this->sortTree('NodeCollection');
 	}
 
 	public function beforeInsert()
@@ -35,11 +61,6 @@ class NodeModel extends Ajde_Model
 	}
 	
 	public function afterInsert()
-	{
-		// ...
-	}
-	
-	public function parseForCrud(Ajde_Crud $crud)
 	{
 		// ...
 	}

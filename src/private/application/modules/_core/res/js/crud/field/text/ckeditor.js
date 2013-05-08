@@ -12,19 +12,26 @@ AC.Crud.Edit.Text = function() {
 		CKEDITOR.instances = {};
 
 		d = elm.ckeditor( function() {
-			elm.ckeditorGet().on('change', function() {
+			this.on('change', function() {
 				AC.Crud.Edit.setDirty.call(this.element.$);
+				$(this.element.$).parents('.control-group').removeClass('error');
 			});
-			elm.ckeditorGet().on('focus', function() {
-				elm.nextAll('.cke_chrome').addClass('active');
+			this.on('focus', function() {
+				$(this.element.$).nextAll('.cke_chrome').addClass('active');
 			});
-			elm.ckeditorGet().on('blur', function() {
-				elm.nextAll('.cke_chrome').removeClass('active');
+			this.on('blur', function() {
+				$(this.element.$).nextAll('.cke_chrome').removeClass('active');
 			});
+//			var self = this;
+//			$(window).on('resize', function() {
+//				self.resize(100);
+//				self.resize($(self.element.$).parent().width());
+//			});
 		}, {
 			toolbar : 'Ajde',
 			format_tags : 'p;h1;h2;h3;pre',
-			width : elm.width() + 13,
+//			width : elm.width() + 13,
+			width : '100%',
 			height : elm.height()
 		});
 	};

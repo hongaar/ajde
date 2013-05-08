@@ -40,15 +40,25 @@ fieldset.crud {
 		}
 		
 		.help-inline {
-			padding-left: 0;
-			padding-top: 5px;
-			text-transform: uppercase;
+			background-color: #EEE;
+			padding: 3px 9px;
+			font-size: 11.844px;
+			line-height: 14px;
+			height: auto;
+			display: inline-block;
+			vertical-align: baseline;
 		}
 		
 		&.error {
-			.help-inline {
-				padding-top: 25px;
+			.picker-container + .help-inline {
+				margin-top: 20px;
 			}
+		}
+		
+		&.dynamic {
+			opacity: 0.01;
+			max-height: 1px;
+			overflow: hidden;
 		}
 		
 		&:not(.error) {
@@ -61,10 +71,35 @@ fieldset.crud {
     &.sidebar {
         
     }
+	
+	&.primary {
+		background-color: #9954BB;
+		padding: 19px;
+		margin-bottom: 20px;
+		
+		label {
+			color: #FFF !important;
+		}
+	}
     
     &:last-child {
         margin-bottom: 0;
     }
+	
+	&.narrow {
+		.control-group {
+			margin-bottom: 0;
+		}
+	}
+	
+	&.short {
+		.control-label {
+			width: 100px;
+		}
+		.controls {
+			margin-left: 120px;
+		}
+	}
 	
 	.picker-container {
 		.picker-radio:last-child {
@@ -78,6 +113,10 @@ fieldset.crud {
 			top: 14px;
 			left: 0;
 		}
+	}
+	
+	.gray {
+		color: silver;
 	}
 
 }
@@ -267,6 +306,16 @@ table.crud {
 						top: -200%;
 					}
 				}
+				
+				.tree-spacer {
+					display: inline-block;
+					border-left: 3px solid #DDD;
+					width: 20px;
+					margin-left: 0;
+					margin-top: -23px;
+					height: 46px;
+					margin-bottom: -8px;
+				}
             }
             
             input.id {
@@ -425,4 +474,20 @@ table.crud {
 	font-size: 0.4em;
 	line-height: 1.3em;
 	margin-bottom: 10px;
+}
+
+.mainFilterButtons div.grouper {	
+	margin-top: 20px;
+	
+	span.badge {
+		clear: both;
+		float: none;
+		font-size: 0.4em;
+		line-height: 1.3em;
+		padding: 5px 12px;
+	}
+	
+	&:first-of-type {
+		margin-top: 0;
+	}
 }

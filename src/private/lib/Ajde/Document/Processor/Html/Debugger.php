@@ -1,7 +1,7 @@
 <?php
 
 class Ajde_Document_Processor_Html_Debugger extends Ajde_Object_Static implements Ajde_Document_Processor
-{
+{			
 	// Not implemented
 	public static function preCompress(Ajde_Resource_Local_Compressor $compressor) {}
 	public static function postCompress(Ajde_Resource_Local_Compressor $compressor) {}

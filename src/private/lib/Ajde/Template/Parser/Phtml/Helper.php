@@ -284,12 +284,13 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	 * @param Ajde_Crud $crud
 	 * @return string
 	 */
-	public function ACCrudMainFilterBadge($crud)
+	public function ACCrudMainFilterBadge($crud, $refresh = false)
 	{
 		return Ajde_Component_Crud::processStatic($this->getParser(),
 			array(
 				'mainfilter' => true,
-				'crud' => $crud
+				'crud' => $crud,
+				'refresh' => $refresh
 			)
 		);
 	}

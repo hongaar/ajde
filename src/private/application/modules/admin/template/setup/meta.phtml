@@ -7,7 +7,10 @@ $options
 			->setEmphasis(true)
 			->up()		
 		->selectField('type')
-			->setHelp('HOI')
+			->setShowLabel(false)
+			->up()
+		->selectField('target')
+//			->setValue('node')
 			->up()
 		->up()
 	->selectList()
@@ -16,20 +19,32 @@ $options
 			->setEdit(true)
 			->up()
 		->setMain('name')
-		->setShow(array('name', 'type'))
+		->setShow(array('name', 'target', 'type'))
+		->selectView()
+//			->addFilter('target', 'node')
+//			->setDisableFilter(true)
+			->up()
 		->up()
 	->selectEdit()
 		->setShow()
 		->selectLayout()
 			->addRow()
 				->addColumn()
-                    ->setSpan(12)
+                    ->setSpan(8)
 					->addBlock()
-						->setShow(array('name', 'type'))
+						->setShow(array('name', 'target'))
 						->up()
 					->addBlock()
 						->setTitle('Options')
 						->setShow(array())
+						->up()
+					->up()
+				->addColumn()
+                    ->setSpan(4)
+					->addBlock()
+						->setClass('sidebar well')
+						->setTitle('Field type')
+						->setShow(array('type'))
 						->up()
 					
 	->finished();
@@ -38,12 +53,13 @@ $options
 $decorator = $this->decorator;
 $decorator->setActiveBlock(1);
 $decorator->setOptions($options);
-$decorator->decorate();
+$decorator->decorateOptions();
 
-var_dump($options->_stack['fields']);
-var_dump($options->_stack['edit']['layout']['rows'][0]['columns'][0]['blocks'][1]['show']);
+//var_dump($options->_stack['fields']);
+//var_dump($options->_stack['edit']['layout']['rows'][0]['columns'][0]['blocks'][1]['show']);
 
 $crud = $this->ACCrudList('meta', $options);
+//$crud->setSessionName('meta.node');
 	
 ?>
 

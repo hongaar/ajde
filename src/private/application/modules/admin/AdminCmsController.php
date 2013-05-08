@@ -45,4 +45,16 @@ class AdminCmsController extends AdminController
 		Ajde::app()->getDocument()->setTitle("Tags");
 		return $this->render();
 	}
+	
+	public function settings()
+	{
+		Ajde_Model::register('admin');
+		
+		Ajde::app()->getDocument()->setTitle("Settings");
+		
+		$decorator = new Ajde_Crud_Cms_Meta_Decorator();
+		$this->getView()->assign('decorator', $decorator);
+		
+		return $this->render();
+	}
 }

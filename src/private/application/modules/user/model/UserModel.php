@@ -9,11 +9,24 @@ class UserModel extends Ajde_User
 	
 	public function __construct() {
 		parent::__construct();
-		Ajde_Event::register($this, 'afterCrudLoaded', 'parseForCrud');
-		Ajde_Event::register($this, 'beforeCrudSave', 'prepareCrudSave');
+		$this->registerEvents();
 		$this->setEncryptedFields(array(
 			'email', 'fullname', 'address', 'zipcode', 'city', 'region', 'country'
 		));
+	}
+	
+	public function __wakeup()
+	{
+		parent::__wakeup();
+		$this->registerEvents();
+	}
+	
+	public function registerEvents()
+	{
+		if (!Ajde_Event::has($this, 'afterCrudLoaded', 'parseForCrud')) {
+			Ajde_Event::register($this, 'afterCrudLoaded', 'parseForCrud');
+			Ajde_Event::register($this, 'beforeCrudSave', 'prepareCrudSave');
+		}
 	}
 	
 	public function afterSave()

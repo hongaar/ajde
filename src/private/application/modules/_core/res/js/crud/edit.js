@@ -30,8 +30,15 @@ AC.Crud.Edit = function() {
 			});
 			
 			AC.Shortcut.add('Ctrl+S', AC.Crud.Edit.saveHandler);
+			AC.Shortcut.add('Ctrl+Alt+S', function(e) {
+				var self = this;
+				AC.Crud.Edit.saveHandler.call(self, e, 'edit');
+			});
 			        
-            // Dirty handler for form input elements
+			// Show/hide elements with data-show-[fieldname] set, and run now
+			$('form.ACCrudEdit :input').on('change', AC.Crud.Edit.dynamicFields).change();
+			
+			// Dirty handler for form input elements
             $('form.ACCrudEdit :input').on('change', AC.Crud.Edit.setDirty);
 		},
             
@@ -46,6 +53,38 @@ AC.Crud.Edit = function() {
                 }
             });            
         },
+			
+		dynamicFields: function(e) {
+			var val = "", name = $(this).attr('name');
+			if (name && name.indexOf('[]') === -1 && $('.control-group[data-show-' + name + ']').length) {
+				if ($(this).attr('type') === 'radio') {
+					if ($(this).filter(':checked').length) {
+						val = $(':input[name=' + name + ']:checked').val();
+					}
+				} else if ($(this)[0].nodeName === 'SELECT') {
+					val = $(this).find('option:selected').val();
+				} else {
+					val = $(this).val();
+				}
+				val = val.toLowerCase().replace(/ /g, '');
+				
+				if (val) {
+					var $hidden = $('.control-group[data-show-' + name + ']:not([data-show-' + name + '*="|' + val + '|"])');
+					var $shown = $('.control-group[data-show-' + name + '*="|' + val + '|"]');
+					$hidden.stop(true, true).hide();
+					$hidden.each(function() {
+						var self = this;
+						setTimeout(function() {
+							if (!$(self).parents('fieldset').find('.control-group:visible').length) {
+								$(self).parents('fieldset').stop(true, true).hide('fast')
+							}
+						}, 100);
+					});
+					$shown.parents('fieldset').show();
+					$shown.removeClass('dynamic').stop(true, true).fadeIn();
+				}				
+			}			
+		},
 		
 		equalizeForm: function() {
 			// Deprecated
@@ -99,6 +138,7 @@ AC.Crud.Edit = function() {
 				var fn = $(form[0]).data('onBeforeSubmit');
 				if (fn() === false) {
 					form.find(disableOnSave).attr('disabled', null);
+					e.preventDefault();
 					return false;
 				}
 			}
@@ -117,14 +157,14 @@ AC.Crud.Edit = function() {
 						for(var i in data.errors) {
                             $input = $(':input[name=' + i + ']');
 							$parent = $input.parents('.control-group');
-							if (!$parent.length) {
+							if (!$parent.length || $parent.is(':not(:visible)')) {
 								errorHandler('Field \'' + i + '\' has errors but is hidden');
 							}
 							$parent.addClass('error');
 							firstError = data.errors[i][0];
 							$parent.data('message', firstError);
 							$message = $('<span class="help-block badge badge-important validation-message"></span>').html(firstError).hide();
-							$input.after($message.fadeIn());
+							$input.parents('.controls').append($message.fadeIn());
 							AC.Crud.Edit.equalizeForm();
 						}
 						$.scrollTo($('.control-group.error:first'), 800, { axis: 'y', offset: -70 });

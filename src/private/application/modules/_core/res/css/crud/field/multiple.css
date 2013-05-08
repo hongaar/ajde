@@ -61,6 +61,11 @@ table.multipleList tr.template {
 	display: none;
 }
 
+table.multipleList.hideMainColumn td.main,
+table.multipleList.hideMainColumn th.main {
+	display: none;
+} 
+
 span.or {
 	position: relative;
 	width: 70px;

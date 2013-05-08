@@ -133,6 +133,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 	{
 		$crud = $this->getCrud();
 		$this->getView()->assign('crud', $crud);
+		$this->getView()->assign('refresh', $this->getRefresh());
 		return $this->render();
 	}
 	
@@ -189,7 +190,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 			'operation' => 'delete',
 			'success' => (bool) $success,
 			'message' => Ajde_Component_String::makePlural(count($id), 'record') . ' deleted'
-			);
+		);
 	}
 	
 	private function sort($crudId, $id)
@@ -321,15 +322,17 @@ class _coreCrudController extends Ajde_Acl_Controller
 		$model->populate($post);
 		
 		Ajde_Event::trigger($model, 'beforeCrudSave', array($crud));
-				throw new Exception('hoi');
+
 		if (!$model->validate($crud->getOptions('fields'))) {
 			return array('operation' => $operation, 'success' => false, 'errors' => $model->getValidationErrors());
 		}
 //		if (!$model->autocorrect($crud->getOptions('fields'))) {
 //			return array('operation' => $operation, 'success' => false, 'errors' => $model->getAutocorrectErrors());
 //		}
-		
+
 		$success = $model->{$operation}();
+		
+		Ajde_Event::trigger($model, 'afterCrudSave', array($crud));
 		
 		// Multiple field SimpleSelector
 		foreach($post as $key => $value) {
@@ -511,6 +514,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 			foreach ($fieldProperties['tableFields'] as $extraField) { 
 				$value	= $child->has($extraField['name']) ? $child->get($extraField['name']) : false;
 				$type	= $extraField['type'];
+				$html	= false;
 				if ($type == 'file' && $value) {
 					$extension = pathinfo($value, PATHINFO_EXTENSION);
 					if ($isImage = in_array(strtolower($extension), array('jpg', 'jpeg', 'png', 'gif'))) {
@@ -529,7 +533,9 @@ class _coreCrudController extends Ajde_Acl_Controller
 				 } else if ($type == 'text') {
 					$html = $value;
 				 }
-				 $ret[] = $html;
+				 if ($html) {
+					 $ret[] = $html;
+				 }
 			}
 		}
 		

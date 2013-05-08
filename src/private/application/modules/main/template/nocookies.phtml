@@ -1,8 +1,20 @@
+<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+<style>
+	body {
+		padding: 20px;
+		text-align: center;
+	}
+</style>
+<h1><?php echo Config::get('sitename'); ?></h1>
+<h3>Cookies are disabled in your browser</h3>
+<h4>
+	Please <a target="_blank" href="http://www.google.com/support/accounts/bin/answer.py?&answer=61416">enable cookies</a> to view this website
+</h4>
 <p>
-	Please <a href="http://www.google.com/support/accounts/bin/answer.py?&answer=61416">enable cookies</a> to view this website
-</p>
-<p>
-	<a href="//<?php echo Config::get('site_root'); echo $this->returnto; ?>">Try again</a>
+	&nbsp;<br/>
+	<a class="btn btn-primary btn-large" href="//<?php echo Config::get('site_root'); echo $this->returnto; ?>">
+		<i class="icon-refresh icon-white"></i> Try again
+	</a>
 </p>
 <script>
 if (typeof history.replaceState !== 'undefined') {

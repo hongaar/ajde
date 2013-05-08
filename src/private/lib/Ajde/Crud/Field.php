@@ -15,6 +15,7 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
 	protected $_type;
 	
 	protected $_useSpan = 12;
+	protected $_attributes = array();
 
 	public function __construct(Ajde_Crud $crud, $fieldOptions) {
 		$explode = explode('_', get_class($this));
@@ -141,28 +142,48 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
 	{
 		return " <img src='public/images/icons/16/key_login.png' style='vertical-align: middle;' title='Primary key' />";
 	}
+	
+	public function getHtmlAttributesAsArray()
+	{
+		if (empty($this->_attributes)) {
+			$attributes = array();
+			if (method_exists($this, '_getHtmlAttributes')) {
+				$attributes = $this->_getHtmlAttributes();
+			}
+			$attributes['name'] = $this->getName();
+			if (!key_exists('id', $attributes)) {
+				$attributes['id'] = 'in_' . $this->getName();
+			}        
+			if ($this->_useSpan !== false) {
+				if (key_exists('class', $attributes)) {
+					$attributes['class'] .= ' span' . $this->_useSpan;
+				} else {
+					$attributes['class'] = 'span' . $this->_useSpan;
+				}
+			}
+			$this->_attributes = $attributes;
+		}
+		return $this->_attributes;
+	}
+	
+	public function getHtmlAttribute($name)
+	{
+		$attributes = $this->getHtmlAttributesAsArray();
+		if (isset($attributes[$name])) {
+			return $attributes[$name];
+		}
+		return false;
+	}
 
 	public function getHtmlAttributes()
 	{
-		$attributes = array();
-		if (method_exists($this, '_getHtmlAttributes')) {
-			$attributes = $this->_getHtmlAttributes();
-		}
-		$attributes['name'] = $this->getName();
-		if (!key_exists('id', $attributes)) {
-			$attributes['id'] = 'in_' . $this->getName();
-		}        
-		if ($this->_useSpan !== false) {
-			if (key_exists('class', $attributes)) {
-				$attributes['class'] .= ' span' . $this->_useSpan;
-			} else {
-				$attributes['class'] = 'span' . $this->_useSpan;
-			}
-		}
+		$attributes = $this->getHtmlAttributesAsArray();
         
         $text = '';
         foreach ($attributes as $k => $v) {
-            $text .= $k . '="' . $v . '" ';
+			if ($v) {
+				$text .= $k . '="' . $v . '" ';
+			}
         }
 		return $text;
 	}

@@ -1,0 +1,91 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ 
+
+$options = new Ajde_Crud_Options();
+$options
+	->selectFields()
+		->selectField('name')
+			->setEmphasis(true)
+			->up()
+		->selectField('type')
+			->up()
+		->selectField('sort')
+			->setType('sort')
+			->up()
+		->selectField('submenus')
+			->addShowOnlyWhen('type', 'submenu')
+			->setModelName('menu')
+			->setParent('parent')
+			->setType('multiple')
+			->setEditRoute('admin/menu:view.crud')
+			->addTableField('type')
+			->addSortField('sort')
+			->up()	
+		->selectField('node')
+			->setIsRequired(true)
+			->addShowOnlyWhen('type', 'nodelink')
+			->setLabel('Node link')
+			->up()			
+		->up()
+	->selectList()
+		->selectButtons()
+			->setNew(false)
+			->setEdit(true)
+			->setDelete(false)
+			->setSelect(false)
+			->up()
+		->setShowHeader(false)
+		->setShowFooter(false)
+		->setSingleClickEdits(true)
+		->setMain('name')
+		->setShow(array('name'))
+		->selectView()
+			->setOrderBy('sort')
+			->up()
+		->up()
+	->selectEdit()
+		->setShow()
+		->selectLayout()
+			->addRow()
+				->addColumn()
+                    ->setSpan(12)
+					->addBlock()
+						->setClass('primary narrow sidebar')
+						->setShow(array('name'))
+						->up()
+					->addBlock()
+						->setClass('sidebar')
+						->setShow(array('type'))
+						->up()
+					->addBlock()
+						->setClass('sidebar well')
+						->setShow(array('submenus'))
+						->up()
+					->addBlock()
+						->setClass('sidebar well')
+						->setShow(array('node'))
+						
+	->finished();
+
+$crud = $this->ACCrudList('menu', $options);
+
+$collection = $crud->getCollection();
+$collection->addFilter(new Ajde_Filter_Where('parent', Ajde_Filter::FILTER_IS, null));
+
+?>
+
+<div class="row-fluid">
+	<div class="span2 hideInIframe">
+		<?php echo $this->includeModule('admin/cms:menu'); ?>		
+	</div><!--/span-->
+	<div class="span10 expandInIframe">
+		
+		<div class="page-header">
+			<h1>
+				<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
+			</h1>
+		</div>		
+		
+		<?php echo $crud->output(); ?>
+		
+	</div><!--/span-->
+</div><!--/row-->

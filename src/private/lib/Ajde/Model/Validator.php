@@ -48,12 +48,40 @@ class Ajde_Model_Validator extends Ajde_Object_Standard
 		}
 	}
 	
+	public function shouldValidateDynamicField($fieldOptions)
+	{
+		if (isset($fieldOptions['showOnlyWhen'])) {
+			$showOnlyWhens = $fieldOptions['showOnlyWhen'];
+			foreach($showOnlyWhens as $fieldName => $showWhenValues) {
+				$value = -1;
+				if ($this->_model->has($fieldName)) {
+					$value = strtolower(str_replace(' ', '', $this->_model->get($fieldName)));
+				}
+				if (in_array($value, $showWhenValues)) {
+					return true;
+				}
+			}
+			return false;
+		}
+		return true;
+	}
+	
 	public function validate($options = array())
 	{
 		$fieldsArray = $this->_model->getTable()->getFieldProperties();
 		$fieldOptions = array();
-		foreach($fieldsArray as $fieldName => $fieldProperties) {	
-			$fieldOptions[$fieldName] = array_merge($fieldProperties, issetor($options[$fieldName], array()));		
+
+		// Add all model fields
+		foreach($fieldsArray as $fieldName => $fieldProperties) {
+			$fieldOptions[$fieldName] = array_merge($fieldProperties, isset($options[$fieldName]) ? $options[$fieldName] : array());
+			if (isset($options[$fieldName])) {
+				unset($options[$fieldName]);
+			}
+		}
+		
+		// Add all non-model fields
+		foreach($options as $fieldName => $fieldProperties) {
+			$fieldOptions[$fieldName] = $fieldProperties;
 		}
 		
 		$valid = true;
@@ -62,18 +90,21 @@ class Ajde_Model_Validator extends Ajde_Object_Standard
 		
 		foreach($this->_model->getValidators() as $fieldName => $fieldValidators) {
 			foreach($fieldValidators as $fieldValidator) {
-				/* @var $validator Ajde_Model_ValidatorAbstract */
+				/* @var $fieldValidator Ajde_Model_ValidatorAbstract */
 				$value = null;
 				if ($this->_model->has($fieldName)) {
 					$value = $this->_model->get($fieldName);
 				}
-				$result = $fieldValidator->validate($fieldOptions[$fieldName], $value);				
-				if ($result['valid'] === false) {
-					if (!isset($errors[$fieldName])) {
-						$errors[$fieldName] = array();
+				// Only validate when dynamic field is shown
+				if ($this->shouldValidateDynamicField($fieldOptions[$fieldName])) {
+					$result = $fieldValidator->validate($fieldOptions[$fieldName], $value);				
+					if ($result['valid'] === false) {
+						if (!isset($errors[$fieldName])) {
+							$errors[$fieldName] = array();
+						}
+						$errors[$fieldName][] = $result['error'];
+						$valid = false;
 					}
-					$errors[$fieldName][] = $result['error'];
-					$valid = false;
 				}
 			}
 		}

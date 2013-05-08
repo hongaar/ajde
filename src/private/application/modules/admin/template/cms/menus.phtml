@@ -7,6 +7,17 @@
 		<?php echo $this->includeModule('admin/cms:menu'); ?>		
 	</div><!--/span-->
 	<div class="span10">
-		<h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
+		
+		<div class="page-header">
+			<h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
+		</div>
+		
+		<p class="lead">
+			What's on the menu today?
+		</p>
+		<p>
+			<a href="admin/menu:view" class="btn btn-primary btn-large">edit menus &raquo;</a>
+		</p>
+		
 	</div><!--/span-->
 </div><!--/row-->
