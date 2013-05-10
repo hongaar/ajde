@@ -2,12 +2,6 @@
 
 class MainController extends Ajde_Controller
 {
-	public function view()
-	{
-		Ajde::app()->getDocument()->setTitle("Project homepage");
-		return $this->render();
-	}
-
 	public function code403()
 	{
 		Ajde::app()->getDocument()->setTitle("Forbidden");

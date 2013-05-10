@@ -129,6 +129,7 @@ class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
 			$parent = (string) $this->getCrud()->getModel()->getTable();
 			$parentId = $this->getCrud()->getModel()->getPK();			
 			$crossReferenceTable = $this->getCrossReferenceTable();
+			$childField = $this->has('childField') ? $this->get('childField') : $this->getModelName();
 			
 			// TODO: implement $this->getAdvancedFilter() filters in subquery
 			
@@ -139,7 +140,7 @@ class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
 			//$collection->addFilter(new Ajde_Filter_Where($childPk, Ajde_Filter::FILTER_IN, $subQuery));
 			
 			$collection->getQuery()->addSelect($crossReferenceTable . '.id AS crossId');
-			$collection->addFilter(new Ajde_Filter_Join($crossReferenceTable, $crossReferenceTable.'.'.$this->getModelName(), $this->getModelName().'.'.$childPk));
+			$collection->addFilter(new Ajde_Filter_Join($crossReferenceTable, $crossReferenceTable.'.'.$childField, $this->getModelName().'.'.$childPk));
 			$collection->addFilter(new Ajde_Filter_Where($crossReferenceTable.'.'.$parent, Ajde_Filter::FILTER_EQUALS, (integer) $parentId));
 			
 			if ($this->getSortField()) {

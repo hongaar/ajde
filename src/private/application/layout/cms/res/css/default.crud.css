@@ -80,6 +80,15 @@ fieldset.crud {
 		label {
 			color: #FFF !important;
 		}
+		
+		&:not(.sidebar) {
+			.control-label {
+				width: 140px;
+			}
+			.controls {
+				margin-left: 160px;
+			}
+		}
 	}
     
     &:last-child {
@@ -98,6 +107,7 @@ fieldset.crud {
 		}
 		.controls {
 			margin-left: 120px;
+			min-height: 30px;
 		}
 	}
 	
@@ -173,13 +183,18 @@ body.iframe {
     .form-horizontal .control-label {
         float: none;
         width: auto;
-        padding-top: 0;
         text-align: left;
     }
     
     .form-horizontal .controls {
         margin-left: 0;
     }
+	
+	.form-horizontal fieldset.short {
+		.control-label {
+			float: left;
+		}		
+	}
 }
 
 table.crud {
@@ -477,14 +492,17 @@ table.crud {
 }
 
 .mainFilterButtons div.grouper {	
-	margin-top: 20px;
+	margin-top: 10px;
+	line-height: 9px;
+	height: 10px;
 	
 	span.badge {
 		clear: both;
 		float: none;
-		font-size: 0.4em;
 		line-height: 1.3em;
-		padding: 5px 12px;
+		font-size: 0.25em;
+		padding: 3px 7px;
+		text-transform: uppercase;
 	}
 	
 	&:first-of-type {

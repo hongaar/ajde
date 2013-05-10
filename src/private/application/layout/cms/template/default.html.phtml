@@ -51,8 +51,12 @@ $user = UserModel::getLoggedIn();
 
 // Node types
 Ajde_Model::register('admin');
+
 $nodeTypes = new NodetypeCollection();
+$nodeTypes->orderBy('category');
 $nodeTypes->orderBy('sort');
+
+$currentGrouper = '';
 
 ?>
 <!-- Inspired by HTML5 Boilerplate -->
@@ -145,12 +149,23 @@ $nodeTypes->orderBy('sort');
 							<li class="dropdown">
 								<a class="dropdown-toggle" data-toggle="dropdown" href="admin/cms:nodes">Content <b class="caret"></b></a>
 								<ul class="dropdown-menu">
-									<li><a href="admin/cms:nodes">Nodes</a></li>
-									<li class="divider"></li>
+									<li class="nav-header">Nodes</li>
+									<li><a href="admin/cms:nodes">Overview</a></li>
 									<?php foreach ($nodeTypes as $nodeType) {  
-										/* @var $nodeType NodetypeModel */ ?>
-									<li><a href="admin/node:view?view[filter][nodetype]=<?php echo $nodeType->getPK(); ?>"><?php echo _e($nodeType->getName()); ?></a></li>
+										/* @var $nodeType NodetypeModel */
+										if ($nodeType->get('category') <> $currentGrouper) {
+											if (!empty($currentGrouper)) { echo '</ul>'; }
+											$currentGrouper = $nodeType->get('category'); ?>
+											<li class="with-sub-menu">
+												<a href="javascript:void(null);">
+													<?php echo ucfirst($currentGrouper); ?> <i class="icon-chevron-right pull-right"></i>
+												</a>
+												<ul class="dropdown-menu sub-menu">
+										<?php } ?>
+										<li><a href="admin/node:view?view[filter][nodetype]=<?php echo $nodeType->getPK(); ?>"><?php echo _e($nodeType->getName()); ?></a></li>
 									<?php } ?>
+										</ul>
+									</li>
 									<li class="divider"></li>
 									<li><a href="admin/cms:media">Media</a></li>
 									<li><a href="admin/cms:menus">Menus</a></li>
@@ -162,11 +177,12 @@ $nodeTypes->orderBy('sort');
 								<li class="dropdown">
 									<a class="dropdown-toggle" data-toggle="dropdown" href="admin/setup:nodes">Setup <b class="caret"></b></a>
 									<ul class="dropdown-menu">
+										<li class="nav-header">Meta setup</li>
 										<li><a href="admin/setup:nodes">Nodes</a></li>
 										<li><a href="admin/setup:menus">Menus</a></li>
 										<li><a href="admin/setup:settings">Settings</a></li>
-										<li class="divider"></li>										
-										<li><a href="admin/setup:meta">Meta fields</a></li>
+										<li class="divider"></li>		
+										<li><a href="admin/setup:meta">Edit meta fields</a></li>
 									</ul>
 								</li>
 								<li><a href="admin/user:view">Users</a></li>

@@ -5,6 +5,7 @@ class Ajde_Crud_Cms_Meta_Type_Nodelink extends Ajde_Crud_Cms_Meta_Type
 	public function getFields()
 	{
 		$this->required();
+		$this->help();
 		$this->link();
 		$this->usePopup();
 		return parent::getFields();
@@ -15,7 +16,7 @@ class Ajde_Crud_Cms_Meta_Type_Nodelink extends Ajde_Crud_Cms_Meta_Type
 		$field = $this->fieldFactory('usenodetype');
 		$field->setLabel('Node type');
 		$field->setType('fk');
-		$field->setIsRequired(true);
+		$field->setIsRequired(false);
 		$field->setModelName('nodetype');
 		$this->addField($field);
 	}
@@ -33,9 +34,11 @@ class Ajde_Crud_Cms_Meta_Type_Nodelink extends Ajde_Crud_Cms_Meta_Type
 		$field = $this->decorationFactory($meta);
 		$field->setType('fk');
 		$field->setModelName('node');
-		$field->setAdvancedFilter(array(
-			new Ajde_Filter_Where('nodetype', Ajde_Filter::FILTER_EQUALS, $meta->getOption('usenodetype'))
-		));
+		if ($meta->getOption('usenodetype')) {
+			$field->setAdvancedFilter(array(
+				new Ajde_Filter_Where('nodetype', Ajde_Filter::FILTER_EQUALS, $meta->getOption('usenodetype'))
+			));
+		}
 		if ($meta->getOption('popup')) {
 			$field->setListRoute('admin/node:view.crud');
 			$field->setUsePopupSelector(true);

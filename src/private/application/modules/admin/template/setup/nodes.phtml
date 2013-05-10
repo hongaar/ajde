@@ -44,6 +44,7 @@ $options
 		->selectField('additional_media')	->setType('boolean')->up()
 		->selectField('children')			->setType('boolean')->up()
 		->selectField('published')			->setType('boolean')->up()
+		->selectField('related_nodes')		->setType('boolean')->up()
 		->up()
 	->selectList()
 		->selectButtons()
@@ -64,7 +65,11 @@ $options
 				->addColumn()
                     ->setSpan(8)
 					->addBlock()
-						->setShow(array('name', 'category'))
+						->setClass('primary narrow')
+						->setShow(array('name'))
+						->up()					
+					->addBlock()
+						->setShow(array('category'))
 						->up()
 					->addBlock()
 						->setShow(array('meta'))
@@ -75,7 +80,7 @@ $options
 					->setSpan(4)
 					->addBlock()
 						->setClass('well narrow')
-						->setShow(array('title', 'subtitle', 'content', 'summary', 'media', 'tag', 'additional_media', 'children', 'published'))
+						->setShow(array('title', 'subtitle', 'content', 'summary', 'media', 'tag', 'additional_media', 'children', 'published', 'related_nodes'))
 
 	->finished();
 

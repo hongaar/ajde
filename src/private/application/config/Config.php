@@ -1,10 +1,14 @@
 <?php
 
-class Config {
+class Config
+{
 
+	const DEV_STAGE = 'slow';
+	const LIVE_STAGE = 'live';
+	
 	// Redirect this class to the following config stage
-	// Default is 'auto' (chooses between 'dev' and 'live' based on remote_addrr
-	public static $stage			= 'slow';
+	// Default is 'auto' (chooses between DEV_STAGE and LIVE_STAGE based on remote_addrr
+	public static $stage			= 'auto';
 
 	// localhost and private networks, add your own dev machine if not in
 	// private network range!
@@ -64,8 +68,8 @@ class Config {
 	{
 		foreach(self::$local as $pattern)
 		if (preg_match($pattern, $_SERVER['REMOTE_ADDR'])) {
-			return 'dev';
+			return self::DEV_STAGE;
 		}
-		return 'live';
+		return self::LIVE_STAGE;
 	}
 }

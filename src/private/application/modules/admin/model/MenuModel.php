@@ -40,5 +40,24 @@ class MenuModel extends Ajde_Model
 		$this->sortTree('MenuCollection');
 	}
 	
+	public function loadByName($name)
+	{
+		$this->loadByField('name', $name);
+	}
+	
+	/**
+	 * 
+	 * @return NodeCollection
+	 */
+	public function getLinks()
+	{
+		$collection = new NodeCollection();
+		$collection->addFilter(new Ajde_Filter_Join('menu', 'menu.node', 'node.id'));
+		$collection->addFilter(new Ajde_Filter_Where('menu.parent', Ajde_Filter::FILTER_EQUALS, $this->getPK()));
+		$collection->orderBy('menu.sort');
+		
+		return $collection;
+	}
+	
 	
 }

@@ -15,17 +15,28 @@ class Config_Application extends Config_Cms
 									);
 
 
-	//public $homepageRoute;
-	//public $defaultRouteParts;
+	public $homepageRoute		= '-homepage/welkom-bij-vakadi.html';
+	public $defaultRouteParts	= array(
+									'module' => 'node',
+									'controller' => null,
+									'action' => 'view',
+									'format' => 'html',
+									'nodetype' => null,
+									'slug' => null,
+									'id' => null									
+									);
 	//public $aliases;
-	//public $routes;
+	public $routes				= array(
+									array('%^-([^/\.]+)/([^/\.]+)$%' => array('nodetype', 'slug')),
+									array('%^-([^/\.]+)/([^/\.]+)\.(html)$%' => array('nodetype', 'slug', 'format')),
+								);
 
 	//public $titleFormat;
 	//public $lang;
 	//public $langAutodetect;
 	//public $langAdapter;
 	//public $timezone;
-	//public $layout;
+	public $layout				= 'vakadi';
 	//public $responseCodeRoute;
 
 	//public $autoEscapeString;
@@ -46,9 +57,12 @@ class Config_Application extends Config_Cms
 	//public $documentProcessors;
 
 	//public $dbAdapter;
-	//public $dbDsn;
-	//public $dbUser;
-	//public $dbPassword;
+	public $dbDsn				= array(
+									'host' 		=> 'localhost',
+									'dbname'	=> 'vakadi'
+									);
+	public $dbUser 				= 'vakadi_ajde';
+	public $dbPassword 			= 'QHcvcxRZZ4nt7bjq';
 	//public $textEditor;
 
 	//public $registerNamespaces;

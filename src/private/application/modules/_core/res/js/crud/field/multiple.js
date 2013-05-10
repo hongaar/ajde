@@ -110,7 +110,7 @@ AC.Crud.Edit.Multiple = function() {
 				}
 				colCounter++;
 			}
-			$newrow.find('td:eq(' + colCounter + ')').find('a').attr('data-id', id);
+			$newrow.find('td').find('a.btn').attr('data-id', id);
 			if (lastId) {
 				$newrow.attr('id', 'row-' + lastId);
 			}

@@ -1,24 +1,35 @@
 <?php
 // Node types
 Ajde_Model::register('admin');
+
 $nodeTypes = new NodetypeCollection();
+$nodeTypes->orderBy('category');
 $nodeTypes->orderBy('sort');
+
+$currentGrouper = '';
 ?>
 
 <div class="well sidebar-nav">
 	<a class="menu-toggle btn btn-normal pull-right"><i class="icon-resize-small"></i></a>
 	<ul class="nav nav-list">
 		<li class="nav-header">Nodes</li>
-		<li><a href="admin/node:view?new&view[filter][nodetype]="><i class="icon-plus"></i> Add</a></li>
+		<li><a href="admin/node:view?new&view[filter][nodetype]="><i class="icon-plus"></i> Add node</a></li>
 		<li class="divider"></li>
 		<?php foreach ($nodeTypes as $nodeType) {  
-			/* @var $nodeType NodetypeModel */ ?>
-		<li>
-			<a href="admin/node:view?view[filter][nodetype]=<?php echo $nodeType->getPK(); ?>">
-				<?php echo _e($nodeType->getName()); ?>
-			</a>
-		</li>
+			/* @var $nodeType NodetypeModel */
+			if ($nodeType->get('category') <> $currentGrouper) {
+				if (!empty($currentGrouper)) { echo '</ul>'; }
+				$currentGrouper = $nodeType->get('category'); ?>
+				<li class="dropdown">
+					<a href="javascript:void(null);" class="dropdown-toggle" data-toggle="dropdown">
+						<?php echo ucfirst($currentGrouper); ?> <b class="caret pull-right"></b>
+					</a>
+					<ul class="dropdown-menu">
+			<?php } ?>
+			<li><a href="admin/node:view?view[filter][nodetype]=<?php echo $nodeType->getPK(); ?>"><?php echo _e($nodeType->getName()); ?></a></li>
 		<?php } ?>
+			</ul>
+		</li>
 		<li class="divider"></li>
 		<li class="nav-header">Media</li>
 		<li><a href="admin/media:view"><i class="icon-th-large"></i> Manager</a></li>        

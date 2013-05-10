@@ -5,6 +5,7 @@ class Ajde_Crud_Cms_Meta_Type_Media extends Ajde_Crud_Cms_Meta_Type
 	public function getFields()
 	{
 		$this->required();
+		$this->help();
 		return parent::getFields();
 	}
 	
@@ -16,9 +17,9 @@ class Ajde_Crud_Cms_Meta_Type_Media extends Ajde_Crud_Cms_Meta_Type
 		$field->setModelName('media');
 		$field->setUsePopupSelector(true);
 		$field->setListRoute('admin/media:view.crud');
-		$field->setUseImage(true);
-		$field->addTableFileField('thumbnail', 'public/images/uploads/');
-		$field->setThumbDim(300, 300);
+//		$field->setUseImage(true);
+//		$field->addTableFileField('thumbnail', 'public/images/uploads/');
+//		$field->setThumbDim(300, 20);
 		return $field;
 	}
 }

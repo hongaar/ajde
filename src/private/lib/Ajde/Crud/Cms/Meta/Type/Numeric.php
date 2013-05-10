@@ -6,6 +6,7 @@ class Ajde_Crud_Cms_Meta_Type_Numeric extends Ajde_Crud_Cms_Meta_Type
 	{
 		$this->required();
 		$this->length();
+		$this->help();
 		return parent::getFields();
 	}
 	

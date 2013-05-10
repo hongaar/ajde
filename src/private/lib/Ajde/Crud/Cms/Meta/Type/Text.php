@@ -7,6 +7,7 @@ class Ajde_Crud_Cms_Meta_Type_Text extends Ajde_Crud_Cms_Meta_Type
 		$this->useWysiwyg();
 		$this->required();
 		$this->length();
+		$this->help();
 		return parent::getFields();
 	}
 	

@@ -54,7 +54,6 @@ body.iframe .row-fluid > div {
 }
 
 .sidebar-nav {
-	overflow: hidden;
 	white-space: nowrap;
 	margin-top: 110px;
 }

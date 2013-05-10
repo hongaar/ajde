@@ -243,6 +243,14 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 	 * @return Ajde_Crud_Options_Fields_Field 
 	 */
 	public function setParent($field) { return $this->_set('parent', $field); }
+	
+	/**
+	 * Sets the child field name if it is different from the model name for fields with type 'multiple'
+	 * 
+	 * @param string $field
+	 * @return Ajde_Crud_Options_Fields_Field 
+	 */
+	public function setChildField($field) { return $this->_set('childField', $field); }
     
 	/**
 	 * Hide this field in iframe (when adding from multiple field)

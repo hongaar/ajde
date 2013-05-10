@@ -7,6 +7,7 @@ class Ajde_Model extends Ajde_Object_Standard
 
 	protected $_autoloadParents = false;
 	
+	protected $_tableName;
 	protected $_displayField = null;
 	protected $_encrypedFields = array();
 	
@@ -151,6 +152,11 @@ class Ajde_Model extends Ajde_Object_Standard
 			return current($this->getTable()->getFieldNames());
 		}
 	}
+	
+	public function displayField()
+	{
+		return $this->get($this->getDisplayField());
+	}
 
 	/**
 	 * @return Ajde_Db_Adapter_Abstract
@@ -284,8 +290,7 @@ class Ajde_Model extends Ajde_Object_Standard
 			// We need to have the MetaModel here..
 			$this->registerAll();
 			$metaCollection = new MetaCollection();
-			$metaCollection->addFilter(new Ajde_Filter_Join($this->getMetaTable(), 'id', 'meta'));
-			var_dump($metaCollection->getEmulatedSql());
+			$metaCollection->addFilter(new Ajde_Filter_Join($this->getMetaTable(), 'meta.id', 'meta'));
 			foreach($metaCollection as $meta) {
 				/* @var $meta MetaModel */
 				$this->_metaLookup[$this->fuzzyMetaName($meta->get('name'))] = $meta->getPK();

@@ -51,8 +51,18 @@ AC.Crud.Edit.Fk = function() {
 				getRowData(id, that, function(response) {
 					var image = response.data[0];
 					var display = response.displayField;
+					var $select = $(that).parents('.control-group').find('select[name]');
 					
-					$(that).parents('.control-group').find('select[name]').val(id);
+					// set selection to new id
+					$select.val(id);
+					
+					// new item for select element?
+					if ($select.val() != id) {
+						$select.append('<option value=' + id + '>' + display + '</option>');
+						$select.val(id);
+					}
+				
+					// update display
 					if ($(that).data('use-image') == '1') {
 						$(that).find('div.input').html(image);
 					} else {

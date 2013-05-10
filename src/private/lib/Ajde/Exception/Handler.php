@@ -219,7 +219,7 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 		$file = str_replace('{{{}}}', "<div style='background-color: #ffff9e;'>", $file);
 		$file = str_replace('{{{/}}}', "</div>", $file);
 
-		$id = md5(microtime());
+		$id = md5(microtime() . $filename . $line);
 		return sprintf(
 				"<a
 					onclick='document.getElementById(\"$id\").style.display = document.getElementById(\"$id\").style.display == \"block\" ? \"none\" : \"block\";'

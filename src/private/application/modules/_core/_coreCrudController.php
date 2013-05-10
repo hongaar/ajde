@@ -103,7 +103,10 @@ class _coreCrudController extends Ajde_Acl_Controller
 		$mainFilter = $crudView->getMainFilter();
 		if ($mainFilter) {
 			$currentFilter = $crudView->getFilterForField($mainFilter);
-			$crud->setOption('fields.' . $mainFilter . '.value', $currentFilter);	
+			// update mainfilter for new records
+			if (Ajde::app()->getRequest()->has('new')) {
+				$crud->setOption('fields.' . $mainFilter . '.value', $currentFilter);	
+			}
 			$crud->setOption('fields.' . $mainFilter . '.hidden', true);	
 		}
 		
@@ -391,8 +394,9 @@ class _coreCrudController extends Ajde_Acl_Controller
 				$statement = $model->getConnection()->prepare($sql);
 				$success = $statement->execute(array($parentId));		
 			} else {
+				$childField = isset($fieldProperties['childField']) ? $fieldProperties['childField'] : $modelName;
 				$parentField = (string) $model->getTable();
-				$sql = 'DELETE FROM '.$fieldProperties['crossReferenceTable'].' WHERE '.$parentField.' = ? AND '.$modelName.' = ? LIMIT 1';
+				$sql = 'DELETE FROM '.$fieldProperties['crossReferenceTable'].' WHERE '.$parentField.' = ? AND '.$childField.' = ? LIMIT 1';
 				$statement = $model->getConnection()->prepare($sql);
 				$success = $statement->execute(array($parentId, $id));			
 			}
@@ -434,9 +438,11 @@ class _coreCrudController extends Ajde_Acl_Controller
 		$modelName = $crud->getOption('fields.' . $fieldName . '.modelName', $fieldName);
 		if (isset($fieldProperties['crossReferenceTable'])) {
 			
+			$childField = isset($fieldProperties['childField']) ? $fieldProperties['childField'] : $modelName;
+			
 			// Already in there?
 			$parentField = (string) $model->getTable();
-			$sql = 'SELECT * FROM '.$fieldProperties['crossReferenceTable'].' WHERE '.$parentField.' = ? AND '.$modelName.' = ? LIMIT 1';
+			$sql = 'SELECT * FROM '.$fieldProperties['crossReferenceTable'].' WHERE '.$parentField.' = ? AND '.$childField.' = ? LIMIT 1';
 			$statement = $model->getConnection()->prepare($sql);
 			$success = $statement->execute(array($parentId, $id));			
 			$result = $statement->fetch(PDO::FETCH_ASSOC);	
@@ -473,7 +479,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 				}
 			}
 			
-			$sql = 'INSERT INTO ' . $fieldProperties['crossReferenceTable'] . ' (' . $parentField . ', ' . $modelName . $endSql;
+			$sql = 'INSERT INTO ' . $fieldProperties['crossReferenceTable'] . ' (' . $parentField . ', ' . $childField . $endSql;
 			$statement = $model->getConnection()->prepare($sql);
 			$success = $statement->execute($values);
 			$lastId = $model->getConnection()->lastInsertId();

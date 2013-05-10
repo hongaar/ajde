@@ -25,7 +25,7 @@ $options
 			->setType('multiple')
 			->setEditRoute('admin/setup:meta.crud')
 			->setShowLabel(false)
-			->setCrossReferenceTable('settingpage_meta')
+			->setCrossReferenceTable('setting_meta')
 			->addTableField('type')
 			->addSortField('sort')
 			->addPrefillField('target', 'setting')
@@ -63,7 +63,7 @@ $options
 
 	->finished();
 
-$crud = $this->ACCrudList('settingpage', $options);
+$crud = $this->ACCrudList('setting', $options);
 
 echo $crud->output();
 

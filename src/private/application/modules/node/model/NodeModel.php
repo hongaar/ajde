@@ -24,11 +24,6 @@ class NodeModel extends Ajde_Model
 		}
 	}
 	
-	public function beforeSave()
-	{
-		// ...
-	}
-
 	public function getTreeName()
 	{
 		$ret = _c($this->title);
@@ -45,6 +40,11 @@ class NodeModel extends Ajde_Model
 	{
 		$this->sortTree('NodeCollection');
 	}
+	
+	public function beforeSave()
+	{
+		// ...
+	}
 
 	public function beforeInsert()
 	{
@@ -58,6 +58,9 @@ class NodeModel extends Ajde_Model
 //			$min = ($item->sort < $min) ? $item->sort : $min;
 //		}
 //		$this->sort = $min - 1;
+		
+		// Slug
+		$this->_setSlug();
 	}
 	
 	public function afterInsert()
@@ -65,18 +68,75 @@ class NodeModel extends Ajde_Model
 		// ...
 	}
 	
-	public function hasUrl()
+	private function _setSlug()
 	{
-		return true;
+		$name = $this->title;
+
+		$ghost = new self();
+		$uniqifier = 0;
+
+		do {
+			$ghost->reset();
+			$slug = $this->_sluggify($name);
+			$slug = $slug . ($uniqifier > 0 ? $uniqifier : '');
+			$ghost->loadBySlug($slug);
+			$uniqifier++;
+			if ($uniqifier >= 100) {
+				throw new Ajde_Controller_Exception('Max recursion depth reached for setting slug');
+				break;
+			}
+		} while($ghost->hasLoaded());
+
+		$this->slug = $slug;
+	}
+
+	private function _sluggify($name)
+	{
+		// @see http://stackoverflow.com/a/5240834
+		$slug = iconv('UTF-8', 'ASCII//TRANSLIT', $name);
+		$slug = preg_replace("/[^a-zA-Z0-9\/_| -]/", '', $name);
+		$slug = strtolower(trim($slug, '-'));
+		$slug = preg_replace("/[\/_| -]+/", '-', $slug);
+		return $slug;
 	}
 	
+	public function loadBySlug($slug)
+	{
+		$this->loadByField('slug', $slug);
+	}
+
+	/***
+	 * GETTERS
+	 */
+		
 	public function getUrl()
 	{
 		if ($this->getPK()) {
-			return 'http://' . Config::get('site_root') . 'post/item/' . $this->getPK() . '.html';
-		} else {
-			return '(not saved)';
+			if (!$this->getNodetype() instanceof Ajde_Model) {
+				$this->loadParents();
+			}
+			$nodetype = str_replace(' ', '_', strtolower($this->getNodetype()->displayField()));
+			return 'http://' . Config::get('site_root') . '-' . $nodetype . '/' . $this->getSlug();
 		}
+		return false;
+	}
+	
+	/**
+	 * 
+	 * @return NodetypeModel
+	 */
+	public function getNodetype()
+	{
+		return parent::getNodetype();
+	}
+	
+	/**
+	 * 
+	 * @return MediaModel
+	 */
+	public function getMedia()
+	{
+		return parent::getMedia();
 	}
 	
 	public function getTags()
@@ -90,8 +150,22 @@ class NodeModel extends Ajde_Model
 		
 		return $collection;
 	}
+	
+	/**
+	 * 
+	 * @return NodeCollection
+	 */
+	public function getRelatedNodes()
+	{
+		$collection = new NodeCollection();
+		$collection->addFilter(new Ajde_Filter_Join('node_related', 'node.id', 'related'));
+		$collection->addFilter(new Ajde_Filter_Where('node_related.node', Ajde_Filter::FILTER_EQUALS, $this->getPK()));
+		$collection->orderBy('node_related.sort');
+		
+		return $collection;
+	}
 
-	public function getMedia()
+	public function getAdditionalMedia()
 	{
 		$collection = new MediaCollection();
 		$collection->addFilter(new Ajde_Filter_Where('post', Ajde_Filter::FILTER_EQUALS, $this->getPK()));

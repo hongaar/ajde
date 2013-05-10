@@ -38,10 +38,10 @@ $options
 /* @var $decorator Ajde_Crud_Cms_Meta_Decorator */
 $decorator = $this->decorator;
 $decorator->setOptions($options);
-$decorator->decorateInputs('settingpage_meta', 'settingpage', 'id', array(
+$decorator->decorateInputs('setting_meta', 'setting', 'id', array(
 	new Ajde_Filter_Where('target', Ajde_Filter::FILTER_EQUALS, 'setting')
 ));
-$crud = $this->ACCrudList('settingpage', $options);
+$crud = $this->ACCrudList('setting', $options);
 
 $crudOutput = $crud->output();
 

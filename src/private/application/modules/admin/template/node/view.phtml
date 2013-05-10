@@ -1,7 +1,7 @@
 <?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ 
 
 $showOnlyWhenFields = array(
-	'title', 'subtitle', 'content', 'summary', 'media', 'tag', 'additional_media', 'children', 'published'
+	'title', 'subtitle', 'content', 'summary', 'media', 'tag', 'additional_media', 'children', 'published', 'related_nodes'
 );
 $showOnlyWhen = array();
 $nodetypes = new NodetypeCollection();
@@ -99,7 +99,20 @@ $options
 //			->addTableField('nodetype')
 			->addSortField('sort')
 			->setShowLabel(false)
-			->up()			
+			->up()
+		->selectField('related_nodes')
+			->addShowOnlyWhen('nodetype', $showOnlyWhen['related_nodes'])
+			->setType('multiple')
+			->setEditRoute('admin/node:view.crud')
+			->setUsePopupSelector(true)
+			->setListRoute('admin/node:view.crud')
+			->setModelName('node')
+			->setSimpleSelector(true)
+			->addSortField('sort')
+			->setShowLabel(false)
+			->setChildField('related')
+			->setCrossReferenceTable('node_related')
+			->up()
 		->selectField('added')
 			->setIsReadonly(true)
 			->up()
@@ -108,7 +121,7 @@ $options
 		->selectButtons()
 			->setNew(true)
 			->setEdit(true)
-			->addItemButton('view', 'view')
+//			->addItemButton('view', 'view')
 			->up()
 		->setMain('title')
 		->setShow(array('title', 'added', 'published', 'sort'))
@@ -129,7 +142,7 @@ $options
 						->setShow(array('title', 'subtitle', 'content', 'summary'))
 						->up()
 					->addBlock()
-						->setClass('sidebar well')
+						->setClass('')
 						->setTitle('Meta values')
 						->up()
 					->up()
@@ -149,6 +162,11 @@ $options
                         ->setClass('sidebar well')
 						->setTitle('Additional media')
 						->setShow(array('additional_media'))
+						->up()
+					->addBlock()
+                        ->setClass('sidebar well')
+						->setTitle('Related nodes')
+						->setShow(array('related_nodes'))
 						->up()
 					->addBlock()
 						->setTitle('Parent node')

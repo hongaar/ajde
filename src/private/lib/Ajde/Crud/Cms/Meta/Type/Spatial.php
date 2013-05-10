@@ -7,6 +7,7 @@ class Ajde_Crud_Cms_Meta_Type_Spatial extends Ajde_Crud_Cms_Meta_Type
 	public function getFields()
 	{
 		$this->required();
+		$this->help();
 		$this->useImage();
 		$this->media();
 		return parent::getFields();
