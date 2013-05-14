@@ -8,6 +8,7 @@ class Ajde_Crud_Cms_Meta_Type_Text extends Ajde_Crud_Cms_Meta_Type
 		$this->required();
 		$this->length();
 		$this->help();
+		$this->defaultValue();
 		return parent::getFields();
 	}
 	

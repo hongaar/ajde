@@ -1,0 +1,32 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+?>
+
+<div class="row-fluid">
+	<div class="span2">
+	</div><!--/span-->
+	<div class="span8">
+		<div class="hero-unit">
+			<h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
+			<p>Belay is task management by <a href="http://nabble.nl" target="_blank">Nabble</a></p>
+			<p><a href="issue/view" class="btn btn-primary btn-large">view issues &raquo;</a></p>
+		</div>
+		<div class="row-fluid">
+			<div class="span4">
+				<h2>Structural</h2>
+				<p>Everything is organized in a tree. Clients, projects, streaks, issues can all be organized relatively. Build one big happy family of issues.</p>
+				<p><a class="btn" href="admin/node:view">a client &raquo;</a></p>
+			</div><!--/span-->
+			<div class="span4">
+				<h2>Media</h2>
+				<p>Files and embedded media such as video and audio</p>
+				<p><a class="btn" href="admin/media:view">view all media &raquo;</a></p>
+			</div><!--/span-->
+			<div class="span4">
+				<h2>Menus</h2>
+				<p>Manage what nodes users can access from the menus</p>
+				<p><a class="btn" href="admin/menu:view">menu overview &raquo;</a></p>
+			</div><!--/span-->
+		</div><!--/row-->
+	</div><!--/span-->
+</div><!--/row-->

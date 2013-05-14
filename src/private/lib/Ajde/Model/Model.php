@@ -285,7 +285,7 @@ class Ajde_Model extends Ajde_Object_Standard
 		return str_replace(' ', '_', strtolower($name));
 	}
 	
-	protected function lookupMetaName($name) {
+	public function lookupMetaName($name) {
 		if (empty($this->_metaLookup)) {
 			// We need to have the MetaModel here..
 			$this->registerAll();
@@ -527,6 +527,11 @@ class Ajde_Model extends Ajde_Object_Standard
 	{
 		return !empty($this->_data);
 	}
+	
+	public function hasParentLoaded($parent)
+	{
+		return $this->has($parent) && $this->get($parent) instanceof Ajde_Model && $this->get($parent)->hasLoaded();
+	}
 
 	public function loadParents()
 	{
@@ -540,6 +545,9 @@ class Ajde_Model extends Ajde_Object_Standard
 		if (empty($this->_data)) {
 			// TODO:
 			throw new Ajde_Exception('Model ' . (string) $this->getTable() . ' not loaded when loading parent');
+		}
+		if ($this->hasParentLoaded($parent)) {
+			return;
 		}
 		if ($parent instanceof Ajde_Model) {
 			$parent = $parent->getTable();

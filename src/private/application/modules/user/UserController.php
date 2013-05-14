@@ -13,7 +13,7 @@ class UserController extends Ajde_User_Controller
 	public function beforeInvoke()
 	{
 		if (substr($_GET['_route'], 0, 5) == 'admin' || substr($_GET['returnto'], 0, 5) == 'admin' || (($user = $this->getLoggedInUser()) && $user->getUsergroup() != UserModel::USERGROUP_USERS)) {
-			Ajde::app()->getDocument()->setLayout(new Ajde_Layout('cms'));
+			Ajde::app()->getDocument()->setLayout(new Ajde_Layout('belay'));
 		}
 		Ajde_Cache::getInstance()->disable();
 		return parent::beforeInvoke();

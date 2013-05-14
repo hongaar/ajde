@@ -23,13 +23,17 @@ class Ajde_Crud_Options extends Ajde_Object_Standard
 	// Protected functions
 	
 	protected function _select($name, $key = null)
-	{		
+	{
+		$key = isset($key) ? $key : $name;
 		// Get new active object
 		$className = get_class($this) . '_' . ucfirst($name);
 		/* @var $new Ajde_Crud_Options */
 		$new = new $className();		
 		$new->_parent = $this;
-		$new->_key = isset($key) ? $key : $name;
+		$new->_key = $key;
+		if (isset($this->_stack[$key])) {
+			$new->_stack = $this->_stack[$key];
+		}
 		return $new;
 	}
 		

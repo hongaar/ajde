@@ -1,0 +1,75 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ 
+
+/* @var $options Ajde_Crud_Options */
+$options = $this->options;
+
+$options
+	->selectFields()
+		->selectField('childrencount')
+			->setLabel('Projects')
+			->setFunction('displayChildrenCount')
+			->up()
+		->up()			
+	->selectList()
+		->setShow(array('title', 'childrencount', 'sort'))
+		->selectButtons()
+			->setNew(true)
+				->setEdit(true)
+				->setDelete(false)
+				->setSelect(false)
+				->addItemButton('projects', 'projects')
+->finished();
+
+$crud = $this->ACCrudList('node', $options);
+$crud->setSessionName('client');
+$crud->setNewAction('client?view[filter][nodetype]=' . NodeModel::NODETYPE_CLIENT);
+
+$filterGroup = new Ajde_Filter_WhereGroup();
+$filters = array(
+	NodeModel::NODETYPE_CLIENT
+);
+foreach ($filters as $filter) {
+	$filterGroup->addFilter(new Ajde_Filter_Where('nodetype', Ajde_Filter_Where::FILTER_EQUALS, $filter, Ajde_Query::OP_OR));
+}
+$crud->getCollection()->addFilter($filterGroup);
+
+if (!Ajde::app()->getRequest()->has('edit') && !Ajde::app()->getRequest()->has('new')) {
+	// LIST 
+	
+	// remove mainfilter
+	$crudView = $crud->getCollectionView();
+	$crudView->setFilter(array());
+	
+	// add node type
+	$crud->getCollection()->joinNodetype();
+	$crud->getCollection()->getQuery()->addSelect('nodetype.name AS nodetype_name');
+	
+	// add childrencount
+	$crud->getCollection()->getQuery()->addSelect('NULL AS childrencount');
+}
+
+if (Ajde::app()->getRequest()->has('new')) {
+	// NEW
+	
+	// set owner
+	$user = UserModel::getLoggedIn();
+	$crud->setOption('fields.user.value', $user->getPK());
+}
+
+
+
+?>
+
+<div class="row-fluid">
+	<div class="span12 expandInIframe">
+		
+		<div class="page-header">
+			<h1>
+				<?php echo Ajde::app()->getDocument()->getTitle(); ?>
+			</h1>
+		</div>		
+		
+		<?php echo $crud->output(); ?>
+		
+	</div><!--/span-->
+</div><!--/row-->

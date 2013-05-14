@@ -1,0 +1,162 @@
+/*#!less*/
+
+body {
+	padding-top: 80px;
+}
+
+.btn, input, textarea, select, .uneditable-input {
+	font-weight: 300 !important;
+}
+
+select option.choose {
+	color: silver;
+}
+
+.navbar .brand {
+	padding-left: 50px;
+	padding-top: 13px;
+	
+	img {
+		position: absolute;
+		left: 0;
+		top: 0;
+		height: inherit;
+	}
+}
+
+@media (max-width: 979px) {
+	.navbar .brand {
+		padding-left: 60px;
+		
+		img {
+			width: 47px;
+			height: 61px;
+		}
+	}
+}
+
+.hero-unit {
+	background-image: url('../../public/images/nabble-cover.png');
+	background-position: 0 0;
+	background-size: cover;
+	h1 {
+		margin-bottom: 0.2em;
+		font-size: 2.2em;
+	}
+}
+
+.menu-toggle {
+	margin: -19px -19px 0 0;
+}
+
+.row-fluid > div {
+	-webkit-transition: width 0.5s ease;
+    -moz-transition: width 0.5s ease;
+    -o-transition: width 0.5s ease;
+    transition: width 0.5s ease;
+	
+	&.no-animation {
+		-webkit-transition: none;
+		-moz-transition: none;
+		-o-transition: none;
+		transition: none;
+	}
+}
+
+body.iframe .row-fluid > div {
+	-webkit-transition: none;
+	-moz-transition: none;
+	-o-transition: none;
+	transition: none;
+}
+
+.row-fluid .span0 {
+	width: 42px !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	overflow: hidden !important;	
+	
+	ul {
+		opacity: 0;
+		pointer-events: none;
+	}
+}
+
+.sidebar-nav {
+	white-space: nowrap;
+	margin-top: 110px;
+}
+
+.page-header h1 span.page {
+	color: silver;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 0.8em;
+}
+
+/** cosmo fixes **/
+.control-group.success .checkbox, .control-group.success .radio, .control-group.success input, .control-group.success select, .control-group.success textarea {
+	color: inherit;
+}
+
+@media (max-width: 979px) {
+	body {
+		padding-top: 0;
+	}
+	
+	.nav-collapse .navbar-text {
+		display: none;
+	}
+	
+	.sidebar-nav {
+		padding: 5px 0 !important;
+	}
+	
+	.menu-toggle {
+		margin: -5px 0;
+	}
+	
+	.navbar-inverse .nav-collapse .nav>li>a, .navbar-inverse .nav-collapse .dropdown-menu a {
+		color: #fff !important;
+	}
+}
+
+@media (max-width: 767px) {
+	.row-fluid .span0 {
+		height: 30px !important;
+	}
+	
+	.sidebar-nav {
+		margin-top: auto ;
+	}
+	
+	/**** CRUD GRID VIEW ****/	
+	table.crud.grid {
+		display: block;
+		
+		thead {
+			tr {			
+				&:first-child {
+					display: none;
+				}
+				
+				th {
+					width: 100% !important;
+					
+					&:first-child {
+						width: 0 !important;
+					}
+				}
+			}
+		}
+				
+		tbody {
+			margin-left: 0 !important;
+			
+			tr {				
+				width: 50% !important;
+			}
+		}
+		
+	}
+}

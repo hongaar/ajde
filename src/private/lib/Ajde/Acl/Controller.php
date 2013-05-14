@@ -5,17 +5,17 @@ abstract class Ajde_Acl_Controller extends Ajde_User_Controller
 	protected $_aclCollection = null;	
 	protected $_registerAclModels = array('acl');
 	
-	protected $_allowedAction = array();
+	protected $_allowedActions = array();
 	
 	/* ACL sets this to true or false to grant/prevent access in beforeInvoke() */
 	private $_hasAccess;
 	
-	public function beforeInvoke()
+	public function beforeInvoke($allowed = array())
 	{
 		foreach($this->_registerAclModels as $model) {
 			Ajde_Model::register($model);
 		}
-		if (!in_array($this->getAction(), $this->_allowedActions) && $this->hasAccess() === false) {
+		if (!in_array($this->getAction(), array_merge($this->_allowedActions, $allowed)) && $this->hasAccess() === false) {
 			Ajde::app()->getRequest()->set('message', __('You may not have the required permission to view this page'));
 			Ajde::app()->getResponse()->dieOnCode(Ajde_Http_Response::RESPONSE_TYPE_UNAUTHORIZED);
 		} else {

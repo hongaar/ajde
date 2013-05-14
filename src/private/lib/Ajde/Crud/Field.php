@@ -16,12 +16,25 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
 	
 	protected $_useSpan = 12;
 	protected $_attributes = array();
-
+	
 	public function __construct(Ajde_Crud $crud, $fieldOptions) {
 		$explode = explode('_', get_class($this));
 		end($explode);
 		$this->_type = strtolower(current($explode));
 		$this->_crud = $crud;
+		
+		/* defaults */
+		$this->_data = array(
+			'name' => isset($fieldOptions['name']) ? $fieldOptions['name'] : false,
+			'type' => 'text',
+			'length' => 255,
+			'default' => '',
+			'label' => isset($fieldOptions['name']) ? ucfirst($fieldOptions['name']) : false,
+			'isRequired' => false,
+			'isPK' => false,				
+			'isAutoIncrement' => false,
+			'isAutoUpdate' => false
+		);
 
 		/* options */
 		foreach($fieldOptions as $key => $value) {

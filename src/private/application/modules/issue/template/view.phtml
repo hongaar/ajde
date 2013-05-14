@@ -1,0 +1,100 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ 
+
+/* @var $options Ajde_Crud_Options */
+$options = $this->options;
+
+$options
+	->selectFields()
+		->selectField('status')
+			->setLabel('Status')
+			->setFunction('displayStatus')
+			->up()
+		->selectField('due')
+			->setLabel('Due')
+			->setFunction('displayDue')
+			->up()
+		->up()			
+	->selectList()
+		->setShow(array('title', 'status', 'due', 'sort'))
+		->setRowClassFunction('rowClass')
+		->selectButtons()
+			->setNew(true)
+			->setEdit(true)
+			->setDelete(true)
+			->setSelect(true)
+//			->addItemButton('new-issue', '<i class="icon-plus icon-white"></i> issue', 'new-issue btn-success', true)
+			->addItemButton('timer', '<i class="icon-time icon-white"></i> work', 'btn-inverse work')
+->finished();
+
+$crud = $this->ACCrudList('node', $options);
+$crud->setSessionName('issue');
+$crud->setNewAction('issue?prefill[parent]=' . $this->parent);
+
+if (!Ajde::app()->getRequest()->has('edit') && !Ajde::app()->getRequest()->has('new')) {
+	// LIST 
+	$collection = $crud->getCollection();
+	/* @var $collection NodeCollection */
+	$model = $crud->getModel();
+	/* @var $model NodeModel */
+	
+	// remove mainfilter
+	$crudView = $crud->getCollectionView();
+	$crudView->setFilter(array());
+	
+	// add parent filter
+	$collection->filterChildrenOfParent($this->parent);
+	
+	// join meta
+	$collection->joinMeta();
+	$collection->getQuery()->addGroupBy('node_meta.node');
+	
+	// add issue status
+	$issuestatusId = $model->lookupMetaName('issue_status');
+	$collection->getQuery()->addSelect(new Ajde_Db_Function(
+		"(SELECT node_meta.value FROM node_meta WHERE node_meta.meta = $issuestatusId AND node_meta.node = node.id) AS status"
+	));
+	
+	// add issue due
+	$issuedueId = $model->lookupMetaName('issue_due');
+	$collection->getQuery()->addSelect(new Ajde_Db_Function(
+		"(SELECT node_meta.value FROM node_meta WHERE node_meta.meta = $issuedueId AND node_meta.node = node.id) AS due"
+	));		
+	
+	// add streak status
+	$streakstatusId = $model->lookupMetaName('streak_status');
+	$collection->getQuery()->addSelect(new Ajde_Db_Function(
+		"(SELECT node_meta.value FROM node_meta WHERE node_meta.meta = $streakstatusId AND node_meta.node = node.id) AS streak_status"
+	));
+	
+	// add node type
+	$collection->joinNodetype();
+	$collection->getQuery()->addSelect('nodetype.name AS nodetype_name');
+	
+}
+
+if (Ajde::app()->getRequest()->has('new')) {
+	// NEW
+	
+	// set owner
+	$user = UserModel::getLoggedIn();
+	$crud->setOption('fields.user.value', $user->getPK());
+}
+
+?>
+
+<div class="row-fluid">
+	<div class="span12 expandInIframe">
+		
+		<div class="page-header">
+			<h1>
+				<?php echo Ajde::app()->getDocument()->getTitle(); ?>
+				<?php if (Ajde::app()->getRequest()->has('edit') || Ajde::app()->getRequest()->has('new')) {
+					echo $this->ACCrudMainFilterBadge($crud, true);
+				} ?>
+			</h1>
+		</div>		
+		
+		<?php echo $crud->output(); ?>
+		
+	</div><!--/span-->
+</div><!--/row-->

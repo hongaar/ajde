@@ -1,0 +1,52 @@
+/*#!less*/
+
+table.crud.grid tbody tr.client,
+table.crud.grid tbody tr.project,
+table.crud.grid tbody tr.streak
+{
+	display: none;
+}
+
+table.crud tbody tr.client,
+table.crud tbody tr.project,
+table.crud tbody tr.streak
+{
+	td.main {
+		color: silver;
+	}
+	
+	td.sort span {
+		display: none;
+	}
+	
+	td.buttons .btn {
+		display: none;
+	}
+	
+	td.buttons .btn.new-issue {
+		display: inherit;
+	}
+}
+
+table.crud tbody tr.note
+{
+	td.buttons .btn.work {
+		display: none;
+	}
+}
+
+table.crud tbody tr.issue {
+	td.buttons .btn.new-issue {
+		display: none;
+	}
+}
+
+table.crud tbody tr td.buttons {
+	text-align: left !important;
+}
+
+table.crud.grid tbody {
+	td i.icon- {
+		display: none;
+	}
+}

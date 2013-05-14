@@ -46,6 +46,9 @@ abstract class Ajde_Crud_Cms_Meta_Type extends Ajde_Crud_Cms_Meta_Fieldlist
 		if ($meta->getOption('help')) {
 			$field->setHelp($meta->getOption('help'));
 		}
+		if ($meta->getOption('default')) {
+			$field->setDefault($meta->getOption('default'));
+		}
 		$field->setLength($meta->getIntOption('length'));
 		$field->setIsRequired($meta->getBooleanOption('required'));
 		return $field;
@@ -80,6 +83,14 @@ abstract class Ajde_Crud_Cms_Meta_Type extends Ajde_Crud_Cms_Meta_Fieldlist
 	public function help()
 	{
 		$field = $this->fieldFactory('help');
+		$field->setType('text');
+		$field->setLength(255);	
+		$this->addField($field);
+	}
+	
+	public function defaultValue()
+	{
+		$field = $this->fieldFactory('default');
 		$field->setType('text');
 		$field->setLength(255);	
 		$this->addField($field);

@@ -1,0 +1,258 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+
+$this->requireGWebFont('Roboto', array(300, 500, 700));
+
+// Twitter bootstrap
+$this->requireCssPublic('bootstrap/bootstrap-cosmo.css', Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST);
+$this->requireCssPublic('bootstrap/bootstrap-responsive.css', Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST);
+$this->requireCss('bootstrap');
+
+// Include jQuery 1.7
+$this->requireJsLibrary('jquery', '1.7');
+
+// Fastclick
+$this->requireJsPublic('lib/fastclick.js');
+
+// Bootstrap.js
+$this->requireJsPublic('lib/bootstrap.min.js');
+
+// jqBootstrapValidation.js
+$this->requireJsPublic('lib/jqBootstrapValidation.js');
+
+// jQuery cookie
+$this->requireJsPublic('lib/jquery.cookie.js');
+
+// Chosen
+$this->requireJsPublic('lib/chosen/chosen.jquery.min.js');
+$this->requireCssPublic('lib/chosen/chosen.css');
+$this->requireCss('chosen');
+
+// Picker
+$this->requireJsPublic('lib/picker/jquery.fs.picker.min.js');
+$this->requireCssPublic('lib/picker/jquery.fs.picker.css');
+$this->requireCss('picker');
+
+// CKEditor
+$this->requireCss('ckeditor');
+
+// Some JavaScript i18n
+$this->requireJsFirst('i18n.' . Ajde_Lang::getInstance()->getShortLang());
+
+// Alert bar
+$this->requireJsFirst('core.alert');
+$this->requireCssFirst('core.alert');
+
+// Additional CSS
+$this->requireCss('default.crud');
+
+// The user
+$user = UserModel::getLoggedIn();
+
+// Node types
+Ajde_Model::register('admin');
+
+$nodeTypes = new NodetypeCollection();
+$nodeTypes->orderBy('category');
+$nodeTypes->orderBy('sort');
+
+$currentGrouper = '';
+
+// Somehow, we need to manually include the timer widget css?
+$this->requireCss('widget', 'html', MODULE_DIR . 'timer/');
+
+?>
+<!-- Inspired by HTML5 Boilerplate -->
+<!doctype html>
+<html lang='<?php echo Ajde_Lang::getInstance()->getShortLang(); ?>' id='<?php echo Config::get('ident'); ?>' data-lifetime='<?php echo (Config::get('sessionLifetime') == 0 ? 180 : Config::get('sessionLifetime')); ?>' data-alert='<?php echo _e(Ajde_Session_Flash::get('alert')); ?>'>
+	<head>
+		
+		<!-- UTF-8 please (also in the headers, just to be sure) -->
+		<meta charset='utf-8'>
+		
+		<!-- Some content meta tags -->
+		<title><?php echo _e(strip_tags(Ajde::app()->getDocument()->getFullTitle())); ?></title>		
+		<meta name='description' content='<?php echo _e(Ajde::app()->getDocument()->getDescription()); ?>' />
+		<meta name='author' content='<?php echo _e(Config::get('author')); ?>' />
+		<?php echo Ajde::app()->getDocument()->getMeta(); ?>
+		
+		<!-- Mobile presentation meta tags -->
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width">
+		<meta http-equiv="cleartype" content="on">
+		
+		<!-- Define the root of the site -->
+		<base href='http://<?php echo Config::get('lang_root'); ?>' />
+		
+		<!-- require JavaScript and cookies -->		
+		<noscript>
+			<meta http-equiv="refresh" content="0;url=main/nojavascript.html?returnto=<?php echo urlencode((string) Ajde::app()->getRoute()); ?>" />
+		</noscript>				
+		<script defer="defer">
+			if (navigator.cookieEnabled === false) {
+				document.location.href='main/nocookies.html?returnto=<?php echo urlencode((string) Ajde::app()->getRoute()); ?>';
+			}
+		</script>
+		
+		<!-- Make IE6-8 HTML5 compliant, somewhat... -->
+		<!--[if lt IE 9]>
+		<script src='public/js/lib/html5shiv.js'></script>
+		<![endif]-->
+		
+		<!-- Favicon and CSS -->
+		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+		<?php echo $this->getDocument()->getHead('css'); ?>
+		
+	</head>
+	
+	<!-- Target older versions of IE with CSS classes -->
+	<!--[if lt IE 7 ]> <body class='ie6 oldie'> <![endif]-->
+	<!--[if IE 7 ]>    <body class='ie7 oldie'> <![endif]-->
+	<!--[if IE 8 ]>    <body class='ie8 oldie'> <![endif]-->
+	<!--[if IE 9 ]>    <body class='ie9'> <![endif]-->
+	<!--[if (gt IE 9)|!(IE)]><!--> <body> <!--<![endif]-->
+		
+		<div class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container-fluid">
+					<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+						  <span class="icon-bar"></span>
+						  <span class="icon-bar"></span>
+						  <span class="icon-bar"></span>
+					</button>
+					<a class="brand" href=".">
+						<img src="public/images/nabble-small.png" width="39" height="51" alt="by Nabble" />
+						<?php echo Config::get('sitename'); ?>
+					</a>
+					<div class="nav-collapse collapse">
+						<?php if ($user) { ?>
+							<ul class="nav pull-right">
+								<li class="dropdown">
+									<a class="dropdown-toggle" data-toggle="dropdown" href="user">
+                                        <?php echo Ajde_Resource_Image_Gravatar::get($user->getEmail(), 18, 'identicon', 'g', true); ?> &nbsp;
+                                        <?php echo $user->getUsername(); ?> <b class="caret"></b>
+                                    </a>
+									<ul class="dropdown-menu">
+										<li><a href="user">Profile</a></li>
+										<li><a href="user/settings">Settings</a></li>
+										<li class="divider"></li>
+										<li><a href="user/logoff">Log out</a></li>
+									</ul>
+								</li>
+							</ul>						
+							<p class="navbar-text pull-right">
+								Logged in as &nbsp; 
+							</p>
+						<?php } else { ?>
+							<ul class="nav pull-right">
+								<li><a href="user/logon">Login</a></li>
+							</ul>	
+						<?php } ?>
+						
+						<ul class="nav">
+							<?php if ($user) { ?>
+								<li><a href="client">Clients</a></li>
+								<li><a href="project">Projects</a></li>
+								<li><a href="issue">Issues</a></li>
+								<li class="divider"></li>
+								<?php echo $this->includeModule('timer/widget'); ?>		
+							<?php }
+							if ($user && $user->getUsergroup() == UserModel::USERGROUP_ADMINS) { ?>
+								<li class="divider"></li>
+								<li><a href="admin/cms:settings">Settings</a></li>
+								<li><a href="admin/user:view">Users</a></li>
+								<li class="dropdown">
+									<a class="dropdown-toggle" data-toggle="dropdown" href="admin/setup:nodes">Setup <b class="caret"></b></a>
+									<ul class="dropdown-menu">
+										<li class="nav-header">Meta setup</li>
+										<li><a href="admin/setup:nodes">Nodes</a></li>
+										<li><a href="admin/setup:menus">Menus</a></li>
+										<li><a href="admin/setup:settings">Settings</a></li>
+										<li class="divider"></li>		
+										<li><a href="admin/setup:meta">Edit meta fields</a></li>
+									</ul>
+								</li>
+								<li class="divider"></li>
+								<li class="dropdown">
+									<a class="dropdown-toggle" data-toggle="dropdown" href="admin/cms:nodes">All nodes <b class="caret"></b></a>
+									<ul class="dropdown-menu">
+										<li class="nav-header">Nodes</li>
+										<li><a href="admin/node:view?view[filter][nodetype]=">Overview</a></li>
+										<?php foreach ($nodeTypes as $nodeType) {  
+											/* @var $nodeType NodetypeModel */
+											if ($nodeType->get('category') <> $currentGrouper) {
+												if (!empty($currentGrouper)) { echo '</ul>'; }
+												$currentGrouper = $nodeType->get('category'); ?>
+												<li class="with-sub-menu">
+													<a href="javascript:void(null);">
+														<?php echo ucfirst($currentGrouper); ?> <i class="icon-chevron-right pull-right"></i>
+													</a>
+													<ul class="dropdown-menu sub-menu">
+											<?php } ?>
+												<li><a href="admin/node:view?view[filter][nodetype]=<?php echo $nodeType->getPK(); ?>"><?php echo _e($nodeType->getName()); ?></a></li>
+										<?php } 
+										if ($nodeTypes->count()) { ?>
+											</ul>
+										<?php } ?>
+										</li>
+										<li class="divider"></li>
+										<li><a href="admin/cms:media">Media</a></li>
+										<li><a href="admin/cms:menus">Menus</a></li>
+										<li><a href="admin/cms:tags">Tags</a></li>
+									</ul>
+								</li>
+							<?php } ?>
+						</ul>
+					</div><!--/.nav-collapse -->
+				</div>
+			</div>
+		</div>
+
+		<div class="container-fluid">
+			
+			<?php echo $this->getDocument()->getBody(); ?>
+			
+			<div class="clearfix"></div>
+			
+			<hr>
+						
+			<footer>
+			  <p>&copy; <?php echo date('Y'); ?> <?php echo Config::get('author'); ?></p>
+			</footer>
+
+		</div><!--/.fluid-container-->
+		
+		<!-- The scripts -->
+		<?php echo $this->getDocument()->getScripts(); ?>
+		
+		<!-- Google Analytics -->
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-XXXXX-X']);
+			_gaq.push(['_trackPageview']);
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+		
+		<!-- updatemybrowser.org widget -->
+		<script type="text/javascript">
+		(function() {
+			var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
+			s.src = ('https:'==document.location.protocol?'https://':'http://') + 'updatemybrowser.org/umb.js';
+			var b = document.getElementsByTagName('script')[0]; b.parentNode.insertBefore(s, b);
+		})();	
+		</script>
+		
+	</body>
+</html>
+
+<!-- Some debugging info -->
+<!--[<pre>
+	<?php $version = Config::get('version'); echo Config::get('ident') . ', v' . $version['number'] . ' (' . $version['name'] . ')'; ?> 
+	Cache <?php echo Ajde_Cache::getInstance()->isEnabled() ? 'enabled' : 'disabled' ?> 
+	Last modified on <?php echo date("r", Ajde_Cache::getInstance()->getLastModified()); ?> 
+</pre><![-->

@@ -181,7 +181,12 @@ AC.Crud.List = function() {
 		},
 
 		newHandler: function() {
-			window.location.href = window.location.pathname + '?new';
+			if ($(this).parents('table').data('newaction')) {
+				var newaction = $(this).parents('table').data('newaction');
+				window.location.href = newaction + (newaction.indexOf('?') > -1 ? '&' : '?') + 'new';
+			} else {
+				window.location.href = window.location.pathname + '?new';
+			}
 		},
 
 		editHandler: function(e) {
@@ -193,8 +198,12 @@ AC.Crud.List = function() {
 			}
 			var id = row.find('input[type=checkbox]').attr('value');
 			var form = $(this).parents('form');
-
-			window.location.href = window.location.pathname + '?edit=' + id;
+			
+			if (row.parents('table').data('editaction')) {
+				window.location.href = row.parents('table').data('editaction') + '?edit=' + id;
+			} else {
+				window.location.href = window.location.pathname + '?edit=' + id;
+			}
 		},
 
 		multipleDeleteHandler: function(e, id) {

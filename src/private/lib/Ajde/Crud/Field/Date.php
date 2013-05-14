@@ -20,7 +20,9 @@ class Ajde_Crud_Field_Date extends Ajde_Crud_Field
 			$attributes['type'] = "text";
 			$attributes['readonly'] = "readonly";
 		} else {
-			$attributes['value'] = Ajde_Component_String::escape( date('Y-m-d', strtotime($this->getValue()) ) );
+			if ($this->getValue()) {
+				$attributes['value'] = Ajde_Component_String::escape( date('Y-m-d', strtotime($this->getValue()) ) );
+			}			
 			$attributes['type'] = "date";
 		}
 		return $attributes;

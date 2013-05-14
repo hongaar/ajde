@@ -6,6 +6,7 @@ class Ajde_Crud_Cms_Meta_Type_Date extends Ajde_Crud_Cms_Meta_Type
 	{
 		$this->required();
 		$this->help();
+		$this->defaultValue();
 		return parent::getFields();
 	}
 	

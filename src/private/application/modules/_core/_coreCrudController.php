@@ -45,7 +45,8 @@ class _coreCrudController extends Ajde_Acl_Controller
 		$session = new Ajde_Session('AC.Crud');
 		$session->setModel($crud->getHash(), $crud);
 		
-		$crud->loadCollectionView();
+		// just preload it
+		$crud->getCollectionView();
 		
 		$view = $crud->getTemplate();		
 		$view->assign('crud', $crud);
@@ -99,7 +100,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 		}
 		
 		// Hide mainfilter fields	
-		$crudView = $crud->loadCollectionView();
+		$crudView = $crud->getCollectionView();
 		$mainFilter = $crudView->getMainFilter();
 		if ($mainFilter) {
 			$currentFilter = $crudView->getFilterForField($mainFilter);

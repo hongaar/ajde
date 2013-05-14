@@ -6,6 +6,7 @@ class Ajde_Crud_Cms_Meta_Type_Listofoptions extends Ajde_Crud_Cms_Meta_Type
 	{
 		$this->required();
 		$this->help();
+		$this->defaultValue();
 		$this->options();
 		return parent::getFields();
 	}
