@@ -7,6 +7,13 @@
 	
 	var bootstrap = function() {	
 		
+		// Loading?
+		$(window).on("beforeunload", function(e) {
+			if ($.active > 0) {
+				return 'Operation in progress, navigating away may lead to errors.';
+			}
+		});     
+		
 		// Fastclick
 		new FastClick(document.body);
         
@@ -19,6 +26,7 @@
 		
 		// Picker
 		$("input[type=radio], input[type=checkbox]").not('.nopicker').filter(':visible').picker();
+		$("input[type=radio], input[type=checkbox]").not('.nopicker').filter('.picker:hidden').picker();
 		
 		// Form validation with Twitter Bootstrap
 		$('form').attr('novalidate', 'novalidate');

@@ -15,7 +15,7 @@ class Ajde_User_Autologon extends Ajde_Object_Singleton
 			return true;
 		}		
 		$user = new UserModel();
-		$user->verifyCookie();
+		$user->verifyCookie(false);
 		return true;
 	}
 }

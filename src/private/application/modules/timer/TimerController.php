@@ -2,7 +2,7 @@
 
 class TimerController extends AdminController
 {
-	protected $_allowedActions = array('widget');
+	protected $_allowedActions = array('widget', 'modal');
 	
 	public function beforeInvoke() {
 		Ajde_Model::register($this);
@@ -13,6 +13,11 @@ class TimerController extends AdminController
 	{	
 		$timer = TimerModel::getCurrentTimer();
 		$this->getView()->assign('timer', $timer);
+		return $this->render();
+	}
+	
+	public function modal()
+	{	
 		return $this->render();
 	}
 	
@@ -29,8 +34,9 @@ class TimerController extends AdminController
 			'user' => UserModel::getLoggedIn()->getPK()
 		));
 		$timer->insert();
+		$timer->work();
 		
-		return array('success' => true, 'issue' => $timer->getNode()->displayField());
+		return array('success' => true, 'issue' => $timer->getNode()->getPK(), 'display' => $timer->getNode()->displayField());
 	}
 	
 	public function pauseJson()
@@ -56,7 +62,25 @@ class TimerController extends AdminController
 		if (!$timer = TimerModel::getCurrentTimer()) {
 			return array('success' => false, 'message' => 'No active timer');
 		}
-		$timer->done();
+		
+		$description = Ajde::app()->getRequest()->getPostParam('description', 'Untitled worklog');
+		$seconds = Ajde::app()->getRequest()->getPostParam('seconds', false);
+		$status = Ajde::app()->getRequest()->getPostParam('status', false);
+		
+		if (!$description) { $description = 'Untitled worklog'; }
+		if (empty($status)) { $status = false; }
+		
+		$timer->done($description, $seconds, $status);
+		
+		return array('success' => true);
+	}
+	
+	public function cancelJson()
+	{
+		if (!$timer = TimerModel::getCurrentTimer()) {
+			return array('success' => false, 'message' => 'No active timer');
+		}
+		$timer->cancel();
 		return array('success' => true);
 	}
 }

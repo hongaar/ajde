@@ -2,7 +2,6 @@
 
 class Config
 {
-
 	const DEV_STAGE = 'slow';
 	const LIVE_STAGE = 'live';
 	

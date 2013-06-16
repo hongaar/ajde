@@ -92,7 +92,6 @@ AC.Crud.Edit.Timespan = function() {
 }();
 
 (function($) {	
-	// BOOTSTRAP
 	$(function() {
 		AC.Crud.Edit.Timespan.init();
 	});

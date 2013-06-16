@@ -119,6 +119,11 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 					<?php if ($crud->getOption('list.buttons.delete', true)) { ?>
 						<a href="javascript:void(null);" class='btn btn-danger delete hideInIframe'>delete selected</a>
 					<?php } ?>
+					<?php if ( ($html = $crud->getOption('list.buttons.toolbarHtml')) && count($html) ) {
+						foreach($html as $snippet) {
+							echo $snippet;
+						}
+					} ?>
 					<?php if ( ($buttons = $crud->getOption('list.buttons.toolbarButtons')) && count($buttons) ) { ?>
                         <div class="btn-group">
 							<?php if (count($buttons) == 1) {
@@ -141,7 +146,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 											<?php if ($button['text'] instanceof Ajde_Core_Route) {
 												echo $this->includeModule($button['text']);
 											} else { ?>
-												<a href="javascript:void(null);" class='btn <?php echo $button['class']; ?>'>
+												<a href="javascript:void(null);" class='btn-left <?php echo $button['class']; ?>'>
 													<?php echo $button['text']; ?>
 												</a>							
 											<?php } ?>
@@ -201,7 +206,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 					<?php } ?>
 				<?php
 				// Display function
-				} elseif ($field->hasFunction()) {
+				} elseif ($field->hasFunction() && $field->getFunction()) {
 					$displayFunction = $field->getFunction();
 					$funcValue = $model->{$displayFunction}(); ?>
 						<td <?php echo $gridData; ?> title="<?php echo _e(strip_tags($funcValue)); ?>" <?php if ($crud->getOption('list.main', false) == $field->getName()) { echo 'class=\'main\''; } ?>>
@@ -274,7 +279,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 									<?php 
 									foreach($buttons as $button) {
 										if ($button['persistent'] === false) { ?>
-											<li><a href="javascript:void(null);" class='<?php echo $button['class']; ?>'><?php echo $button['text']; ?></a></li>
+											<li><a href="javascript:void(null);" class='btn-left <?php echo $button['class']; ?>'><?php echo $button['text']; ?></a></li>
 										<?php }
 									} ?>
 								</ul>
@@ -284,6 +289,17 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
                 </div>
 			</td>
 		</tr>
+		<?php if ($crud->getOption('list.panelFunction', false)) {
+			$function = $crud->getOption('list.panelFunction');
+			$output = $model->{$function}();
+			if ($output !== false) { ?>
+			<tr class='panel'>
+				<td colspan="<?php echo $columnCount + 2; ?>">
+					<?php echo $output; ?>
+				</td>
+			</tr>
+			<?php }
+		} ?>		
 	<?php } ?>
 	<?php if (count($items) == 0) { ?>
 		<tr>

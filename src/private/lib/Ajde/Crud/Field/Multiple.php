@@ -148,7 +148,6 @@ class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
 			}
 			
 //			echo $collection->getEmulatedSql();
-			
 		} else {
 			$collection = $this->getCollection();
 			$collection->addFilter(new Ajde_Filter_Where($this->getParentName(), Ajde_Filter::FILTER_EQUALS, (string) $this->_crud->getModel()));

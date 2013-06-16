@@ -30,6 +30,21 @@ class NodeController extends Ajde_Controller
 		return $this->render();
 	}
 	
+	public function row()
+	{
+		$item = $this->getItem();
+		$nodetype = (string) $item->get('nodetype');
+		if ($nodetype == NodeModel::NODETYPE_ISSUE) {
+			$this->setAction('issueRow');
+		} else if ($nodetype == NodeModel::NODETYPE_STREAK) {
+			$this->setAction('streakRow');
+		} else {
+			return false;
+		}
+		$this->getView()->assign('item', $item);
+		return $this->render();
+	}
+	
 	public static function getNodeOptions()
 	{
 		$showOnlyWhenFields = array(
@@ -163,6 +178,7 @@ class NodeController extends Ajde_Controller
 					->setMainFilterGrouper('category')
 					->setOrderBy('sort')
 					->up()
+				->setPanelFunction('displayPanel')
 				->up()
 			->selectEdit()
 				->setShow()
@@ -223,6 +239,26 @@ class NodeController extends Ajde_Controller
 			new Ajde_Filter_Where('target', Ajde_Filter::FILTER_EQUALS, 'node')
 		));
 		
+		if (Ajde::app()->getRequest()->has('new')) {
+			// set owner
+			$user = UserModel::getLoggedIn();
+			$options->selectFields()->selectField('user')->setValue($user->getPK())->finished();
+			
+			if (!UserModel::isAdmin()) {
+				$currentUser = UserModel::getLoggedIn();
+				$subquery = "(SELECT user_node.user FROM user_node WHERE user_node.node IN (SELECT user_node.node FROM user_node WHERE user_node.user = " . (int) $currentUser->getPK() . " GROUP BY user_node.node))";
+				$userFilters = array(new Ajde_Filter_Where('user.id', Ajde_Filter::FILTER_IN, new Ajde_Db_Function($subquery)));
+				$options->selectFields()->selectField('user')->setAdvancedFilter($userFilters);				
+			}
+		}
+		if (Ajde::app()->getRequest()->has('edit')) {
+			if (!UserModel::isAdmin()) {
+				$options->selectFields()->selectField('user')
+					->setIsReadonly(true)
+					->setUsePopupSelector(true)
+				->finished();
+			}
+		}		
 		return $options;
 	}
 }

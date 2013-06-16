@@ -15,13 +15,16 @@ $timer = $this->timer;
 		<div class="timerwidget">
 			<div class="active_container">
 				<b>Working on</b>
-				<span class="issue"><?php if ($timer) { echo _e($timer->getNode()->displayField()); } ?></span>
+				<span class="issue">
+					<a href="issue/view?edit=<?php if ($timer) { echo $timer->getNode()->getPK(); } ?>"><?php if ($timer) { echo _e($timer->getNode()->displayField()); } ?></a>
+				</span>
 				<b>Duration</b>
 				<span class="duration" data-seconds="<?php if ($timer) { echo _e($timer->getElapsed()); } ?>"></span>
 				<div class="buttons btn-group">
-					<a class="btn pause"><i class="icon-pause"></i> pause</a>
-					<a class="btn resume"><i class="icon-play"></i> resume</a>
+					<a class="btn pause"><i class="icon-pause"></i></a>
+					<a class="btn resume"><i class="icon-play"></i></a>
 					<a class="btn btn-success done"><i class="icon-ok icon-white"></i> done</a>
+					<a class="btn cancel"><i class="icon-remove"></i></a>
 				</div>
 			</div>
 			<div class="inactive_container">

@@ -1,0 +1,35 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */ 
+?>
+
+<div class="row-fluid">
+	<div class="span12">		
+		<div class="page-header">
+			<h1>
+				<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
+			</h1>
+		</div>			
+	</div>
+</div>
+
+<div class="row-fluid">
+	
+	<div class="span6">		
+		<?php foreach($this->pagePermissions as $page => $options) { ?>
+			<h3><?php echo $page; ?></h3>
+			<?php foreach($options as $preset => $options) { ?>
+				<a class='btn btn-primary' href='admin/acl:page?page=<?php echo $page; ?>&preset=<?php echo $preset; ?>'>&raquo; <?php echo $preset; ?></a>
+			<?php } ?>
+		<?php } ?>				
+	</div>
+	
+	<div class="span6">
+		<?php foreach($this->modelPermissions as $model => $options) { ?>
+			<h3><?php echo $model; ?></h3>
+			<?php foreach($options as $preset => $options) { ?>
+				<a class='btn btn-primary' href='admin/acl:model?model=<?php echo $model; ?>&preset=<?php echo $preset; ?>'>&raquo; <?php echo $preset; ?></a>
+			<?php } ?>
+		<?php } ?>	
+	</div>				
+	
+</div><!--/row-->

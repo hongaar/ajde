@@ -2,7 +2,9 @@
 
 table.crud.grid tbody tr.client,
 table.crud.grid tbody tr.project,
-table.crud.grid tbody tr.streak
+table.crud.grid tbody tr.streak,
+table.crud.grid tbody tr.panel,
+table.crud.grid tbody td.main span.badge
 {
 	display: none;
 }
@@ -28,21 +30,15 @@ table.crud tbody tr.streak
 	}
 }
 
-table.crud tbody tr.note
-{
-	td.buttons .btn.work {
-		display: none;
-	}
-}
-
 table.crud tbody tr.issue {
-	td.buttons .btn.new-issue {
+	td.buttons .btn.new-issue,
+	td.buttons .btn.dropdown-toggle {
 		display: none;
 	}
 }
 
 table.crud tbody tr td.buttons {
-	text-align: left !important;
+	/*text-align: left !important;*/
 }
 
 table.crud.grid tbody {

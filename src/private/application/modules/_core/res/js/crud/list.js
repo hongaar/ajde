@@ -240,7 +240,9 @@ AC.Crud.List = function() {
 			}
 
 			if (count > 0 && confirm(i18n.confirmDelete + ' (' + count + ' item/items)')) {
+				$('body').addClass('loading');
 				$.post(url, data, function(response) {
+					$('body').removeClass('loading');
 					if (response.operation === 'delete' && response.success === true) {
 						for (elm in data) {
 							if (data[elm].name == 'id[]') {
@@ -257,7 +259,11 @@ AC.Crud.List = function() {
 					}
 				}, 'json').error(function(jqXHR, message, exception) {
 					$('body').removeClass('loading');
-					errorHandler(i18n.requestError + ' (' + exception + ')');
+					if (exception == 'Unauthorized' || exception == 'Forbidden') {
+						warningHandler(i18n.forbiddenWarning);
+					} else {
+						errorHandler(i18n.requestError + ' (' + exception + ')');
+					}
 				});
 			}
 		},
@@ -286,7 +292,11 @@ AC.Crud.List = function() {
 				}
 			}, 'json').error(function(jqXHR, message, exception) {
 				$('body').removeClass('loading');
-				errorHandler(i18n.requestError + ' (' + exception + ')');
+				if (exception == 'Unauthorized' || exception == 'Forbidden') {
+					warningHandler(i18n.forbiddenWarning);
+				} else {
+					errorHandler(i18n.requestError + ' (' + exception + ')');
+				}
 			});
 		},
 
@@ -410,7 +420,11 @@ AC.Crud.List = function() {
 				$.scrollTo(form, 800, { axis: 'y', offset: -70 });
 			}, 'html').error(function(jqXHR, message, exception) {
 				$('body').removeClass('loading');
-				errorHandler(i18n.requestError + ' (' + exception + ')');
+				if (exception == 'Unauthorized' || exception == 'Forbidden') {
+					warningHandler(i18n.forbiddenWarning);
+				} else {
+					errorHandler(i18n.requestError + ' (' + exception + ')');
+				}
 			});
 		},
 

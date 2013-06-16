@@ -3,21 +3,48 @@
 /* @var $options Ajde_Crud_Options */
 $options = $this->options;
 
+if (UserModel::isAdmin()) {
+	$showUsers = array('users');
+} else {
+	$showUsers = array();
+}
+
 $options
 	->selectFields()
 		->selectField('childrencount')
 			->setLabel('Projects')
 			->setFunction('displayChildrenCount')
 			->up()
+		->selectField('users')
+			->setLabel('User access')
+			->setType('multiple')
+			->setEditRoute('admin/user:view.crud')
+			->setListRoute('admin/user:view.crud')
+			->setSimpleSelector(true)
+			->setModelName('user')
+			->setCrossReferenceTable('user_node')
+			->up()
 		->up()			
 	->selectList()
-		->setShow(array('title', 'childrencount', 'sort'))
+		->setShow(array('title', 'childrencount'))
+		->selectView()
+			->setOrderBy('title')
+			->up()
 		->selectButtons()
 			->setNew(true)
-				->setEdit(true)
-				->setDelete(false)
-				->setSelect(false)
-				->addItemButton('projects', 'projects')
+			->setEdit(true)
+			->setDelete(false)
+			->setSelect(false)
+			->addItemButton('projects', 'projects')
+			->up()
+		->up()
+	->selectEdit()
+		->selectLayout()
+			->addRow()
+				->addColumn()
+					->setSpan(8)
+					->addBlock()
+						->setShow($showUsers)
 ->finished();
 
 $crud = $this->ACCrudList('node', $options);
@@ -47,16 +74,6 @@ if (!Ajde::app()->getRequest()->has('edit') && !Ajde::app()->getRequest()->has('
 	// add childrencount
 	$crud->getCollection()->getQuery()->addSelect('NULL AS childrencount');
 }
-
-if (Ajde::app()->getRequest()->has('new')) {
-	// NEW
-	
-	// set owner
-	$user = UserModel::getLoggedIn();
-	$crud->setOption('fields.user.value', $user->getPK());
-}
-
-
 
 ?>
 

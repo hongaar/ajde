@@ -57,6 +57,15 @@ class TimerModel extends Ajde_Model
 		}
 	}
 	
+	public function work()
+	{
+		Ajde_Model::register('node');
+				
+		// make new worklog
+		$issue = $this->getNode();
+		$issue->saveMetaValue(NodeModel::META_ISSUESTATUS, NodeModel::ISSUESTATUS_ACTIVE);
+	}
+	
 	public function pause()
 	{
 		$this->set('status', 'paused');
@@ -71,8 +80,38 @@ class TimerModel extends Ajde_Model
 		$this->save();
 	}
 	
-	public function done()
+	public function done($description, $seconds = false, $status = false)
 	{
+		Ajde_Model::register('node');
+		
+		if ($seconds === false) {
+			$seconds = $this->getTotalSeconds();		
+		}
+		
+		// make new worklog
+		$log = new NodeModel();
+		$log->setNodetype(NodeModel::NODETYPE_WORK);
+		$log->setParent($this->get('node'));
+		$log->setSummary($description);
+		$log->setTitle(Ajde_Component_String::trim($description, 30));
+		$log->setUser(UserModel::getLoggedIn()->getPK());
+		$log->insert();
+		$log->saveMetaValue('time_spent', $seconds);
+		
+		$log->sortTree('NodeCollection');
+		$log->updateTimeSpent();
+		$log->updateTotalCost();
+		
+		if ($status) {
+			$this->getNode()->saveMetaValue(NodeModel::META_ISSUESTATUS, $status);
+		}
+		
+		$this->delete();
+	}
+	
+	public function cancel()
+	{
+		Ajde_Model::register('node');		
 		$this->delete();
 	}
 	

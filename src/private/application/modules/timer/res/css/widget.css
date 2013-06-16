@@ -21,10 +21,10 @@
 	&.paused {
 		a.dropdown-toggle i.icon-time {
 			display: inline-block;			
-			-webkit-animation-name:             rotate; 
+/*			-webkit-animation-name:             rotate; 
 			-webkit-animation-duration:         1s; 
 			-webkit-animation-iteration-count:  infinite;
-			-webkit-transition-timing-function: ease;
+			-webkit-transition-timing-function: ease;*/
 		}
 		a.dropdown-toggle i.icon-eye-close {
 			display: none;

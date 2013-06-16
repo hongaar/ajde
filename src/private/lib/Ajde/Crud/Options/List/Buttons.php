@@ -65,6 +65,20 @@ class Ajde_Crud_Options_List_Buttons extends Ajde_Crud_Options
 	}
 	
 	/**
+	 * Adds a custom button for every item in the list
+	 * 
+	 * @param name $name Identifier of the button
+	 * @param text $text Text to display
+	 * @param type $class Optional classname to add
+	 * @return Ajde_Crud_Options_List_Buttons 
+	 */
+	public function addToolbarHtml($name, $html) { 
+		$toolbarHtml = ($this->has('toolbarHtml') ? $this->get('toolbarHtml') : array());
+		$toolbarHtml[$name] = $html;
+		return $this->_set('toolbarHtml', $toolbarHtml);
+	}
+	
+	/**
 	 * Adds a custom button to the list toolbar
 	 * 
 	 * @param name $name Identifier of the button

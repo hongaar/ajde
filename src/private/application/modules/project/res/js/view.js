@@ -4,6 +4,10 @@ if (typeof App.Project === "undefined") {App.Project = function(){}};
 
 App.Project.View = function() {
 
+	var PROJECT = 24;
+	var ISSUE = 25;
+	var STREAK = 26;
+	
 	var trHandler = function(e) {
 		e.stopPropagation();
 		var row = $(this);
@@ -15,7 +19,25 @@ App.Project.View = function() {
 		e.preventDefault();
 		var row = $(this).parents('tr');
 		var id = row.find('input[type=checkbox]').attr('value');
-		window.location.href = 'project/?new&view[filter][nodetype]=24&prefill[parent]=' + id;
+		window.location.href = 'project/?new&view[filter][nodetype]=' + PROJECT + '&parent=' + id + '&prefill[parent]=' + id;
+		return false;
+	};
+
+	var btnNewStreakHandler = function(e) {
+		e.stopPropagation();
+		e.preventDefault();
+		var row = $(this).parents('tr');
+		var id = row.find('input[type=checkbox]').attr('value');
+		window.location.href = 'project/?new&view[filter][nodetype]=' + STREAK + '&parent=' + id + '&prefill[parent]=' + id;
+		return false;
+	};
+
+	var btnNewIssueHandler = function(e) {
+		e.stopPropagation();
+		e.preventDefault();
+		var row = $(this).parents('tr');
+		var id = row.find('input[type=checkbox]').attr('value');
+		window.location.href = 'issue/?new&view[filter][nodetype]=' + ISSUE + '&parent=' + id + '&prefill[parent]=' + id;
 		return false;
 	};
 
@@ -36,6 +58,8 @@ App.Project.View = function() {
 			$('form.ACCrudList tbody tr').live('click', trHandler);
 			$('form.ACCrudList tbody td.buttons a.btn.nodes').live('click', btnNodesHandler);
 			$('form.ACCrudList tbody td.buttons a.new-project').live('click', btnNewProjectHandler);
+			$('form.ACCrudList tbody td.buttons a.new-streak').live('click', btnNewStreakHandler);
+			$('form.ACCrudList tbody td.buttons a.new-issue').live('click', btnNewIssueHandler);
 		}
 
 	};

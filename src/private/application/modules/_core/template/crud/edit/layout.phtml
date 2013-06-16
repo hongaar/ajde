@@ -21,9 +21,7 @@ foreach($rows as $row) {
 
 echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudEdit form-horizontal');?>
 
-	<div class='data'
-		 data-listaction='<?php echo $crud->getListAction(); ?>'
-	/>
+	<div class='data' data-listaction='<?php echo $crud->getListAction(); ?>'></div>
 
 	<?php if ($totalFields > $topToolbarTreshold) { ?>
     <div class="form-actions">

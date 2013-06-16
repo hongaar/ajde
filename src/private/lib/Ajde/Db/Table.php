@@ -68,20 +68,29 @@ class Ajde_Db_Table extends Ajde_Object_Standard
 		return false;
 	}
 	
-	public function getFK(Ajde_Db_Table $parent) {
-		$fk = Ajde_Db::getInstance()->getAdapter()->getForeignKey((string) $this, (string) $parent);
+	/**
+	 * 
+	 * @param Ajde_Db_Table|string $parent
+	 * @return array
+	 */
+	public function getFK($column) {
+		$fk = Ajde_Db::getInstance()->getAdapter()->getForeignKey((string) $this, (string) $column);
 		return array('field' => $fk['COLUMN_NAME'], 'parent_table' => $fk['REFERENCED_TABLE_NAME'], 'parent_field' => $fk['REFERENCED_COLUMN_NAME']);
 	}
 	
 	public function getParents() {
 		$parents = Ajde_Db::getInstance()->getAdapter()->getParents((string) $this);
-		$parentTables = array();
+		$parentColumns = array();
 		foreach($parents as $parent) {
-			if (isset($parent['REFERENCED_TABLE_NAME'])) {
-				$parentTables[] = $parent['REFERENCED_TABLE_NAME'];
+			if (
+					isset($parent['COLUMN_NAME'])
+					&& isset($parent['REFERENCED_TABLE_NAME'])
+					&& strtoupper($parent['CONSTRAINT_NAME']) != 'PRIMARY'					
+				) {
+				$parentColumns[] = $parent['COLUMN_NAME'];
 			}
 		}
-		return $parentTables;		
+		return array_unique($parentColumns);
 	}
 	
 	public function getFieldProperties($fieldName = null, $property = null)

@@ -1,5 +1,7 @@
 <?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ 
 
+$clientFilter = new Ajde_Filter_Where('nodetype', Ajde_Filter::FILTER_EQUALS, NodeModel::NODETYPE_CLIENT);
+
 $options = new Ajde_Crud_Options();
 $options
 	->selectFields()
@@ -13,6 +15,16 @@ $options
 			->up()
 		->selectField('email')
 			->setFunction('emailLink')
+			->up()
+		->selectField('clients')
+			->setLabel('Client access')
+			->setType('multiple')
+			->setEditRoute('admin/node:view.crud?view[filter][nodetype]=23')
+			->setListRoute('admin/node:view.crud?view[filter][nodetype]=23')
+			->setAdvancedFilter(array($clientFilter))
+			->setSimpleSelector(true)
+			->setModelName('node')
+			->setCrossReferenceTable('user_node')
 			->up()
 		->up()
 	->selectList()
@@ -31,7 +43,7 @@ $options
 				->addColumn()
                     ->setSpan(12)
 					->addBlock()
-						->setShow(array('username', 'password', 'usergroup', 'email', 'fullname'))
+						->setShow(array('username', 'password', 'usergroup', 'email', 'fullname', 'clients'))
 
 	->finished();
 

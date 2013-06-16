@@ -23,7 +23,9 @@ class Ajde_Crud_Field_Fk extends Ajde_Crud_Field_Enum
 		if ($this->hasModelName()) {
 			return $this->get('modelName');
 		} else {
-			return $this->getName();
+			$fieldName = $this->getName();
+			$model = $this->getCrud()->getModel();
+			return (string) $model->getParentModel($fieldName)->getTable();
 		}
 	}
 	

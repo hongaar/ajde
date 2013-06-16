@@ -450,4 +450,13 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 		}
 		return md5($str);
 	}
+	
+	public function toArray()
+	{
+		$array = array();
+		foreach($this as $item) {
+			$array[] = $item->values();
+		}
+		return $array;
+	}
 }

@@ -7,17 +7,20 @@ $this->requireCssPublic('_core/crud/fancybox/jquery.fancybox.css');
 $field = $this->field;
 
 $useImage = $field->has('useImage') && $field->get('useImage') === true;
+$listRoute = ($field->has('listRoute') ? $field->get('listRoute') : false);
 
 ?>
 
 <div class='picker <?php echo $pickerType; ?>'
-	data-list-route='<?php echo $field->getListRoute(); ?>'
+	data-list-route='<?php echo $listRoute; ?>'
 	data-list-multiple='<?php echo $pickerMultiple; ?>'
 	data-field='<?php echo $field->getName(); ?>'
 	data-use-image='<?php echo $useImage ? '1' : '0'; ?>'
 >
 	<div class="controls-row simple-selector">
-		<a href='javascript:void(null);' class='span2 btn choose'><i class='icon-folder-open icon-white'></i></a>
+		<?php if ($field->hasReadonly() && $field->getReadonly() === true) {} else { ?>
+			<a href='javascript:void(null);' class='span2 btn choose'><i class='icon-folder-open icon-white'></i></a>
+		<?php } ?>
 		<div class='input'>
 			<?php
 			$value = $field->getValue();

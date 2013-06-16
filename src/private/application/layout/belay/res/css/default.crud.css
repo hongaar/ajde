@@ -316,6 +316,10 @@ table.crud {
 				
 				&.buttons {
 					text-align: right;
+					
+					a.btn-left {
+						text-align: left;
+					}
 				}
 				
 				.thumbContainer {
@@ -362,6 +366,86 @@ table.crud {
 					height: 46px;
 					margin-bottom: -8px;
 				}
+			}
+			
+			&.panel {
+				display: none;
+				border: 1px solid #cde6ff;
+				
+				th {
+					text-align: right;
+				}
+
+				td, th {
+					cursor: default !important;
+					background-color: inherit !important;	
+					white-space: normal;
+					
+					input {
+						cursor: pointer;
+						border: 1px solid transparent;
+						
+						&:hover {
+							background-color: #e8f8fd;
+						}
+						
+						&:focus {
+							border: 1px solid #eee;
+							cursor: default;
+							z-index: 10;
+							
+							&:invalid {
+								border-color: #E9322D;
+							}
+						}
+					}
+					
+					h3 {
+						font-size: 1.2em;
+						line-height: 1.2em;
+						margin: 0 0 8px 0;
+						padding: 8px 5px 4px 5px;
+						border-bottom: 1px solid #EEE;
+						
+						input {
+							font-size: 1em;
+							position: relative;
+							left: -6px;
+							color: black;
+						}
+					}
+					
+					table {
+						margin-bottom: 0;
+						
+						td {
+							position: relative;
+							
+							> span {
+								padding-left: 7px;
+							}
+						}
+												
+						input {
+							/*position: absolute;*/
+							top: 3px;
+							font-size: 1em;
+							margin-top: -3px;
+							
+							&.input-large {
+								width: 210px !important;
+							}
+						}
+					}
+				}
+			}
+			
+			&.checked + .panel {
+				display: table-row;
+			}
+			
+			&.checked + .panel + tr span.tree-spacer {
+				opacity: 0;
 			}
         }
     }

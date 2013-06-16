@@ -20,4 +20,13 @@ class Ajde_Acl_Collection extends Ajde_Collection
 		}
 		return false;
 	}
+	
+	/**
+	 * 
+	 * @param string $entity
+	 * @return Ajde_Acl_Collection
+	 */
+	public function filterByEntity($entity) {
+		return $this->addFilter(new Ajde_Filter_Where('entity', Ajde_Filter::FILTER_EQUALS, $entity));
+	}
 }

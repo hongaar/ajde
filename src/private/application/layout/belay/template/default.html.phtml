@@ -45,6 +45,8 @@ $this->requireCssFirst('core.alert');
 
 // Additional CSS
 $this->requireCss('default.crud');
+$this->requireCss('default.tablet', 'html', null, Ajde_Document_Format_Html::RESOURCE_POSITION_LAST, 'media="only screen and (max-width: 979px)"');
+$this->requireCss('default.phone', 'html', null, Ajde_Document_Format_Html::RESOURCE_POSITION_LAST, 'media="only screen and (max-width: 767px)"');
 
 // The user
 $user = UserModel::getLoggedIn();
@@ -136,6 +138,7 @@ $this->requireCss('widget', 'html', MODULE_DIR . 'timer/');
 									<ul class="dropdown-menu">
 										<li><a href="user">Profile</a></li>
 										<li><a href="user/settings">Settings</a></li>
+										<li><a href="user/app">App</a></li>
 										<li class="divider"></li>
 										<li><a href="user/logoff">Log out</a></li>
 									</ul>
@@ -156,12 +159,38 @@ $this->requireCss('widget', 'html', MODULE_DIR . 'timer/');
 								<li><a href="project">Projects</a></li>
 								<li><a href="issue">Issues</a></li>
 								<li class="divider"></li>
+								<li class="dropdown">
+									<a class="dropdown-toggle" data-toggle="dropdown" href="report">Reports <b class="caret"></b></a>
+									<ul class="dropdown-menu">
+										<li class="with-sub-menu">
+											<a href="javascript:void(null);">Todo <i class="icon-chevron-right pull-right"></i></a>
+											<ul class="dropdown-menu sub-menu">
+												<li><a href="report/todo:active">Active now</a></li>
+												<li><a href="report/todo:followup">Follow-up</a></li>
+												<li><a href="report/todo:billable">Billable</a></li>
+											</ul>
+										</li>
+										<li class="with-sub-menu">
+											<a href="javascript:void(null);">Hours <i class="icon-chevron-right pull-right"></i></a>
+											<ul class="dropdown-menu sub-menu">
+												<li><a href="report/hours:worked">Worked</a></li>
+												<li><a href="report/hours:planning">Planning</a></li>
+											</ul>
+										</li>
+										<li class="with-sub-menu">
+											<a href="javascript:void(null);">Profit <i class="icon-chevron-right pull-right"></i></a>
+											<ul class="dropdown-menu sub-menu">
+												<li><a href="report/profit:weekly">Weekly</a></li>
+											</ul>
+										</li>
+									</ul>
+								</li>								
+								<li class="divider"></li>
 								<?php echo $this->includeModule('timer/widget'); ?>		
 							<?php }
-							if ($user && $user->getUsergroup() == UserModel::USERGROUP_ADMINS) { ?>
+							if ($user && (string) $user->getUsergroup() == UserModel::USERGROUP_ADMINS) { ?>
 								<li class="divider"></li>
 								<li><a href="admin/cms:settings">Settings</a></li>
-								<li><a href="admin/user:view">Users</a></li>
 								<li class="dropdown">
 									<a class="dropdown-toggle" data-toggle="dropdown" href="admin/setup:nodes">Setup <b class="caret"></b></a>
 									<ul class="dropdown-menu">
@@ -169,14 +198,10 @@ $this->requireCss('widget', 'html', MODULE_DIR . 'timer/');
 										<li><a href="admin/setup:nodes">Nodes</a></li>
 										<li><a href="admin/setup:menus">Menus</a></li>
 										<li><a href="admin/setup:settings">Settings</a></li>
-										<li class="divider"></li>		
-										<li><a href="admin/setup:meta">Edit meta fields</a></li>
-									</ul>
-								</li>
-								<li class="divider"></li>
-								<li class="dropdown">
-									<a class="dropdown-toggle" data-toggle="dropdown" href="admin/cms:nodes">All nodes <b class="caret"></b></a>
-									<ul class="dropdown-menu">
+										<li><a href="admin/setup:meta">Meta fields</a></li>
+										<li class="nav-header">Access</li>
+										<li><a href="admin/user:view">Users</a></li>
+										<li><a href="admin/acl:view">Pages &amp; models</a></li>	
 										<li class="nav-header">Nodes</li>
 										<li><a href="admin/node:view?view[filter][nodetype]=">Overview</a></li>
 										<?php foreach ($nodeTypes as $nodeType) {  
@@ -196,7 +221,7 @@ $this->requireCss('widget', 'html', MODULE_DIR . 'timer/');
 											</ul>
 										<?php } ?>
 										</li>
-										<li class="divider"></li>
+										<li class="nav-header">Other</li>
 										<li><a href="admin/cms:media">Media</a></li>
 										<li><a href="admin/cms:menus">Menus</a></li>
 										<li><a href="admin/cms:tags">Tags</a></li>
@@ -208,8 +233,10 @@ $this->requireCss('widget', 'html', MODULE_DIR . 'timer/');
 				</div>
 			</div>
 		</div>
+		
+		<?php echo $this->includeModule('timer/modal'); ?>	
 
-		<div class="container-fluid">
+		<div id="main" class="container-fluid">
 			
 			<?php echo $this->getDocument()->getBody(); ?>
 			
@@ -222,6 +249,12 @@ $this->requireCss('widget', 'html', MODULE_DIR . 'timer/');
 			</footer>
 
 		</div><!--/.fluid-container-->
+		
+		<div id="loading">
+			<div>
+				<div class="spinner"><strong>loading...</strong><span></span></div>
+			</div>
+		</div>
 		
 		<!-- The scripts -->
 		<?php echo $this->getDocument()->getScripts(); ?>

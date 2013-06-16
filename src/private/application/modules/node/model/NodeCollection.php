@@ -1,6 +1,6 @@
 <?php
 
-class NodeCollection extends Ajde_Collection
+class NodeCollection extends Ajde_Acl_Proxy_Collection
 {
 	public function filterByType($type)
 	{
@@ -25,7 +25,7 @@ class NodeCollection extends Ajde_Collection
 		return $this;
 	}
 	
-	public function filterChildrenOfParent($parentId, $levels = 5)
+	public function filterChildrenOfParent($parentId, $levels = 6)
 	{
 		$this->getQuery()->setDistinct(true);
 		$subqueryFragment = "(SELECT t%.id FROM node AS t1";
@@ -82,6 +82,15 @@ class NodeCollection extends Ajde_Collection
 	{
 		$this->addFilter(new Ajde_Filter_LeftJoin('node_meta', 'node_meta.node', 'node.id'));
 		$this->addFilter(new Ajde_Filter_LeftJoin('meta', 'meta.id', 'node_meta.meta'));
+		return $this;
+	}
+	
+	public function joinMetaConditional($metaId, Ajde_Filter_WhereGroup $wheregroup)
+	{
+		$this->addFilter(new Ajde_Filter_Join('node_meta', 'node_meta.node', 'node.id'));
+		$this->addFilter(new Ajde_Filter_Join('meta', 'meta.id', 'node_meta.meta'));
+		$this->addFilter(new Ajde_Filter_Where('meta.id', Ajde_Filter::FILTER_EQUALS, $metaId));
+		$this->addFilter($wheregroup);
 		return $this;
 	}
 	

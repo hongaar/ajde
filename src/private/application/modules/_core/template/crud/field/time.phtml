@@ -2,7 +2,7 @@
 
 <?php if ($field->getIsAutoUpdate() === true) {
 	if ($field->getValue() === 'CURRENT_TIMESTAMP') {
-		echo '(not saved)';
+		echo '';
 	} else {
 		echo $field->getValue();
 	}

@@ -208,9 +208,15 @@ AC.Crud.Edit.Multiple = function() {
 
 			var parent = $(this).parents('div.multiple:eq(0)').attr('data-parent');
 			var editRoute = $(this).parents('div.multiple:eq(0)').attr('data-edit-route');
+			
+			if (editRoute.indexOf('?') > -1) {
+				editRoute += '&';
+			} else {
+				editRoute += '?';
+			}
 
 			$.fancybox.open({
-				href: editRoute + '?new&prefill[' + parent + ']=' + parentId + '&hide[' + parent + ']=1&' + getPrefillFields(this) + getHiddenFields(this),
+				href: editRoute + 'new&prefill[' + parent + ']=' + parentId + '&hide[' + parent + ']=1&' + getPrefillFields(this) + getHiddenFields(this),
 				type: 'iframe',
 				autoSize: false,
 				maxWidth: 960,
@@ -252,9 +258,15 @@ AC.Crud.Edit.Multiple = function() {
 			var field = $(this).parents('div.multiple:eq(0)').attr('data-field');
 			var editRoute = $(this).parents('div.multiple:eq(0)').attr('data-edit-route');
 			var id = $(this).attr('data-id');
+			
+			if (editRoute.indexOf('?') > -1) {
+				editRoute += '&';
+			} else {
+				editRoute += '?';
+			}
 
 			$.fancybox.open({
-				href: editRoute + '?edit=' + id + '&hide[' + parent + ']=1&' + getPrefillFields(this) + getHiddenFields(this),
+				href: editRoute + 'edit=' + id + '&hide[' + parent + ']=1&' + getPrefillFields(this) + getHiddenFields(this),
 				type: 'iframe',
 				autoSize: false,
 				maxWidth: 960,

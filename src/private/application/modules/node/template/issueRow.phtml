@@ -1,0 +1,47 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+$this->requireJs('panel');
+$this->requireJs('crud/field/timespan', 'html', MODULE_DIR . '_core/', $position = Ajde_Document_Format_Html::RESOURCE_POSITION_LAST);
+$this->requireJs('update', 'html', MODULE_DIR . 'issue/', $position = Ajde_Document_Format_Html::RESOURCE_POSITION_LAST);
+
+/* @var $item NodeModel */
+$item = $this->item;
+
+?>
+
+<h3><input type="text" class='input-large' name='title' data-input='title' required="required" value="<?php echo _e($item->getTitle()); ?>" ></h3>
+
+<div class="row-fluid">
+	<div class="span4">
+		<table class="table table-condensed">
+			<tr>
+				<td><?php echo _c($item->getContent()); ?></td>
+			</tr>
+		</table>
+	</div>
+	<div class="span4">
+		<table class="table table-condensed">
+			<tr>
+				<th>Time allocated</th>
+				<td>
+					<input type="hidden" name='time_allocated' value="<?php echo $item->getTimeAllocated(); ?>">
+					<input type="text" class='input-large timespan' data-input='time_allocated' data-meta='1' required="required" >
+				</td>
+			</tr>
+			<tr>
+				<th>Due</th>
+				<td>
+					<input type="date" class='input-large' data-input='issue_due' data-meta='1' name="issue_due" required="required" value="<?php echo $item->getMetaValue('issue_due'); ?>" />
+				</td>
+			</tr>			
+		</table>
+	</div>
+	<div class="span4">
+		<table class="table table-condensed">
+			<tr>
+				<th>Total time</th>
+				<td><span><?php echo NodeModel::span2str($item->getTotalTime()); ?></span></td>
+			</tr>
+		</table>
+	</div>
+</div>

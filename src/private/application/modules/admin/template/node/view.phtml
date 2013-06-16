@@ -4,11 +4,6 @@ $options = NodeController::getNodeOptions();
 
 $crud = $this->ACCrudList('node', $options);
 
-if (Ajde::app()->getRequest()->has('new')) {
-	$user = UserModel::getLoggedIn();
-	$crud->setOption('fields.user.value', $user->getPK());
-}
-
 ?>
 
 <div class="row-fluid">

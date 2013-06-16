@@ -1,31 +1,167 @@
 <?php
 /* @var $this Ajde_Template_Parser_Phtml_Helper */
+
+/* @var $options Ajde_Crud_Options */
+$options = $this->options;
+
+$options
+	->selectFields()
+		->selectField('title')
+			->setFunction('displayRootName')
+			->up()
+		->selectField('status')
+			->setLabel('Status')
+			->setFunction('displayStatus')
+			->up()
+		->selectField('due')
+			->setLabel('Due')
+			->setFunction('displayDue')
+			->up()
+		->selectField('time_spent')
+			->setLabel('Spent')
+			->setFunction('displayTimeSpent')
+			->up()
+		->selectField('total_time')
+			->setLabel('Total')
+			->setFunction('displayTotalTime')
+			->up()
+		->selectField('remaining')
+			->setLabel('Remaining')
+			->setFunction('displayRemaining')
+			->up()
+		->selectField('children')
+			->addTableField('nodetype')			
+			->addMetaField(NodeModel::META_TOTALTIME, 'displayTotalTime')
+			->addSortField('sort')
+			->up()
+		->up()			
+	->selectList()
+		->setShow(array('title', 'status', 'due', 'remaining'))
+		->setRowClassFunction('rowClass')
+		->selectButtons()
+			->setSelect(false)
+			->setDelete(false)
+			->addItemButton('timer', '<i class="icon-time icon-white"></i> work', 'btn-inverse work')
+			->up()
+		->setShowFooter(false)
+		->setShowHeader(false)
+		
+->finished();
+
+$crud = $this->ACCrudList('node', $options);
+$crud->setSessionName('dashboard');
+
+if (!Ajde::app()->getRequest()->has('edit') && !Ajde::app()->getRequest()->has('new')) {
+	// LIST 
+	$collection = $crud->getCollection();
+	/* @var $collection NodeCollection */
+	$model = $crud->getModel();
+	/* @var $model NodeModel */
+	
+	// remove mainfilter
+	$crudView = $crud->getCollectionView();
+	$crudView->setFilter(array());
+	
+	// set view
+	$crudView->setOrderBy('due');
+	$crudView->setOrderDir('asc');
+	$crudView->setPageSize(10);
+		
+	// join meta and filter on issue status
+	$filterGroup = new Ajde_Filter_WhereGroup();
+	$filters = array(
+		'New', 'Active'
+	);
+	foreach ($filters as $filter) {
+		$filterGroup->addFilter(new Ajde_Filter_Where('node_meta.value', Ajde_Filter_Where::FILTER_EQUALS, $filter, Ajde_Query::OP_OR));
+	}
+	$collection->joinMetaConditional(NodeModel::META_ISSUESTATUS, $filterGroup);
+	$collection->getQuery()->addGroupBy('node_meta.node');
+	
+	// add issue status and filter
+	$issuestatusId = $model->lookupMetaName('issue_status');
+	$collection->getQuery()->addSelect(new Ajde_Db_Function(
+		"(SELECT node_meta.value FROM node_meta WHERE node_meta.meta = $issuestatusId AND node_meta.node = node.id) AS status"
+	));
+	
+	// add issue due
+	$issuedueId = $model->lookupMetaName('issue_due');
+	$collection->getQuery()->addSelect(new Ajde_Db_Function(
+		"(SELECT node_meta.value FROM node_meta WHERE node_meta.meta = $issuedueId AND node_meta.node = node.id) AS due"
+	));		
+	
+	// add streak status
+	$streakstatusId = $model->lookupMetaName('streak_status');
+	$collection->getQuery()->addSelect(new Ajde_Db_Function(
+		"(SELECT node_meta.value FROM node_meta WHERE node_meta.meta = $streakstatusId AND node_meta.node = node.id) AS streak_status"
+	));
+	
+	// add time spent
+	$timespentId = $model->lookupMetaName('time_spent');
+	$collection->getQuery()->addSelect(new Ajde_Db_Function(
+		"(SELECT node_meta.value FROM node_meta WHERE node_meta.meta = $timespentId AND node_meta.node = node.id) AS time_spent"
+	));
+	
+	// add total time
+	$totaltimeId = $model->lookupMetaName('total_time');
+	$collection->getQuery()->addSelect(new Ajde_Db_Function(
+		"(SELECT node_meta.value FROM node_meta WHERE node_meta.meta = $totaltimeId AND node_meta.node = node.id) AS total_time"
+	));
+	
+	// add allocated
+	$allocatedId = $model->lookupMetaName('time_allocated');
+	$collection->getQuery()->addSelect(new Ajde_Db_Function(
+		"(SELECT node_meta.value FROM node_meta WHERE node_meta.meta = $allocatedId AND node_meta.node = node.id) AS time_allocated"
+	));
+	
+	// add node type
+	$collection->joinNodetype();
+	$collection->getQuery()->addSelect('nodetype.name AS nodetype_name');
+	
+	// filter nodetype
+	$filterGroup = new Ajde_Filter_WhereGroup();
+	$filters = array(
+		NodeModel::NODETYPE_ISSUE
+	);
+	foreach ($filters as $filter) {
+		$filterGroup->addFilter(new Ajde_Filter_Where('nodetype', Ajde_Filter_Where::FILTER_EQUALS, $filter, Ajde_Query::OP_OR));
+	}
+	$collection->addFilter($filterGroup);
+}
+
 ?>
 
 <div class="row-fluid">
-	<div class="span2">
-	</div><!--/span-->
+	<div class="span2"></div><!--/span-->
 	<div class="span8">
 		<div class="hero-unit">
 			<h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
 			<p>Belay is task management by <a href="http://nabble.nl" target="_blank">Nabble</a></p>
-			<p><a href="issue/view" class="btn btn-primary btn-large">view issues &raquo;</a></p>
+			<p>
+				<a href="report/todo:active" class="btn btn-primary btn-large">start working &raquo;</a>
+				<a href="report/todo:followup" class="btn btn-primary btn-large">follow-up &raquo;</a>
+			</p>
+		</div>
+		<div class="row-fluid">
+			<div class="span12">
+				<?php echo $crud->output(); ?>
+			</div>
 		</div>
 		<div class="row-fluid">
 			<div class="span4">
-				<h2>Structural</h2>
-				<p>Everything is organized in a tree. Clients, projects, streaks, issues can all be organized relatively. Build one big happy family of issues.</p>
-				<p><a class="btn" href="admin/node:view">a client &raquo;</a></p>
+				<h2>Clients</h2>
+				<p>Keep track of contact details and allow your clients to login.</p>
+				<p><a class="btn" href="client">view &raquo;</a></p>
 			</div><!--/span-->
 			<div class="span4">
-				<h2>Media</h2>
-				<p>Files and embedded media such as video and audio</p>
-				<p><a class="btn" href="admin/media:view">view all media &raquo;</a></p>
+				<h2>Projects & Streaks</h2>
+				<p>Projects are bigger stuff, streaks are smaller and can be billed.</p>
+				<p><a class="btn" href="project">view &raquo;</a></p>
 			</div><!--/span-->
 			<div class="span4">
-				<h2>Menus</h2>
-				<p>Manage what nodes users can access from the menus</p>
-				<p><a class="btn" href="admin/menu:view">menu overview &raquo;</a></p>
+				<h2>Issues</h2>
+				<p>Work on issues active, and keep track of project todo's and time.</p>
+				<p><a class="btn" href="issue">view &raquo;</a></p>
 			</div><!--/span-->
 		</div><!--/row-->
 	</div><!--/span-->

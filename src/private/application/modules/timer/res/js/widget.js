@@ -11,54 +11,15 @@ App.Timer.Widget = function() {
 	var timer = {};
 	var elapsedSeconds = 0;
 	
-	var span = {
-		week: 144000,
-		day: 28800,
-		hour: 3600,
-		minute: 60
-	};
-	
-	var formatTimespan = function(seconds) {	
-		if (seconds == 0) {
-			return '0s';
-		}
-	
-		var weeks = Math.floor(seconds / span.week);
-		seconds = seconds - (weeks * span.week);
-
-		var days = Math.floor(seconds / span.day);
-		seconds = seconds - (days * span.day);
-
-		var hours = Math.floor(seconds / span.hour);
-		seconds = seconds - (hours * span.hour);
-
-		var minutes = Math.floor(seconds / span.minute);
-		seconds = seconds - (minutes * span.minute);
-
-		var output = '';
-		if (weeks) {
-			output += weeks + 'w ';
-		}
-		if (days) {
-			output += days + 'd ';
-		}
-		if (hours) {
-			output += hours + 'h ';
-		}
-		if (minutes) {
-			output += minutes + 'm ';
-		}
-		if (seconds) {
-			output += seconds + 's ';
-		}
-		return output.trim();
-	};
-	
-	var initActive = function(issue) {
+	var initActive = function(issue, display) {
 		$('.timerwidget_container').removeClass('paused').addClass('active open');
-		$('.timerwidget .issue').text(issue);
+		$('.timerwidget .issue a').attr('href', 'issue/view?edit=' + issue);
+		$('.timerwidget .issue a').text(display);
 		elapsedSeconds = 0;
 		startTimer();
+		if (AC && AC.Crud && AC.Crud.List) {
+			AC.Crud.List.updateView($('form.ACCrudList').children(':eq(0)'));
+		}
 	};
 
 	var doPause = function() {
@@ -73,6 +34,15 @@ App.Timer.Widget = function() {
 
 	var doDone = function() {
 		$('.timerwidget_container').removeClass('paused').removeClass('active');
+		if (AC && AC.Crud && AC.Crud.List) {
+			AC.Crud.List.updateView($('form.ACCrudList').children(':eq(0)'));
+		}
+		elapsedSeconds = 0;
+		cancelTimer();
+	};
+
+	var doCancel = function() {
+		$('.timerwidget_container').removeClass('paused').removeClass('active');
 		elapsedSeconds = 0;
 		cancelTimer();
 	};
@@ -81,9 +51,13 @@ App.Timer.Widget = function() {
 		cancelTimer();
 		timer = accurateInterval(1000, function() {
 			elapsedSeconds++;
-			$('.timerwidget .duration').text(formatTimespan(elapsedSeconds));
+			$('.timerwidget .duration').text(AC.Crud.Edit.Timespan.formatTimespan(elapsedSeconds));
 		});
-		$('.timerwidget .duration').text(formatTimespan(elapsedSeconds));
+		if (elapsedSeconds) {
+			$('.timerwidget .duration').text(AC.Crud.Edit.Timespan.formatTimespan(elapsedSeconds));
+		} else {
+			$('.timerwidget .duration').text('0s');
+		}
 	};
 
 	var cancelTimer = function() {
@@ -99,11 +73,12 @@ App.Timer.Widget = function() {
 			if ($('.timerwidget_container').hasClass('active')) {				
 				startTimer();
 			} else if ($('.timerwidget_container').hasClass('paused')) {
-				$('.timerwidget .duration').text(formatTimespan(elapsedSeconds));
+				$('.timerwidget .duration').text(AC.Crud.Edit.Timespan.formatTimespan(elapsedSeconds));
 			}
 			$('.timerwidget a.pause').live('click', this.pause);
 			$('.timerwidget a.resume').live('click', this.resume);
 			$('.timerwidget a.done').live('click', this.done);
+			$('.timerwidget a.cancel').live('click', this.cancel);
 		},
 			
 		pause: function(e) {
@@ -148,11 +123,58 @@ App.Timer.Widget = function() {
 	
 		done: function(e) {
 			e.stopPropagation();
-			var url = 'timer/done.json';
-			$.post(url, {}, function(data) {										
+			$('#worklog').modal('show');
+			
+			$('#work_seconds').val(elapsedSeconds);
+			$('#work_span').val(AC.Crud.Edit.Timespan.formatTimespan(elapsedSeconds));
+			
+			$('#worklog button.save').off('click');
+			$('#worklog button.save').on('click', function() {
+				
+				var self = this;
+				$(self).text('saving...');
+				
+				var url = 'timer/done.json';
+				var data = {
+					seconds: $('#work_seconds').val(),
+					description: $('#worklog textarea').val(),
+					status: $('input[name=work_issue_status]:checked').val(),
+					'_token': $('input[name=_token]').val()
+				};
+				$.post(url, data, function(data) {										
+					if (data.success === true) {
+						$('#worklog').modal('hide');
+						$(self).text('save');
+						$('#work_description').val('');
+						infoHandler('Worklog saved');
+						doDone();
+					} else {
+						warningHandler(data.message);
+					}
+				}, 'json').error(function(jqXHR, message, exception) {
+					if (exception == 'Unauthorized' || exception == 'Forbidden') {
+						warningHandler(i18n.forbiddenWarning);
+					} else {
+						errorHandler(i18n.requestError + ' (' + exception + ')');
+					}
+				});
+				
+			});
+			
+			return false;
+		},
+	
+		cancel: function(e) {
+			e.stopPropagation();
+				
+			var url = 'timer/cancel.json';
+			var data = {
+				'_token': $('input[name=_token]').val()
+			};
+			$.post(url, data, function(data) {										
 				if (data.success === true) {
-					infoHandler('Worklog saved');
-					doDone();
+					infoHandler('Worklog cancelled');
+					doCancel();
 				} else {
 					warningHandler(data.message);
 				}
@@ -163,6 +185,7 @@ App.Timer.Widget = function() {
 					errorHandler(i18n.requestError + ' (' + exception + ')');
 				}
 			});
+			
 			return false;
 		},
 	
@@ -175,9 +198,10 @@ App.Timer.Widget = function() {
 			$.post(url, data, function(data) {										
 				if (data.success === true) {
 					infoHandler('Timer started');
-					initActive(data.issue);
+					initActive(data.issue, data.display);
 				} else {
 					warningHandler(data.message);
+					$('.timerwidget_container').addClass('open');
 				}
 			}, 'json').error(function(jqXHR, message, exception) {
 				if (exception == 'Unauthorized' || exception == 'Forbidden') {

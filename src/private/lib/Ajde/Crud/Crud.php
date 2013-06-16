@@ -277,6 +277,7 @@ class Ajde_Crud extends Ajde_Object_Standard
 		}
 		
 		$collection->load();
+		
 		// TODO: this should be done with JOIN
 		if ($this->getModel()->getAutoloadParents()) {
 			$collection->loadParents();

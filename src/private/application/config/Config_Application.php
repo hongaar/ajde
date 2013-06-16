@@ -43,7 +43,7 @@ class Config_Application extends Config_Cms
 	//public $autoCleanHtml;
 	//public $requirePostToken;
 	//public $postWhitelistRoutes;
-	public $secret				= 'randomstring';
+	public $secret				= 's4MCDgW2OD8p9gTc$y!lf976kt19cfT*';
 	//public $cookieDomain;
 	//public $cookieSecure;
 	//public $cookieHttponly;
@@ -62,7 +62,7 @@ class Config_Application extends Config_Cms
 									'dbname'	=> 'belay'
 									);
 	public $dbUser 				= 'belay';
-	public $dbPassword 			= 'belay';
+	public $dbPassword 			= 'dj8fwAqmSZB9RNuu';
 	//public $textEditor;
 
 	//public $registerNamespaces;

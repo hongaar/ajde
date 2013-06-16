@@ -5,7 +5,7 @@ $field = $this->field;
 
 <?php if ($field->getIsAutoUpdate() === true || ($field->has('readonly') && $field->get('readonly')) ) {
 	if ($field->getValue() === 'CURRENT_TIMESTAMP') {
-		echo '(not saved)';
+		echo '';
 	} else {
 		echo $field->getValue();
 	}

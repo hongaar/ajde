@@ -4,6 +4,7 @@ class Ajde_Crud_Cms_Meta_Type_Toggle extends Ajde_Crud_Cms_Meta_Type
 {
 	public function getFields()
 	{
+		$this->readonly();
 		$this->help();
 		$this->defaultValue();
 		return parent::getFields();
