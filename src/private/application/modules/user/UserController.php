@@ -180,6 +180,12 @@ class UserController extends Ajde_User_Controller
 			}
 			$return = array('success' => true);
 		} else {
+			$session = new Ajde_Session('user');
+			$attempts = $session->has('attempts') ? $session->get('attempts') : 1;
+			$session->set('attempts', $attempts + 1);
+			if ($attempts % 4 === 0) {
+				sleep(5);
+			}
 			$return = array(
 				'success' => false,
 				'message' => __("We could not log you in with these credentials")
