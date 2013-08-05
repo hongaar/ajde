@@ -18,6 +18,13 @@ class MetaModel extends Ajde_Model
 		$this->registerEvents();
 	}
 	
+    public function reset()
+	{
+		$this->_metaValues = array();
+		$this->_options = array();
+		parent::reset();
+	}
+	
 	public function registerEvents()
 	{
 		if (!Ajde_Event::has($this, 'afterCrudLoaded', 'parseForCrud')) {
@@ -67,5 +74,12 @@ class MetaModel extends Ajde_Model
 	{
 		$val = $this->getOption($name);
 		return (int) $val;
+	}
+	
+	public static function getNameFromId($metaId)
+	{
+		$meta = new self();
+		$meta->loadByPK((int) $metaId);
+		return $meta->displayField();
 	}
 }

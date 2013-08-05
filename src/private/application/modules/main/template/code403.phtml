@@ -2,16 +2,31 @@
 /* @var $this Ajde_Template_Parser_Phtml_Helper */
 ?>
 
-<!--<h1>Status 403</h1>
-<p>&nbsp;</p>-->
-<h3><?php echo __("We've taken a security measure"); ?></h3>
-<p>&nbsp;</p>
-<p>
-	You may have looked this page up some time, or from another location or device, and it has expired.
-</p>
-<p>&nbsp;</p>
-<p>
-	<a class='action' href='javascript:void(0);' onclick='window.location.reload(true);'>
-		<?php echo __("Reload this page"); ?>
-	</a>
-</p>
+<div class="row-fluid">
+	
+	<div class="span10 offset1">
+		
+		<div class="box">
+			<div class="row">
+				<div class="span6">
+					<div class="featured-image">
+						<img src="http://2.bp.blogspot.com/-IqXGVlCP0jo/T2y8koA137I/AAAAAAAADbk/VWU059O1j1w/s1600/404.jpg" />
+					</div>	
+					<div class="node-title">
+						<h1><?php echo __("We've taken a security measure"); ?></h1>
+					</div>	
+				</div>
+				<div class="span5 offset1">
+					<p>
+                    	You may have looked this page up some time, or from another location or device, and it has expired.
+                    </p>
+                    <a class='action' href='javascript:void(0);' onclick='window.location.reload(true);'>
+                		<?php echo __("Reload this page"); ?>
+                	</a>
+				</div>
+			</div>
+		</div>		
+		
+	</div><!--/span-->	
+
+</div><!--/row-->

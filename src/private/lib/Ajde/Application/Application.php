@@ -128,7 +128,7 @@ class Ajde_Application extends Ajde_Object_Singleton
 		$response->send();
 	}
 
-	public static function routingError(Ajde_Exception $exception)
+	public static function routingError(Exception $exception)
 	{
 		if (Config::get("debug") === true) {
 			throw $exception;

@@ -30,6 +30,33 @@ class MediaModel extends Ajde_Model
 		$this->saveFileFromWeb();
 	}
 	
+	public function getTag($width = null, $height = null, $crop = null, $class = null)
+	{
+		$path = $this->uploadDirectory . $this->thumbnail;
+		
+		$image = new Ajde_Resource_Image($path);
+		$image->setWidth($width);
+		$image->setHeight($height);
+		$image->setCrop($crop);
+
+		$controller = Ajde_Controller::fromRoute(new Ajde_Core_Route('_core/component:image'));
+		$controller->setImage($image);			
+		$controller->setExtraClass($class);
+		return $controller->invoke();
+	}
+	
+	public function getFilename($width = null, $height = null, $crop = null, $class = null)
+	{
+		$path = $this->uploadDirectory . $this->thumbnail;
+		
+		$image = new Ajde_Resource_Image($path);
+		$image->setWidth($width);
+		$image->setHeight($height);
+		$image->setCrop($crop);
+		
+		return $image->getLinkUrl();
+	}
+	
 	private function saveFileFromWeb()
     {
         if ($this->has('thumbnail') &&

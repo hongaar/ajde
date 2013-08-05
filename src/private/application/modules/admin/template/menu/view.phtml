@@ -24,7 +24,14 @@ $options
 			->setIsRequired(true)
 			->addShowOnlyWhen('type', 'nodelink')
 			->setLabel('Node link')
-			->up()			
+			->up()
+		->selectField('url')
+			->setIsRequired(true)
+			->addShowOnlyWhen('type', 'url')
+			->setDisableRichText(true)
+			->setTextInputHeight(1)
+			->setLabel('URL')
+			->up()
 		->up()
 	->selectList()
 		->selectButtons()
@@ -63,6 +70,10 @@ $options
 					->addBlock()
 						->setClass('sidebar well')
 						->setShow(array('node'))
+						->up()
+					->addBlock()
+						->setClass('sidebar well')
+						->setShow(array('url'))
 						
 	->finished();
 

@@ -14,7 +14,11 @@ class Ajde_Shop_Cart_Item_Collection extends Ajde_Collection
 	
 	protected function _format($value)
 	{
-		return money_format('%!i', $value);
+		if (function_exists('money_format')) {
+			return money_format('%!i', $value);
+		} else {
+			return $value;
+		}
 	}
 	
 	public function getTotal()

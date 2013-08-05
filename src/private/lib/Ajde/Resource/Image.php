@@ -336,13 +336,39 @@ class Ajde_Resource_Image extends Ajde_Resource
 		// 4 = Up to 25 times faster.  Almost identical to imagecopyresampled for most images.
 		// 5 = No speedup. Just uses imagecopyresampled, no advantage over imagecopyresampled.
 		
-		if (empty($src_image) || empty($dst_image) || $quality <= 0) { return false; }
+		// work to do?
+		if (empty($src_image) || empty($dst_image) || $quality <= 0) {
+			return false;			
+		}
+		
+		// This is the resizing/resampling/transparency-preserving magic
+		// https://github.com/maxim/smart_resize_image/blob/master/smart_resize_image.function.php
+		if ($this->_type == 'png' || $this->_type == 'gif') {
+
+			$transparency = imagecolortransparent($src_image);
+			if ($transparency >= 0) {
+				$transparent_color  = imagecolorsforindex($src_image, $trnprt_indx);
+				$transparency       = imagecolorallocate($dst_image, $trnprt_color['red'], $trnprt_color['green'], $trnprt_color['blue']);
+				imagefill($dst_image, 0, 0, $transparency);
+				imagecolortransparent($dst_image, $transparency);
+			} elseif ($this->_type == 'png') {
+				imagealphablending($dst_image, false);
+				$color = imagecolorallocatealpha($dst_image, 0, 0, 0, 127);
+				imagefill($dst_image, 0, 0, $color);
+				imagesavealpha($dst_image, true);
+			}
+		}
+		
+		// do the resize
 		if ($quality < 5 && (($dst_w * $quality) < $src_w || ($dst_h * $quality) < $src_h)) {
-		$temp = imagecreatetruecolor ($dst_w * $quality + 1, $dst_h * $quality + 1);
-		imagecopyresized ($temp, $src_image, 0, 0, $src_x, $src_y, $dst_w * $quality + 1, $dst_h * $quality + 1, $src_w, $src_h);
-		imagecopyresampled ($dst_image, $temp, $dst_x, $dst_y, 0, 0, $dst_w, $dst_h, $dst_w * $quality, $dst_h * $quality);
-		imagedestroy ($temp);
-		} else imagecopyresampled ($dst_image, $src_image, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h);
+			$temp = imagecreatetruecolor ($dst_w * $quality + 1, $dst_h * $quality + 1);
+			imagecopyresized ($temp, $src_image, 0, 0, $src_x, $src_y, $dst_w * $quality + 1, $dst_h * $quality + 1, $src_w, $src_h);
+			imagecopyresampled ($dst_image, $temp, $dst_x, $dst_y, 0, 0, $dst_w, $dst_h, $dst_w * $quality, $dst_h * $quality);
+			imagedestroy ($temp);
+		} else {
+			imagecopyresampled ($dst_image, $src_image, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h);
+		}
+		
 		return true;
 	}
 	

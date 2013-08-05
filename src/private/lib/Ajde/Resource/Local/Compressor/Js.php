@@ -2,7 +2,7 @@
 
 class Ajde_Resource_Local_Compressor_Js extends Ajde_Resource_Local_Compressor
 {
-	private $_lib = 'packer'; // packer|closure
+	private $_lib = 'closure'; // packer|closure
 	
 	public function  __construct()
 	{

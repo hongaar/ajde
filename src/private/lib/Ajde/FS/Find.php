@@ -25,6 +25,16 @@ class Ajde_FS_Find extends Ajde_Object_Static
 		return $return;
 	}
 	
+	public static function findFilenames($dir, $pattern, $flags = 0)
+	{
+	    $files = self::findFiles($dir, $pattern, $flags);
+	    $return = array();
+	    foreach ($files as $file) {
+	        $return[] = basename($file);
+	    }
+	    return $return;
+	}
+	
 	/**
 	 *
 	 * @param array $array 

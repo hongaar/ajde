@@ -129,7 +129,13 @@ class Ajde_Model extends Ajde_Object_Standard
 		$this->_connection = Ajde_Db::getInstance()->getConnection();
 		$this->_table = Ajde_Db::getInstance()->getTable($tableName);
 	}
-
+	
+	public function reset()
+	{
+		$this->_metaValues = array();
+		parent::reset();
+	}
+	
 	public function isEmpty($key)
 	{
 		$value = (string) $this->get($key);
@@ -195,6 +201,7 @@ class Ajde_Model extends Ajde_Object_Standard
 	// Load model values
 	public function loadByPK($value)
 	{
+		$this->reset();
 		$pk = $this->getTable()->getPK();
 		return $this->loadByFields(array($pk => $value));
 	}
@@ -285,12 +292,13 @@ class Ajde_Model extends Ajde_Object_Standard
 		return str_replace(' ', '_', strtolower($name));
 	}
 	
-	protected function lookupMetaName($name) {
+	public function lookupMetaName($name) {
 		if (empty($this->_metaLookup)) {
 			// We need to have the MetaModel here..
 			$this->registerAll();
 			$metaCollection = new MetaCollection();
-			$metaCollection->addFilter(new Ajde_Filter_Join($this->getMetaTable(), 'meta.id', 'meta'));
+			// disable join, as we don't get any metas which don't have a row yet
+//			$metaCollection->addFilter(new Ajde_Filter_Join($this->getMetaTable(), 'meta.id', 'meta'));
 			foreach($metaCollection as $meta) {
 				/* @var $meta MetaModel */
 				$this->_metaLookup[$this->fuzzyMetaName($meta->get('name'))] = $meta->getPK();
@@ -316,26 +324,41 @@ class Ajde_Model extends Ajde_Object_Standard
 	public function saveMeta()
 	{
 		foreach($this->getValues() as $key => $value) {
-			if (substr($key, 0, 5) === 'meta_' && $value) {
+			// don't ignore empty values
+//			if (substr($key, 0, 5) === 'meta_' && $value) {
+			if (substr($key, 0, 5) === 'meta_') {			
 				$metaId = str_replace('meta_', '', $key);
 				$this->saveMetaValue($metaId, $value);
 			}
-		}		
+		}
 	}
 	
-	protected function saveMetaValue($metaId, $value)
+	public function saveMetaValue($metaId, $value)
 	{
-		// Delete old records
-		$sql = 'DELETE FROM ' . $this->getMetaTable() . ' WHERE ' . $this->getTable() . ' = ? AND meta = ?';
-		$statement = $this->getConnection()->prepare($sql);
-		$statement->execute(array($this->getPK(), $metaId));		
-				
+		if (!is_numeric($metaId)) {
+			$metaId = $this->lookupMetaName($metaId);
+		}	
+		
+		$this->deleteMetaValue($metaId);
+		
 		// Insert new ones
 		$sql = 'INSERT INTO ' . $this->getMetaTable() . ' (' . $this->getTable() . ', meta, value) VALUES (?, ?, ?)';
 		$statement = $this->getConnection()->prepare($sql);
 		$statement->execute(array($this->getPK(), $metaId, $value));
 
 		$this->_metaValues[$metaId] = $value;
+	}
+	
+	public function deleteMetaValue($metaId)
+	{
+		if (!is_numeric($metaId)) {
+			$metaId = $this->lookupMetaName($metaId);
+		}	
+		
+		// Delete old records
+		$sql = 'DELETE FROM ' . $this->getMetaTable() . ' WHERE ' . $this->getTable() . ' = ? AND meta = ?';
+		$statement = $this->getConnection()->prepare($sql);
+		$statement->execute(array($this->getPK(), $metaId));
 	}
 	
 	/**
@@ -527,6 +550,11 @@ class Ajde_Model extends Ajde_Object_Standard
 	{
 		return !empty($this->_data);
 	}
+	
+	public function hasParentLoaded($parent)
+	{
+		return $this->has($parent) && $this->get($parent) instanceof Ajde_Model && $this->get($parent)->hasLoaded();
+	}
 
 	public function loadParents()
 	{
@@ -541,6 +569,9 @@ class Ajde_Model extends Ajde_Object_Standard
 			// TODO:
 			throw new Ajde_Exception('Model ' . (string) $this->getTable() . ' not loaded when loading parent');
 		}
+		if ($this->hasParentLoaded($parent)) {
+			return;
+		}
 		if ($parent instanceof Ajde_Model) {
 			$parent = $parent->getTable();
 		} elseif (!$parent instanceof Ajde_Db_Table) {
@@ -548,7 +579,7 @@ class Ajde_Model extends Ajde_Object_Standard
 		}
 		$fk = $this->getTable()->getFK($parent);
 		if (!$this->has($fk['field'])) {
-			// No value for FK field
+			// No column for FK field
 			return false;
 		}
 		$parentModelName = ucfirst(strtolower($fk['parent_table'])) . 'Model';
@@ -557,7 +588,10 @@ class Ajde_Model extends Ajde_Object_Standard
 			// TODO:
 			throw new Ajde_Exception('Constraints on non primary key fields are currently not supported');
 		}
-		$parentModel->loadByPK($this->get($fk['field']));
+		if ($this->hasNotEmpty($fk['field'])) {
+			// We have a value for FK field
+			$parentModel->loadByPK($this->get($fk['field']));
+		}
 		$this->set($fk['field'], $parentModel);
 	}
 

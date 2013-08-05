@@ -125,7 +125,11 @@ abstract class Ajde_Shop_Cart_Item extends Ajde_Model
 	
 	protected function _format($value)
 	{
-		return money_format('%!i', $value);
+		if (function_exists('money_format')) {
+			return money_format('%!i', $value);
+		} else {
+			return $value;
+		}
 	}
 	
 	public function getFormattedUnitprice()

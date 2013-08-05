@@ -150,7 +150,7 @@ $currentGrouper = '';
 								<a class="dropdown-toggle" data-toggle="dropdown" href="admin/cms:nodes">Content <b class="caret"></b></a>
 								<ul class="dropdown-menu">
 									<li class="nav-header">Nodes</li>
-									<li><a href="admin/cms:nodes">Overview</a></li>
+									<li><a href="admin/node:view?view[filter][nodetype]=&nofilterpopup=1">Overview</a></li>
 									<?php foreach ($nodeTypes as $nodeType) {  
 										/* @var $nodeType NodetypeModel */
 										if ($nodeType->get('category') <> $currentGrouper) {

@@ -10,7 +10,7 @@ $filterField = $crud->getField($mainFilter);
 $filterFieldValues = $filterField->getValues();
 $currentFilter = $crudView->getFilterForField($mainFilter);
 
-$filteredBy = 'Choose';
+$filteredBy = 'Filter';
 if (key_exists($currentFilter, $filterFieldValues)) {
 	$filteredBy = $filterFieldValues[$currentFilter];
 }
@@ -46,7 +46,7 @@ if ($edit) {
 >
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		<h3 id="myModalLabel">Choose a <?php echo _e(strtolower($filterField->getLabel())); ?></h3>
+		<h3 id="myModalLabel">Filter by <?php echo _e(strtolower($filterField->getLabel())); ?></h3>
 	</div>
 	<div class="modal-body">
 
@@ -75,7 +75,7 @@ if ($edit) {
 						<a href='javascript:void(null);'
 						   data-name='<?php echo $filterField->getName(); ?>'
 						   data-value='<?php echo $item->getPK(); ?>'
-						   class='btn <?php if ($item->getPK() != $currentFilter) { echo 'btn-info'; } ?>'
+						   class='filter btn <?php if ($item->getPK() != $currentFilter) { echo 'btn-info'; } ?>'
 						   <?php if ($item->getPK() == $currentFilter) { echo 'data-init="true"'; } ?>
 						><?php echo _e($item->get($item->getDisplayField())); ?></a>
 					<?php } ?>
@@ -88,7 +88,7 @@ if ($edit) {
 						<a href='javascript:void(null);'
 						   data-name='<?php echo $filterField->getName(); ?>'
 						   data-value='<?php echo $key; ?>'
-						   class='btn <?php if ($key != $currentFilter) { echo 'btn-info'; } ?>'
+						   class='filter btn <?php if ($key != $currentFilter) { echo 'btn-info'; } ?>'
 						   <?php if ($key == $currentFilter) { echo 'data-init="true"'; } ?>
 						><?php echo _e($option); ?></a>
 					<?php } ?>
@@ -99,6 +99,6 @@ if ($edit) {
 		<?php } ?>
 	</div>
 	<div class="modal-footer">
-		<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+		<button class="btn btn-primary btn-large all" data-name='<?php echo $filterField->getName(); ?>'>show all <?php echo _e(strtolower($filterField->getLabel())); ?></button>
 	</div>
 </div>

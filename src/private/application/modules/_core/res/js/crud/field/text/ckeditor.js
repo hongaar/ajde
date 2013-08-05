@@ -55,6 +55,7 @@ AC.Crud.Edit.Text = function() {
 			CKEDITOR.config.contentsCss = [CKEDITOR.basePath + 'contents.css', 'public/css/_core/crud/editor/ckeditor/style.css'];
 			CKEDITOR.config.removePlugins = 'elementspath';
 			CKEDITOR.config.resize_enabled = false;
+			CKEDITOR.config.removeButtons = '';
 
 			// Optional configuration
 //			CKEDITOR.config.extraPlugins = 'autogrow';

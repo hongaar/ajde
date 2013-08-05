@@ -15,8 +15,10 @@ class Ajde_Session extends Ajde_Object_Standard
 		// Security
 		ini_set('session.gc_maxlifetime', ($lifetime == 0 ? 180 * 60 : $lifetime * 60)); // PHP session garbage collection timeout in minutes
 		ini_set('session.gc_divisor', 100);		// Set divisor and probability for cronjob Ubuntu/Debian
-		ini_set('session.gc_probability', 1);	// @see http://www.php.net/manual/en/function.session-save-path.php#98106 
-		ini_set('session.save_path', str_replace('~', Config::get('local_root'), Config::get('sessionSavepath')));
+		ini_set('session.gc_probability', 1);	// @see http://www.php.net/manual/en/function.session-save-path.php#98106
+		if ( Config::get('sessionSavepath') ) { 
+			ini_set('session.save_path', str_replace('~', Config::get('local_root'), Config::get('sessionSavepath')));
+		}
 		ini_set('session.use_cookies', 1);
 		ini_set('session.use_only_cookies', 1); // @see http://www.php.net/manual/en/session.configuration.php#ini.session.use-only-cookies
 				

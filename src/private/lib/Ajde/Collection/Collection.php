@@ -312,9 +312,9 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 		}
 	}
 	
-	public function addTextFilter($text)
+	public function addTextFilter($text, $operator = Ajde_Query::OP_AND)
 	{
-		$searchFilter = new Ajde_Filter_WhereGroup;
+		$searchFilter = new Ajde_Filter_WhereGroup($operator);
 		$fieldOptions = $this->getTable()->getFieldProperties();			
 		foreach($fieldOptions as $fieldName => $fieldProperties) {
 			switch ($fieldProperties['type']) {

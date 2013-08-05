@@ -11,11 +11,12 @@ AC.Crud.Mainfilter = function() {
 	return {
 
 		init: function() {
-			$('#mainFilter a').live('click', AC.Crud.Mainfilter.mainFilterHandler);
+			$('#mainFilter a.filter').live('click', AC.Crud.Mainfilter.mainFilterHandler);
+			$('#mainFilter button.all').live('click', AC.Crud.Mainfilter.allHandler);
 			var current = $('#mainFilter .mainFilterButtons a[data-init]').text();
 			if (current) {
 				$('.mainFilterLabel').text(current);
-			} else {
+			} else if (window.location.href.indexOf('nofilterpopup=1') === -1) {
 				$('#mainFilter').modal('show');
 			}
 		
@@ -29,6 +30,19 @@ AC.Crud.Mainfilter = function() {
 					return false;
 				}
 			});
+		},
+				
+		allHandler: function(e) {
+			var name = $(this).data('name');
+			var form = $('form.ACCrud');
+			var curVal = form.filter('.ACCrudList').find('select[name="view[filter][' + name + ']"]').val();
+			if (curVal) {
+				form.filter('.ACCrudList').find('select[name="view[filter][' + name + ']"]').val('');
+				AC.Crud.List.updateView(form.children(':eq(0)'));
+			}
+			$('#mainFilter a').addClass('btn-info');
+			$('.mainFilterLabel').text('Filter');
+			$('#mainFilter').modal('hide');
 		},
 
 		mainFilterHandler: function(e) {

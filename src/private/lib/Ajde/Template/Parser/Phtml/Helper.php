@@ -173,9 +173,9 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	 * @param string $route
 	 * @return string
 	 */
-	public function includeModule($route)
+	public function includeModule($route, $vars = array())
 	{
-		return Ajde_Component_Include::processStatic($this->getParser(), array('route' => $route));
+		return Ajde_Component_Include::processStatic($this->getParser(), array('route' => $route, 'vars' => $vars));
 	}
 	
 	/************************

@@ -37,6 +37,9 @@ abstract class Ajde_Document extends Ajde_Object_Standard
 	 */
 	public function setLayout(Ajde_Layout $layout)
 	{
+		if (! $layout instanceof Ajde_Layout) {
+			$layout = new Ajde_Layout($layout);
+		}
 		$layout->setDocument($this);
 		return $this->set("layout", $layout);
 	}	

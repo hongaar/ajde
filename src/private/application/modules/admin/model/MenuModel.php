@@ -54,9 +54,36 @@ class MenuModel extends Ajde_Model
 		$collection = new NodeCollection();
 		$collection->addFilter(new Ajde_Filter_Join('menu', 'menu.node', 'node.id'));
 		$collection->addFilter(new Ajde_Filter_Where('menu.parent', Ajde_Filter::FILTER_EQUALS, $this->getPK()));
+		$collection->getQuery()->addSelect('menu.name as name');
 		$collection->orderBy('menu.sort');
 		
 		return $collection;
+	}
+	
+	public function getItems()
+	{
+		$collection = new MenuCollection();
+		$collection->filterByParent($this->id);
+		$collection->orderBy('sort');
+		
+		$node = new NodeModel();
+		
+		$items = array();
+		foreach($collection as $item) {
+			$name = $item->name;
+			if ($item->type == 'URL') {				
+				$url = $item->url;
+			} else if ($item->type == 'Node link') {
+				$node->loadByPK($item->node);
+				$url = $node->getUrl();				
+			}
+			$items[] = array(
+				'name' => $name,
+				'url' => $url				
+			);
+		}
+		
+		return $items;
 	}
 	
 	

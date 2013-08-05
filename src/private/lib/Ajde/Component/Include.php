@@ -18,6 +18,13 @@ class Ajde_Component_Include extends Ajde_Component
 		if (!$route instanceof Ajde_Core_Route) {
 			$route = new Ajde_Core_Route($route);
 		}
-		return Ajde_Controller::fromRoute($route)->invoke();
+		$controller = Ajde_Controller::fromRoute($route);
+		if (array_key_exists('vars', $this->attributes) && is_array($this->attributes['vars'])) {
+			$view = $controller->getView();
+			foreach($this->attributes['vars'] as $key => $var) {
+				$view->assign($key, $var);
+			}
+		}
+		return $controller->invoke();
 	}
 }

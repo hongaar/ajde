@@ -2,17 +2,32 @@
 /* @var $this Ajde_Template_Parser_Phtml_Helper */
 ?>
 
-<!--<h1>Status 404</h1>
-<p>&nbsp;</p>-->
-<h3><?php echo __("We're sorry, this page can not be found"); ?></h3>
-<p>&nbsp;</p>
-<p>
-	We tried everything we could to find the page you're looking for,<br/>
-	but had to give up in the end.
-</p>
-<p>&nbsp;</p>
-<p>
-	<a class='action' href='.'>
-		<?php echo __("Take me to the homepage"); ?>
-	</a>
-</p>
+<div class="row-fluid">
+	
+	<div class="span10 offset1">
+		
+		<div class="box">
+			<div class="row">
+				<div class="span6">
+					<div class="featured-image">
+						<img src="http://2.bp.blogspot.com/-IqXGVlCP0jo/T2y8koA137I/AAAAAAAADbk/VWU059O1j1w/s1600/404.jpg" />
+					</div>	
+					<div class="node-title">
+						<h1><?php echo __("We're sorry, this page can not be found"); ?></h1>
+					</div>	
+				</div>
+				<div class="span5 offset1">
+					<p>
+                    	We tried everything we could to find the page you're looking for,
+                    	but had to give up in the end.
+                    </p>
+                    <a class='action' href='.'>
+                		<?php echo __("Take me to the homepage"); ?>
+                	</a>
+				</div>
+			</div>
+		</div>		
+		
+	</div><!--/span-->	
+
+</div><!--/row-->
