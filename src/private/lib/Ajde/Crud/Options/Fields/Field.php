@@ -336,6 +336,18 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 	}
 	
 	/**
+	 * Adds an image column to the cross reference table (for fields with type 'multiple')
+	 * 
+	 * @param string $field
+	 * @return Ajde_Crud_Options_Fields_Field 
+	 */
+	public function addMetaField($metaId, $function = false) {
+		$fields = ($this->has('tableFields') ? $this->get('tableFields') : array());
+		$fields[] = array('name' => $metaId, 'type' => 'meta', 'function' => $function);
+		return $this->_set('tableFields', $fields);
+	}
+	
+	/**
 	 * Sort the foreign table by this field
 	 * 
 	 * @param string $table

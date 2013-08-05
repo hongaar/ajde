@@ -5,8 +5,10 @@ class Ajde_Crud_Cms_Meta_Type_Nodelink extends Ajde_Crud_Cms_Meta_Type
 	public function getFields()
 	{
 		$this->required();
+		$this->readonly();
 		$this->help();
 		$this->link();
+		$this->defaultValue();
 		$this->usePopup();
 		return parent::getFields();
 	}

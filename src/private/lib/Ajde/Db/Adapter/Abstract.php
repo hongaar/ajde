@@ -22,6 +22,6 @@ abstract class Ajde_Db_Adapter_Abstract
 	
 	abstract public function getConnection();
 	abstract public function getTableStructure($tableName);
-	abstract public function getForeignKey($childTable, $parentTable);
+	abstract public function getForeignKey($childTable, $childColumn);
 	abstract public function getParents($childTable);
 }

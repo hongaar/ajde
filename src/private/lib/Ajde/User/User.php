@@ -2,19 +2,22 @@
 
 abstract class Ajde_User extends Ajde_Model
 {	
-	protected $_autoloadParents = false;
+	protected $_autoloadParents = true;
 	protected $_displayField = 'fullname';
 	
 	public $usernameField = 'username';
 	public $passwordField = 'password';
 	
-	const USERGROUP_USERS	= 1;
-	const USERGROUP_ADMINS	= 2;
-	const USERGROUP_EDITORS	= 3;
+	const USERGROUP_USERS		= 1;
+	const USERGROUP_ADMINS		= 2;
+	const USERGROUP_CLIENTS		= 3;
+	const USERGROUP_EMPLOYEES	= 4;
 	
 	public $defaultUserGroup = self::USERGROUP_USERS;
 	
 	protected $cookieLifetime = 30; // in days
+	
+	private static $_user;
 	
 	/**
 	 *
@@ -22,13 +25,21 @@ abstract class Ajde_User extends Ajde_Model
 	 */
 	public static function getLoggedIn()
 	{
-		$session = new Ajde_Session('user');
-		if ($session->has('model')) {
-			$user = $session->getModel('model');
-			return $user;
-		} else {
-			return false;
+		if (!isset(self::$_user)) {
+			$session = new Ajde_Session('user');
+			if ($session->has('model')) {
+				$user = $session->getModel('model');
+				self::$_user = $user;
+			} else {
+				self::$_user = false;
+			}
 		}
+		return self::$_user;
+	}
+	
+	public static function isAdmin()
+	{
+		return ((string) self::getLoggedIn()->getUsergroup() == self::USERGROUP_ADMINS);
 	}
 	
 	public function loadByCredentials($username, $password)
@@ -90,6 +101,7 @@ abstract class Ajde_User extends Ajde_Model
 		}
 		$session = new Ajde_Session('user');
 		$session->setModel('model', $this);
+		self::$_user = $this;
 	}
 	
 	public function logout()
@@ -101,6 +113,7 @@ abstract class Ajde_User extends Ajde_Model
 		$session->destroy();
 		$cookie = new Ajde_Cookie(Config::get('ident') . '_user');
 		$cookie->destroy();
+		self::$_user = null;
 	}
 	
 	public function refresh() 
@@ -124,9 +137,9 @@ abstract class Ajde_User extends Ajde_Model
 		return $this->insert();
 	}
 	
-	public function storeCookie()
+	public function storeCookie($includeDomain = true)
 	{
-		$hash = $this->getCookieHash();		
+		$hash = $this->getCookieHash($includeDomain);		
 		$cookieValue = $this->getPK() . ':' . $hash;
 		$cookie = new Ajde_Cookie(Config::get('ident') . '_user', true);
 		$cookie->setLifetime($this->cookieLifetime);
@@ -134,7 +147,7 @@ abstract class Ajde_User extends Ajde_Model
 		return true;
 	}
 	
-	private function getCookieHash()
+	public function getCookieHash($includeDomain = true)
 	{
 		if (empty($this->_data)) {
 			// TODO:
@@ -146,7 +159,11 @@ abstract class Ajde_User extends Ajde_Model
 		}
 		$userSecret	= $this->get('secret');
 		$appSecret	= Config::get('secret');
-		$hash = hash("sha256", $userSecret . $appSecret . $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
+		if ($includeDomain) {
+			$hash = hash("sha256", $userSecret . $appSecret . $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
+		} else {
+			$hash = hash("sha256", $userSecret . $appSecret);
+		}
 		if (empty($hash)) {
 			// TODO:
 			throw new Ajde_Exception('SHA-256 algorithm failed');
@@ -154,7 +171,7 @@ abstract class Ajde_User extends Ajde_Model
 		return $hash;
 	}
 	
-	public function verifyCookie()
+	public function verifyCookie($includeDomain = true)
 	{
 		$cookie = new Ajde_Cookie(Config::get('ident') . '_user', true);
 		if (!$cookie->has('auth')) {
@@ -165,7 +182,7 @@ abstract class Ajde_User extends Ajde_Model
 		if (!$this->loadByPK($uid)) {
 			return false;
 		}
-		if ($this->getCookieHash() === $hash) {
+		if ($this->getCookieHash($includeDomain) === $hash) {
 			$this->login();
 			Ajde_Session_Flash::alert(sprintf(__('Welcome back %s, we automatically logged you in'), $this->getFullname()));
 		} else {

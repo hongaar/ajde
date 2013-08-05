@@ -4,11 +4,11 @@ require_once 'Config_Cms.php';
 class Config_Application extends Config_Cms
 {
 	// Site parameters
-	public $ident				= 'project';
-	public $sitename 			= 'Project name';
-	public $description			= 'Project description';
-	public $author				= 'Author name';
-	public $email				= 'info@example.com';
+	public $ident				= 'belay';
+	public $sitename 			= 'Belay';
+	public $description			= 'Project management';
+	public $author				= 'Nabble';
+	public $email				= 'joram@nabble.nl';
 	public $version 			= array(
 									'number' => '0.1',
 									'name' => 'alpha'
@@ -17,7 +17,7 @@ class Config_Application extends Config_Cms
 
 	public $homepageRoute		= 'main.html';
 	public $defaultRouteParts	= array(
-									'module' => 'node',
+									'module' => 'belay',
 									'controller' => null,
 									'action' => 'view',
 									'format' => 'html',

@@ -17,10 +17,12 @@ App.Admin.User.View = function() {
 
 		// Add CSRF token
 		data = data + '&_token=' + form.find('input[name=\'_token\']').val();
-
+		
+		$('body').addClass('loading');
 		$.post(url, data, function(response) {
 			if (response.success === true) {
 				AC.Core.Alert.flash('User logged in, please stand by for refresh', 2, function() {
+					$('body').addClass('loading');
 					window.location.reload(true);
 				});
 			} else {

@@ -1,0 +1,194 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+
+/* @var $options Ajde_Crud_Options */
+$options = $this->options;
+
+$options
+	->selectFields()
+		->selectField('title')
+			->setFunction('displayParentName')
+			->up()
+		->selectField('status')
+			->setLabel('Status')
+			->setFunction('displayStatus')
+			->up()
+		->selectField('due')
+			->setLabel('Due')
+			->setFunction('displayDue')
+			->up()
+		->selectField('time_spent')
+			->setLabel('Spent')
+			->setFunction('displayTimeSpent')
+			->up()
+		->selectField('total_time')
+			->setLabel('Total')
+			->setFunction('displayTotalTime')
+			->up()
+		->selectField('remaining')
+			->setLabel('Remaining')
+			->setFunction('displayRemaining')
+			->up()
+		->selectField('children')
+			->addTableField('nodetype')			
+			->addMetaField(NodeModel::META_TOTALTIME, 'displayTotalTime')
+			->addSortField('sort')
+			->up()
+		->up()			
+	->selectList()
+		->setShow(array('title', 'status', 'due', 'remaining'))
+		->setRowClassFunction('rowClass')
+		->selectButtons()
+			->setSelect(true)
+			->setDelete(false)
+			->setNew(false)
+			->addItemButton('timer', '<i class="icon-time icon-white"></i> work', 'btn-inverse work')
+			->addToolbarHtml('issue_status', $this->includeModule('issue/statusBtn'))
+			->up()
+		->setShowFooter(true)
+		->setShowHeader(true)
+		
+->finished();
+
+$crud = $this->ACCrudList('node', $options);
+$crud->setSessionName('report.active');
+
+$collection = $crud->getCollection();
+/* @var $collection NodeCollection */
+$model = $crud->getModel();
+/* @var $model NodeModel */
+
+// remove mainfilter
+$crudView = $crud->getCollectionView();
+$crudView->setFilter(array());
+
+// set view
+$crudView->setOrderBy('sort');
+$crudView->setOrderDir('asc');
+
+// group to filter issue status, but only for issues
+$filterIssueStatusGroup = new Ajde_Filter_WhereGroup();
+
+// group to filter status of issues
+$filterIssueGroup = new Ajde_Filter_WhereGroup();
+
+// group for issue status values
+$filterStatusGroup = new Ajde_Filter_WhereGroup();
+$filters = array(
+	'New', 'Active'
+);
+foreach ($filters as $filter) {
+	$filterStatusGroup->addFilter(new Ajde_Filter_Where('node_meta.value', Ajde_Filter_Where::FILTER_EQUALS, $filter, Ajde_Query::OP_OR));
+}
+
+// add status values
+$filterIssueGroup->addFilter(new Ajde_Filter_Where('meta.id', Ajde_Filter::FILTER_EQUALS, NodeModel::META_ISSUESTATUS));
+$filterIssueGroup->addFilter(new Ajde_Filter_Where('node.nodetype', Ajde_Filter::FILTER_EQUALS, NodeModel::NODETYPE_ISSUE));
+$filterIssueGroup->addFilter($filterStatusGroup);
+
+// add filter for nodetypes
+$filterIssueStatusGroup->addFilter($filterIssueGroup);
+$filterIssueStatusGroup->addFilter(new Ajde_Filter_Where('node.nodetype', Ajde_Filter::FILTER_EQUALSNOT, NodeModel::NODETYPE_ISSUE, Ajde_Query::OP_OR));
+
+// group to filter issue status, but only for issues
+$filterStreakStatusGroup = new Ajde_Filter_WhereGroup();
+
+// group to filter status of issues
+$filterStreakGroup = new Ajde_Filter_WhereGroup();
+
+// group for issue status values
+$filterStatusGroup = new Ajde_Filter_WhereGroup();
+$filters = array(
+	'Approved'
+);
+foreach ($filters as $filter) {
+	$filterStatusGroup->addFilter(new Ajde_Filter_Where('node_meta.value', Ajde_Filter_Where::FILTER_EQUALS, $filter, Ajde_Query::OP_OR));
+}
+
+// add status values
+$filterStreakGroup->addFilter(new Ajde_Filter_Where('meta.id', Ajde_Filter::FILTER_EQUALS, NodeModel::META_STREAKSTATUS));
+$filterStreakGroup->addFilter(new Ajde_Filter_Where('node.nodetype', Ajde_Filter::FILTER_EQUALS, NodeModel::NODETYPE_STREAK));
+$filterStreakGroup->addFilter($filterStatusGroup);
+
+// add filter for nodetypes
+$filterStreakStatusGroup->addFilter($filterStreakGroup);
+$filterStreakStatusGroup->addFilter(new Ajde_Filter_Where('node.nodetype', Ajde_Filter::FILTER_EQUALSNOT, NodeModel::NODETYPE_STREAK, Ajde_Query::OP_OR));
+
+// add everything to collection and group
+$collection->addFilter(new Ajde_Filter_LeftJoin('node_meta', 'node_meta.node', 'node.id'));
+$collection->addFilter(new Ajde_Filter_LeftJoin('meta', 'meta.id', 'node_meta.meta'));
+$collection->addFilter($filterIssueStatusGroup);
+$collection->addFilter($filterStreakStatusGroup);
+$collection->getQuery()->addGroupBy('node_meta.node');
+
+// add issue status and filter
+$issuestatusId = $model->lookupMetaName('issue_status');
+$collection->getQuery()->addSelect(new Ajde_Db_Function(
+	"(SELECT node_meta.value FROM node_meta WHERE node_meta.meta = $issuestatusId AND node_meta.node = node.id) AS status"
+));
+
+// add issue due
+$issuedueId = $model->lookupMetaName('issue_due');
+$collection->getQuery()->addSelect(new Ajde_Db_Function(
+	"(SELECT node_meta.value FROM node_meta WHERE node_meta.meta = $issuedueId AND node_meta.node = node.id) AS due"
+));		
+
+// add streak status
+$streakstatusId = $model->lookupMetaName('streak_status');
+$collection->getQuery()->addSelect(new Ajde_Db_Function(
+	"(SELECT node_meta.value FROM node_meta WHERE node_meta.meta = $streakstatusId AND node_meta.node = node.id) AS streak_status"
+));
+
+// add time spent
+$timespentId = $model->lookupMetaName('time_spent');
+$collection->getQuery()->addSelect(new Ajde_Db_Function(
+	"(SELECT node_meta.value FROM node_meta WHERE node_meta.meta = $timespentId AND node_meta.node = node.id) AS time_spent"
+));
+
+// add total time
+$totaltimeId = $model->lookupMetaName('total_time');
+$collection->getQuery()->addSelect(new Ajde_Db_Function(
+	"(SELECT node_meta.value FROM node_meta WHERE node_meta.meta = $totaltimeId AND node_meta.node = node.id) AS total_time"
+));
+
+// add allocated
+$allocatedId = $model->lookupMetaName('time_allocated');
+$collection->getQuery()->addSelect(new Ajde_Db_Function(
+	"(SELECT node_meta.value FROM node_meta WHERE node_meta.meta = $allocatedId AND node_meta.node = node.id) AS time_allocated"
+));
+
+// add node type
+$collection->joinNodetype();
+$collection->getQuery()->addSelect('nodetype.name AS nodetype_name');
+
+// filter nodetype
+$filterGroup = new Ajde_Filter_WhereGroup();
+$filters = array(
+	NodeModel::NODETYPE_CLIENT,
+	NodeModel::NODETYPE_ISSUE,
+	NodeModel::NODETYPE_STREAK
+);
+foreach ($filters as $filter) {
+	$filterGroup->addFilter(new Ajde_Filter_Where('nodetype', Ajde_Filter_Where::FILTER_EQUALS, $filter, Ajde_Query::OP_OR));
+}
+$collection->addFilter($filterGroup);
+
+?>
+
+
+<div class="row-fluid">
+	<div class="span12 expandInIframe">
+		
+		<div class="page-header">
+			<h1>
+				<?php echo Ajde::app()->getDocument()->getTitle(); ?>
+			</h1>
+		</div>		
+		
+		<div class="row-fluid">
+			<div class="span8 offset2">
+				<?php echo $crud->output(); ?>
+			</div>
+		</div>
+	</div><!--/span-->
+</div><!--/row-->

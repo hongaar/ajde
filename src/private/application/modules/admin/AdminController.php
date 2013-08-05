@@ -7,11 +7,10 @@ class AdminController extends Ajde_Acl_Controller
 	 * When returning false, invocation is cancelled
 	 * @return boolean 
 	 */
-	public function beforeInvoke()
+	public function beforeInvoke($allowed = array())
 	{
-		Ajde::app()->getDocument()->setLayout(new Ajde_Layout('cms'));
 		Ajde_Cache::getInstance()->disable();
-		return parent::beforeInvoke();
+		return parent::beforeInvoke($allowed);
 	}
 	
 	/**

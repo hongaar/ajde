@@ -291,7 +291,12 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 		if (!$view->isEmpty('orderBy')) {
 			$oldOrderBy = $this->getQuery()->orderBy;
 			$this->getQuery()->orderBy = array();
-			$this->orderBy((string) $this->getTable() . '.' . $view->getOrderBy(), $view->getOrderDir());
+			if (in_array($view->getOrderBy(), $this->getTable()->getFieldNames())) {
+				$this->orderBy((string) $this->getTable() . '.' . $view->getOrderBy(), $view->getOrderDir());
+			} else {
+				// custom column, make sure to add it to the query first!
+				$this->orderBy($view->getOrderBy(), $view->getOrderDir());
+			}
 			foreach($oldOrderBy as $orderBy) {
 				$this->orderBy($orderBy['field'], $orderBy['direction']);
 			}
@@ -367,6 +372,7 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 		$query = clone $this->getQuery();
 		/* @var $query Ajde_Query */
 		$query->select = array();
+		$query->orderBy = array();
 		$query->limit = array('start' => null, 'count' => null);	
 		$query->addSelect('COUNT(*) AS count');
 		return $query->getSql();
@@ -443,5 +449,14 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 			$str .= implode($item->values());
 		}
 		return md5($str);
+	}
+	
+	public function toArray()
+	{
+		$array = array();
+		foreach($this as $item) {
+			$array[] = $item->values();
+		}
+		return $array;
 	}
 }

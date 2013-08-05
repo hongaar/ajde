@@ -45,7 +45,8 @@ class _coreCrudController extends Ajde_Acl_Controller
 		$session = new Ajde_Session('AC.Crud');
 		$session->setModel($crud->getHash(), $crud);
 		
-		$crud->loadCollectionView();
+		// just preload it
+		$crud->getCollectionView();
 		
 		$view = $crud->getTemplate();		
 		$view->assign('crud', $crud);
@@ -99,7 +100,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 		}
 		
 		// Hide mainfilter fields	
-		$crudView = $crud->loadCollectionView();
+		$crudView = $crud->getCollectionView();
 		$mainFilter = $crudView->getMainFilter();
 		if ($mainFilter) {
 			$currentFilter = $crudView->getFilterForField($mainFilter);
@@ -338,12 +339,11 @@ class _coreCrudController extends Ajde_Acl_Controller
 		Ajde_Event::trigger($model, 'afterCrudSave', array($crud));
 		
 		// Multiple field SimpleSelector
-		foreach($post as $key => $value) {
-			if (is_array($value)) {
-				$fieldOptions = $crud->getOption('fields.' . $key);
-				if (isset($fieldOptions['crossReferenceTable'])) {
-					$this->deleteMultiple($crud, null, $model->getPK(), $key, true);
-					foreach($value as $item) {
+		foreach($crud->getOption('fields') as $key => $field) {
+			if (isset($field['crossReferenceTable']) && isset($field['simpleSelector']) && $field['simpleSelector'] === true) {
+				$this->deleteMultiple($crud, null, $model->getPK(), $key, true);
+				if (isset($post[$key]) && is_array($post[$key])) {
+					foreach($post[$key] as $item) {
 						$this->addMultiple($crud, $item, $model->getPK(), $key);
 					}
 				}

@@ -26,9 +26,11 @@ $currentGrouper = '';
 					</a>
 					<ul class="dropdown-menu">
 			<?php } ?>
-			<li><a href="admin/node:view?view[filter][nodetype]=<?php echo $nodeType->getPK(); ?>"><?php echo _e($nodeType->getName()); ?></a></li>
-		<?php } ?>
+				<li><a href="admin/node:view?view[filter][nodetype]=<?php echo $nodeType->getPK(); ?>"><?php echo _e($nodeType->getName()); ?></a></li>
+		<?php } 
+		if ($nodeTypes->count()) { ?>
 			</ul>
+		<?php } ?>
 		</li>
 		<li class="divider"></li>
 		<li class="nav-header">Media</li>

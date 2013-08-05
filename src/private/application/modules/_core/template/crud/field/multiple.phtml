@@ -90,9 +90,15 @@ $field = $this->field;
                 <tr>
                     <th class='main'><?php echo $field->getModel()->getTable()->getFieldProperties($field->getModel()->getDisplayField(), 'label'); ?></th>
                     <?php if ($field->hasTableFields()) {
-                        foreach ($field->getTableFields() as $extraField) { ?>
-                            <th><?php echo $field->getModel()->getTable()->getFieldProperties($extraField['name'], 'label'); ?></th>
-                        <?php } 
+                        foreach ($field->getTableFields() as $extraField) {
+							if ($extraField['type'] == 'meta') {
+								$meta = new MetaModel();
+								$meta->loadByPK($extraField['name']); ?>
+								<th><?php echo $meta->getName(); ?></th>
+							<?php } else { ?>
+								<th><?php echo $field->getModel()->getTable()->getFieldProperties($extraField['name'], 'label'); ?></th>
+							<?php }
+                        } 
                     } ?>
                     <th></th>
                 </tr>
@@ -189,6 +195,12 @@ $field = $this->field;
 									>
 										<span><img src='public/images/_core/crud/up_16.png'>&middot;&middot;&middot;<img src='public/images/_core/crud/down_16.png'></span>
 									</td>
+								<?php } else if ($type == 'meta') {
+									$value = $child->getMetaValue($extraField['name']);
+									if ($extraField['function'] !== false) {
+										$value = $child->{$extraField['function']}();
+									} ?>
+									<td><?php echo $value; ?></td>
                                 <?php } else { ?>
 									<td>
 										<?php $value = $child->get($extraField['name']);

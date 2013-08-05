@@ -87,6 +87,14 @@ class Ajde_Crud_Options_List extends Ajde_Crud_Options
 	public function setShow($fields)	{ return $this->_set('show', $fields); }
 	
 	/**
+	 * Sets a function which generates the row class
+	 * 
+	 * @param array $fields
+	 * @return Ajde_Crud_Options_List
+	 */
+	public function setRowClassFunction($modelFunction)	{ return $this->_set('rowClassFunction', $modelFunction); }
+	
+	/**
 	 * Sets which fields to show in grid view
 	 * 
 	 * @param array $fields
@@ -102,4 +110,12 @@ class Ajde_Crud_Options_List extends Ajde_Crud_Options
 	 * @return Ajde_Crud_Options_List 
 	 */
 	public function setThumbDim($width, $height) { return $this->_set('thumbDim', array('width' => $width, 'height' => $height)); }
+	
+	/**
+	 * Sets info panel function
+	 * 
+	 * @param string $function
+	 * @return Ajde_Crud_Options_List 
+	 */
+	public function setPanelFunction($function) { return $this->_set('panelFunction', $function); }
 }

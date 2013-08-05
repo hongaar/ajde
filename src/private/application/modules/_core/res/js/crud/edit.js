@@ -34,12 +34,15 @@ AC.Crud.Edit = function() {
 				var self = this;
 				AC.Crud.Edit.saveHandler.call(self, e, 'edit');
 			});
-			        
+
 			// Show/hide elements with data-show-[fieldname] set, and run now
-			$('form.ACCrudEdit :input').on('change', AC.Crud.Edit.dynamicFields).change();
+			$('form.ACCrudEdit :input').on('change', AC.Crud.Edit.dynamicFields).each(function() {
+				AC.Crud.Edit.dynamicFields.call(this);
+			});			
 			
 			// Dirty handler for form input elements
             $('form.ACCrudEdit :input').on('change', AC.Crud.Edit.setDirty);
+			
 		},
             
         setDirty: function(e) {
@@ -55,35 +58,39 @@ AC.Crud.Edit = function() {
         },
 			
 		dynamicFields: function(e) {
-			var val = "", name = $(this).attr('name');
+			var $this = $(this);
+			var val = "";
+			var name = $this.attr('name');
+			
 			if (name && name.indexOf('[]') === -1 && $('.control-group[data-show-' + name + ']').length) {
-				if ($(this).attr('type') === 'radio') {
-					if ($(this).filter(':checked').length) {
+				var ctlgroup = $('.control-group[data-show-' + name + ']');
+				if ($this.attr('type') === 'radio') {
+					if ($this.filter(':checked').length) {
 						val = $(':input[name=' + name + ']:checked').val();
 					}
-				} else if ($(this)[0].nodeName === 'SELECT') {
-					val = $(this).find('option:selected').val();
+				} else if ($this[0].nodeName === 'SELECT') {
+					val = $this.find('option:selected').val();
 				} else {
-					val = $(this).val();
+					val = $this.val();
 				}
 				val = val.toLowerCase().replace(/ /g, '');
 				
 				if (val) {
-					var $hidden = $('.control-group[data-show-' + name + ']:not([data-show-' + name + '*="|' + val + '|"])');
-					var $shown = $('.control-group[data-show-' + name + '*="|' + val + '|"]');
+					var $hidden = ctlgroup.filter(':not([data-show-' + name + '*="|' + val + '|"])');
+					var $shown = ctlgroup.filter('.control-group[data-show-' + name + '*="|' + val + '|"]');
 					$hidden.stop(true, true).hide();
 					$hidden.each(function() {
-						var self = this;
+						var $self = $(this);
 						setTimeout(function() {
-							if (!$(self).parents('fieldset').find('.control-group:visible').length) {
-								$(self).parents('fieldset').stop(true, true).hide('fast')
+							if (!$self.parents('fieldset').find('.control-group:visible').length) {
+								$self.parents('fieldset').stop(true, true).hide('fast')
 							}
 						}, 100);
 					});
 					$shown.parents('fieldset').show();
 					$shown.removeClass('dynamic').stop(true, true).fadeIn();
 				}				
-			}			
+			}		
 		},
 		
 		equalizeForm: function() {
@@ -142,6 +149,8 @@ AC.Crud.Edit = function() {
 					return false;
 				}
 			}
+		
+			infoHandler('Saving...');
 			$.post(url, data, function(data) {		
 								
 				if (data.success === false) {
@@ -168,6 +177,7 @@ AC.Crud.Edit = function() {
 							AC.Crud.Edit.equalizeForm();
 						}
 						$.scrollTo($('.control-group.error:first'), 800, { axis: 'y', offset: -70 });
+						warningHandler('Please correct the errors in this form');
 					} else {
 						errorHandler(i18n.applicationError);
 					}

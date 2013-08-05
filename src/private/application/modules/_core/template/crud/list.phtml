@@ -42,10 +42,12 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 		class='table <?php if ($crudView->getViewType() == 'list') { echo 'table-striped'; } ?> table-hover crud <?php echo $crudView->getViewType(); ?>'
 		data-disable-multiple='<?php if ($disableMultiple) { echo '1'; } ?>'
 		data-singleclick='<?php echo $crud->getOption('list.singleClickEdits', false) ? '1' : '0'; ?>'
+		data-editaction='<?php echo $crud->getEditAction(); ?>'
+		data-newaction='<?php echo $crud->getNewAction(); ?>'
 	>
 	<thead <?php if (!$crud->getOption('list.showHeader', true)) { echo 'class="hidden"'; } ?>>        
 		<tr <?php if (!$crud->getOption('list.showColumnNames', true)) { echo 'class="hidden"'; } ?>>
-			<th width="10">
+			<th width="10" <?php if (!$crud->getOption('list.buttons.select', true)) { ?>class="hidden"<?php } ?>>
 				<input type="hidden" name="view[orderBy]" value="<?php echo $crudView->getOrderBy(); ?>" />
 				<input type="hidden" name="view[orderDir]" value="<?php echo $crudView->getOrderDir(); ?>" />
 			</th>
@@ -77,7 +79,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 		</tr>
 		<?php if ($showFilters && !$crudView->getDisableFilter()) { ?>
 			<tr class="filters <?php echo $crudView->getFilterVisible() ? 'visible' : ''; ?>">
-				<th></th>
+				<th <?php if (!$crud->getOption('list.buttons.select', true)) { ?>class="hidden"<?php } ?>></th>
 				<?php foreach($fieldsToShow as $fieldName) {
 					$field = $crud->getField($fieldName); ?>
 					<th>
@@ -98,7 +100,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 			</tr>
         <?php } ?>
         <tr>
-            <th></th>
+            <th <?php if (!$crud->getOption('list.buttons.select', true)) { ?>class="hidden"<?php } ?>></th>
             <th colspan="<?php echo $columnCount + 1; ?>">
                 <?php if ($crud->getOption('list.search', true)) { ?>
                     <input type="search" name="view[search]" class="span12 search" value="<?php echo $crudView->getSearch(); ?>" placeholder="<?php echo __("Search"); ?>"/>
@@ -106,8 +108,8 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
             </th>
         </tr>
 		<tr class="toolbar">
-			<td>
-				<input <?php if (!$crud->getOption('list.buttons.select', true)) { ?>class="hidden"<?php } ?> type="checkbox" class="toggleSelect nopicker" />
+			<td <?php if (!$crud->getOption('list.buttons.select', true)) { ?>class="hidden"<?php } ?>>
+				<input type="checkbox" class="toggleSelect nopicker" />
 			</td>			
 			<td class="toolbar" colspan="<?php echo $columnCount; ?>">
 				<div class="btn-group">
@@ -117,6 +119,11 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 					<?php if ($crud->getOption('list.buttons.delete', true)) { ?>
 						<a href="javascript:void(null);" class='btn btn-danger delete hideInIframe'>delete selected</a>
 					<?php } ?>
+					<?php if ( ($html = $crud->getOption('list.buttons.toolbarHtml')) && count($html) ) {
+						foreach($html as $snippet) {
+							echo $snippet;
+						}
+					} ?>
 					<?php if ( ($buttons = $crud->getOption('list.buttons.toolbarButtons')) && count($buttons) ) { ?>
                         <div class="btn-group">
 							<?php if (count($buttons) == 1) {
@@ -130,7 +137,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 								<?php } ?>
 							<?php } else { ?>
 								<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-									More <span class="caret"></span>
+									actions <span class="caret"></span>
 								</a>
 								<ul class="dropdown-menu pull-right">
 									<?php 
@@ -139,7 +146,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 											<?php if ($button['text'] instanceof Ajde_Core_Route) {
 												echo $this->includeModule($button['text']);
 											} else { ?>
-												<a href="javascript:void(null);" class='btn <?php echo $button['class']; ?>'>
+												<a href="javascript:void(null);" class='btn-left <?php echo $button['class']; ?>'>
 													<?php echo $button['text']; ?>
 												</a>							
 											<?php } ?>
@@ -170,14 +177,14 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 		/* @var $model Ajde_Model */
 		$crud->fireCrudLoadedOnModel($model);
 		?>
-		<tr id="row-<?php echo $model->getPK(); ?>">
+		<tr id="row-<?php echo $model->getPK(); ?>" class="<?php if ($crud->getOption('list.rowClassFunction', false)) { echo $model->{$crud->getOption('list.rowClassFunction')}(); } ?>">
 			<td class="<?php if (!$crud->getOption('list.buttons.select', true)) { ?>hidden<?php } ?>">
-				<input type="checkbox" class="id nopicker <?php if (!$crud->getOption('list.buttons.select', true)) { ?>hidden<?php } ?>" name="id[]" value="<?php echo $model->getPK(); ?>" />
+				<input type="checkbox" class="id nopicker" name="id[]" value="<?php echo $model->getPK(); ?>" />
 			</td>
 			<?php foreach($fieldsToShow as $fieldName) {				
 				
 				$field = $crud->getField($fieldName);
-				$value = $model->get($fieldName);			
+				$value = $model->has($fieldName) ? $model->get($fieldName) : false;
 				
 				if (!in_array($fieldName, $gridFields)) {
 					$gridData = 'data-grid="hide"';
@@ -199,7 +206,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 					<?php } ?>
 				<?php
 				// Display function
-				} elseif ($field->hasFunction()) {
+				} elseif ($field->hasFunction() && $field->getFunction()) {
 					$displayFunction = $field->getFunction();
 					$funcValue = $model->{$displayFunction}(); ?>
 						<td <?php echo $gridData; ?> title="<?php echo _e(strip_tags($funcValue)); ?>" <?php if ($crud->getOption('list.main', false) == $field->getName()) { echo 'class=\'main\''; } ?>>
@@ -259,15 +266,22 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 							<?php if (count($buttons) == 1) {
 								$button = current($buttons); ?>
 								<a href="javascript:void(null);" class='btn <?php echo $button['class']; ?>'><?php echo $button['text']; ?></a>
-							<?php } else { ?>
+							<?php } else {
+								foreach($buttons as $button) { 
+									if ($button['persistent'] === true) { ?>
+										<a href="javascript:void(null);" class='btn <?php echo $button['class']; ?>'><?php echo $button['text']; ?></a>
+									<?php } 
+								} ?>
 								<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-									More <span class="caret"></span>
+									<span class="caret"></span>
 								</a>
 								<ul class="dropdown-menu pull-right">
 									<?php 
-									foreach($buttons as $button) { ?>
-										<li><a href="javascript:void(null);" class='<?php echo $button['class']; ?>'><?php echo $button['text']; ?></a></li>
-									<?php } ?>
+									foreach($buttons as $button) {
+										if ($button['persistent'] === false) { ?>
+											<li><a href="javascript:void(null);" class='btn-left <?php echo $button['class']; ?>'><?php echo $button['text']; ?></a></li>
+										<?php }
+									} ?>
 								</ul>
 							<?php } ?>
                         </div>
@@ -275,10 +289,21 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
                 </div>
 			</td>
 		</tr>
+		<?php if ($crud->getOption('list.panelFunction', false)) {
+			$function = $crud->getOption('list.panelFunction');
+			$output = $model->{$function}();
+			if ($output !== false) { ?>
+			<tr class='panel'>
+				<td colspan="<?php echo $columnCount + 2; ?>">
+					<?php echo $output; ?>
+				</td>
+			</tr>
+			<?php }
+		} ?>		
 	<?php } ?>
 	<?php if (count($items) == 0) { ?>
 		<tr>
-			<td></td>			
+			<td <?php if (!$crud->getOption('list.buttons.select', true)) { ?>class="hidden"<?php } ?>></td>			
 			<td colspan="<?php echo $columnCount + 1; ?>">				
 				<?php echo __("No items found"); ?>
 			</td>			
@@ -287,7 +312,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 	</tbody>
 	<tfoot <?php if (!$crud->getOption('list.showFooter', true)) { echo 'class="hidden"'; } ?>>
 		<tr class="toolbar">
-			<td></td>			
+			<td <?php if (!$crud->getOption('list.buttons.select', true)) { ?>class="hidden"<?php } ?>></td>			
 			<td class='buttons' colspan="<?php echo $columnCount; ?>">
 				<input type="hidden" name="view[page]" value="<?php echo $crudView->getPage(); ?>" />
                 

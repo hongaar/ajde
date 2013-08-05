@@ -168,6 +168,28 @@ class _coreComponentController extends Ajde_Controller
 		$output = $image->getImage();
 		return $output;
 	}
+	
+	/************************
+	 * Ajde_Component_Qrcode
+	 ************************/
+	
+	public function qrcodeHtml() {
+		/* @var $qr Ajde_Resource_Qrcode */
+		$qr = $this->getQrcode();
+		$this->setAction('qrcode/show');
+		$this->getView()->assign('href', $qr->getLinkUrl());
+		return $this->render();
+	}
+	
+	public function qrcodeData() {
+		$fingerprint = Ajde::app()->getRequest()->getRaw('id');		
+		/* @var $qr Ajde_Resource_Qrcode */
+		$qr = Ajde_Resource_Qrcode::fromFingerprint($fingerprint);
+		Ajde_Cache::getInstance()->updateHash($fingerprint);
+		
+		$qr->write();
+		return false;
+	}
     
     /************************
 	 * Ajde_Component_Embed

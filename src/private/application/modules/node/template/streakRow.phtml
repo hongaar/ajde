@@ -1,0 +1,43 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+
+/* @var $item NodeModel */
+$item = $this->item;
+
+?>
+
+<h3><?php echo _e($item->getTitle()); ?></h3>
+
+<div class="row-fluid">
+	<div class="span4">
+		<table class="table table-condensed">
+			<tr>
+				<td><?php echo nl2br(_e($item->getSummary())); ?></td>
+			</tr>
+		</table>
+	</div>
+	<div class="span4">
+		<table class="table table-condensed">
+			<tr>
+				<th>Billing type</th>
+				<td><?php echo $item->getMetaValue('billing_type'); ?></td>
+			</tr>
+			<tr>
+				<th>Discount</th>
+				<td><?php echo $item->getMetaValue('discount'); ?>%</td>
+			</tr>
+		</table>
+	</div>
+	<div class="span4">
+		<table class="table table-condensed">
+			<tr>
+				<th>Total time</th>
+				<td><?php echo NodeModel::span2str($item->getTotalTime()); ?></td>
+			</tr>
+			<tr>
+				<th>Total cost</th>
+				<td>€ <?php echo $item->getTotalCost(); ?></td>
+			</tr>
+		</table>
+	</div>
+</div>

@@ -43,6 +43,10 @@ class Ajde_Filter_WhereGroup extends Ajde_Filter
 			}				
 		}
 		
+		if (!$sqlWhere) {
+			$sqlWhere = 1;
+		}
+		
 		return array(
 			'where' => array(
 				'arguments' => array('(' . $sqlWhere . ')', $this->_operator),

@@ -32,7 +32,7 @@ $field = $this->field;
     <?php } ?>
 
     <div class="controls">        
-        <?php if ($field->getIsPK() === true) :
+        <?php if ($field->hasIsPK() && $field->getIsPK() === true) :
             echo $field->getHtmlPK();
         endif; ?>
         <?php echo $field->getInput(); ?>

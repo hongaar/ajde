@@ -9,11 +9,12 @@ class UserController extends Ajde_User_Controller
 		'keepalive'
 	);
 	protected $_logonRoute = 'user/logon/html';
+	protected $includeDomain = false;
 	
 	public function beforeInvoke()
 	{
 		if (substr($_GET['_route'], 0, 5) == 'admin' || substr($_GET['returnto'], 0, 5) == 'admin' || (($user = $this->getLoggedInUser()) && $user->getUsergroup() != UserModel::USERGROUP_USERS)) {
-			Ajde::app()->getDocument()->setLayout(new Ajde_Layout('cms'));
+			Ajde::app()->getDocument()->setLayout(new Ajde_Layout('belay'));
 		}
 		Ajde_Cache::getInstance()->disable();
 		return parent::beforeInvoke();
@@ -23,6 +24,13 @@ class UserController extends Ajde_User_Controller
 	public function view()
 	{
 		return $this->profile();
+	}
+	
+	public function app()
+	{
+		$user = $this->getLoggedInUser();
+		$this->getView()->assign('user', $user);		
+		return $this->render();
 	}
 	
 	public function keepaliveJson()
@@ -168,7 +176,7 @@ class UserController extends Ajde_User_Controller
 			$user->login();
             Ajde_Session_Flash::alert(sprintf(__('Welcome back %s'), $user->getFullname()));
 			if ($rememberme === true) {
-				$user->storeCookie();
+				$user->storeCookie($this->includeDomain);
 			}
 			$return = array('success' => true);
 		} else {

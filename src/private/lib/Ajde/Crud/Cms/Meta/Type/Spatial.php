@@ -7,7 +7,9 @@ class Ajde_Crud_Cms_Meta_Type_Spatial extends Ajde_Crud_Cms_Meta_Type
 	public function getFields()
 	{
 		$this->required();
+		$this->readonly();
 		$this->help();
+		$this->defaultValue();
 		$this->useImage();
 		$this->media();
 		return parent::getFields();
@@ -28,6 +30,7 @@ class Ajde_Crud_Cms_Meta_Type_Spatial extends Ajde_Crud_Cms_Meta_Type
 		Ajde_Model::register('media');
 		$field = $this->fieldFactory('media');
 		$field->setType('fk');
+		$field->setModelName('media');
 		$field->addShowOnlyWhen('spatialtype', 'image');
 		$field->setUsePopupSelector(true);
 		$field->setListRoute('admin/media:view.crud');

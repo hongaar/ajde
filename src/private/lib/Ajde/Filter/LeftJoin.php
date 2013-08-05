@@ -15,7 +15,7 @@ class Ajde_Filter_LeftJoin extends Ajde_Filter
 	
 	public function prepare(Ajde_Db_Table $table = null)
 	{
-		$sql = $this->_table . ' ON ' . $table . '.' . $this->_ownerField . ' = ' . $this->_table . '.' . $this->_childField;
+		$sql = $this->_table . ' ON ' . $this->_ownerField . ' = ' . $this->_childField;
 		return array(
 			'join' => array(
 				'arguments' => array($sql, Ajde_Query::JOIN_LEFT),

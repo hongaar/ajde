@@ -157,6 +157,40 @@ class Ajde_Crud extends Ajde_Object_Standard
 		return (string) $this->getModel()->getTable();		
 	}
 	
+	public function setEditAction($value)
+	{
+		parent::setEditAction($value);
+	}
+	
+	public function getEditAction()
+	{
+		if (parent::hasEditAction()) return parent::getEditAction();
+		return false;
+	}
+	
+	public function setNewAction($value)
+	{
+		parent::setNewAction($value);
+	}
+	
+	public function getNewAction()
+	{
+		if (parent::hasNewAction()) return parent::getNewAction();
+		return false;
+	}
+	
+	public function setListAction($value)
+	{
+		parent::setListAction($value);
+	}
+	
+	public function getListAction()
+	{
+		if (parent::hasListAction()) return parent::getListAction();
+		return false;
+	}
+	
+	
 	/**
 	 * @return Ajde_Collection
 	 */
@@ -243,7 +277,11 @@ class Ajde_Crud extends Ajde_Object_Standard
 		}
 		
 		$collection->load();
-		$collection->loadParents();
+		
+		// TODO: this should be done with JOIN
+		if ($this->getModel()->getAutoloadParents()) {
+			$collection->loadParents();
+		}		
 		return $collection;
 	}
 	
@@ -263,23 +301,33 @@ class Ajde_Crud extends Ajde_Object_Standard
 	public function loadFields()
 	{
 		$fields = array();
+		$allFields = $this->getDeclaredFieldNames();
+		
 		$fieldsArray =  $this->getModel()->getTable()->getFieldProperties();		
 		// TODO: changed getItem to getModel, any side effects?
 		$parents = $this->getModel()->getTable()->getParents();
-
-		foreach($fieldsArray as $fieldProperties) {
-			$fieldOptions = $this->getFieldOptions($fieldProperties['name'], $fieldProperties);				
+		
+		foreach($allFields as $fieldName) {
+			$fieldProperties = array();
+			if (isset($fieldsArray[$fieldName])) {
+				$fieldProperties = $fieldsArray[$fieldName];
+			}
+			$fieldOptions = $this->getFieldOptions($fieldName, $fieldProperties);		
+			$fieldOptions['name'] = $fieldName;
 			if (in_array($fieldOptions['name'], $parents)) {
 				$fieldOptions['type'] = 'fk';
 			}
 			$field = $this->createField($fieldOptions);
-			$fields[$field->getName()] = $field;
+			$fields[$fieldName] = $field;
 		}
 		return $this->_fields = $fields;
 	}
 	
 	public function createField($fieldOptions)
 	{		
+		if (!isset($fieldOptions['type'])) {
+			$fieldOptions['type'] = 'text';
+		}
 		$fieldClass = Ajde_Core_ExternalLibs::getClassname("Ajde_Crud_Field_" . ucfirst($fieldOptions['type']));				
 		$field = new $fieldClass($this, $fieldOptions);
 		if ($this->getOperation() === 'edit') {					
@@ -317,6 +365,22 @@ class Ajde_Crud extends Ajde_Object_Standard
 				return false;
 			}
 		}
+	}
+	
+	public function getDeclaredFieldNames()
+	{
+		$fields = $this->getFieldNames();
+		foreach($this->getFieldNamesFromOptions() as $optionField) {
+			if (!in_array($optionField, $fields)) {
+				$fields[] = $optionField;
+			}
+		}
+		return $fields;
+	}
+	
+	public function getFieldNamesFromOptions()
+	{
+		return array_keys($this->getOptions('fields'));
 	}
 	
 	public function getFieldOptions($fieldName, $fieldProperties = array())
@@ -357,23 +421,25 @@ class Ajde_Crud extends Ajde_Object_Standard
 	 * @param array $viewParams
 	 * @return Ajde_Collection_View
 	 */
-	public function loadCollectionView($viewParams = array())
+	public function getCollectionView($viewParams = array())
 	{
-		$viewSession = new Ajde_Session('AC.Crud.View');
-		$sessionName = $this->getSessionName();
-		if ($viewSession->has($sessionName)) {
-			$crudView = $viewSession->get($sessionName);
-		} else {
-			$crudView = new Ajde_Collection_View($sessionName, $this->getOption('list.view', array()));
+		if (!$this->getCollection()->hasView()) {
+			$viewSession = new Ajde_Session('AC.Crud.View');
+			$sessionName = $this->getSessionName();
+			if ($viewSession->has($sessionName)) {
+				$crudView = $viewSession->get($sessionName);
+			} else {
+				$crudView = new Ajde_Collection_View($sessionName, $this->getOption('list.view', array()));
+			}
+			if (empty($viewParams)) {
+				$viewParams = Ajde::app()->getRequest()->getParam('view', array());
+			}
+			$crudView->setOptions($viewParams);
+			$viewSession->set($sessionName, $crudView);
+
+			$this->getCollection()->setView($crudView);
 		}
-		if (empty($viewParams)) {
-			$viewParams = Ajde::app()->getRequest()->getParam('view', array());
-		}
-		$crudView->setOptions($viewParams);
-		$viewSession->set($sessionName, $crudView);
-		
-		$this->getCollection()->setView($crudView);
-		return $crudView;
+		return $this->getCollection()->getView();
 	}
 		
 	/**

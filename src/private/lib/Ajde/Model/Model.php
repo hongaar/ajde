@@ -147,7 +147,8 @@ class Ajde_Model extends Ajde_Object_Standard
 		if (empty($this->_data)) {
 			return null;
 		}
-		return $this->get($this->getTable()->getPK());
+		$pk = $this->getTable()->getPK();
+		return $this->has($pk) ? $this->get($pk) : null;
 	}
 
 	public function getDisplayField()
@@ -558,41 +559,54 @@ class Ajde_Model extends Ajde_Object_Standard
 
 	public function loadParents()
 	{
-		foreach($this->getParents() as $parentTableName) {
-			$this->loadParent($parentTableName);
+		foreach($this->getParents() as $column) {
+			$this->loadParent($column);
 		}
 	}
 
-	public function loadParent($parent)
+	public function loadParent($column)
 	{
 		if (empty($this->_data)) {
 			// TODO:
 			throw new Ajde_Exception('Model ' . (string) $this->getTable() . ' not loaded when loading parent');
 		}
-		if ($this->hasParentLoaded($parent)) {
+		if ($this->hasParentLoaded($column)) {
 			return;
 		}
-		if ($parent instanceof Ajde_Model) {
-			$parent = $parent->getTable();
-		} elseif (!$parent instanceof Ajde_Db_Table) {
-			$parent = new Ajde_Db_Table($parent);
-		}
-		$fk = $this->getTable()->getFK($parent);
-		if (!$this->has($fk['field'])) {
-			// No column for FK field
+		if (!$this->has($column)) {
+			// No value for FK field
 			return false;
 		}
-		$parentModelName = ucfirst(strtolower($fk['parent_table'])) . 'Model';
-		$parentModel = new $parentModelName();
-		if ($parentModel->getTable()->getPK() != $fk['parent_field']) {
+		$parentModel = $this->getParentModel($column);
+		if ($parentModel->getTable()->getPK() != $this->getParentField($column)) {
 			// TODO:
 			throw new Ajde_Exception('Constraints on non primary key fields are currently not supported');
 		}
-		if ($this->hasNotEmpty($fk['field'])) {
-			// We have a value for FK field
-			$parentModel->loadByPK($this->get($fk['field']));
-		}
-		$this->set($fk['field'], $parentModel);
+		$parentModel->loadByPK($this->get($column));
+		$this->set($column, $parentModel);
+	}
+	
+	/**
+	 * 
+	 * @param string $column
+	 * @return Ajde_Model
+	 */
+	public function getParentModel($column)
+	{
+		$parentModelName = ucfirst($this->getParentTable($column)) . 'Model';
+		return new $parentModelName();
+	}
+	
+	public function getParentTable($column)
+	{
+		$fk = $this->getTable()->getFK($column);
+		return strtolower($fk['parent_table']);
+	}
+	
+	public function getParentField($column) 
+	{
+		$fk = $this->getTable()->getFK($column);
+		return strtolower($fk['parent_field']);
 	}
 
 	public function getAutoloadParents()

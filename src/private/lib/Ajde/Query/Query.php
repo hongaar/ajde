@@ -12,6 +12,7 @@ class Ajde_Query extends Ajde_Object_Standard
 	const JOIN_LEFT		= 'LEFT';
 	
 	public $select = array();
+	public $distinct = false;
 	public $from = array();
 	public $where = array();
 	public $join = array();	
@@ -33,6 +34,11 @@ class Ajde_Query extends Ajde_Object_Standard
 	public function addSelect($select)
 	{
 		$this->select[] = $select;		
+	}
+	
+	public function setDistinct($distinct)
+	{
+		$this->distinct = (boolean) $distinct;
 	}
 	
 	public function addFrom($from)
@@ -73,12 +79,13 @@ class Ajde_Query extends Ajde_Object_Standard
 	public function getSql()
 	{
 		$sql = '';
+		$distinct = $this->distinct ? 'DISTINCT ' : '';
 		
 		// SELECT
 		if (empty($this->select)) {
-			$sql .= 'SELECT *';
+			$sql .= 'SELECT ' . $distinct . '*';
 		} else {
-			$sql .= 'SELECT ' . implode(', ', $this->select);
+			$sql .= 'SELECT ' . $distinct . implode(', ', $this->select);
 		}
 		
 		// FROM

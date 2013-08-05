@@ -181,7 +181,12 @@ AC.Crud.List = function() {
 		},
 
 		newHandler: function() {
-			window.location.href = window.location.pathname + '?new';
+			if ($(this).parents('table').data('newaction')) {
+				var newaction = $(this).parents('table').data('newaction');
+				window.location.href = newaction + (newaction.indexOf('?') > -1 ? '&' : '?') + 'new';
+			} else {
+				window.location.href = window.location.pathname + '?new';
+			}
 		},
 
 		editHandler: function(e) {
@@ -193,8 +198,12 @@ AC.Crud.List = function() {
 			}
 			var id = row.find('input[type=checkbox]').attr('value');
 			var form = $(this).parents('form');
-
-			window.location.href = window.location.pathname + '?edit=' + id;
+			
+			if (row.parents('table').data('editaction')) {
+				window.location.href = row.parents('table').data('editaction') + '?edit=' + id;
+			} else {
+				window.location.href = window.location.pathname + '?edit=' + id;
+			}
 		},
 
 		multipleDeleteHandler: function(e, id) {
@@ -231,7 +240,9 @@ AC.Crud.List = function() {
 			}
 
 			if (count > 0 && confirm(i18n.confirmDelete + ' (' + count + ' item/items)')) {
+				$('body').addClass('loading');
 				$.post(url, data, function(response) {
+					$('body').removeClass('loading');
 					if (response.operation === 'delete' && response.success === true) {
 						for (elm in data) {
 							if (data[elm].name == 'id[]') {
@@ -248,7 +259,11 @@ AC.Crud.List = function() {
 					}
 				}, 'json').error(function(jqXHR, message, exception) {
 					$('body').removeClass('loading');
-					errorHandler(i18n.requestError + ' (' + exception + ')');
+					if (exception == 'Unauthorized' || exception == 'Forbidden') {
+						warningHandler(i18n.forbiddenWarning);
+					} else {
+						errorHandler(i18n.requestError + ' (' + exception + ')');
+					}
 				});
 			}
 		},
@@ -277,7 +292,11 @@ AC.Crud.List = function() {
 				}
 			}, 'json').error(function(jqXHR, message, exception) {
 				$('body').removeClass('loading');
-				errorHandler(i18n.requestError + ' (' + exception + ')');
+				if (exception == 'Unauthorized' || exception == 'Forbidden') {
+					warningHandler(i18n.forbiddenWarning);
+				} else {
+					errorHandler(i18n.requestError + ' (' + exception + ')');
+				}
 			});
 		},
 
@@ -401,7 +420,11 @@ AC.Crud.List = function() {
 				$.scrollTo(form, 800, { axis: 'y', offset: -70 });
 			}, 'html').error(function(jqXHR, message, exception) {
 				$('body').removeClass('loading');
-				errorHandler(i18n.requestError + ' (' + exception + ')');
+				if (exception == 'Unauthorized' || exception == 'Forbidden') {
+					warningHandler(i18n.forbiddenWarning);
+				} else {
+					errorHandler(i18n.requestError + ' (' + exception + ')');
+				}
 			});
 		},
 

@@ -66,7 +66,7 @@ class Config_Advanced
 
 	// Session
 	public $sessionLifetime		= 60; // in minutes
-	public $sessionSavepath		= '/tmp'; // '~' gets replaced with local_root
+	public $sessionSavepath		= '~/private/var/tmp'; // '~' gets replaced with local_root
 
 	// Performance
 	public $compressResources	= true;
