@@ -24,7 +24,7 @@ class Ajde_Component_Image extends Ajde_Component
 			$image = new Ajde_Resource_Image($this->attributes['filename']);
 			$image->setWidth(issetor($this->attributes['width']));
 			$image->setHeight(issetor($this->attributes['height']));
-			$image->setCrop(Ajde_Component_String::toBoolean($this->attributes['crop']));
+			$image->setCrop(Ajde_Component_String::toBoolean(issetor($this->attributes['crop'], true)));
 						
 			$controller = Ajde_Controller::fromRoute(new Ajde_Core_Route('_core/component:imageBase64'));
 			$controller->setImage($image);
@@ -38,7 +38,7 @@ class Ajde_Component_Image extends Ajde_Component
 			$image = new Ajde_Resource_Image($this->attributes['filename']);
 			$image->setWidth(issetor($this->attributes['width']));
 			$image->setHeight(issetor($this->attributes['height']));
-			$image->setCrop(Ajde_Component_String::toBoolean($this->attributes['crop']));
+			$image->setCrop(Ajde_Component_String::toBoolean(issetor($this->attributes['crop'], true)));
 			
 			$controller = Ajde_Controller::fromRoute(new Ajde_Core_Route('_core/component:image'));
 			$controller->setImage($image);			
