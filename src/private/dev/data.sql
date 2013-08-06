@@ -440,6 +440,13 @@ CREATE TABLE IF NOT EXISTS `user` (
   KEY `usergroup` (`usergroup`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=22 ;
 
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`id`, `username`, `password`, `usergroup`, `email`, `fullname`, `address`, `zipcode`, `city`, `region`, `country`, `secret`, `debug`) VALUES
+(20, 'admin', '$2a$10$611167be6e8607a7fab6euCxjM/v92mTP/pwSu5j5Jc4/V4ZHHZqm', 2, 'AUAAv/9Ro3C5pozvIgoxcIpsSkzoFEDpeIvAE7r86vL+h0dBfMUDmgiDWl7Z8deUCbvbxLbK2K2QtD1mMGUSoo5P0aHh', NULL, NULL, NULL, NULL, NULL, NULL, '6402649ab41f623fa9d635f4cf261bf3d6004a7a', 1);
+
 -- --------------------------------------------------------
 
 --

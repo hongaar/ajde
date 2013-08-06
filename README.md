@@ -74,4 +74,5 @@ Create a new database, and run `private/dev/data.sql` on this database. Edit the
 
 #### Prepare admin user
 
-Register for a new account on `http://[WEBROOT]/user/register` and change the `usergroup` field of this user in the database (`user` table) to `2`. Now you can login on `http://[WEBROOT]/admin`. 
+Register for a new account on `http://[WEBROOT]/user/register` and change the `usergroup` field of this user in the database (`user` table) to `2`. Now you can login on `http://[WEBROOT]/admin`.
+Alternatively, log in as `admin` with password `ajde`. However, please create a new admin account, and delete the original admin user account afterwards. 
