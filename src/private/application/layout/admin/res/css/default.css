@@ -4,6 +4,10 @@ body {
 	padding-top: 80px;
 }
 
+body.iframe {
+	padding-top: 0;
+}
+
 /* loading */
 
 body #main {

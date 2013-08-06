@@ -25,13 +25,11 @@ if ($edit) {
 
 ?>
 
-<<?php echo $edit ? 'span' : 'a href="#mainFilter" role="button" data-toggle="modal"'; ?>>
-	<span class='badge badge-info'>
-		<span class="mainFilterLabel"><?php echo $filteredBy; ?></span>
-		<?php if (!$edit) { ?>
-			<b class="caret"></b>
-		<?php } ?>
-	</span>
+<<?php echo $edit ? 'span' : 'a href="#mainFilter" role="button" data-toggle="modal" class="mainFilterToggle"'; ?>>
+	<span class="mainFilterLabel"><?php echo $filteredBy; ?></span>
+	<?php if (!$edit) { ?>
+		<b class="caret"></b>
+	<?php } ?>
 </<?php echo $edit ? 'span' : 'a'; ?>>
 
 <!-- Modal -->

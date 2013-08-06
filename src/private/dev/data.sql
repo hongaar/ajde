@@ -194,6 +194,8 @@ CREATE TABLE IF NOT EXISTS `nodetype` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `name` varchar(255) NOT NULL COMMENT 'Name',
   `category` varchar(255) DEFAULT NULL COMMENT 'Category',
+  `child_type` int(10) unsigned DEFAULT NULL COMMENT 'Default child type',
+  `parent_type` int(10) unsigned DEFAULT NULL COMMENT 'Default parent type',
   `sort` int(11) NOT NULL DEFAULT '999' COMMENT 'Ordering',
   `title` tinyint(4) DEFAULT '1' COMMENT 'Title',
   `subtitle` tinyint(4) DEFAULT '0' COMMENT 'Subtitle',
@@ -206,15 +208,17 @@ CREATE TABLE IF NOT EXISTS `nodetype` (
   `published` tinyint(4) DEFAULT '0' COMMENT 'Toggle published',
   `related_nodes` tinyint(4) DEFAULT '0' COMMENT 'Related nodes',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=33 ;
+  UNIQUE KEY `name` (`name`),
+  KEY `child_type` (`child_type`),
+  KEY `parent_type` (`parent_type`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=34 ;
 
 --
 -- Dumping data for table `nodetype`
 --
 
-INSERT INTO `nodetype` (`id`, `name`, `category`, `sort`, `title`, `subtitle`, `content`, `summary`, `media`, `tag`, `additional_media`, `children`, `published`, `related_nodes`) VALUES
-(32, 'Homepage', NULL, 999, 1, NULL, 1, NULL, 1, NULL, NULL, NULL, 1, NULL);
+INSERT INTO `nodetype` (`id`, `name`, `category`, `child_type`, `parent_type`, `sort`, `title`, `subtitle`, `content`, `summary`, `media`, `tag`, `additional_media`, `children`, `published`, `related_nodes`) VALUES
+(32, 'Homepage', NULL, NULL, NULL, 999, 1, NULL, 1, NULL, 1, NULL, NULL, 1, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -554,6 +558,13 @@ ALTER TABLE `node`
   ADD CONSTRAINT `node_ibfk_4` FOREIGN KEY (`media`) REFERENCES `media` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
   ADD CONSTRAINT `node_ibfk_7` FOREIGN KEY (`parent`) REFERENCES `node` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
   ADD CONSTRAINT `node_ibfk_9` FOREIGN KEY (`media`) REFERENCES `media` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
+
+--
+-- Constraints for table `nodetype`
+--
+ALTER TABLE `nodetype`
+  ADD CONSTRAINT `nodetype_ibfk_2` FOREIGN KEY (`parent_type`) REFERENCES `nodetype` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
+  ADD CONSTRAINT `nodetype_ibfk_1` FOREIGN KEY (`child_type`) REFERENCES `nodetype` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
 
 --
 -- Constraints for table `nodetype_meta`

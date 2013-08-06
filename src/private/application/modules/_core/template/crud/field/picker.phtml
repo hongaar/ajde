@@ -8,6 +8,7 @@ $field = $this->field;
 
 $useImage = $field->has('useImage') && $field->get('useImage') === true;
 $listRoute = ($field->has('listRoute') ? $field->get('listRoute') : false);
+$listRoute = $field->has('listRouteFunction') ? $field->getCrud()->getModel()->{$field->get('listRouteFunction')}() : $listRoute;
 
 ?>
 

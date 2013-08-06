@@ -53,8 +53,10 @@ class NodeController extends Ajde_Controller
 		$nodetypes = new NodetypeCollection();
 		foreach($nodetypes as $nodetype) {
 			foreach($showOnlyWhenFields as $field) {
-				$showOnlyWhen[$field] = array();
-				if ($nodetype->get($field) == 1) {
+				if (!isset($showOnlyWhen[$field])) {
+					$showOnlyWhen[$field] = array();
+				}
+				if ($nodetype->get($field) == 1) {					
 					$showOnlyWhen[$field][] = $nodetype->getPK();
 				}
 			}
@@ -106,7 +108,7 @@ class NodeController extends Ajde_Controller
 					->setModelName('node')
 					->setShowLabel(false)
 					->setUsePopupSelector(true)
-					->setListRoute('admin/node:view.crud')
+					->setListRouteFunction('listRouteParent')
 					->up()	
 				->selectField('published')
 					->addShowOnlyWhen('nodetype', $showOnlyWhen['published'])
@@ -139,7 +141,7 @@ class NodeController extends Ajde_Controller
 					->setParent('parent')
 					->setHideInIframe(true)
 					->setType('multiple')
-					->setEditRoute('admin/node:view.crud')
+					->setEditRouteFunction('editRouteChild')
 					->addTableField('nodetype')
 					->addSortField('sort')
 					->setShowLabel(false)

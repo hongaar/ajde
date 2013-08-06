@@ -205,12 +205,28 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 	public function setEditRoute($route) { return $this->_set('editRoute', $route); }
 	
 	/**
+	 * Sets the edit route function for fields with type 'multiple'
+	 * 
+	 * @param string $function
+	 * @return Ajde_Crud_Options_Fields_Field 
+	 */
+	public function setEditRouteFunction($function) { return $this->_set('editRouteFunction', $function); }
+	
+	/**
 	 * Sets the list route for fields with type 'fk'
 	 * 
 	 * @param string $route
 	 * @return Ajde_Crud_Options_Fields_Field 
 	 */
 	public function setListRoute($route) { return $this->_set('listRoute', $route); }
+	
+	/**
+	 * Sets the list route function for fields with type 'fk'
+	 *
+	 * @param string $function
+	 * @return Ajde_Crud_Options_Fields_Field
+	 */
+	public function setListRouteFunction($function) { return $this->_set('listRouteFunction', $function); }
 	
 	/**
 	 * Disables rich text editing for text fields

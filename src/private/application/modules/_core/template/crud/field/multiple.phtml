@@ -8,7 +8,7 @@ $field = $this->field;
 
 <div
 	class='multiple <?php if ($field->hasHideInIframe()) { echo 'hideInIframe'; } ?>'
-	data-edit-route='<?php echo $field->getEditRoute(); ?>'
+	data-edit-route='<?php echo $field->has('editRouteFunction') ? $field->getCrud()->getModel()->{$field->get('editRouteFunction')}() : $field->getEditRoute(); ?>'
 	data-field='<?php echo $field->getName(); ?>'
 	data-parent='<?php echo $field->has('parent') ? $field->get('parent') : (string) $field->getCrud()->getModel()->getTable(); ?>'
 	data-parent-id='<?php echo $field->getCrud()->getModel()->getPK(); ?>'

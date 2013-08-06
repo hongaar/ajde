@@ -22,9 +22,15 @@ AC.Crud.Edit.Picker = function() {
 
 			var listRoute = $(this).parents('div.picker:eq(0)').attr('data-list-route');
 			var listMultiple = $(this).parents('div.picker:eq(0)').attr('data-list-multiple');
+			
+			if (listRoute.indexOf('?') > -1) {
+				listRoute += '&';
+			} else {
+				listRoute += '?';
+			}
 
 			$.fancybox.open({
-				href: listRoute + '?multiple=' + listMultiple,
+				href: listRoute + 'multiple=' + listMultiple,
 				type: 'iframe',
 				autoSize: false,
 				maxWidth: 960,

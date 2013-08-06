@@ -128,6 +128,22 @@ class NodeModel extends Ajde_Acl_Proxy_Model
 		return $class;
 	}
 	
+	public function editRouteChild() {
+		$childtype = '';
+		if ($this->hasLoaded()) {
+			$childtype = $this->getNodetype()->get('child_type');
+		}
+		return 'admin/node:view.crud?view[filter][nodetype]=' . $childtype;
+	}
+	
+	public function listRouteParent() {
+		$parenttype = '';
+		if ($this->hasLoaded()) {
+			$parenttype = $this->getNodetype()->get('parent_type');
+		}
+		return 'admin/node:view.crud?view[filter][nodetype]=' . $parenttype;
+	}
+	
 	public function afterSort()
 	{
 		$this->sortTree('NodeCollection');

@@ -16,6 +16,16 @@
 	}
 }
 
+.mainFilterToggle {
+	text-decoration: none !important;
+	
+	.mainFilterLabel + .caret {
+		border-top: 10px solid #007fff;
+		border-right: 10px solid transparent;
+		border-left: 10px solid transparent;
+	}
+}
+
 fieldset.crud {
     input.emphasis[type=text] {
         font-size: 1.5em;
@@ -150,11 +160,17 @@ body .showInIframe {
 }
 
 body.iframe {
+	.container {
+		width: 90%;
+	}
 	.hideInIframe {
 		display: none !important;
 	}
 	.showInIframe {
 		display: block;
+	}
+	.expandInIframe {
+		margin-left: 0;
 	}
 	a.btn.showInIframe {
 		display: inline-block;
