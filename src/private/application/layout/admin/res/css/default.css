@@ -18,15 +18,24 @@ body.loading #main {
 }
 
 body #loading {
-	position: fixed;
+	position: absolute;
 	z-index: 1050;
 	top: 0; right: 0; bottom: 0; left: 0;
-	display: none;
+	display: block;
+	opacity: 0;
+	transition: opacity 0 linear 0.2s;
+	-webkit-transition: opacity 0 linear 0.2s;
+	top: -99999px;
+	height: 0;
 }
 
 body.loading #loading {
+	position: fixed;
+	top: 0;
+	height: inherit;
 	display: block;
-	-webkit-animation: overlay 1s ease-out 0 1;
+	opacity: 1;
+	-webkit-animation: overlay 1s ease-out 0.2s 1;
 }
 
 body #loading > div {
@@ -37,7 +46,7 @@ body #loading > div {
 }
 
 body.loading #loading > div {
-	-webkit-animation: spinner 0.3s ease-out 0 1;
+	-webkit-animation: spinner 0.3s ease-out 0.2s 1;
 }
 
 body #loading > div .spinner {

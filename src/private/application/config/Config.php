@@ -2,7 +2,7 @@
 
 class Config
 {
-	const DEV_STAGE = 'slow';
+	const DEV_STAGE = 'dev';
 	const LIVE_STAGE = 'live';
 	
 	// Redirect this class to the following config stage

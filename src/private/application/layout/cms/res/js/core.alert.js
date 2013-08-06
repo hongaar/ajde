@@ -66,6 +66,6 @@ $(document).ready(function() {
 	if (a !== '') {
 		setTimeout(function() {
 			AC.Core.Alert.flash(a);			
-		}, 300);
+		}, 1000);
 	}
 });

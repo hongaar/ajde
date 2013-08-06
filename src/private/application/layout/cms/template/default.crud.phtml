@@ -1,51 +1,22 @@
 <?php
 /* @var $this Ajde_Template_Parser_Phtml_Helper */
 
-$this->requireGWebFont('Roboto', array(300, 500, 700));
+// Unify the user agent specific css rules
+$this->requireCssTop('core.reset');
 $this->requireCss('default');
-
-// Twitter bootstrap
-$this->requireCssPublic('bootstrap/bootstrap-cosmo.css', Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST);
-$this->requireCssPublic('bootstrap/bootstrap-responsive.css', Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST);
-$this->requireCss('bootstrap');
 
 // Include jQuery 1.7
 $this->requireJsLibrary('jquery', '1.7');
-
-// Fastclick
-$this->requireJsPublic('lib/fastclick.js');
-
-// Bootstrap.js
-$this->requireJsPublic('lib/bootstrap.min.js');
-
-// jqBootstrapValidation.js
-$this->requireJsPublic('lib/jqBootstrapValidation.js');
-
-// jQuery cookie
-$this->requireJsPublic('lib/jquery.cookie.js');
-
-// Chosen
-$this->requireJsPublic('lib/chosen/chosen.jquery.min.js');
-$this->requireCssPublic('lib/chosen/chosen.css');
-$this->requireCss('chosen');
-
-// Picker
-$this->requireJsPublic('lib/picker/jquery.fs.picker.min.js');
-$this->requireCssPublic('lib/picker/jquery.fs.picker.css');
-$this->requireCss('picker');
-
-// CKEditor
-$this->requireCss('ckeditor');
 
 // Some JavaScript i18n
 $this->requireJsFirst('i18n.' . Ajde_Lang::getInstance()->getShortLang());
 
 // Alert bar
-$this->requireJsFirst('core.alert');
-$this->requireCssFirst('core.alert');
+$this->requireJsFirst('core.alert'); $this->requireCssFirst('core.alert');
 
-// Additional CSS
-$this->requireCss('default.crud');
+// Example styles
+$this->requireCssTop('core.1140');
+$this->requireGWebFont('Dosis', array(400, 700));
 
 ?>
 <!-- Inspired by HTML5 Boilerplate -->

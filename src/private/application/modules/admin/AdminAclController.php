@@ -23,38 +23,26 @@ class AdminAclController extends AdminController
 				'extra' => '*'
 			)
 		),
-		'Nodes' => array(
-			'clients' => array(
-				'module' => 'client',
+		'Content' => array(
+			'nodes' => array(
+				'module' => 'admin',
 				'action' => '*',
-				'extra' => '*'
+				'extra' => 'node'
 			),
-			'projects' => array(
-				'module' => 'project',
+			'media' => array(
+				'module' => 'admin',
 				'action' => '*',
-				'extra' => '*'
+				'extra' => 'media'
 			),
-			'issues' => array(
-				'module' => 'issue',
+			'menus' => array(
+				'module' => 'admin',
 				'action' => '*',
-				'extra' => '*'
-			)
-		),
-		'Reports' => array(
-			'todo' => array(
-				'module' => 'report',
-				'action' => '*',
-				'extra' => 'todo'
+				'extra' => 'menu'
 			),
-			'hours' => array(
-				'module' => 'report',
-				'action' => '',
-				'extra' => 'hours'
-			),
-			'profit' => array(
-				'module' => 'report',
+			'tags' => array(
+				'module' => 'admin',
 				'action' => '*',
-				'extra' => 'profit'
+				'extra' => 'tags'
 			)
 		),
 		'Admin functions' => array(
@@ -78,13 +66,6 @@ class AdminAclController extends AdminController
 				'action' => '*',
 				'extra' => 'setup'
 			)
-		),
-		'Timer' => array(
-			'timer' => array(
-				'module' => 'timer',
-				'action' => '*',
-				'extra' => '*'
-			)
 		)
 	);
 	
@@ -93,29 +74,25 @@ class AdminAclController extends AdminController
 			'all' => array(
 				'model' => 'node',
 				'extra' => '*'
-			),
-			'clients' => array(
-				'model' => 'node',
-				'extra' => NodeModel::NODETYPE_CLIENT
-			),
-			'projects' => array(
-				'model' => 'node',
-				'extra' => NodeModel::NODETYPE_PROJECT
-			),
-			'streaks' => array(
-				'model' => 'node',
-				'extra' => NodeModel::NODETYPE_STREAK
-			),
-			'issue' => array(
-				'model' => 'node',
-				'extra' => NodeModel::NODETYPE_ISSUE
-			),
-			'worklog' => array(
-				'model' => 'node',
-				'extra' => NodeModel::NODETYPE_WORK
 			)
 		)
 	);
+	
+	public function  __construct($action = null, $format = null)
+	{
+		Ajde_Model::register('admin');
+		
+		$nodetypes = new NodetypeCollection();
+		$nodetypes->orderBy('sort');
+		foreach($nodetypes as $type) {
+			$this->_modelPermissions['Node types'][$type->name] = array(
+				'model' => 'node',
+				'extra' => $type->id
+			);
+		}		
+		
+		parent::__construct($action, $format);
+	}
 	
 	public function beforeInvoke($allowed = array()) {
 		Ajde_Model::register('acl');

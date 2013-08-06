@@ -1,8 +1,9 @@
 ;
 if (typeof App === "undefined") {App = function(){}};
-if (typeof App.Node === "undefined") {App.Node = function(){}};
+if (typeof App.Admin === "undefined") {App.Admin = function(){}};
+if (typeof App.Admin.Node === "undefined") {App.Admin.Node = function(){}};
 
-App.Node.IssueRow = function() {
+App.Admin.Node.Panel = function() {
 
 	var infoHandler		= AC.Core.Alert.show;
 	var warningHandler	= AC.Core.Alert.warning;
@@ -10,7 +11,11 @@ App.Node.IssueRow = function() {
 	
 	return {
 
-		init: function() {			
+		init: function() {		
+			$('form.ACCrudList tbody tr.panel td').live('dblclick', function(e) {
+				e.stopPropagation();
+			});
+			
 			$('table.crud tr.panel :input').each(function() {
 				var origVal = $(this).val();
 				$(this).live('focus', function() {
@@ -27,7 +32,8 @@ App.Node.IssueRow = function() {
 							var meta = ($self.data('meta') == 1) ? 1 : 0;
 							var key = row.find(':input[name=' + $self.data('input') + ']').attr('name');
 							var value = row.find(':input[name=' + $self.data('input') + ']').val();
-							App.Issue.Update.update(id, meta, key, value);
+							App.Admin.Node.Update.update(id, meta, key, value);
+							origVal = newVal;
 						}
 					}, 10);					
 				});
@@ -38,5 +44,5 @@ App.Node.IssueRow = function() {
 }();
 
 $(document).ready(function() {
-	App.Node.IssueRow.init();
+	App.Admin.Node.Panel.init();
 });

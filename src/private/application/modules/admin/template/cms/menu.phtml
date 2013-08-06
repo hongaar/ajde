@@ -28,10 +28,10 @@ $currentGrouper = '';
 			<?php } ?>
 				<li><a href="admin/node:view?view[filter][nodetype]=<?php echo $nodeType->getPK(); ?>"><?php echo _e($nodeType->getName()); ?></a></li>
 		<?php } 
-		if ($nodeTypes->count()) { ?>
-			</ul>
+			if ($nodeTypes->count() && !empty($currentGrouper)) { ?>
+				</ul>
+			</li>
 		<?php } ?>
-		</li>
 		<li class="divider"></li>
 		<li class="nav-header">Media</li>
 		<li><a href="admin/media:view"><i class="icon-th-large"></i> Manager</a></li>        

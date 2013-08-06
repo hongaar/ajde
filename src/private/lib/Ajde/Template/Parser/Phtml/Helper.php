@@ -80,6 +80,18 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	}
 	
 	/**
+	 *
+	 * @param string $action
+	 * @param string $format
+	 * @param string $base
+	 * @return void
+	 */
+	public function requireJsTop($action, $format = 'html', $base = null, $arguments = '')
+	{
+		return $this->requireJs($action, $format, $base, Ajde_Document_Format_Html::RESOURCE_POSITION_TOP, $arguments);
+	}
+	
+	/**
 	 * 
 	 * @param string $filename
 	 * @param integer $position

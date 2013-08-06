@@ -1,0 +1,57 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+$this->requireJs('node/panel');
+$this->requireJs('node/update');
+
+/* @var $item NodeModel */
+$item = $this->item;
+
+?>
+
+<h3><input type="text" class='input-large' name='title' data-input='title' required="required" value="<?php echo _e($item->getTitle()); ?>" ></h3>
+
+<div class="row-fluid">
+	<div class="span4">
+		<table class="table table-condensed">
+			<tr>
+				<td><?php echo _c($item->getContent()); ?></td>
+			</tr>
+		</table>
+	</div>
+	<div class="span4">
+		<table class="table table-condensed">
+			<tr>
+				<th>Published</th>
+				<td>
+				
+					<input 
+						type='checkbox'
+						class='picker'
+						data-input='published'
+						data-meta='0'
+						name="published"
+						id="published"
+						<?php echo $item->getPublished() ? 'checked="checked"' : ''; ?>
+					/>
+					<label class="radio" for="published">
+						<?php echo $item->getPublished() ? 'On' : 'Off'; ?>
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<th>Some field</th>
+				<td>
+					Some value
+				</td>
+			</tr>			
+		</table>
+	</div>
+	<div class="span4">
+		<table class="table table-condensed">
+			<tr>
+				<th>Some field</th>
+				<td><span>Some value</span></td>
+			</tr>
+		</table>
+	</div>
+</div>

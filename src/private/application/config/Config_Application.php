@@ -15,28 +15,17 @@ class Config_Application extends Config_Cms
 									);
 
 
-	public $homepageRoute		= 'main.html';
-	public $defaultRouteParts	= array(
-									'module' => 'node',
-									'controller' => null,
-									'action' => 'view',
-									'format' => 'html',
-									'nodetype' => null,
-									'slug' => null,
-									'id' => null									
-									);
+	//public $homepageRoute;
+	//public $defaultRouteParts;
 	//public $aliases;
-	public $routes				= array(
-									array('%^-([^/\.]+)/([^/\.]+)$%' => array('nodetype', 'slug')),
-									array('%^-([^/\.]+)/([^/\.]+)\.(html)$%' => array('nodetype', 'slug', 'format')),
-								);
+	//public $routes;
 
 	//public $titleFormat;
 	//public $lang;
 	//public $langAutodetect;
 	//public $langAdapter;
 	//public $timezone;
-	public $layout				= 'advanced';
+	//public $layout;
 	//public $responseCodeRoute;
 
 	//public $autoEscapeString;

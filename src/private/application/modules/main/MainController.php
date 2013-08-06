@@ -2,6 +2,19 @@
 
 class MainController extends Ajde_Controller
 {
+	public function beforeInvoke()
+	{
+		if (substr($_GET['_route'], 0, 5) == 'admin') {
+			Ajde::app()->getDocument()->setLayout(new Ajde_Layout(Config::get('adminLayout')));
+		}
+		return true;
+	}
+	
+	public function view()
+	{
+		return $this->render();
+	}
+	
 	public function code403()
 	{
 		Ajde::app()->getDocument()->setTitle("Forbidden");

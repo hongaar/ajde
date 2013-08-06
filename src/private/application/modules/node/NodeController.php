@@ -4,6 +4,7 @@ class NodeController extends Ajde_Controller
 {
 	public function beforeInvoke()
 	{
+		Ajde_Model::register('acl');
 		Ajde_Model::register('admin');
 		Ajde_Model::register('node');
 		Ajde_Model::register('media');
@@ -40,21 +41,6 @@ class NodeController extends Ajde_Controller
 		$this->getView()->assign('node', $node);
 		
 		// render the temnplate
-		return $this->render();
-	}
-	
-	public function row()
-	{
-		$item = $this->getItem();
-		$nodetype = (string) $item->get('nodetype');
-		if ($nodetype == NodeModel::NODETYPE_ISSUE) {
-			$this->setAction('issueRow');
-		} else if ($nodetype == NodeModel::NODETYPE_STREAK) {
-			$this->setAction('streakRow');
-		} else {
-			return false;
-		}
-		$this->getView()->assign('item', $item);
 		return $this->render();
 	}
 	
@@ -191,7 +177,7 @@ class NodeController extends Ajde_Controller
 					->setMainFilterGrouper('category')
 					->setOrderBy('sort')
 					->up()
-				->setPanelFunction('displayPanel')
+// 				->setPanelFunction('displayPanel')
 				->up()
 			->selectEdit()
 				->setShow()

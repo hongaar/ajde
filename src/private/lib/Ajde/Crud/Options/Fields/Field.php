@@ -146,6 +146,14 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 	 * @return Ajde_Crud_Options_Fields_Field 
 	 */
 	public function setFunction($function) { return $this->_set('function', $function); }
+	
+	/**
+	 * Sets the display function arguments of the model for the list view
+	 *
+	 * @param array $arguments
+	 * @return Ajde_Crud_Options_Fields_Field
+	 */
+	public function setFunctionArgs($args) { return $this->_set('functionArgs', $args); }
 				
 	/**
 	 * Sets thumbnail dimensions of images

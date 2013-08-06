@@ -115,7 +115,7 @@ AC.Crud.List = function() {
 			if (row.parents('table').data('singleclick') == 1) {
 				AC.Crud.List.editHandler.call(this, e);
 			} else {
-				var checkbox = row.find('input[type=checkbox]');
+				var checkbox = row.find('input[type=checkbox].id');
 				checkbox.attr('checked', !checkbox.attr('checked'));
 				AC.Crud.List.checkboxHandler.call(checkbox, e);
 			}

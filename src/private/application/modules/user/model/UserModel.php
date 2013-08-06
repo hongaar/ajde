@@ -68,4 +68,10 @@ class UserModel extends Ajde_User
 			$this->set('secret', $this->generateSecret());
 		}
 	}
+	
+	public function displayGravatar($width = 90, $class = '')
+	{
+		return Ajde_Resource_Image_Gravatar::get($this->getEmail(), $width, 'identicon', 'g', true, array('class' => $class));
+		            
+	}
 }

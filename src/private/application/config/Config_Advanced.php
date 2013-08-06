@@ -20,7 +20,7 @@ class Config_Advanced
 									);
 
 	// Routing
-	public $homepageRoute		= 'home.html';
+	public $homepageRoute		= 'home';
 	public $defaultRouteParts	= array(
 									'module' => 'main',
 									'controller' => null,
@@ -28,7 +28,7 @@ class Config_Advanced
 									'format' => 'html'
 									);
 	public $aliases				= array(
-									'home.html' => 'main.html'
+									'home' => 'main.html'
 									);
 	public $routes				= array(
 									);
@@ -113,6 +113,7 @@ class Config_Advanced
 									'Ajde_Session',
 									'Ajde_Core_ExternalLibs',
 									'Ajde_User_Autologon',
+									'Ajde_Core_Autodebug',
 									'Ajde_Shop_Cart_Merge'
 									);
 

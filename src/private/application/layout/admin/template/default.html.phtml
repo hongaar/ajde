@@ -60,9 +60,6 @@ $nodeTypes->orderBy('sort');
 
 $currentGrouper = '';
 
-// Somehow, we need to manually include the timer widget css?
-$this->requireCss('widget', 'html', MODULE_DIR . 'timer/');
-
 ?>
 <!-- Inspired by HTML5 Boilerplate -->
 <!doctype html>
@@ -123,10 +120,7 @@ $this->requireCss('widget', 'html', MODULE_DIR . 'timer/');
 						  <span class="icon-bar"></span>
 						  <span class="icon-bar"></span>
 					</button>
-					<a class="brand" href=".">
-						<img src="public/images/nabble-small.png" width="39" height="51" alt="by Nabble" />
-						<?php echo Config::get('sitename'); ?>
-					</a>
+					<a class="brand" href="admin"><?php echo Config::get('sitename'); ?></a>
 					<div class="nav-collapse collapse">
 						<?php if ($user) { ?>
 							<ul class="nav pull-right">
@@ -155,55 +149,12 @@ $this->requireCss('widget', 'html', MODULE_DIR . 'timer/');
 						
 						<ul class="nav">
 							<?php if ($user) { ?>
-								<li><a href="client">Clients</a></li>
-								<li><a href="project">Projects</a></li>
-								<li><a href="issue">Issues</a></li>
-								<li class="divider"></li>
+								<li><a href="admin">Dashboard</a></li>
 								<li class="dropdown">
-									<a class="dropdown-toggle" data-toggle="dropdown" href="report">Reports <b class="caret"></b></a>
+									<a class="dropdown-toggle" data-toggle="dropdown" href="admin/cms:nodes">Content <b class="caret"></b></a>
 									<ul class="dropdown-menu">
-										<li class="with-sub-menu">
-											<a href="javascript:void(null);">Todo <i class="icon-chevron-right pull-right"></i></a>
-											<ul class="dropdown-menu sub-menu">
-												<li><a href="report/todo:active">Active now</a></li>
-												<li><a href="report/todo:followup">Follow-up</a></li>
-												<li><a href="report/todo:billable">Billable</a></li>
-											</ul>
-										</li>
-										<li class="with-sub-menu">
-											<a href="javascript:void(null);">Hours <i class="icon-chevron-right pull-right"></i></a>
-											<ul class="dropdown-menu sub-menu">
-												<li><a href="report/hours:worked">Worked</a></li>
-												<li><a href="report/hours:planning">Planning</a></li>
-											</ul>
-										</li>
-										<li class="with-sub-menu">
-											<a href="javascript:void(null);">Profit <i class="icon-chevron-right pull-right"></i></a>
-											<ul class="dropdown-menu sub-menu">
-												<li><a href="report/profit:weekly">Weekly</a></li>
-											</ul>
-										</li>
-									</ul>
-								</li>								
-								<li class="divider"></li>
-								<?php echo $this->includeModule('timer/widget'); ?>		
-							<?php }
-							if ($user && (string) $user->getUsergroup() == UserModel::USERGROUP_ADMINS) { ?>
-								<li class="divider"></li>
-								<li><a href="admin/cms:settings">Settings</a></li>
-								<li class="dropdown">
-									<a class="dropdown-toggle" data-toggle="dropdown" href="admin/setup:nodes">Setup <b class="caret"></b></a>
-									<ul class="dropdown-menu">
-										<li class="nav-header">Meta setup</li>
-										<li><a href="admin/setup:nodes">Nodes</a></li>
-										<li><a href="admin/setup:menus">Menus</a></li>
-										<li><a href="admin/setup:settings">Settings</a></li>
-										<li><a href="admin/setup:meta">Meta fields</a></li>
-										<li class="nav-header">Access</li>
-										<li><a href="admin/user:view">Users</a></li>
-										<li><a href="admin/acl:view">Pages &amp; models</a></li>	
 										<li class="nav-header">Nodes</li>
-										<li><a href="admin/node:view?view[filter][nodetype]=">Overview</a></li>
+										<li><a href="admin/node:view?view[filter][nodetype]=&nofilterpopup=1">Overview</a></li>
 										<?php foreach ($nodeTypes as $nodeType) {  
 											/* @var $nodeType NodetypeModel */
 											if ($nodeType->get('category') <> $currentGrouper) {
@@ -215,28 +166,43 @@ $this->requireCss('widget', 'html', MODULE_DIR . 'timer/');
 													</a>
 													<ul class="dropdown-menu sub-menu">
 											<?php } ?>
-												<li><a href="admin/node:view?view[filter][nodetype]=<?php echo $nodeType->getPK(); ?>"><?php echo _e($nodeType->getName()); ?></a></li>
-										<?php } 
-										if ($nodeTypes->count()) { ?>
+											<li><a href="admin/node:view?view[filter][nodetype]=<?php echo $nodeType->getPK(); ?>"><?php echo _e($nodeType->getName()); ?></a></li>
+										<?php }
+										if ($nodeTypes->count() && !empty($currentGrouper)) { ?>
 											</ul>
-										<?php } ?>
 										</li>
-										<li class="nav-header">Other</li>
+										<?php } ?>
+										<li class="divider"></li>
 										<li><a href="admin/cms:media">Media</a></li>
 										<li><a href="admin/cms:menus">Menus</a></li>
 										<li><a href="admin/cms:tags">Tags</a></li>
 									</ul>
 								</li>
+								<li><a href="admin/cms:settings">Settings</a></li>
+							<?php }
+							if ($user && (string) $user->getUsergroup() == UserModel::USERGROUP_ADMINS) { ?>
+								<li class="dropdown">
+									<a class="dropdown-toggle" data-toggle="dropdown" href="admin/setup:nodes">Setup <b class="caret"></b></a>
+									<ul class="dropdown-menu">
+										<li class="nav-header">Meta setup</li>
+										<li><a href="admin/setup:nodes">Nodes</a></li>
+										<li><a href="admin/setup:menus">Menus</a></li>
+										<li><a href="admin/setup:settings">Settings</a></li>
+										<li><a href="admin/setup:meta">Meta fields</a></li>
+										<li class="nav-header">Access</li>
+										<li><a href="admin/user:view">Users</a></li>
+										<li><a href="admin/acl:view">Pages &amp; models</a></li>	
+									</ul>
+								</li>
 							<?php } ?>
+							<li><a href="./">View site</a></li>
 						</ul>
 					</div><!--/.nav-collapse -->
 				</div>
 			</div>
 		</div>
-		
-		<?php echo $this->includeModule('timer/modal'); ?>	
 
-		<div id="main" class="container-fluid">
+		<div class="container-fluid">
 			
 			<?php echo $this->getDocument()->getBody(); ?>
 			
