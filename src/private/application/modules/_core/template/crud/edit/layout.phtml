@@ -6,14 +6,14 @@ $editOptions = $crud->getOptions('edit');
 $topToolbarTreshold = 50;
 
 // Total fields
-$rows = $crud->getOption('edit.layout.rows');	
+$rows = $crud->getOption('edit.layout.rows');
 $totalFields = 0;
 foreach($rows as $row) {
 	$columns = $row['columns'];
 	foreach($columns as $column) {
 		$blocks = $column['blocks'];
 		foreach($blocks as $block) {
-			$fieldsToShow = $block['show'];
+			$fieldsToShow = issetor($block['show']);
             $totalFields += count($fieldsToShow);
 		}
 	}
@@ -56,8 +56,8 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudEdit
             <?php
             $blocks = $column['blocks'];
             foreach($blocks as $block) {
-                $fieldsToShow = $block['show'];
-                $className = $block['class'];
+                $fieldsToShow = issetor($block['show']);
+                $className = issetor($block['class']);
                 ?>
 
                 <fieldset class='crud <?php echo $className; ?>'>
@@ -68,7 +68,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudEdit
                         </div>
                     <?php } ?>
 
-                    <?php foreach($fieldsToShow as $fieldName) {
+                    <?php foreach( (isset($fieldsToShow) ? $fieldsToShow : array()) as $fieldName) {
 
                         $fieldsShown[] = $fieldName;
                         $field = $crud->getField($fieldName, false);

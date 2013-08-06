@@ -12,3 +12,4 @@ nbproject/
 # ignore Ajde files
 src/public/images/uploads/*
 src/public/js/_core/crud/editor/ckeditor/lib/*
+.settings

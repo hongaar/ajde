@@ -17,7 +17,7 @@ class Ajde_Model_Validator extends Ajde_Object_Standard
 	private function _initValidators($fieldOptions)
 	{
 		foreach($fieldOptions as $fieldName => $fieldProperties) {
-			switch ($fieldProperties['type']) {
+			switch (issetor($fieldProperties['type'])) {
 				case Ajde_Db::FIELD_TYPE_DATE:				
 					$this->_model->addValidator($fieldName, new Ajde_Model_Validator_Date());
 					break;
@@ -38,11 +38,11 @@ class Ajde_Model_Validator extends Ajde_Object_Standard
 					break;
 			}
 			
-			if ($fieldProperties['isRequired'] === true && $fieldProperties['default'] == '') {
+			if (issetor($fieldProperties['isRequired']) === true && issetor($fieldProperties['default']) == '') {
 				$this->_model->addValidator($fieldName, new Ajde_Model_Validator_Required());
 			}
 			
-			if ($fieldProperties['isUnique'] === true) {
+			if (issetor($fieldProperties['isUnique']) === true) {
 				$this->_model->addValidator($fieldName, new Ajde_Model_Validator_Unique());
 			}
 		}

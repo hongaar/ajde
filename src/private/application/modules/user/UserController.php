@@ -13,7 +13,7 @@ class UserController extends Ajde_User_Controller
 	
 	public function beforeInvoke()
 	{
-		if (substr($_GET['_route'], 0, 5) == 'admin' || substr($_GET['returnto'], 0, 5) == 'admin' || (($user = $this->getLoggedInUser()) && (string) $user->getUsergroup() != UserModel::USERGROUP_USERS)) {
+		if (substr($_GET['_route'], 0, 5) == 'admin' || (isset($_GET['returnto']) && substr($_GET['returnto'], 0, 5) == 'admin') || (($user = $this->getLoggedInUser()) && (string) $user->getUsergroup() != UserModel::USERGROUP_USERS)) {
 			Ajde::app()->getDocument()->setLayout(new Ajde_Layout(Config::get('adminLayout')));
 		}
 		Ajde_Cache::getInstance()->disable();
@@ -155,7 +155,7 @@ class UserController extends Ajde_User_Controller
 			$user = new UserModel();
 			$this->setAction('logon');
 //			$message = Ajde::app()->getRequest()->getParam('message', 'Please login');
-			$this->getView()->assign('message', $message);
+			$this->getView()->assign('message', '');
 			$this->getView()->assign('user', $user);
 			$this->getView()->assign('returnto', Ajde::app()->getRequest()->getParam('returnto', $_SERVER['REDIRECT_STATUS'] == 200 ? 'user' : false));
 			return $this->render();

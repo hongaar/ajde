@@ -111,9 +111,9 @@ class Ajde_Model extends Ajde_Object_Standard
 	public function __toString()
 	{
 		if (empty($this->_data)) {
-			return null;
+			return '';
 		}
-		return $this->getPK();
+		return (string) $this->getPK();
 	}
 
 	public function __sleep()
@@ -689,7 +689,7 @@ class Ajde_Model extends Ajde_Object_Standard
 
 	public function isEncrypted($field)
 	{
-		return substr_count(Ajde_Component_String::decrypt(parent::_get($field)), '$$$ENCRYPTED$$$');
+		return substr_count(Ajde_Component_String::decrypt(parent::_get($field)), '$$$ENCRYPTED$$$' . Config::get('secret'));
 	}
 
 	public function encrypt($field)
@@ -704,7 +704,7 @@ class Ajde_Model extends Ajde_Object_Standard
 	
 	public function doEncrypt($string)
 	{
-		return Ajde_Component_String::encrypt('$$$ENCRYPTED$$$' . $string);
+		return Ajde_Component_String::encrypt('$$$ENCRYPTED$$$' . Config::get('secret') . $string);
 	}
 
 	public function decrypt($field)
@@ -712,7 +712,7 @@ class Ajde_Model extends Ajde_Object_Standard
 		if (!$this->isEncrypted($field)) {
 			return parent::_get($field);
 		}
-		$decrypted = str_replace( '$$$ENCRYPTED$$$', '', Ajde_Component_String::decrypt(parent::_get($field)) );
+		$decrypted = str_replace( '$$$ENCRYPTED$$$' . Config::get('secret'), '', Ajde_Component_String::decrypt(parent::_get($field)) );
 		return $decrypted;
 	}
 	

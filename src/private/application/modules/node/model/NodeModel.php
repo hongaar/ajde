@@ -85,7 +85,7 @@ class NodeModel extends Ajde_Acl_Proxy_Model
 	public function displayTreeName()
 	{
 		$nodetype = $this->has('nodetype_name') ? $this->get('nodetype_name') : $this->getNodetype()->displayField();
-		$ret = str_repeat('<span class="tree-spacer"></span>', $this->get('level') - 1);
+		$ret = str_repeat('<span class="tree-spacer"></span>', max(0, $this->get('level') - 1));
 		if ($this->get('level') > 0) {
 			$ret = $ret . '<span class="tree-spacer last"></span>';
 		}

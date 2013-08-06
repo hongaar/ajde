@@ -335,43 +335,58 @@ class Ajde_Component_String extends Ajde_Component
 	}
 	
 	public static function encrypt($text) {
-		return trim(
-			base64_encode(
-				gzdeflate(
-					mcrypt_encrypt(
-						MCRYPT_RIJNDAEL_256,
-						Config::get('secret'),
-						$text,
-						MCRYPT_MODE_ECB,
-						mcrypt_create_iv(
-							mcrypt_get_iv_size(
-								MCRYPT_RIJNDAEL_256,
-								MCRYPT_MODE_ECB
-							),
-							MCRYPT_RAND
-						)
-					),
-					9
+		try {
+			return trim(
+				base64_encode(
+					gzdeflate(
+						mcrypt_encrypt(
+							MCRYPT_RIJNDAEL_256,
+							Config::get('secret'),
+							$text,
+							MCRYPT_MODE_ECB,
+							mcrypt_create_iv(
+								mcrypt_get_iv_size(
+									MCRYPT_RIJNDAEL_256,
+									MCRYPT_MODE_ECB
+								),
+								MCRYPT_RAND
+							)
+						),
+						9
+					)
 				)
-			)
-		);
+			);
+		} catch (Exception $e) {
+			return false;
+		}
 	}
 	
 	public static function decrypt($text) {
-		return trim(
-			mcrypt_decrypt(
-				MCRYPT_RIJNDAEL_256,
-				Config::get('secret'),
-				gzinflate(base64_decode($text)),
-				MCRYPT_MODE_ECB,
-				mcrypt_create_iv(
-					mcrypt_get_iv_size(
-						MCRYPT_RIJNDAEL_256,
-						MCRYPT_MODE_ECB
-					),
-					MCRYPT_RAND
+		if (empty($text)) {
+			return false;
+		}
+		$oldErrRep = error_reporting(0);
+		try {
+			$decrypted = trim(
+				mcrypt_decrypt(
+					MCRYPT_RIJNDAEL_256,
+					Config::get('secret'),
+					gzinflate(base64_decode($text)),
+					MCRYPT_MODE_ECB,
+					mcrypt_create_iv(
+						mcrypt_get_iv_size(
+							MCRYPT_RIJNDAEL_256,
+							MCRYPT_MODE_ECB
+						),
+						MCRYPT_RAND
+					)
 				)
-			)
-		);
+			);
+			error_reporting($oldErrRep);
+			return $decrypted;
+		} catch (Exception $e) {
+			error_reporting($oldErrRep);
+			return false;
+		}
 	}
 }

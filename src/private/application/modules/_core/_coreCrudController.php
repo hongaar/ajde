@@ -9,7 +9,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 	 * Ajde_Component_Crud
 	 ************************/
 	
-	public function beforeInvoke() {
+	public function beforeInvoke($allowed = array()) {
 		$crud = $this->getCrudInstance();
 		if (!$crud && Ajde::app()->getRequest()->has('crudId')) {
 			Ajde_Model::registerAll();

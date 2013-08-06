@@ -16,12 +16,17 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 
 	public static function errorHandler($errno, $errstr, $errfile, $errline)
 	{
-		error_log(sprintf("PHP error: %s in %s on line %s", $errstr, $errfile, $errline));
-		// TODO: only possible in PHP >= 5.3 ?
-		try
-		{
-			throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
-		} catch(Exception $exception) {
+		if (error_reporting() > 0) {
+			$message = sprintf("PHP error: %s in %s on line %s", $errstr, $errfile, $errline);
+			error_log($message);
+			dump($message);
+	
+			// TODO: only possible in PHP >= 5.3 ?
+			try
+			{
+				throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+			} catch(Exception $exception) {
+			}
 		}
 	}
 
@@ -144,8 +149,8 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 				break;
 			case self::EXCEPTION_TRACE_LOG:
 				$message = 'UNCAUGHT EXCEPTION' . PHP_EOL;
-				$message .= 'Request ' . $_SERVER["REQUEST_URI"] . " triggered:" . PHP_EOL;
-				$message .= sprintf("%s: %s in %s on line %s",
+				$message .= "\tRequest " . $_SERVER["REQUEST_URI"] . " triggered:" . PHP_EOL;
+				$message .= sprintf("\t%s: %s in %s on line %s",
 						$type,
 						$exception->getMessage(),
 						$exception->getFile(),
@@ -153,7 +158,7 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 				);
 				foreach(array_reverse($exception->getTrace()) as $i => $line) {
 					$message .= PHP_EOL;
-					$message .= $i . '. ' . $line['file'] . ' on line ' . $line['line'];
+					$message .= "\t" . $i . '. ' . (isset($line['file']) ? $line['file'] : 'unknown file') . ' on line ' . (isset($line['line']) ? $line['line'] : 'unknown line');
 				}				
 				break;
 		}

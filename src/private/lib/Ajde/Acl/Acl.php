@@ -185,12 +185,15 @@ class Ajde_Acl extends Ajde_Model
 		return false;
 	}
 
-	public static function doValidation($entity, $module, $action, $extra, $ownerCallback = array(self, 'validateOwner'), $parentCallback = array(self, 'validateParent'))
+	public static function doValidation($entity, $module, $action, $extra, $ownerCallback = false, $parentCallback = false)
 	{
 		$uid = self::getUserId();
 		$usergroup = self::getUsergroupId();
 		
-		$callbackHash = md5(get_class($ownerCallback[0]) . get_class($parentCallback[0]) . $ownerCallback[1] . $parentCallback[1]);
+		$callbackHash = '';
+		if ($ownerCallback !== false && $parentCallback !== false) {
+			$callbackHash = md5(get_class($ownerCallback[0]) . get_class($parentCallback[0]) . $ownerCallback[1] . $parentCallback[1]);
+		}
 		$validationHash = md5($entity.'/'.$module.'/'.$action.'/'.$extra.'/'.$uid.'/'.$usergroup.'/'.$callbackHash);
 		
 		if (isset(self::$_aclRulesCache[$validationHash])) {

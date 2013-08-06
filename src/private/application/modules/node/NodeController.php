@@ -53,10 +53,8 @@ class NodeController extends Ajde_Controller
 		$nodetypes = new NodetypeCollection();
 		foreach($nodetypes as $nodetype) {
 			foreach($showOnlyWhenFields as $field) {
+				$showOnlyWhen[$field] = array();
 				if ($nodetype->get($field) == 1) {
-					if (!isset($showOnlyWhen[$field])) {
-						$showOnlyWhen[$field] = array();
-					}
 					$showOnlyWhen[$field][] = $nodetype->getPK();
 				}
 			}
@@ -180,7 +178,6 @@ class NodeController extends Ajde_Controller
 // 				->setPanelFunction('displayPanel')
 				->up()
 			->selectEdit()
-				->setShow()
 				->selectLayout()
 					->addRow()
 						->addColumn()
