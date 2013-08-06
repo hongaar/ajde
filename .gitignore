@@ -6,12 +6,9 @@ desktop.ini
 nbproject/
 *.sublime-project
 *.sublime-workspace
+.buildpath
+.project
 
 # ignore Ajde files
-src/private/var/cache/*
-src/private/var/log/*
-src/private/var/tmp/*
 src/public/images/uploads/*
 src/public/js/_core/crud/editor/ckeditor/lib/*
-src/.buildpath
-src/.project
