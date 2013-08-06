@@ -325,7 +325,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
                     ?>
                     <ul>
                         <li class='<?php if ($crudView->getPage() == 1) { echo 'disabled'; } ?>'>
-                            <a class='<?php if ($crudView->getPage() == 1) { echo 'disabled'; } ?> prev' href="javascript:void(null);">â†�</a>
+                            <a class='<?php if ($crudView->getPage() == 1) { echo 'disabled'; } ?> prev' href="javascript:void(null);">←</a>
                         </li>
                         <?php
                         $pages = min($pageCount, 5);
@@ -340,7 +340,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
                             </li>
                         <?php } ?>
                         <li class='<?php if ($crudView->getPage() >= $pageCount) { echo 'disabled'; } ?>'>
-                            <a class='<?php if ($crudView->getPage() >= $pageCount) { echo 'disabled'; } ?> next' href="javascript:void(null);">â†’</a>
+                            <a class='<?php if ($crudView->getPage() >= $pageCount) { echo 'disabled'; } ?> next' href="javascript:void(null);">→</a>
                         </li>
                     </ul>
                 </div>
