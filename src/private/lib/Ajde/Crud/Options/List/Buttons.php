@@ -55,12 +55,14 @@ class Ajde_Crud_Options_List_Buttons extends Ajde_Crud_Options
 	 * 
 	 * @param name $name Identifier of the button
 	 * @param text $text Text to display
-	 * @param type $class Optional classname to add
+	 * @param string $class Optional classname to add
+	 * @param boolean $persistent Don't fold button
+	 * @param boolean $function Call model function defined in $text (return false to omit button)
 	 * @return Ajde_Crud_Options_List_Buttons 
 	 */
-	public function addItemButton($name, $text, $class = null, $persistent = false) { 
+	public function addItemButton($name, $text, $class = null, $persistent = false, $function = false) { 
 		$buttons = ($this->has('itemButtons') ? $this->get('itemButtons') : array());
-		$buttons[$name] = array('text' => $text, 'class' => isset($class) ? $class : $name, 'persistent' => $persistent);
+		$buttons[$name] = array('text' => $text, 'class' => isset($class) ? $class : $name, 'persistent' => $persistent, 'function' => $function);
 		return $this->_set('itemButtons', $buttons);
 	}
 	

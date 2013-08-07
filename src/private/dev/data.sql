@@ -83,6 +83,7 @@ CREATE TABLE IF NOT EXISTS `cart_item` (
 
 CREATE TABLE IF NOT EXISTS `media` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nodetype` int(10) unsigned DEFAULT NULL COMMENT 'Node type',
   `sort` int(11) NOT NULL DEFAULT '999' COMMENT 'Ordering',
   `name` varchar(255) NOT NULL COMMENT 'Title',
   `type` enum('unknown','image','file','embed') NOT NULL DEFAULT 'unknown' COMMENT 'Type',
@@ -93,15 +94,16 @@ CREATE TABLE IF NOT EXISTS `media` (
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Updated',
   `user` int(10) unsigned NOT NULL COMMENT 'Owner',
   PRIMARY KEY (`id`),
-  KEY `user` (`user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=293 ;
+  KEY `user` (`user`),
+  KEY `nodetype` (`nodetype`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=327 ;
 
 --
 -- Dumping data for table `media`
 --
 
-INSERT INTO `media` (`id`, `sort`, `name`, `type`, `pointer`, `thumbnail`, `icon`, `added`, `updated`, `user`) VALUES
-(292, 996, 'ajde', 'image', 'ajde.jpg', 'ajde.jpg', NULL, '2013-08-06 13:22:10', '2013-08-06 13:22:10', 20);
+INSERT INTO `media` (`id`, `nodetype`, `sort`, `name`, `type`, `pointer`, `thumbnail`, `icon`, `added`, `updated`, `user`) VALUES
+(292, NULL, 996, 'ajde', 'image', 'ajde.jpg', 'ajde.jpg', NULL, '2013-08-06 13:22:10', '2013-08-06 13:22:10', 20);
 
 -- --------------------------------------------------------
 

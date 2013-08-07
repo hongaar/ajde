@@ -168,6 +168,7 @@ class NodeController extends Ajde_Controller
 					->setNew(true)
 					->setEdit(true)
 		//			->addItemButton('view', 'view')
+					->addItemButton('child', 'addChildButton', 'btn-success add-child', false, true)
 					->up()
 				->setMain('title')
 				->setShow(array('title', 'added', 'published', 'sort'))

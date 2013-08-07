@@ -23,14 +23,16 @@ App.Admin.Media.UploadButton = function() {
 	};
 
 	var onComplete = function(e, id, filename, response) {
-		filename = response.filename;	
+		filename = response.filename;
+		nodetype = $('form.ACCrudList').find('select[name="view[filter][nodetype]"]').val();
 		uploading--;
 		
 		var form = node.parents('form');
 		var url = 'admin/media:upload.json';
 		var data = {
 			_token: form.find('input[name=\'_token\']').val(),
-			filename: filename
+			filename: filename,
+			nodetype: nodetype
 		};
 
 		$.post(url, data, onCallback, 'json').error(function(jqXHR, message, exception) {
