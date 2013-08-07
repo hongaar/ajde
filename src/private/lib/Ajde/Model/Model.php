@@ -423,7 +423,7 @@ class Ajde_Model extends Ajde_Object_Standard
 		foreach($this->getTable()->getFieldNames() as $field) {
 			// Don't save a field is it's empty or not set
 			if ($this->has($field)) {
-				if ($this->getTable()->getFieldProperties($field, 'isAutoUpdate')) {
+				if ($this->getTable()->getFieldProperties($field, 'isAutoUpdate') && !$this->get($field) instanceof Ajde_Db_Function) {
 					// just ignore this field
 				} elseif ($this->isEmpty($field) && !$this->getTable()->getFieldProperties($field, 'isRequired')) {
 					$sqlSet[] = $field . ' = NULL';
@@ -725,17 +725,18 @@ class Ajde_Model extends Ajde_Object_Standard
 		$collection->orderBy($sortField);
 		
 		// Start at root path
-		$this->_recurseChildren($collection, $collectionName, $parentField, $levelField, $sortField);	
+		$this->_recurseChildren($collection, $collectionName, $parentField, $levelField, $sortField);
 	}
 	
-	private function _recurseChildren($collection, $collectionName, $parentField, $levelField, $sortField) {
+	private function _recurseChildren($collection, $collectionName, $parentField, $levelField, $sortField, $updatedField = 'updated') {
 		static $sort;
 		static $level;
 		foreach($collection as $item) {			
-			/* @var $menu MenuModel */
+			/* @var $item Ajde_Model */
 			$sort++;
 			$item->set($sortField, $sort);
 			$item->set($levelField, $level);
+			$item->set($updatedField, new Ajde_Db_Function($updatedField));
 			$item->save();
 			// Look for children
 			$children = new $collectionName();
