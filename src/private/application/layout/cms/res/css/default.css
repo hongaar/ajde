@@ -8,15 +8,15 @@
  
  
 body {
-	font-family: 'Roboto', sans-serif;
+	/*font-family: 'Roboto', sans-serif; */
 	padding-top: 50px;
 }
 
 h1, h2, h3, h4 {
-	font-family: 'PT Sans Narrow', sans-serif;
-	font-weight: normal;
+	/*font-family: 'PT Sans Narrow', sans-serif;
+	font-weight: normal;*/
 }
 
 .main {
-	padding: 40px 15px;
+	padding: 0;
 }
