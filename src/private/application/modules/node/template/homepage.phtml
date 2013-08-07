@@ -5,9 +5,13 @@
 $node = $this->node;
 ?>
 
-<div class="page-header">
-	<h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
-</div>			
+<div class="row">
+	<div class="col-12">
+		<div class="page-header">		
+			<h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
+		</div>
+	</div>
+</div>
 
 <div class="row">
 	
@@ -15,7 +19,7 @@ $node = $this->node;
 		<?php echo _c($node->content); ?>
 	</div>
 	
-	<div class="col-12 col-lg-6 col-lg-offset-2">
+	<div class="col-12 col-lg-6 col-lg-offset-2 col-offset-2">
 		<?php echo $node->getMediaTag(800, null, false, 'img-responsive'); ?>
 	</div>
 

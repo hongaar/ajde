@@ -1,20 +1,12 @@
-<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ ?>
-
-<div class="row-fluid">
-	<div class="span2 hideInIframe">
-		<?php echo $this->includeModule('admin/cms:menu'); ?>		
-	</div><!--/span-->
-	<div class="span10 expandInIframe">
-		
-		<div class="page-header">
-			<h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
-		</div>		
-		
-<?php
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ 
 
 $options = new Ajde_Crud_Options();
 $options	
 	->selectFields()
+		->selectField('nodetype')
+			->setOrderBy('sort')
+			->setIsRequired(false)
+			->up()
 		->selectField('name')
 			->setEmphasis(true)
 			->up()
@@ -46,6 +38,7 @@ $options
 			->setNew(true)
 			->setEdit(true)
 			->addToolbarButton('upload', new Ajde_Core_Route('admin/media:uploadButton'))
+			->addToolbarHtml('nodetype', $this->includeModule('admin/media:typeBtn'))
 			->up()
 		->setMain('name')
 		->setShow(array('name', 'added', 'thumbnail'))
@@ -55,6 +48,8 @@ $options
 			->setViewType('grid')
 			->setOrderBy('added')
             ->setOrderDir(Ajde_Query::ORDER_DESC)
+            ->setMainFilter('nodetype')
+            ->setMainFilterGrouper('category')
 			->up()
 		->up()
 	->selectEdit()
@@ -84,10 +79,22 @@ if (Ajde::app()->getRequest()->has('new')) {
 	$crud->setOption('fields.user.value', $user->getPK());
 }
 
-echo $crud->output();
-
 ?>
 
+<div class="row-fluid">
+	<div class="span2 hideInIframe">
+		<?php echo $this->includeModule('admin/cms:menu'); ?>		
+	</div><!--/span-->
+	<div class="span10 expandInIframe">
+		
+		<div class="page-header">
+			<h1>
+				<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
+				<?php echo $this->ACCrudMainFilterBadge($crud, true); ?>
+			</h1>
+		</div>		
+		
+		<?php echo $crud->output(); ?>
 		
 	</div><!--/span-->
 </div><!--/row-->

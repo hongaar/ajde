@@ -10,7 +10,7 @@ class AdminMediaController extends AdminController
 	{
 		Ajde_Model::register('media');
 		
-		Ajde::app()->getDocument()->setTitle("Media manager");
+		Ajde::app()->getDocument()->setTitle("Media");
         $this->getView()->assign('extensions', $this->_extensions);
 		$this->getView()->assign('uploaddir', $this->_uploaddir);
 		return $this->render();
@@ -34,12 +34,14 @@ class AdminMediaController extends AdminController
 	public function uploadJson()
 	{
 		$filename = Ajde::app()->getRequest()->getPostParam('filename');
+		$nodetype = Ajde::app()->getRequest()->getPostParam('nodetype', false);
 		$extension = pathinfo($filename, PATHINFO_EXTENSION);
 		$title = pathinfo($filename, PATHINFO_FILENAME);
 						
 		Ajde_Model::register('media');
 		$media = new MediaModel();
 		
+		$media->nodetype = $nodetype;
 		$media->name = $title;
 		$media->pointer = $filename;
 		$media->thumbnail = $filename;
@@ -51,5 +53,35 @@ class AdminMediaController extends AdminController
 		$media->user = UserModel::getLoggedIn()->getPK();
 		
 		return array('success' => $media->insert());
+	}
+	
+	public function typeBtn()
+	{
+		return $this->render();
+	}
+	
+	public function typeBtnJson()
+	{
+		Ajde_Model::register('media');
+		
+		$value = Ajde::app()->getRequest()->getPostParam('type');
+		$id = Ajde::app()->getRequest()->getPostParam('id', false);
+	
+		$model = new MediaModel();
+	
+		if (!is_array($id)) {
+			$id = array($id);
+		}
+	
+		foreach($id as $elm) {
+			$model->loadByPK($elm);
+			$model->set('nodetype', $value);
+			$model->save();
+		}
+	
+		return array(
+				'success' => true,
+				'message' => Ajde_Component_String::makePlural(count($id), 'media') . ' changed'
+		);
 	}
 }

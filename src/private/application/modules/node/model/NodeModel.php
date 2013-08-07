@@ -119,6 +119,13 @@ class NodeModel extends Ajde_Acl_Proxy_Model
 		return $ret;
 	}
 	
+	public function displayAgo()
+	{
+		$timestamp = new DateTime($this->get('updated'));
+		$timestamp = $timestamp->format('U');
+		return Ajde_Component_String::time2str($timestamp);
+	}
+	
 	public function rowClass()
 	{
 		$class = strtolower($this->getNodetype()->getName());
@@ -142,6 +149,14 @@ class NodeModel extends Ajde_Acl_Proxy_Model
 			$parenttype = $this->getNodetype()->get('parent_type');
 		}
 		return 'admin/node:view.crud?view[filter][nodetype]=' . $parenttype;
+	}
+	
+	public function addChildButton() {
+		if ($this->hasLoaded() && $childtype = $this->getNodetype()->get('child_type')) {
+			$this->getNodetype()->loadParent('child_type');
+			return '<i class="icon-plus icon-white" data-nodetype="' . $childtype . '"></i> ' . strtolower($this->getNodetype()->get('child_type')->getName());
+		}
+		return false;
 	}
 	
 	public function afterSort()

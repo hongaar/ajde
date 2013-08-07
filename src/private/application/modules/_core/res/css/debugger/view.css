@@ -10,11 +10,13 @@ body{margin-bottom:10px !important}
 	padding: 0;
 	background-color: white;
 	z-index: 9999;
+	font-family: monospace;
+	font-size: 0.7em;
 }
 
 #ajdeDebuggerHeader {
 	height: 10px;
-	background-color: #9a0092;
+	background-color: #eb6864;
 	cursor: pointer;
 }
 
@@ -42,7 +44,6 @@ body{margin-bottom:10px !important}
 
 #ajdeDebugger h4 {
 	font-size: 20px;
-	color: #005d9a;
 	margin: 10px 0 10px 0;
 }
 
@@ -51,7 +52,7 @@ body{margin-bottom:10px !important}
 }
 
 #ajdeDebugger dl dt {
-	background: #005d9a;
+	background: silver;
 	color: #fff;
 	float: left;
 	clear: both;

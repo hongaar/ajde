@@ -13,11 +13,22 @@ App.Admin.Node.View = function() {
 		window.location.href = 'sample/view/' + id + '.html';
 		return false;
 	};
+	
+	var addChildHandler = function(e) {
+		e.stopPropagation();
+		e.preventDefault();
+		var row = $(this).parents('tr');
+		var id = row.find('input[type=checkbox]').attr('value');
+		var nodetype = $(this).find('i').data('nodetype');
+		window.location.href = 'admin/node:view?new&view[filter][nodetype]=' + nodetype + '&prefill[parent]=' + id;
+		return false;
+	};
 
 	return {
 
 		init: function() {
 			$('form.ACCrudList td.buttons a.btn.view').live('click', viewHandler);
+			$('form.ACCrudList td.buttons a.btn.add-child').live('click', addChildHandler);
 		}
 
 	};

@@ -11,7 +11,7 @@ class Config_Application extends Config_Cms
 	public $email				= 'info@example.nl';
 	public $version 			= array(
 									'number' => '0.1',
-									'name' => 'alpha'
+									'name' => 'ajde-nacim'
 									);
 
 
