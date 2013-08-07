@@ -105,7 +105,7 @@ class SampleController extends Ajde_Acl_Controller
 
 #### Template
 
-```php
+```html
 <?php
 /* @var $this Ajde_Template_Parser_Phtml_Helper */
 $this->requireJsLibrary('jquery', '1');
@@ -244,3 +244,31 @@ Only the private/var/* directories should be writable by the webserver.
 #### User authentication
 
 When using the Ajde_User extension, user cookies are hashed with the client IP address, a unique user secret and application secret, making it virtually impossible to use a stolen user authentication cookie.
+
+----------------
+
+
+
+
+License
+-------------------------
+
+Copyright (c) 2013 Joram van den Boezem
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
