@@ -1,6 +1,8 @@
 Ajde is a web framework
 =======================
 
+![Ajde logo](https://raw.github.com/hongaar/ajde/master/src/public/images/ajde-medium.png "Ajde logo")
+
 *Yet another PHP 5.0 MVC framework with out-of-the-box HTML / CSS / JS / caching and HTTP optimizations. Your project will be fast and cutting edges right from the start!*
 
 **PLEASE NOTE: Ajde is in an early alpha stage, and the API is still changing.**
