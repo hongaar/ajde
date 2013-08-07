@@ -1,0 +1,1 @@
+ALTER TABLE  `user` ADD  `reset_hash` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT  'Reset hash' AFTER  `secret`

@@ -19,22 +19,22 @@ $this->requireJsPublic('lib/complexify/jquery.complexify.min.js');
 				
 				<input type="hidden" name="returnto" id="returnto" value="<?php echo $this->returnto; ?>" />
 
-				<div class="control-group give-status">			
-					<div class="controls">
+				<div class="control-group form-group give-status">			
+					<div class="controls col-lg-6">
 						<p class="help-block status-text"></p>
 					</div>
 				</div>	
 
-				<div class="control-group">
-					<label class="control-label" for="in_user"><?php echo __(ucfirst($this->user->usernameField)); ?></label>
-					<div class="controls">
+				<div class="control-group form-group">
+					<label class="control-label col-lg-4" for="in_user"><?php echo __(ucfirst($this->user->usernameField)); ?></label>
+					<div class="controls col-lg-6">
 						<input type="text" name="<?php echo $this->user->usernameField; ?>" placeholder="" required id="in_user" />
 					</div>
 				</div>
 				
-				<div class="control-group">
-					<label class="control-label" for="in_pass1"><?php echo __(ucfirst($this->user->passwordField)); ?></label>
-					<div class="controls">
+				<div class="control-group form-group">
+					<label class="control-label col-lg-4" for="in_pass1"><?php echo __(ucfirst($this->user->passwordField)); ?></label>
+					<div class="controls col-lg-6">
 						<input type="password" name="password" placeholder="****" required id="in_pass1" />
 						<div class='complexity'>
 							<div class='progressbar'><div class='progress'></div></div>
@@ -43,28 +43,28 @@ $this->requireJsPublic('lib/complexify/jquery.complexify.min.js');
 					</div>
 				</div>
 				
-				<div class="control-group">
-					<label class="control-label" for="in_pass2"><?php echo __('Verify') . ' ' . __($this->user->passwordField); ?></label>
-					<div class="controls">
+				<div class="control-group form-group">
+					<label class="control-label col-lg-4" for="in_pass2"><?php echo __('Verify') . ' ' . __($this->user->passwordField); ?></label>
+					<div class="controls col-lg-6">
 						<input type="password" name="passwordCheck" placeholder="****" required id="in_pass2" />
 					</div>
 				</div>
 				
-				<div class="control-group">
-					<label class="control-label" for="in_email"><?php echo __('E-mail'); ?></label>
-					<div class="controls">
+				<div class="control-group form-group">
+					<label class="control-label col-lg-4" for="in_email"><?php echo __('E-mail'); ?></label>
+					<div class="controls col-lg-6">
 						<input type="text" name="email" required id="in_email" />
 					</div>
 				</div>
 				
-				<div class="control-group">
-					<label class="control-label" for="in_name"><?php echo __('Full name'); ?></label>
-					<div class="controls">
+				<div class="control-group form-group">
+					<label class="control-label col-lg-4" for="in_name"><?php echo __('Full name'); ?></label>
+					<div class="controls col-lg-6">
 						<input type="text" name="fullname" required id="in_name" />
 					</div>
 				</div>
 				
-				<div class="form-actions">
+				<div class="form-actions col-lg-6 col-lg-offset-4 col-offset-4">
 					<button class="btn btn-primary" type="submit"><?php echo __('register'); ?></button>
 				</div>
 			</fieldset>

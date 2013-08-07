@@ -53,6 +53,16 @@ abstract class Ajde_User extends Ajde_Model
 		return ($this->verifyHash($password) ? $user : false);
 	}
 	
+	/**
+	 * 
+	 * @return UsergroupModel:
+	 */
+	public function getUsergroup()
+	{
+		$this->loadParent('usergroup');
+		return $this->get('usergroup');
+	}
+	
 	public function createHash($password)
 	{
 		// @see http://net.tutsplus.com/tutorials/php/understanding-hash-functions-and-keeping-passwords-safe/
@@ -121,7 +131,7 @@ abstract class Ajde_User extends Ajde_Model
 		$this->loadByPK($this->getPK());
 	}
 	
-	protected function generateSecret($length = 255)
+	public function generateSecret($length = 255)
 	{
 		return substr(sha1(mt_rand()), 0, $length);
 	}
@@ -132,6 +142,7 @@ abstract class Ajde_User extends Ajde_Model
 		$this->populate(array(
 			$this->usernameField	=> $username,
 			$this->passwordField	=> $hash,
+			'usergroup'				=> $this->defaultUserGroup,
 			'secret'				=> $this->generateSecret()
 		));			
 		return $this->insert();
@@ -208,5 +219,44 @@ abstract class Ajde_User extends Ajde_Model
 		$values = array($newUsername, $this->getPK());
 		$sql = 'SELECT * FROM '.$this->_table.' WHERE ' . $this->usernameField . ' = ? AND id != ? LIMIT 1';
 		return !$this->_load($sql, $values);
+	}
+	
+	public function resetUser()
+	{
+		if (!$this->hasNotEmpty('email')) {
+			return false;
+		}
+		$resetHash = $this->getResetHash();
+		$this->set('reset_hash', $resetHash);
+		$this->save();
+		$this->sendResetMail($resetHash);
+		
+		return $resetHash;
+	}
+	
+	public function sendResetMail($hash)
+	{
+		return false;
+	}
+	
+	public function getResetHash()
+	{
+		if (empty($this->_data)) {
+			// TODO:
+			throw new Ajde_Exception('Invalid user object');
+		}
+		if (!in_array('sha256', hash_algos())) {
+			// TODO:
+			throw new Ajde_Exception('SHA-256 algorithm not available for hashing');
+		}
+		$userSecret	= $this->get('secret');
+		$appSecret	= Config::get('secret');
+		$hash = strtotime("+1 month") . ':' . hash("sha256", $userSecret . $appSecret . microtime() . rand());
+
+		if (empty($hash)) {
+			// TODO:
+			throw new Ajde_Exception('SHA-256 algorithm failed');
+		}
+		return $hash;
 	}
 }

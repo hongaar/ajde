@@ -3,6 +3,8 @@
 class UserController extends Ajde_User_Controller
 {
 	protected $_allowedActions = array(
+		'forgot',
+		'reset',
 		'logon',
 		'logoff',
 		'register',
@@ -13,7 +15,10 @@ class UserController extends Ajde_User_Controller
 	
 	public function beforeInvoke()
 	{
-		if (substr($_GET['_route'], 0, 5) == 'admin' || (isset($_GET['returnto']) && substr($_GET['returnto'], 0, 5) == 'admin') || (($user = $this->getLoggedInUser()) && (string) $user->getUsergroup() != UserModel::USERGROUP_USERS)) {
+		if (
+				substr($_GET['_route'], 0, 5) == 'admin' ||
+				( isset($_GET['returnto']) && substr($_GET['returnto'], 0, 5) == 'admin' ) ||
+				( ($user = $this->getLoggedInUser()) && $user->getUsergroup()->id != UserModel::USERGROUP_USERS) ) {
 			Ajde::app()->getDocument()->setLayout(new Ajde_Layout(Config::get('adminLayout')));
 		}
 		Ajde_Cache::getInstance()->disable();
@@ -191,6 +196,115 @@ class UserController extends Ajde_User_Controller
 				'message' => __("We could not log you in with these credentials")
 			);			
 		}		
+		return $return;
+	}
+	
+	// Reset
+	public function forgotHtml()
+	{
+		return $this->render();
+	}
+	
+	public function forgotJson()
+	{
+		$user = new UserModel();
+		
+		$ident = Ajde::app()->getRequest()->getPostParam('user');
+		$found = false;
+		$return = array(false);
+		
+		if (false !== $user->loadByField('email', $ident)) {
+			$found = true;
+		}
+		if (false === $found && false !== $user->loadByField($user->usernameField, $ident)) {
+			$found = true;
+		}
+		
+		if (false !== $found) {
+			if ($user->resetUser()) {
+	            Ajde_Session_Flash::alert(__('A password reset link is sent to your e-mail address.'));
+	            $return = array('success' => true);
+			} else {
+				$return = array(
+					'success' => false,
+					'message' => __("We could not reset your password. Please contact our technical staff.")
+				);
+			}
+		} else {
+			$session = new Ajde_Session('user');
+			$attempts = $session->has('attempts') ? $session->get('attempts') : 1;
+			$session->set('attempts', $attempts + 1);
+			if ($attempts % 4 === 0) {
+				sleep(5);
+			}
+			$return = array(
+				'success' => false,
+				'message' => __("No matching user found")
+			);			
+		}		
+		return $return;
+	}
+	
+	public function resetHtml()
+	{
+		$resetHash = Ajde::app()->getRequest()->getParam('h', false);
+		if (!$resetHash) { return $this->render(); }
+		
+		$resetArray = explode(':', $resetHash);
+		$timestamp = $resetArray[0];
+		if (time() > $timestamp) { return $this->render(); }
+		
+		$user = new UserModel();
+		$found = $user->loadByField('reset_hash', $resetHash);
+		if (!$found) { return $this->render(); }
+		
+		$user->login();
+		
+		$this->getView()->assign('user', $user);
+		
+		return $this->render();
+	}
+	
+	public function resetJson()
+	{
+		$user = $this->getLoggedInUser();
+	
+		$password		= Ajde::app()->getRequest()->getPostParam('password');
+		$passwordCheck	= Ajde::app()->getRequest()->getPostParam('passwordCheck');
+		
+		$return = array(false);
+	
+		$shadowUser = new UserModel();
+	
+		if (empty($password)) {
+			$return = array(
+					'success' => false,
+					'message' => __("Please provide a password")
+			);
+		} else if ($password !== $passwordCheck) {
+			$return = array(
+					'success' => false,
+					'message' => __("Passwords do not match")
+			);
+		} else {
+			$hash = $user->createHash($password);
+			$user->set($user->passwordField, $hash);
+			$user->set('secret', $user->generateSecret());
+			$user->set('reset_hash', '');
+			
+			if ($user->save()) {
+				$user->login();
+				Ajde_Session_Flash::alert(sprintf(__('Welcome %s, you are now logged in'), $user->getFullname()));
+				$return = array(
+						'success' => true
+				);
+			} else {
+				$return = array(
+						'success' => false,
+						'message' => __("Something went wrong")
+				);
+			}
+		}
 		return $return;
 	}
 	

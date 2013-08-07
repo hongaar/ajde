@@ -31,7 +31,7 @@ class UserModel extends Ajde_User
 	
 	public function afterSave()
 	{
-		if ($this->getPK() == $this->getLoggedIn()->getPK()) {
+		if ($this->getLoggedIn() && $this->getPK() == $this->getLoggedIn()->getPK()) {
 			$this->login();
 		}
 	}
@@ -69,9 +69,17 @@ class UserModel extends Ajde_User
 		}
 	}
 	
+	public function sendResetMail($hash)
+	{
+		$mailer = new Ajde_Mailer();
+		$body = "Your password reset link:<br/>" . 
+				"<br/>" .
+				"<a href='" . Config::get('site_root') . 'user/reset?h=' . $hash . "'>" . $hash . "</a>";
+		$mailer->SendQuickMail($this->getEmail(), Config::get('email'), Config::get('sitename'), "Password reset", $body);	
+	}
+	
 	public function displayGravatar($width = 90, $class = '')
 	{
 		return Ajde_Resource_Image_Gravatar::get($this->getEmail(), $width, 'identicon', 'g', true, array('class' => $class));
-		            
 	}
 }
