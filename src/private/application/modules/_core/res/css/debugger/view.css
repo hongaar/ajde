@@ -11,7 +11,7 @@ body{margin-bottom:10px !important}
 	background-color: white;
 	z-index: 9999;
 	font-family: monospace;
-	font-size: 0.7em;
+	font-size: 12px;
 }
 
 #ajdeDebuggerHeader {
@@ -43,8 +43,10 @@ body{margin-bottom:10px !important}
 }
 
 #ajdeDebugger h4 {
-	font-size: 20px;
+	font-size: 18px;
 	margin: 10px 0 10px 0;
+	font-family: sans-serif;
+	font-weight: normal;
 }
 
 #ajdeDebugger dl {

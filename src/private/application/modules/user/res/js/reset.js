@@ -34,7 +34,7 @@ $(document).ready(function() {
 		}
 	);
 
-	$('#registerform').on('before', function() {
+	$('#resetform').on('before', function() {
 		if (!$(this).data('valid')) {
 			$('body').removeClass('loading');
 			$('.give-status').addClass('error');
@@ -43,31 +43,27 @@ $(document).ready(function() {
 		}
 	});
 		
-	$('#registerform').on('result', function(event, data) {
+	$('#resetform').on('result', function(event, data) {
 		if (data.success === false) {
 			$('.give-status').addClass('error');
 			$('.status-text').text(data.message);
 		} else {
-			if (data.returnto !== false) {
-				window.location.href = data.returnto;
-			} else {
-				window.location.href = 'user';
-			}
+			window.location.href = 'user';
 		}
 	});
 		
-	$('#registerform').on('error', function(event) {
+	$('#resetform').on('error', function(event) {
 		$('.give-status').addClass('error');
 		$('.status-text').text('Something went wrong');
 	});
 	
-	$('#registerform').on('submit', function(event) {
+	$('#resetform').on('submit', function(event) {
 //		$('.give-status').removeClass('error');
 //		$('.status-text').text('Registering...');
 		return true;
 	});
 	
-	$('#registerform :input').on('keydown', function() {
+	$('#resetform :input').on('keydown', function() {
 		$('.status-text').text('');
 	});
 	

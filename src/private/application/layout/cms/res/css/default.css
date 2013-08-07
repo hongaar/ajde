@@ -9,7 +9,11 @@
  
 body {
 	/*font-family: 'Roboto', sans-serif; */
-	padding-top: 50px;
+	padding-top: 80px;
+}
+
+body.loading, body.loading * {
+	cursor: progress !important;
 }
 
 h1, h2, h3, h4 {

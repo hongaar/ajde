@@ -31,4 +31,25 @@ class AdminUserController extends AdminController
 		}		
 		return $return;
 	}
+	
+	public function resetJson()
+	{
+		$user = new UserModel();
+		
+		$id = Ajde::app()->getRequest()->getPostParam('id');
+				
+		$return = array(false);
+		
+		if (false !== $user->loadByPK($id)) {
+			$hash = $user->resetUser();
+			$return = array(
+				'success' => ( $hash !== false )
+			);
+		} else {
+			$return = array(
+				'success' => false
+			);			
+		}		
+		return $return;
+	}
 }

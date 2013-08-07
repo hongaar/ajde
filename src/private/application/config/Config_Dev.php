@@ -4,7 +4,7 @@ require_once 'Config_Application.php';
 class Config_Dev extends Config_Application {
 
 	// Performance
-	public $compressResources	= true;
+	public $compressResources	= false;
 	public $debug 				= false;
 	public $useCache			= false;
 
