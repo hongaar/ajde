@@ -20,7 +20,7 @@ App.Admin.Node.View = function() {
 		var row = $(this).parents('tr');
 		var id = row.find('input[type=checkbox]').attr('value');
 		var nodetype = $(this).find('i').data('nodetype');
-		window.location.href = 'admin/node:view?new&view[filter][nodetype]=' + nodetype + '&prefill[parent]=' + id + '&hide[parent]=1';
+		window.location.href = 'admin/node:view?new&view[filter][nodetype]=' + nodetype + '&prefill[parent]=' + id;
 		return false;
 	};
 

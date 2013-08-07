@@ -119,6 +119,13 @@ class NodeModel extends Ajde_Acl_Proxy_Model
 		return $ret;
 	}
 	
+	public function displayAgo()
+	{
+		$timestamp = new DateTime($this->get('updated'));
+		$timestamp = $timestamp->format('U');
+		return Ajde_Component_String::time2str($timestamp);
+	}
+	
 	public function rowClass()
 	{
 		$class = strtolower($this->getNodetype()->getName());
