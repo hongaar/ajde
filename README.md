@@ -1,7 +1,7 @@
-Ajde is a web framework
-=======================
-
 ![Ajde logo](https://raw.github.com/hongaar/ajde/master/src/public/images/ajde-medium.png "Ajde logo")
+
+___another web framework___
+===========================
 
 *Yet another PHP 5.0 MVC framework with out-of-the-box HTML / CSS / JS / caching and HTTP optimizations. Your project will be fast and cutting edges right from the start!*
 
@@ -89,17 +89,17 @@ Example
 ```
 class SampleController extends Ajde_Acl_Controller
 {
-    public function sayhello()
-    {
-        // Set document title
-        Ajde::app()->getDocument()->setTitle("A warm welcome word");
+  public function sayhello()
+  {
+    // Set document title
+    Ajde::app()->getDocument()->setTitle("A warm welcome word");
 
-        // Set the text to display in the template
-        $this->getView()->assign('message', 'Hello World!');
+    // Set the text to display in the template
+    $this->getView()->assign('message', 'Hello World!');
 
-        // Returns the rendered template, which automatically adds js & css
-        return $this->render();
-    }
+    // Returns the rendered template, which automatically adds js & css
+    return $this->render();
+  }
 }
 ```
 
@@ -113,21 +113,21 @@ $this->requireJsRemote('http://www.cornify.com/js/cornify.js');
 ?>
 
 <header class="row">
-    <div class="col-12">
-        <div class="page-header">
-            <h1>
-                <?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
-            </h1>
-        </div>
+  <div class="col-12">
+    <div class="page-header">
+      <h1>
+        <?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
+      </h1>
     </div>
+  </div>
 </header>
 
 <article class="row">
-    <section class="col-12">
-        <p>
-            <?php echo _e($this->message); ?>
-        </p>
-    </section>
+  <section class="col-12">
+    <p>
+      <?php echo _e($this->message); ?>
+    </p>
+  </section>
 </article>
 ```
 
@@ -149,7 +149,7 @@ $(document).ready(function() {
 @pink: #ff31d5;
 
 body {
-    background-color: @pink;
+  background-color: @pink;
 }
 ```
 
@@ -244,33 +244,3 @@ Only the private/var/* directories should be writable by the webserver.
 #### User authentication
 
 When using the Ajde_User extension, user cookies are hashed with the client IP address, a unique user secret and application secret, making it virtually impossible to use a stolen user authentication cookie.
-
-
-----------------
-
-
-
-
-License
--------------------------
-
-Copyright (c) 2013 Joram van den Boezem
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
