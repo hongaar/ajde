@@ -86,7 +86,7 @@ Example
 
 #### Controller
 
-```
+```php
 class SampleController extends Ajde_Acl_Controller
 {
   public function sayhello()
@@ -105,7 +105,7 @@ class SampleController extends Ajde_Acl_Controller
 
 #### Template
 
-```
+```php
 <?php
 /* @var $this Ajde_Template_Parser_Phtml_Helper */
 $this->requireJsLibrary('jquery', '1');
@@ -133,7 +133,7 @@ $this->requireJsRemote('http://www.cornify.com/js/cornify.js');
 
 #### Javascript
 
-```
+```javascript
 $(document).ready(function() {
         setInterval(function() {
                 cornify_add();
@@ -144,7 +144,7 @@ $(document).ready(function() {
 
 #### Stylesheet
 
-```
+```css
 /*#!less*/
 @pink: #ff31d5;
 
