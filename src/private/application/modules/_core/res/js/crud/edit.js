@@ -41,11 +41,11 @@ AC.Crud.Edit = function() {
 			});
 			
 			// Hide fieldsets with no control-groups
-			$('form.ACCrudEdit fieldset').each(function() {
+			$('form.ACCrudEdit fieldset.crud').each(function() {
 				if (!$(this).find('.control-group:visible').length) {
 					$(this).stop(true, true).hide('fast');
 				}
-			});			
+			});
 			
 			// Dirty handler for form input elements
             $('form.ACCrudEdit :input').on('change', AC.Crud.Edit.setDirty);
