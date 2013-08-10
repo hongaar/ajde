@@ -2,6 +2,19 @@
 
 class NodeCollection extends Ajde_Acl_Proxy_Collection
 {
+	public function filterPublished()
+	{
+		$this->addFilter(new Ajde_Filter_Where('published', Ajde_Filter::FILTER_EQUALS, 1));
+		$startGroup = new Ajde_Filter_WhereGroup();
+			$startGroup->addFilter(new Ajde_Filter_Where('published_start', Ajde_Filter::FILTER_IS, null));
+			$startGroup->addFilter(new Ajde_Filter_Where('published_start', Ajde_Filter::FILTER_LESSOREQUAL, new Ajde_Db_Function('NOW()'), Ajde_Query::OP_OR));
+		$endGroup = new Ajde_Filter_WhereGroup();
+			$endGroup->addFilter(new Ajde_Filter_Where('published_end', Ajde_Filter::FILTER_IS, null));
+			$endGroup->addFilter(new Ajde_Filter_Where('published_end', Ajde_Filter::FILTER_GREATEROREQUAL, new Ajde_Db_Function('NOW()'), Ajde_Query::OP_OR));
+		$this->addFilter($startGroup);
+		$this->addFilter($endGroup);
+	}
+	
 	public function filterByType($type)
 	{
 		if (is_numeric($type)) {
@@ -98,5 +111,13 @@ class NodeCollection extends Ajde_Acl_Proxy_Collection
 	{
 		$this->addFilter(new Ajde_Filter_Join('nodetype', 'nodetype.id', 'node.nodetype'));
 		return $this;
+	}
+	
+	public function load()
+	{
+		if (Ajde::app()->getRequest()->getParam('filterPublished', false) ==  true) {
+			$this->filterPublished();
+		}
+		return parent::load();
 	}
 }

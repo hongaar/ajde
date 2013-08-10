@@ -9,12 +9,15 @@
 		<div class="hero-unit">
 			<h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
 			<p>Yay, you reached the dashboard!</p>
-			<p><a href="admin/node:view?new&view[filter][nodetype]=" class="btn btn-primary btn-large">add content &raquo;</a></p>
+			<p>
+				<a href="admin/node:view?view[filter][nodetype]=" class="btn btn-primary btn-large">content overview &raquo;</a>
+				<a href="admin/node:view?new&view[filter][nodetype]=" class="btn btn-primary btn-large">add content &raquo;</a>
+			</p>
 		</div>
 		<div class="row-fluid">
 			<div class="span4">
 				<h2>Nodes</h2>
-				<p>Can be anything which is a single page on the website</p>
+				<p>All content are nodes, such as single pages or news items</p>
 				<p><a class="btn" href="admin/node:view">manage nodes &raquo;</a></p>
 			</div><!--/span-->
 			<div class="span4">

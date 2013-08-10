@@ -10,7 +10,6 @@ class Config_Dev extends Config_Application {
 
 	function __construct() {
 		parent::__construct();
-		$this->documentProcessors['css'] = array('Less');
 		$this->documentProcessors['html'][] = 'Debugger';
 		// Disable Beautifier processor by default
 		// as Tidy class is not included in quite

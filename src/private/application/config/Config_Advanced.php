@@ -73,7 +73,10 @@ class Config_Advanced
 	public $debug 				= false;
 	public $useCache			= true;
 	public $documentProcessors	= array(
-									'css'	=> array('Less', 'Maximizer')
+									'css'	=> array(
+											'Less',
+// 											'Maximizer' // disable, it's not so efficient
+									)
 								  );
 
 	// Database

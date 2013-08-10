@@ -126,6 +126,25 @@ class NodeModel extends Ajde_Acl_Proxy_Model
 		return Ajde_Component_String::time2str($timestamp);
 	}
 	
+	public function displayPublished()
+	{
+		if ($this->getNodetype()->get('published')) {
+			if (!$this->get('published')) {
+				return "<i class='icon-remove' title='No' />";
+			} else if (($start = $this->get('published_start')) &&
+					strtotime($start) > time()) {
+				return "<i class='icon-time' title='Queued' />";
+			} else if (($end = $this->get('published_end')) &&
+					strtotime($end) < time()) {
+				return "<i class='icon-time' title='Expired' />";
+			} else {
+				return "<i class='icon-ok' title='Yes' />";
+			}
+		} else {
+			return "";
+		}
+	}
+	
 	public function rowClass()
 	{
 		$class = strtolower($this->getNodetype()->getName());
@@ -158,6 +177,10 @@ class NodeModel extends Ajde_Acl_Proxy_Model
 		}
 		return false;
 	}
+	
+	/**
+	 * BEFORE / AFTER FUNCTIONS
+	 */
 	
 	public function afterSort()
 	{
@@ -211,6 +234,10 @@ class NodeModel extends Ajde_Acl_Proxy_Model
 		// ...
 	}
 	
+	/**
+	 * SLUG FUNCTIONS
+	 */
+	
 	private function _setSlug()
 	{
 		$name = $this->title;
@@ -243,10 +270,53 @@ class NodeModel extends Ajde_Acl_Proxy_Model
 		return $slug;
 	}
 	
-	public function loadBySlug($slug)
+	public function loadBySlug($slug, $publishedCheck = false)
 	{
 		$this->loadByField('slug', $slug);
+		if ($publishedCheck) {
+			$this->filterPublished();
+		}
 	}
+	
+	/**
+	 * PUBLISHED FUNCTIONS
+	 */
+	
+	public function checkPublished() {
+		if ($this->getNodetype()->get('published')) {
+			if (!$this->get('published')) {
+				return false;
+			}
+			if (($start = $this->get('published_start')) &&
+					strtotime($start) > time()) {
+				return false;
+			}
+			if (($end = $this->get('published_end')) &&
+					strtotime($end) < time()) {
+				return false;
+			} 
+		}
+		return true;
+	}
+	
+	public function filterPublished() {
+		if (false === $this->checkPublished()) {
+			$this->reset();
+		}
+	}
+	
+	protected function _load($sql, $values)
+	{
+		$return = parent::_load($sql, $values);
+		if (Ajde::app()->getRequest()->getParam('filterPublished', false) ==  true) {
+			$this->filterPublished();
+		}		
+		return $return; 	
+	}
+	
+	/**
+	 * TREE FUNCTIONS
+	 */
 	
 	/**
 	 * 
@@ -331,65 +401,9 @@ class NodeModel extends Ajde_Acl_Proxy_Model
 			$child->save();
 		}
 	}
-
-	/***
-	 * GETTERS
-	 */
-		
-	public function getUrl()
-	{
-		if ($this->getPK()) {
-			if (!$this->getNodetype() instanceof Ajde_Model) {
-				$this->loadParents();
-			}
-			$nodetype = str_replace(' ', '_', strtolower($this->getNodetype()->displayField()));
-			return 'http://' . Config::get('site_root') . '-' . $nodetype . '/' . $this->getSlug();
-		}
-		return false;
-	}
 	
 	/**
-	 * 
-	 * @return NodetypeModel
-	 */
-	public function getNodetype()
-	{
-		$this->loadParent('nodetype');
-		return parent::getNodetype();
-	}
-	
-	/**
-	 * 
-	 * @return MediaModel
-	 */
-	public function getMedia()
-	{
-		$this->loadParent('media');
-		return parent::getMedia();
-	}
-	
-	public function getMediaTag($width = null, $height = null, $crop = null, $class = null)
-	{
-		if ($this->hasMedia()) {
-			return $this->getMedia()->getTag($width, $height, $crop, $class);
-		}
-		return '';
-	}
-	
-	public function getTags()
-	{
-		$id = $this->getPK();
-		$crossReferenceTable = 'post_tag';
-
-		$subQuery = new Ajde_Db_Function('(SELECT tag FROM ' . $crossReferenceTable . ' WHERE post = ' . $this->getPK() . ')');
-		$collection = new TagCollection();
-		$collection->addFilter(new Ajde_Filter_Where('id', Ajde_Filter::FILTER_IN, $subQuery));
-		
-		return $collection;
-	}
-	
-	/**
-	 * 
+	 *
 	 * @return NodeCollection
 	 */
 	public function getRelatedNodes()
@@ -398,16 +412,16 @@ class NodeModel extends Ajde_Acl_Proxy_Model
 		$collection->addFilter(new Ajde_Filter_Join('node_related', 'node.id', 'related'));
 		$collection->addFilter(new Ajde_Filter_Where('node_related.node', Ajde_Filter::FILTER_EQUALS, $this->getPK()));
 		$collection->orderBy('node_related.sort');
-		
+	
 		return $collection;
 	}
-
+	
 	public function getAdditionalMedia()
 	{
 		$collection = new MediaCollection();
 		$collection->addFilter(new Ajde_Filter_Where('post', Ajde_Filter::FILTER_EQUALS, $this->getPK()));
 		$collection->orderBy('sort');
-		
+	
 		return $collection;
 	}
 	
@@ -476,5 +490,61 @@ class NodeModel extends Ajde_Acl_Proxy_Model
 		}
 		// No sibling
 		return false;
+	}
+
+	/***
+	 * GETTERS
+	 */
+		
+	public function getUrl()
+	{
+		if ($this->getPK()) {
+			if (!$this->getNodetype() instanceof Ajde_Model) {
+				$this->loadParents();
+			}
+			$nodetype = str_replace(' ', '_', strtolower($this->getNodetype()->displayField()));
+			return 'http://' . Config::get('site_root') . '-' . $nodetype . '/' . $this->getSlug();
+		}
+		return false;
+	}
+	
+	/**
+	 * 
+	 * @return NodetypeModel
+	 */
+	public function getNodetype()
+	{
+		$this->loadParent('nodetype');
+		return parent::getNodetype();
+	}
+	
+	/**
+	 * 
+	 * @return MediaModel
+	 */
+	public function getMedia()
+	{
+		$this->loadParent('media');
+		return parent::getMedia();
+	}
+	
+	public function getMediaTag($width = null, $height = null, $crop = null, $class = null)
+	{
+		if ($this->hasNotEmpty('media')) {
+			return $this->getMedia()->getTag($width, $height, $crop, $class);
+		}
+		return '';
+	}
+	
+	public function getTags()
+	{
+		$id = $this->getPK();
+		$crossReferenceTable = 'post_tag';
+
+		$subQuery = new Ajde_Db_Function('(SELECT tag FROM ' . $crossReferenceTable . ' WHERE post = ' . $this->getPK() . ')');
+		$collection = new TagCollection();
+		$collection->addFilter(new Ajde_Filter_Where('id', Ajde_Filter::FILTER_IN, $subQuery));
+		
+		return $collection;
 	}
 }

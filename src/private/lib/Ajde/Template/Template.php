@@ -18,7 +18,7 @@ class Ajde_Template extends Ajde_Object_Standard
 		if (($fileInfo = $this->getFileInfo()) === false) {
 			$exception = new Ajde_Exception(sprintf("Template file in %s,
 					for action %s with format %s not found",
-					$base, $action, $format), 90010);
+					$this->getBase(), $this->getAction(), $this->getFormat()), 90010);
 			Ajde::routingError($exception);
 		}		
 		$className = 'Ajde_Template_Parser_' . $fileInfo['parser'];

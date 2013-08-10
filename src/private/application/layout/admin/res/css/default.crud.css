@@ -71,6 +71,10 @@ fieldset.crud {
 			overflow: hidden;
 		}
 		
+		&.hidden {
+			display: none !important;
+		}
+		
 		&:not(.error) {
 			.validation-message {
 				display: none !important;

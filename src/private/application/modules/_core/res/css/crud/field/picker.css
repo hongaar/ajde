@@ -1,6 +1,8 @@
 /*#!less*/
 
 div.picker div.controls-row {
+	position: relative;
+	
 	a.btn {
 		width: 50px;
 		float: right !important;
@@ -12,5 +14,20 @@ div.picker div.controls-row {
 		input {
 			width: 100%;
 		}
+	}
+	
+	a.setnull {
+		position: absolute;
+		right: 55px;
+		top: 5px;
+	}
+	
+	div.input.with-image + a.setnull {
+		display: none;
+	}
+	
+	div.input.with-image:hover + a.setnull {
+		display: block;
+		right: 65px;
 	}
 }

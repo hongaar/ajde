@@ -89,7 +89,7 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 						$dump = ob_get_clean();
 						$arguments = sprintf(' with arguments: %s', $dump);
 					}
-					$traceMessage .= sprintf("<li><em>%s</em>%s<strong>%s</strong><br/>in %s<br/>&nbsp;\n",							
+					$traceMessage .= sprintf("<li><code><em>%s</em>%s<strong>%s</strong></code><br/>in %s<br/>&nbsp;\n",							
 							!empty($item['class']) ? $item['class'] : '&lt;unknown class&gt;',
 							!empty($item['type']) ? $item['type'] : '::',
 							!empty($item['function']) ? $item['function'] : '&lt;unknown function&gt;',

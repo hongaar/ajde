@@ -236,6 +236,8 @@ abstract class Ajde_User extends Ajde_Model
 	
 	public function sendResetMail($hash)
 	{
+		// @todo exception
+		throw new Ajde_Exception('Please implement sendResetMail in UserModel');
 		return false;
 	}
 	

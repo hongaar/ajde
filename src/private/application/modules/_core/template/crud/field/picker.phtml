@@ -6,6 +6,9 @@ $this->requireCssPublic('_core/crud/fancybox/jquery.fancybox.css');
 /* @var $field Ajde_Crud_Field_Fk */
 $field = $this->field;
 
+/* @var $value Ajde_Model */
+$value = $field->getValue();
+	
 $useImage = $field->has('useImage') && $field->get('useImage') === true;
 $listRoute = ($field->has('listRoute') ? $field->get('listRoute') : false);
 $listRoute = $field->has('listRouteFunction') ? $field->getCrud()->getModel()->{$field->get('listRouteFunction')}() : $listRoute;
@@ -22,9 +25,9 @@ $listRoute = $field->has('listRouteFunction') ? $field->getCrud()->getModel()->{
 		<?php if ($field->hasReadonly() && $field->getReadonly() === true) {} else { ?>
 			<a href='javascript:void(null);' class='span2 btn choose'><i class='icon-folder-open icon-white'></i></a>
 		<?php } ?>
-		<div class='input'>
-			<?php
-			$value = $field->getValue();
+		<div class='input
+			<?php if ($useImage && $value instanceof Ajde_Model && $value->hasLoaded()) { echo 'with-image'; } ?>'>
+			<?php			
 			if ($useImage) {
 				if ($value instanceof Ajde_Model && $value->hasLoaded()) {
 					$extraField = current($field->getTableFields());		
@@ -49,9 +52,7 @@ $listRoute = $field->has('listRouteFunction') ? $field->getCrud()->getModel()->{
 					<input type="text" readonly="readonly" value="Please choose one" />
 				<?php } ?>
 			<?php } else { ?>
-				<input type="text" readonly="readonly" value="<?php 
-					/* @var $value Ajde_Model */
-					$value = $field->getValue();		
+				<input type="text" readonly="readonly" value="<?php 	
 					if ($value instanceof Ajde_Model && $value->hasLoaded()) {
 						echo _e($field->getValue()->get($field->getValue()->getDisplayField()));
 					} else if ($value instanceof Ajde_Model || empty($value)) {
@@ -59,8 +60,12 @@ $listRoute = $field->has('listRouteFunction') ? $field->getCrud()->getModel()->{
 					} else {
 						echo _e($field->getValue());
 					}
-					?>" />		
-			<?php } ?>
-		</div>           
+					?>" />
+			<?php } ?>			
+		</div>        
+		<?php
+		if ($field->hasIsRequired() && $field->getIsRequired() === false) { ?>
+			<a href='javascript:void(null);' class='setnull'><i class='icon-remove'></i></a>
+		<?php } ?>   
 	</div>
 </div>

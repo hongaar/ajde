@@ -15,6 +15,7 @@ AC.Crud.Edit.Picker = function() {
 		
 		init: function() {
 			$('form.ACCrudEdit div.picker a.choose').click(AC.Crud.Edit.Picker.chooseHandler);
+			$('form.ACCrudEdit div.picker a.setnull').click(AC.Crud.Edit.Picker.setnullHandler);
 		},
 			
 		chooseHandler: function(e) {
@@ -38,6 +39,10 @@ AC.Crud.Edit.Picker = function() {
 				height: '100%',
 				closeBtn: false
 			});
+		},
+		
+		setnullHandler: function(e) {
+			$(this).parents('div.picker').trigger('chosen', false);
 		},
 			
 		chosen: function(data) {

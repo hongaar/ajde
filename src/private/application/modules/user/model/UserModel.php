@@ -71,10 +71,11 @@ class UserModel extends Ajde_User
 	
 	public function sendResetMail($hash)
 	{
+		$resetLink = Config::get('site_root') . 'user/reset?h=' . $hash;
 		$mailer = new Ajde_Mailer();
 		$body = "Your password reset link:<br/>" . 
 				"<br/>" .
-				"<a href='" . Config::get('site_root') . 'user/reset?h=' . $hash . "'>" . $hash . "</a>";
+				"<a href='" . $resetLink . "'>" . $resetLink . "</a>";
 		$mailer->SendQuickMail($this->getEmail(), Config::get('email'), Config::get('sitename'), "Password reset", $body);	
 	}
 	

@@ -14,6 +14,9 @@ class NodeController extends Ajde_Controller
 	
 	public function view()
 	{
+		// we want to display published nodes only
+		Ajde::app()->getRequest()->set('filterPublished', true);
+		
 		// load our node
 		/* @var $node NodeModel */
 		$slug = $this->getSlug();
@@ -112,7 +115,14 @@ class NodeController extends Ajde_Controller
 					->up()	
 				->selectField('published')
 					->addShowOnlyWhen('nodetype', $showOnlyWhen['published'])
+					->setFunction('displayPublished')
 					->setType('boolean')
+					->up()
+				->selectField('published_start')
+					->addShowOnlyWhen('nodetype', $showOnlyWhen['published'])
+					->up()
+				->selectField('published_end')
+					->addShowOnlyWhen('nodetype', $showOnlyWhen['published'])
 					->up()
 				->selectField('sort')
 					->setType('sort')
@@ -231,7 +241,7 @@ class NodeController extends Ajde_Controller
 							->addBlock()
 								->setTitle('Metadata')
 								->setClass('narrow short well')
-								->setShow(array('added', 'updated', 'published', 'user'))
+								->setShow(array('added', 'updated', 'published', 'published_start', 'published_end', 'user'))
 		->finished();
 		
 		/* @var $decorator Ajde_Crud_Cms_Meta_Decorator */

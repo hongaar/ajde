@@ -41,34 +41,47 @@ AC.Crud.Edit.Fk = function() {
 			
 		chosenHandler: function(e, ids) {
 			var that = this;
-			for (elm in ids) {
-				var id = ids[elm];
+			var $select = $(that).parents('.control-group').find('select[name]');
+			
+			$(that).find('div.input').removeClass('with-image');
+			
+			if (!ids || !ids.length) {
+				$select.val('');
 				if ($(that).data('use-image') == '1') {
-					$(that).find('div.input').html('<i class="icon-loading"></i>');
+					$(that).find('div.input').html('<input type="text" readonly="readonly" value="Please choose one" />');
 				} else {
-					$(that).find('input').val('loading...');
-				}
-				getRowData(id, that, function(response) {
-					var image = response.data[0];
-					var display = response.displayField;
-					var $select = $(that).parents('.control-group').find('select[name]');
-					
-					// set selection to new id
-					$select.val(id);
-					
-					// new item for select element?
-					if ($select.val() != id) {
-						$select.append('<option value=' + id + '>' + display + '</option>');
-						$select.val(id);
-					}
-				
-					// update display
+					$(that).find('input').val('Please choose one');
+				}				
+			} else {
+				for (elm in ids) {
+					var id = ids[elm];
 					if ($(that).data('use-image') == '1') {
-						$(that).find('div.input').html(image);
+						$(that).find('div.input').html('<i class="icon-loading"></i>');
 					} else {
-						$(that).find('input').val(display);
+						$(that).find('input').val('loading...');
 					}
-				});
+					getRowData(id, that, function(response) {
+						var image = response.data[0];
+						var display = response.displayField;
+						
+						// set selection to new id
+						$select.val(id);
+						
+						// new item for select element?
+						if ($select.val() != id) {
+							$select.append('<option value=' + id + '>' + display + '</option>');
+							$select.val(id);
+						}
+					
+						// update display
+						if ($(that).data('use-image') == '1') {
+							$(that).find('div.input').addClass('with-image');
+							$(that).find('div.input').html(image);
+						} else {
+							$(that).find('input').val(display);
+						}
+					});
+				}
 			}
 		}
 		

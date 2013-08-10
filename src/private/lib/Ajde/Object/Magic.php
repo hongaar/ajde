@@ -83,7 +83,9 @@ abstract class Ajde_Object_Magic extends Ajde_Object
 	public function isEmpty($key)
 	{
 		$value = $this->get($key);
-		return empty($value);
+		return $value instanceof Ajde_Model ?
+			!$value->hasLoaded() : 
+			empty($value);
 	}
 	
 	public function hasEmpty($key)

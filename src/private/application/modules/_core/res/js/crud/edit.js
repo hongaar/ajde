@@ -38,6 +38,13 @@ AC.Crud.Edit = function() {
 			// Show/hide elements with data-show-[fieldname] set, and run now
 			$('form.ACCrudEdit :input').on('change', AC.Crud.Edit.dynamicFields).each(function() {
 				AC.Crud.Edit.dynamicFields.call(this);
+			});
+			
+			// Hide fieldsets with no control-groups
+			$('form.ACCrudEdit fieldset').each(function() {
+				if (!$(this).find('.control-group:visible').length) {
+					$(this).stop(true, true).hide('fast');
+				}
 			});			
 			
 			// Dirty handler for form input elements
@@ -83,7 +90,7 @@ AC.Crud.Edit = function() {
 						var $self = $(this);
 						setTimeout(function() {
 							if (!$self.parents('fieldset').find('.control-group:visible').length) {
-								$self.parents('fieldset').stop(true, true).hide('fast')
+								$self.parents('fieldset').stop(true, true).hide('fast');
 							}
 						}, 100);
 					});

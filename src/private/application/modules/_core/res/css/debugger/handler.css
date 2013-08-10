@@ -10,6 +10,13 @@ a:hover {
 	color: #9A0092;
 }
 
+code {
+	background-color: #F1F1F1;
+	padding: 1px 5px;
+	margin-bottom: 4px;
+	display: inline-block;
+}
+
 h2 {
 	color: #005D9A;
 }
