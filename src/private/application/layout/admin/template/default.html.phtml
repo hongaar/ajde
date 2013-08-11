@@ -173,9 +173,9 @@ $currentGrouper = '';
 										</li>
 										<?php } ?>
 										<li class="divider"></li>
-										<li><a href="admin/cms:media">Media</a></li>
-										<li><a href="admin/cms:menus">Menus</a></li>
-										<li><a href="admin/cms:tags">Tags</a></li>
+										<li><a href="admin/media:view">Media</a></li>
+										<li><a href="admin/menu:view">Menus</a></li>
+										<li><a href="admin/tag:view">Tags</a></li>
 									</ul>
 								</li>
 								<li><a href="admin/cms:settings">Settings</a></li>
@@ -211,7 +211,10 @@ $currentGrouper = '';
 			<hr>
 						
 			<footer>
-			  <p>&copy; <?php echo date('Y'); ?> <?php echo Config::get('author'); ?></p>
+				<span class="pull-right ajde-footer">
+					Powered by <a href="https://github.com/hongaar/ajde"><img src="public/images/ajde-small.png" /></a> web administration platform				
+				</span>
+				<p>&copy; <?php echo date('Y'); ?> <?php echo Config::get('author'); ?></p>
 			</footer>
 
 		</div><!--/.fluid-container-->

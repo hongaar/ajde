@@ -201,6 +201,10 @@ body.iframe .row-fluid > div {
 	font-size: 0.8em;
 }
 
+.ajde-footer {
+	font-size: 0.9em;
+}
+
 /** cosmo fixes **/
 .control-group.success .checkbox, .control-group.success .radio, .control-group.success input, .control-group.success select, .control-group.success textarea {
 	color: inherit;
