@@ -28,11 +28,12 @@ AC.Crud.Edit.Text = function() {
 //				self.resize($(self.element.$).parent().width());
 //			});
 		}, {
-			toolbar : 'Ajde',
+			toolbar		: 'Ajde',
+			stylesSet	: 'styles_Ajde',
 			format_tags : 'p;h3;pre',
-//			width : elm.width() + 13,
-			width : '100%',
-			height : elm.height()
+//			width		: elm.width() + 13,
+			width		: '100%',
+			height		: elm.height()
 		});
 	};
 
@@ -42,21 +43,33 @@ AC.Crud.Edit.Text = function() {
 
 			CKEDITOR.config.toolbar_Ajde =
 			[
-				{ name: 'basicstyles',	items : [ 'Format','Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ] },
+				{ name: 'basicstyles',	items : [ 'Styles','Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ] },
 				{ name: 'paragraph',	items : [ 'NumberedList','BulletedList','-','Outdent','Indent' ] },
 				{ name: 'links',		items : [ 'Link','Unlink' ] },
 				{ name: 'insert',		items : [ 'Image','Table','SpecialChar' ] },
 				{ name: 'tools',		items : [ 'Maximize', 'ShowBlocks','Source' ] }
 			];
+			
+			CKEDITOR.stylesSet.add( 'styles_Ajde',
+			[
+			 	{ name: 'Paragraph', element: 'p' },
+			 	{ name: 'Heading', element: 'h3' },
+			 	{ name: 'Code', element: 'pre' },
+				{ name: 'Button', element : 'a', attributes : { 'class' : 'btn btn-primary' } }
+			]);
 
-			CKEDITOR.config.baseHref = document.getElementsByTagName('base')[0].href;
-			CKEDITOR.config.forcePasteAsPlainText = true;
-            CKEDITOR.config.extraPlugins = 'onchange';
-			CKEDITOR.config.contentsCss = [CKEDITOR.basePath + 'contents.css', 'public/css/_core/crud/editor/ckeditor/style.css'];
-			CKEDITOR.config.removePlugins = 'elementspath';
 			CKEDITOR.config.resize_enabled = false;
+			CKEDITOR.config.forcePasteAsPlainText = true;
+			
+			CKEDITOR.config.baseHref = document.getElementsByTagName('base')[0].href;            
+			CKEDITOR.config.contentsCss = [CKEDITOR.basePath + 'contents.css', 'public/css/_core/crud/editor/ckeditor/style.css'];
+			
+			CKEDITOR.config.removePlugins = 'elementspath';
 			CKEDITOR.config.removeButtons = '';
-
+			
+			CKEDITOR.config.extraPlugins = 'onchange';
+			CKEDITOR.config.extraAllowedContent = 'a(*)';
+			
 			// Optional configuration
 //			CKEDITOR.config.extraPlugins = 'autogrow';
 //			CKEDITOR.config.resize_enabled = false;

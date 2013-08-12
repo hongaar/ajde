@@ -13,3 +13,10 @@ body, .cke_editable {
 	font-size: 14px;
 	font-weight: 300;
 }
+
+a.btn {
+	display: inline-block;
+	background-color: #eee;
+	color: gray;
+	padding: 2px 5px;
+}
