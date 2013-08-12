@@ -3,7 +3,7 @@
 $options = new Ajde_Crud_Options();
 $options	
 	->selectFields()
-		->selectField('nodetype')
+		->selectField('mediatype')
 			->setOrderBy('sort')
 			->setIsRequired(false)
 			->up()
@@ -38,7 +38,7 @@ $options
 			->setNew(true)
 			->setEdit(true)
 			->addToolbarButton('upload', new Ajde_Core_Route('admin/media:uploadButton'))
-			->addToolbarHtml('nodetype', $this->includeModule('admin/media:typeBtn'))
+			->addToolbarHtml('mediatype', $this->includeModule('admin/media:typeBtn'))
 			->up()
 		->setMain('name')
 		->setShow(array('name', 'added', 'thumbnail'))
@@ -48,7 +48,7 @@ $options
 			->setViewType('grid')
 			->setOrderBy('added')
             ->setOrderDir(Ajde_Query::ORDER_DESC)
-            ->setMainFilter('nodetype')
+            ->setMainFilter('mediatype')
             ->setMainFilterGrouper('category')
 			->up()
 		->up()

@@ -10,6 +10,14 @@ class AdminSetupController extends AdminController
 		return $this->render();
 	}
 	
+	public function media()
+	{
+		Ajde_Model::register($this);
+	
+		Ajde::app()->getDocument()->setTitle("Setup media");
+		return $this->render();
+	}
+	
 	public function meta()
 	{
 		Ajde_Model::register($this);

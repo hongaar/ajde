@@ -1,0 +1,60 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ ?>
+
+<div class="row-fluid">
+	<div class="span2">
+		<?php echo $this->includeModule('admin/cms:setupmenu'); ?>		
+	</div><!--/span-->
+	<div class="span10">
+		
+		<div class="page-header">
+			<h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
+		</div>		
+		
+<?php
+
+$options = new Ajde_Crud_Options();
+$options
+	->selectFields()
+		->selectField('name')
+			->setEmphasis(true)
+			->up()
+		->selectField('category')
+			->up()
+		->selectField('sort')
+			->setType('sort')
+			->up()
+		->up()
+	->selectList()
+		->selectButtons()
+			->setNew(true)
+			->setEdit(true)
+//			->addItemButton('meta', 'meta')
+			->up()
+		->setMain('name')
+		->setShow(array('name', 'category', 'sort'))
+		->selectView()
+			->setOrderBy('sort')
+			->up()
+		->up()
+	->selectEdit()
+		->selectLayout()
+			->addRow()
+				->addColumn()
+					->addBlock()
+						->setClass('primary narrow')
+						->setShow(array('name'))
+						->up()					
+					->addBlock()
+						->setShow(array('category'))
+
+	->finished();
+
+$crud = $this->ACCrudList('mediatype', $options);
+
+echo $crud->output();
+
+?>
+
+		
+	</div><!--/span-->
+</div><!--/row-->

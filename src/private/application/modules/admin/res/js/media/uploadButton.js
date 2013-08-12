@@ -24,7 +24,7 @@ App.Admin.Media.UploadButton = function() {
 
 	var onComplete = function(e, id, filename, response) {
 		filename = response.filename;
-		nodetype = $('form.ACCrudList').find('select[name="view[filter][nodetype]"]').val();
+		mediatype = $('form.ACCrudList').find('select[name="view[filter][mediatype]"]').val();
 		uploading--;
 		
 		var form = node.parents('form');
@@ -32,7 +32,7 @@ App.Admin.Media.UploadButton = function() {
 		var data = {
 			_token: form.find('input[name=\'_token\']').val(),
 			filename: filename,
-			nodetype: nodetype
+			mediatype: mediatype
 		};
 
 		$.post(url, data, onCallback, 'json').error(function(jqXHR, message, exception) {

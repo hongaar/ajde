@@ -34,14 +34,14 @@ class AdminMediaController extends AdminController
 	public function uploadJson()
 	{
 		$filename = Ajde::app()->getRequest()->getPostParam('filename');
-		$nodetype = Ajde::app()->getRequest()->getPostParam('nodetype', false);
+		$mediatype = Ajde::app()->getRequest()->getPostParam('mediatype', false);
 		$extension = pathinfo($filename, PATHINFO_EXTENSION);
 		$title = pathinfo($filename, PATHINFO_FILENAME);
 						
 		Ajde_Model::register('media');
 		$media = new MediaModel();
 		
-		$media->nodetype = $nodetype;
+		$media->mediatype = $mediatype;
 		$media->name = $title;
 		$media->pointer = $filename;
 		$media->thumbnail = $filename;
@@ -75,7 +75,7 @@ class AdminMediaController extends AdminController
 	
 		foreach($id as $elm) {
 			$model->loadByPK($elm);
-			$model->set('nodetype', $value);
+			$model->set('mediatype', $value);
 			$model->save();
 		}
 	
