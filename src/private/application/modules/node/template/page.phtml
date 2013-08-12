@@ -5,31 +5,35 @@
 $node = $this->node;
 ?>
 
-<div class="row">
-	<div class="col-12">
-		<div class="page-header">		
-			<h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
+<div class="container main">
+	
+	<div class="row">
+		<div class="col-12">
+			<div class="page-header">		
+				<h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
+			</div>
 		</div>
 	</div>
-</div>
-
-<div class="row">
 	
-	<div class="col-12 col-lg-4">					
-		<?php echo _c($node->content); ?>
+	<div class="row">
 		
-		<p>
-			<?php foreach($node->getChildren() as $child) {
-				/* @var $child NodeModel */ ?>
-				<a class='btn btn-default' href='<?php echo _e($child->getUrl())?>'>
-					<?php echo _e($child->getTitle()); ?>
-				</a>
-			<?php } ?>
-		</p>
+		<div class="col-12 col-lg-4">					
+			<?php echo _c($node->content); ?>
+			
+			<p>
+				<?php foreach($node->getChildren() as $child) {
+					/* @var $child NodeModel */ ?>
+					<a class='btn btn-default' href='<?php echo _e($child->getUrl())?>'>
+						<?php echo _e($child->getTitle()); ?>
+					</a>
+				<?php } ?>
+			</p>
+		</div>
+		
+		<div class="col-12 col-lg-6 col-lg-offset-2 col-offset-2">
+			<?php echo $node->getMediaTag(800, null, false, 'img-responsive'); ?>
+		</div>
+	
 	</div>
 	
-	<div class="col-12 col-lg-6 col-lg-offset-2 col-offset-2">
-		<?php echo $node->getMediaTag(800, null, false, 'img-responsive'); ?>
-	</div>
-
-</div><!--/row-->
+</div>

@@ -129,13 +129,13 @@ $this->requireCssFirst('core.alert');
 		</div>
 		
 		<!-- Page content -->
-		<div class="container main">
-			<?php echo $this->getDocument()->getBody(); ?>
-		</div>
+		<?php echo $this->getDocument()->getBody(); ?>
 				
 		<footer class='container'>
-			<div class='col-12'>
-				&copy; <?php echo date('Y'); ?> <?php echo Config::get('author'); ?>
+			<div class='row'>
+				<div class='col-12'>
+					&copy; <?php echo date('Y'); ?> <?php echo Config::get('author'); ?>
+				</div>
 			</div>
 		</footer>
 		

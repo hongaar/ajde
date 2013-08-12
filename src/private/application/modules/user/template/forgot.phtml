@@ -1,34 +1,38 @@
-<div class="row-fluid">
-	<div class="span8 col-8">
-	
-		<?php echo $this->ACAjaxForm('user/forgot', 'forgotform', 'form-horizontal well'); ?>
-			<fieldset>
-				<legend><?php echo __('What is your username of e-mail address?'); ?></legend>
+<div class="container">
 
-				<div class="control-group form-group give-status">
-					<label class="control-label col-lg-4" for="in_user"><?php echo __('Username or e-mail address'); ?></label>
-					<div class="controls col-lg-6">
-						<input type="text" id="in_user" name="user" placeholder="" required />
-						<span class="help-inline status-text"></span>
+	<div class="row">
+		<div class="col-8">
+		
+			<?php echo $this->ACAjaxForm('user/forgot', 'forgotform', 'form-horizontal well'); ?>
+				<fieldset>
+					<legend><?php echo __('What is your username of e-mail address?'); ?></legend>
+	
+					<div class="control-group form-group give-status">
+						<label class="control-label col-lg-4" for="in_user"><?php echo __('Username or e-mail address'); ?></label>
+						<div class="controls col-lg-6">
+							<input type="text" id="in_user" name="user" placeholder="" required />
+							<span class="help-inline status-text"></span>
+						</div>
 					</div>
-				</div>
-
-				<div class="form-actions col-lg-6 col-lg-offset-4 col-offset-4">
-					<button class="btn btn-large btn-success" type="submit"><?php echo __('reset password'); ?></button>
-				</div>
-			</fieldset>
-		</form>
 	
-	</div><!--/span-->
-	<div class="span4 col-4">
+					<div class="form-actions col-lg-6 col-lg-offset-4 col-offset-4">
+						<button class="btn btn-large btn-success" type="submit"><?php echo __('reset password'); ?></button>
+					</div>
+				</fieldset>
+			</form>
+		
+		</div><!--/span-->
+		<div class="col-4">
+		
+			<h2>Remember?</h2>
+			<p>
+				If you suddenly remember your password, click the link below to login:
+			</p>
+			<p>
+				<a class='btn btn-primary' href="user/logon"><?php echo __('login'); ?></a>
+			</p>
 	
-		<h2>Remember?</h2>
-		<p>
-			If you suddenly remember your password, click the link below to login:
-		</p>
-		<p>
-			<a class='btn btn-primary' href="user/logon"><?php echo __('login'); ?></a>
-		</p>
-
+		</div>
 	</div>
+	
 </div>
