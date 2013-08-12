@@ -98,7 +98,7 @@ class Ajde_Core_Autoloader
 		self::addFile($className . ".php");		
 		
 		// Class/Class.php naming
-		self::addFile($className . '/' . $className . ".php");
+		self::addFile($className . DIRECTORY_SEPARATOR . $className . ".php");
 	}
 
 	public static function autoload($className)

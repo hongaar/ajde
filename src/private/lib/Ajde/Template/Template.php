@@ -4,7 +4,7 @@ class Ajde_Template extends Ajde_Object_Standard
 {
 	protected $_contents = null;
 	protected $_table = array();
-	
+
 	public function  __construct($base, $action, $format = 'html')
 	{
 		$this->set('base', $base);
@@ -12,7 +12,7 @@ class Ajde_Template extends Ajde_Object_Standard
 		$this->set('format', $format);
 		$this->setFileinfo();
 	}
-	
+
 	protected function setFileinfo()
 	{
 		if (($fileInfo = $this->getFileInfo()) === false) {
@@ -20,32 +20,32 @@ class Ajde_Template extends Ajde_Object_Standard
 					for action %s with format %s not found",
 					$this->getBase(), $this->getAction(), $this->getFormat()), 90010);
 			Ajde::routingError($exception);
-		}		
+		}
 		$className = 'Ajde_Template_Parser_' . $fileInfo['parser'];
 		$parser = new $className($this);
-		
+
 		$this->setFilename($fileInfo['filename']);
 		$this->setParser($parser);
 	}
-	
+
 	public function setBase($base)
 	{
 		$this->set('base', $base);
 		$this->setFileinfo();
 	}
-	
+
 	public function setAction($action)
 	{
 		$this->set('action', $action);
 		$this->setFileinfo();
 	}
-	
+
 	public function setFormat($format)
 	{
 		$this->set('format', $format);
 		$this->setFileinfo();
 	}
-	
+
 	public function __fallback($method, $arguments)
 	{
 		$helper = $this->getParser()->getHelper();
@@ -54,42 +54,48 @@ class Ajde_Template extends Ajde_Object_Standard
 		} else {
 			throw new Ajde_Exception("Call to undefined method ".get_class($this)."::$method()", 90006);
 		}
-    }
-	
+	}
+
 	protected function getFileInfo()
 	{
 		return $this->_getFileInfo($this->getBase(), $this->getAction(), $this->getFormat());
 	}
-	
+
 	private static function _getFileInfo($base, $action, $format = 'html')
 	{
 		// go see what templates are available
 		$fileNamePatterns = array(
-			$action . '.' . $format, $action
+				$action . '.' . $format, $action
 		);
 		$fileTypes = array(
-			'phtml' => 'Phtml', 'xhtml' => 'Xhtml'
+				'phtml' => 'Phtml', 'xhtml' => 'Xhtml'
 		);
 		$fileName = null;
 		foreach($fileNamePatterns as $fileNamePattern) {
 			foreach($fileTypes as $fileType => $parserType) {
 				$filePattern = $fileNamePattern . '.' . $fileType;
+				if (!substr_count($base, DIRECTORY_SEPARATOR . 'layout' . DIRECTORY_SEPARATOR)) {
+					$layoutDir = 'layout.' . Ajde::app()->getDocument()->getLayout()->getName() . DIRECTORY_SEPARATOR;
+					if ($fileMatch = Ajde_FS_Find::findFile($base.TEMPLATE_DIR . $layoutDir, $filePattern)) {
+						return array('filename' => $fileMatch, 'parser' => $parserType);
+					}
+				}
 				if ($fileMatch = Ajde_FS_Find::findFile($base.TEMPLATE_DIR, $filePattern)) {
 					return array('filename' => $fileMatch, 'parser' => $parserType);
-				}				
+				}
 			}
 		}
-		return false;		
+		return false;
 	}
-	
+
 	public function setParser(Ajde_Template_Parser $parser)
 	{
 		$this->set('parser', $parser);
 	}
-	
+
 	/**
-	 * 
-	 * @return Ajde_Template_Parser 
+	 *
+	 * @return Ajde_Template_Parser
 	 */
 	public function getParser()
 	{
@@ -100,12 +106,12 @@ class Ajde_Template extends Ajde_Object_Standard
 	{
 		return self::_getFileInfo($base, $action, $format);
 	}
-	
+
 	public function setFilename($filename)
 	{
 		$this->set('filename', $filename);
 	}
-	
+
 	public function getFilename()
 	{
 		return $this->get("filename");
@@ -130,19 +136,19 @@ class Ajde_Template extends Ajde_Object_Standard
 	{
 		$this->_table[$key] = $value;
 	}
-	
+
 	public function assignArray($array)
 	{
 		foreach($array as $key => $value) {
 			$this->assign($key, $value);
-		}		
+		}
 	}
-	
+
 	public function hasAssigned($key)
 	{
-		return array_key_exists($key, $this->_table);	
+		return array_key_exists($key, $this->_table);
 	}
-	
+
 	public function getAssigned($key)
 	{
 		return $this->_table[$key];
@@ -154,13 +160,13 @@ class Ajde_Template extends Ajde_Object_Standard
 		{
 			Ajde_Event::trigger($this, 'beforeGetContents');
 			Ajde_Cache::getInstance()->addFile($this->getFilename());
-			$contents = $this->getParser()->parse($this);		
-			$this->setContents($contents);			
+			$contents = $this->getParser()->parse($this);
+			$this->setContents($contents);
 			Ajde_Event::trigger($this, 'afterGetContents');
 		}
 		return $this->_contents;
 	}
-	
+
 	/**
 	 * Alias for $this->getContents()
 	 * @see self::getContents()
@@ -174,7 +180,7 @@ class Ajde_Template extends Ajde_Object_Standard
 	{
 		$this->_contents = $contents;
 	}
-	
+
 	public function getDefaultResourcePosition()
 	{
 		return Ajde_Document_Format_Html::RESOURCE_POSITION_DEFAULT;

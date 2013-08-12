@@ -37,7 +37,7 @@ class Ajde_Model extends Ajde_Object_Standard
 	{
 		$dirs = Ajde_FS_Find::findFiles(MODULE_DIR, '*/model');
 		foreach($dirs as $dir) {
-			Ajde_Core_Autoloader::addDir($dir . '/');
+			Ajde_Core_Autoloader::addDir($dir . DIRECTORY_SEPARATOR);
 		}
 	}
 

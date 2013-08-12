@@ -83,11 +83,11 @@ class Ajde_Resource_Local extends Ajde_Resource
 	protected static function _getFilename($base, $type, $action, $format)
 	{
 		$filename = false;
-		$formatResource = $base . 'res/' . $type . '/' . $action . '.' . $format . '.' . $type;
+		$formatResource = $base . 'res/' . $type . DIRECTORY_SEPARATOR . $action . '.' . $format . '.' . $type;
 		if (self::exist($formatResource)) {
 			$filename = $formatResource;
 		} else {
-			$noFormatResource = $base . 'res/' . $type . '/' . $action . '.' . $type;
+			$noFormatResource = $base . 'res/' . $type . DIRECTORY_SEPARATOR . $action . '.' . $type;
 			if (self::exist($noFormatResource)) {
 				$filename = $noFormatResource;
 			}
@@ -103,7 +103,7 @@ class Ajde_Resource_Local extends Ajde_Resource
 		if (!$this->_filename) {
 			// TODO:
 			throw new Ajde_Exception(sprintf('Resource %s could not be found',
-					$this->getBase() . 'res/' . $this->getType() . '/' . $this->getAction() . '[.' . $this->getFormat() . '].' . $this->getType()));
+					$this->getBase() . 'res/' . $this->getType() . DIRECTORY_SEPARATOR . $this->getAction() . '[.' . $this->getFormat() . '].' . $this->getType()));
 		}
 		return $this->_filename;
 	}

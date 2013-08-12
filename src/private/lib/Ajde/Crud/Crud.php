@@ -470,11 +470,11 @@ class Ajde_Crud extends Ajde_Object_Standard
 	
 	private function _getCustomTemplateBase()
 	{
-		return MODULE_DIR . $this->getCustomTemplateModule() . '/';
+		return MODULE_DIR . $this->getCustomTemplateModule() . DIRECTORY_SEPARATOR;
 	}
 	
 	private function _getCustomTemplateAction()
 	{
-		return 'crud/' . (string) $this->getModel()->getTable() . '/' . $this->getAction();
+		return 'crud/' . (string) $this->getModel()->getTable() . DIRECTORY_SEPARATOR . $this->getAction();
 	}
 }

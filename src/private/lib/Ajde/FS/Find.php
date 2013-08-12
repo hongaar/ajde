@@ -4,7 +4,7 @@ class Ajde_FS_Find extends Ajde_Object_Static
 {
 	public static function findFile($dir, $pattern)
 	{
-		$search = Config::get("local_root") . '/' . $dir . $pattern;
+		$search = Config::get("local_root") . DIRECTORY_SEPARATOR . $dir . $pattern;
 		$result = glob($search);
 		if ($result === false) {
 			return false;
@@ -17,7 +17,7 @@ class Ajde_FS_Find extends Ajde_Object_Static
 	
 	public static function findFiles($dir, $pattern, $flags = 0)
 	{
-		$search = Config::get("local_root") . '/' . $dir . $pattern;
+		$search = Config::get("local_root") . DIRECTORY_SEPARATOR . $dir . $pattern;
 		$return = array();
 		foreach (glob($search, $flags) as $filename) {
 			$return[] = $filename;

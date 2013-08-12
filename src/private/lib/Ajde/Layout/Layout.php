@@ -7,7 +7,7 @@ class Ajde_Layout extends Ajde_Template
 		$this->setName($name);
 		$this->setStyle($style);
 
-		$base = LAYOUT_DIR.$this->getName() . '/';
+		$base = LAYOUT_DIR.$this->getName() . DIRECTORY_SEPARATOR;
 		$action = $this->getStyle();
 		if (!$format) {
 			if ( (Ajde_Http_Request::isAjax() && $this->exist($base, $action, 'ajax'))
