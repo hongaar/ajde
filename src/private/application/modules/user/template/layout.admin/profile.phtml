@@ -1,0 +1,33 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ ?>
+
+<div class="row-fluid">
+	<div class="span2">
+		<div class="well sidebar-nav">
+            <a class="menu-toggle btn btn-normal pull-right"><i class="icon-resize-small"></i></a>
+            <ul class="nav nav-list">
+                <li class="nav-header">User account</li>
+                <li><a href="user/profile"><i class="icon-user"></i> Profile</a></li>
+                <li><a href="user/settings"><i class="icon-cog"></i> Settings</a></li>
+				<li><a href="user/app"><i class="icon-qrcode"></i> App</a></li>
+                <li class="divider"></li>
+                <li><a href="user/logoff"><i class="icon-share-alt"></i> Log off</a></li>
+            </ul>
+        </div><!--/.well -->
+	</div><!--/span-->
+	<div class="span10">
+		
+        <div class='page-header'>
+            <?php echo $this->user->displayGravatar(90, 'pull-left'); ?> &nbsp;
+            <h1> &nbsp; <?php echo $this->clean($this->user->getFullname()); ?></h1>
+        </div>
+
+        <dl class="dl-horizontal">
+            <dt>E-mail address</dt>
+            <dd><?php echo $this->clean($this->user->getEmail()); ?></dd>
+
+            <dt>Full name</dt>
+            <dd><?php echo $this->clean($this->user->getFullname()); ?></dd>
+        </dl>
+    </div>
+</div>
+

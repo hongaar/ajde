@@ -1,0 +1,57 @@
+<div class="row-fluid">
+	<div class="span8 col-12 col-sm-8">
+	
+		<?php echo $this->ACAjaxForm('user/logon', 'loginform', 'form-horizontal well'); ?>
+			<fieldset>
+				<legend><?php echo __('Please sign in'); ?></legend>
+
+				<input type="hidden" name="returnto" id="returnto" value="<?php echo $this->returnto; ?>" />
+
+				<div class="control-group">			
+					<div class="controls">
+						<p class="help-block"><?php echo $this->clean($this->message); ?></p>
+					</div>
+				</div>	
+
+				<div class="control-group form-group give-status">
+					<label class="control-label col-lg-2" for="in_user"><?php echo __(ucfirst($this->user->usernameField)); ?></label>
+					<div class="controls col-lg-10">
+						<input type="text" id="in_user" name="<?php echo $this->user->usernameField; ?>" placeholder="" required />
+						<span class="help-inline status-text"></span>
+					</div>
+				</div>
+
+				<div class="control-group form-group">
+					<label class="control-label col-lg-2" for="in_pass"><?php echo __(ucfirst($this->user->passwordField)); ?></label>
+					<div class="controls col-lg-10">
+						<input type="password" name="password" placeholder="****" required />
+						<span class="help-inline"><a href="user/forgot">Forgot password?</a></span>
+					</div>
+				</div>
+
+				<div class="control-group form-group">
+					<div class="controls col-lg-10 col-lg-offset-2 col-offset-2">						
+						<input type="checkbox" name="rememberme" id='rememberme' />
+						<label class='checkbox' for='rememberme'><?php echo __('Remember me'); ?></label>
+					</div>
+				</div>
+
+				<div class="form-actions col-lg-10 col-lg-offset-2 col-offset-2">
+					<button class="btn btn-large btn-success" type="submit"><?php echo __('logon'); ?></button>
+				</div>
+			</fieldset>
+		</form>
+	
+	</div><!--/span-->
+	<div class="span4 col-12 col-sm-4">
+	
+		<h2>No account?</h2>
+		<p>
+			Click the link below to register for an account:
+		</p>
+		<p>
+			<a class='btn btn-primary' href="user/register?returnto=<?php echo $this->returnto ? $this->returnto : $_GET['_route']; ?>"><?php echo __('register'); ?></a>
+		</p>
+
+	</div>
+</div>
