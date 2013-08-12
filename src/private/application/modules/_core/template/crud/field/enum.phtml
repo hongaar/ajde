@@ -8,10 +8,10 @@ if ($field->useRadio()) { ?>
 	<fieldset class='picker-container'>
 		<?php
 		$counter = 0;
-		if (!$field->getIsRequired()) { 
+		if (!$field->getIsRequired() && !$field->getDefault()) { 
 			$counter++; ?>
 			<input type="radio" <?php echo $field->getHtmlAttributes(); ?> id="radio_<?php echo $field->getName(); ?>" value="" 
-				<?php if (!$pk) { echo "checked='checked'"; } ?> 
+				<?php if (!trim($field->getValue()) && !$field->getDefault()) { echo "checked='checked'"; } ?> 
 			/> 	
 			<label class="radio" for="radio_<?php echo $field->getName(); ?>"><span class="gray">None</span></label>
 		<?php } ?>		
@@ -21,7 +21,7 @@ if ($field->useRadio()) { ?>
 			$option = trim($option);
 			?>
 			<input type="radio" <?php echo $field->getHtmlAttributes(); ?> id="radio_<?php echo $field->getName(); ?>_<?php echo $counter; ?>" value='<?php echo $option; ?>' <?php 
-				if ($option == trim($field->getValue())) { echo "checked='checked'"; }
+				if ($option == trim($field->getValue()) || ( !trim($field->getValue()) && $field->getDefault() == $option ) ) { echo "checked='checked'"; }
 				elseif ($field->hasReadonly() && $field->getReadonly() === true) { echo ' disabled="disabled" '; } ?>				
 			/>
 			<label class="radio" for="radio_<?php echo $field->getName(); ?>_<?php echo $counter; ?>">
