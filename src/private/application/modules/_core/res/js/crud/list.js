@@ -127,7 +127,7 @@ AC.Crud.List = function() {
 			    }
 				window.close();
 				
-			} else if (isIrame) {
+			} else if (isIframe) {
 				parent.AC.Crud.Edit.Picker.chosen(rows);
 			}
 			
