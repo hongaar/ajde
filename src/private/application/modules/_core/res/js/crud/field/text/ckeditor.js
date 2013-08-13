@@ -33,7 +33,10 @@ AC.Crud.Edit.Text = function() {
 			format_tags : 'p;h3;pre',
 //			width		: elm.width() + 13,
 			width		: '100%',
-			height		: elm.height()
+			height		: elm.height(),
+			filebrowserImageBrowseUrl : 'admin/media:view.crud?multiple=0&media=1',
+		    filebrowserWindowWidth  : 800,
+		    filebrowserWindowHeight : 500
 		});
 	};
 

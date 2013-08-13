@@ -30,7 +30,7 @@ class Ajde_Resource_Image extends Ajde_Resource
 
 		if (Config::get('debug') === true)
 		{
-			$url .= '&file=' . str_replace('%2F', ':', urlencode($this->_source));
+			$url .= '&file=' . str_replace(array('%2F', '%5C'), ':', urlencode($this->_source));
 		}
 		return $url;
 	}

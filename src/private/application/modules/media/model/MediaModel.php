@@ -30,6 +30,11 @@ class MediaModel extends Ajde_Model
 		$this->saveFileFromWeb();
 	}
 	
+	public function getPath()
+	{
+		return $this->getFilename(1024);
+	}
+	
 	public function getTag($width = null, $height = null, $crop = null, $class = null)
 	{
 		$path = $this->uploadDirectory . $this->thumbnail;

@@ -45,7 +45,7 @@ class Ajde_Resource_Local_Compressed extends Ajde_Resource
 		
 		if (Config::get('debug') === true)
 		{
-			$url .= '?file=' . str_replace('%2F', ':', urlencode($this->getFilename()));
+			$url .= '?file=' . str_replace(array('%2F', '%5C'), ':', urlencode($this->getFilename()));
 		}
 		return $url;
 	}

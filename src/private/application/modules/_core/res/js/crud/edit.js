@@ -1,4 +1,4 @@
-//;
+;
 if (typeof AC ==="undefined") {AC = function(){}};
 if (typeof AC.Crud ==="undefined") {AC.Crud = function(){}};
 

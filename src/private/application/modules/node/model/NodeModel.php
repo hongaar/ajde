@@ -495,6 +495,18 @@ class NodeModel extends Ajde_Acl_Proxy_Model
 	/***
 	 * GETTERS
 	 */
+	
+	public function getPath()
+	{
+		if ($this->getPK()) {
+			if (!$this->getNodetype() instanceof Ajde_Model) {
+				$this->loadParents();
+			}
+			$nodetype = str_replace(' ', '_', strtolower($this->getNodetype()->displayField()));
+			return '-' . $nodetype . '/' . $this->getSlug();
+		}
+		return false;
+	}
 		
 	public function getUrl()
 	{

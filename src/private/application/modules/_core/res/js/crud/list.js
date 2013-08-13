@@ -48,7 +48,7 @@ AC.Crud.List = function() {
 			});
 		
 			// Popup functions
-			isIframe = (window.location != window.parent.location);
+			isIframe = (window.location != window.parent.location) || window.opener;
 			disableMultiple = ( $('form.ACCrudList table').data('disable-multiple') == '1' );
 			
 			// Sub init
@@ -100,8 +100,34 @@ AC.Crud.List = function() {
 					rows.push(data[elm].value);					
 				}
 			}
-
-			if (isIframe) {
+			
+			if (window.opener) {
+				// assume CKEditor for now
+				
+				// look for CKEditorFuncNum
+				var vars = [], hash;
+			    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+			    for(var i = 0; i < hashes.length; i++)
+			    {
+			        hash = hashes[i].split('=');
+			        vars.push(hash[0]);
+			        vars[hash[0]] = hash[1];
+			    }
+			    
+			    var firstId = rows[0];
+			    var url = $("#row-" + firstId).data('path');
+			    
+			    if (vars['link'] == 1) {
+			    	var dialog = window.opener.CKEDITOR.dialog.getCurrent();
+			    	dialog.setValueOf('info', 'url', url);
+			        dialog.setValueOf('info', 'protocol', '');
+			    } else if (vars['media'] == 1) {
+			    	var CKEditorFuncNum = vars['CKEditorFuncNum'];
+			    	window.opener.CKEDITOR.tools.callFunction(CKEditorFuncNum, url);
+			    }
+				window.close();
+				
+			} else if (isIrame) {
 				parent.AC.Crud.Edit.Picker.chosen(rows);
 			}
 			

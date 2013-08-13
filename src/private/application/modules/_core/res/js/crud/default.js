@@ -12,7 +12,7 @@ AC.Crud = function() {
 	return {
 		
 		init: function() {		
-			isIframe = (window.location != window.parent.location);
+			isIframe = (window.location != window.parent.location) || window.opener;
 			
 			if (isIframe) {
 				$('body').addClass('iframe');
