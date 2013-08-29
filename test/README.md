@@ -1,7 +1,0 @@
-Install
--------------------------
-
-#### Server configuration
-
-Install SimpleTest (http://simpletest.org/index.html) in the subdirectory
-simpletest and point your browser to http://ajdeinstall/test/all.php
