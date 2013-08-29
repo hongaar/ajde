@@ -85,7 +85,9 @@ AC.Crud.List = function() {
 		},
 			
 		cancelHandler: function() {
-			if (isIframe) {
+			if (window.opener) {
+				window.close();
+			} else if (isIframe) {
 				parent.$.fancybox.close();
 			}
 		},
