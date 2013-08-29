@@ -55,6 +55,13 @@
 				$(window).trigger('resize');
 			}, 0);
 		}
+		
+		// Hide spinning loading thingy on window blur, as it consumes too much CPU on some systems
+		$(window).on('blur', function() {
+			$('#loading').hide();
+		}).on('focus', function() {
+			$('#loading').show();
+		});
 	};
 
 	$(document).ready(bootstrap);
