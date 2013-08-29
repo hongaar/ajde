@@ -1,5 +1,8 @@
 <?php
 /* @var $this Ajde_Template_Parser_Phtml_Helper */ 
+
+$updater = $this->updater;
+/* @var $updater Ajde_Core_Updater */ 
 ?>
 
 <div class="row-fluid">
@@ -14,12 +17,19 @@
 
 <div class="row-fluid">
 	
-	<div class="span6">		
-				
-	</div>
-	
-	<div class="span6">
+	<div class="span12">		
 			
-	</div>				
+		<p>
+			Current version: <?php echo $updater->getCurrentVersion(); ?><br/>
+			Available version: <?php echo $updater->getAvailableVersion(); ?>
+		</p>
+		
+		<?php if ($updater->isUpdateable()) { ?>
+		
+			<a href="admin/system:update?do" class="btn btn-success btn-large">Update now</a>
+		
+		<?php } ?>
+			
+	</div>		
 	
 </div><!--/row-->

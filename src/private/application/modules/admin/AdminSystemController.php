@@ -41,9 +41,9 @@ class AdminSystemController extends AdminController
 	{
 		Ajde::app()->getDocument()->setTitle("Ajde updater");
 		
-		$this->getView()->assign('curversion', AJDE_VERSION);
-		$this->getView()->assign('availableversion', $results);
+		$updater = Ajde_Core_Updater::getInstance();
 		
+		$this->getView()->assign('updater', $updater);		
 		return $this->render();
 	}
 	
