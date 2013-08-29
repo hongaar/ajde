@@ -1,0 +1,30 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */ 
+?>
+
+<div class="row-fluid">
+	<div class="span12">		
+		<div class="page-header">
+			<h1>
+				<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
+			</h1>
+		</div>			
+	</div>
+</div>
+
+<div class="row-fluid">
+	
+	<div class="span12">		
+		<?php foreach($this->results as $result) { ?>
+			<div>
+				<span class="label label-<?php echo $result['status']; ?>">
+					<?php echo _e($result['check']); ?>
+				</span>
+				<span class="pull-right">
+					<?php echo _e($result['msg']); ?>
+				</span>
+			</div>
+		<?php } ?>
+	</div>				
+	
+</div><!--/row-->

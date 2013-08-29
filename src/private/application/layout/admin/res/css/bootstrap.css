@@ -112,3 +112,7 @@ div[data-toggle] {
 		opacity: 0.8;
 	}
 }
+
+.label {
+	min-height: inherit;
+}
