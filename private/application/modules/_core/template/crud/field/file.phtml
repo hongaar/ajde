@@ -46,7 +46,7 @@ $field = $this->field;
 						$image->setWidth(50);
 						$image->setHeight(50);
 						$image->setCrop(true);							
-						echo "<img class='thumb' data-original='" . $image->getLinkUrl() . "' src='public/images/gray.gif' width='50' height='50' />";
+						echo "<img class='thumb' data-original='" . $image->getLinkUrl() . "' src='" . MEDIA_DIR . "gray.gif' width='50' height='50' />";
 					
 					} else {
 						echo "<span class='icon'><img class='icon' src='" . Ajde_Resource_FileIcon::_($extension) . "' /></span>";

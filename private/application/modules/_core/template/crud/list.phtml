@@ -198,7 +198,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 					$this->requireJsPublic('_core/crud/jquery.tablednd.js', Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST);
 					if ($crudView->getOrderBy() == $fieldName) { ?>						
 						<td class='sort' data-field='<?php echo $fieldName; ?>'>
-							<span><img src='public/images/_core/crud/up_16.png'>&middot;&middot;&middot;<img src='public/images/_core/crud/down_16.png'></span>
+							<span><img src='<?php echo MEDIA_DIR; ?>_core/crud/up_16.png'>&middot;&middot;&middot;<img src='<?php echo MEDIA_DIR; ?>_core/crud/down_16.png'></span>
 						</td>
 					<?php } else { ?>
 						<td class='sortDisabled'>
@@ -232,7 +232,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 						if (in_array(strtolower($extension), array('jpg', 'jpeg', 'png', 'gif'))) {
 							$filename = $field->getSaveDir() . $value;							
 						} else {
-							$filename = 'public/images/nothumb.png';
+							$filename = MEDIA_DIR . 'nothumb.png';
 						}
 						echo '<div class="thumbContainer">';
 						echo $this->ACImage(array(

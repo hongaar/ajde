@@ -105,13 +105,13 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 				
 				$exceptionDocumentation = '';
 				if ($exception instanceof Ajde_Exception && $exception->getCode()) {
-					$exceptionDocumentation = sprintf("<div style='margin-top: 4px;'><img src='//" . Config::get('site_root') . "public/images/_core/globe_16.png' style='vertical-align: bottom;' title='Primary key' width='16' height='16' /> <a href='%s'>Documentation on error %s</a>&nbsp;</div>",
+					$exceptionDocumentation = sprintf("<div style='margin-top: 4px;'><img src='//" . Config::get('site_root') . MEDIA_DIR . "_core/globe_16.png' style='vertical-align: bottom;' title='Primary key' width='16' height='16' /> <a href='%s'>Documentation on error %s</a>&nbsp;</div>",
 						Ajde_Core_Documentation::getUrl($exception->getCode()),
 						$exception->getCode()
 					);
 				}
 				
-				$exceptionMessage = sprintf("<div style='background-color:#F1F1F1;background-image: url(\"//" . Config::get('site_root') . "public/images/_core/warning_48.png\"); background-repeat: no-repeat; background-position: 10px 10px; border: 1px solid silver; padding: 10px 10px 10px 70px;'><h3 style='margin:0;'>%s:</h3><h2 style='margin:0;'>%s</h2> Exception thrown in %s%s</div><h3>Trace:</h3>\n",
+				$exceptionMessage = sprintf("<div style='background-color:#F1F1F1;background-image: url(\"//" . Config::get('site_root') . MEDIA_DIR . "_core/warning_48.png\"); background-repeat: no-repeat; background-position: 10px 10px; border: 1px solid silver; padding: 10px 10px 10px 70px;'><h3 style='margin:0;'>%s:</h3><h2 style='margin:0;'>%s</h2> Exception thrown in %s%s</div><h3>Trace:</h3>\n",
 						$type,
 						$exception->getMessage(),
 						self::embedScript(

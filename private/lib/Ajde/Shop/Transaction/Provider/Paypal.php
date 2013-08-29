@@ -7,7 +7,7 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
 	}
 	
 	public function getLogo() {
-		return 'public/images/_core/shop/paypal.png';
+		return MEDIA_DIR . '_core/shop/paypal.png';
 	}
 	
 	public function usePostProxy() {

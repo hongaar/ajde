@@ -5,7 +5,7 @@ class MediaModel extends Ajde_Model
 	protected $_autoloadParents = false;
 	protected $_displayField = 'name';
 	
-	protected $uploadDirectory = 'public/images/uploads/';
+	protected $uploadDirectory = UPLOAD_DIR;
     protected $replaceOldFile = false;
 	
 	public function beforeInsert()

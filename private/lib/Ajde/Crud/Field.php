@@ -153,7 +153,7 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
 
 	public function getHtmlPK()
 	{
-		return " <img src='public/images/icons/16/key_login.png' style='vertical-align: middle;' title='Primary key' />";
+		return " <img src='" . MEDIA_DIR . "icons/16/key_login.png' style='vertical-align: middle;' title='Primary key' />";
 	}
 	
 	public function getHtmlAttributesAsArray()

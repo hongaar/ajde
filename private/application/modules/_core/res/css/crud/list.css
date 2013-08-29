@@ -132,11 +132,11 @@ table.crudList th a.order.desc {
 }
 
 table.crudList th a.order.asc {
-	background-image: url('../../public/images/_core/crud/down_16.png');
+	background-image: url('../../public/media/_core/crud/down_16.png');
 }
 
 table.crudList th a.order.desc {
-	background-image: url('../../public/images/_core/crud/up_16.png');
+	background-image: url('../../public/media/_core/crud/up_16.png');
 }
 
 */

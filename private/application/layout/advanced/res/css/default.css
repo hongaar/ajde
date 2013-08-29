@@ -122,7 +122,7 @@ header h4 {
 }
 
 body.loading header h4 {
-	background-image: url("../../public/images/loading.gif");
+	background-image: url("../../public/media/loading.gif");
 	background-size: 20px 20px;
 }
 

@@ -1,5 +1,5 @@
 
-div.wysiwyg { border: 1px solid #999; padding: 5px; background: #fff; /* url("../../../../public/images/_core/crud/jquery.wysiwyg.bg.png") repeat-x top;*/ }
+div.wysiwyg { border: 1px solid #999; padding: 5px; background: #fff; /* url("../../../../public/media/_core/crud/jquery.wysiwyg.bg.png") repeat-x top;*/ }
 div.wysiwyg * { margin: 0; padding: 0; }
 
 div.wysiwyg ul.toolbar li.jwysiwyg-custom-command { overflow: hidden; }

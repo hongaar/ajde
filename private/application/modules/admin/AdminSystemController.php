@@ -13,8 +13,8 @@ class AdminSystemController extends AdminController
 			'fn'	=> 'writable'
 		);
 		$checks[] = array(
-			'msg'	=> 'Files deleted?',
-			'fn'	=> 'deleted'
+			'msg'	=> 'Production ready?',
+			'fn'	=> 'production'
 		);
 		
 		$ret = array();
@@ -47,10 +47,10 @@ class AdminSystemController extends AdminController
 		return $this->render();
 	}
 	
-	private function checkDeleted()
+	private function checkProduction()
 	{
 		$files = array(
-				'../phpinfo.php', '../loadtest.php', '../test'
+				'phpinfo.php', 'loadtest.php'
 		);
 		$ret = array();
 		foreach($files as $file) {
@@ -67,7 +67,7 @@ class AdminSystemController extends AdminController
 	private function checkWritable()
 	{
 		$dirs = array(
-			TMP_DIR, LOG_DIR, CACHE_DIR
+			TMP_DIR, LOG_DIR, CACHE_DIR, UPLOAD_DIR
 		);
 		$ret = array();
 		foreach($dirs as $dir) {

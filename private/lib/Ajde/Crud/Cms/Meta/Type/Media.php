@@ -19,7 +19,7 @@ class Ajde_Crud_Cms_Meta_Type_Media extends Ajde_Crud_Cms_Meta_Type
 		$field->setUsePopupSelector(true);
 		$field->setListRoute('admin/media:view.crud');
 //		$field->setUseImage(true);
-//		$field->addTableFileField('thumbnail', 'public/images/uploads/');
+//		$field->addTableFileField('thumbnail', UPLOAD_DIR);
 //		$field->setThumbDim(300, 20);
 		return $field;
 	}

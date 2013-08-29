@@ -183,7 +183,6 @@ Remove these files and directories to cleanup your Ajde install for production:
 
  - loadtest.php
  - phpinfo.php
- - test/
 
 #### Secret
 

@@ -11,7 +11,7 @@ class Ajde_Shop_Transaction_Provider_Wedeal extends Ajde_Shop_Transaction_Provid
 	}
 	
 	public function getLogo() {
-		return 'public/images/_core/shop/ideal.png';
+		return MEDIA_DIR . '_core/shop/ideal.png';
 	}
 	
 	public function usePostProxy() {

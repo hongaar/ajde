@@ -2,7 +2,7 @@
 
 class Ajde_Crud_Cms_Meta_Type_Spatial extends Ajde_Crud_Cms_Meta_Type
 {
-	private $_uploaddir = 'public/images/uploads/';
+	private $_uploaddir = UPLOAD_DIR;
 	
 	public function getFields()
 	{
