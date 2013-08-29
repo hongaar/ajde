@@ -195,7 +195,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 
 				// Sort
 				if ($crud->getField($fieldName) instanceof Ajde_Crud_Field_Sort) {
-					$this->requireJsPublic('_core/crud/jquery.tablednd.js', Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST);
+					$this->requireJsPublic('core/jquery.tablednd.js', Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST);
 					if ($crudView->getOrderBy() == $fieldName) { ?>						
 						<td class='sort' data-field='<?php echo $fieldName; ?>'>
 							<span><img src='<?php echo MEDIA_DIR; ?>_core/crud/up_16.png'>&middot;&middot;&middot;<img src='<?php echo MEDIA_DIR; ?>_core/crud/down_16.png'></span>

@@ -20,9 +20,9 @@ class Ajde_Crud_Editor_Aloha extends Ajde_Crud_Editor
 			'common/paste'
 			/*'common/block'*/
 		);
-		$view->requireJsPublic('_core/crud/editor/aloha/ajde.js', Ajde_Document_Format_Html::RESOURCE_POSITION_LAST);
-		$view->requireJsPublic('_core/crud/editor/aloha/lib/aloha.js', Ajde_Document_Format_Html::RESOURCE_POSITION_LAST, 'data-aloha-plugins="' . implode(',', $plugins) . '"');		
-		$view->requireCssPublic('_core/crud/editor/aloha/aloha.css');
+		$view->requireJsPublic('core/aloha/ajde.js', Ajde_Document_Format_Html::RESOURCE_POSITION_LAST);
+		$view->requireJsPublic('core/aloha/lib/aloha.js', Ajde_Document_Format_Html::RESOURCE_POSITION_LAST, 'data-aloha-plugins="' . implode(',', $plugins) . '"');		
+		$view->requireCssPublic('core/aloha/aloha.css');
 				
 	}
 }

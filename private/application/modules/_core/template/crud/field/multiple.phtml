@@ -1,7 +1,7 @@
 <?php
 /* @var $this Ajde_Template_Parser_Phtml_Helper */
-$this->requireJsPublic('_core/crud/fancybox/jquery.fancybox.pack.js');
-$this->requireCssPublic('_core/crud/fancybox/jquery.fancybox.css');
+$this->requireJsPublic('core/fancybox/jquery.fancybox.pack.js');
+$this->requireCssPublic('core/fancybox/jquery.fancybox.css');
 /* @var $field Ajde_Crud_Field_Multiple */
 $field = $this->field;
 ?>
@@ -116,7 +116,7 @@ $field = $this->field;
 									$sortTable = $field->getCrossReferenceTable();
 									$pk = $field->getCrossReferenceTable() . '.id';
 								}
-								$this->requireJsPublic('_core/crud/jquery.tablednd.js', Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST); ?>						
+								$this->requireJsPublic('core/jquery.tablednd.js', Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST); ?>						
 								<td class='sort'
 									data-table='<?php echo $sortTable; ?>'
 									data-field='<?php echo $extraField['name']; ?>'

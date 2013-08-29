@@ -7,10 +7,6 @@ $this->requireCssTop('core.reset');
 // Include jQuery 1.7
 $this->requireJsLibrary('jquery', '1.7');
 
-// EU cookie law
-$this->requireJsPublic('lib/cookie.debug.min.js'); $this->requireCssPublic('lib/cookie_style.css'); // @see http://creativeaura.github.com/eu-cookie-opt-in/
-$this->requireJs('core.cookielaw');
-
 // Some JavaScript i18n
 $this->requireJsFirst('i18n.' . Ajde_Lang::getInstance()->getShortLang());
 

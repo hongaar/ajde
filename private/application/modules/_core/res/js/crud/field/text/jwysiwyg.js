@@ -14,7 +14,7 @@ AC.Crud.Edit.Text = function() {
 		$.wysiwyg.rmFormat.enabled = true;
 		$.wysiwyg.removeFormat($text);
 		var wysiwyg = $text.wysiwyg({
-			css:				'public/css/_core/crud/editor/jwysiwyg/jwysiwyg.editor.css',
+			css:				'public/css/core/jwysiwyg/jwysiwyg.editor.css',
 			initialContent:		'',
 			rmUnusedControls:	true,
 			plugins: {
