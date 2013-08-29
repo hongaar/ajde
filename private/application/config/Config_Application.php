@@ -10,8 +10,8 @@ class Config_Application extends Config_Cms
 	public $author				= 'Author name';
 	public $email				= 'info@example.nl';
 	public $version 			= array(
-									'number' => '0.1',
-									'name' => 'ajde-nacim'
+									'number' => '1',
+									'name' => 'version description'
 									);
 
 
