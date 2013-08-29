@@ -1,11 +1,21 @@
 <?php
 
-/**
+/*********************
  * AJDE OPEN WEB FRAMEWORK
- * http://code.google.com/p/ajde/
- */
+ * https://github.com/hongaar/ajde
+ *********************/
 
-define('AJDE', true);
+//	--------------------
+//	We're running index.php
+//	--------------------
+
+	define('AJDE', true);
+	
+//	--------------------
+//	Which version of Ajde are we running?
+//	--------------------
+	
+	define('AJDE_VERSION', '0.1');
 
 /*********************
  * ERROR REPORTING
