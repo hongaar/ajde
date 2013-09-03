@@ -69,8 +69,8 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 			case "copy":
 				return $this->copyFiles();
 				break;
-			case "db":
-				return $this->databaseMaintenance();
+			case "post":
+				return $this->postHook();
 				break;
 		}	
 	}
@@ -170,7 +170,7 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 		return true;
 	}
 	
-	public function databaseMaintenance()
+	public function postHook()
 	{
 		return true;
 	}

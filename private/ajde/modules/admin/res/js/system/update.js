@@ -31,10 +31,10 @@ App.Admin.System.Update = function() {
 				break;
 			case 'copy':
 				statusText = 'Copying files...';
-				nextStep = 'db';
+				nextStep = 'post';
 				break;
-			case 'db':
-				statusText = 'Database maintenance...';
+			case 'post':
+				statusText = 'Running post hook...';
 				nextStep = 'done';
 				break;
 		}
