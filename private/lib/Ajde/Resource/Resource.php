@@ -44,7 +44,25 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
 			$layout = new Ajde_Layout(Config::get("layout"));
 		}
 		$format = issetor($format, 'html');
-		return LAYOUT_DIR . $layout->getName() . '/link/' . $type . '.' . $format . '.php';
+		
+		$dirPrefixPatterns = array(
+				APP_DIR, CORE_DIR
+		);
+		foreach($dirPrefixPatterns as $dirPrefixPattern) {
+			$prefixedLayout = $dirPrefixPattern . LAYOUT_DIR;
+			if (self::exist($prefixedLayout . $layout->getName() . '/link/' . $type . '.' . $format . '.php')) {
+				return $prefixedLayout . $layout->getName() . '/link/' . $type . '.' . $format . '.php';
+			}
+		}
+		return false;
+	}
+	
+	protected static function exist($filename)
+	{
+		if (is_file($filename)) {
+			return true;
+		}
+		return false;
 	}
 	
 	public static function encodeFingerprint($array)

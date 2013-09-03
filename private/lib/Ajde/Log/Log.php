@@ -25,7 +25,7 @@ class Ajde_Log extends Ajde_Object_Static
 		}
 		fwrite($fh, PHP_EOL . PHP_EOL . date("H:i:sP") . ":" . PHP_EOL);
 		fwrite($fh, $string);
-		fwrite($fh, PHP_EOL . "Debug info - user agent: " . $_SERVER["HTTP_USER_AGENT"] . " - referer: " . $_SERVER["HTTP_REFERER"]);
+		fwrite($fh, PHP_EOL . "Debug info - user agent: " . issetor($_SERVER["HTTP_USER_AGENT"]) . " - referer: " . issetor($_SERVER["HTTP_REFERER"]));
 		fclose($fh);
 	}
 }

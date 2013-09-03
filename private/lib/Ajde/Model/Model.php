@@ -25,17 +25,23 @@ class Ajde_Model extends Ajde_Object_Standard
 		}
 		// Extend autoloader
 		if ($controller instanceof Ajde_Controller) {
-			Ajde_Core_Autoloader::addDir(MODULE_DIR.$controller->getModule().'/model/');
+			Ajde_Core_Autoloader::addDir(CORE_DIR . MODULE_DIR . $controller->getModule() . '/model/');
+			Ajde_Core_Autoloader::addDir(APP_DIR . MODULE_DIR . $controller->getModule() . '/model/');
 		} elseif ($controller === '*') {
 			self::registerAll();
 		} else {
-			Ajde_Core_Autoloader::addDir(MODULE_DIR.$controller.'/model/');
+			Ajde_Core_Autoloader::addDir(CORE_DIR . MODULE_DIR . $controller . '/model/');
+			Ajde_Core_Autoloader::addDir(APP_DIR . MODULE_DIR . $controller . '/model/');
 		}
 	}
 
 	public static function registerAll()
 	{
-		$dirs = Ajde_FS_Find::findFiles(MODULE_DIR, '*/model');
+		$dirs = Ajde_FS_Find::findFiles(CORE_DIR . MODULE_DIR, '*/model');
+		foreach($dirs as $dir) {
+			Ajde_Core_Autoloader::addDir($dir . DIRECTORY_SEPARATOR);
+		}
+		$dirs = Ajde_FS_Find::findFiles(APP_DIR . MODULE_DIR, '*/model');
 		foreach($dirs as $dir) {
 			Ajde_Core_Autoloader::addDir($dir . DIRECTORY_SEPARATOR);
 		}

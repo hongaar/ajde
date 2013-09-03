@@ -8,13 +8,11 @@
 //	--------------------
 //	We're running index.php
 //	--------------------
-
 	define('AJDE', true);
 	
 //	--------------------
 //	Which version of Ajde are we running?
-//	--------------------
-	
+//	--------------------	
 	define('AJDE_VERSION', 'v0.2');
 
 /*********************
@@ -78,19 +76,26 @@
 //	--------------------
 	define('PRIVATE_DIR',		'private' . DIRECTORY_SEPARATOR);
 	define('PUBLIC_DIR',		'public' . DIRECTORY_SEPARATOR);
+	define('CONFIG_DIR',		'config' . DIRECTORY_SEPARATOR);
+	define('LAYOUT_DIR',		'layout' . DIRECTORY_SEPARATOR);
+	define('MODULE_DIR',		'modules' . DIRECTORY_SEPARATOR);
+	define('LANG_DIR',			'lang' . DIRECTORY_SEPARATOR);
+	
 	define('TEMPLATE_DIR',		'template' . DIRECTORY_SEPARATOR);
-	define('APP_DIR',			PRIVATE_DIR.'application' . DIRECTORY_SEPARATOR);
+	
 	define('LIB_DIR',			PRIVATE_DIR.'lib' . DIRECTORY_SEPARATOR);
 	define('VAR_DIR',			PRIVATE_DIR.'var' . DIRECTORY_SEPARATOR);
+	
 	define('MEDIA_DIR',			PUBLIC_DIR.'media' . DIRECTORY_SEPARATOR);
+	
 	define('UPLOAD_DIR',		MEDIA_DIR.'upload' . DIRECTORY_SEPARATOR);
-	define('CONFIG_DIR',		APP_DIR.'config' . DIRECTORY_SEPARATOR);
-	define('LAYOUT_DIR',		APP_DIR.'layout' . DIRECTORY_SEPARATOR);
-	define('MODULE_DIR',		APP_DIR.'modules' . DIRECTORY_SEPARATOR);
-	define('LANG_DIR',			APP_DIR.'lang' . DIRECTORY_SEPARATOR);
+	
 	define('CACHE_DIR',			VAR_DIR.'cache' . DIRECTORY_SEPARATOR);
 	define('LOG_DIR',			VAR_DIR.'log' . DIRECTORY_SEPARATOR);
 	define('TMP_DIR',			VAR_DIR.'tmp' . DIRECTORY_SEPARATOR);
+
+	define('CORE_DIR',			PRIVATE_DIR.'ajde' . DIRECTORY_SEPARATOR);
+	define('APP_DIR',			PRIVATE_DIR.'application' . DIRECTORY_SEPARATOR);	
 	
 //	--------------------
 //	Zend requires include path to be set to the LIB directory

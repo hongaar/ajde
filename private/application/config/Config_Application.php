@@ -1,5 +1,5 @@
 <?php
-require_once 'Config_Cms.php';
+require_once CORE_DIR . CONFIG_DIR . 'Config_Cms.php';
 
 class Config_Application extends Config_Cms
 {

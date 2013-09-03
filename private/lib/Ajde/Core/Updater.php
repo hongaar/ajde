@@ -43,5 +43,10 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 	{
 		return version_compare($this->available_version, $this->current_version) > 0;
 	}
+	
+	public function getChangelog()
+	{
+		return Ajde_Http_Curl::get('https://raw.github.com/hongaar/ajde/master/README.md');
+	}
 
 }

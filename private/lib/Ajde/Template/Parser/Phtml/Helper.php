@@ -255,6 +255,20 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	}
     
     /************************
+	 * Ajde_Component_Markdown
+	 ************************/
+	
+	/**
+	 *
+	 * @param string $target
+	 * @return string
+	 */
+	public function ACMarkdown($attributes)
+	{
+		return Ajde_Component_Markdown::processStatic($this->getParser(), $attributes);
+	}
+    
+    /************************
 	 * Ajde_Component_Embed
 	 ************************/
 	

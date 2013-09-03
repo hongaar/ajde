@@ -17,6 +17,15 @@ class Ajde_Core_Autoloader
 		'Zend_Application_Bootstrap_Bootstrap'
 	);
 	
+	public static function getFile($base, $filename) 
+	{
+		$coreDir = CORE_DIR . $base;
+		$overrideDir = APP_DIR . $base;
+		if (file_exists($overrideDir . $filename)) {
+			return $overrideDir . $filename;
+		}
+		return $coreDir . $filename;
+	}
 	 
 	public static function register($dirPrepend = null)
 	{
@@ -28,9 +37,9 @@ class Ajde_Core_Autoloader
 		set_include_path(get_include_path() . PATH_SEPARATOR . LIB_DIR);
 		
 		// Get namespaces from Config
-		$defaultNamespaces = array('Ajde', 'AjdeX', 'Zend', 'HTMLPurifier');
+		$defaultNamespaces = array('Ajde', 'Zend', 'HTMLPurifier');
 		if (!self::exists('Config')) {			
-			require_once CONFIG_DIR . 'Config.php';
+			require_once self::getFile(CONFIG_DIR, 'Config.php');
 		}
 		
 		// Try to use the Config object, and if it fails we have to redirect to
@@ -54,7 +63,9 @@ class Ajde_Core_Autoloader
 	
 	public static function addDir($dir)
 	{
-		self::$dirs[] = $dir;
+		if (file_exists($dir)) {
+			self::$dirs[] = $dir;
+		}
 		self::$dirs = array_unique(self::$dirs);
 	}
 	
@@ -73,7 +84,8 @@ class Ajde_Core_Autoloader
 	{
 		// Add libraries and config to include path
 		self::addDir(LIB_DIR);
-		self::addDir(MODULE_DIR);
+		self::addDir(CORE_DIR . MODULE_DIR);
+		self::addDir(APP_DIR . MODULE_DIR);
 		self::addDir(CONFIG_DIR);
 	}
 	
@@ -127,7 +139,10 @@ class Ajde_Core_Autoloader
 		} else {			
 			// Non LIB related classes
 			if (substr_count($className, 'Controller') > 0) {
-				$dirs = array(MODULE_DIR);
+				$dirs = array(
+					CORE_DIR . MODULE_DIR,
+					APP_DIR . MODULE_DIR
+				);
 				
 				$controllerName = str_replace('Controller', '', $className);
 				if (strtolower(substr($controllerName, 1)) != substr($controllerName, 1)) { // See if we got more capitals

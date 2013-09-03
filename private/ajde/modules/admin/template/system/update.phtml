@@ -1,0 +1,60 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */ 
+
+$updater = $this->updater;
+/* @var $updater Ajde_Core_Updater */ 
+?>
+
+<div class="row-fluid">
+	<div class="span12">		
+		<div class="page-header">
+			<h1>
+				<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
+			</h1>
+		</div>			
+	</div>
+</div>
+
+<div class="row-fluid">		
+			
+	<?php if (!$updater->isUpdateable()) { ?>
+	
+		<div class="span4">
+		
+			<h2>Update available!</h2>
+		
+			<p>
+				<span class='label label-warning'>Current: <?php echo $updater->getCurrentVersion(); ?></span>
+				New version available: <?php echo $updater->getAvailableVersion(); ?>
+			</p>
+			
+			<p>
+				<a href="admin/system:update?do" class="btn btn-primary btn-large">Update now</a>
+			</p>
+			
+		</div>
+		
+		<div class="span8">
+		
+			<h2>Changelog:</h2>
+			
+			<?php echo $this->ACMarkdown(array('text' => $updater->getChangelog())); ?>
+		
+		</div>
+		
+	<?php } else { ?>
+	
+		<div class="span12">
+		
+			<h2>You are up to date!</h2>
+		
+			<p>
+				<span class='label label-success'>Current: <?php echo $updater->getCurrentVersion(); ?></span>
+				Current version is up to date.				
+			</p>
+			
+		</div>
+	
+	<?php } ?>
+
+</div><!--/row-->

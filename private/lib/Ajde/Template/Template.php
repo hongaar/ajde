@@ -64,24 +64,29 @@ class Ajde_Template extends Ajde_Object_Standard
 	private static function _getFileInfo($base, $action, $format = 'html')
 	{
 		// go see what templates are available
+		$dirPrefixPatterns = array(
+				APP_DIR, CORE_DIR
+		);
 		$fileNamePatterns = array(
 				$action . '.' . $format, $action
 		);
 		$fileTypes = array(
 				'phtml' => 'Phtml', 'xhtml' => 'Xhtml'
 		);
-		$fileName = null;
-		foreach($fileNamePatterns as $fileNamePattern) {
-			foreach($fileTypes as $fileType => $parserType) {
-				$filePattern = $fileNamePattern . '.' . $fileType;
-				if (!substr_count($base, DIRECTORY_SEPARATOR . 'layout' . DIRECTORY_SEPARATOR)) {
-					$layoutDir = 'layout.' . Ajde::app()->getDocument()->getLayout()->getName() . DIRECTORY_SEPARATOR;
-					if ($fileMatch = Ajde_FS_Find::findFile($base.TEMPLATE_DIR . $layoutDir, $filePattern)) {
+		foreach($dirPrefixPatterns as $dirPrefixPattern) {
+			$prefixedBase = $dirPrefixPattern . $base;
+			foreach($fileNamePatterns as $fileNamePattern) {
+				foreach($fileTypes as $fileType => $parserType) {
+					$filePattern = $fileNamePattern . '.' . $fileType;
+					if (!substr_count($prefixedBase, DIRECTORY_SEPARATOR . 'layout' . DIRECTORY_SEPARATOR)) {
+						$layoutDir = 'layout.' . Ajde::app()->getDocument()->getLayout()->getName() . DIRECTORY_SEPARATOR;
+						if ($fileMatch = Ajde_FS_Find::findFile($prefixedBase . TEMPLATE_DIR . $layoutDir, $filePattern)) {
+							return array('filename' => $fileMatch, 'parser' => $parserType);
+						}
+					}
+					if ($fileMatch = Ajde_FS_Find::findFile($prefixedBase . TEMPLATE_DIR, $filePattern)) {
 						return array('filename' => $fileMatch, 'parser' => $parserType);
 					}
-				}
-				if ($fileMatch = Ajde_FS_Find::findFile($base.TEMPLATE_DIR, $filePattern)) {
-					return array('filename' => $fileMatch, 'parser' => $parserType);
 				}
 			}
 		}

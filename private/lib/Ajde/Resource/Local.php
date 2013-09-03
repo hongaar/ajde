@@ -77,19 +77,24 @@ class Ajde_Resource_Local extends Ajde_Resource
 			return true;
 		}
 		return false;
-
 	}
 
 	protected static function _getFilename($base, $type, $action, $format)
 	{
+		$dirPrefixPatterns = array(
+				APP_DIR, CORE_DIR
+		);
 		$filename = false;
-		$formatResource = $base . 'res/' . $type . DIRECTORY_SEPARATOR . $action . '.' . $format . '.' . $type;
-		if (self::exist($formatResource)) {
-			$filename = $formatResource;
-		} else {
-			$noFormatResource = $base . 'res/' . $type . DIRECTORY_SEPARATOR . $action . '.' . $type;
-			if (self::exist($noFormatResource)) {
-				$filename = $noFormatResource;
+		foreach($dirPrefixPatterns as $dirPrefixPattern) {
+			$prefixedBase = $dirPrefixPattern . $base;
+			$formatResource = $prefixedBase . 'res/' . $type . DIRECTORY_SEPARATOR . $action . '.' . $format . '.' . $type;
+			if (self::exist($formatResource)) {
+				$filename = $formatResource;
+			} else {
+				$noFormatResource = $prefixedBase . 'res/' . $type . DIRECTORY_SEPARATOR . $action . '.' . $type;
+				if (self::exist($noFormatResource)) {
+					$filename = $noFormatResource;
+				}
 			}
 		}		
 		return $filename;
