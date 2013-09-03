@@ -29,6 +29,9 @@ AC.Form.Ajax = function() {
 			var url = $(this).attr('action');
 			var data = $(this).serialize();
 			var form = this;
+			var before = function(jqXHR, settings) {
+				$(form).trigger('before', [jqXHR, settings]);
+			};
 			var success = function(data) {
 				$('body').removeClass('loading');
 				$(form).trigger('result', [data]);
@@ -47,6 +50,7 @@ AC.Form.Ajax = function() {
 					type: type,
 					url: url,
 					data: data,
+					beforeSend: before,
 					success: success,
 					dataType: dataType
 				}).error(errorHandler);

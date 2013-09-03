@@ -17,7 +17,7 @@ $updater = $this->updater;
 
 <div class="row-fluid">		
 			
-	<?php if (!$updater->isUpdateable()) { ?>
+	<?php if ($updater->isUpdateable()) { ?>
 	
 		<div class="span4">
 		
@@ -28,9 +28,10 @@ $updater = $this->updater;
 				New version available: <?php echo $updater->getAvailableVersion(); ?>
 			</p>
 			
-			<p>
-				<a href="admin/system:update?do" class="btn btn-primary btn-large">Update now</a>
-			</p>
+			<?php echo $this->ACAjaxForm('admin/system:update', 'systemUpdateForm'); ?>
+				<input type='hidden' name='step' value='start' />
+				<button type="submit" class="btn btn-primary btn-large">Update now</a>
+			</form>
 			
 		</div>
 		

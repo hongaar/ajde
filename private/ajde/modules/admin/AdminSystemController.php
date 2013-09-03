@@ -37,7 +37,7 @@ class AdminSystemController extends AdminController
 		return $this->render();
 	}
 	
-	public function update()
+	public function updateHtml()
 	{
 		Ajde::app()->getDocument()->setTitle("Ajde updater");
 		
@@ -45,6 +45,17 @@ class AdminSystemController extends AdminController
 		
 		$this->getView()->assign('updater', $updater);		
 		return $this->render();
+	}
+	
+	public function updateJson()
+	{
+		$step = Ajde::app()->getRequest()->getPostParam('step', 'start');
+		$status = true;
+		if ($step !== 'start') {
+			$updater = Ajde_Core_Updater::getInstance();
+			$status = $updater->update($step);
+		}
+		return array('status' => $status);
 	}
 	
 	private function checkProduction()

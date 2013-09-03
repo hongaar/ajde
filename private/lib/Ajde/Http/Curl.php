@@ -74,7 +74,7 @@ class Ajde_Http_Curl {
 	 * @return string
 	 * @throws Exception 
 	 */
-	static public function get($url) {		
+	static public function get($url, $toFile = false) {		
 		$output = false;
 		try {
 			$ch = curl_init();
@@ -88,16 +88,41 @@ class Ajde_Http_Curl {
 			curl_setopt($ch, CURLOPT_AUTOREFERER, true);	// TRUE to automatically set the Referer: field in requests where it follows a Location: redirect.
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);// FALSE to stop cURL from verifying the peer's certificate. Alternate certificates to verify against can be specified with the CURLOPT_CAINFO option or a certificate directory can be specified with the CURLOPT_CAPATH option. CURLOPT_SSL_VERIFYHOST may also need to be TRUE or FALSE if CURLOPT_SSL_VERIFYPEER is disabled (it defaults to 2).
 			
-			// Not possible in SAFE_MODE
-			// curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // TRUE to follow any "Location: " header that the server sends as part of the HTTP header (note this is recursive, PHP will follow as many "Location: " headers that it is sent, unless CURLOPT_MAXREDIRS is set).
-			// curl_setopt($ch, CURLOPT_HEADER, false);		// TRUE to include the header in the output.
-			// curl_setopt($ch, CURLOPT_MAXREDIRS, 10);		// The maximum amount of HTTP redirections to follow. Use this option alongside CURLOPT_FOLLOWLOCATION.
-			$output = self::_curl_exec_follow($ch, 10, false);
-			curl_close($ch);
+			if ($toFile !== false) {
+				
+				// @TODO We need SAFE_MODE to be off
+				if (ini_get('safe_mode')) {
+					throw new Ajde_Exception('SAFE_MODE must be off when downloading files');
+				}
+				
+				$fp = fopen ($toFile, 'w+'); //This is the file where we save the information
+				
+				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+				curl_setopt($ch, CURLOPT_TIMEOUT, 300);
+				curl_setopt($ch, CURLOPT_FILE, $fp); // write curl response to file
+				
+				curl_exec($ch);
+				curl_close($ch);
+				fclose($fp);
+				$output = true;
+				
+			} else {
+				// Not possible in SAFE_MODE
+				// curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // TRUE to follow any "Location: " header that the server sends as part of the HTTP header (note this is recursive, PHP will follow as many "Location: " headers that it is sent, unless CURLOPT_MAXREDIRS is set).
+				// curl_setopt($ch, CURLOPT_HEADER, false);		// TRUE to include the header in the output.
+				// curl_setopt($ch, CURLOPT_MAXREDIRS, 10);		// The maximum amount of HTTP redirections to follow. Use this option alongside CURLOPT_FOLLOWLOCATION.
+				$output = self::_curl_exec_follow($ch, 10, false);
+				curl_close($ch);
+			}
+						
 		} catch (Exception $e) {
 			throw $e;
 		}
 		return $output;
+	}
+	
+	public static function download($url, $filename) {
+		return self::get($url, $filename);
 	}
 	
 	/**
