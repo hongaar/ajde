@@ -66,13 +66,16 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 			case "clean":
 				return $this->cleanCurrent();
 				break;
-			case "install":
-				return $this->installUpdate();
+			case "copy":
+				return $this->copyFiles();
+				break;
+			case "db":
+				return $this->databaseMaintenance();
 				break;
 		}	
 	}
 	
-	public function getPackageFile()
+	private function getPackageFile()
 	{
 		return TMP_DIR . 'update.zip';
 	}
@@ -94,11 +97,25 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 		if (!is_file($file)) {
 			return false;
 		}
+		
 		$zip = new ZipArchive;
 		$res = $zip->open($file);
 		if ($res === true) {
+			// delete old directory
+			if (is_dir(TMP_DIR . 'update')) {
+				Ajde_FS_Directory::delete(TMP_DIR . 'update');
+			}
+			
+			// get root folder
+			$root = $zip->statIndex(0);
+			$root = $root['name'];
+				
+			// extract zip
 			$zip->extractTo(TMP_DIR);
 			$zip->close();
+			
+			// rename to update
+			rename(TMP_DIR . $root, TMP_DIR . 'update');
 			return true;
 		}
 		return false;
@@ -106,12 +123,56 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 	
 	public function cleanCurrent()
 	{
+		$cleanDirs = array(
+				CACHE_DIR, LOG_DIR
+		);
 		
+		foreach($cleanDirs as $cleanDir) {
+			Ajde_FS_Directory::truncate($cleanDir);
+		}
+		return true;
 	}
 	
-	public function installUpdate()
+	public function copyFiles()
 	{
+		$installDirs = array(
+				CORE_DIR,
+				LIB_DIR . 'Ajde' . DIRECTORY_SEPARATOR,
+				PUBLIC_DIR . 'css' . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR,
+				PUBLIC_DIR . 'js' . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR,
+				PUBLIC_DIR . 'media' . DIRECTORY_SEPARATOR . '_core' . DIRECTORY_SEPARATOR,
+				PUBLIC_DIR . 'css' . DIRECTORY_SEPARATOR . 'icons' . DIRECTORY_SEPARATOR
+		);
 		
+		if (!is_dir(TMP_DIR . 'update')) {
+			throw new Ajde_Exception('Update directory not found');
+		}
+		
+		$updateDir = TMP_DIR . 'update' . DIRECTORY_SEPARATOR;
+		
+		foreach($installDirs as $installDir) {
+			if (is_dir($updateDir . $installDir)) {
+				
+				// truncate first
+				Ajde_FS_Directory::truncate($installDir);
+				
+				// then copy
+				Ajde_FS_Directory::copy($updateDir . $installDir, $installDir);
+				
+			} else {
+				throw new Ajde_Exception('Directory ' . $installDir . ' in update package not found');
+			}
+		}
+		
+		// cleaning up TMP DIR
+		Ajde_FS_Directory::truncate(TMP_DIR);
+		
+		return true;
+	}
+	
+	public function databaseMaintenance()
+	{
+		return true;
 	}
 
 }

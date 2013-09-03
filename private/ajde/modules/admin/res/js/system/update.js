@@ -27,10 +27,14 @@ App.Admin.System.Update = function() {
 				break;
 			case 'clear':
 				statusText = 'Clean current installation...';
-				nextStep = 'install';
+				nextStep = 'copy';
 				break;
-			case 'install':
-				statusText = 'Installing update...';
+			case 'copy':
+				statusText = 'Copying files...';
+				nextStep = 'db';
+				break;
+			case 'db':
+				statusText = 'Database maintenance...';
 				nextStep = 'done';
 				break;
 		}
