@@ -135,6 +135,8 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 	
 	public function copyFiles()
 	{
+		set_time_limit(0);
+		
 		$installDirs = array(
 				CORE_DIR,
 				LIB_DIR . 'Ajde' . DIRECTORY_SEPARATOR,
@@ -157,7 +159,7 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 				Ajde_FS_Directory::truncate($installDir);
 				
 				// then copy
-				Ajde_FS_Directory::copy($updateDir . $installDir, $installDir);
+				Ajde_FS_Directory::copy($updateDir . $installDir, dirname($installDir) );
 				
 			} else {
 				throw new Ajde_Exception('Directory ' . $installDir . ' in update package not found');
