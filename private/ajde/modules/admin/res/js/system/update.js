@@ -62,7 +62,8 @@ App.Admin.System.Update = function() {
 		
 		if (data.status !== true) {
 			statusLabel.text(data.status === false ? 'Unknown error' : data.status);
-			progressBar.css({width: '100%'}).addClass('bar-danger');
+			$('.progress').addClass('progress-danger');
+			progressBar.css({width: '100%'});
 		} else {		
 			if (step == 'done') {
 				onUpdateComplete(e);

@@ -143,7 +143,7 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 				PUBLIC_DIR . 'css' . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR,
 				PUBLIC_DIR . 'js' . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR,
 				PUBLIC_DIR . 'media' . DIRECTORY_SEPARATOR . '_core' . DIRECTORY_SEPARATOR,
-				PUBLIC_DIR . 'css' . DIRECTORY_SEPARATOR . 'icons' . DIRECTORY_SEPARATOR
+				PUBLIC_DIR . 'media' . DIRECTORY_SEPARATOR . 'icons' . DIRECTORY_SEPARATOR
 		);
 		
 		if (!is_dir(TMP_DIR . 'update')) {
