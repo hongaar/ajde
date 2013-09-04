@@ -72,7 +72,8 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 			case "post":
 				return $this->postHook();
 				break;
-		}	
+		}
+		return 'Unknown step in update process';
 	}
 	
 	private function getPackageFile()

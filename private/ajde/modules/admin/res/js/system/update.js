@@ -28,7 +28,7 @@ App.Admin.System.Update = function() {
 				progress = 30;
 				nextStep = 'clear';
 				break;
-			case 'clear':
+			case 'clean':
 				statusText = '3/5 Clean current installation...';
 				progress = 40;
 				nextStep = 'copy';
