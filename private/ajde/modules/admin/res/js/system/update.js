@@ -20,7 +20,7 @@ App.Admin.System.Update = function() {
 		switch (curstep) {
 			case 'download':
 				statusText = '1/5 Downloading...';
-				progress = 15;
+				progress = 5;
 				nextStep = 'extract';
 				break;
 			case 'extract':
