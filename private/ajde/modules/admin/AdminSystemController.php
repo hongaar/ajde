@@ -50,8 +50,9 @@ class AdminSystemController extends AdminController
 	public function updateJson()
 	{
 		$step = Ajde::app()->getRequest()->getPostParam('step', 'start');
-		$status = false;
+		$status = true;
 		if ($step !== 'start') {
+			$status = false;
 			$updater = Ajde_Core_Updater::getInstance();
 			try {
 				$status = $updater->update($step);
