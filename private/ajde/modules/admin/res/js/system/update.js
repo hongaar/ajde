@@ -57,14 +57,21 @@ App.Admin.System.Update = function() {
 				
 	};
 	
-	var onUpdateStepComplete = function(e) {
-		if (step == 'done') {
-			onUpdateComplete(e);
-		} else {
-			$('input[name=step]').val(step);
-			form.trigger('submit');
-			update(step);		
+	var onUpdateStepComplete = function(e, data) {
+		
+		if (data.status !== true) {
+			statusLabel.text(data.status === false ? 'Unknown error' : data.status);
+			progressBar.css({width: '100%'}).addClass('bar-danger');
+		} else {		
+			if (step == 'done') {
+				onUpdateComplete(e);
+			} else {
+				$('input[name=step]').val(step);
+				form.trigger('submit');
+				update(step);		
+			}			
 		}
+		
 	};
 	
 	var onUpdateComplete = function(e) {

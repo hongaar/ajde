@@ -53,7 +53,11 @@ class AdminSystemController extends AdminController
 		$status = true;
 		if ($step !== 'start') {
 			$updater = Ajde_Core_Updater::getInstance();
-			$status = $updater->update($step);
+			try {
+				$status = $updater->update($step);
+			} catch(Exception $e) {
+				$status = $e->getMessage();
+			}
 		}
 		return array('status' => $status);
 	}
