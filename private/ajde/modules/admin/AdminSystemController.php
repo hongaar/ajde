@@ -57,6 +57,7 @@ class AdminSystemController extends AdminController
 			try {
 				$status = $updater->update($step);
 			} catch(Exception $e) {
+				Ajde_Exception_Log::logException($e);
 				$status = $e->getMessage();
 			}
 		}

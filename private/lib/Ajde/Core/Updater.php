@@ -124,7 +124,7 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 	public function cleanCurrent()
 	{
 		$cleanDirs = array(
-				CACHE_DIR, LOG_DIR
+				CACHE_DIR
 		);
 		
 		foreach($cleanDirs as $cleanDir) {
