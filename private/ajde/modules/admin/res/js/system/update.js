@@ -50,6 +50,7 @@ App.Admin.System.Update = function() {
 		$('body').removeClass('loading');
 		button.hide();
 		
+		$('#status').show();
 		statusLabel.text(statusText);
 		progressBar.css({width: progress + '%'});
 		

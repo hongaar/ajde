@@ -19,7 +19,7 @@ class Ajde_FS_Directory extends Ajde_Object_Static
 		self::delete($dir, true);
 	}
 	
-	public static function copy($source, $dest)
+	public static function copy($src, $dst)
 	{
 	    $dir = opendir($src); 
 	    @mkdir($dst); 
