@@ -167,7 +167,8 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 		}
 		
 		// cleaning up TMP DIR
-		Ajde_FS_Directory::truncate(TMP_DIR);
+		unlink(TMP_DIR . 'update.zip');
+		Ajde_FS_Directory::delete(TMP_DIR . 'update');		
 		
 		return true;
 	}

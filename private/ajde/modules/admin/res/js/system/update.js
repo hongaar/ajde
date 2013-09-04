@@ -5,10 +5,8 @@ if (typeof App.Admin.System === "undefined") {App.Admin.System = function(){}};
 
 App.Admin.System.Update = function() {
 	
-	var timer;
-	var step = 'copy';
+	var step = 'download';
 	var progress = 0;
-	var xhr;
 	
 	var form;
 	var button;
@@ -21,27 +19,27 @@ App.Admin.System.Update = function() {
 		
 		switch (curstep) {
 			case 'download':
-				statusText = 'Downloading...';
+				statusText = '1/5 Downloading...';
 				progress = 15;
 				nextStep = 'extract';
 				break;
 			case 'extract':
-				statusText = 'Extracting files...';
+				statusText = '2/5 Extracting files...';
 				progress = 30;
 				nextStep = 'clear';
 				break;
 			case 'clear':
-				statusText = 'Clean current installation...';
+				statusText = '3/5 Clean current installation...';
 				progress = 40;
 				nextStep = 'copy';
 				break;
 			case 'copy':
-				statusText = 'Copying files...';
+				statusText = '4/5 Copying files...';
 				progress = 60;
 				nextStep = 'post';
 				break;
 			case 'post':
-				statusText = 'Post-processing...';
+				statusText = '5/5 Post-processing...';
 				progress = 80;
 				nextStep = 'done';
 				break;
@@ -54,8 +52,7 @@ App.Admin.System.Update = function() {
 		statusLabel.text(statusText);
 		progressBar.css({width: progress + '%'});
 		
-		step = nextStep;
-				
+		step = nextStep;				
 	};
 	
 	var onUpdateStepComplete = function(e, data) {
@@ -81,16 +78,11 @@ App.Admin.System.Update = function() {
 		statusLabel.text('Done, refreshing...');
 		progressBar.css({width: '100%'});
 		
-//		clearInterval(timer);
 		setTimeout(function() {
 			window.location.reload(true);
 		}, 2000);
 	};
 	
-	var onUpdateStatus = function(e) {
-        
-	};
-
 	return {
 
 		init: function() {
