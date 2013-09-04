@@ -20,3 +20,11 @@ CREATE TABLE IF NOT EXISTS `mediatype` (
 ALTER TABLE  `media` DROP `nodetype`;
 ALTER TABLE  `media` ADD  `mediatype` INT UNSIGNED NULL DEFAULT NULL COMMENT  'Media type' AFTER  `id`, ADD INDEX (  `mediatype` );
 ALTER TABLE  `media` ADD FOREIGN KEY (  `mediatype` ) REFERENCES  `mediatype` (`id`) ON DELETE SET NULL ON UPDATE SET NULL ;
+
+-- ajde table + version string
+CREATE TABLE IF NOT EXISTS `ajde` (
+  `k` text,
+  `v` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `ajde` (`k`, `v`) VALUES
+('version', 'v0.2');
