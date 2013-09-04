@@ -6,11 +6,14 @@ if (typeof App.Admin.System === "undefined") {App.Admin.System = function(){}};
 App.Admin.System.Update = function() {
 	
 	var timer;
-	var step = 'download';
+	var step = 'copy';
+	var progress = 0;
 	var xhr;
 	
 	var form;
 	var button;
+	var statusLabel;
+	var progressBar;
 	
 	var update = function(curstep)
 	{
@@ -19,29 +22,36 @@ App.Admin.System.Update = function() {
 		switch (curstep) {
 			case 'download':
 				statusText = 'Downloading...';
+				progress = 15;
 				nextStep = 'extract';
 				break;
 			case 'extract':
 				statusText = 'Extracting files...';
+				progress = 30;
 				nextStep = 'clear';
 				break;
 			case 'clear':
 				statusText = 'Clean current installation...';
+				progress = 40;
 				nextStep = 'copy';
 				break;
 			case 'copy':
 				statusText = 'Copying files...';
+				progress = 60;
 				nextStep = 'post';
 				break;
 			case 'post':
-				statusText = 'Running post hook...';
+				statusText = 'Post-processing...';
+				progress = 80;
 				nextStep = 'done';
 				break;
 		}
 		
 		$('body').removeClass('loading');
-		button.prop('disabled', 'disabled');
-		button.text(statusText);
+		button.hide();
+		
+		statusLabel.text(statusText);
+		progressBar.css({width: progress + '%'});
 		
 		step = nextStep;
 				
@@ -58,10 +68,10 @@ App.Admin.System.Update = function() {
 	};
 	
 	var onUpdateComplete = function(e) {
-		button
-			.text('Done, refreshing... 	')
-			.removeClass('btn-primary')
-			.addClass('btn-success');
+
+		statusLabel.text('Done, refreshing...');
+		progressBar.css({width: '100%'});
+		
 //		clearInterval(timer);
 		setTimeout(function() {
 			window.location.reload(true);
@@ -77,6 +87,8 @@ App.Admin.System.Update = function() {
 		init: function() {
 			button = $('#systemUpdateForm button');
 			form = $('#systemUpdateForm');
+			statusLabel = $('#status p');
+			progressBar = $('#status .bar');
 			
 			form.on('result', onUpdateStepComplete);
 		}
