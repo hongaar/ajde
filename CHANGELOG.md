@@ -4,6 +4,7 @@
  - **NEW** Database installer
  - **FIX** Picker bug: could not reset an image
  - **FIX** Typo in updater
+ - Bundled CKEditor 4.2
 
 
 
