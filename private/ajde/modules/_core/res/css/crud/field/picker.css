@@ -1,4 +1,4 @@
-/*#!less*/
+	/*#!less*/
 
 div.picker div.controls-row {
 	position: relative;
@@ -26,7 +26,8 @@ div.picker div.controls-row {
 		display: none;
 	}
 	
-	div.input.with-image:hover + a.setnull {
+	div.input.with-image:hover + a.setnull,
+	div.input.with-image + a.setnull:hover {
 		display: block;
 		right: 65px;
 	}

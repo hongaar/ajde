@@ -21,6 +21,8 @@ AC.Crud.List = function() {
 		init: function() {
 			$('form.ACCrudList tbody tr').live('click', AC.Crud.List.trHandler);
 			$('form.ACCrudList tbody tr').live('dblclick', AC.Crud.List.editHandler);
+			
+			$('form.ACCrudList tbody td.main').hover(AC.Crud.List.showPanel, AC.Crud.List.hidePanel);
             
             $('form.ACCrudList thead a.listView').live('click', AC.Crud.List.activateListView);
             $('form.ACCrudList thead a.gridView').live('click', AC.Crud.List.activateGridView);
@@ -58,6 +60,7 @@ AC.Crud.List = function() {
 
 		initMove: function() {
 			if ($('form.ACCrudList tbody td.sort').length) {
+				$('form.ACCrudList table').addClass('sorted');
 				$('form.ACCrudList table tbody').tableDnD({
 					onDrop: AC.Crud.List.onSortHandler,
 					serializeParamName: 'id',
@@ -81,6 +84,18 @@ AC.Crud.List = function() {
 				}
 				$('form.ACCrudList div.form-actions a.choose').click(AC.Crud.List.chooseHandler);
 				$('form.ACCrudList div.form-actions a.cancel').click(AC.Crud.List.cancelHandler);
+			}
+		},
+		
+		showPanel: function(e) {
+			if ($(this).closest('tr').next('tr').hasClass('panel')) {
+				$(this).closest('tr').next('tr').addClass('expand');
+			}
+		},
+		
+		hidePanel: function(e) {
+			if ($(this).closest('tr').next('tr').hasClass('panel')) {
+				$(this).closest('tr').next('tr').removeClass('expand');
 			}
 		},
 			

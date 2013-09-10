@@ -62,6 +62,9 @@
 		}).on('focus', function() {
 			$('#loading').show();
 		});
+		
+		// Quick node search from top bar
+		
 	};
 
 	$(document).ready(bootstrap);

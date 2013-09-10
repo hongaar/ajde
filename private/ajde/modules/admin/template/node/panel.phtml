@@ -8,13 +8,24 @@ $item = $this->item;
 
 ?>
 
-<h3><input type="text" class='input-large' name='title' data-input='title' required="required" value="<?php echo _e($item->getTitle()); ?>" ></h3>
+<h3>
+	<?php echo _e($item->getTitle()); ?>
+</h3>
 
 <div class="row-fluid">
 	<div class="span4">
 		<table class="table table-condensed">
 			<tr>
-				<td><?php echo _c($item->getContent()); ?></td>
+				<td>
+					<?php echo $item->getMediaTag(400, 150, true, ''); ?>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="span4">
+		<table class="table table-condensed">
+			<tr>
+				<td><?php echo _c(Ajde_Component_String::trim( $item->getContent(), 250 )); ?></td>
 			</tr>
 		</table>
 	</div>
@@ -22,35 +33,19 @@ $item = $this->item;
 		<table class="table table-condensed">
 			<tr>
 				<th>Published</th>
-				<td>
-				
-					<input 
-						type='checkbox'
-						class='picker'
-						data-input='published'
-						data-meta='0'
-						name="published"
-						id="published"
-						<?php echo $item->getPublished() ? 'checked="checked"' : ''; ?>
-					/>
-					<label class="radio" for="published">
-						<?php echo $item->getPublished() ? 'On' : 'Off'; ?>
-					</label>
+				<td>					
+					<?php echo $item->getPublished() ? 'On' : 'Off'; ?>
 				</td>
 			</tr>
 			<tr>
-				<th>Some field</th>
-				<td>
-					Some value
+				<th>Added</th>
+				<td>					
+					<?php 
+					$timestamp = new DateTime($item->get('added'));
+					$timestamp = $timestamp->format('U');
+					echo Ajde_Component_String::time2str($timestamp);
+					?>
 				</td>
-			</tr>			
-		</table>
-	</div>
-	<div class="span4">
-		<table class="table table-condensed">
-			<tr>
-				<th>Some field</th>
-				<td><span>Some value</span></td>
 			</tr>
 		</table>
 	</div>

@@ -58,6 +58,9 @@ class Ajde_Db extends Ajde_Object_Singleton
 	{
 		// @see http://stackoverflow.com/a/10209702/938297
 		
+		// time limit
+		set_time_limit(5 * 60);
+		
 		// load file
 		$commands = file_get_contents($filename);
 	

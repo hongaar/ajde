@@ -211,7 +211,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 					$displayFunction = $field->getFunction();
 					$displayFunctionArgs = $field->hasFunctionArgs() ? $field->getFunctionArgs() : array();
 					$funcValue = call_user_func_array(array($model, $displayFunction), $displayFunctionArgs); ?>
-						<td <?php echo $gridData; ?> title="<?php echo _e(strip_tags($funcValue)); ?>" <?php if ($crud->getOption('list.main', false) == $field->getName()) { echo 'class=\'main\''; } ?>>
+					<td <?php echo $gridData; ?> title="<?php echo _e(strip_tags($funcValue)); ?>" <?php if ($crud->getOption('list.main', false) == $field->getName()) { echo 'class=\'main\''; } ?>>
 						<?php echo $funcValue; ?>
 					</td>
 				<?php
@@ -263,18 +263,18 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 								$button = current($buttons);
 								$text = $button['text'];
 								if (!$button['function'] || ($button['function'] && ($text = $model->{$button['text']}()))) { ?>
-									<a href="javascript:void(null);" class='btn <?php echo $button['class']; ?>'><?php echo $text; ?></a>
+									<a href="javascript:void(null);" class='btn btn-small <?php echo $button['class']; ?>'><?php echo $text; ?></a>
 								<?php } ?>
 							<?php } else {
 								foreach($buttons as $button) { 
 									if ($button['persistent'] === true) {
 										$text = $button['text'];
 										if (!$button['function'] || ($button['function'] && ($text = $model->{$button['text']}()))) { ?>
-											<a href="javascript:void(null);" class='btn <?php echo $button['class']; ?>'><?php echo $text; ?></a>
+											<a href="javascript:void(null);" class='btn btn-small <?php echo $button['class']; ?>'><?php echo $text; ?></a>
 										<?php } ?>
 									<?php } 
 								} ?>
-								<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+								<a class="btn btn-small dropdown-toggle" data-toggle="dropdown" href="#">
 									<span class="caret"></span>
 								</a>
 								<ul class="dropdown-menu pull-right">
@@ -284,7 +284,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 											<li>
 												<?php $text = $button['text'];
 												if (!$button['function'] || ($button['function'] && ($text = $model->{$button['text']}()))) { ?>
-													<a href="javascript:void(null);" class='btn-left <?php echo $button['class']; ?>'><?php echo $text; ?></a>
+													<a href="javascript:void(null);" class='btn-left btn-small <?php echo $button['class']; ?>'><?php echo $text; ?></a>
 												<?php } ?>
 											</li>
 										<?php }
@@ -294,10 +294,10 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
                         </div>
                     <?php } ?>
                     <?php if ($crud->getOption('list.buttons.edit', true)) { ?>
-                        <a href="javascript:void(null);" class='btn btn-primary edit'><i class='icon-pencil icon-white'></i></a>
+                        <a href="javascript:void(null);" class='btn btn-small btn-primary edit'><i class='icon-pencil icon-white'></i></a>
                     <?php } ?>
                     <?php if ($crud->getOption('list.buttons.delete', true)) { ?>
-                        <a href="javascript:void(null);" class='btn btn-danger delete'><i class='icon-trash icon-white'></i></a>
+                        <a href="javascript:void(null);" class='btn btn-small btn-danger delete'><i class='icon-trash icon-white'></i></a>
                     <?php } ?>
                 </div>
 			</td>
