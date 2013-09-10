@@ -28,10 +28,18 @@ class Ajde_Db_PDO extends PDO
 		try {
         	$result = parent::query($query);
 		} catch (Exception $e) {
-			throw new Ajde_Db_Exception($e->getMessage());
-		}			
+			if (Config::get('debug') === true) {
+				if (isset($this->queryString)) dump($this->queryString);
+				dump('Go to http://' . Config::get('site_root') . '?install=1 to install DB');
+				throw new Ajde_Db_Exception($e->getMessage());
+			} else {
+				Ajde_Exception_Log::logException($e);
+				die('DB connection problem. <a href="?install=1">Install database?</a>');
+				return false;
+			}
+		}		
 			
-			//$cache->set($query, serialize($result));
+		//$cache->set($query, serialize($result));
 		//	$log['cache'] = false;			
 		//} else {
 		//	$result = $cache->get($query);

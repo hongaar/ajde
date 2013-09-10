@@ -6,6 +6,9 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 	public $available_version;
 	public $available_package;
 	
+	public $repo_tags_url = 'https://api.github.com/repos/hongaar/ajde/tags';
+	public $changelog_url = 'https://raw.github.com/hongaar/ajde/master/CHANGELOG.md';
+	
 	/**
 	 *
 	 * @staticvar Ajde_Application $instance
@@ -19,7 +22,7 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 	
 	protected function __construct()
 	{
-		$tags = json_decode(Ajde_Http_Curl::get('https://api.github.com/repos/hongaar/ajde/tags'));
+		$tags = json_decode(Ajde_Http_Curl::get($this->repo_tags_url));
 		
 		$availableversion = $tags[0]->name;
 		$zipball = $tags[0]->zipball_url;
@@ -51,7 +54,7 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 	
 	public function getChangelog()
 	{
-		return Ajde_Http_Curl::get('https://raw.github.com/hongaar/ajde/master/CHANGELOG.md');
+		return Ajde_Http_Curl::get($this->changelog_url);
 	}
 	
 	public function update($step)
@@ -176,7 +179,13 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 	
 	public function postHook()
 	{
-		return true;
+		return $this->updateDatabase();
+	}
+	
+	public function updateDatabase()
+	{
+		$db = Ajde_Db::getInstance();
+		return $db->update();
 	}
 
 }

@@ -13,7 +13,7 @@
 //	--------------------
 //	Which version of Ajde are we running?
 //	--------------------	
-	define('AJDE_VERSION', 'v0.2');
+	define('AJDE_VERSION', 'v0.2.1');
 
 /*********************
  * ERROR REPORTING
@@ -85,6 +85,7 @@
 	
 	define('LIB_DIR',			PRIVATE_DIR.'lib' . DIRECTORY_SEPARATOR);
 	define('VAR_DIR',			PRIVATE_DIR.'var' . DIRECTORY_SEPARATOR);
+	define('DEV_DIR',			PRIVATE_DIR.'dev' . DIRECTORY_SEPARATOR);
 	
 	define('MEDIA_DIR',			PUBLIC_DIR.'media' . DIRECTORY_SEPARATOR);
 	
@@ -175,6 +176,14 @@
 //	--------------------
 	require_once(LIB_DIR . "Ajde/Ajde.php");
 
+//	--------------------
+//	Install the db?
+//	--------------------
+	if (isset($_GET['install']) && $_GET['install'] == '1') {
+		require('install.php');
+		exit;
+	}
+	
 //	--------------------
 //	Run the main application
 //	--------------------
