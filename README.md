@@ -1,4 +1,4 @@
-![Ajde logo](https://raw.github.com/hongaar/ajde/master/src/public/images/ajde-medium.png "Ajde logo")
+![Ajde logo](https://raw.github.com/hongaar/ajde/master/public/media/ajde-medium.png "Ajde logo")
 
 ___another web framework___
 ===========================
