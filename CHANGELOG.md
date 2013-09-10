@@ -3,6 +3,7 @@
  - **NEW** The quick view panel is back in the nodes view
  - **NEW** Database installer
  - **FIX** Picker bug: could not reset an image
+ - **FIX** Typo in updater
 
 
 
