@@ -7,6 +7,7 @@ App.Admin.System.Update = function() {
 	
 	var step = 'download';
 	var progress = 0;
+	var timer;
 	
 	var form;
 	var button;
@@ -20,7 +21,7 @@ App.Admin.System.Update = function() {
 		switch (curstep) {
 			case 'download':
 				statusText = '1/5 Downloading...';
-				progress = 5;
+				progress = 0;
 				nextStep = 'extract';
 				break;
 			case 'extract':
@@ -57,6 +58,8 @@ App.Admin.System.Update = function() {
 	
 	var onUpdateStepComplete = function(e, data) {
 		
+		clearInterval(timer);
+		
 		if (data.status !== true) {
 			statusLabel.text(data.status === false ? 'Unknown error' : data.status);
 			$('.progress').addClass('progress-danger');
@@ -67,8 +70,12 @@ App.Admin.System.Update = function() {
 			} else {
 				$('input[name=step]').val(step);
 				form.trigger('submit');
+				timer = setInterval(function() {
+					var width = parseFloat(progressBar.css('width')) + 1; 
+					progressBar.css({'width': width + 'px'});
+				}, 1000);
 				update(step);		
-			}			
+			}
 		}
 		
 	};

@@ -146,6 +146,20 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 		// make sure we are in the current dir
 		chdir(Config::get('local_root'));
 		
+		// delete index.php
+		$delete_tries = 0;
+		do {
+			$delete_tries++;
+			if ($delete_tries > 20) {
+				throw new Ajde_Exception('Unable to remove index.php, please try again later');
+			}
+			if ($delete_tries > 0) {
+				sleep(1);
+			}
+			$deleted = @unlink('index.php');
+		} while ($deleted === false);
+		
+		// directories to overwrite
 		$installDirs = array(
 				CORE_DIR,
 				LIB_DIR . 'Ajde' . DIRECTORY_SEPARATOR,
@@ -155,6 +169,7 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 				PUBLIC_DIR . 'media' . DIRECTORY_SEPARATOR . 'icons' . DIRECTORY_SEPARATOR
 		);
 		
+		// files to overwrite
 		$rootFiles = Ajde_FS_Find::findFilenames($updateDir, '*');
 		
 		if (!is_dir(TMP_DIR . 'update')) {
