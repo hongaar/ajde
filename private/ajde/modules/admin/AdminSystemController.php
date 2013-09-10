@@ -67,7 +67,9 @@ class AdminSystemController extends AdminController
 	private function checkProduction()
 	{
 		$files = array(
-				'phpinfo.php', 'loadtest.php'
+				'phpinfo.php',
+				'loadtest.php',
+				'install.php'
 		);
 		$ret = array();
 		foreach($files as $file) {

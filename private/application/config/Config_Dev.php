@@ -5,7 +5,7 @@ class Config_Dev extends Config_Application {
 
 	// Performance
 	public $compressResources	= false;
-	public $debug 				= true;
+	public $debug 				= false;
 	public $useCache			= false;
 
 	function __construct() {
