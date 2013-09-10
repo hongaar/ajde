@@ -139,7 +139,12 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 	
 	public function copyFiles()
 	{
-		set_time_limit(0);
+		set_time_limit(5 * 60);
+		
+		$updateDir = TMP_DIR . 'update' . DIRECTORY_SEPARATOR;
+		
+		// make sure we are in the current dir
+		chdir(Config::get('local_root'));
 		
 		$installDirs = array(
 				CORE_DIR,
@@ -150,11 +155,11 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 				PUBLIC_DIR . 'media' . DIRECTORY_SEPARATOR . 'icons' . DIRECTORY_SEPARATOR
 		);
 		
+		$rootFiles = Ajde_FS_Find::findFilenames($updateDir, '*');
+		
 		if (!is_dir(TMP_DIR . 'update')) {
 			throw new Ajde_Exception('Update directory not found');
 		}
-		
-		$updateDir = TMP_DIR . 'update' . DIRECTORY_SEPARATOR;
 		
 		foreach($installDirs as $installDir) {
 			if (is_dir($updateDir . $installDir)) {
@@ -167,6 +172,15 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 				
 			} else {
 				throw new Ajde_Exception('Directory ' . $installDir . ' in update package not found');
+			}
+		}
+		
+		foreach($rootFiles as $rootFile) {
+			if (is_file($updateDir . $rootFile)) {
+				
+				// copy files
+				copy($updateDir . $rootFile, $rootFile);
+				
 			}
 		}
 		
