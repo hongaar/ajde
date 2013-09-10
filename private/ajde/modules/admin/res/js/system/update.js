@@ -26,7 +26,7 @@ App.Admin.System.Update = function() {
 			case 'extract':
 				statusText = '2/5 Extracting files...';
 				progress = 30;
-				nextStep = 'clear';
+				nextStep = 'clean';
 				break;
 			case 'clean':
 				statusText = '3/5 Clean current installation...';
