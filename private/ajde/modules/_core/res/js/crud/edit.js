@@ -70,7 +70,11 @@ AC.Crud.Edit = function() {
 			var name = $this.attr('name');
 			
 			if (name && name.indexOf('[]') === -1 && $('.control-group[data-show-' + name + ']').length) {
+				
+				// control group
 				var ctlgroup = $('.control-group[data-show-' + name + ']');
+				
+				// get value
 				if ($this.attr('type') === 'radio') {
 					if ($this.filter(':checked').length) {
 						val = $(':input[name=' + name + ']:checked').val();
@@ -83,8 +87,13 @@ AC.Crud.Edit = function() {
 				val = val.toLowerCase().replace(/ /g, '');
 				
 				if (val) {
+					
 					var $hidden = ctlgroup.filter(':not([data-show-' + name + '*="|' + val + '|"])');
 					var $shown = ctlgroup.filter('.control-group[data-show-' + name + '*="|' + val + '|"]');
+					
+					// dynamic sort the shown fields
+					AC.Crud.Edit.dynamicSort($shown, name, val);
+					
 					$hidden.stop(true, true).hide();
 					$hidden.each(function() {
 						var $self = $(this);
@@ -98,6 +107,24 @@ AC.Crud.Edit = function() {
 					$shown.removeClass('dynamic').stop(true, true).fadeIn();
 				}				
 			}		
+		},
+		
+		dynamicSort: function($ctlgroups, field, search) {
+			var groups = $ctlgroups.filter('[data-sort-' + field + ']');
+			var container = groups.parent();
+			groups.each(function() {
+				var dataShow = $(this).data('show-' + field);
+				dataShow = dataShow.substring(1, dataShow.length - 1).split('|');
+				var dataSort = $(this).data('sort-' + field);
+				dataSort = dataSort.substring(1, dataSort.length - 1).split('|');
+				var index = dataShow.indexOf(search);
+				var sort = dataSort[index];
+				$(this).data('sort', sort);
+			});
+			groups.detach().sort(function(a, b) {
+				return $(a).data('sort') > $(b).data('sort') ? 1 : -1;  
+			});
+			container.append(groups);			
 		},
 		
 		equalizeForm: function() {

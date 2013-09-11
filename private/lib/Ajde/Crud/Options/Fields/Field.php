@@ -304,6 +304,26 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 		return $this->_set('showOnlyWhen', $showOnlyWhen);	
 	}
 	
+	/**
+	 * Sorts this field accoding to a dynamic sorting rule
+	 *
+	 * @param string $field
+	 * @param mixed $value
+	 * @return Ajde_Crud_Options_Fields_Field
+	 */
+	public function addDynamicSort($field, $value) {
+		if (!is_array($value)) {
+			$value = array($value);
+		}
+		$dynamicSort = ($this->has('dynamicSort') ? $this->get('dynamicSort') : array());
+		if (isset($dynamicSort[$field])) {
+			$dynamicSort[$field] = array_merge($dynamicSort[$field], $value);
+		} else {
+			$dynamicSort[$field] = $value;
+		}
+		return $this->_set('dynamicSort', $dynamicSort);
+	}
+	
     /**
 	 * Use a simple selector for fields with type 'multiple'
 	 * 
@@ -453,5 +473,15 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 	 */
 	public function setUsePopupSelector($use) {
 		return $this->_set('usePopupSelector', $use);
+	}
+	
+	/**
+	 * Use this package for fields with type icon
+	 *
+	 * @param string $package
+	 * @return Ajde_Crud_Options_Fields_Field
+	 */
+	public function setIconPackage($package) {
+		return $this->_set('iconPackage', $package);
 	}
 }

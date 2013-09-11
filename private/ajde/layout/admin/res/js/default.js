@@ -64,6 +64,47 @@
 		});
 		
 		// Quick node search from top bar
+		if ($.fn.autocomplete) {
+			var autocomplete_timer;
+			var can_search = false;
+			var autocomplete_options = {
+				serviceUrl: 'admin/node:search.json',
+				minChars: 2,
+				delimiter: '',
+				maxHeight: 400,
+				width: 300,
+				zIndex: 9999,
+				deferRequestBy: 200, //miliseconds
+				params: { }, //aditional parameters
+				noCache: false, //default is false, set to true to disable caching
+				appendTo: $('#node-search-results'),
+				onSearchStart: function(query) {
+					if (!can_search) {
+						return false;
+					}
+					var that = this;
+					$(this).addClass('loading');
+					setTimeout(function() {
+						$(that).removeClass('loading');
+					}, 2000); // remove loading after 2s for cached requests
+				},
+				onSearchComplete: function(query) {
+					$(this).removeClass('loading');
+				},
+				// callback function:
+				onSelect: function(suggestion) {
+					window.location.href = 'admin/node:view?edit=' + suggestion.data;
+				}
+			};
+			var autocomplete_instance = $('#node-search').autocomplete(autocomplete_options);
+			$('#node-search').on('keyup', function() {
+				can_search = false;
+				clearTimeout(autocomplete_timer);
+				autocomplete_timer = setTimeout(function() {
+					can_search = true;
+				}, 100);
+			});
+		}
 		
 	};
 

@@ -61,13 +61,14 @@ class Ajde_Crud_Cms_Meta extends Ajde_Crud_Cms_Meta_Fieldlist
 		return parent::getFields();
 	}
 	
-	public function getMetaFields($crossReferenceTable, $crossReferenceField, $parentField, $filters = array())
+	public function getMetaFields($crossReferenceTable, $crossReferenceField, $sortField, $parentField, $filters = array())
 	{
 		$allFields = array();
 		
 		Ajde_Model::register('admin');
 		$metas = new MetaCollection();
 		$metas->concatCrossReference($crossReferenceTable, $crossReferenceField);
+		$metas->concatField($crossReferenceTable, $sortField);
 		if (!empty($filters)) {
 			$group = new Ajde_Filter_WhereGroup();
 			foreach($filters as $filter) {
@@ -82,8 +83,13 @@ class Ajde_Crud_Cms_Meta extends Ajde_Crud_Cms_Meta_Fieldlist
 		foreach($metas as $meta) {
 			$metaField = $this->getType($meta->get('type'));
 			$fieldOptions = $metaField->getMetaField($meta);
+			// add show only when
 			foreach(explode(',', $meta->get($crossReferenceField)) as $parentValue) {
 				$fieldOptions->addShowOnlyWhen($parentField, $parentValue);
+			}
+			// add sorting
+			foreach(explode(',', $meta->get($sortField)) as $parentValue) {
+				$fieldOptions->addDynamicSort($parentField, $parentValue);
 			}
 			$allFields['meta_' . $meta->getPK()] = $fieldOptions;
 		}

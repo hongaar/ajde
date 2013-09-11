@@ -1,0 +1,13 @@
+a.picker-icon {
+	display: inline-block;
+	
+	padding: 1px;
+	margin: 1px;
+	
+	width: 18px;
+	height: 20px;
+}
+
+a.picker-icon.active {
+	background-color: rgb(0, 114, 230);
+}

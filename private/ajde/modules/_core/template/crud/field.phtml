@@ -15,6 +15,12 @@ $field = $this->field;
 		foreach($showOnlyWhens as $key => $showOnlyWhen) {
 			echo 'data-show-' . $key . '="|' . implode('|', $showOnlyWhen) . '|"';
 		}
+		if ($field->hasDynamicSort()) {
+			$dynamicSorts = $field->getDynamicSort();
+			foreach($dynamicSorts as $key => $dynamicSort) {
+				echo 'data-sort-' . $key . '="|' . implode('|', $dynamicSort) . '|"';
+			}
+		}
 	} else {
 		echo '"';
 	} ?>

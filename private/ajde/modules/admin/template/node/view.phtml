@@ -4,6 +4,18 @@ $options = NodeController::getNodeOptions();
 
 $crud = $this->ACCrudList('node', $options);
 
+// join in some info to use later
+
+if (!Ajde::app()->getRequest()->has('new') && !Ajde::app()->getRequest()->has('edit')) {
+	$collection = $crud->getCollection();
+	
+	// add nodetype info
+	/* @var $collection NodeCollection */
+	$collection->joinNodetype();
+	$collection->getQuery()->addSelect('nodetype.name AS nodetype_name');		
+	$collection->getQuery()->addSelect('nodetype.icon AS nodetype_icon');
+}
+
 ?>
 
 <div class="row-fluid">

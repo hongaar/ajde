@@ -31,12 +31,17 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 		$_SERVER['REDIRECT_STATUS'] = $code;
 		
 		if (array_key_exists($code, Config::getInstance()->responseCodeRoute)) {
-			self::dieOnRoute(Config::getInstance()->responseCodeRoute[$code]);
-		} else {
-			ob_get_clean();
-			include(Config::get('local_root') . '/errordocument.php');
-			die();
+			try {
+				self::dieOnRoute(Config::getInstance()->responseCodeRoute[$code]);
+			} catch (Exception $e) {
+				Ajde_Exception_Log::logException($e);
+			}
 		}
+		
+		// fallback
+		ob_get_clean();
+		include(Config::get('local_root') . '/errordocument.php');
+		die();
 	}
 	
 	public static function dieOnRoute($route)

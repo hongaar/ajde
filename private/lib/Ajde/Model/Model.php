@@ -168,7 +168,8 @@ class Ajde_Model extends Ajde_Object_Standard
 	
 	public function displayField()
 	{
-		return $this->get($this->getDisplayField());
+		$displayField = $this->getDisplayField();
+		return $this->has($displayField) ? $this->get($displayField) : '(untitled model)';
 	}
 
 	/**

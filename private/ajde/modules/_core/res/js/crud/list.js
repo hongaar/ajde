@@ -22,7 +22,8 @@ AC.Crud.List = function() {
 			$('form.ACCrudList tbody tr').live('click', AC.Crud.List.trHandler);
 			$('form.ACCrudList tbody tr').live('dblclick', AC.Crud.List.editHandler);
 			
-			$('form.ACCrudList tbody td.main').hover(AC.Crud.List.showPanel, AC.Crud.List.hidePanel);
+			$('form.ACCrudList tbody td.main').live('mouseover', AC.Crud.List.showPanel);
+			$('form.ACCrudList tbody td.main').live('mouseout', AC.Crud.List.hidePanel);
             
             $('form.ACCrudList thead a.listView').live('click', AC.Crud.List.activateListView);
             $('form.ACCrudList thead a.gridView').live('click', AC.Crud.List.activateGridView);

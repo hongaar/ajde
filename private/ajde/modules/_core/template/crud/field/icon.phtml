@@ -1,0 +1,14 @@
+<?php 
+/* @var $field Ajde_Crud_Field_Icon */
+$field = $this->field;
+?>
+
+<input
+	<?php echo $field->getHtmlAttributes(); ?>
+/>
+
+<?php foreach($field->getIconPackage() as $key => $icon) { ?>
+	<a href="javascript:void(null);" class="picker-icon <?php if ($field->getValue() == $icon) { echo 'active'; } ?>" data-value="<?php echo $icon; ?>">
+		<i class="<?php echo $icon; ?>"></i>
+	</a>
+<?php } ?>

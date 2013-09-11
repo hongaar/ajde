@@ -187,7 +187,7 @@ class NodeController extends Ajde_Controller
 				->setMain('title')
 				->setShow(array('title', 'updated', 'published', 'sort'))
 				->setThumbDim(50, 50)
-		//		->setSearch(false)
+				->setSearch(false)
 				->selectView()
 					->setMainFilter('nodetype')
 					->setMainFilterGrouper('category')
@@ -249,10 +249,10 @@ class NodeController extends Ajde_Controller
 		$decorator = new Ajde_Crud_Cms_Meta_Decorator();
 		$decorator->setActiveBlock(1);
 		$decorator->setOptions($options);
-		$decorator->decorateInputs('nodetype_meta', 'nodetype', 'nodetype', array(
+		$decorator->decorateInputs('nodetype_meta', 'nodetype', 'sort', 'nodetype', array(
 			new Ajde_Filter_Where('target', Ajde_Filter::FILTER_EQUALS, 'node')
 		));
-		
+				
 		if (Ajde::app()->getRequest()->has('new')) {
 			// set owner
 			$user = UserModel::getLoggedIn();
@@ -272,7 +272,8 @@ class NodeController extends Ajde_Controller
 					->setUsePopupSelector(true)
 				->finished();
 			}
-		}		
+		}
+					
 		return $options;
 	}
 }

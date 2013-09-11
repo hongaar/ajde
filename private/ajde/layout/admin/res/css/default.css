@@ -209,3 +209,21 @@ body.iframe .row-fluid > div {
 .control-group.success .checkbox, .control-group.success .radio, .control-group.success input, .control-group.success select, .control-group.success textarea {
 	color: inherit;
 }
+
+/** autocomplete **/
+
+#node-search {
+	margin-bottom: 0;
+}
+#node-search.loading {
+	background-image: url('../../public/media/loading-cms.gif');
+	background-repeat: no-repeat;
+	background-position: 98% center;
+}
+#node-search-results {
+	
+}
+.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
+.autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+.autocomplete-selected { background: #F0F0F0; }
+.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }

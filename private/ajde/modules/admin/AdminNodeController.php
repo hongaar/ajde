@@ -81,4 +81,52 @@ class AdminNodeController extends AdminController
 		);
 	}
 	
+	public function searchJson()
+	{
+		$q = Ajde::app()->getRequest()->getParam('query');
+		
+		$collection = new NodeCollection();
+		
+		// split search terms
+		$terms = explode(" ", $q);
+		
+		// search on node fields
+		$searchGroup = new Ajde_Filter_WhereGroup(Ajde_Query::OP_OR);
+		foreach ($terms as $term) {
+			$termGroup = $collection->getTextFilterGroup($term, Ajde_Query::OP_OR);
+			if ($termGroup !== false) {
+				$searchGroup->addFilter($termGroup);
+			}
+		}
+		$collection->addFilter($searchGroup);
+		
+		// search on meta search
+		$collection->addFilter(new Ajde_Filter_LeftJoin('node_meta', 'node_meta.node', 'node.id'));
+		$searchGroup = new Ajde_Filter_WhereGroup(Ajde_Query::OP_OR);
+		foreach ($terms as $term) {
+			$searchGroup->addFilter(new Ajde_Filter_Where('node_meta.value', Ajde_Filter::FILTER_LIKE, '%' . $term . '%', Ajde_Query::OP_OR));
+		}
+		$collection->addFilter($searchGroup);
+		$collection->getQuery()->addGroupBy('node.id');
+		
+		// join in nodetype info
+		$collection->joinNodetype();
+		$collection->getQuery()->addSelect('nodetype.name AS nodetype_name');
+		$collection->getQuery()->addSelect('nodetype.icon AS nodetype_icon');
+		
+		$suggestions = array();
+		foreach ($collection as $node) {
+			/* @var $node NodeModel */
+			$suggestions[] = array(
+					'value' => "<i class='" . $node->get('nodetype_icon') . "'></i> " . $node->displayField(),
+					'data' => $node->getPK()
+				);
+		}
+		
+		return array(
+				'query' => $q,
+				'suggestions' => $suggestions
+			);
+	}
+	
 }

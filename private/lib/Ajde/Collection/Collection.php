@@ -319,23 +319,29 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 	
 	public function addTextFilter($text, $operator = Ajde_Query::OP_AND)
 	{
-		$searchFilter = new Ajde_Filter_WhereGroup($operator);
-		$fieldOptions = $this->getTable()->getFieldProperties();			
-		foreach($fieldOptions as $fieldName => $fieldProperties) {
-			switch ($fieldProperties['type']) {
-				case Ajde_Db::FIELD_TYPE_TEXT:						
-				case Ajde_Db::FIELD_TYPE_ENUM:
-					$searchFilter->addFilter(new Ajde_Filter_Where((string) $this->getTable() . '.' . $fieldName, Ajde_Filter::FILTER_LIKE, '%' . $text . '%', Ajde_Query::OP_OR));						
-					break;					
-				default:
-					break;
-			}
-		}
-        if ($searchFilter->hasFilters()) {
+		$searchFilter = $this->getTextFilterGroup($text, $operator);
+        if ($searchFilter !== false) {
             $this->addFilter($searchFilter);
         } else {
             $this->addFilter(new Ajde_Filter_Where('true', '=', 'false'));
         }
+	}
+	
+	public function getTextFilterGroup($text, $operator = Ajde_Query::OP_AND)
+	{
+		$searchFilter = new Ajde_Filter_WhereGroup($operator);
+		$fieldOptions = $this->getTable()->getFieldProperties();
+		foreach($fieldOptions as $fieldName => $fieldProperties) {
+			switch ($fieldProperties['type']) {
+				case Ajde_Db::FIELD_TYPE_TEXT:
+				case Ajde_Db::FIELD_TYPE_ENUM:
+					$searchFilter->addFilter(new Ajde_Filter_Where((string) $this->getTable() . '.' . $fieldName, Ajde_Filter::FILTER_LIKE, '%' . $text . '%', Ajde_Query::OP_OR));
+					break;
+				default:
+					break;
+			}
+		}
+		return $searchFilter->hasFilters() ? $searchFilter : false;
 	}
 	
 	public function getSql()

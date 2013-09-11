@@ -14,7 +14,11 @@ class Ajde_Crud_Cms_Meta_Decorator extends Ajde_Object_Standard
 	protected $activeColumn = 0;
 	protected $activeBlock = 0;
 	
-	protected $meta = array();
+	/**
+	 * 
+	 * @var Ajde_Crud_Cms_Meta
+	 */
+	protected $meta;
 	
 	public function __construct() {
 		$this->meta = new Ajde_Crud_Cms_Meta();
@@ -48,9 +52,9 @@ class Ajde_Crud_Cms_Meta_Decorator extends Ajde_Object_Standard
 		}		
 	}
 	
-	public function decorateInputs($crossReferenceTable, $crossReferenceField, $parentField, $filters = array())
+	public function decorateInputs($crossReferenceTable, $crossReferenceField, $sortField, $parentField, $filters = array())
 	{
-		foreach ($this->meta->getMetaFields($crossReferenceTable, $crossReferenceField, $parentField, $filters) as $key => $field) {
+		foreach ($this->meta->getMetaFields($crossReferenceTable, $crossReferenceField, $sortField, $parentField, $filters) as $key => $field) {
 			/* @var $field Ajde_Crud_Options_Fields_Field */
 			$this->addField($key, $field->values());
 		}	

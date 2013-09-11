@@ -85,11 +85,13 @@ class NodeModel extends Ajde_Acl_Proxy_Model
 	public function displayTreeName()
 	{
 		$nodetype = $this->has('nodetype_name') ? $this->get('nodetype_name') : $this->getNodetype()->displayField();
+		$icon = $this->has('nodetype_icon') ? $this->get('nodetype_icon') : $this->getNodetype()->getIcon();
 		$ret = str_repeat('<span class="tree-spacer"></span>', max(0, $this->get('level') - 1));
 		if ($this->get('level') > 0) {
 			$ret = $ret . '<span class="tree-spacer last"></span>';
 		}
-		$ret .= '<span class="badge">'. strtolower($nodetype) . '</span>';
+		//$ret .= '<span class="badge">'. strtolower($nodetype) . '</span>';
+		$ret .= '<span class="badge-icon" title="' . _e($nodetype) . '"><i class="'. $icon . '"></i></span>';
 		$ret .= ' <span class="title">' . _c($this->title) . '</span>';
 		return $ret;
 	}

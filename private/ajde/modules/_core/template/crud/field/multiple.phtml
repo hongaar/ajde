@@ -215,8 +215,8 @@ $field = $this->field;
                         } ?>
                         <td class='buttons'>
 							<div class='btn-group'>
-								<a href='javascript:void(null);' class='btn editMultiple' data-id='<?php echo $child->getPK(); ?>'><i class='icon-pencil icon-white'></i></a>
-								<a href='javascript:void(null);' class='btn btn-<?php echo ($field->hasCrossReferenceTable()) ? 'warning' : 'danger'; ?> deleteMultiple' data-id='<?php echo $child->getPK(); ?>'>
+								<a href='javascript:void(null);' class='btn btn-small editMultiple' data-id='<?php echo $child->getPK(); ?>'><i class='icon-pencil icon-white'></i></a>
+								<a href='javascript:void(null);' class='btn btn-small btn-<?php echo ($field->hasCrossReferenceTable()) ? 'warning' : 'danger'; ?> deleteMultiple' data-id='<?php echo $child->getPK(); ?>'>
 									<i class='icon-<?php echo ($field->hasCrossReferenceTable()) ? 'minus' : 'trash'; ?> icon-white'></i>
 								</a>
 							</div>

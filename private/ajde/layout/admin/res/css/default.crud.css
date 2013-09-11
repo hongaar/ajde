@@ -355,18 +355,19 @@ table.crud {
 				.tree-spacer {
 					display: none;
 					border-left: 3px solid #ddd;
-					width: 20px;
-					margin-left: 0;
-					margin-top: -23px;
-					height: 46px;
-					margin-bottom: -8px;
-					height: 46px;
+					width: 12px;
+					margin-left: 7px;
+					margin-top: -35px;
+					margin-bottom: -1px;
+					height: 52px;
 					position: relative;
-					top: -4px;
+					top: 8px;
 				}
 				
 				.tree-spacer.last {
 					border-bottom: 3px solid #ddd;		
+					height: 25px;
+					top: -4px;
 				}
             }
             
@@ -391,7 +392,7 @@ table.crud {
 			&.panel {
 				max-height: 0;
 				overflow: hidden;
-				z-index: 2;
+				z-index: 4;
 				
 				position: fixed;
 				bottom: -20px;
@@ -408,7 +409,7 @@ table.crud {
        -o-transition: all 0.3s ease-out; 
           transition: all 0.3s ease-out; 
           
-          		opacity: 0.8;
+          		opacity: 0.9;
           		
           		pointer-events: none;
 				
@@ -485,7 +486,7 @@ table.crud {
 				
 				&.expand {
 					bottom: 0;
-					z-index: 1;
+					z-index: 3;
 					
   -webkit-transition: inherit;
      -moz-transition: inherit; 
