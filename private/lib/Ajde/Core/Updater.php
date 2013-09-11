@@ -162,6 +162,7 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 		// directories to overwrite
 		$installDirs = array(
 				CORE_DIR,
+				DEV_DIR,
 				LIB_DIR . 'Ajde' . DIRECTORY_SEPARATOR,
 				PUBLIC_DIR . 'css' . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR,
 				PUBLIC_DIR . 'js' . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR,
