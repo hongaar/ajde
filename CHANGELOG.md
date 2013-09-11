@@ -1,3 +1,13 @@
+#### v0.2.2
+
+ - **NEW** Quicksearch with autocomplete
+ - **NEW** Icons for nodetypes
+ - **NEW** Header meta field
+ - **FIX** Meta fields are now displayed in the right order
+ - Small fixes
+
+
+
 #### v0.2.1
 
  - **NEW** The quick view panel is back in the nodes view
