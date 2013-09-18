@@ -1,3 +1,6 @@
+#### AUTO-UPDATE NOTE ####
+Due to a bug in the auto-updater, updating from a version prior to v0.2.2 doesn't work. Please use Git instead.
+
 #### v0.2.3
 
  - **NEW** Full i18n of nodes and menus
