@@ -1,6 +1,7 @@
 #### v0.2.3
 
  - **NEW** Full i18n of nodes and menus
+ - **IMPORTANT NOTE** To use i18n, create directory `lang` in application directory, and add subdirectories for each language used
 
 
 

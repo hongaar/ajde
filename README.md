@@ -59,6 +59,7 @@ It has however no support for plug and play themes or plugins or whatsoever, so 
  - Dynamic routing
  - Web debugger & console
  - Mail class
+ - I18n
  - much more...
 
 #### Out of the box modules supporting
@@ -175,7 +176,7 @@ Directories which have to be writable by the webserver:
  - private/var/cache
  - private/var/tmp
  - private/var/log
- - public/images/uploads
+ - public/media/upload
 
 #### Directories to delete in production
 

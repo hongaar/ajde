@@ -30,6 +30,9 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 		$this->current_version = AJDE_VERSION;
 		$this->available_version = $availableversion;
 		$this->available_package = $zipball;
+		
+		// allow 5 minutes for each step
+		set_time_limit(5 * 60);
 	}
 	
 	public function getCurrentVersion()
@@ -138,9 +141,7 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 	}
 	
 	public function copyFiles()
-	{
-		set_time_limit(5 * 60);
-		
+	{		
 		$updateDir = TMP_DIR . 'update' . DIRECTORY_SEPARATOR;
 		
 		// make sure we are in the current dir
