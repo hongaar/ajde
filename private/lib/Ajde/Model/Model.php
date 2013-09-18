@@ -73,6 +73,16 @@ class Ajde_Model extends Ajde_Object_Standard
 		$modelName = ucfirst($name) . 'Model';
 		return new $modelName();
 	}
+	
+	/**
+	 * 
+	 * @return Ajde_Collection
+	 */
+	public function getCollection()
+	{
+		$collectionName = $this->toCamelCase($this->_tableName) . 'Collection';
+		return new $collectionName();
+	}
 
 	public function __construct()
 	{
@@ -81,6 +91,7 @@ class Ajde_Model extends Ajde_Object_Standard
 
 		$this->_connection = Ajde_Db::getInstance()->getConnection();
 		$this->_table = Ajde_Db::getInstance()->getTable($tableName);
+		$this->_tableName = $tableName;
 	}
 
 	public function __set($name, $value)
@@ -129,11 +140,7 @@ class Ajde_Model extends Ajde_Object_Standard
 
 	public function __wakeup()
 	{
-		$tableNameCC = str_replace('Model', '', get_class($this));
-		$tableName = $this->fromCamelCase($tableNameCC);
-
-		$this->_connection = Ajde_Db::getInstance()->getConnection();
-		$this->_table = Ajde_Db::getInstance()->getTable($tableName);
+		$this->__construct();
 	}
 	
 	public function reset()
@@ -244,14 +251,19 @@ class Ajde_Model extends Ajde_Object_Standard
 			return false;
 		} else {
 			$this->reset();
-			$this->populate($result);
-			if ($this->_autoloadParents === true) {
-				$this->loadParents();
-			}
-			if ($this->_hasMeta === true) {
-				$this->populateMeta();
-			}
+			$this->loadFromValues($result);
 			return true;
+		}
+	}
+	
+	public function loadFromValues($values)
+	{
+		$this->populate($values);
+		if ($this->_autoloadParents === true) {
+			$this->loadParents();
+		}
+		if ($this->_hasMeta === true) {
+			$this->populateMeta();
 		}
 	}
 	

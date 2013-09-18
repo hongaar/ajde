@@ -484,4 +484,12 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 	public function setIconPackage($package) {
 		return $this->_set('iconPackage', $package);
 	}
+	
+	/**
+	 * Sets the fields to clone when creating a translation
+	 *
+	 * @param array $fields
+	 * @return Ajde_Crud_Options_Fields_Field
+	 */
+	public function setCloneFields($array) { return $this->_set('cloneFields', $array); }
 }

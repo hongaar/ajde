@@ -8,7 +8,12 @@ $mainFilter = $crudView->getMainFilter();
 
 $filterField = $crud->getField($mainFilter);
 $filterFieldValues = $filterField->getValues();
-$currentFilter = $crudView->getFilterForField($mainFilter);
+
+// do we have a value from the model?
+$currentFilter = $crud->getOption('fields.' . $mainFilter . '.value');
+if (!$currentFilter) {
+	$currentFilter = $crudView->getFilterForField($mainFilter);
+}
 
 $filteredBy = 'Filter';
 if (key_exists($currentFilter, $filterFieldValues)) {

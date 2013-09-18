@@ -21,7 +21,7 @@ class Config_Application extends Config_Cms
 	//public $routes;
 
 	//public $titleFormat;
-	//public $lang;
+	public $lang 				= 'en_GB';
 	//public $langAutodetect;
 	//public $langAdapter;
 	//public $timezone;

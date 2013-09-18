@@ -1,6 +1,6 @@
 <?php
 
-class NodeCollection extends Ajde_Acl_Proxy_Collection
+class NodeCollection extends Ajde_Collection_With_AclI18n
 {
 	public function filterPublished()
 	{

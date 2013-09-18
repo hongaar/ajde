@@ -25,7 +25,13 @@ class Ajde_Crud_Field_Enum extends Ajde_Crud_Field
 					continue;
 				}
 			}
-			$return[$option] = $option;
+			if (substr_count($option, ':')) {
+				list($key, $value) = explode(':', $option);
+			} else {
+				$key = $option;
+				$value = $option;
+			}
+			$return[$key] = $value;
 		}
 		return $return;
 	}

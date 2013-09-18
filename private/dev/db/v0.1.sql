@@ -10,10 +10,6 @@
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
---
--- Database: `ajde_cms`
---
-
 -- --------------------------------------------------------
 
 --
@@ -512,8 +508,6 @@ CREATE TABLE IF NOT EXISTS `vat` (
 -- Constraints for table `acl`
 --
 ALTER TABLE `acl`
-  ADD CONSTRAINT `acl_ibfk_5` FOREIGN KEY (`user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `acl_ibfk_6` FOREIGN KEY (`usergroup`) REFERENCES `usergroup` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `acl_ibfk_7` FOREIGN KEY (`user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `acl_ibfk_8` FOREIGN KEY (`usergroup`) REFERENCES `usergroup` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -521,29 +515,24 @@ ALTER TABLE `acl`
 -- Constraints for table `cart`
 --
 ALTER TABLE `cart`
-  ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`user`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`user`) REFERENCES `user` (`id`);
 
 --
 -- Constraints for table `cart_item`
 --
 ALTER TABLE `cart_item`
-  ADD CONSTRAINT `cart_item_ibfk_2` FOREIGN KEY (`cart`) REFERENCES `cart` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `cart_item_ibfk_3` FOREIGN KEY (`cart`) REFERENCES `cart` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `media`
 --
 ALTER TABLE `media`
-  ADD CONSTRAINT `media_ibfk_1` FOREIGN KEY (`user`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `media_ibfk_2` FOREIGN KEY (`user`) REFERENCES `user` (`id`);
 
 --
 -- Constraints for table `menu`
 --
 ALTER TABLE `menu`
-  ADD CONSTRAINT `menu_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `menu` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `menu_ibfk_2` FOREIGN KEY (`node`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `menu_ibfk_3` FOREIGN KEY (`parent`) REFERENCES `menu` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `menu_ibfk_4` FOREIGN KEY (`node`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -551,13 +540,9 @@ ALTER TABLE `menu`
 -- Constraints for table `node`
 --
 ALTER TABLE `node`
-  ADD CONSTRAINT `node_ibfk_10` FOREIGN KEY (`nodetype`) REFERENCES `nodetype` (`id`),
-  ADD CONSTRAINT `node_ibfk_11` FOREIGN KEY (`parent`) REFERENCES `node` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
   ADD CONSTRAINT `node_ibfk_12` FOREIGN KEY (`nodetype`) REFERENCES `nodetype` (`id`),
   ADD CONSTRAINT `node_ibfk_13` FOREIGN KEY (`root`) REFERENCES `node` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
-  ADD CONSTRAINT `node_ibfk_14` FOREIGN KEY (`user`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `node_ibfk_3` FOREIGN KEY (`user`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `node_ibfk_4` FOREIGN KEY (`media`) REFERENCES `media` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
   ADD CONSTRAINT `node_ibfk_7` FOREIGN KEY (`parent`) REFERENCES `node` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
   ADD CONSTRAINT `node_ibfk_9` FOREIGN KEY (`media`) REFERENCES `media` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
 
@@ -572,8 +557,6 @@ ALTER TABLE `nodetype`
 -- Constraints for table `nodetype_meta`
 --
 ALTER TABLE `nodetype_meta`
-  ADD CONSTRAINT `nodetype_meta_ibfk_1` FOREIGN KEY (`nodetype`) REFERENCES `nodetype` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `nodetype_meta_ibfk_2` FOREIGN KEY (`meta`) REFERENCES `meta` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `nodetype_meta_ibfk_3` FOREIGN KEY (`nodetype`) REFERENCES `nodetype` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `nodetype_meta_ibfk_4` FOREIGN KEY (`meta`) REFERENCES `meta` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -581,8 +564,6 @@ ALTER TABLE `nodetype_meta`
 -- Constraints for table `node_media`
 --
 ALTER TABLE `node_media`
-  ADD CONSTRAINT `node_media_ibfk_2` FOREIGN KEY (`media`) REFERENCES `media` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `node_media_ibfk_3` FOREIGN KEY (`node`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `node_media_ibfk_4` FOREIGN KEY (`media`) REFERENCES `media` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `node_media_ibfk_5` FOREIGN KEY (`node`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -590,8 +571,6 @@ ALTER TABLE `node_media`
 -- Constraints for table `node_meta`
 --
 ALTER TABLE `node_meta`
-  ADD CONSTRAINT `node_meta_ibfk_4` FOREIGN KEY (`meta`) REFERENCES `meta` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `node_meta_ibfk_5` FOREIGN KEY (`node`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `node_meta_ibfk_6` FOREIGN KEY (`meta`) REFERENCES `meta` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `node_meta_ibfk_7` FOREIGN KEY (`node`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -599,8 +578,6 @@ ALTER TABLE `node_meta`
 -- Constraints for table `node_related`
 --
 ALTER TABLE `node_related`
-  ADD CONSTRAINT `node_related_ibfk_1` FOREIGN KEY (`node`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `node_related_ibfk_2` FOREIGN KEY (`related`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `node_related_ibfk_3` FOREIGN KEY (`node`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `node_related_ibfk_4` FOREIGN KEY (`related`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -608,8 +585,6 @@ ALTER TABLE `node_related`
 -- Constraints for table `node_tag`
 --
 ALTER TABLE `node_tag`
-  ADD CONSTRAINT `node_tag_ibfk_2` FOREIGN KEY (`tag`) REFERENCES `tag` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `node_tag_ibfk_3` FOREIGN KEY (`node`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `node_tag_ibfk_4` FOREIGN KEY (`tag`) REFERENCES `tag` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `node_tag_ibfk_5` FOREIGN KEY (`node`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -617,8 +592,6 @@ ALTER TABLE `node_tag`
 -- Constraints for table `sample`
 --
 ALTER TABLE `sample`
-  ADD CONSTRAINT `sample_ibfk_2` FOREIGN KEY (`user`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `sample_ibfk_3` FOREIGN KEY (`vat`) REFERENCES `vat` (`id`),
   ADD CONSTRAINT `sample_ibfk_4` FOREIGN KEY (`user`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `sample_ibfk_5` FOREIGN KEY (`vat`) REFERENCES `vat` (`id`);
 
@@ -626,8 +599,6 @@ ALTER TABLE `sample`
 -- Constraints for table `setting_meta`
 --
 ALTER TABLE `setting_meta`
-  ADD CONSTRAINT `setting_meta_ibfk_2` FOREIGN KEY (`meta`) REFERENCES `meta` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `setting_meta_ibfk_3` FOREIGN KEY (`setting`) REFERENCES `setting` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `setting_meta_ibfk_4` FOREIGN KEY (`meta`) REFERENCES `meta` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `setting_meta_ibfk_5` FOREIGN KEY (`setting`) REFERENCES `setting` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -635,14 +606,12 @@ ALTER TABLE `setting_meta`
 -- Constraints for table `transaction`
 --
 ALTER TABLE `transaction`
-  ADD CONSTRAINT `transaction_ibfk_2` FOREIGN KEY (`user`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `transaction_ibfk_3` FOREIGN KEY (`user`) REFERENCES `user` (`id`);
 
 --
 -- Constraints for table `user`
 --
 ALTER TABLE `user`
-  ADD CONSTRAINT `user_ibfk_2` FOREIGN KEY (`usergroup`) REFERENCES `usergroup` (`id`),
   ADD CONSTRAINT `user_ibfk_3` FOREIGN KEY (`usergroup`) REFERENCES `usergroup` (`id`);
 
 --

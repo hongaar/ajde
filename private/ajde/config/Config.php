@@ -4,10 +4,11 @@ class Config
 {
 	const DEV_STAGE = 'dev';
 	const LIVE_STAGE = 'live';
+	const AUTO_STAGE = 'auto';
 	
 	// Redirect this class to the following config stage
 	// Default is 'auto' (chooses between DEV_STAGE and LIVE_STAGE based on remote_addrr
-	public static $stage			= 'auto';
+	public static $stage			= self::AUTO_STAGE;
 
 	// localhost and private networks, add your own dev machine if not in
 	// private network range!

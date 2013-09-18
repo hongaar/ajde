@@ -1,6 +1,6 @@
 <?php
 
-class NodeModel extends Ajde_Acl_Proxy_Model
+class NodeModel extends Ajde_Model_With_AclI18n
 {
 	protected $_autoloadParents = false;
 	protected $_displayField = 'title';
@@ -145,6 +145,16 @@ class NodeModel extends Ajde_Acl_Proxy_Model
 		} else {
 			return "";
 		}
+	}
+	
+	public function displayLang()
+	{
+		$lang = Ajde_Lang::getInstance();
+		$currentLang = $this->get('lang');
+		if ($currentLang) {
+			return $lang->getNiceName($currentLang);
+		}
+		return '';
 	}
 	
 	public function rowClass()
@@ -310,7 +320,7 @@ class NodeModel extends Ajde_Acl_Proxy_Model
 	protected function _load($sql, $values)
 	{
 		$return = parent::_load($sql, $values);
-		if (Ajde::app()->getRequest()->getParam('filterPublished', false) ==  true) {
+		if ($return && Ajde::app()->getRequest()->getParam('filterPublished', false) ==  true) {
 			$this->filterPublished();
 		}		
 		return $return; 	
@@ -510,14 +520,15 @@ class NodeModel extends Ajde_Acl_Proxy_Model
 		return false;
 	}
 		
-	public function getUrl()
+	public function getUrl($relative = true)
 	{
 		if ($this->getPK()) {
 			if (!$this->getNodetype() instanceof Ajde_Model) {
 				$this->loadParents();
 			}
 			$nodetype = str_replace(' ', '_', strtolower($this->getNodetype()->displayField()));
-			return 'http://' . Config::get('site_root') . '-' . $nodetype . '/' . $this->getSlug();
+			$url = '-' . $nodetype . '/' . $this->getSlug();
+			return $relative ? $url : 'http://' . Config::get('site_root') . $url; 
 		}
 		return false;
 	}

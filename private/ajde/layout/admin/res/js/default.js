@@ -94,6 +94,7 @@
 				// callback function:
 				onSelect: function(suggestion) {
 					window.location.href = 'admin/node:view?edit=' + suggestion.data;
+					$('#node-search').val('Loading...');
 				}
 			};
 			var autocomplete_instance = $('#node-search').autocomplete(autocomplete_options);

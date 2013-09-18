@@ -13,7 +13,7 @@
 //	--------------------
 //	Which version of Ajde are we running?
 //	--------------------	
-	define('AJDE_VERSION', 'v0.2.2');
+	define('AJDE_VERSION', 'v0.2.3');
 
 /*********************
  * ERROR REPORTING
@@ -79,7 +79,6 @@
 	define('CONFIG_DIR',		'config' . DIRECTORY_SEPARATOR);
 	define('LAYOUT_DIR',		'layout' . DIRECTORY_SEPARATOR);
 	define('MODULE_DIR',		'modules' . DIRECTORY_SEPARATOR);
-	define('LANG_DIR',			'lang' . DIRECTORY_SEPARATOR);
 	
 	define('TEMPLATE_DIR',		'template' . DIRECTORY_SEPARATOR);
 	
@@ -97,6 +96,8 @@
 
 	define('CORE_DIR',			PRIVATE_DIR.'ajde' . DIRECTORY_SEPARATOR);
 	define('APP_DIR',			PRIVATE_DIR.'application' . DIRECTORY_SEPARATOR);	
+	
+	define('LANG_DIR',			APP_DIR . 'lang' . DIRECTORY_SEPARATOR);
 	
 //	--------------------
 //	Zend requires include path to be set to the LIB directory

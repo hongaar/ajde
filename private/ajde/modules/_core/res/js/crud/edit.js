@@ -178,6 +178,7 @@ AC.Crud.Edit = function() {
 			if (typeof $(form[0]).data('onBeforeSubmit') === 'function') {
 				var fn = $(form[0]).data('onBeforeSubmit');
 				if (fn() === false) {
+					$('body').removeClass('loading');
 					form.find(disableOnSave).attr('disabled', null);
 					e.preventDefault();
 					return false;

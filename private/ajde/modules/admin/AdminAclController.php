@@ -1,7 +1,7 @@
 <?php 
 
-// const in declaration
-require MODULE_DIR . 'node/model/NodeModel.php';
+// when using const in declaration, uncomment next line
+// require CORE_DIR . MODULE_DIR . 'node/model/NodeModel.php';
 
 class AdminAclController extends AdminController
 {	

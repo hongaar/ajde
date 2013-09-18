@@ -16,6 +16,9 @@ if (!Ajde::app()->getRequest()->has('new') && !Ajde::app()->getRequest()->has('e
 	$collection->getQuery()->addSelect('nodetype.icon AS nodetype_icon');
 }
 
+// allow crud output to render before we render MainFilter
+$crudOutput = $crud->output();
+
 ?>
 
 <div class="row-fluid">
@@ -31,7 +34,7 @@ if (!Ajde::app()->getRequest()->has('new') && !Ajde::app()->getRequest()->has('e
 			</h1>
 		</div>		
 		
-		<?php echo $crud->output(); ?>
+		<?php echo $crudOutput; ?>
 		
 	</div><!--/span-->
 </div><!--/row-->

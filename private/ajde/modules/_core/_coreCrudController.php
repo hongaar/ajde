@@ -55,7 +55,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 	}
 	
 	public function editDefault()
-	{		
+	{
 		$this->setAction('edit');
 		
 		$crud = $this->getCrudInstance();
@@ -82,6 +82,19 @@ class _coreCrudController extends Ajde_Acl_Controller
 			$crud->setId(Ajde::app()->getRequest()->getParam('edit', false));
 		}
 		
+		// Hide mainfilter fields
+		$crudView = $crud->getCollectionView();
+		$mainFilter = $crudView->getMainFilter();
+		if ($mainFilter) {
+			$currentFilter = $crudView->getFilterForField($mainFilter);
+			// update mainfilter for new records
+			if (Ajde::app()->getRequest()->has('new')) {
+				$crud->setOption('fields.' . $mainFilter . '.value', $currentFilter);
+			}
+			$crud->setOption('fields.' . $mainFilter . '.hidden', true);
+		}
+		
+		// Set prefilled, disabled and hidden fields from request
 		$disable = Ajde::app()->getRequest()->getParam('disable', array());
 		$hide = Ajde::app()->getRequest()->getParam('hide', array());
 		$prefill = Ajde::app()->getRequest()->getParam('prefill', array());
@@ -97,18 +110,6 @@ class _coreCrudController extends Ajde_Acl_Controller
 			if ($value) {
 				$crud->setOption('fields.' . $field . '.hidden', true);	
 			}
-		}
-		
-		// Hide mainfilter fields	
-		$crudView = $crud->getCollectionView();
-		$mainFilter = $crudView->getMainFilter();
-		if ($mainFilter) {
-			$currentFilter = $crudView->getFilterForField($mainFilter);
-			// update mainfilter for new records
-			if (Ajde::app()->getRequest()->has('new')) {
-				$crud->setOption('fields.' . $mainFilter . '.value', $currentFilter);	
-			}
-			$crud->setOption('fields.' . $mainFilter . '.hidden', true);	
 		}
 		
 		// Reload Crud fields in case they were already loaded
@@ -260,7 +261,9 @@ class _coreCrudController extends Ajde_Acl_Controller
 			// Make sure ids is a array of integers
 			$ids = array();
 			foreach($id as $elm) {
-				$ids[] = (int) $elm;
+				if (!empty($elm)) {
+					$ids[] = (int) $elm;
+				}
 			}
 
 			// Get lowest current sort values
@@ -279,7 +282,9 @@ class _coreCrudController extends Ajde_Acl_Controller
 			$success = true;
 			foreach($ids as $id) {
 				$model->loadByPK($id);
-				$model->set($sortField, $sortValue);		
+				$model->set($sortField, $sortValue);
+				// don't update fields with name 'updated'
+				$model->set('updated', new Ajde_Db_Function('updated'));
 				$success = $success * $model->save();
 				$sortValue++;
 				if ($field->has('sort_children')) {

@@ -1,6 +1,6 @@
 <?php
 
-class MenuCollection extends Ajde_Collection
+class MenuCollection extends Ajde_Collection_With_I18n
 {
 	public function filterByParent($menuId)
 	{

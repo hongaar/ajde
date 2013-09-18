@@ -1,0 +1,11 @@
+select.lang {
+	width: inherit;
+}
+
+div.translations {
+	margin-top: 10px;
+}
+
+div.translations a.new {
+	color: rgb(245, 15, 67);
+}

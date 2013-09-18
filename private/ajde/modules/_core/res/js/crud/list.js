@@ -329,10 +329,13 @@ AC.Crud.List = function() {
 
 			// Add sort fieldname
 			data = data + '&field=' + form.find('td.sort:eq(0)').attr('data-field');
-
+			
+			$('body').addClass('loading');
 			$.post(url, data, function(response) {
 				if (response.operation === 'sort' && response.success === true) {
+					$('body').removeClass('loading');
 					AC.Core.Alert.flash(response.message);
+					AC.Crud.List.updateView(form.children(':eq(0)'));
 				}
 			}, 'json').error(function(jqXHR, message, exception) {
 				$('body').removeClass('loading');

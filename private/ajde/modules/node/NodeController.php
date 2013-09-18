@@ -22,7 +22,7 @@ class NodeController extends Ajde_Controller
 		$slug = $this->getSlug();
 		$node = $this->getModel();
 		$node->loadBySlug($slug);
-		
+				
 		// check if we have a hit
 		if (!$node->hasLoaded()) {
 			Ajde::app()->getResponse()->redirectNotFound();
@@ -49,6 +49,7 @@ class NodeController extends Ajde_Controller
 	
 	public static function getNodeOptions()
 	{
+		// show only
 		$showOnlyWhenFields = array(
 			'title', 'subtitle', 'content', 'summary', 'media', 'tag', 'additional_media', 'children', 'published', 'related_nodes'
 		);
@@ -64,7 +65,7 @@ class NodeController extends Ajde_Controller
 				}
 			}
 		}
-
+		
 		$options = new Ajde_Crud_Options();
 		$options
 			->selectFields()
@@ -127,10 +128,6 @@ class NodeController extends Ajde_Controller
 				->selectField('sort')
 					->setType('sort')
 					->up()
-				->selectField('url')
-					->setIsReadonly(true)
-					->setLabel('URL')
-					->up()
 				->selectField('additional_media')
 					->addShowOnlyWhen('nodetype', $showOnlyWhen['additional_media'])
 					->setType('multiple')
@@ -176,6 +173,13 @@ class NodeController extends Ajde_Controller
 					->setFunction('displayAgo')
 					->setIsReadonly(true)
 					->up()
+				->selectField('lang')
+					->setFunction('displayLang')
+					->setType('i18n')
+					->setCloneFields(array(
+							'nodetype', 'media'
+						))
+					->up()
 				->up()
 			->selectList()
 				->selectButtons()
@@ -185,7 +189,7 @@ class NodeController extends Ajde_Controller
 					->addItemButton('child', 'addChildButton', 'btn-success add-child', false, true)
 					->up()
 				->setMain('title')
-				->setShow(array('title', 'updated', 'published', 'sort'))
+				->setShow(array('title', 'lang', 'updated', 'published', 'sort'))
 				->setThumbDim(50, 50)
 				->setSearch(false)
 				->selectView()
@@ -243,6 +247,11 @@ class NodeController extends Ajde_Controller
 								->setTitle('Metadata')
 								->setClass('narrow short well')
 								->setShow(array('added', 'updated', 'published', 'published_start', 'published_end', 'user'))
+								->up()
+							->addBlock()
+								->setTitle('Translation')
+								->setClass('narrow short well')
+								->setShow(array('lang'))
 		->finished();
 		
 		/* @var $decorator Ajde_Crud_Cms_Meta_Decorator */

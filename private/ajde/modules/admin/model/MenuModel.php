@@ -1,6 +1,6 @@
 <?php
 
-class MenuModel extends Ajde_Model
+class MenuModel extends Ajde_Model_With_I18n
 {
 	protected $_autoloadParents = false;
 	protected $_displayField = 'name';
@@ -28,6 +28,16 @@ class MenuModel extends Ajde_Model
 		$ret = _c($this->name);
 		$ret = str_repeat('<span class="tree-spacer"></span>', $this->get('level')) . $ret;
 		return $ret;
+	}
+	
+	public function displayLang()
+	{
+		$lang = Ajde_Lang::getInstance();
+		$currentLang = $this->get('lang');
+		if ($currentLang) {
+			return $lang->getNiceName($currentLang);
+		}
+		return '';
 	}
 	
 	public function afterSort()
