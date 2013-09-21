@@ -34,7 +34,7 @@ It follows the naming conventions of the Zend Framework and you can use most of 
 
 #### A framework for clients
 
-Current development on the Ajde CMS is taking place in the `cms` branch. To get the latest snapshot of Ajde, make sure to clone this branch.
+Current development focuses on the CMS system, and Ajde is evolving to a complete web application administration package. However, CMS might not be the right designation. It has some typical CMS characteristics - and we will expand those in the future - but at its core it is mainly an extensive CRUD layer with a highly customizable GUI.
 
 
 ----------------
@@ -53,7 +53,8 @@ It has however no support for plug and play themes or plugins or whatsoever, so 
  - Database & query abstraction
  - CRUD
  - ACL layer
- - CMS
+ - CMS features
+ - Auto update module (for production installations)
  - Shopping cart with support for iDeal (WeDeal) & PayPal
  - Templating in straight PHP or XHTML
  - Dynamic routing
