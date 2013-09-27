@@ -32,7 +32,7 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 		$this->available_package = $zipball;
 		
 		// allow 5 minutes for each step
-		set_time_limit(5 * 60);
+		@set_time_limit(5 * 60);
 	}
 	
 	public function getCurrentVersion()
