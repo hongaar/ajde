@@ -185,7 +185,7 @@ class NodeModel extends Ajde_Model_With_AclI18n
 	public function addChildButton() {
 		if ($this->hasLoaded() && $childtype = $this->getNodetype()->get('child_type')) {
 			$this->getNodetype()->loadParent('child_type');
-			return '<i class="icon-plus icon-white" data-nodetype="' . $childtype . '"></i> ' . strtolower($this->getNodetype()->get('child_type')->getName());
+			return '<i class="icon-plus icon-white" data-nodetype="' . $childtype . '"></i><span class="text-slide"> ' . strtolower($this->getNodetype()->get('child_type')->getName()) . '</span>';
 		}
 		return false;
 	}

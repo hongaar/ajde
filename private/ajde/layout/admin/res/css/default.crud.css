@@ -340,6 +340,26 @@ table.crud {
 					a.btn-left {
 						text-align: left;
 					}
+					
+					span.text-slide {
+						display: inline-block;
+						max-width: 0;
+						overflow: hidden;
+						
+			      -webkit-transition: all 0.3s ease-out; 
+				     -moz-transition: all 0.3s ease-out; 
+				       -o-transition: all 0.3s ease-out; 
+				          transition: all 0.3s ease-out; 
+										
+					}
+					
+					&:hover {
+						
+						span.text-slide {
+							max-width: 100px;
+						}
+					
+					}
 				}
 				
 				.thumbContainer {
