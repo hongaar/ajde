@@ -49,6 +49,7 @@ class AdminCmsController extends AdminController
 	public function settings()
 	{
 		Ajde_Model::register('admin');
+		Ajde_Model::register('node');
 		
 		Ajde::app()->getDocument()->setTitle("Settings");
 		

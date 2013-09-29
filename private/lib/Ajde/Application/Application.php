@@ -75,24 +75,32 @@ class Ajde_Application extends Ajde_Object_Singleton
 			$response = new Ajde_Http_Response();
 			$this->setResponse($response);
 		$this->endTimer($timer);
+		
+		Ajde_Event::trigger($this, 'onAfterResponseCreated');
 
 		// Bootstrap init
 		$timer = $this->addTimer('Run bootstrap queue');
 			$bootstrap = new Ajde_Core_Bootstrap();
 			$bootstrap->run();
 		$this->endTimer($timer);
+		
+		Ajde_Event::trigger($this, 'onAfterBootstrap');
 
 		// Get request
 		$timer = $this->addTimer('Read in global request');
 			$request = Ajde_Http_Request::fromGlobal();
 			$this->setRequest($request);
 		$this->endTimer($timer);
+		
+		Ajde_Event::trigger($this, 'onAfterRequestCreated');
 
 		// Get route
 		$timer = $this->addTimer('Initialize route');
 			$route = $request->initRoute();
 			$this->setRoute($route);
 		$this->endTimer($timer);
+		
+		Ajde_Event::trigger($this, 'onAfterRouteInitialized');
 
 		// Load document
 		$timer = $this->addTimer('Create document');
@@ -100,22 +108,30 @@ class Ajde_Application extends Ajde_Object_Singleton
 			$this->setDocument($document);
 		$this->endTimer($timer);
 		
+		Ajde_Event::trigger($this, 'onAfterDocumentCreated');
+		
 		// Load controller
 		$timer = $this->addTimer('Load controller');
 			$controller = Ajde_Controller::fromRoute($route);
 			$this->setController($controller);
 		$this->endTimer($timer);
+		
+		Ajde_Event::trigger($this, 'onAfterControllerCreated');
 
 		// Invoke controller action
 		$timer = $this->addTimer('Invoke controller');
 			$actionResult = $controller->invoke();
 			$document->setBody($actionResult);
 		$this->endTimer($timer);
+		
+		Ajde_Event::trigger($this, 'onAfterControllerInvoked');
 
 		// Get document contents
 		$timer = $this->addTimer('Render document');
 			$contents = $document->render();
 		$this->endTimer($timer);
+		
+		Ajde_Event::trigger($this, 'onAfterDocumentRendered');
 		
 		// Let the cache handle the contents and have it saved to the response
 		$timer = $this->addTimer('Save to response');
@@ -123,9 +139,13 @@ class Ajde_Application extends Ajde_Object_Singleton
 			$cache->setContents($contents);
 			$cache->saveResponse();
 		$this->endTimer($timer);
+		
+		Ajde_Event::trigger($this, 'onAfterResponseCreated');
 
 		// Output the buffer
 		$response->send();
+		
+		Ajde_Event::trigger($this, 'onAfterResponseSent');
 	}
 
 	public static function routingError(Exception $exception)

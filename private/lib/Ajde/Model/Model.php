@@ -19,6 +19,10 @@ class Ajde_Model extends Ajde_Object_Standard
 
 	public static function register($controller)
 	{
+		if (Ajde_Cms::hasRegisteredAll()) {
+			return;
+		}
+		
 		// Extend Ajde_Controller
 		if (!Ajde_Event::has('Ajde_Controller', 'call', 'Ajde_Model::extendController')) {
 			Ajde_Event::register('Ajde_Controller', 'call', 'Ajde_Model::extendController');

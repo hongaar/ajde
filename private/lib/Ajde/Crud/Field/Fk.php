@@ -49,6 +49,10 @@ class Ajde_Crud_Field_Fk extends Ajde_Crud_Field_Enum
 		if (!isset($this->_collection)) {
 			$collectionName = ucfirst($this->getModelName()) . 'Collection';
 			$this->_collection = new $collectionName;
+			if (method_exists($this->_collection, 'getLanguageField')) {
+				$languageField = $this->_collection->getLanguageField();
+				$this->_collection->addFilter(new Ajde_Filter_Where($languageField, Ajde_Filter::FILTER_EQUALS, Config::get('lang')));
+			}
 		}
 		return $this->_collection;
 	}

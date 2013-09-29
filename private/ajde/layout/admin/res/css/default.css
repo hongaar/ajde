@@ -170,6 +170,25 @@ select option.choose {
 	}
 }
 
+.chrome {
+	display: none;
+	min-height: 50px; 
+	
+	img {
+		margin-right: 10px;
+	}
+	
+	a {
+		font-weight: bold;
+	}
+}
+
+#no-chrome-warning {	
+	a {
+		color: white !important;
+	}
+}
+
 body.iframe .row-fluid > div {
 	-webkit-transition: none;
 	-moz-transition: none;

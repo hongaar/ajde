@@ -13,6 +13,20 @@ class NodeModel extends Ajde_Model_With_AclI18n
 		$this->registerEvents();
 	}
 	
+	/**
+	 * 
+	 * @param int $id
+	 * @return NodeModel|boolean
+	 */
+	public static function fromPk($id)
+	{
+		$node = new self();
+		if ($node->loadByPK($id)) {
+			return $node;
+		}
+		return false;
+	}
+	
 	public function __wakeup()
 	{
 		parent::__wakeup();

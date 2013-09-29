@@ -211,13 +211,36 @@ $currentGrouper = '';
 		</div>
 
 		<div class="container-fluid">
+		
+			<div id="no-chrome-warning" class="chrome alert">
+				<img src="https://lh3.ggpht.com/7O3H3V0fEBumwJlqDLD03t1fmwl8fH9YoBsPwB2UQ_aiBilM7OAOe2gkFB3wrojJqbM=w50" class="pull-left" alt="Chrome logo" />
+				<p>
+					The website you're managing is optimized for all regular browsers. This administration section however, works best with Google Chrome.<br/>
+					<i class="icon-chevron-right icon-white"></i><a href="http://chrome.google.com">Please  download &amp; install Google Chrome</a>
+				</p>
+			</div>
 			
 			<?php echo $this->getDocument()->getBody(); ?>
 			
 			<div class="clearfix"></div>
 			
-			<hr>
-						
+			<?php
+			$chromeapp = new Ajde_Session('env');
+			if (Ajde::app()->getRequest()->getInt('chromeapp', false) === 1) {
+				$chromeapp->set('chromeapp', 1);
+			}
+			if (!$chromeapp->has('chromeapp')) { ?>
+			<div id="chrome-app" class="chrome well">
+				<img src="https://lh3.ggpht.com/7O3H3V0fEBumwJlqDLD03t1fmwl8fH9YoBsPwB2UQ_aiBilM7OAOe2gkFB3wrojJqbM=w50" class="pull-left" alt="Chrome logo" />
+				<p>
+					There's a Chrome app available for easy access to this administration panel.<br/>
+					<i class="icon-chevron-right"></i><a href="admin/system:chromeApp">Install now</a>
+				</p>
+			</div>
+			<?php } else { ?>		
+				<hr>
+			<?php } ?>
+			
 			<footer>
 				<span class="pull-right ajde-footer">
 					Powered by <a href="https://github.com/hongaar/ajde"><img src="<?php echo MEDIA_DIR; ?>ajde-small.png" /></a> web administration platform				
