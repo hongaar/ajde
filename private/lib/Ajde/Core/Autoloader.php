@@ -115,7 +115,7 @@ class Ajde_Core_Autoloader
 
 	public static function autoload($className)
 	{
-		$debug = true; // turn on for performance checking of the autoloader
+		$debug = false; // turn on for performance checking of the autoloader
 		
 		if (in_array($className, self::$incompatibleClasses)) {
 			throw new Ajde_Exception('Could not create instance of incompatible class ' . $className . '.', 90018);
