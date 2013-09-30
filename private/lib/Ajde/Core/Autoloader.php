@@ -115,7 +115,7 @@ class Ajde_Core_Autoloader
 
 	public static function autoload($className)
 	{
-		$debug = false; // turn on for performance checking of the autoloader
+		$debug = true; // turn on for performance checking of the autoloader
 		
 		if (in_array($className, self::$incompatibleClasses)) {
 			throw new Ajde_Exception('Could not create instance of incompatible class ' . $className . '.', 90018);
@@ -140,8 +140,8 @@ class Ajde_Core_Autoloader
 			// Non LIB related classes
 			if (substr_count($className, 'Controller') > 0) {
 				$dirs = array(
-					CORE_DIR . MODULE_DIR,
-					APP_DIR . MODULE_DIR
+					APP_DIR . MODULE_DIR,
+					CORE_DIR . MODULE_DIR					
 				);
 				
 				$controllerName = str_replace('Controller', '', $className);
