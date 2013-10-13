@@ -331,9 +331,9 @@ class NodeModel extends Ajde_Model_With_AclI18n
 		}
 	}
 	
-	protected function _load($sql, $values)
+	protected function _load($sql, $values, $populate = true)
 	{
-		$return = parent::_load($sql, $values);
+		$return = parent::_load($sql, $values, $populate);
 		if ($return && Ajde::app()->getRequest()->getParam('filterPublished', false) ==  true) {
 			$this->filterPublished();
 		}		

@@ -29,13 +29,13 @@ class Ajde_Model extends Ajde_Object_Standard
 		}
 		// Extend autoloader
 		if ($controller instanceof Ajde_Controller) {
-			Ajde_Core_Autoloader::addDir(CORE_DIR . MODULE_DIR . $controller->getModule() . '/model/');
 			Ajde_Core_Autoloader::addDir(APP_DIR . MODULE_DIR . $controller->getModule() . '/model/');
+			Ajde_Core_Autoloader::addDir(CORE_DIR . MODULE_DIR . $controller->getModule() . '/model/');
 		} elseif ($controller === '*') {
 			self::registerAll();
 		} else {
-			Ajde_Core_Autoloader::addDir(CORE_DIR . MODULE_DIR . $controller . '/model/');
 			Ajde_Core_Autoloader::addDir(APP_DIR . MODULE_DIR . $controller . '/model/');
+			Ajde_Core_Autoloader::addDir(CORE_DIR . MODULE_DIR . $controller . '/model/');
 		}
 	}
 
@@ -246,18 +246,18 @@ class Ajde_Model extends Ajde_Object_Standard
 		return $this->_load($sql, $values);
 	}
 
-	protected function _load($sql, $values)
+	protected function _load($sql, $values, $populate = true)
 	{
 		$statement = $this->getConnection()->prepare($sql);
 		$statement->execute($values);
 		$result = $statement->fetch(PDO::FETCH_ASSOC);
 		if ($result === false || empty($result)) {
 			return false;
-		} else {
+		} else if ($populate === true) {
 			$this->reset();
 			$this->loadFromValues($result);
-			return true;
 		}
+		return true;
 	}
 	
 	public function loadFromValues($values)

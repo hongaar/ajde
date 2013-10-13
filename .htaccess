@@ -18,6 +18,7 @@
   
 	# Max upload size
 	php_value upload_max_filesize 15M
+	php_value post_max_size 15M
                                                
 	# Force PHP errors
 	php_value display_errors 1

@@ -208,7 +208,7 @@ abstract class Ajde_User extends Ajde_Model
 		}
 		$values = array($newEmail, $this->getPK());
 		$sql = 'SELECT * FROM '.$this->_table.' WHERE email = ? AND id != ? LIMIT 1';
-		return !$this->_load($sql, $values);
+		return !$this->_load($sql, $values, false);
 	}
     
     public function canChangeUsernameTo($newUsername)
@@ -218,7 +218,7 @@ abstract class Ajde_User extends Ajde_Model
 		}
 		$values = array($newUsername, $this->getPK());
 		$sql = 'SELECT * FROM '.$this->_table.' WHERE ' . $this->usernameField . ' = ? AND id != ? LIMIT 1';
-		return !$this->_load($sql, $values);
+		return !$this->_load($sql, $values, false);
 	}
 	
 	public function resetUser()

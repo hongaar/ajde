@@ -56,7 +56,7 @@ AC.Form.Upload = function() {
                             elm.parents('form').find('button.save, button.apply').attr('disabled', 'disabled');
                             // Disable upload button
                             if (elm.attr('data-multiple') == '0') {
-    //							elm.find('.qq-upload-button').hide();
+    							elm.find('.qq-upload-button').hide();
                             }
                         },
                         onProgress: function(id, fileName, loaded, total) {},

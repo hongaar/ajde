@@ -41,6 +41,7 @@
 
 	// Max upload size
 	ini_set('upload_max_filesize', '15M');
+	ini_set('post_max_size', '15M');
 
 	// Force PHP errors
 	ini_set('display_errors', 1);

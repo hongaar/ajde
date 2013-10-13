@@ -52,11 +52,11 @@ $field = $this->field;
 						echo "<span class='icon'><img class='icon' src='" . Ajde_Resource_FileIcon::_($extension) . "' /></span>";
 					}
 					echo "<span>";
-						echo "<span class='filename'>" . str_replace(Config::get('local_root') . '/' . $field->getSaveDir(), '', $file) . "</span>";
+						echo "<span class='filename'>" . str_replace(Config::get('local_root') . DIRECTORY_SEPARATOR . $field->getSaveDir(), '', $file) . "</span>";
 						if ($isImage) {
-							echo "<span class='imagePreview preview' data-fancybox-group='preview" . ucfirst($field->getName()) . "' title='" . _e(str_replace(Config::get('local_root') . '/' . $field->getSaveDir(), '', $file)) . "' href='" . $this->escape(str_replace(Config::get('local_root') . '/', '', $file)) . "'>preview</span>";
+							echo "<span class='imagePreview preview' data-fancybox-group='preview" . ucfirst($field->getName()) . "' title='" . _e(str_replace(Config::get('local_root') . DIRECTORY_SEPARATOR . $field->getSaveDir(), '', $file)) . "' href='" . $this->escape(str_replace(Config::get('local_root') . DIRECTORY_SEPARATOR, '', $file)) . "'>preview</span>";
 						} else {
-							echo "<span class='filePreview preview' href='" . $this->escape(str_replace(Config::get('local_root') . '/', '', $file)) . "'>preview</span>";
+							echo "<span class='filePreview preview' href='" . $this->escape(str_replace(Config::get('local_root') . DIRECTORY_SEPARATOR, '', $file)) . "'>preview</span>";
 						}
 					echo "</span>";
 				echo "</a>";
