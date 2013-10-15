@@ -224,6 +224,8 @@ $currentGrouper = '';
 			
 			<div class="clearfix"></div>
 			
+			<hr>
+			
 			<?php
 			$chromeapp = new Ajde_Session('env');
 			if (Ajde::app()->getRequest()->getInt('chromeapp', false) === 1) {
@@ -237,8 +239,6 @@ $currentGrouper = '';
 					<i class="icon-chevron-right"></i><a href="admin/system:chromeApp">Install now</a>
 				</p>
 			</div>
-			<?php } else { ?>		
-				<hr>
 			<?php } ?>
 			
 			<footer>
