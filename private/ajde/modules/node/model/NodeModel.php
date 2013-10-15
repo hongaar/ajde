@@ -442,11 +442,17 @@ class NodeModel extends Ajde_Model_With_AclI18n
 		return $collection;
 	}
 	
+	/**
+	 * 
+	 * @return MediaCollection
+	 */
 	public function getAdditionalMedia()
 	{
 		$collection = new MediaCollection();
-		$collection->addFilter(new Ajde_Filter_Where('post', Ajde_Filter::FILTER_EQUALS, $this->getPK()));
-		$collection->orderBy('sort');
+		$collection->addFilter(new Ajde_Filter_Join('node_media', 'node_media.media', 'media.id'));
+		$collection->addFilter(new Ajde_Filter_Join('node', 'node.id', 'node_media.node'));
+		$collection->addFilter(new Ajde_Filter_Where('node_media.node', Ajde_Filter::FILTER_EQUALS, $this->getPK()));
+		$collection->orderBy('node_media.sort');
 	
 		return $collection;
 	}
@@ -578,9 +584,9 @@ class NodeModel extends Ajde_Model_With_AclI18n
 	public function getTags()
 	{
 		$id = $this->getPK();
-		$crossReferenceTable = 'post_tag';
+		$crossReferenceTable = 'node_tag';
 
-		$subQuery = new Ajde_Db_Function('(SELECT tag FROM ' . $crossReferenceTable . ' WHERE post = ' . $this->getPK() . ')');
+		$subQuery = new Ajde_Db_Function('(SELECT tag FROM ' . $crossReferenceTable . ' WHERE node = ' . $this->getPK() . ')');
 		$collection = new TagCollection();
 		$collection->addFilter(new Ajde_Filter_Where('id', Ajde_Filter::FILTER_IN, $subQuery));
 		
