@@ -32,6 +32,7 @@ class Ajde_Acl_Proxy_Collection extends Ajde_Collection
 			}
 		}
 		$this->_items = $newItems;
+		$this->rewind();
 	}
 	
 	private function validationErrorRedirect()
