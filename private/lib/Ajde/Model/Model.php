@@ -16,10 +16,12 @@ class Ajde_Model extends Ajde_Object_Standard
 	protected $_metaValues = array();
 	
 	protected $_validators = array();
+	
+	private static $_registeredAll = false;
 
 	public static function register($controller)
 	{
-		if (Ajde_Cms::hasRegisteredAll()) {
+		if (self::$_registeredAll === true) {
 			return;
 		}
 		
@@ -29,26 +31,27 @@ class Ajde_Model extends Ajde_Object_Standard
 		}
 		// Extend autoloader
 		if ($controller instanceof Ajde_Controller) {
-			Ajde_Core_Autoloader::addDir(CORE_DIR . MODULE_DIR . $controller->getModule() . '/model/');
 			Ajde_Core_Autoloader::addDir(APP_DIR . MODULE_DIR . $controller->getModule() . '/model/');
+			Ajde_Core_Autoloader::addDir(CORE_DIR . MODULE_DIR . $controller->getModule() . '/model/');
 		} elseif ($controller === '*') {
 			self::registerAll();
 		} else {
-			Ajde_Core_Autoloader::addDir(CORE_DIR . MODULE_DIR . $controller . '/model/');
 			Ajde_Core_Autoloader::addDir(APP_DIR . MODULE_DIR . $controller . '/model/');
+			Ajde_Core_Autoloader::addDir(CORE_DIR . MODULE_DIR . $controller . '/model/');
 		}
 	}
 
 	public static function registerAll()
 	{
-		$dirs = Ajde_FS_Find::findFiles(CORE_DIR . MODULE_DIR, '*/model');
-		foreach($dirs as $dir) {
-			Ajde_Core_Autoloader::addDir($dir . DIRECTORY_SEPARATOR);
-		}
 		$dirs = Ajde_FS_Find::findFiles(APP_DIR . MODULE_DIR, '*/model');
 		foreach($dirs as $dir) {
 			Ajde_Core_Autoloader::addDir($dir . DIRECTORY_SEPARATOR);
 		}
+		$dirs = Ajde_FS_Find::findFiles(CORE_DIR . MODULE_DIR, '*/model');		
+		foreach($dirs as $dir) {
+			Ajde_Core_Autoloader::addDir($dir . DIRECTORY_SEPARATOR);
+		}
+		self::$_registeredAll = true;
 	}
 
 	public static function extendController(Ajde_Controller $controller, $method, $arguments)
