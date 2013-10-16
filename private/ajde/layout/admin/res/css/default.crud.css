@@ -91,10 +91,10 @@ fieldset.crud {
 		padding: 19px;
 		margin-bottom: 20px;
 		
-		label {
+		label, legend {
 			color: #FFF !important;
 		}
-		
+				
 		&:not(.sidebar) {
 			.control-label {
 				width: 140px;
@@ -345,6 +345,7 @@ table.crud {
 						display: inline-block;
 						max-width: 0;
 						overflow: hidden;
+						height: 15px;
 						
 			      -webkit-transition: all 0.3s ease-out; 
 				     -moz-transition: all 0.3s ease-out; 
@@ -421,8 +422,8 @@ table.crud {
 				
 				background-color: #cde6ff;
 				
-  -webkit-box-shadow: 0px 0px 10px 5px #8a8a8a;
-          box-shadow: 0px 0px 10px 5px #8a8a8a;
+  /*-webkit-box-shadow: 0px 0px 10px 5px #8a8a8a;
+          box-shadow: 0px 0px 10px 5px #8a8a8a;*/
           
   -webkit-transition: all 0.3s ease-out; 
      -moz-transition: all 0.3s ease-out; 

@@ -10,7 +10,7 @@
 	var update = function(input) {
 		setTimeout(function() {
 			$(input).parents('div.controls').find('input[type=hidden]').val($(input).attr('checked') == 'checked' ? 1 : 0).change();
-			$(input).nextAll('label').text($(input).attr('checked') == 'checked' ? 'On' : 'Off');
+			$(input).next().children('label').text($(input).attr('checked') == 'checked' ? 'On' : 'Off');
 		}, 0);
 	}
 });
