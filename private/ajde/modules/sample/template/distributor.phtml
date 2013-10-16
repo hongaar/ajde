@@ -8,7 +8,7 @@ $options
 			->up()
 		->selectField('logo')
 			->setType('file')
-			->setSaveDir('public/images/uploads/')
+			->setSaveDir('public/media/upload/')
 			->setExtensions(array('png', 'jpg', 'pdf', 'docx'))
 			->setMultiple(false)
 			->setThumbDim(266, 100)

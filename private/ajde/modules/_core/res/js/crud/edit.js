@@ -122,7 +122,7 @@ AC.Crud.Edit = function() {
 				$(this).data('sort', sort);
 			});
 			groups.detach().sort(function(a, b) {
-				return $(a).data('sort') > $(b).data('sort') ? 1 : -1;  
+				return parseInt($(a).data('sort')) > parseInt($(b).data('sort')) ? 1 : -1;  
 			});
 			container.append(groups);			
 		},

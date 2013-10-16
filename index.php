@@ -180,7 +180,7 @@
 //	--------------------
 //	Install the db?
 //	--------------------
-	if (isset($_GET['install']) && $_GET['install'] == '1') {
+	if (isset($_GET['install']) && $_GET['install'] == '1' && is_file('install.php')) {
 		require('install.php');
 		exit;
 	}

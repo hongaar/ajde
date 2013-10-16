@@ -81,15 +81,20 @@ class MenuModel extends Ajde_Model_With_I18n
 		$items = array();
 		foreach($collection as $item) {
 			$name = $item->name;
+			$target = "";
 			if ($item->type == 'URL') {				
 				$url = $item->url;
+				if (substr($url, 0, 7) === 'http://') {
+					$target = "_blank";
+				}
 			} else if ($item->type == 'Node link') {
 				$node->loadByPK($item->node);
 				$url = $node->getUrl();				
 			}
 			$items[] = array(
 				'name' => $name,
-				'url' => $url				
+				'url' => $url,
+				'target' => $target			
 			);
 		}
 		
