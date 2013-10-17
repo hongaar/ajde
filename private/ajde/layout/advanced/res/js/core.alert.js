@@ -24,6 +24,7 @@ AC.Core.Alert = function() {
 		},
 		
 		show: function(text, c) {
+			AC.Core.Alert.hide();
 			if (timer) {
 				clearTimeout(timer);
 			}

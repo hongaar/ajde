@@ -31,7 +31,7 @@ $options
 			->setIsRequired(true)
 			->addShowOnlyWhen('type', 'nodelink')
 			->setLabel('Node link')
-			->up()
+			->up()		
 		->selectField('url')
 			->setIsRequired(true)
 			->addShowOnlyWhen('type', 'url')
@@ -87,9 +87,9 @@ $options
 				->addColumn()
 					->setSpan(3)
 					->addBlock()
-					->setClass('narrow sidebar well')
-					->setShow(array('lang'))
-					->up()
+						->setClass('narrow sidebar well')
+						->setShow(array('lang'))
+						->up()
 						
 	->finished();
 

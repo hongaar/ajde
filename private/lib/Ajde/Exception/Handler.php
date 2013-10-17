@@ -194,6 +194,12 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 	{
 		$lineOffset = 5;
 		$file = '';
+
+		// in case of eval, filename looks like File.php(30) : eval()'d code
+		if (substr_count($filename, '(')) {
+			list($filename) = explode('(', $filename);
+		}
+		
 		if (isset($filename) && isset($line))
 		{
 			$lines = file($filename);

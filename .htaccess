@@ -45,15 +45,15 @@ RewriteRule ^(.+)$ index.php?_route=$1 [QSA,L]
 # Error documents
 # Update to local path, i.e. /ajde/errordocument.php to prevent error:
 # 	'Additionally, a 404 Not Found error was encountered while trying to use an ErrorDocument to handle the request.'
-ErrorDocument 400 errordocument.php
-ErrorDocument 401 errordocument.php
-ErrorDocument 403 errordocument.php
-ErrorDocument 404 errordocument.php
+ErrorDocument 400 /errordocument.php
+ErrorDocument 401 /errordocument.php
+ErrorDocument 403 /errordocument.php
+ErrorDocument 404 /errordocument.php
 
-ErrorDocument 500 errordocument.php
-ErrorDocument 501 errordocument.php
-ErrorDocument 502 errordocument.php
-ErrorDocument 503 errordocument.php
+ErrorDocument 500 /errordocument.php
+ErrorDocument 501 /errordocument.php
+ErrorDocument 502 /errordocument.php
+ErrorDocument 503 /errordocument.php
 
 ###### From HTML5 Boilerplate
 

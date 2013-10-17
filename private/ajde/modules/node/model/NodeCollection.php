@@ -91,6 +91,23 @@ class NodeCollection extends Ajde_Collection_With_AclI18n
 		return $this;		
 	}
 	
+	public function filterByNodetypeCategory($category)
+	{
+		$nodetypes = new NodetypeCollection();
+		$nodetypes->addFilter(new Ajde_Filter_Where('category', Ajde_Filter::FILTER_EQUALS, $category));
+		$ids = array();
+		foreach($nodetypes as $nodetype) {
+			$ids[] = $nodetype->id;
+		}
+		$this->addFilter(new Ajde_Filter_Where('nodetype', Ajde_Filter_Where::FILTER_IN, new Ajde_Db_Function('(' . implode(',', $ids) . ')')));
+	}
+	
+	public function filterByLevel($level)
+	{
+		$this->addFilter(new Ajde_Filter_Where('level', Ajde_Filter::FILTER_EQUALS, (int) $level));
+		return $this;
+	}
+	
 	public function joinMeta()
 	{
 		$this->addFilter(new Ajde_Filter_LeftJoin('node_meta', 'node_meta.node', 'node.id'));
