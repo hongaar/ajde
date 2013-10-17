@@ -12,41 +12,39 @@ $item = $this->item;
 	<?php echo _e($item->getTitle()); ?>
 </h3>
 
-<div class="row-fluid">
-	<div class="span4">
-		<table class="table table-condensed">
-			<tr>
-				<td>
-					<?php echo $item->getMediaTag(400, 150, true, ''); ?>
-				</td>
-			</tr>
-		</table>
-	</div>
-	<div class="span4">
-		<table class="table table-condensed">
-			<tr>
-				<td><?php echo _c(Ajde_Component_String::trim( $item->getContent(), 250 )); ?></td>
-			</tr>
-		</table>
-	</div>
-	<div class="span4">
-		<table class="table table-condensed">
-			<tr>
-				<th>Published</th>
-				<td>					
-					<?php echo $item->getPublished() ? 'On' : 'Off'; ?>
-				</td>
-			</tr>
-			<tr>
-				<th>Added</th>
-				<td>					
-					<?php 
-					$timestamp = new DateTime($item->get('added'));
-					$timestamp = $timestamp->format('U');
-					echo Ajde_Component_String::time2str($timestamp);
-					?>
-				</td>
-			</tr>
-		</table>
+<div class="container">
+	<div class="row-fluid">
+		<div class="span9">
+			<table class="table table-condensed">
+				<tr>
+					<td>
+						<?php echo $item->getMediaTag(150, 150, true, 'pull-left padding-right'); ?>
+						<p>
+							<?php echo nl2br(_c(Ajde_Component_String::trim( strip_tags( $item->getContent()), 450 ))); ?>
+						</p>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="span3">
+			<table class="table table-condensed">
+				<tr>
+					<th>Published</th>
+					<td>					
+						<?php echo $item->getPublished() ? 'On' : 'Off'; ?>
+					</td>
+				</tr>
+				<tr>
+					<th>Added</th>
+					<td>					
+						<?php 
+						$timestamp = new DateTime($item->get('added'));
+						$timestamp = $timestamp->format('U');
+						echo Ajde_Component_String::time2str($timestamp);
+						?>
+					</td>
+				</tr>
+			</table>
+		</div>
 	</div>
 </div>

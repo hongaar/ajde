@@ -34,12 +34,21 @@ $options
 
 	->finished();
 
-/* @var $decorator Ajde_Crud_Cms_Meta_Decorator */
-$decorator = $this->decorator;
-$decorator->setOptions($options);
-$decorator->decorateInputs('setting_meta', 'setting', 'sort', 'id', array(
-	new Ajde_Filter_Where('target', Ajde_Filter::FILTER_EQUALS, 'setting')
-));
+if (Ajde::app()->getRequest()->has('edit')) {
+	
+	$settingId = Ajde::app()->getRequest()->getInt('edit', 0);
+	
+	/* @var $decorator Ajde_Crud_Cms_Meta_Decorator */
+	$decoratorFilters = array(
+		new Ajde_Filter_Where('target', Ajde_Filter::FILTER_EQUALS, 'setting'),
+		new Ajde_Filter_Where('setting_meta.setting', Ajde_Filter::FILTER_EQUALS, $settingId)
+	);
+	
+	$decorator = $this->decorator;
+	$decorator->setOptions($options);
+	$decorator->decorateInputs('setting_meta', 'setting', 'sort', 'id', $decoratorFilters);
+}
+
 $crud = $this->ACCrudList('setting', $options);
 
 $crudOutput = $crud->output();

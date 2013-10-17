@@ -466,6 +466,8 @@ table.crud {
 						}
 					}
 					
+					
+					
 					h3 {
 						font-size: 1.2em;
 						line-height: 1.2em;
@@ -501,6 +503,10 @@ table.crud {
 							&.input-large {
 								width: 210px !important;
 							}
+						}
+						
+						img.padding-right {
+							padding-right: 10px;
 						}
 					}
 				}
@@ -703,4 +709,36 @@ table.crud {
 	&:first-of-type {
 		margin-top: 0;
 	}
+}
+
+@media screen and (min-width: 980px) {
+	
+	.sidebar-nav {
+		
+		position: fixed;
+		top: 50px;
+		left: 0;
+		bottom: 0;
+		margin-top: 0;
+		margin-bottom: 0;
+		overflow-y: auto;
+		overflow-x: hidden;
+		width: 20%;
+	
+	}
+	
+	.span0 .sidebar-nav {
+		width: inherit;
+		padding: 14px 0;
+		overflow: hidden;
+	}
+	
+	.span0 .sidebar-nav .menu-toggle {
+		float: none;
+	}
+	
+	.offset05 {
+		margin-left: 42px; 
+	}
+	
 }

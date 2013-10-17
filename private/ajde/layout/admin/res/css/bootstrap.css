@@ -49,6 +49,16 @@ input, select, textarea, body .cke.active .cke_contents, body .chzn-container-ac
 	color: #fff;
 }
 
+/* dropdown on hover */
+
+.navbar .dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.navbar .dropdown .dropdown-menu {
+	margin-top: -2px;
+}
+
 /* MULTI-LEVEL DROPDOWNS FOR BOOTSTRAP */
 /* http://imdev.in/twitter-bootstrap-multi-level-dropdown-menu-system/ */
 

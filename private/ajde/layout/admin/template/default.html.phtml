@@ -215,7 +215,7 @@ $currentGrouper = '';
 
 		<div class="container-fluid">
 		
-			<div id="no-chrome-warning" class="chrome alert">
+			<div id="no-chrome-warning" class="chrome alert menu-offset">
 				<img src="https://lh3.ggpht.com/7O3H3V0fEBumwJlqDLD03t1fmwl8fH9YoBsPwB2UQ_aiBilM7OAOe2gkFB3wrojJqbM=w50" class="pull-left" alt="Chrome logo" />
 				<p>
 					The website you're managing is optimized for all regular browsers. This administration section however, works best with Google Chrome.<br/>
@@ -235,7 +235,7 @@ $currentGrouper = '';
 				$chromeapp->set('chromeapp', 1);
 			}
 			if (!$chromeapp->has('chromeapp')) { ?>
-			<div id="chrome-app" class="chrome well">
+			<div id="chrome-app" class="chrome well menu-offset">
 				<img src="https://lh3.ggpht.com/7O3H3V0fEBumwJlqDLD03t1fmwl8fH9YoBsPwB2UQ_aiBilM7OAOe2gkFB3wrojJqbM=w50" class="pull-left" alt="Chrome logo" />
 				<p>
 					There's a Chrome app available for easy access to this administration panel.<br/>
@@ -244,7 +244,7 @@ $currentGrouper = '';
 			</div>
 			<?php } ?>
 			
-			<footer>
+			<footer class="menu-offset">
 				<span class="pull-right ajde-footer">
 					Powered by <a href="https://github.com/hongaar/ajde"><img src="<?php echo MEDIA_DIR; ?>ajde-small.png" /></a> web administration platform				
 				</span>
