@@ -55,6 +55,11 @@ class Config
 			throw new Ajde_Exception("Config parameter $param not set", 90004);
 		}
 	}
+	
+	public static function getStage()
+	{
+		return self::_getStage();
+	}
 
 	private static function _getStage($stage = null) {
 		$stage = empty($stage) ? self::$stage : $stage;

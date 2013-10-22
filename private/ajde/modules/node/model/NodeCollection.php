@@ -47,7 +47,7 @@ class NodeCollection extends Ajde_Collection_With_AclI18n
 		}
 		$subqueryFragment .= " WHERE";
 		for($i = 1; $i < $levels + 1; $i++) {
-			$subqueryFragment .= " t$i.parent = " . (int) $parentId;
+			$subqueryFragment .= " t$i.parent = " . (int) (string) $parentId;
 			if ($i < $levels) { $subqueryFragment .= " OR"; }
 		}
 		$subqueryFragment .= ')';

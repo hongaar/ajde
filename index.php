@@ -137,6 +137,11 @@
 		Ajde_Dump::dump($var, $expand);
 	}
 	
+	function dd($var) {
+		while (ob_get_level()) { ob_end_clean(); } 
+		die(var_dump($var));
+	}
+	
 	/**
 	 * Translates the string with Ajde_Lang::translate
 	 * 
