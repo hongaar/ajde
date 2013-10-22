@@ -1,0 +1,7 @@
+#chrome-app {
+	visibility: hidden;
+	max-height: 0;
+	overflow: hidden;
+	position: absolute;
+	top: -9999px;
+}

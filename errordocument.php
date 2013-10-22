@@ -1,8 +1,9 @@
 <?php
 
-if (!defined('AJDE')) {
-	die('No direct access');
-}
+// Allow direct access from .htaccess
+// if (!defined('AJDE')) {
+// 	die('No direct access');
+// }
 
 global $code;
 if (isset($_SERVER['REDIRECT_STATUS'])) {

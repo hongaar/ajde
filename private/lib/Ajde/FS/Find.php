@@ -19,7 +19,8 @@ class Ajde_FS_Find extends Ajde_Object_Static
 	{
 		$search = Config::get("local_root") . DIRECTORY_SEPARATOR . $dir . $pattern;
 		$return = array();
-		foreach (glob($search, $flags) as $filename) {
+		$files = (array) glob($search, $flags);
+		foreach ($files as $filename) {
 			$return[] = $filename;
 		}
 		return $return;

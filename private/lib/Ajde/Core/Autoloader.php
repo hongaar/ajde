@@ -140,8 +140,8 @@ class Ajde_Core_Autoloader
 			// Non LIB related classes
 			if (substr_count($className, 'Controller') > 0) {
 				$dirs = array(
-					CORE_DIR . MODULE_DIR,
-					APP_DIR . MODULE_DIR
+					APP_DIR . MODULE_DIR,
+					CORE_DIR . MODULE_DIR					
 				);
 				
 				$controllerName = str_replace('Controller', '', $className);

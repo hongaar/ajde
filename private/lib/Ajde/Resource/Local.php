@@ -122,7 +122,7 @@ class Ajde_Resource_Local extends Ajde_Resource
 	{
 		$base = '_core/component:resourceLocal';
 		if (Config::get('debug') === true) {
-			$url = $base . '.' . $this->getType() . '?' . str_replace(array('%2F', '%5C'), ':', urlencode(str_replace('private/application/', '', $this->getFilename())));
+			$url = $base . '.' . $this->getType() . '?' . str_replace(array('%2F', '%5C'), ':', urlencode($this->getFilename()));
 			$url .= '&id=' . urlencode($this->getFingerprint());
 		} else {
 			$url = $base . '/' . urlencode($this->getFingerprint()) . '.' . $this->getType();

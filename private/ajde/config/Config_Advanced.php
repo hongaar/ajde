@@ -117,7 +117,8 @@ class Config_Advanced
 									'Ajde_Core_ExternalLibs',
 									'Ajde_User_Autologon',
 									'Ajde_Core_Autodebug',
-									'Ajde_Shop_Cart_Merge'
+									'Ajde_Shop_Cart_Merge',
+									'Ajde_Cms'
 									);
 
 	function __construct()

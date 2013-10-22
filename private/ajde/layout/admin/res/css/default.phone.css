@@ -8,6 +8,19 @@
 	margin-top: auto ;
 }
 
+table.crud.list {
+	
+	td, th {
+		display: block;
+		padding: 2px;
+	}
+	
+	th {
+		
+	}
+	
+}
+
 /**** CRUD GRID VIEW ****/	
 table.crud.grid {
 	display: block;

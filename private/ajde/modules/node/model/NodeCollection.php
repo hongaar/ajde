@@ -47,7 +47,7 @@ class NodeCollection extends Ajde_Collection_With_AclI18n
 		}
 		$subqueryFragment .= " WHERE";
 		for($i = 1; $i < $levels + 1; $i++) {
-			$subqueryFragment .= " t$i.parent = " . (int) $parentId;
+			$subqueryFragment .= " t$i.parent = " . (int) (string) $parentId;
 			if ($i < $levels) { $subqueryFragment .= " OR"; }
 		}
 		$subqueryFragment .= ')';
@@ -89,6 +89,23 @@ class NodeCollection extends Ajde_Collection_With_AclI18n
 		$this->addFilter($whereGroup);
 		$this->joinMeta();
 		return $this;		
+	}
+	
+	public function filterByNodetypeCategory($category)
+	{
+		$nodetypes = new NodetypeCollection();
+		$nodetypes->addFilter(new Ajde_Filter_Where('category', Ajde_Filter::FILTER_EQUALS, $category));
+		$ids = array();
+		foreach($nodetypes as $nodetype) {
+			$ids[] = $nodetype->id;
+		}
+		$this->addFilter(new Ajde_Filter_Where('nodetype', Ajde_Filter_Where::FILTER_IN, new Ajde_Db_Function('(' . implode(',', $ids) . ')')));
+	}
+	
+	public function filterByLevel($level)
+	{
+		$this->addFilter(new Ajde_Filter_Where('level', Ajde_Filter::FILTER_EQUALS, (int) $level));
+		return $this;
 	}
 	
 	public function joinMeta()

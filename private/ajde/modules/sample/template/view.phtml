@@ -16,7 +16,7 @@ $this->requireCss('view.mobile', 'html', null, Ajde_Document_Format_Html::RESOUR
 		<h3><?php echo $this->escape( $entry->title ); ?></h3>
 		<?php if ($entry->hasNotEmpty('image')) { ?>
 		<?php echo $this->ACImage(array(
-			'filename' => 'public/images/uploads/' . $entry->getImage(),
+			'filename' => 'public/media/upload/' . $entry->getImage(),
 			'width' => 200,
 			'height' => 200,
 			'crop' => true,

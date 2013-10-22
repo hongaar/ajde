@@ -34,8 +34,8 @@ abstract class Ajde_Acl_Proxy_Model extends Ajde_Model
 		Ajde::app()->getResponse()->dieOnCode(Ajde_Http_Response::RESPONSE_TYPE_UNAUTHORIZED);
 	}
 	
-	protected function _load($sql, $values) {
-		$return = parent::_load($sql, $values);
+	protected function _load($sql, $values, $populate = true) {
+		$return = parent::_load($sql, $values, $populate);
 		if ($return) {
 			$this->validateAccess('read');
 		}

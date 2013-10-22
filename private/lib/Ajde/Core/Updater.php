@@ -32,7 +32,7 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 		$this->available_package = $zipball;
 		
 		// allow 5 minutes for each step
-		set_time_limit(5 * 60);
+		@set_time_limit(5 * 60);
 	}
 	
 	public function getCurrentVersion()
@@ -141,11 +141,42 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 	}
 	
 	public function copyFiles()
-	{		
-		$updateDir = TMP_DIR . 'update' . DIRECTORY_SEPARATOR;
-		
+	{	
 		// make sure we are in the current dir
 		chdir(Config::get('local_root'));
+		
+		$updateDir = TMP_DIR . 'update' . DIRECTORY_SEPARATOR;
+		
+		// directories to overwrite
+		$installDirs = array(
+			CORE_DIR,
+			DEV_DIR,
+			LIB_DIR . 'Ajde' . DIRECTORY_SEPARATOR,
+			PUBLIC_DIR . 'css' . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR,
+			PUBLIC_DIR . 'js' . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR,
+			PUBLIC_DIR . 'media' . DIRECTORY_SEPARATOR . '_core' . DIRECTORY_SEPARATOR,
+			PUBLIC_DIR . 'media' . DIRECTORY_SEPARATOR . 'icons' . DIRECTORY_SEPARATOR
+		);
+		
+		// files to overwrite
+		$rootFiles = Ajde_FS_Find::findFilenames($updateDir, '*');
+		
+		// make sure we have the update dir
+		if (!is_dir(TMP_DIR . 'update')) {
+			throw new Ajde_Exception('Update directory not found');
+		}
+		
+		// make sure we have all the neccesary files
+		foreach($installDirs as $installDir) {
+			if (!is_dir($updateDir . $installDir)) {
+				throw new Ajde_Exception('Directory ' . $installDir . ' in update package not found');
+			}
+		}
+		
+		// make sure we have a new index.php before deleting the old one
+		if (!is_file($updateDir . 'index.php')) {
+			throw new Ajde_Exception('File index.php in update package not found');
+		}
 		
 		// delete index.php
 		$delete_tries = 0;
@@ -160,24 +191,7 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 			$deleted = @unlink('index.php');
 		} while ($deleted === false);
 		
-		// directories to overwrite
-		$installDirs = array(
-				CORE_DIR,
-				DEV_DIR,
-				LIB_DIR . 'Ajde' . DIRECTORY_SEPARATOR,
-				PUBLIC_DIR . 'css' . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR,
-				PUBLIC_DIR . 'js' . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR,
-				PUBLIC_DIR . 'media' . DIRECTORY_SEPARATOR . '_core' . DIRECTORY_SEPARATOR,
-				PUBLIC_DIR . 'media' . DIRECTORY_SEPARATOR . 'icons' . DIRECTORY_SEPARATOR
-		);
-		
-		// files to overwrite
-		$rootFiles = Ajde_FS_Find::findFilenames($updateDir, '*');
-		
-		if (!is_dir(TMP_DIR . 'update')) {
-			throw new Ajde_Exception('Update directory not found');
-		}
-		
+		// empty directories and copy new files
 		foreach($installDirs as $installDir) {
 			if (is_dir($updateDir . $installDir)) {
 				
@@ -188,14 +202,14 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 				Ajde_FS_Directory::copy($updateDir . $installDir, $installDir);
 				
 			} else {
-				throw new Ajde_Exception('Directory ' . $installDir . ' in update package not found');
+				throw new Ajde_Exception('This is weird, should we make updating semaphored?');
 			}
 		}
 		
+		// copy individual files
 		foreach($rootFiles as $rootFile) {
 			if (is_file($updateDir . $rootFile)) {
 				
-				// copy files
 				copy($updateDir . $rootFile, $rootFile);
 				
 			}

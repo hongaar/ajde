@@ -193,7 +193,7 @@ $field = $this->field;
 										data-field='<?php echo $extraField['name']; ?>'
 										data-pk='<?php echo $pk; ?>'
 									>
-										<span><img src='<?php echo MEDIA_DIR; ?>_core/crud/up_16.png'>&middot;&middot;&middot;<img src='<?php echo MEDIA_DIR; ?>_core/crud/down_16.png'></span>
+										<span class='icon-move'></span>
 									</td>
 								<?php } else if ($type == 'meta') {
 									$value = $child->getMetaValue($extraField['name']);

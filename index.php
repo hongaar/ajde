@@ -13,7 +13,7 @@
 //	--------------------
 //	Which version of Ajde are we running?
 //	--------------------	
-	define('AJDE_VERSION', 'v0.2.3');
+	define('AJDE_VERSION', 'v0.2.4');
 
 /*********************
  * ERROR REPORTING
@@ -41,6 +41,7 @@
 
 	// Max upload size
 	ini_set('upload_max_filesize', '15M');
+	ini_set('post_max_size', '15M');
 
 	// Force PHP errors
 	ini_set('display_errors', 1);
@@ -136,6 +137,11 @@
 		Ajde_Dump::dump($var, $expand);
 	}
 	
+	function dd($var) {
+		while (ob_get_level()) { ob_end_clean(); } 
+		die(var_dump($var));
+	}
+	
 	/**
 	 * Translates the string with Ajde_Lang::translate
 	 * 
@@ -180,7 +186,7 @@
 //	--------------------
 //	Install the db?
 //	--------------------
-	if (isset($_GET['install']) && $_GET['install'] == '1') {
+	if (isset($_GET['install']) && $_GET['install'] == '1' && is_file('install.php')) {
 		require('install.php');
 		exit;
 	}

@@ -10,7 +10,7 @@ i18n = function() {
 		loading : "Bezig met laden...",
 		saving: "Bezig met opslaan...",
 		timeoutWarning: "De huidige pagina is bijna verlopen",
-		timeoutCountdown: "De huidige pagina is bijna verlopen, klik op 'Verder' binnen %s seconde om dit te voorkomen",
+		timeoutCountdown: "De huidige pagina is bijna verlopen, klik hier binnen %s seconde om dit te voorkomen",
 		timedout: "Pagina is verlopen, vernieuw de pagina a.u.b."
 	}
 }();

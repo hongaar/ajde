@@ -2,13 +2,13 @@
 
 class Config
 {
-	const DEV_STAGE = 'dev';
-	const LIVE_STAGE = 'live';
-	const AUTO_STAGE = 'auto';
+	const STAGE_DEV = 'dev';
+	const STAGE_LIVE = 'live';
+	const STAGE_AUTO = 'auto';
 	
 	// Redirect this class to the following config stage
 	// Default is 'auto' (chooses between DEV_STAGE and LIVE_STAGE based on remote_addrr
-	public static $stage			= self::AUTO_STAGE;
+	public static $stage			= self::STAGE_AUTO;
 
 	// localhost and private networks, add your own dev machine if not in
 	// private network range!
@@ -55,6 +55,11 @@ class Config
 			throw new Ajde_Exception("Config parameter $param not set", 90004);
 		}
 	}
+	
+	public static function getStage()
+	{
+		return self::_getStage();
+	}
 
 	private static function _getStage($stage = null) {
 		$stage = empty($stage) ? self::$stage : $stage;
@@ -68,8 +73,8 @@ class Config
 	{
 		foreach(self::$local as $pattern)
 		if (preg_match($pattern, $_SERVER['REMOTE_ADDR'])) {
-			return self::DEV_STAGE;
+			return self::STAGE_DEV;
 		}
-		return self::LIVE_STAGE;
+		return self::STAGE_LIVE;
 	}
 }

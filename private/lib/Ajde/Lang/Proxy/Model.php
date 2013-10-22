@@ -80,9 +80,9 @@ abstract class Ajde_Lang_Proxy_Model extends Ajde_Model
 		return $collection;
 	}
 	
-	protected function _load($sql, $values)
+	protected function _load($sql, $values, $populate = true)
 	{
-		$return = parent::_load($sql, $values);
+		$return = parent::_load($sql, $values, $populate);
 		if ($return) {
 			// get translation
 			$lang = Ajde_Lang::getInstance();

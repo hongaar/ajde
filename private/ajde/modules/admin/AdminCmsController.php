@@ -17,6 +17,39 @@ class AdminCmsController extends AdminController
 		return $this->render();
 	}
 	
+	public function nav()
+	{
+		return $this->render();
+	}
+	
+	public function navJson()
+	{
+		$parent = Ajde::app()->getRequest()->getInt('node', false);
+		
+		$nodes = new NodeCollection();		
+		if ($parent) {
+			$nodes->addFilter(new Ajde_Filter_Where('parent', Ajde_Filter::FILTER_EQUALS, $parent));
+		} else {
+			$nodes->addFilter(new Ajde_Filter_Where('level', Ajde_Filter::FILTER_EQUALS, 0));
+		}
+		$nodes->getQuery()->addSelect('id AS aid');
+		$nodes->getQuery()->addSelect('(SELECT count(b.id) FROM node b WHERE b.parent = aid) AS children');
+		$nodes->orderBy('sort');
+		
+		$json = array();
+		foreach($nodes as $node) {
+			/* @var $node NodeModel */
+			$children = $node->get('children');
+			$json[] = array(
+				"label" => $node->getTitle(),
+				"id" => $node->getPK(),
+				"load_on_demand" => $children ? true : false
+					);
+		}
+		
+		return $json;
+	}
+	
 	public function setupmenu()
 	{
 		return $this->render();
@@ -49,6 +82,7 @@ class AdminCmsController extends AdminController
 	public function settings()
 	{
 		Ajde_Model::register('admin');
+		Ajde_Model::register('node');
 		
 		Ajde::app()->getDocument()->setTitle("Settings");
 		

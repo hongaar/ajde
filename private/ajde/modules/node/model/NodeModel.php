@@ -13,6 +13,20 @@ class NodeModel extends Ajde_Model_With_AclI18n
 		$this->registerEvents();
 	}
 	
+	/**
+	 * 
+	 * @param int $id
+	 * @return NodeModel|boolean
+	 */
+	public static function fromPk($id)
+	{
+		$node = new self();
+		if ($node->loadByPK($id)) {
+			return $node;
+		}
+		return false;
+	}
+	
 	public function __wakeup()
 	{
 		parent::__wakeup();
@@ -185,7 +199,7 @@ class NodeModel extends Ajde_Model_With_AclI18n
 	public function addChildButton() {
 		if ($this->hasLoaded() && $childtype = $this->getNodetype()->get('child_type')) {
 			$this->getNodetype()->loadParent('child_type');
-			return '<i class="icon-plus icon-white" data-nodetype="' . $childtype . '"></i> ' . strtolower($this->getNodetype()->get('child_type')->getName());
+			return '<i class="icon-plus icon-white" data-nodetype="' . $childtype . '"></i><span class="text-slide"> ' . strtolower($this->getNodetype()->get('child_type')->getName()) . '</span>';
 		}
 		return false;
 	}
@@ -317,9 +331,9 @@ class NodeModel extends Ajde_Model_With_AclI18n
 		}
 	}
 	
-	protected function _load($sql, $values)
+	protected function _load($sql, $values, $populate = true)
 	{
-		$return = parent::_load($sql, $values);
+		$return = parent::_load($sql, $values, $populate);
 		if ($return && Ajde::app()->getRequest()->getParam('filterPublished', false) ==  true) {
 			$this->filterPublished();
 		}		
@@ -373,11 +387,11 @@ class NodeModel extends Ajde_Model_With_AclI18n
 			$node->ignoreAccessControl = true;
 		}
 		$lastParent = $this->getPK();
-		$parent = $this->has('parent') ? $this->getParent() : false;
+		$parent = $this->has('parent') ? $this->getParent(false) : false;
 		while ($parent) {
 			$lastParent = $parent;
 			$node->loadByPK($parent);
-			$parent = $node->has('parent') ? $node->getParent() : false;
+			$parent = $node->has('parent') ? $node->getParent(false) : false;
 		}
 		if ($lastParent === $this->getPK()) {
 			return $this;
@@ -428,11 +442,17 @@ class NodeModel extends Ajde_Model_With_AclI18n
 		return $collection;
 	}
 	
+	/**
+	 * 
+	 * @return MediaCollection
+	 */
 	public function getAdditionalMedia()
 	{
 		$collection = new MediaCollection();
-		$collection->addFilter(new Ajde_Filter_Where('post', Ajde_Filter::FILTER_EQUALS, $this->getPK()));
-		$collection->orderBy('sort');
+		$collection->addFilter(new Ajde_Filter_Join('node_media', 'node_media.media', 'media.id'));
+		$collection->addFilter(new Ajde_Filter_Join('node', 'node.id', 'node_media.node'));
+		$collection->addFilter(new Ajde_Filter_Where('node_media.node', Ajde_Filter::FILTER_EQUALS, $this->getPK()));
+		$collection->orderBy('node_media.sort');
 	
 		return $collection;
 	}
@@ -441,10 +461,13 @@ class NodeModel extends Ajde_Model_With_AclI18n
 	 *
 	 * @return NodeModel
 	 */
-	public function getParent()
+	public function getParent($load = true)
 	{
-		$this->loadParent('parent');
-		return $this->get('parent');
+		if ($load) {
+			$this->loadParent('parent');
+			return $this->get('parent');
+		}
+		return (string) $this->get('parent');
 	}
 	
 	/**
@@ -564,12 +587,49 @@ class NodeModel extends Ajde_Model_With_AclI18n
 	public function getTags()
 	{
 		$id = $this->getPK();
-		$crossReferenceTable = 'post_tag';
+		$crossReferenceTable = 'node_tag';
 
-		$subQuery = new Ajde_Db_Function('(SELECT tag FROM ' . $crossReferenceTable . ' WHERE post = ' . $this->getPK() . ')');
+		$subQuery = new Ajde_Db_Function('(SELECT tag FROM ' . $crossReferenceTable . ' WHERE node = ' . $this->getPK() . ')');
 		$collection = new TagCollection();
 		$collection->addFilter(new Ajde_Filter_Where('id', Ajde_Filter::FILTER_IN, $subQuery));
 		
 		return $collection;
+	}
+	
+	/** META **/
+	
+	public function getMetaValues()
+	{
+		if (empty($this->_metaValues)) {
+			$meta = array();
+			if ($this->hasLoaded()) {
+				$sql = "
+					SELECT node_meta.*, nodetype_meta.sort AS sort
+					FROM node_meta 
+					INNER JOIN nodetype_meta ON nodetype_meta.meta = node_meta.meta
+						AND nodetype_meta.nodetype = ?
+					WHERE node = ?
+					ORDER BY sort ASC";
+				$statement = $this->getConnection()->prepare($sql);
+				$statement->execute(array((string) $this->getNodetype(), $this->getPK()));
+				$results = $statement->fetchAll(PDO::FETCH_ASSOC);
+				foreach($results as $result) {
+					if (isset($meta[$result['meta']])) {
+						if (is_array($meta[$result['meta']])) {
+							$meta[$result['meta']][] = $result['value'];
+						} else {
+							$meta[$result['meta']] = array(
+									$meta[$result['meta']],
+									$result['value']
+							);
+						}
+					} else {
+						$meta[$result['meta']] = $result['value'];
+					}
+				}
+			}
+			$this->_metaValues = $meta;
+		}
+		return $this->_metaValues;
 	}
 }

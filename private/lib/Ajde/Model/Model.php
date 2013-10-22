@@ -16,35 +16,42 @@ class Ajde_Model extends Ajde_Object_Standard
 	protected $_metaValues = array();
 	
 	protected $_validators = array();
+	
+	private static $_registeredAll = false;
 
 	public static function register($controller)
 	{
+		if (self::$_registeredAll === true) {
+			return;
+		}
+		
 		// Extend Ajde_Controller
 		if (!Ajde_Event::has('Ajde_Controller', 'call', 'Ajde_Model::extendController')) {
 			Ajde_Event::register('Ajde_Controller', 'call', 'Ajde_Model::extendController');
 		}
 		// Extend autoloader
 		if ($controller instanceof Ajde_Controller) {
-			Ajde_Core_Autoloader::addDir(CORE_DIR . MODULE_DIR . $controller->getModule() . '/model/');
 			Ajde_Core_Autoloader::addDir(APP_DIR . MODULE_DIR . $controller->getModule() . '/model/');
+			Ajde_Core_Autoloader::addDir(CORE_DIR . MODULE_DIR . $controller->getModule() . '/model/');
 		} elseif ($controller === '*') {
 			self::registerAll();
 		} else {
-			Ajde_Core_Autoloader::addDir(CORE_DIR . MODULE_DIR . $controller . '/model/');
 			Ajde_Core_Autoloader::addDir(APP_DIR . MODULE_DIR . $controller . '/model/');
+			Ajde_Core_Autoloader::addDir(CORE_DIR . MODULE_DIR . $controller . '/model/');
 		}
 	}
 
 	public static function registerAll()
 	{
-		$dirs = Ajde_FS_Find::findFiles(CORE_DIR . MODULE_DIR, '*/model');
-		foreach($dirs as $dir) {
-			Ajde_Core_Autoloader::addDir($dir . DIRECTORY_SEPARATOR);
-		}
 		$dirs = Ajde_FS_Find::findFiles(APP_DIR . MODULE_DIR, '*/model');
 		foreach($dirs as $dir) {
 			Ajde_Core_Autoloader::addDir($dir . DIRECTORY_SEPARATOR);
 		}
+		$dirs = Ajde_FS_Find::findFiles(CORE_DIR . MODULE_DIR, '*/model');		
+		foreach($dirs as $dir) {
+			Ajde_Core_Autoloader::addDir($dir . DIRECTORY_SEPARATOR);
+		}
+		self::$_registeredAll = true;
 	}
 
 	public static function extendController(Ajde_Controller $controller, $method, $arguments)
@@ -242,18 +249,18 @@ class Ajde_Model extends Ajde_Object_Standard
 		return $this->_load($sql, $values);
 	}
 
-	protected function _load($sql, $values)
+	protected function _load($sql, $values, $populate = true)
 	{
 		$statement = $this->getConnection()->prepare($sql);
 		$statement->execute($values);
 		$result = $statement->fetch(PDO::FETCH_ASSOC);
 		if ($result === false || empty($result)) {
 			return false;
-		} else {
+		} else if ($populate === true) {
 			$this->reset();
 			$this->loadFromValues($result);
-			return true;
 		}
+		return true;
 	}
 	
 	public function loadFromValues($values)

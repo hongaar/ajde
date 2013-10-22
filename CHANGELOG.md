@@ -1,6 +1,14 @@
 #### AUTO-UPDATE NOTE ####
 Due to a bug in the auto-updater, updating from a version prior to v0.2.2 doesn't work. Please use Git instead.
 
+#### v0.2.4
+
+ - **NEW** Choose homepage from settings (make a main settings meta field with name 'Homepage' and type 'Node link')
+ - **NEW** Generate Google Chrome app on-the-fly
+ - **NEW** Require Google Chrome for admin layout
+
+
+
 #### v0.2.3
 
  - **NEW** Full i18n of nodes and menus
