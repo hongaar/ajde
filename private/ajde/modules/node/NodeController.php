@@ -2,6 +2,18 @@
 
 class NodeController extends Ajde_Controller
 {
+	/**
+	 * 
+	 * @var NodeModel
+	 */
+	protected $node;
+	
+	public function getCanonicalUrl()
+	{
+		
+		return $this->node->getUrl();
+	}
+	
 	public function beforeInvoke()
 	{
 		Ajde_Model::register('acl');
@@ -17,23 +29,30 @@ class NodeController extends Ajde_Controller
 		// we want to display published nodes only
 		Ajde::app()->getRequest()->set('filterPublished', true);
 		
-		// load our node
-		/* @var $node NodeModel */
+		// get the current slug		
 		$slug = $this->getSlug();
+		
+		/* @var $node NodeModel */
 		$node = $this->getModel();
 		$node->loadBySlug($slug);
+		$this->node = $node;
 				
 		// check if we have a hit
 		if (!$node->hasLoaded()) {
 			Ajde::app()->getResponse()->redirectNotFound();
 		}
 		
+		Ajde_Event::trigger($this, 'onAfterNodeLoaded', array($node));
+		
 		// update cache
 		Ajde_Cache::getInstance()->updateHash($node->hash());
 		Ajde_Cache::getInstance()->updateHash($node->getChildren()->hash());
 		
 		// set title
-		Ajde::app()->getDocument()->setTitle($node->getTitle());		
+		Ajde::app()->getDocument()->setTitle($node->getTitle());	
+		if ($node->summary) {
+			Ajde::app()->getDocument()->setDescription($node->summary);
+		}	
 				
 		// set template
 		$nodetype = $node->getNodetype();

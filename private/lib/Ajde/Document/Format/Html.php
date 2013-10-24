@@ -165,6 +165,10 @@ class Ajde_Document_Format_Html extends Ajde_Document
 		} else {
 			$this->_resources[$position][] = $resource;
 		}
+		// Add to cache
+		if ($resource instanceof Ajde_Resource_Local) {
+			Ajde_Cache::getInstance()->addFile($resource->getFilename());
+		}
 		return true;	
 	}
 	

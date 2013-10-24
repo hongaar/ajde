@@ -60,6 +60,11 @@ class Ajde_Controller extends Ajde_Object_Standard
 	{
 		return $this->_route;
 	}
+	
+	public function getCanonicalUrl()
+	{
+		return $this->_route->buildRoute();
+	}
 
 	/**
 	 *

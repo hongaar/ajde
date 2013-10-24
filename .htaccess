@@ -34,6 +34,10 @@ RewriteRule ^[a-zA-Z]{2}?\/public\/(.*)$ public/$1 [L]
 # Do not rewrite images, JS, PHP or CSS files
 #RewriteRule \.(php|css|jpe?g|gif|png|js|pdf|ico)$ - [L]
 
+# Remove www
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^ http://%1%{REQUEST_URI} [L,R=301]
+
 # Add a trailing slash if needed
 #RewriteCond %{REQUEST_URI} ^/[^\.]+[^/]$
 #RewriteRule ^(.*)$ http://%{HTTP_HOST}/$1/ [R=301,L]
@@ -107,6 +111,7 @@ SetEnvIfNoCase Request_URI  \
 
 	ExpiresByType text/css                  "access plus 1 week"
 	ExpiresByType application/javascript    "access plus 1 week"
+	ExpiresByType application/x-javascript	"access plus 1 week"
 	ExpiresByType text/javascript           "access plus 1 week"
 
 	ExpiresByType image/png                 "access plus 1 month"
@@ -119,6 +124,7 @@ SetEnvIfNoCase Request_URI  \
 	ExpiresByType font/ttf                  "access plus 1 month"
 	ExpiresByType font/woff                 "access plus 1 month"
 	ExpiresByType image/svg+xml             "access plus 1 month"
+	ExpiresByType image/x-icon 				"access plus 1 month"
 	ExpiresByType image/vnd.microsoft.icon  "access plus 1 month"
 </IfModule>
 

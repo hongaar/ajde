@@ -63,6 +63,11 @@ class Ajde_Core_Autoloader
 	
 	public static function addDir($dir)
 	{
+		// do not allow empty dirs
+		if ($dir === DIRECTORY_SEPARATOR) {
+			return;
+		}
+		
 		if (file_exists($dir)) {
 			self::$dirs[] = $dir;
 		}

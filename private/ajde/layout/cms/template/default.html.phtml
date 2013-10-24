@@ -47,6 +47,9 @@ $this->requireCssFirst('core.alert');
 		<!-- Define the root of the site -->
 		<base href='http://<?php echo Config::get('lang_root'); ?>' />
 		
+		<!-- Canonical URL -->
+		<link rel="canonical" href="http://<?php echo Config::get('site_root') . Ajde::app()->getController()->getCanonicalUrl(); ?>" />
+		
 		<!-- require JavaScript and cookies -->		
 		<noscript>
 			<meta http-equiv="refresh" content="0;url=main/nojavascript.html?returnto=<?php echo urlencode((string) Ajde::app()->getRoute()); ?>" />
