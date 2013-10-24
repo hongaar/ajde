@@ -6,6 +6,7 @@ Due to a bug in the auto-updater, updating from a version prior to v0.2.2 doesn'
  - **NEW** Choose homepage from settings (make a main settings meta field with name 'Homepage' and type 'Node link')
  - **NEW** Generate Google Chrome app on-the-fly
  - **NEW** Require Google Chrome for admin layout
+ - **NEW** Publish new nodes to Twitter or mail newsletter via meta field
 
 
 
