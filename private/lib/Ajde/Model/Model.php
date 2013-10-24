@@ -186,6 +186,21 @@ class Ajde_Model extends Ajde_Object_Standard
 		$displayField = $this->getDisplayField();
 		return $this->has($displayField) ? $this->get($displayField) : '(untitled model)';
 	}
+	
+	public function getPublishData()
+	{
+		return array(
+			'title'		=> $this->displayField(),
+			'message'	=> null,
+			'image'		=> null,
+			'url'		=> null
+		);
+	}
+	
+	public function getPublishRecipients()
+	{
+		return array();
+	}
 
 	/**
 	 * @return Ajde_Db_Adapter_Abstract
@@ -388,10 +403,22 @@ class Ajde_Model extends Ajde_Object_Standard
 		
 		$this->deleteMetaValue($metaId);
 		
+		// Get meta stuff
+		Ajde_Model::register('admin');
+		$meta = new MetaModel();
+		$meta->loadByPK($metaId);
+		$metaType = Ajde_Crud_Cms_Meta::fromType($meta->getType());
+		
+		// Before save		
+		$value = $metaType->beforeSave($meta, $value, $this);
+		
 		// Insert new ones
 		$sql = 'INSERT INTO ' . $this->getMetaTable() . ' (' . $this->getTable() . ', meta, value) VALUES (?, ?, ?)';
 		$statement = $this->getConnection()->prepare($sql);
 		$statement->execute(array($this->getPK(), $metaId, $value));
+		
+		// After save
+		$metaType->afterSave($meta, $value, $this);		
 
 		$this->_metaValues[$metaId] = $value;
 	}

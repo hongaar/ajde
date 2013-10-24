@@ -62,6 +62,11 @@ class MediaModel extends Ajde_Model
 		return $image->getLinkUrl();
 	}
 	
+	public function getAbsoluteUrl()
+	{
+		return Config::get('site_root') . $this->uploadDirectory . $this->thumbnail;
+	}
+	
 	private function saveFileFromWeb()
     {
         if ($this->has('thumbnail') &&

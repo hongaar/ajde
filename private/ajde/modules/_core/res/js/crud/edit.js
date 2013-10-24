@@ -164,7 +164,7 @@ AC.Crud.Edit = function() {
 			};
 			
 			var url = $(form).attr('action') + "?" + $.param(options);
-			var data = $(form).serialize();
+			var data = $(form).serializeArray();
 			
 			// clean up errors
 			form.find(':input').parent().removeClass('validation_error');
@@ -174,6 +174,15 @@ AC.Crud.Edit = function() {
 			// Set loading state and disable submit button
 			$('body').addClass('loading');
 			form.find(disableOnSave).attr('disabled', 'disabled');
+			
+			// remove hidden meta fields
+			for (var elm in data) {
+				if (data[elm].name.substring(0, 5) === 'meta_') {
+					if (!$(':input[name="' + data[elm].name + '"]').closest('.control-group').is(':visible')) {
+						delete data[elm];
+					}
+				}
+			}
 			
 			if (typeof $(form[0]).data('onBeforeSubmit') === 'function') {
 				var fn = $(form[0]).data('onBeforeSubmit');

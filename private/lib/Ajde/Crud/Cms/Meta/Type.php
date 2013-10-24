@@ -9,8 +9,25 @@ abstract class Ajde_Crud_Cms_Meta_Type extends Ajde_Crud_Cms_Meta_Fieldlist
 	public function className()
 	{
 		$className = get_class($this);
-		return strtolower(substr($className, strrpos($className, '_') + 1));
-		
+		return strtolower(substr($className, strrpos($className, '_') + 1));	
+	}
+	
+	/**
+	 * Gets called before model save of this meta type
+	 * 
+	 * @return boolean
+	 */
+	public function beforeSave(MetaModel $meta, $value, Ajde_Model $model)
+	{
+		return $value;
+	}
+	
+	/**
+	 * Gets called after model save of this meta type
+	 */
+	public function afterSave(MetaModel $meta, $value, Ajde_Model $model)
+	{
+		// ...
 	}
 		
 	/**

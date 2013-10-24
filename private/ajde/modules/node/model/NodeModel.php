@@ -90,6 +90,33 @@ class NodeModel extends Ajde_Model_With_AclI18n
 	 * DISPLAY FUNCTIONS
 	 */
 	
+	public function getPublishData()
+	{
+		if ($return = $this->shadowCall('getPublishData')) {
+			return $return;
+		}
+		return array(
+				'title'		=> $this->getTitle(),
+				'message'	=> $this->getSummary(),
+				'image'		=> $this->getMediaAbsoluteUrl(),
+				'url'		=> $this->getUrl(false)
+		);
+	}
+	
+	public function getPublishRecipients()
+	{
+		if ($return = $this->shadowCall('getPublishRecipients')) {
+			return $return;
+		}
+		$users = new UserCollection();
+		$addresses = array();
+		foreach($users as $user) {
+			/* @var $user UserModel */
+			$addresses[] = $user->getEmail();
+		}
+		return $addresses;
+	}
+	
 	public function displayPanel()
 	{
 		$nodetype = (string) $this->get('nodetype');
@@ -299,10 +326,13 @@ class NodeModel extends Ajde_Model_With_AclI18n
 			try {	
 				$rfmethod = new ReflectionMethod($shadowModel, $method);
 				if ($rfmethod->getDeclaringClass()->getName() == get_class($shadowModel)) {			
-					$shadowModel->$method();
+					return $shadowModel->$method();
 				}
-			} catch (Exception $e) {}
+			} catch (Exception $e) {
+				return false;
+			}
 		}
+		return false;
 	}
 	
 	
@@ -628,6 +658,14 @@ class NodeModel extends Ajde_Model_With_AclI18n
 			return $this->getMedia()->getTag($width, $height, $crop, $class);
 		}
 		return '';
+	}
+	
+	public function getMediaAbsoluteUrl()
+	{
+		if ($this->hasNotEmpty('media')) {
+			return $this->getMedia()->getAbsoluteUrl();
+		}
+		return false;
 	}
 	
 	public function getTags()
