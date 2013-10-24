@@ -88,6 +88,11 @@ class Config_Advanced
 	public $dbUser 				= 'ajde_user';
 	public $dbPassword 			= 'ajde_pass';
 	public $textEditor			= 'ckeditor'; // Use this text editor for CRUD operations (aloha|jwysiwyg|ckeditor)
+	
+	// Mailer
+	public $mailer				= 'mail'; // One of: mail|smtp
+	public $mailerSmtpHost		= false;
+	public $mailerDebug			= false;
 
 	// Custom libraries
 	public $registerNamespaces	= array();
