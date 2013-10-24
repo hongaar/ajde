@@ -348,6 +348,22 @@ class Ajde_Model extends Ajde_Object_Standard
 		return false;
 	}
 	
+	public function getMediaModelFromMetaValue($metaId)
+	{
+		$metaValue = (int) $this->getMetaValue($metaId);
+		$media = new MediaModel();
+		$media->loadByPK($metaValue);
+		return $media->hasLoaded() ? $media : false;
+	}
+	
+	public function getNodeModelFromMetaValue($metaId)
+	{
+		$metaValue = (int) $this->getMetaValue($metaId);
+		$node = new NodeModel();
+		$node->loadByPK($metaValue);
+		return $node->hasLoaded() ? $node : false;
+	}
+	
 	public function saveMeta()
 	{
 		foreach($this->getValues() as $key => $value) {

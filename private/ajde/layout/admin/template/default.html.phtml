@@ -185,6 +185,7 @@ $currentGrouper = '';
 										<li><a href="admin/tag:view">Tags</a></li>
 									</ul>
 								</li>
+								<?php echo Ajde_Event::trigger('Ajde_Layout', 'onAdminMenu'); ?>
 								<li><a href="admin/cms:settings">Settings</a></li>
 							<?php }
 							if ($user && (string) $user->getUsergroup() == UserModel::USERGROUP_ADMINS) { ?>
