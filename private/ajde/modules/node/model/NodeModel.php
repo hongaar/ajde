@@ -6,6 +6,8 @@ class NodeModel extends Ajde_Model_With_AclI18n
 	protected $_displayField = 'title';
 	protected $_hasMeta = true;
 	
+	protected $_shadowModel;
+	
 	public static $_parentAclCache = array();
 	
 	public function __construct() {
@@ -226,11 +228,12 @@ class NodeModel extends Ajde_Model_With_AclI18n
 	
 	public function beforeDelete()
 	{
-		// ...
+		$this->shadowCall('beforeDelete');
 	}
 	
 	public function beforeSave()
 	{
+		$this->shadowCall('beforeSave');	
 	}
 
 	public function beforeInsert()
@@ -248,17 +251,60 @@ class NodeModel extends Ajde_Model_With_AclI18n
 		
 		// Slug
 		$this->_setSlug();
+		
+		$this->shadowCall('beforeInsert');
 	}
 	
 	public function afterInsert()
 	{
-		// ...
+		$this->shadowCall('afterInsert');
 	}
 	
 	public function afterSave()
 	{
-		// ...
+		$this->shadowCall('afterSave');
 	}
+	
+	/**
+	 * Shadow model
+	 */
+	
+	public function getShadowModel()
+	{
+		if (!isset($this->_shadowModel)) {
+			$modelName = ucfirst($this->getNodetype()->getName()) . 'NodeModel';
+			if (Ajde_Core_Autoloader::exists($modelName)) {
+				$this->_shadowModel = new $modelName();
+			} else {
+				$this->_shadowModel = false;
+			}
+		}
+		
+		$this->shadowCopy();
+		return $this->_shadowModel;
+	}
+	
+	public function shadowCopy()
+	{
+		if ($this->_shadowModel) {
+			$this->_shadowModel->populate($this->values());
+			$this->_shadowModel->populateMeta($this->_metaValues);
+		}
+	}
+	
+	public function shadowCall($method)
+	{
+		$shadowModel = $this->getShadowModel();
+		if ($shadowModel) {		
+			try {	
+				$rfmethod = new ReflectionMethod($shadowModel, $method);
+				if ($rfmethod->getDeclaringClass()->getName() == get_class($shadowModel)) {			
+					$shadowModel->$method();
+				}
+			} catch (Exception $e) {}
+		}
+	}
+	
 	
 	/**
 	 * SLUG FUNCTIONS

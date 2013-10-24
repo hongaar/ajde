@@ -308,8 +308,15 @@ class _coreCrudController extends Ajde_Acl_Controller
 	private function save($crudId, $id)
 	{
 		$session = new Ajde_Session('AC.Crud');		
+		
 		/* @var $crud Ajde_Crud */
 		$crud = $session->getModel($crudId);
+		
+		// verify that we have a valid crud model
+		if (!$crud) {
+			return array('success' => false);
+		}
+		
 		/* @var $model Ajde_Model */
 		$model = $crud->getModel();		
 		$model->setOptions($crud->getOptions('model'));

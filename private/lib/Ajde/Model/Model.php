@@ -93,12 +93,13 @@ class Ajde_Model extends Ajde_Object_Standard
 
 	public function __construct()
 	{
-		$tableNameCC = str_replace('Model', '', get_class($this));
-		$tableName = $this->fromCamelCase($tableNameCC);
+		if (empty($this->_tableName)) {
+			$tableNameCC = str_replace('Model', '', get_class($this));
+			$this->_tableName = $this->fromCamelCase($tableNameCC);
+		}
 
 		$this->_connection = Ajde_Db::getInstance()->getConnection();
-		$this->_table = Ajde_Db::getInstance()->getTable($tableName);
-		$this->_tableName = $tableName;
+		$this->_table = Ajde_Db::getInstance()->getTable($this->_tableName);		
 	}
 
 	public function __set($name, $value)
@@ -279,11 +280,14 @@ class Ajde_Model extends Ajde_Object_Standard
 		return $this->getTable() . '_meta';
 	}
 	
-	public function populateMeta()
+	public function populateMeta($values = false)
 	{
-		foreach($this->getMetaValues() as $metaId => $value) {
+		if (!$values) {
+			$values = $this->getMetaValues();
+		}
+		foreach($values as $metaId => $value) {
 			$this->set('meta_' . $metaId, $value);
-		}	
+		}
 	}
 		
 	public function getMetaValues()
