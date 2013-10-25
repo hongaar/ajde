@@ -12,7 +12,7 @@ class Ajde_Crud_Cms_Meta extends Ajde_Crud_Cms_Meta_Fieldlist
 	 */
 	public static function fromType($type)
 	{
-		$metaTypeClass = "Ajde_Crud_Cms_Meta_Type_" . ucfirst($type);
+		$metaTypeClass = "Ajde_Crud_Cms_Meta_Type_" . ucfirst(str_replace(' ', '', $type));
 		$metaType = new $metaTypeClass();
 		return $metaType;				
 	}

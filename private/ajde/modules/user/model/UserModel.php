@@ -71,7 +71,7 @@ class UserModel extends Ajde_User
 	
 	public function sendResetMail($hash)
 	{
-		$resetLink = Config::get('site_root') . 'user/reset?h=' . $hash;
+		$resetLink = 'http://' . Config::get('site_root') . 'user/reset?h=' . $hash;
 		$mailer = new Ajde_Mailer();
 		$body = "Your password reset link:<br/>" . 
 				"<br/>" .

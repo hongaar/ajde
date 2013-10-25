@@ -14,7 +14,9 @@
 
 <div class="row-fluid">
 	
-	<div class="span12">		
+	<div class="span12">
+		
+		<h2>All systems go?</h2>	
 		<?php foreach($this->results as $result) { ?>
 			<div>
 				<span class="label label-<?php echo $result['status']; ?>">
@@ -25,6 +27,33 @@
 				</span>
 			</div>
 		<?php } ?>
+		
+		<h2>Configuration</h2>
+		
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Key</th>
+					<th>Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach($this->config as $k => $v) { ?>
+					<tr>
+						<td>
+							<?php echo _e($k); ?>
+						</td>
+						<td>
+							<?php if (is_array($v)) { ?>
+								<?php echo _e(json_encode($v)); ?>
+							<?php } else { ?>
+								<?php echo _e($v); ?>
+							<?php } ?>
+						</td>
+					</tr>
+				<?php } ?>
+			</tbody>
+		</table>
 	</div>				
 	
 </div><!--/row-->

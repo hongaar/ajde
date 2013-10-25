@@ -56,6 +56,14 @@ class Config
 		}
 	}
 	
+	public static function getAll($stage = null)
+	{
+		$stage = self::_getStage($stage);
+		$instance = self::getInstance($stage);
+		$vars = get_object_vars ($instance);
+		return $vars;
+	}
+	
 	public static function getStage()
 	{
 		return self::_getStage();
