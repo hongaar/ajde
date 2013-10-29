@@ -15,15 +15,15 @@ class NodeCollection extends Ajde_Collection_With_AclI18n
 		$this->addFilter($endGroup);
 	}
 	
-	public function filterByType($type)
+	public function filterByType($type, $operator = Ajde_Query::OP_AND)
 	{
 		if (is_numeric($type)) {
-			$this->addFilter(new Ajde_Filter_Where('nodetype', Ajde_Filter::FILTER_EQUALS, $type));
+			$this->addFilter(new Ajde_Filter_Where('nodetype', Ajde_Filter::FILTER_EQUALS, $type, $operator));
 		} else {
 			$niceName = str_replace('_', ' ', $type);
 			$nodetype = new NodetypeModel();
 			if ($nodetype->loadByField('name', $niceName)) {
-				$this->addFilter(new Ajde_Filter_Where('nodetype', Ajde_Filter::FILTER_EQUALS, $nodetype->getPK()));
+				$this->addFilter(new Ajde_Filter_Where('nodetype', Ajde_Filter::FILTER_EQUALS, $nodetype->getPK(), $operator));
 			}	
 		}
 		return $this;
@@ -91,7 +91,7 @@ class NodeCollection extends Ajde_Collection_With_AclI18n
 		return $this;		
 	}
 	
-	public function filterByNodetypeCategory($category)
+	public function filterByNodetypeCategory($category, $operator = Ajde_Query::OP_AND)
 	{
 		$nodetypes = new NodetypeCollection();
 		$nodetypes->addFilter(new Ajde_Filter_Where('category', Ajde_Filter::FILTER_EQUALS, $category));
@@ -99,7 +99,7 @@ class NodeCollection extends Ajde_Collection_With_AclI18n
 		foreach($nodetypes as $nodetype) {
 			$ids[] = $nodetype->id;
 		}
-		$this->addFilter(new Ajde_Filter_Where('nodetype', Ajde_Filter_Where::FILTER_IN, new Ajde_Db_Function('(' . implode(',', $ids) . ')')));
+		$this->addFilter(new Ajde_Filter_Where('nodetype', Ajde_Filter_Where::FILTER_IN, new Ajde_Db_Function('(' . implode(',', $ids) . ')'), $operator));
 	}
 	
 	public function filterByLevel($level)

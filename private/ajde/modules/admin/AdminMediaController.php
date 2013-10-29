@@ -2,7 +2,7 @@
 
 class AdminMediaController extends AdminController
 {
-	private $_extensions = array('mp4', 'avi', 'mp3', 'ogg', 'png', 'jpg', 'jpeg', 'gif', 'pdf', 'xls', 'doc', 'xlsx', 'docx', 'zip');
+	private $_extensions = array('mp4', 'avi', 'swf', 'mp3', 'ogg', 'png', 'jpg', 'jpeg', 'gif', 'pdf', 'xls', 'doc', 'xlsx', 'docx', 'zip');
 	private $_imageExtensions = array('jpg', 'jpeg', 'png', 'gif');
 	private $_uploaddir = UPLOAD_DIR;
 	

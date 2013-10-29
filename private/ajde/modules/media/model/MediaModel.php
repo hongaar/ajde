@@ -30,6 +30,16 @@ class MediaModel extends Ajde_Model
 		$this->saveFileFromWeb();
 	}
 	
+	/**
+	 *
+	 * @return MediatypeModel
+	 */
+	public function getMediatype()
+	{
+		$this->loadParent('mediatype');
+		return parent::getMediatype();
+	}
+	
 	public function getPath()
 	{
 		return $this->getFilename(1024);
@@ -60,6 +70,11 @@ class MediaModel extends Ajde_Model
 		$image->setCrop($crop);
 		
 		return $image->getLinkUrl();
+	}
+	
+	public function getExtension()
+	{
+		return pathinfo($this->thumbnail, PATHINFO_EXTENSION);
 	}
 	
 	public function getAbsoluteUrl()

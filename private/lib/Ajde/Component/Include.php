@@ -19,7 +19,7 @@ class Ajde_Component_Include extends Ajde_Component
 			$route = new Ajde_Core_Route($route);
 		}
 		$controller = Ajde_Controller::fromRoute($route);
-		if (array_key_exists('vars', $this->attributes) && is_array($this->attributes['vars'])) {
+		if (array_key_exists('vars', $this->attributes) && is_array($this->attributes['vars']) && !empty($this->attributes['vars'])) {
 			try {
 				$view = $controller->getView();
 				foreach($this->attributes['vars'] as $key => $var) {
