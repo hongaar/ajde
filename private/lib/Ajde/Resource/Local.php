@@ -82,7 +82,7 @@ class Ajde_Resource_Local extends Ajde_Resource
 	protected static function _getFilename($base, $type, $action, $format)
 	{
 		$dirPrefixPatterns = array(
-				APP_DIR, CORE_DIR
+				CORE_DIR, APP_DIR
 		);
 		$filename = false;
 		foreach($dirPrefixPatterns as $dirPrefixPattern) {

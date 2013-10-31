@@ -44,6 +44,10 @@ fieldset.crud {
 		color: #fff !important;
 	}
 	
+	a.imagePreview img {
+		background-image: url('../../public/media/checkerboard.png');
+	}
+	
 	div.control-group {
 		&:last-child {
 /*			margin-bottom: 0;*/
@@ -370,6 +374,7 @@ table.crud {
 					img {
 						position: relative;
 						top: -200%;
+						max-width: inherit;
 					}
 				}
 				
@@ -635,6 +640,7 @@ table.crud {
 
 						img {
 							top: auto;
+							max-width: 100%;
 						}
 					}
 					

@@ -49,7 +49,9 @@ class NodeController extends Ajde_Controller
 		Ajde_Cache::getInstance()->updateHash($node->getChildren()->hash());
 		
 		// set title
-		Ajde::app()->getDocument()->setTitle($node->getTitle());	
+		if (!Ajde::app()->getDocument()->hasNotEmpty('title')) {
+			Ajde::app()->getDocument()->setTitle($node->getTitle());
+		}	
 		if ($node->summary) {
 			Ajde::app()->getDocument()->setDescription($node->summary);
 		}	
@@ -88,6 +90,9 @@ class NodeController extends Ajde_Controller
 		$options = new Ajde_Crud_Options();
 		$options
 			->selectFields()
+				->selectField('slug')
+					->setIsReadonly(true)
+					->up()
 				->selectField('nodetype')
 					->setOrderBy('sort')
 					->setIsRequired(false)
@@ -129,7 +134,7 @@ class NodeController extends Ajde_Controller
 					->addShowOnlyWhen('nodetype', $showOnlyWhen['children'])
 					->setType('fk')
 					->setModelName('node')
-					->setShowLabel(false)
+					->setShowLabel(true)
 					->setUsePopupSelector(true)
 					->setListRouteFunction('listRouteParent')
 					->up()	
@@ -239,38 +244,29 @@ class NodeController extends Ajde_Controller
 							->setSpan(4)
 							->addBlock()
 								->setTitle('Featured image')
-								->setClass('sidebar well')
+								->setClass('sidebar')
 								->setShow(array('media'))
 								->up()
 							->addBlock()
 								->setTitle('Tags')
-								->setClass('sidebar well')
+								->setClass('sidebar')
 								->setShow(array('tag'))
 								->up()
 							->addBlock()
-								->setClass('sidebar well')
+								->setClass('sidebar')
 								->setTitle('Additional media')
 								->setShow(array('additional_media'))
 								->up()
 							->addBlock()
-								->setClass('sidebar well')
+								->setClass('sidebar')
 								->setTitle('Related nodes')
 								->setShow(array('related_nodes'))
 								->up()
 							->addBlock()
-								->setTitle('Parent node')
-								->setClass('sidebar well')
-								->setShow(array('parent'))
-								->up()
-							->addBlock()
 								->setTitle('Metadata')
-								->setClass('narrow short well')
-								->setShow(array('added', 'updated', 'published', 'published_start', 'published_end', 'user'))
+								->setClass('sidebar well')
+								->setShow(array('added', 'updated', 'slug', 'parent', 'published', 'published_start', 'published_end', 'user', 'lang'))
 								->up()
-							->addBlock()
-								->setTitle('Translation')
-								->setClass('narrow short well')
-								->setShow(array('lang'))
 		->finished();
 		
 		/* @var $decorator Ajde_Crud_Cms_Meta_Decorator */
