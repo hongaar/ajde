@@ -16,7 +16,7 @@ AC.Crud.Mainfilter = function() {
 			var current = $('#mainFilter .mainFilterButtons a[data-init]').text();
 			if (current) {
 				$('.mainFilterLabel').text(current);
-			} else if (window.location.href.indexOf('nofilterpopup=1') === -1) {
+			} else if (window.location.href.indexOf('nofilterpopup=1') === -1 && $('#mainFilter a.filter').length) {
 				$('#mainFilter').modal('show');
 			}
 		

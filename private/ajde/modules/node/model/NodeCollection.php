@@ -124,9 +124,31 @@ class NodeCollection extends Ajde_Collection_With_AclI18n
 		return $this;
 	}
 	
+	public function joinMetaAs($metaId, $as)
+	{
+		$rand = 'table' . md5(microtime(true));
+		$this->addFilter(new Ajde_Filter_Join('node_meta ' . $rand, $rand . '.node', 'node.id'));
+		$this->addFilter(new Ajde_Filter_Join('meta', 'meta.id', $rand . '.meta'));
+		$this->addFilter(new Ajde_Filter_Where('meta.id', Ajde_Filter::FILTER_EQUALS, $metaId));
+		$this->getQuery()->addSelect($rand . '.value AS ' . $as);
+		return $this;
+	}
+	
 	public function joinNodetype()
 	{
 		$this->addFilter(new Ajde_Filter_Join('nodetype', 'nodetype.id', 'node.nodetype'));
+		return $this;
+	}
+	
+	public function concatTags()
+	{
+		$this->addFilter(new Ajde_Filter_Join('node_tag', 'node.id', 'node_tag.node'));
+		$this->addFilter(new Ajde_Filter_Join('tag', 'tag.id', 'node_tag.tag'));
+		$this->getQuery()->addSelect(new Ajde_Db_Function(
+				'GROUP_CONCAT(tag.name)' .
+				'AS tags'
+		));
+		$this->getQuery()->addGroupBy('node.id');
 		return $this;
 	}
 	

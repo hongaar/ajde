@@ -82,4 +82,16 @@ class MetaModel extends Ajde_Model
 		$meta->loadByPK((int) $metaId);
 		return $meta->displayField();
 	}
+	
+	public static function getIdFromName($metaName)
+	{
+		$metaName = str_replace('_', ' ', $metaName);
+		$meta = new self();
+		$meta->loadByField('name', $metaName);
+		if ($meta->hasLoaded()) {
+			return $meta->getPK();
+		} else {
+			return false;
+		}
+	}
 }

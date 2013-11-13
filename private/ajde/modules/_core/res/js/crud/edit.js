@@ -208,7 +208,7 @@ AC.Crud.Edit = function() {
 							fn();
 						}
 						for(var i in data.errors) {
-                            $input = $(':input[name=' + i + ']');
+                            $input = $(':input[name=' + i + '], :input[name="' + i + '[]"]');
 							$parent = $input.parents('.control-group');
 							if (!$parent.length || $parent.is(':not(:visible)')) {
 								errorHandler('Field \'' + i + '\' has errors but is hidden');

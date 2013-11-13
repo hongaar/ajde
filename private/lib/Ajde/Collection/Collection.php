@@ -465,4 +465,12 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 		}
 		return $array;
 	}
+	
+	public function items()
+	{
+		if (!isset($this->_items)) {
+			$this->load();
+		}
+		return $this->_items;
+	}
 }
