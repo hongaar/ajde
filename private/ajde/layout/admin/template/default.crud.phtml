@@ -60,7 +60,7 @@ $this->requireCss('default.crud');
 		<title><?php echo _e(strip_tags(Ajde::app()->getDocument()->getFullTitle())); ?></title>		
 		
 		<!-- Define the root of the site -->
-		<base href='http://<?php echo Config::get('lang_root'); ?>' />
+		<base href='<?php echo Config::get('lang_root'); ?>' />
 		
 		<!-- Favicon and CSS -->
 		<?php echo $this->getDocument()->getHead('css'); ?>

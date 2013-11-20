@@ -14,6 +14,7 @@ class Config
 	// private network range!
 	// @see http://en.wikipedia.org/wiki/Private_network
 	public static $local			= array(
+		'/::1/',
 		'/127\.0\.0\.1/',
 		'/10\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/',
 		'/172\.[1-3][0-9]\.[0-9]{1,3}\.[0-9]{1,3}/',

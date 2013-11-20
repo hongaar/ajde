@@ -31,7 +31,7 @@ $this->requireGWebFont('Dosis', array(400, 700));
 		<title><?php echo _e(Ajde::app()->getDocument()->getFullTitle()); ?></title>		
 		
 		<!-- Define the root of the site -->
-		<base href='http://<?php echo Config::get('lang_root'); ?>' />
+		<base href='<?php echo Config::get('lang_root'); ?>' />
 		
 		<!-- Favicon and CSS -->
 		<?php echo $this->getDocument()->getHead('css'); ?>

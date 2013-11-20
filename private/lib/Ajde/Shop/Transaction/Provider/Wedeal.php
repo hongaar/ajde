@@ -35,8 +35,8 @@ class Ajde_Shop_Transaction_Provider_Wedeal extends Ajde_Shop_Transaction_Provid
 				"methodcode"	=> "0101",
 				"maxcount"		=> "1",
 				"test"			=> $this->isSandbox() ? "true" : "false",
-				"successurl"	=> 'http://' . Config::get('site_root') . 'shop/transaction:callback/wedeal.html',
-				"failurl"		=> 'http://' . Config::get('site_root') . 'shop/transaction:callback/wedeal.html'
+				"successurl"	=> Config::get('site_root') . 'shop/transaction:callback/wedeal.html',
+				"failurl"		=> Config::get('site_root') . 'shop/transaction:callback/wedeal.html'
 			)
 		);
 		$res = $this->sendRequest($request, true);

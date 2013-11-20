@@ -2,7 +2,7 @@
 
 class Ajde_Resource_JsLibrary extends Ajde_Object_Static
 {
-	public static $base = 'http://ajax.googleapis.com/ajax/libs/';
+	public static $base = '//ajax.googleapis.com/ajax/libs/';
 	
 	/*
 	 * @see http://code.google.com/apis/libraries/devguide.html#Libraries

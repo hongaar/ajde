@@ -627,7 +627,7 @@ class NodeModel extends Ajde_Model_With_AclI18n
 			}
 			$nodetype = str_replace(' ', '_', strtolower($this->getNodetype()->displayField()));
 			$url = '-' . $nodetype . '/' . $this->getSlug();
-			return $relative ? $url : 'http://' . Config::get('site_root') . $url; 
+			return $relative ? $url : Config::get('site_root') . $url; 
 		}
 		return false;
 	}

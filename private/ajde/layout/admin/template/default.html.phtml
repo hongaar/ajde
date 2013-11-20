@@ -88,7 +88,7 @@ $currentGrouper = '';
 		<meta http-equiv="cleartype" content="on">
 		
 		<!-- Define the root of the site -->
-		<base href='http://<?php echo Config::get('lang_root'); ?>' />
+		<base href='<?php echo Config::get('lang_root'); ?>' />
 		
 		<!-- require JavaScript and cookies -->		
 		<noscript>
@@ -279,7 +279,7 @@ $currentGrouper = '';
 		<script type="text/javascript">
 		(function() {
 			var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
-			s.src = ('https:'==document.location.protocol?'https://':'http://') + 'updatemybrowser.org/umb.js';
+			s.src = '//updatemybrowser.org/umb.js';
 			var b = document.getElementsByTagName('script')[0]; b.parentNode.insertBefore(s, b);
 		})();	
 		</script>

@@ -35,14 +35,26 @@ RewriteRule ^[a-zA-Z]{2}?\/public\/(.*)$ public/$1 [L]
 #RewriteRule \.(php|css|jpe?g|gif|png|js|pdf|ico)$ - [L]
 
 # Remove www
-RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
-RewriteRule ^ http://%1%{REQUEST_URI} [L,R=301]
+#RewriteCond %{HTTP_HOST} ^www\.
+#RewriteCond %{HTTPS}s ^on(s)|off
+#RewriteCond http%1://%{HTTP_HOST} ^(https?://)(www\.)?(.+)$
+#RewriteRule ^ %1%3%{REQUEST_URI} [L,R=301]
+
+# Force www
+#RewriteCond %{HTTP_HOST} !^$
+#RewriteCond %{HTTP_HOST} !^www\. [NC]
+#RewriteCond %{HTTPS}s ^on(s)|
+#RewriteRule ^ http%1://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Force https
+#RewriteCond %{HTTPS} !=on
+#RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 # Add a trailing slash if needed
 #RewriteCond %{REQUEST_URI} ^/[^\.]+[^/]$
-#RewriteRule ^(.*)$ http://%{HTTP_HOST}/$1/ [R=301,L]
+#RewriteRule ^ http://%{HTTP_HOST}%{REQUEST_URI}/ [L,R=301]
 
-# Rewrite all traffic to index.php, exclude existing files
+# Rewrite all traffic to index.php, exclude physical files
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.+)$ index.php?_route=$1 [QSA,L]
 

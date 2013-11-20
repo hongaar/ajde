@@ -24,7 +24,7 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
 		return array(
 			'cmd'			=> '_xclick',
 			'business'		=> Config::get('shopPaypalAccount'),
-			'notify_url'	=> 'http://' . Config::get('site_root') . 'shop/transaction:callback/paypal.html',
+			'notify_url'	=> Config::get('site_root') . 'shop/transaction:callback/paypal.html',
 			'bn'			=> Config::get('ident') . '_BuyNow_WPS_' . strtoupper(Ajde_Lang::getInstance()->getShortLang()),
 			'amount'		=> $transaction->payment_amount,
 			'item_name'		=> Config::get('ident') . ': ' . Ajde_Component_String::makePlural($transaction->shipment_itemsqty, 'item'),
@@ -41,7 +41,7 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
 			'custom'		=> $transaction->secret,
 			'no_shipping'	=> 1, // do not prompt for an address
 			'no_note'		=> 1, // hide the text box and the prompt
-			'return'		=> 'http://' . Config::get('site_root') . 'shop/transaction:complete',
+			'return'		=> Config::get('site_root') . 'shop/transaction:complete',
 			'rm'			=> 1 // the buyer’s browser is redirected to the return URL by using the GET method, but no payment variables are included
 		);
 	}

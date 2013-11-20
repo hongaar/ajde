@@ -97,16 +97,16 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 	public function setRedirect($url = self::REDIRECT_SELF)
 	{
 		if ($url === true || $url === self::REDIRECT_HOMEPAGE) {
-			$this->addHeader("Location", 'http://' . Config::get('site_root'));
+			$this->addHeader("Location", Config::get('site_root'));
 		} elseif ($url === self::REDIRECT_REFFERER) {
 			$this->addHeader("Location", Ajde_Http_Request::getRefferer());
 		} elseif ($url === self::REDIRECT_SELF || empty($url)) {
 			$route = (string) Ajde::app()->getRoute();
-			$this->addHeader("Location", 'http://' . Config::get('site_root') . $route);
-		} elseif (substr($url, 0, 7) == "http://") {
+			$this->addHeader("Location", Config::get('site_root') . $route);
+		} elseif (substr($url, 0, 7) == "http://" || substr($url, 0, 8) == "https://") {
 			$this->addHeader("Location", $url);
 		} elseif ($url) {
-			$this->addHeader("Location", 'http://' . Config::get('site_root') . $url);
+			$this->addHeader("Location", Config::get('site_root') . $url);
 		}
 		// Don't load any content after Location header is set
 		Ajde::app()->getDocument()->setLayout(new Ajde_Layout('empty'));

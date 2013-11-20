@@ -38,7 +38,7 @@ class SampleModel extends Ajde_Model
 	public function getUrl()
 	{
 		if ($this->getPK()) {
-			return 'http://' . Config::get('site_root') . 'sample/' . $this->getPK() . '.html';
+			return Config::get('site_root') . 'sample/' . $this->getPK() . '.html';
 		} else {
 			return '(not saved)';
 		}

@@ -96,7 +96,7 @@ class AdminSystemController extends AdminController
 		mkdir($appdir);
 
 		// manifest.json
-		$url = 'http://' . Config::get('lang_root') . 'admin/?chromeapp=1';
+		$url = Config::get('lang_root') . 'admin/?chromeapp=1';
 		$manifest = (object) array(
 			"manifest_version" 		=> 2,
 			"name" 					=> Config::get('sitename'),

@@ -45,10 +45,10 @@ $this->requireCssFirst('core.alert');
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		
 		<!-- Define the root of the site -->
-		<base href='http://<?php echo Config::get('lang_root'); ?>' />
+		<base href='<?php echo Config::get('lang_root'); ?>' />
 		
 		<!-- Canonical URL -->
-		<link rel="canonical" href="http://<?php echo Config::get('site_root') . Ajde::app()->getController()->getCanonicalUrl(); ?>" />
+		<link rel="canonical" href="<?php echo Config::get('site_root') . Ajde::app()->getController()->getCanonicalUrl(); ?>" />
 		
 		<!-- require JavaScript and cookies -->		
 		<noscript>
@@ -72,8 +72,8 @@ $this->requireCssFirst('core.alert');
 		<?php echo $this->getDocument()->getHead('css'); ?>
 
 		<!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
-		<link rel="stylesheet" type="text/css" href="http://assets.cookieconsent.silktide.com/current/style.min.css"/>
-		<script type="text/javascript" src="http://assets.cookieconsent.silktide.com/current/plugin.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="//d39hc9zyqwn1u0.cloudfront.net/current/style.min.css"/>
+		<script type="text/javascript" src="//d39hc9zyqwn1u0.cloudfront.net/current/plugin.min.js"></script>
 		<script type="text/javascript">
 		// <![CDATA[
 		cc.initialise({
@@ -162,7 +162,7 @@ $this->requireCssFirst('core.alert');
 		<script type="text/javascript">
 		(function() {
 			var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
-			s.src = ('https:'==document.location.protocol?'https://':'http://') + 'updatemybrowser.org/umb.js';
+			s.src = '//updatemybrowser.org/umb.js';
 			var b = document.getElementsByTagName('script')[0]; b.parentNode.insertBefore(s, b);
 		})();	
 		</script>

@@ -2,7 +2,7 @@
 
 class Ajde_Resource_GWebFont extends Ajde_Object_Static
 {
-	public static $base = 'http://fonts.googleapis.com/css?';
+	public static $base = '//fonts.googleapis.com/css?';
 	
 	public static function getUrl($family, $weight = array(400), $subset = array('latin'))
 	{

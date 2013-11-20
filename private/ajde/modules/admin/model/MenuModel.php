@@ -84,7 +84,7 @@ class MenuModel extends Ajde_Model_With_I18n
 			$target = "";
 			if ($item->type == 'URL') {				
 				$url = $item->url;
-				if (substr($url, 0, 7) === 'http://') {
+				if (substr($url, 0, 7) === 'http://' || substr($url, 0, 8) === 'https://') {
 					$target = "_blank";
 				}
 			} else if ($item->type == 'Node link') {

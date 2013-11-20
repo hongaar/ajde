@@ -41,10 +41,10 @@ $this->requireCss('default.mobile', 'html', null, Ajde_Document_Format_Html::RES
 		<meta http-equiv="cleartype" content="on">
 		
 		<!-- Define the root of the site -->
-		<base href='http://<?php echo Config::get('lang_root'); ?>' />
+		<base href='<?php echo Config::get('lang_root'); ?>' />
 		
 		<!-- Canonical URL -->
-		<link rel="canonical" href="http://<?php echo Config::get('site_root') . Ajde::app()->getController()->getCanonicalUrl(); ?>" />
+		<link rel="canonical" href="<?php echo Config::get('site_root') . Ajde::app()->getController()->getCanonicalUrl(); ?>" />
 		
 		<!-- require JavaScript and cookies -->		
 		<noscript>
@@ -130,7 +130,7 @@ $this->requireCss('default.mobile', 'html', null, Ajde_Document_Format_Html::RES
 		<script type="text/javascript">
 		(function() {
 			var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
-			s.src = ('https:'==document.location.protocol?'https://':'http://') + 'updatemybrowser.org/umb.js';
+			s.src = '//updatemybrowser.org/umb.js';
 			var b = document.getElementsByTagName('script')[0]; b.parentNode.insertBefore(s, b);
 		})();	
 		</script>
