@@ -1,5 +1,9 @@
 <?php
 /* @var $this Ajde_Template_Parser_Phtml_Helper */
+
+if ($OOChartsApiKey = SettingModel::byName('oocharts_api_key')) {
+    $this->requireJsPublic('core/oocharts.min.js');
+}
 ?>
 
 <div class="row-fluid">
@@ -16,7 +20,7 @@
 		</div>
         <div class="row-fluid">
             <div class="span12">
-                   <h2>Recently changed nodes</h2>
+                <h2>Recently changed nodes</h2>
                 <?php
 
                 $options = NodeController::getNodeOptions();
@@ -44,7 +48,68 @@
                 $crud->setSessionName('dashboard');
                 echo $crud->output();
 
-                ?>
+                if ($OOChartsApiKey) {
+
+                    $OOChartsAnalyticsProfile = SettingModel::byName('oocharts_analytics_profile')
+
+                    ?>
+
+                    <script>
+                    window.onload = function(){
+                        oo.setAPIKey("<?php echo $OOChartsApiKey; ?>");
+                        oo.load(function() {
+
+                            var chart = new oo.Timeline("<?php echo $OOChartsAnalyticsProfile; ?>", "30d");
+                            chart.addMetric("ga:visits", "Visits");
+                            chart.addMetric("ga:newVisits", "New Visits");
+                            chart.draw('chart');
+
+                            var query = new oo.Query("<?php echo $OOChartsAnalyticsProfile; ?>", "30d");
+                            query.addMetric('ga:visits');
+                            query.addMetric('ga:newVisits');
+                            query.addMetric('ga:timeOnSite');
+                            query.addDimension('ga:source');
+                            query.setSort('-ga:visits');
+                            query.execute(function(data){
+                                console.log(data);
+                                var rows = data['rows'];
+                                var tbody = $('#metric tbody');
+                                for(var i in rows) {
+                                    var time = parseInt(rows[i][3], 10) / parseInt(rows[i][1], 10);
+                                    var mins = Math.floor( time / 60 );
+                                    var secs = time - mins * 60;
+                                    var hrs= Math.floor( time / 3600 );
+                                    time = (hrs>9?hrs:"0"+hrs) + ":" + (mins>9?mins:"0"+mins) + ":" + (secs>9?parseInt(secs):"0"+parseInt(secs));
+
+                                    var row = $('<tr/>').html('<td>' + rows[i][0] + '</td><td>' + rows[i][1] + '</td><td>' + rows[i][2] + '</td><td>' + time + '</td>');
+                                    tbody.append(row);
+                                }
+                            });
+
+                        });
+                    };
+                    </script>
+
+                    <h2>Visits</h2>
+                    <div id='chart'></div>
+
+                    <h2>Referrers</h2>
+                    <div id='metric'>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Referrer</th>
+                                <th>Visits</th>
+                                <th>New visits</th>
+                                <th>Average visit time</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+
+                <?php } ?>
 
             </div>
         </div>

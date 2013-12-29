@@ -1,12 +1,19 @@
 #### AUTO-UPDATE NOTE ####
 Due to a bug in the auto-updater, updating from a version prior to v0.2.2 doesn't work. Please use Git instead.
 
+#### v0.2.5
+
+ - **IMPORTANT NOTE** Repository URL changed, please check Ajde_Core_Updater
+ - **NEW** OOCharts dashboard widgets (please add to settings: 'Google Analytics property', 'OOCharts API key', 'OOCharts Analytics profile')
+ - **NEW** Recently changed nodes
+
+
 #### v0.2.4
 
  - **NEW** Choose homepage from settings (make a main settings meta field with name 'Homepage' and type 'Node link')
  - **NEW** Generate Google Chrome app on-the-fly
  - **NEW** Require Google Chrome for admin layout
- - **NEW** Publish new nodes to Twitter or mail newsletter via meta field
+ - **NEW** Publish new nodes to Twitter or mail newsletter via meta field (Facebook coming soon)
 
 
 

@@ -149,7 +149,11 @@ $this->requireCssFirst('core.alert');
 		<!-- Google Analytics -->
 		<script type="text/javascript" class="cc-onconsent-analytics">
 		var _gaq = _gaq || [];
-		_gaq.push(['_setAccount', 'UA-XXXXX-X']);
+        <?php if ($gap = SettingModel::byName('google_analytics_property')) { ?>
+		    _gaq.push(['_setAccount', '<?php echo $gap; ?>']);
+        <?php } else { ?>
+            _gaq.push(['_setAccount', 'UA-XXXXX-X']);
+        <?php } ?>
 		_gaq.push(['_trackPageview']);
 		(function() {
 			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
