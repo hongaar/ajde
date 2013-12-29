@@ -16,7 +16,7 @@ if (!$currentFilter) {
 }
 
 $filteredBy = 'Filter';
-if (key_exists($currentFilter, $filterFieldValues)) {
+if (array_key_exists($currentFilter, $filterFieldValues)) {
 	$filteredBy = $filterFieldValues[$currentFilter];
 }
 
@@ -49,7 +49,7 @@ if ($edit) {
 >
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		<h3 id="myModalLabel">Filter by <?php echo _e(strtolower($filterField->getLabel())); ?></h3>
+		<h3 id="myModalLabel">Choose <?php echo _e(strtolower($filterField->getLabel())); ?></h3>
 	</div>
 	<div class="modal-body">
 

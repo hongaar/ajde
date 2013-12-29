@@ -254,7 +254,7 @@ table.crud {
             &.toolbar {
 				white-space: nowrap;
 				
-                .delete {
+                .itemAction {
                     display: none;
 
                     &.show {

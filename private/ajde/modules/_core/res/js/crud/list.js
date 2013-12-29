@@ -170,14 +170,14 @@ AC.Crud.List = function() {
 			e.stopPropagation();
 			var form = $(this).parents('form');
 			var data = form.serializeArray();
-			form.find('td.toolbar .delete').removeClass('show');
+			form.find('td.toolbar .itemAction').removeClass('show');
 			form.find('input.toggleSelect').attr('checked', false);
 			var count = 0;
 			for (elm in data) {
 				if (data[elm].name == 'id[]') {
 					form.find('input.toggleSelect').css('opacity', 0.45);
 					form.find('input.toggleSelect').attr('checked', true);
-					form.find('td.toolbar .delete').addClass('show');
+					form.find('td.toolbar .itemAction').addClass('show');
 					count++;
 				}
 			}
@@ -205,10 +205,10 @@ AC.Crud.List = function() {
 			form.find('input.toggleSelect').css('opacity', 1);
 			if (count > 0) {
 				form.find('input.id').attr('checked', false);
-				form.find('td.toolbar .delete').removeClass('show');
+				form.find('td.toolbar .itemAction').removeClass('show');
 			} else {
 				form.find('input.id').attr('checked', true);
-				form.find('td.toolbar .delete').addClass('show');
+				form.find('td.toolbar .itemAction').addClass('show');
 			}
 			AC.Crud.List.updateCheckRows(this);
 		},
@@ -244,6 +244,7 @@ AC.Crud.List = function() {
 			var form = $(this).parents('form');
 			
 			if (row.parents('table').data('editaction')) {
+                debugger;
 				window.location.href = row.parents('table').data('editaction') + '?edit=' + id;
 			} else {
 				window.location.href = window.location.pathname + '?edit=' + id;

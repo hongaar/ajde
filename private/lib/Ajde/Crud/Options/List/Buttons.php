@@ -65,6 +65,10 @@ class Ajde_Crud_Options_List_Buttons extends Ajde_Crud_Options
 		$buttons[$name] = array('text' => $text, 'class' => isset($class) ? $class : $name, 'persistent' => $persistent, 'function' => $function);
 		return $this->_set('itemButtons', $buttons);
 	}
+
+    public function resetItemButtons() {
+        return $this->_set('itemButtons', array());
+    }
 	
 	/**
 	 * Adds a custom button for every item in the list

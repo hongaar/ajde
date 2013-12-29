@@ -94,7 +94,14 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 										><?php echo __($option); ?></option>
 								<?php } ?>
 							</select>
-						<?php } ?>
+						<?php } else if ($field instanceof Ajde_Crud_Field_Boolean) {
+                            $fieldFilter = $crudView->getFilterForField($field->getName()); ?>
+                            <select class="filter span12" name="view[filter][<?php echo $field->getName(); ?>]">
+                                <option value="" class="select"><?php echo __("No filter"); ?></option>
+                                    <option value='0' <?php if ('0' == $fieldFilter) { echo "selected='selected'"; } ?>><?php echo __('Off'); ?></option>
+                                    <option value='1' <?php if ('1' == $fieldFilter) { echo "selected='selected'"; } ?>><?php echo __('On'); ?></option>
+                            </select>
+                        <?php } ?>
 					</th>
 				<?php } ?>
 				<th></th>
@@ -108,6 +115,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
                 <?php } ?>
             </th>
         </tr>
+        <?php if ($crud->getOption('list.showToolbar', true)) { ?>
 		<tr class="toolbar">
 			<td <?php if (!$crud->getOption('list.buttons.select', true)) { ?>class="hidden"<?php } ?>>
 				<input type="checkbox" class="toggleSelect nopicker" />
@@ -118,7 +126,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 						<a href="javascript:void(null);" class='btn btn-success new hideInIframe'><i class="icon-plus icon-white"></i> new</a>
 					<?php } ?>
 					<?php if ($crud->getOption('list.buttons.delete', true)) { ?>
-						<a href="javascript:void(null);" class='btn btn-danger delete hideInIframe'>delete selected</a>
+						<a href="javascript:void(null);" class='btn btn-danger delete hideInIframe itemAction'>delete selected</a>
 					<?php } ?>
 					<?php if ( ($html = $crud->getOption('list.buttons.toolbarHtml')) && count($html) ) {
 						foreach($html as $snippet) {
@@ -171,7 +179,8 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 					&nbsp; <a href="javascript:void(null);" class='btn filterToggle <?php echo $crudView->getFilterVisible() ? 'active' : ''; ?>' data-toggle="button" title='Toggle filters'><i class='icon-filter'></i></a>
 				<?php } ?>
             </td>
-		</tr>		
+		</tr>
+        <?php } ?>
 	</thead>
 	<tbody>
 	<?php foreach($items = $crud->getItems() as $model) {

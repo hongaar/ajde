@@ -61,6 +61,14 @@ class Ajde_Crud_Options_List extends Ajde_Crud_Options
 	 * @return Ajde_Crud_Options_List
 	 */
 	public function setShowHeader($show)	{ return $this->_set('showHeader', $show); }
+
+    /**
+     * Shows the table toolbar
+     *
+     * @param boolean $show
+     * @return Ajde_Crud_Options_List
+     */
+    public function setShowToolbar($show)	{ return $this->_set('showToolbar', $show); }
 	
 	/**
 	 * Shows the table header

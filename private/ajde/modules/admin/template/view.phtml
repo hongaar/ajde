@@ -14,6 +14,40 @@
 				<a href="admin/node:view?new&amp;view[filter][nodetype]=" class="btn btn-primary btn-large">add node &raquo;</a>
 			</p>
 		</div>
+        <div class="row-fluid">
+            <div class="span12">
+                   <h2>Recently changed nodes</h2>
+                <?php
+
+                $options = NodeController::getNodeOptions();
+
+                $options
+                    ->selectList()
+                        ->selectButtons()
+                            ->setDelete(false)
+                            ->setEdit(false)
+                            ->setSelect(false)
+                            ->setNew(false)
+                            ->resetItemButtons()
+                            ->up()
+                        ->setShowFooter(false)
+                        ->setShowToolbar(false)
+                        ->setSingleClickEdits(true)
+                        ->selectView()
+                            ->setMainFilter(false)
+                            ->setOrderBy('updated')
+                            ->setOrderDir('DESC')
+                    ->finished();
+
+                $crud = $this->ACCrudList('node', $options);
+                $crud->setEditAction('admin/node:view');
+                $crud->setSessionName('dashboard');
+                echo $crud->output();
+
+                ?>
+
+            </div>
+        </div>
 		<div class="row-fluid">
 			<div class="span4">
 				<h2>Media</h2>
