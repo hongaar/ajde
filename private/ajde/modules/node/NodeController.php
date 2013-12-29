@@ -91,7 +91,7 @@ class NodeController extends Ajde_Controller
 		$options
 			->selectFields()
 				->selectField('slug')
-					->setIsReadonly(true)
+                    ->setHelp('Changing the slug might impact SEO scores and break existing internal links')
 					->up()
 				->selectField('nodetype')
 					->setOrderBy('sort')
@@ -221,7 +221,7 @@ class NodeController extends Ajde_Controller
 					->setMainFilterGrouper('category')
 					->setOrderBy('sort')
 					->up()
-				->setPanelFunction('displayPanel')
+//				->setPanelFunction('displayPanel')
 				->up()
 			->selectEdit()
 				->selectLayout()
@@ -281,6 +281,7 @@ class NodeController extends Ajde_Controller
 			// set owner
 			$user = UserModel::getLoggedIn();
 			$options->selectFields()->selectField('user')->setValue($user->getPK())->finished();
+            $options->selectFields()->selectField('slug')->setIsReadonly(true)->finished();
 			
 			if (!UserModel::isAdmin()) {
 				$currentUser = UserModel::getLoggedIn();

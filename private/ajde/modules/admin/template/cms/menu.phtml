@@ -13,30 +13,36 @@ $currentGrouper = '';
 	<a class="menu-toggle btn btn-normal pull-right"><i class="icon-resize-small"></i></a>
 	<ul class="nav nav-list">
 		<li class="nav-header">Nodes</li>
-		<li><a href="admin/node:view?new&view[filter][nodetype]="><i class="icon-plus"></i> Add node</a></li>
-		<li class="divider"></li>
-		<?php foreach ($nodeTypes as $nodeType) {  
-			/* @var $nodeType NodetypeModel */
-			if ($nodeType->get('category') <> $currentGrouper) {
-				if (!empty($currentGrouper)) { echo '</ul>'; }
-				$currentGrouper = $nodeType->get('category'); ?>
-				<li class="dropdown">
-					<a href="javascript:void(null);" class="dropdown-toggle" data-toggle="dropdown">
-						<?php echo ucfirst($currentGrouper); ?> <b class="caret pull-right"></b>
-					</a>
-					<ul class="dropdown-menu">
-			<?php } ?>
-				<li><a href="admin/node:view?view[filter][nodetype]=<?php echo $nodeType->getPK(); ?>"><?php echo _e($nodeType->getName()); ?></a></li>
-		<?php } 
-			if ($nodeTypes->count() && !empty($currentGrouper)) { ?>
-				</ul>
-			</li>
-		<?php } ?>
-		<li class="divider"></li>
+<!--		<li><a href="admin/node:view?new&view[filter][nodetype]="><i class="icon-plus"></i> Add</a></li>-->
+        <?php
+        $extendedMenu = false;
+        if ($extendedMenu) { ?>
+            <li class="divider"></li>
+            <?php foreach ($nodeTypes as $nodeType) {
+                /* @var $nodeType NodetypeModel */
+                if ($nodeType->get('category') <> $currentGrouper) {
+                    if (!empty($currentGrouper)) { echo '</ul>'; }
+                    $currentGrouper = $nodeType->get('category'); ?>
+                    <li class="dropdown">
+                        <a href="javascript:void(null);" class="dropdown-toggle" data-toggle="dropdown">
+                            <?php echo ucfirst($currentGrouper); ?> <b class="caret pull-right"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                <?php } ?>
+                    <li><a href="admin/node:view?view[filter][nodetype]=<?php echo $nodeType->getPK(); ?>"><?php echo _e($nodeType->getName()); ?></a></li>
+            <?php }
+                if ($nodeTypes->count() && !empty($currentGrouper)) { ?>
+                    </ul>
+                </li>
+            <?php } ?>
+            <li class="divider"></li>
+        <?php } else { ?>
+            <li><a href="admin/node:view?view[filter][nodetype]=&nofilterpopup=1"><i class="icon-file"></i> Overview</a></li>
+        <?php } ?>
 		<li class="nav-header">Media</li>
-		<li><a href="admin/media:view"><i class="icon-th-large"></i> Manager</a></li>        
-		<li><a href="admin/media:view?new"><i class="icon-plus"></i> Add</a></li>
-        <li><a href="admin/media:upload"><i class="icon-circle-arrow-up"></i> Upload files</a></li>
+		<li><a href="admin/media:view"><i class="icon-th-large"></i> Manager</a></li>
+<!--		<li><a href="admin/media:view?new"><i class="icon-plus"></i> Add</a></li>-->
+<!--        <li><a href="admin/media:upload"><i class="icon-circle-arrow-up"></i> Upload files</a></li>-->
 		<li class="nav-header">Menus</li>
 		<li><a href="admin/menu:view"><i class="icon-bookmark"></i> Editor</a></li>
 		<li class="nav-header">Tags</li>

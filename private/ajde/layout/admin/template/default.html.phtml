@@ -158,31 +158,37 @@ $currentGrouper = '';
 							<?php if ($user) { ?>
 								<!-- <li><a href="admin">Dashboard</a></li> -->
 								<li class="dropdown">
-									<a class="dropdown-toggle" data-toggle="dropdown" href="admin/cms:nodes">Content <b class="caret"></b></a>
-									<ul class="dropdown-menu">
-										<li class="nav-header">Nodes</li>
-										<li><a href="admin/node:view?view[filter][nodetype]=&nofilterpopup=1">Overview</a></li>
-										<?php foreach ($nodeTypes as $nodeType) {  
-											/* @var $nodeType NodetypeModel */
-											if ($nodeType->get('category') <> $currentGrouper) {
-												if (!empty($currentGrouper)) { echo '</ul>'; }
-												$currentGrouper = $nodeType->get('category'); ?>
-												<li class="with-sub-menu">
-													<a href="javascript:void(null);">
-														<?php echo ucfirst($currentGrouper); ?> <i class="icon-chevron-right pull-right"></i>
-													</a>
-													<ul class="dropdown-menu sub-menu">
-											<?php } ?>
-											<li><a href="admin/node:view?view[filter][nodetype]=<?php echo $nodeType->getPK(); ?>"><?php echo _e($nodeType->getName()); ?></a></li>
-										<?php }
-										if ($nodeTypes->count() && !empty($currentGrouper)) { ?>
-											</ul>
-										</li>
-										<?php } ?>
-										<li class="divider"></li>
-										<li><a href="admin/media:view">Media</a></li>
-										<li><a href="admin/menu:view">Menus</a></li>
-										<li><a href="admin/tag:view">Tags</a></li>
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="admin/cms:nodes">Content <b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <?php
+                                        $extendedMenu = false;
+                                        if ($extendedMenu) { ?>
+                                            <li class="nav-header">Nodes</li>
+                                            <li><a href="admin/node:view?view[filter][nodetype]=&nofilterpopup=1">Overview</a></li>
+                                            <?php foreach ($nodeTypes as $nodeType) {
+                                                /* @var $nodeType NodetypeModel */
+                                                if ($nodeType->get('category') <> $currentGrouper) {
+                                                    if (!empty($currentGrouper)) { echo '</ul>'; }
+                                                    $currentGrouper = $nodeType->get('category'); ?>
+                                                    <li class="with-sub-menu">
+                                                        <a href="javascript:void(null);">
+                                                            <?php echo ucfirst($currentGrouper); ?> <i class="icon-chevron-right pull-right"></i>
+                                                        </a>
+                                                        <ul class="dropdown-menu sub-menu">
+                                                <?php } ?>
+                                                <li><a href="admin/node:view?view[filter][nodetype]=<?php echo $nodeType->getPK(); ?>"><?php echo _e($nodeType->getName()); ?></a></li>
+                                            <?php }
+                                            if ($nodeTypes->count() && !empty($currentGrouper)) { ?>
+                                                </ul>
+                                            </li>
+                                            <?php } ?>
+                                            <li class="divider"></li>
+                                        <?php } else { ?>
+                                            <li><a href="admin/node:view?view[filter][nodetype]=&nofilterpopup=1">Node overview</a></li>
+                                        <?php } ?>
+										<li><a href="admin/media:view">Media manager</a></li>
+										<li><a href="admin/menu:view">Menu editor</a></li>
+										<li><a href="admin/tag:view">Tag manager</a></li>
 									</ul>
 								</li>
 								<?php echo Ajde_Event::trigger('Ajde_Layout', 'onAdminMenu'); ?>
@@ -197,6 +203,7 @@ $currentGrouper = '';
 										<li><a href="admin/setup:media">Media</a></li>
 										<li><a href="admin/setup:menus">Menus</a></li>
 										<li><a href="admin/setup:settings">Settings</a></li>
+                                        <li class="divider"></li>
 										<li><a href="admin/setup:meta">Meta fields</a></li>
 										<li class="nav-header">Access</li>
 										<li><a href="admin/user:view">Users</a></li>
@@ -215,19 +222,23 @@ $currentGrouper = '';
 		</div>
 
 		<div class="container-fluid">
-		
-			<div id="no-chrome-warning" class="chrome alert menu-offset">
-				<img src="https://lh3.ggpht.com/7O3H3V0fEBumwJlqDLD03t1fmwl8fH9YoBsPwB2UQ_aiBilM7OAOe2gkFB3wrojJqbM=w50" class="pull-left" alt="Chrome logo" />
-				<p>
-					The website you're managing is optimized for all regular browsers. This administration section however, works best with Google Chrome.<br/>
-					<i class="icon-chevron-right icon-white"></i><a href="http://chrome.google.com">Please  download &amp; install Google Chrome</a>
-				</p>
-			</div>
-			
-			<?php echo $this->getDocument()->getBody(); ?>
-			
-			<div class="clearfix"></div>
-			
+
+            <div class="row-fluid">
+                <div id="no-chrome-warning" class="chrome alert menu-offset">
+                    <img src="https://lh3.ggpht.com/7O3H3V0fEBumwJlqDLD03t1fmwl8fH9YoBsPwB2UQ_aiBilM7OAOe2gkFB3wrojJqbM=w50" class="pull-left" alt="Chrome logo" />
+                    <p>
+                        The website you're managing is optimized for all regular browsers. This administration section however, works best with Google Chrome.<br/>
+                        <i class="icon-chevron-right icon-white"></i><a href="http://chrome.google.com">Please  download &amp; install Google Chrome</a>
+                    </p>
+                </div>
+            </div>
+
+            <div id="main">
+                <?php echo $this->getDocument()->getBody(); ?>
+            </div>
+
+            <div class="clearfix"></div>
+
 			<hr>
 			
 			<?php
@@ -236,21 +247,25 @@ $currentGrouper = '';
 				$chromeapp->set('chromeapp', 1);
 			}
 			if (!$chromeapp->has('chromeapp')) { ?>
-			<div id="chrome-app" class="chrome well menu-offset">
-				<img src="https://lh3.ggpht.com/7O3H3V0fEBumwJlqDLD03t1fmwl8fH9YoBsPwB2UQ_aiBilM7OAOe2gkFB3wrojJqbM=w50" class="pull-left" alt="Chrome logo" />
-				<p>
-					There's a Chrome app available for easy access to this administration panel.<br/>
-					<i class="icon-chevron-right"></i><a href="admin/system:chromeApp">Install now</a>
-				</p>
-			</div>
+            <div class="row-fluid">
+                <div id="chrome-app" class="chrome well menu-offset">
+                    <img src="https://lh3.ggpht.com/7O3H3V0fEBumwJlqDLD03t1fmwl8fH9YoBsPwB2UQ_aiBilM7OAOe2gkFB3wrojJqbM=w50" class="pull-left" alt="Chrome logo" />
+                    <p>
+                        There's a Chrome app available for easy access to this administration panel.<br/>
+                        <i class="icon-chevron-right"></i><a href="admin/system:chromeApp">Install now</a>
+                    </p>
+                </div>
+            </div>
 			<?php } ?>
-			
-			<footer class="menu-offset">
-				<span class="pull-right ajde-footer">
-					Powered by <a href="https://github.com/hongaar/ajde"><img src="<?php echo MEDIA_DIR; ?>ajde-small.png" /></a> web administration platform				
-				</span>
-				<p>&copy; <?php echo date('Y'); ?> <?php echo Config::get('author'); ?></p>
-			</footer>
+
+            <div class="row-fluid">
+                <footer class="menu-offset">
+                    <span class="pull-right ajde-footer">
+                        Powered by <a href="https://github.com/hongaar/ajde"><img src="<?php echo MEDIA_DIR; ?>ajde-small.png" /></a> web administration platform
+                    </span>
+                    <p>&copy; <?php echo date('Y'); ?> <?php echo Config::get('author'); ?></p>
+                </footer>
+            </div>
 
 		</div><!--/.fluid-container-->
 		

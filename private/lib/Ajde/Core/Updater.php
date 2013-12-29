@@ -6,8 +6,8 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 	public $available_version;
 	public $available_package;
 	
-	public $repo_tags_url = 'https://api.github.com/repos/hongaar/ajde/tags';
-	public $changelog_url = 'https://raw.github.com/hongaar/ajde/master/CHANGELOG.md';
+	public $repo_tags_url = 'https://api.github.com/repos/nabble/ajde/tags';
+	public $changelog_url = 'https://raw.github.com/nabble/ajde/master/CHANGELOG.md';
 	
 	/**
 	 *
@@ -22,10 +22,13 @@ class Ajde_Core_Updater extends Ajde_Object_Singleton
 	
 	protected function __construct()
 	{
-		$tags = json_decode(Ajde_Http_Curl::get($this->repo_tags_url));
-		
-		$availableversion = $tags[0]->name;
-		$zipball = $tags[0]->zipball_url;
+        $tags = json_decode(Ajde_Http_Curl::get($this->repo_tags_url));
+
+        if (!is_array($tags) || !isset($tags[0])) {
+            throw new Ajde_Exception("Updater failed to initialize");
+        }
+        $availableversion = $tags[0]->name;
+        $zipball = $tags[0]->zipball_url;
 		
 		$this->current_version = AJDE_VERSION;
 		$this->available_version = $availableversion;

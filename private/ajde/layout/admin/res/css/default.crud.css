@@ -147,6 +147,14 @@ fieldset.crud {
 		color: silver;
 	}
 
+    &.well {
+        div.control-group {
+            .help-inline {
+                background-color: #ddd;
+            }
+        }
+    }
+
 }
 
 .fancybox-skin {

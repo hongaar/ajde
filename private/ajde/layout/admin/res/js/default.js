@@ -38,15 +38,15 @@
 	
 		// Toggled menu
 		$('.menu-toggle').on('click', function() {
-			if ($('.row-fluid > div:eq(0)').hasClass('span3')) {
+			if ($('#main .row-fluid > div:eq(0)').hasClass('span3')) {
 				$.cookie('collapsed-menu', 1);
-				$('.row-fluid > div:eq(0)').removeClass('span3').addClass('span0');
-				$('.row-fluid > div:eq(1)').removeClass('span9').addClass('span11');
+				$('#main .row-fluid > div:eq(0)').removeClass('span3').addClass('span0');
+				$('#main .row-fluid > div:eq(1)').removeClass('span9').addClass('span11');
 				$('.menu-offset').removeClass('offset3').addClass('offset05');
 			} else {
 				$.cookie('collapsed-menu', 0);
-				$('.row-fluid > div:eq(0)').removeClass('span0 no-animation').addClass('span3');
-				$('.row-fluid > div:eq(1)').removeClass('span11 no-animation').addClass('span9');
+				$('#main .row-fluid > div:eq(0)').removeClass('span0 no-animation').addClass('span3');
+				$('#main .row-fluid > div:eq(1)').removeClass('span11 no-animation').addClass('span9');
 				$('.menu-offset').removeClass('offset05').addClass('offset3');
 			}
 		});
@@ -54,7 +54,7 @@
 			$('.menu-offset').addClass('offset3');
 		}
 		if ($.cookie('collapsed-menu') == 1) {
-			$('.row-fluid > div').addClass('no-animation');
+			$('#main .row-fluid > div').addClass('no-animation');
 			$('.menu-toggle').trigger('click');			
 			setTimeout(function() {
 				$(window).trigger('resize');
