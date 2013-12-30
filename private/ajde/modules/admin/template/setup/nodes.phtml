@@ -45,6 +45,10 @@ $options
 				new Ajde_Filter_Where('target', Ajde_Filter::FILTER_EQUALS, 'node')
 			))
 			->up()
+
+        ->selectField('enabled')
+            ->setType('header')
+            ->up()
 		->selectField('title')				->setType('boolean')->setIsReadonly(true)->up()
 		->selectField('subtitle')			->setType('boolean')->up()
 		->selectField('content')			->setType('boolean')->up()
@@ -55,6 +59,19 @@ $options
 		->selectField('children')			->setType('boolean')->up()
 		->selectField('published')			->setType('boolean')->up()
 		->selectField('related_nodes')		->setType('boolean')->up()
+
+        ->selectField('required')
+            ->setType('header')
+            ->up()
+        ->selectField('required_title')				->addShowOnlyWhen('title', 1)->setType('boolean')->setIsReadonly(true)->up()
+        ->selectField('required_subtitle')			->addShowOnlyWhen('subtitle', 1)->setType('boolean')->up()
+        ->selectField('required_content')			->addShowOnlyWhen('content', 1)->setType('boolean')->up()
+        ->selectField('required_summary')			->addShowOnlyWhen('summary', 1)->setType('boolean')->up()
+        ->selectField('required_media')				->addShowOnlyWhen('media', 1)->setType('boolean')->up()
+        ->selectField('required_tag')				->addShowOnlyWhen('tag', 1)->setType('boolean')->up()
+        ->selectField('required_additional_media')	->addShowOnlyWhen('additional_media', 1)->setType('boolean')->up()
+        ->selectField('required_children')			->setLabel('Parent item')->addShowOnlyWhen('children', 1)->setType('boolean')->up()
+        ->selectField('required_related_nodes')		->addShowOnlyWhen('related_nodes', 1)->setType('boolean')->up()
 		->up()
 	->selectList()
 		->selectButtons()
@@ -89,7 +106,12 @@ $options
 					->setSpan(4)
 					->addBlock()
 						->setClass('well narrow')
-						->setShow(array('title', 'subtitle', 'content', 'summary', 'media', 'tag', 'additional_media', 'children', 'published', 'related_nodes'))
+						->setShow(array('enabled', 'title', 'subtitle', 'content', 'summary', 'media', 'tag', 'additional_media', 'children', 'published', 'related_nodes'))
+                        ->up()
+                    ->addBlock()
+                        ->setClass('well narrow')
+                        ->setShow(array('required', 'required_title', 'required_subtitle', 'required_content', 'required_summary', 'required_media', 'required_tag', 'required_additional_media', 'required_children', 'required_related_nodes'))
+
 
 	->finished();
 

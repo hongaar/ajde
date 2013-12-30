@@ -34,7 +34,7 @@ class Ajde_Core_Autoloader
 		
 		// Zend requires include path to be set to the LIB directory
 		// Include config dir here to speed up requiring the config classes
-		set_include_path(get_include_path() . PATH_SEPARATOR . LIB_DIR);
+		set_include_path(get_include_path() . PATH_SEPARATOR . $_SERVER['DOCUMENT_ROOT'] . str_replace('/index.php', '', $_SERVER['PHP_SELF']) . DIRECTORY_SEPARATOR . LIB_DIR);
 		
 		// Get namespaces from Config
 		$defaultNamespaces = array('Ajde', 'Zend', 'HTMLPurifier');

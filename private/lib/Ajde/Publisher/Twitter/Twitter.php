@@ -1,5 +1,4 @@
 <?php
-require 'twitteroauth.php';
 
 class Ajde_Publisher_Twitter extends Ajde_Publisher
 {
@@ -16,7 +15,7 @@ class Ajde_Publisher_Twitter extends Ajde_Publisher
 		$this->_token = $options['token'];
 		$this->_tokenSecret = $options['tokenSecret'];
 		
-		$this->_twitter =  new TwitterOAuth($this->_consumerKey, $this->_consumerSecret, $this->_token, $this->_tokenSecret);
+		$this->_twitter =  new Ajde_Social_Provider_Twitter($this->_consumerKey, $this->_consumerSecret, $this->_token, $this->_tokenSecret);
 	}
 	
 	public function publish()

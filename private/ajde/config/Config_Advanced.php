@@ -98,6 +98,13 @@ class Config_Advanced
 	public $registerNamespaces	= array();
 	public $overrideClass		= array();
 
+    // User login
+    public $ssoProviders        = array('google', 'facebook', 'twitter');
+
+        // Twitter
+        public $ssoTwitterKey       = false;
+        public $ssoTwitterSecret    = false;
+
 	// Shop
 	public $transactionProviders= array('creditcard', 'paypal', 'wedeal');
 	public $currency			= '€';

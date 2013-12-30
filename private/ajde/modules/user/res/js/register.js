@@ -34,38 +34,42 @@ $(document).ready(function() {
 		}
 	);
 
-	$('#registerform').on('before', function() {
-		if (!$(this).data('valid')) {
-			$('body').removeClass('loading');
-			$('.give-status').addClass('error');
-			$('.status-text').text('Please provide a more complex password');
-			return false;
-		}
-	});
-		
-	$('#registerform').on('result', function(event, data) {
-		if (data.success === false) {
-			$('.give-status').addClass('error');
-			$('.status-text').text(data.message);
-		} else {
-			if (data.returnto !== false) {
-				window.location.href = data.returnto;
-			} else {
-				window.location.href = 'user';
-			}
-		}
-	});
-		
-	$('#registerform').on('error', function(event) {
-		$('.give-status').addClass('error');
-		$('.status-text').text('Something went wrong');
-	});
-	
-	$('#registerform').on('submit', function(event) {
+    AC.Form.Ajax.registerCallback(function() {
+
+	    $('#registerform').on('before', function() {
+            if (!$('#provider').val() && !$(this).data('valid')) {
+                $('body').removeClass('loading');
+                $('.give-status').addClass('error');
+                $('.status-text').text('Please provide a more complex password');
+                return false;
+            }
+        });
+
+        $('#registerform').on('result', function(event, data) {
+            if (data.success === false) {
+                $('.give-status').addClass('error');
+                $('.status-text').text(data.message);
+            } else {
+                if (data.returnto !== false) {
+                    window.location.href = data.returnto;
+                } else {
+                    window.location.href = 'user';
+                }
+            }
+        });
+
+        $('#registerform').on('error', function(event) {
+            $('.give-status').addClass('error');
+            $('.status-text').text('Something went wrong');
+        });
+
+        $('#registerform').on('submit', function(event) {
 //		$('.give-status').removeClass('error');
 //		$('.status-text').text('Registering...');
-		return true;
-	});
+            return true;
+        });
+
+    });
 	
 	$('#registerform :input').on('keydown', function() {
 		$('.status-text').text('');

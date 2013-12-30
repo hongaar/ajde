@@ -7,12 +7,12 @@
  */
 
 /* Load OAuth lib. You can find it at http://oauth.net */
-require_once('OAuth.php');
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'OAuth.php';
 
 /**
  * Twitter OAuth class
  */
-class TwitterOAuth {
+class Ajde_Social_Provider_Twitter {
   /* Contains the last HTTP status code returned. */
   public $http_code;
   /* Contains the last API call. */

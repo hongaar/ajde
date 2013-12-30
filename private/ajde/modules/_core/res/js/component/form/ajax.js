@@ -3,12 +3,30 @@ if (typeof AC ==="undefined") {AC = function() {};}
 if (typeof AC.Form ==="undefined") {AC.Form = function() {};}
 
 AC.Form.Ajax = function() {
+
+    var ready = false;
+    var callbacks = [];
+
 	return {
 		
 		init: function() {
 			$('form.ACAjaxForm.getHandler').submit(AC.Form.Ajax.getHandler);
 			$('form.ACAjaxForm:not(.getHandler)').submit(AC.Form.Ajax.postHandler);
+            ready = true;
+            for (var i in callbacks) {
+                (function(cb) {
+                    setTimeout(cb, 100);
+                })(callbacks[i]);
+            }
 		},
+
+        registerCallback: function(callback) {
+            if (ready) {
+                setTimeout(callback, 100);
+            } else {
+                callbacks.push(callback);
+            }
+        },
 		
 		postHandler: function() {
 			var self = this;

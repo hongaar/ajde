@@ -42,6 +42,38 @@ class NodeModel extends Ajde_Model_With_AclI18n
 			Ajde_Event::register($this, 'afterCrudSave', 'postCrudSave');
 		}
 	}
+
+    public function beforeValidate()
+    {
+        // required fields
+        $nodetype = $this->getNodetype();
+        if ($nodetype->get('required_subtitle')) { $this->addValidator('subtitle', new Ajde_Model_Validator_Required()); }
+        if ($nodetype->get('required_content'))  { $this->addValidator('content', new Ajde_Model_Validator_Required()); }
+        if ($nodetype->get('required_summary'))  { $this->addValidator('summary', new Ajde_Model_Validator_Required()); }
+        if ($nodetype->get('required_media'))    { $this->addValidator('media', new Ajde_Model_Validator_Required()); }
+        if ($nodetype->get('required_tag'))      {
+            $validator = new Ajde_Model_Validator_HasChildren();
+            $validator->setReferenceOptions('node_tag', 'node', 'tag');
+            $this->addValidator('tag', $validator);
+        }
+        if ($nodetype->get('required_additional_media')) {
+            $validator = new Ajde_Model_Validator_HasChildren();
+            $validator->setReferenceOptions('node_media', 'node', 'media');
+            $this->addValidator('additional_media', $validator);
+        }
+        if ($nodetype->get('required_children')) { $this->addValidator('parent', new Ajde_Model_Validator_Required()); }
+        if ($nodetype->get('required_content'))  { $this->addValidator('content', new Ajde_Model_Validator_Required()); }
+        if ($nodetype->get('required_related_nodes')) {
+            $validator = new Ajde_Model_Validator_HasChildren();
+            $validator->setReferenceOptions('node_related', 'node', 'related node');
+            $this->addValidator('related_nodes', $validator);
+        }
+
+        // slug
+        $this->addValidator('slug', new Ajde_Model_Validator_Unique());
+
+        return true;
+    }
 	
 	public function getAclParam()
 	{

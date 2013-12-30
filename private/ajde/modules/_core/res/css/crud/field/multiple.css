@@ -21,6 +21,8 @@ div.multiple div.controls-row {
 
 div.multiple div.picker {
 	display: inline-block;
+    position: relative;
+    top: 10px;
 	
 	div.input {
 		display: none;

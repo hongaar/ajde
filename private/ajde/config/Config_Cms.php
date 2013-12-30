@@ -66,10 +66,13 @@ class Config_Cms extends Config_Advanced
 	//public $registerNamespaces;
 	//public $overrideClass;
 
+    //public $ssoProviders;
+
 	//public $transactionProviders;
 	//public $currency;
 	//public $currencyCode;
 	//public $defaultVAT;
+    //public $shopSandboxPayment;
 
 	//public $bootstrap;
 

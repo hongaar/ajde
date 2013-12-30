@@ -57,10 +57,16 @@ class Config_Application extends Config_Cms
 	//public $registerNamespaces;
 	//public $overrideClass;
 
+    //public $ssoProviders;
+
+    public $ssoTwitterKey       = 'PkoVQbj7DaRfMvZWBMeFQ';
+    public $ssoTwitterSecret    = 'XrFO01xEIQp0DlhMJYFjf0xSTvPg14taLqH5RM40';
+
 	//public $transactionProviders;
 	//public $currency;
 	//public $currencyCode;
 	//public $defaultVAT;
+    //public $shopSandboxPayment;
 
 	//public $bootstrap;
 

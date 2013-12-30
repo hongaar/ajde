@@ -1,0 +1,51 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ 
+
+$this->requireJsPublic('core/complexify/jquery.complexify.banlist.js');
+$this->requireJsPublic('core/complexify/jquery.complexify.min.js');
+
+?>
+
+<div class="row-fluid">
+	<div class="span3">
+		<div class="well sidebar-nav">
+            <a class="menu-toggle btn btn-normal pull-right"><i class="icon-resize-small"></i></a>
+            <ul class="nav nav-list">
+                <li class="nav-header">User account</li>
+                <li><a href="user/profile"><i class="icon-user"></i> Profile</a></li>
+                <li><a href="user/social"><i class="icon-thumbs-up"></i> Social</a></li>
+                <li><a href="user/settings"><i class="icon-cog"></i> Settings</a></li>
+				<li><a href="user/app"><i class="icon-qrcode"></i> App</a></li>
+                <li class="divider"></li>
+                <li><a href="user/logoff"><i class="icon-share-alt"></i> Log off</a></li>
+            </ul>
+        </div><!--/.well -->
+	</div><!--/span-->
+	<div class="span9">
+        
+        <div class='page-header'>    
+            <h1>Social</h1>
+        </div>
+
+        <?php
+        $model = new SsoModel();
+        foreach($this->sso as $sso) { ?>
+            <div>
+                <?php if ($model->loadByFields(array(
+                        'user' => $this->user->getPK(),
+                        'provider' => $sso
+                    ))) { ?>
+                    <a class="btn disabled" href="javascript:void(null);">Connect with <?php echo ucfirst($sso); ?></a> Already connected
+                <?php } else { ?>
+                    <a class="btn btn-success" href="user/sso:login?returnto=<?php echo _e( $_GET['_route'] ); ?>&amp;provider=<?php echo $sso; ?>">Connect with <?php echo ucfirst($sso); ?></a>
+                <?php } ?>
+            </div>
+        <?php } ?>
+	
+	</div><!--/span-->
+    <div class='span4'>
+        
+        
+
+        
+    </div>
+</div>
