@@ -10,3 +10,10 @@
 	background-color: #FF3333;
 	color: white;
 }
+
+.btn-block {
+    padding-left: 12px !important;
+}
+.fa.pull-left {
+    margin-top: 3px;
+}

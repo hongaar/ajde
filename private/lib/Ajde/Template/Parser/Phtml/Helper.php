@@ -175,6 +175,17 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	{
 		return Ajde_Component_Css::processStatic($this->getParser(), array('filename' => $filename, 'position' => $position, 'arguments' => $arguments));
 	}
+
+    /**
+     *
+     * @param string $url
+     * @param integer $position
+     * @return void
+     */
+    public function requireCssRemote($url, $position = Ajde_Document_Format_Html::RESOURCE_POSITION_DEFAULT, $arguments = '')
+    {
+        return Ajde_Component_Css::processStatic($this->getParser(), array('url' => $url, 'position' => $position, 'arguments' => $arguments));
+    }
 	
 	/************************
 	 * Ajde_Component_Include

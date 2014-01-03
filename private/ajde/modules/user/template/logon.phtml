@@ -1,3 +1,9 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */
+
+$this->requireCssRemote("//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css");
+
+?>
+
 <div class="container">
     <div class="row-fluid">
         <div class="span8 col-12 col-sm-8">
@@ -32,7 +38,7 @@
 
                     <div class="control-group form-group">
                         <div class="controls col-lg-10 col-lg-offset-2 col-offset-2">
-                            <input type="checkbox" name="rememberme" id='rememberme' />
+                            <input type="checkbox" name="rememberme" id='rememberme' checked="checked" />
                             <label class='checkbox' for='rememberme'><?php echo __('Remember me'); ?></label>
                         </div>
                     </div>
@@ -46,11 +52,18 @@
         </div>
         <div class="span4 col-12 col-sm-4">
 
-            <h2>Fast &amp; no passwords</h2>
+            <h2>Social login</h2>
             <?php
             foreach($this->sso as $sso) { ?>
                 <div style="margin-bottom: 5px;">
-                    <a class="btn btn-primary btn-block" href="user/sso:login?returnto=<?php echo _e( $this->returnto ? $this->returnto : $_GET['_route'] ); ?>&amp;provider=<?php echo $sso; ?>">Sign in using <?php echo ucfirst($sso); ?></a>
+                    <?php
+                    $staticClass = "Ajde_User_SSO_" . ucfirst($sso);
+                    $icon = call_user_func(array($staticClass, 'getIconName'));
+                    $color = call_user_func(array($staticClass, 'getColor'));
+                    ?>
+                    <a class="btn btn-primary btn-block" style="border: 0; background-color: #<?php echo $color; ?>;" href="user/sso:login?returnto=<?php echo _e( $this->returnto ? $this->returnto : $_GET['_route'] ); ?>&amp;provider=<?php echo $sso; ?>">
+                        <i class="fa fa-<?php echo $icon; ?> pull-left"></i> sign in using <?php echo ucfirst($sso); ?>
+                    </a>
                 </div>
             <?php } ?>
 

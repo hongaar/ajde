@@ -345,6 +345,8 @@ class UserController extends Ajde_User_Controller
 		$user = new UserModel();
 		$this->getView()->assign('returnto', Ajde::app()->getRequest()->getParam('returnto', false));
         $this->getView()->assign('username', Ajde::app()->getRequest()->getParam('username', false));
+        $this->getView()->assign('email', Ajde::app()->getRequest()->getParam('email', false));
+        $this->getView()->assign('fullname', Ajde::app()->getRequest()->getParam('fullname', false));
         $this->getView()->assign('provider', Ajde::app()->getRequest()->getParam('provider', false));
         $this->getView()->assign('hidepassword', Ajde::app()->getRequest()->getParam('hidepassword', 0));
 		$this->getView()->assign('user', $user);
@@ -376,7 +378,7 @@ class UserController extends Ajde_User_Controller
             }
 
             $classname = 'Ajde_User_SSO_' . ucfirst($providername);
-            /* @var $provider Ajde_User_SSO */
+            /* @var $provider Ajde_User_SSO_Interface */
             $provider = new $classname;
         }
 
@@ -434,12 +436,15 @@ class UserController extends Ajde_User_Controller
                     $sso->populate(array(
                         'user' => $user->getPK(),
                         'provider' => $providername,
-                        'token' => md5($provider->getToken()),
+                        'username' => $provider->getUsernameSuggestion(),
+                        'avatar' => $provider->getAvatarSuggestion(),
+                        'uid' => $provider->getUidHash(),
                         'data' => serialize($provider->getData())
                     ));
                     $sso->insert();
                 }
 				$user->login();
+                $user->storeCookie($this->includeDomain);
 				Ajde_Session_Flash::alert(sprintf(__('Welcome %s, you are now logged in'), $fullname));
 				$return = array(
 					'success' => true,

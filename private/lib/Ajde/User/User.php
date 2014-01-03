@@ -41,9 +41,18 @@ abstract class Ajde_User extends Ajde_Model
 	{
 		return ((string) self::getLoggedIn()->getUsergroup() == self::USERGROUP_ADMINS);
 	}
+
+    public function hasPassword()
+    {
+        return !$this->verifyHash('');
+    }
 	
 	public function loadByCredentials($username, $password)
 	{
+        if (empty($username) || empty($password)) {
+            return false;
+        }
+
 		$sql = 'SELECT * FROM '.$this->_table.' WHERE '.$this->usernameField.' = ? LIMIT 1';
 		$values = array($username);
 		$user = $this->_load($sql, $values);
@@ -196,6 +205,7 @@ abstract class Ajde_User extends Ajde_Model
 		if ($this->getCookieHash($includeDomain) === $hash) {
 			$this->login();
 			Ajde_Session_Flash::alert(sprintf(__('Welcome back %s, we automatically logged you in'), $this->getFullname()));
+            Ajde_Cache::getInstance()->disable();
 		} else {
 			return false;
 		}

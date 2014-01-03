@@ -9,30 +9,32 @@ $(document).ready(function() {
 		0: 'Unsafe password'		
 	};
 
-	$("input[name=password]").complexify({
-			minimumChars		: 8,
-			strengthScaleFactor	: 0.5,
-			bannedPasswords		: complexify.banlist,
-			banmode				: 'loose',
-			preventSubmit		: false
-		}, function (valid, complexity) {
-			$(this).closest('form').data('valid', valid);
-			
-			if (!$(this).val().length) return;
-			
-			$('div.complexity .progress').css({'width':complexity + '%'});
-			if (!valid) {
-				$('div.complexity').removeClass('valid').addClass('invalid');
-			} else {
-				$('div.complexity').removeClass('invalid').addClass('valid');
-			}
-			for (var i in complexityClass) {
-				if (complexity >= i) {
-					$('div.complexity .class').html(complexityClass[i]);
-				}
-			}
-		}
-	);
+    try {
+        $("input[name=password]").complexify({
+                minimumChars		: 8,
+                strengthScaleFactor	: 0.5,
+                bannedPasswords		: complexify.banlist,
+                banmode				: 'loose',
+                preventSubmit		: false
+            }, function (valid, complexity) {
+                $(this).closest('form').data('valid', valid);
+
+                if (!$(this).val().length) return;
+
+                $('div.complexity .progress').css({'width':complexity + '%'});
+                if (!valid) {
+                    $('div.complexity').removeClass('valid').addClass('invalid');
+                } else {
+                    $('div.complexity').removeClass('invalid').addClass('valid');
+                }
+                for (var i in complexityClass) {
+                    if (complexity >= i) {
+                        $('div.complexity .class').html(complexityClass[i]);
+                    }
+                }
+            }
+        );
+    } catch (e) {};
 
     AC.Form.Ajax.registerCallback(function() {
 

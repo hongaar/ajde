@@ -13,7 +13,7 @@ class Ajde_Component_Css extends Ajde_Component_Resource
 		return array(
 			'action' => 'local',
 			'filename' => 'public',
-			'href' => 'remote',
+			'url' => 'remote',
 			'fontFamily' => 'font'
 		);
 	}
@@ -39,6 +39,14 @@ class Ajde_Component_Css extends Ajde_Component_Resource
 					issetor($this->attributes['arguments'], '')
 				);
 				break;
+            case 'remote':
+                $this->requireRemoteResource(
+                    Ajde_Resource_Local::TYPE_STYLESHEET,
+                    $this->attributes['url'],
+                    issetor($this->attributes['position'], null),
+                    issetor($this->attributes['arguments'], '')
+                );
+                break;
 			case 'font':
 				$url = Ajde_Resource_GWebFont::getUrl(
 					$this->attributes['fontFamily'],

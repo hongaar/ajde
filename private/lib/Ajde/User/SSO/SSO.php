@@ -1,19 +1,16 @@
 <?php
 
-interface Ajde_User_SSO
+abstract class Ajde_User_SSO
 {
-    public function getAuthenticationURL($returnto = '');
-
-    public function getAccessToken();
-
-    /**
-     * @return Ajde_User
-     */
-    public function getUser();
-
-    public function getUsernameSuggestion();
-
-    public function getToken();
-
-    public function getData();
+    public function getUser()
+    {
+        $hash = $this->getUidHash();
+        $model = new SsoModel();
+        if ($hash && $model->loadByField('uid', $hash)) {
+            $model->loadParent('user');
+            return $model->getUser();
+        } else {
+            return false;
+        }
+    }
 }

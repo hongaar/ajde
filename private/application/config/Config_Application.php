@@ -59,8 +59,14 @@ class Config_Application extends Config_Cms
 
     //public $ssoProviders;
 
-    public $ssoTwitterKey       = 'PkoVQbj7DaRfMvZWBMeFQ';
-    public $ssoTwitterSecret    = 'XrFO01xEIQp0DlhMJYFjf0xSTvPg14taLqH5RM40';
+    public $ssoTwitterKey       = 'Ryrp5QnYJkjBFDYLUuUt8Q';
+    public $ssoTwitterSecret    = '3gf4kVcjRchAaIL5gOxVMwGvBZv6c8R3gu1dTwaIiYk';
+
+    public $ssoFacebookKey      = '536948643066481';
+    public $ssoFacebookSecret   = 'a9b01ccbf1da937363b0d84b7cdc5da8';
+
+    public $ssoGoogleKey        = '514075591820.apps.googleusercontent.com';
+    public $ssoGoogleSecret     = 'MS4EgiWPHZAaDko9lG_8oX52';
 
 	//public $transactionProviders;
 	//public $currency;

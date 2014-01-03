@@ -105,6 +105,10 @@ class Config_Advanced
         public $ssoTwitterKey       = false;
         public $ssoTwitterSecret    = false;
 
+        // Facebook
+        public $ssoFacebookKey      = false;
+        public $ssoFacebookSecret   = false;
+
 	// Shop
 	public $transactionProviders= array('creditcard', 'paypal', 'wedeal');
 	public $currency			= '€';

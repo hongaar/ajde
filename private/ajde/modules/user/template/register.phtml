@@ -57,14 +57,14 @@ $this->requireJsPublic('core/complexify/jquery.complexify.min.js');
                     <div class="control-group form-group">
                         <label class="control-label col-lg-4" for="in_email"><?php echo __('E-mail'); ?></label>
                         <div class="controls col-lg-6">
-                            <input type="text" name="email" required id="in_email" />
+                            <input type="text" name="email" required id="in_email" <?php if ($this->email) { echo 'value="' . $this->email . '"'; } ?>  />
                         </div>
                     </div>
 
                     <div class="control-group form-group">
                         <label class="control-label col-lg-4" for="in_name"><?php echo __('Full name'); ?></label>
                         <div class="controls col-lg-6">
-                            <input type="text" name="fullname" required id="in_name" />
+                            <input type="text" name="fullname" required id="in_name" <?php if ($this->fullname) { echo 'value="' . $this->fullname . '"'; } ?> />
                         </div>
                     </div>
 

@@ -1,95 +1,144 @@
 <?php
 
-class Ajde_User_SSO_Twitter implements Ajde_User_SSO
+class Ajde_User_SSO_Twitter extends Ajde_User_SSO
 {
-    private $_key;
-    private $_secret;
+    private $_session;
+    private $_credentials = false;
 
-    public function __construct()
+    const SSO_SESSION_KEY = 'sso.twitter.credentials';
+
+    public static $iconName = 'twitter';
+    public static $color = '00acee';
+
+    public function __construct($credentials = false)
     {
-        $this->_key = Config::get('ssoTwitterKey');
-        $this->_secret = Config::get('ssoTwitterSecret');
+        $this->_session = new Ajde_Session('user');
+        if ($credentials) {
+            $this->setCredentials($credentials);
+        } else if ($this->_session->has(self::SSO_SESSION_KEY)) {
+            $this->_credentials = $this->_session->get(self::SSO_SESSION_KEY);
+        }
+    }
+
+    public static function fromModel(SsoModel $sso)
+    {
+        $instance = new self(unserialize($sso->getData()));
+        return $instance;
+    }
+
+    /**
+     * @return Ajde_Social_Provider_Twitter
+     */
+    public function getProvider()
+    {
+        if ($this->_credentials) {
+            return new Ajde_Social_Provider_Twitter($this->_credentials['oauth_token'], $this->_credentials['oauth_token_secret']);
+        } else {
+            return new Ajde_Social_Provider_Twitter();
+        }
+    }
+
+    public function setCredentials($credentials)
+    {
+        $this->_session->set(self::SSO_SESSION_KEY, $credentials);
+        $this->_credentials = $credentials;
+    }
+
+    public function getCredentials()
+    {
+        return $this->_credentials;
+    }
+
+    public function hasCredentials()
+    {
+        return isset($this->_credentials);
+    }
+
+    public function destroySession()
+    {
+        $this->_session->destroy(self::SSO_SESSION_KEY);
+    }
+
+    public static function getIconName()
+    {
+        return self::$iconName;
+    }
+
+    public static function getColor()
+    {
+        return self::$color;
     }
 
     public function getAuthenticationURL($returnto = '')
     {
-        /* Build TwitterOAuth object with client credentials. */
-        $connection = new Ajde_Social_Provider_Twitter($this->_key, $this->_secret);
+        $connection = $this->getProvider();
 
         /* Get temporary credentials. */
         $callbackUrl = Config::get('site_root') . 'user/sso:callback?provider=twitter&returnto=' . $returnto;
         $request_token = $connection->getRequestToken($callbackUrl);
-
-        /* Save temporary credentials to session. */
-        $session = new Ajde_Session('sso_twitter');
-        $session->set('oauth_token', $token = $request_token['oauth_token']);
-        $session->set('oauth_token_secret', $request_token['oauth_token_secret']);
+        $this->setCredentials($request_token);
 
         /* If last connection failed don't display authorization link. */
         switch ($connection->http_code) {
             case 200:
                 /* Build authorize URL and redirect user to Twitter. */
-                return $connection->getAuthorizeURL($token);
+                return $connection->getAuthorizeURL($request_token);
             default:
                 /* Show notification if something went wrong. */
                 throw new Ajde_Exception('Could not connect to Twitter (' . $connection->http_info . '). Refresh the page or try again later.');
         }
     }
 
-    public function getAccessToken()
+    public function isAuthenticated()
     {
-        $session = new Ajde_Session('sso_twitter');
-        $oauth_token = $session->get('oauth_token');
-        $oauth_token_secret = $session->get('oauth_token_secret');
+        if (Ajde::app()->getRequest()->getParam('denied', false)) {
+            return false;
+        }
 
-        /* Get intermediate object */
-        $connection = new Ajde_Social_Provider_Twitter($this->_key, $this->_secret, $oauth_token, $oauth_token_secret);
-
-        /* Get access token. */
         $verifier = Ajde::app()->getRequest()->getParam('oauth_verifier');
-        $token_credentials = $connection->getAccessToken($verifier);
+        $connection = $this->getProvider();
+        $this->setCredentials( $connection->getAccessToken($verifier) );
 
-        $session->destroy('oauth_token');
-        $session->destroy('oauth_token_secret');
-        $session->set('credentials', $token_credentials);
-
-        return $token_credentials;
+        return true;
     }
 
-    public function getUser()
+    public function getUsernameSuggestion()
     {
-        $session = new Ajde_Session('sso_twitter');
-        $token_credentials = $session->get('credentials');
-
-        $token = $token_credentials['oauth_token'];
-        $model = new SsoModel();
-        if ($model->loadByField('token', md5($token))) {
-            $model->loadParent('user');
-            return $model->getUser();
+        if ($this->hasCredentials()) {
+            $credentials = $this->getCredentials();
+            return $credentials['screen_name'];
         } else {
             return false;
         }
     }
 
-    public function getUsernameSuggestion()
+    public function getEmailSuggestion()
     {
-        $session = new Ajde_Session('sso_twitter');
-        $token_credentials = $session->get('credentials');
-
-        return $token_credentials['screen_name'];
+        return false;
     }
 
-    public function getToken()
+    public function getNameSuggestion()
     {
-        $session = new Ajde_Session('sso_twitter');
-        $token_credentials = $session->get('credentials');
+        return false;
+    }
 
-        return $token_credentials['oauth_token'];
+    public function getAvatarSuggestion()
+    {
+        return false;
+    }
+
+    public function getUidHash()
+    {
+        if ($this->hasCredentials()) {
+            $credentials = $this->getCredentials();
+            return md5(md5($credentials['user_id']));
+        } else {
+            return false;
+        }
     }
 
     public function getData()
     {
-        $session = new Ajde_Session('sso_twitter');
-        return $session->get('credentials');
+        return $this->hasCredentials() ? $this->getCredentials() : false;
     }
 }
