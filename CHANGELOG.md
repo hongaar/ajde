@@ -1,6 +1,12 @@
 #### AUTO-UPDATE NOTE ####
 Due to a bug in the auto-updater, updating from a version prior to v0.2.2 doesn't work. Please use Git instead.
 
+
+#### v0.2.6
+
+ - **NEW** Login with Facebook, Twitter & Google+
+
+
 #### v0.2.5
 
  - **IMPORTANT NOTE** Repository URL changed, please check Ajde_Core_Updater
