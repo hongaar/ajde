@@ -8,7 +8,7 @@ class ShopController extends Ajde_Acl_Controller
 	
 	protected $_allowGuestTransaction = true;
 	
-	public function beforeInvoke()
+	public function beforeInvoke($allowed = array())
 	{
 		if ($this->_allowGuestTransaction === true) {
 			$this->_allowedActions[] = $this->getAction();

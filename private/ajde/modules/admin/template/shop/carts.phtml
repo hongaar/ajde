@@ -1,0 +1,79 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ 
+
+$options = new Ajde_Crud_Options();
+$options
+	->selectFields()
+		->selectField('user')
+			->setEmphasis(true)
+			->up()
+        ->selectField('client')
+            ->setIsReadonly(true)
+            ->up()
+		->selectField('updated')
+			->up()
+        ->selectField('added')
+            ->setIsReadonly(true)
+            ->up()
+        ->selectField('items')
+            ->setModelName('cartItem')
+            ->setHideInIframe(true)
+            ->setType('multiple')
+            ->setEditRoute('#')
+            ->addTableField('entity')
+            ->addTableField('entity_id')
+            ->addTableField('unitprice')
+            ->addTableField('qty')
+            ->setShowLabel(true)
+            ->up()
+		->up()
+	->selectList()
+		->selectButtons()
+			->setEdit(true)
+            ->setNew(false)
+			->up()
+		->setMain('user')
+		->setShow(array('user', 'added', 'updated'))
+		->selectView()
+			->setOrderBy('added')
+            ->setOrderDir('DESC')
+			->up()
+		->up()
+	->selectEdit()
+		->selectLayout()
+			->addRow()
+				->addColumn()
+                    ->setSpan(8)
+					->addBlock()
+						->setShow(array('user', 'items'))
+                        ->up()
+                    ->up()
+                ->addColumn()
+                    ->setSpan(4)
+                    ->addBlock()
+                        ->setTitle('Metadata')
+                        ->setClass('sidebar well')
+                        ->setShow(array('client', 'added', 'updated'))
+                        ->up()
+
+	->finished();
+
+$crud = $this->ACCrudList('cart', $options);
+
+?>
+
+<div class="row-fluid">
+	<div class="span3 hideInIframe">
+		<?php echo $this->includeModule('admin/cms:menu'); ?>		
+	</div><!--/span-->
+	<div class="span9 expandInIframe">
+		
+		<div class="page-header">
+			<h1>
+				<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
+			</h1>
+		</div>		
+		
+		<?php echo $crud->output(); ?>
+		
+	</div><!--/span-->
+</div><!--/row-->

@@ -28,6 +28,16 @@ class UserModel extends Ajde_User
 			Ajde_Event::register($this, 'beforeCrudSave', 'prepareCrudSave');
 		}
 	}
+
+    public function beforeInsert()
+    {
+        $this->saveFileFromWeb('avatar');
+    }
+
+    public function beforeSave()
+    {
+        $this->saveFileFromWeb('avatar');
+    }
 	
 	public function afterSave()
 	{
@@ -35,6 +45,49 @@ class UserModel extends Ajde_User
 			$this->login();
 		}
 	}
+
+    private function saveFileFromWeb($fieldName)
+    {
+        if ($this->has($fieldName) &&
+            (substr(strtolower($this->get($fieldName)), 0, 7) === 'http://' ||
+                substr(strtolower($this->get($fieldName)), 0, 8) === 'https://')) {
+
+            // load file from web
+            $image = Ajde_Http_Curl::get($this->get($fieldName));
+
+            // extract filename (without extension)
+            $basename = basename(parse_url($this->get($fieldName), PHP_URL_PATH));
+            $filename = preg_replace('/[^A-Za-z0-9_\-]/', '_', $this->get($this->usernameField)) . '_' . pathinfo($basename, PATHINFO_FILENAME);
+
+            // save to tmp directory
+            $tmp_path = TMP_DIR . $filename;
+            $fh = fopen($tmp_path, 'wb');
+            fwrite($fh, $image);
+            fclose($fh);
+
+            // get mime type
+            $mimeType = Ajde_FS_File::getMimeType($tmp_path);
+
+            // unlink tmp file
+            unlink($tmp_path);
+
+            // get default extension
+            $extension = Ajde_FS_File::getExtensionFromMime($mimeType);
+
+            // don't overwrite previous files that were uploaded
+            while (is_file(AVATAR_DIR . $filename . '.' . $extension)) {
+                $filename .= rand(10, 99);
+            }
+
+            // save to avatar directory
+            $path = AVATAR_DIR . $filename . '.' . $extension;
+            $fh = fopen($path, 'wb');
+            fwrite($fh, $image);
+            fclose($fh);
+
+            $this->set($fieldName, $filename . '.' . $extension);
+        }
+    }
 	
 	public function emailLink()
 	{
@@ -83,4 +136,13 @@ class UserModel extends Ajde_User
 	{
 		return Ajde_Resource_Image_Gravatar::get($this->getEmail(), $width, 'identicon', 'g', true, array('class' => $class));
 	}
+
+    public function displayAvatar($width = 90, $class = '')
+    {
+        if ($this->hasNotEmpty('avatar')) {
+            return Ajde_Component_Image::getImageTag(AVATAR_DIR . $this->getAvatar(), $width, $width, true, $class);
+        } else {
+            return $this->displayGravatar($width, $class);
+        }
+    }
 }

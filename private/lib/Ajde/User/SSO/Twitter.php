@@ -4,6 +4,7 @@ class Ajde_User_SSO_Twitter extends Ajde_User_SSO
 {
     private $_session;
     private $_credentials = false;
+    private $_me;
 
     const SSO_SESSION_KEY = 'sso.twitter.credentials';
 
@@ -69,6 +70,22 @@ class Ajde_User_SSO_Twitter extends Ajde_User_SSO
         return self::$color;
     }
 
+    public function getMe()
+    {
+        if ($this->hasCredentials()) {
+            if (!isset($this->_me)) {
+                $provider = $this->getProvider();
+                $credentials = $this->getCredentials();
+                $this->_me = $provider->get('users/show', array(
+                    'screen_name' => $credentials['screen_name']
+                ));
+            }
+            return $this->_me;
+        }
+        throw new Ajde_Exception('Provider Facebook has no authenticated user');
+
+    }
+
     public function getAuthenticationURL($returnto = '')
     {
         $connection = $this->getProvider();
@@ -124,7 +141,15 @@ class Ajde_User_SSO_Twitter extends Ajde_User_SSO
 
     public function getAvatarSuggestion()
     {
-        return false;
+        if ($this->hasCredentials()) {
+            $me = $this->getMe();
+            $image = $me->profile_image_url;
+            $image = str_replace('_normal.', '.', $image);
+            return $image;
+        } else {
+            return false;
+        }
+//        return false;
     }
 
     public function getUidHash()

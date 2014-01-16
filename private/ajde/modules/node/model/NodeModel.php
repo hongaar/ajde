@@ -28,6 +28,20 @@ class NodeModel extends Ajde_Model_With_AclI18n
 		}
 		return false;
 	}
+
+    /**
+     *
+     * @param string $id
+     * @return NodeModel|boolean
+     */
+    public static function fromSlug($slug)
+    {
+        $node = new self();
+        if ($node->loadBySlug($slug)) {
+            return $node;
+        }
+        return false;
+    }
 	
 	public function __wakeup()
 	{
@@ -292,6 +306,9 @@ class NodeModel extends Ajde_Model_With_AclI18n
 	
 	public function beforeSave()
 	{
+        // filter slug
+        $this->slug = $this->_sluggify($this->slug);
+
 		$this->shadowCall('beforeSave');	
 	}
 
@@ -371,27 +388,43 @@ class NodeModel extends Ajde_Model_With_AclI18n
 	/**
 	 * SLUG FUNCTIONS
 	 */
-	
-	private function _setSlug()
+
+    public function getSlug()
+    {
+        if (!$this->hasSlug()) {
+            $this->_makeSlug();
+        }
+        return $this->slug;
+    }
+
+    private function _makeSlug()
+    {
+        $name = $this->title;
+
+        $ghost = new self();
+        $uniqifier = 0;
+
+        do {
+            $ghost->reset();
+            $slug = $this->_sluggify($name);
+            $slug = $slug . ($uniqifier > 0 ? $uniqifier : '');
+            $ghost->loadBySlug($slug);
+            $uniqifier++;
+            if ($uniqifier >= 100) {
+                throw new Ajde_Controller_Exception('Max recursion depth reached for setting slug');
+            }
+        } while($ghost->hasLoaded());
+
+        return $slug;
+    }
+
+    /**
+     * @param bool $breadcrumb
+     * @deprecated use $this->slug = $this->_makeSlug();
+     */
+    private function _setSlug()
 	{
-		$name = $this->title;
-
-		$ghost = new self();
-		$uniqifier = 0;
-
-		do {
-			$ghost->reset();
-			$slug = $this->_sluggify($name);
-			$slug = $slug . ($uniqifier > 0 ? $uniqifier : '');
-			$ghost->loadBySlug($slug);
-			$uniqifier++;
-			if ($uniqifier >= 100) {
-				throw new Ajde_Controller_Exception('Max recursion depth reached for setting slug');
-				break;
-			}
-		} while($ghost->hasLoaded());
-
-		$this->slug = $slug;
+		$this->slug = $this->_makeSlug();
 	}
 
 	private function _sluggify($name)
@@ -410,6 +443,7 @@ class NodeModel extends Ajde_Model_With_AclI18n
 		if ($publishedCheck) {
 			$this->filterPublished();
 		}
+        return $this->hasLoaded();
 	}
 	
 	/**
@@ -638,8 +672,12 @@ class NodeModel extends Ajde_Model_With_AclI18n
 	/***
 	 * GETTERS
 	 */
-	
-	public function getPath()
+
+    /**
+     * @return bool|string
+     * @deprecated
+     */
+    public function getPath()
 	{
 		if ($this->getPK()) {
 			if (!$this->getNodetype() instanceof Ajde_Model) {
@@ -658,11 +696,20 @@ class NodeModel extends Ajde_Model_With_AclI18n
 				$this->loadParents();
 			}
 			$nodetype = str_replace(' ', '_', strtolower($this->getNodetype()->displayField()));
-			$url = '-' . $nodetype . '/' . $this->getSlug();
-			return $relative ? $url : Config::get('site_root') . $url; 
+//			$url = '-' . $nodetype . '/' . $this->getSlug();
+            $url = $this->getFullUrl();
+			return $relative ? $url : Config::get('site_root') . $url;
 		}
 		return false;
 	}
+
+    public function getFullUrl()
+    {
+        if (($parent = $this->getParent()) && $parent->hasLoaded()) {
+            return $parent->getSlug() . '/' . $this->getSlug();
+        }
+        return $this->getSlug();
+    }
 	
 	/**
 	 * 

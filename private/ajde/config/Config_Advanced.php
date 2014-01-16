@@ -110,7 +110,7 @@ class Config_Advanced
         public $ssoFacebookSecret   = false;
 
 	// Shop
-	public $transactionProviders= array('creditcard', 'paypal', 'wedeal');
+	public $transactionProviders= array('paypal_creditcard', 'paypal', 'mollie_ideal');
 	public $currency			= '€';
 	public $currencyCode		= 'EUR';
 	public $defaultVAT			= 0.19;
@@ -125,8 +125,11 @@ class Config_Advanced
 		public $shopWedealCallbackUsername	= 'user';
 		public $shopWedealCallbackPassword	= 'pass';
 
+        // Mollie
+        public $shopMollieLiveKey           = 'live_key';
+        public $shopMollieTestKey           = 'test_key';
 
-	// Which modules should we call on bootstrapping?
+    // Which modules should we call on bootstrapping?
 	public $bootstrap			= array(
 									'Ajde_Exception_Handler',
 									'Ajde_Session',

@@ -26,6 +26,7 @@ class Ajde_Core_Route extends Ajde_Object_Standard
 		} else {
 			$this->_route = $route;
 		}
+        Ajde_Event::trigger($this, 'onAfterRouteSet');
 		// Get route parts
 		$routeParts = $this->_extractRouteParts();
 		if (empty($routeParts)) {
@@ -61,6 +62,16 @@ class Ajde_Core_Route extends Ajde_Object_Standard
 		}
 		return $route;
 	}
+
+    public function getRoute()
+    {
+        return $this->_route;
+    }
+
+    public function setRoute($route)
+    {
+        $this->_route = $route;
+    }
 	
 	public function getModule($default = null) {
 		if (isset($default)) {
@@ -135,7 +146,7 @@ class Ajde_Core_Route extends Ajde_Object_Standard
 		
 		$configRules = Config::get('routes');
 		$rules = array_merge($configRules, $defaultRules);
-		
+
 		foreach($rules as $rule)
 		{
 			$pattern = key($rule);

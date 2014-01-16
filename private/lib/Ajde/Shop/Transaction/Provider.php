@@ -5,7 +5,7 @@ interface Ajde_Shop_Transaction_Provider_Interface
 	public function getName();	
 	public function getLogo();
 	public function usePostProxy();
-	public function getRedirectUrl();
+	public function getRedirectUrl($description = null);
 	public function getRedirectParams();
 	public function updatePayment();
 }
@@ -13,6 +13,8 @@ interface Ajde_Shop_Transaction_Provider_Interface
 abstract class Ajde_Shop_Transaction_Provider extends Ajde_Object_Standard
 implements Ajde_Shop_Transaction_Provider_Interface
 {
+    public $returnRoute = 'shop/transaction:callback/';
+
 	/**
 	 *
 	 * @param string $name
@@ -22,7 +24,7 @@ implements Ajde_Shop_Transaction_Provider_Interface
 	 */
 	public static function getProvider($name, $transaction = null)
 	{
-		$providerClass = 'Ajde_Shop_Transaction_Provider_' .ucfirst($name);
+		$providerClass = 'Ajde_Shop_Transaction_Provider_' . self::classnameToUppercase($name);
 		if (!Ajde_Core_Autoloader::exists($providerClass)) {
 			// TODO:
 			throw new Ajde_Exception('Payment provider ' . $name . ' not found');

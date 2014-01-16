@@ -505,7 +505,7 @@ class Ajde_Model extends Ajde_Object_Standard
 						$sqlSet[] = $field . ' = ' . (string) $this->get($field);
                     } elseif ($this->getTable()->getFieldProperties($field, 'type') === Ajde_Db::FIELD_TYPE_SPATIAL) {
                         $pointValues = explode(' ', (string) parent::_get($field));
-                        $sqlSet[] = $field . ' = PointFromWKB(POINT(' . (double) $pointValues[0] . ',' . (double) $pointValues[1] . '))';
+                        $sqlSet[] = $field . ' = PointFromWKB(POINT(' . str_replace(',', '.', (double) $pointValues[0]) . ',' . str_replace(',', '.', (double) $pointValues[1]) . '))';
 					} else {
 						$sqlSet[] = $field . ' = ?';
 						$values[] = (string) parent::_get($field);
@@ -564,7 +564,7 @@ class Ajde_Model extends Ajde_Object_Standard
                 } elseif ($this->getTable()->getFieldProperties($field, 'type') === Ajde_Db::FIELD_TYPE_SPATIAL) {
                     $sqlFields[] = $field;
                     $pointValues = explode(' ', (string) parent::_get($field));
-					$sqlValues[] = 'PointFromWKB(POINT(' . (double) $pointValues[0] . ',' . (double) $pointValues[1] . '))';
+					$sqlValues[] = 'PointFromWKB(POINT(' . str_replace(',', '.', (double) $pointValues[0]) . ',' . str_replace(',', '.', (double) $pointValues[1]) . '))';
 				} else {
 					$sqlFields[] = $field;
 					$sqlValues[] = '?';

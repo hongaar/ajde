@@ -212,7 +212,9 @@ class Ajde_Core_Autoloader
 		{
 			// TODO: Custom Exceptions are still causing problems
 			// throw new Ajde_Core_Autoloader_Exception("Unable to load $className", 90005);
-			throw new Exception("Unable to load $className", 90005);
+
+            // Disabled exceptions, to give 3rd party autoloaders a chance
+            // throw new Exception("Unable to load $className", 90005);
 		}
 	}
 

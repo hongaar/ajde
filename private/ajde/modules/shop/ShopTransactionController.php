@@ -9,7 +9,7 @@ class ShopTransactionController extends ShopController
 		$transaction = new TransactionModel();
 		
 		// Get from ID
-		if ($this->hasId()) {
+		if ($this->hasNotEmpty('id')) {
 			if ($transaction->loadByField('secret', $this->getId()) !== false) {
 				$this->getView()->assign('source', 'id');
 			}			

@@ -14,7 +14,8 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
 		return true;
 	}
 	
-	public function getRedirectUrl() {
+	public function getRedirectUrl($description = null)
+    {
 		$url = $this->isSandbox() ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
 		return $this->ping($url) ? $url : false;
 	}

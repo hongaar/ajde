@@ -76,7 +76,6 @@ class Ajde_User_SSO_Facebook extends Ajde_User_SSO
             return $this->_me;
         }
         throw new Ajde_Exception('Provider Facebook has no authenticated user');
-
     }
 
     public function getAuthenticationURL($returnto = '')
@@ -132,7 +131,14 @@ class Ajde_User_SSO_Facebook extends Ajde_User_SSO
 
     public function getAvatarSuggestion()
     {
-        return false;
+        if ($this->hasCredentials()) {
+            $me = $this->getMe();
+            $id = $me['id'];
+            $image = 'http://graph.facebook.com/'. $id . '/picture?type=large';
+            return $image;
+        } else {
+            return false;
+        }
     }
 
     public function getUidHash()

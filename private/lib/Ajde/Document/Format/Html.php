@@ -185,18 +185,18 @@ class Ajde_Document_Format_Html extends Ajde_Document
 	{
 		$position = $template->getDefaultResourcePosition();
 		foreach($this->getResourceTypes() as $resourceType) {
-			if ($defaultResource = Ajde_Resource_Local::lazyCreate($resourceType, $template->getBase(), 'default', $template->getFormat()))
-			{
+            // default resource
+			if ($defaultResource = Ajde_Resource_Local::lazyCreate($resourceType, $template->getBase(), 'default', $template->getFormat())) {
 				$this->addResource($defaultResource, $position);
 			}
+            // default sub-action resource
 			if (substr_count($template->getAction(), '/') > 0 &&
-				$actionDefaultResource = Ajde_Resource_Local::lazyCreate($resourceType, $template->getBase(), $this->_getTemplateActionDefault($template), $template->getFormat()))
-			{
+    				$actionDefaultResource = Ajde_Resource_Local::lazyCreate($resourceType, $template->getBase(), $this->_getTemplateActionDefault($template), $template->getFormat())) {
 				$this->addResource($actionDefaultResource, $position);
 			}
-			if ($template->getAction() != 'default' &&
-				$actionResource = Ajde_Resource_Local::lazyCreate($resourceType, $template->getBase(), $template->getAction(), $template->getFormat()))
-			{
+            // non-default resource
+            if ($template->getAction() != 'default' &&
+			    	$actionResource = Ajde_Resource_Local::lazyCreate($resourceType, $template->getBase(), $template->getAction(), $template->getFormat())) {
 				$this->addResource($actionResource, $position);
 			}
 		}

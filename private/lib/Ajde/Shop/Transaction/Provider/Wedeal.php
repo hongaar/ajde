@@ -18,11 +18,9 @@ class Ajde_Shop_Transaction_Provider_Wedeal extends Ajde_Shop_Transaction_Provid
 		return false;
 	}
 	
-	public function getRedirectUrl() {
-		$transaction = $this->getTransaction();		
-		
-		$total = (string) $total;
-		$total = str_replace(".", ",", $total);
+	public function getRedirectUrl($description = null)
+    {
+		$transaction = $this->getTransaction();
 		
 		$request = array(			
 			"type" => "transaction",

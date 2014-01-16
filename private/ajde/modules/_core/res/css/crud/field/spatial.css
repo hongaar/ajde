@@ -7,6 +7,14 @@ div.spatial img, img.spatial {
     /*max-width: inherit;*/
 }
 
+div.spatial.gmaps img {
+    max-width: none;
+}
+div.spatial.gmaps label {
+    width: auto;
+    display:inline;
+}
+
 div.spatialMarker {
     display: none;
     position: absolute;

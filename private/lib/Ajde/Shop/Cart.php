@@ -8,6 +8,12 @@ abstract class Ajde_Shop_Cart extends Ajde_Model
 	protected $_cartItemCollection = null;
 	
 	private $_items;
+
+    public function beforeInsert()
+    {
+        // Added
+        $this->added = new Ajde_Db_Function("NOW()");
+    }
 	
 	/**
 	 *
@@ -69,7 +75,9 @@ abstract class Ajde_Shop_Cart extends Ajde_Model
 		
 		$cartItem = $this->getItem($entity, $id);
 		/* @var $cartItem Ajde_Shop_Cart_Item */
-		
+
+        $this->updated = new Ajde_Db_Function("NOW()");
+
 		if ($cartItem->hasLoaded()) {
 			$cartItem->addQty($qty);
 			$cartItem->save();
@@ -121,6 +129,9 @@ abstract class Ajde_Shop_Cart extends Ajde_Model
 			/* @var $item Ajde_Shop_Cart_Item */
 			$success = $success * $item->delete();
 		}
+
+        $this->updated = new Ajde_Db_Function("NOW()");
+        $this->save();
 		
 		return (bool) $success;
 	}

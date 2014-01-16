@@ -23,7 +23,7 @@ class Ajde_User_SSO_Google extends Ajde_User_SSO
         }
         $google = new Ajde_Social_Provider_Google();
         $google->setRedirectUri(Config::get('site_root') . 'user/sso:callback?provider=google');
-//        $google->setScopes("https://www.googleapis.com/auth/plus.login");
+        $google->setScopes("https://www.googleapis.com/auth/plus.login");
         $google->setScopes('https://www.googleapis.com/auth/plus.profile.emails.read');
         $this->_plus = $google->getPlus();
         $this->_provider = $google;
@@ -150,7 +150,15 @@ class Ajde_User_SSO_Google extends Ajde_User_SSO
 
     public function getAvatarSuggestion()
     {
-        return false;
+        $size = 150;
+        if ($this->hasCredentials()) {
+//            $image = $this->getMe()->getImage();
+            $id = $this->getMe()->getId();
+            $image = 'https://plus.google.com/s2/photos/profile/' . $id . '?sz=' . $size;
+            return $image;
+        } else {
+            return false;
+        }
     }
 
     public function getUidHash()

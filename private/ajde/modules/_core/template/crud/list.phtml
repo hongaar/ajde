@@ -226,7 +226,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 				<?php
 				// Linked Model
 				} elseif ($value instanceof Ajde_Model && $value->hasLoaded()) { ?>
-					<td <?php echo $gridData; ?> class="linkedModel" title="<?php echo $value->get($value->getDisplayField()); ?>"><?php echo $value->get($value->getDisplayField()); ?></td>
+					<td <?php echo $gridData; ?> class="linkedModel <?php if ($crud->getOption('list.main', false) == $field->getName()) { echo 'main'; } ?>" title="<?php echo $value->get($value->getDisplayField()); ?>"><?php echo $value->get($value->getDisplayField()); ?></td>
 				<?php
 				// Boolean
 				} elseif ($field instanceof Ajde_Crud_Field_Boolean) { ?>
@@ -257,8 +257,8 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 				// Text value
 				} else { ?>
 					<td <?php echo $gridData; ?> title="<?php echo $this->escape($value); ?>" <?php if ($crud->getOption('list.main', false) == $field->getName()) { echo 'class=\'main\''; } ?>>
-						<?php echo substr($this->escape($value), 0, 100); ?>
-						<?php if (strlen($this->escape($value)) > 100) { ?>
+						<?php echo substr($this->escape($value), 0, 50); ?>
+						<?php if (strlen($this->escape($value)) > 50) { ?>
 							...
 						<?php } ?>
 					</td>
