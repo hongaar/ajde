@@ -6,6 +6,10 @@ $this->requireCssPublic('core/fancybox/jquery.fancybox.css');
 $field = $this->field;
 ?>
 
+<input
+    <?php echo $field->getHtmlAttributes(); ?>
+/>
+
 <div
 	class='multiple <?php if ($field->hasHideInIframe()) { echo 'hideInIframe'; } ?>'
 	data-edit-route='<?php echo $field->has('editRouteFunction') ? $field->getCrud()->getModel()->{$field->get('editRouteFunction')}() : $field->getEditRoute(); ?>'

@@ -29,7 +29,7 @@ $options
 			->up()	
 		->selectField('node')
 			->setIsRequired(true)
-			->addShowOnlyWhen('type', 'nodelink')
+            ->addShowOnlyWhen('type', array('submenu', 'nodelink'))
 			->setLabel('Node link')
 			->up()		
 		->selectField('url')

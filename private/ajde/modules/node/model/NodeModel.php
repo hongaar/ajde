@@ -276,6 +276,9 @@ class NodeModel extends Ajde_Model_With_AclI18n
 			$this->getNodetype()->loadParent('child_type');
 			return '<i class="icon-plus icon-white" data-nodetype="' . $childtype . '"></i><span class="text-slide"> ' . strtolower($this->getNodetype()->get('child_type')->getName()) . '</span>';
 		}
+        if ($this->hasLoaded() && $childtype = $this->getNodetype()->get('children')) {
+            return '<i class="icon-plus icon-white"></i>';
+        }
 		return false;
 	}
 	

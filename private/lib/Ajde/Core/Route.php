@@ -2,10 +2,12 @@
 
 class Ajde_Core_Route extends Ajde_Object_Standard
 {
+    protected $_originalRoute = null;
 	protected $_route = null;
 
 	public function __construct($route)
 	{
+        $this->_originalRoute = $route;
 		// See if first part is language code (i.e. first part is exactly
 		// two characters in length)
 		if (strlen($route) === 2 || substr($route, 2, 1) === '/') {
@@ -66,6 +68,11 @@ class Ajde_Core_Route extends Ajde_Object_Standard
     public function getRoute()
     {
         return $this->_route;
+    }
+
+    public function getOriginalRoute()
+    {
+        return $this->_originalRoute;
     }
 
     public function setRoute($route)

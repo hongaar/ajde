@@ -3,4 +3,7 @@
 	<?php if ($this->width) { echo "width='$this->width' "; } ?>
 	<?php if ($this->height) { echo "height='$this->height' "; } ?>
 	<?php if ($this->extraClass) { echo "class='$this->extraClass' "; } ?>
+    <?php if ($this->attributes) { foreach($this->attributes as $k => $v) {
+        echo $k . '="' . _e($v) . '" ';
+    } } ?>
 />

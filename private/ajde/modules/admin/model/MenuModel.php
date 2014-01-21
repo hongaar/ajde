@@ -80,8 +80,12 @@ class MenuModel extends Ajde_Model_With_I18n
 		
 		$items = array();
 		foreach($collection as $item) {
+            /* @var $item MenuModel */
 			$name = $item->name;
 			$target = "";
+            $submenus = array();
+            $current = '';
+
 			if ($item->type == 'URL') {				
 				$url = $item->url;
 				if (substr($url, 0, 7) === 'http://' || substr($url, 0, 8) === 'https://') {
@@ -90,11 +94,27 @@ class MenuModel extends Ajde_Model_With_I18n
 			} else if ($item->type == 'Node link') {
 				$node->loadByPK($item->node);
 				$url = $node->getUrl();				
-			}
+			} else if ($item->type == 'Submenu') {
+                $node->loadByPK($item->node);
+                $url = $node->getUrl();
+                $submenus = $item->getItems();
+                foreach($submenus as $submenu) {
+                    if ($submenu['current']) {
+                        $current = 'active sub-active';
+                    }
+                }
+            }
+
+            if ($url == Ajde::app()->getRoute()->getOriginalRoute()) {
+                $current = 'active';
+            }
+
 			$items[] = array(
 				'name' => $name,
 				'url' => $url,
-				'target' => $target			
+				'target' => $target,
+                'current' => $current,
+                'submenus' => $submenus
 			);
 		}
 		

@@ -63,7 +63,10 @@ class NodeController extends Ajde_Controller
 		
 		// pass node to template
 		$this->getView()->assign('node', $node);
-		
+
+        // pass node to document
+        Ajde::app()->getDocument()->getLayout()->assign('node', $node);
+
 		// render the temnplate
 		return $this->render();
 	}

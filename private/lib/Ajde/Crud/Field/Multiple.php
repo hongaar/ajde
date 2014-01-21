@@ -13,8 +13,15 @@ class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
 	 * @var Ajde_Model
 	 */
 	private $_model;
-	
-	/**
+
+    protected function _getHtmlAttributes()
+    {
+        $attributes = array();
+        $attributes['type'] = "hidden";
+        return $attributes;
+    }
+
+    /**
 	 * 
 	 * @return string 
 	 */	
@@ -52,7 +59,7 @@ class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
 		}
 		return $this->_collection;
 	}
-	
+
 	public function getSortField()
 	{
 		if ($this->hasTableFields()) {

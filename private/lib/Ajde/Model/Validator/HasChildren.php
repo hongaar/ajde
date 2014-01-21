@@ -18,6 +18,11 @@ class Ajde_Model_Validator_HasChildren extends Ajde_Model_ValidatorAbstract
         $pk = $this->getModel()->getPK();
         $model = $this->getModel();
 
+        if (empty($pk)) {
+            // model not saved yet, we cannot validate now, return true
+            return array('valid' => true);
+        }
+
         $sql = "SELECT COUNT(*) FROM " . $this->_refTable . " WHERE " . $this->_fk . " = " . $pk;
         $statement = $model->getConnection()->prepare($sql);
         $statement->execute();

@@ -14,7 +14,7 @@ class Ajde_Embed_Youtube extends Ajde_Embed
 		$this->convertUrlToEmbed();
 		$this->_setHeight();
 		$this->_setWidth();
-		$this->_code = str_replace('" frameborder', '?rel=0&amp;autoplay=1&amp;wmode=transparent" frameborder', $this->_code);
+		$this->_code = str_replace('" frameborder', '?rel=0&amp;autoplay=1&amp;wmode=transparent&amp;autohide=1" frameborder', $this->_code);
 		return $this->_code;
 	}
 	

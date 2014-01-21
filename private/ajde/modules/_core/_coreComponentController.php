@@ -142,6 +142,7 @@ class _coreComponentController extends Ajde_Controller
 		$this->getView()->assign('width', $image->getWidth(false));
 		$this->getView()->assign('height', $image->getHeight(false));
 		$this->getView()->assign('extraClass', $this->getExtraClass());
+        $this->getView()->assign('attributes', $this->hasAttributes() ? $this->getAttributes() : array());
 		return $this->render();
 	}
 	

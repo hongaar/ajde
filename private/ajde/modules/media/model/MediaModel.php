@@ -45,7 +45,7 @@ class MediaModel extends Ajde_Model
 		return $this->getFilename(1024);
 	}
 	
-	public function getTag($width = null, $height = null, $crop = null, $class = null)
+	public function getTag($width = null, $height = null, $crop = null, $class = null, $attributes = array())
 	{
 		$path = $this->uploadDirectory . $this->thumbnail;
 		
@@ -57,6 +57,7 @@ class MediaModel extends Ajde_Model
 		$controller = Ajde_Controller::fromRoute(new Ajde_Core_Route('_core/component:image'));
 		$controller->setImage($image);			
 		$controller->setExtraClass($class);
+        $controller->setAttributes($attributes);
 		return $controller->invoke();
 	}
 	
