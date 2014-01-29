@@ -81,16 +81,24 @@ class _coreCrudController extends Ajde_Acl_Controller
 		if (!$crud->hasId()) {
 			$crud->setId(Ajde::app()->getRequest()->getParam('edit', false));
 		}
-		
-		// Hide mainfilter fields
+
+        // get view for crud instance, load from request, but do not persist
 		$crudView = $crud->getCollectionView();
+
+        // current mainfilter from view
 		$mainFilter = $crudView->getMainFilter();
+
 		if ($mainFilter) {
+
+            // get current filter
 			$currentFilter = $crudView->getFilterForField($mainFilter);
+
 			// update mainfilter for new records
 			if (Ajde::app()->getRequest()->has('new')) {
 				$crud->setOption('fields.' . $mainFilter . '.value', $currentFilter);
 			}
+
+            // hide mainfilter fields
 			$crud->setOption('fields.' . $mainFilter . '.hidden', true);
 		}
 		

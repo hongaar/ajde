@@ -28,6 +28,11 @@ if ($edit) {
 	$filteredBy = $filterFieldValues[$currentFilter];
 }
 
+// Open after page loaded?
+$autoOpen = false;
+if ($crud->getOperation() === 'edit') {
+    $autoOpen = true;
+}
 ?>
 
 <<?php echo $edit ? 'span' : 'a href="#mainFilter" role="button" data-toggle="modal" class="mainFilterToggle"'; ?>>
@@ -42,6 +47,7 @@ if ($edit) {
 	id="mainFilter"
 	class="modal hide fade"
 	data-refresh="<?php echo $this->refresh ? '1' : '0'; ?>"
+    data-autoopen="<?php echo $autoOpen ? '1' : '0'; ?>"
 	tabindex="-1"
 	role="dialog"
 	aria-labelledby="mainFilter"

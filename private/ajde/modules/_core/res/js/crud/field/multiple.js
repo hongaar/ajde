@@ -219,7 +219,6 @@ AC.Crud.Edit.Multiple = function() {
 				href: editRoute + 'new&prefill[' + parent + ']=' + parentId + '&hide[' + parent + ']=1&' + getPrefillFields(this) + getHiddenFields(this),
 				type: 'iframe',
 				autoSize: false,
-				maxWidth: 960,
 				width: '100%',
 				height: '100%',
 				closeBtn: false
@@ -269,7 +268,6 @@ AC.Crud.Edit.Multiple = function() {
 				href: editRoute + 'edit=' + id + '&hide[' + parent + ']=1&' + getPrefillFields(this) + getHiddenFields(this),
 				type: 'iframe',
 				autoSize: false,
-				maxWidth: 960,
 				width: '100%',
 				height: '100%',
 				closeBtn: false

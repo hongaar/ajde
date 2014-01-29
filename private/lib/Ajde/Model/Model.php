@@ -359,7 +359,7 @@ class Ajde_Model extends Ajde_Object_Standard
 	public function getMetaValue($metaId) {
 		if (!is_numeric($metaId)) {
 			$metaId = $this->lookupMetaName($metaId);
-		}			
+		}
 		$values = $this->getMetaValues();
 		if (isset($values[$metaId])) {
 			return $values[$metaId];

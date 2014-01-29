@@ -419,23 +419,32 @@ class Ajde_Crud extends Ajde_Object_Standard
 	/**
 	 * 
 	 * @param array $viewParams
+     * @param boolean|string $persist
 	 * @return Ajde_Collection_View
 	 */
-	public function getCollectionView($viewParams = array())
+	public function getCollectionView($viewParams = array(), $persist = 'auto')
 	{
 		if (!$this->getCollection()->hasView()) {
 			$viewSession = new Ajde_Session('AC.Crud.View');
 			$sessionName = $this->getSessionName();
-			if ($viewSession->has($sessionName)) {
+
+            if ($viewSession->has($sessionName)) {
 				$crudView = $viewSession->get($sessionName);
 			} else {
 				$crudView = new Ajde_Collection_View($sessionName, $this->getOption('list.view', array()));
 			}
+
+            // somehow, when altering crudView, session gets updated as well
+            $crudView = clone $crudView;
+
 			if (empty($viewParams)) {
 				$viewParams = Ajde::app()->getRequest()->getParam('view', array());
 			}
 			$crudView->setOptions($viewParams);
-			$viewSession->set($sessionName, $crudView);
+
+            if (($persist == 'auto' && $this->getOperation() == 'list') || $persist === true) {
+			    $viewSession->set($sessionName, $crudView);
+            }
 
 			$this->getCollection()->setView($crudView);
 		}

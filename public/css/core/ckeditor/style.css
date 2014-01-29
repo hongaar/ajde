@@ -14,9 +14,28 @@ body, .cke_editable {
 	font-weight: 300;
 }
 
-a.btn {
+a.btn-primary {
 	display: inline-block;
 	background-color: #eee;
 	color: gray;
 	padding: 2px 5px;
+}
+
+a.btn-default {
+    display: inline-block;
+    border: 1px solid #eee;
+    color: gray;
+    padding: 1px 4px;
+}
+
+.red {
+    color: #ec1c24;
+}
+
+.gray {
+    color: gray;
+}
+
+.silver {
+    color: silver;
 }

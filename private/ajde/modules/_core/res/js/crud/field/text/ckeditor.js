@@ -47,7 +47,7 @@ AC.Crud.Edit.Text = function() {
 			CKEDITOR.config.toolbar_Ajde =
 			[
 				{ name: 'basicstyles',	items : [ 'Styles','Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ] },
-				{ name: 'paragraph',	items : [ 'NumberedList','BulletedList','-','Outdent','Indent' ] },
+				{ name: 'paragraph',	items : [ 'NumberedList','BulletedList','-','JustifyLeft','JustifyCenter','JustifyRight','-','Outdent','Indent' ] },
 				{ name: 'links',		items : [ 'Link','Unlink' ] },
 				{ name: 'insert',		items : [ 'Image','Table','SpecialChar' ] },
 				{ name: 'tools',		items : [ 'Maximize', 'ShowBlocks','Source' ] }
@@ -58,7 +58,11 @@ AC.Crud.Edit.Text = function() {
 			 	{ name: 'Paragraph', element: 'p' },
 			 	{ name: 'Heading', element: 'h3' },
 			 	{ name: 'Code', element: 'pre' },
-				{ name: 'Button', element : 'a', attributes : { 'class' : 'btn btn-primary' } }
+				{ name: 'Default button', element : 'a', attributes : { 'class' : 'btn btn-default' } },
+                { name: 'Primary button', element : 'a', attributes : { 'class' : 'btn btn-primary' } },
+                { name: 'Red text', element : 'span', attributes : { 'class' : 'red' } },
+                { name: 'Gray text', element : 'span', attributes : { 'class' : 'gray' } },
+                { name: 'Silver text', element : 'span', attributes : { 'class' : 'silver' } }
 			]);
 
 			CKEDITOR.config.resize_enabled = false;
@@ -70,7 +74,7 @@ AC.Crud.Edit.Text = function() {
 			CKEDITOR.config.removePlugins = 'elementspath';
 			CKEDITOR.config.removeButtons = '';
 			
-			CKEDITOR.config.extraPlugins = 'onchange';
+			CKEDITOR.config.extraPlugins = 'onchange,justify';
 			CKEDITOR.config.extraAllowedContent = 'a(*)';
 			
 			// Optional configuration

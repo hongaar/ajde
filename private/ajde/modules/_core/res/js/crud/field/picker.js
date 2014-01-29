@@ -34,7 +34,6 @@ AC.Crud.Edit.Picker = function() {
 				href: listRoute + 'multiple=' + listMultiple,
 				type: 'iframe',
 				autoSize: false,
-				maxWidth: 960,
 				width: '100%',
 				height: '100%',
 				closeBtn: false

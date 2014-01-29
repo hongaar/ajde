@@ -14,8 +14,8 @@ if ($OOChartsApiKey = SettingModel::byName('oocharts_api_key')) {
 			<h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
 			<p>Yay, you reached the dashboard!</p>
 			<p>
-				<a href="admin/node:view?view[filter][nodetype]=&amp;nofilterpopup=1" class="btn btn-primary btn-large">node overview &raquo;</a>
-				<a href="admin/node:view?new&amp;view[filter][nodetype]=" class="btn btn-primary btn-large">add node &raquo;</a>
+				<a href="admin/node:view" class="btn btn-primary btn-large">node overview &raquo;</a>
+				<a href="admin/node:view?new" class="btn btn-primary btn-large">add node &raquo;</a>
 			</p>
 		</div>
         <div class="row-fluid">

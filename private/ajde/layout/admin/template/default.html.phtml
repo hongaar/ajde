@@ -165,7 +165,7 @@ $currentGrouper = '';
                                         $extendedMenu = false;
                                         if ($extendedMenu) { ?>
                                             <li class="nav-header">Nodes</li>
-                                            <li><a href="admin/node:view?view[filter][nodetype]=&nofilterpopup=1">Overview</a></li>
+                                            <li><a href="admin/node:view">Overview</a></li>
                                             <?php foreach ($nodeTypes as $nodeType) {
                                                 /* @var $nodeType NodetypeModel */
                                                 if ($nodeType->get('category') <> $currentGrouper) {
@@ -185,7 +185,7 @@ $currentGrouper = '';
                                             <?php } ?>
                                             <li class="divider"></li>
                                         <?php } else { ?>
-                                            <li><a href="admin/node:view?view[filter][nodetype]=&nofilterpopup=1">Node overview</a></li>
+                                            <li><a href="admin/node:view">Node overview</a></li>
                                         <?php } ?>
 										<li><a href="admin/media:view">Media manager</a></li>
 										<li><a href="admin/menu:view">Menu editor</a></li>
@@ -288,7 +288,7 @@ $currentGrouper = '';
 		<?php echo $this->getDocument()->getScripts(); ?>
 		
 		<!-- Google Analytics -->
-		<script type="text/javascript">
+		<script>
 			var _gaq = _gaq || [];
 			_gaq.push(['_setAccount', 'UA-XXXXX-X']);
 			_gaq.push(['_trackPageview']);
@@ -300,7 +300,7 @@ $currentGrouper = '';
 		</script>
 		
 		<!-- updatemybrowser.org widget -->
-		<script type="text/javascript">
+		<script>
 		(function() {
 			var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
 			s.src = '//updatemybrowser.org/umb.js';

@@ -60,12 +60,15 @@ class NodeController extends Ajde_Controller
 		$nodetype = $node->getNodetype();
 		$action = str_replace(' ', '_', strtolower($nodetype->get($nodetype->getDisplayField())));
 		$this->setAction($action);
-		
-		// pass node to template
-		$this->getView()->assign('node', $node);
 
-        // pass node to document
-        Ajde::app()->getDocument()->getLayout()->assign('node', $node);
+        // pass node to document, only first
+        $layout = Ajde::app()->getDocument()->getLayout();
+        if (!$layout->hasAssigned('node')) {
+            $layout->assign('node', $node);
+        }
+
+        // pass node to view
+        $this->getView()->assign('node', $node);
 
 		// render the temnplate
 		return $this->render();
@@ -265,10 +268,15 @@ class NodeController extends Ajde_Controller
 								->setTitle('Related nodes')
 								->setShow(array('related_nodes'))
 								->up()
+                            ->addBlock()
+                                ->setTitle('Node status')
+                                ->setClass('well left')
+                                ->setShow(array('slug', 'published', 'published_start', 'published_end'))
+                                ->up()
 							->addBlock()
 								->setTitle('Metadata')
 								->setClass('sidebar well')
-								->setShow(array('added', 'updated', 'slug', 'parent', 'published', 'published_start', 'published_end', 'user', 'lang'))
+								->setShow(array('added', 'updated', 'parent', 'user', 'lang'))
 								->up()
 		->finished();
 		

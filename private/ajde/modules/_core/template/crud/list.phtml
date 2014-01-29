@@ -7,19 +7,23 @@ $fieldOptions = $crud->getOptions('fields');
 
 /* @var $crudView Ajde_Collection_View */
 $crudView = $crud->getCollection()->getView();
-$mainFilter = $crudView->getMainFilter();
 
+// Which fields to show?
 if (isset($listOptions['show'])) {
 	$fieldsToShow = $crud->getOption('list.show');
 } else {
 	$fieldsToShow = $crud->getFieldNames();
 }
-// Unset the main filter
+// Unset the main filter in fieldsToShow (otherwise it would be double up)
+$mainFilter = $crudView->getMainFilter();
 if ($mainFilter && in_array($mainFilter, $fieldsToShow)) {
 	unset($fieldsToShow[array_search($mainFilter, $fieldsToShow)]);
 }
 
+// Fields to show in grid view from gridShow option
 $gridFields = isset($listOptions['gridShow']) ? $crud->getOption('list.gridShow') : $fieldsToShow;
+
+// Number of columns for layouting
 $columnCount = count($fieldsToShow);
 
 // Disable multiple selection?

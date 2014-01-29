@@ -206,6 +206,15 @@ body.iframe {
     margin-left: 0;
 }
 
+.form-horizontal .left .control-label {
+    text-align: left;
+    width: 120px;
+}
+
+.form-horizontal .left .controls {
+    margin-left: 120px;
+}
+
 @media (max-width: 1200px) {
     .form-horizontal .form-actions {
         padding-right: 10px;
@@ -219,7 +228,7 @@ body.iframe {
     }
     
     .form-horizontal .controls {
-        margin-left: 0;
+        margin-left: 0 !important;
     }
 	
 	.form-horizontal fieldset.short {
