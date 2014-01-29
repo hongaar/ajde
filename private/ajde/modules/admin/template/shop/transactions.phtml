@@ -44,7 +44,7 @@ $options
             ->setNew(false)
 			->up()
 		->setMain('comment')
-		->setShow(array('comment', 'name', 'payment_amount', 'payment_status', 'modified'))
+		->setShow(array('comment', 'name', 'payment_provider', 'payment_amount', 'payment_status', 'modified'))
 		->selectView()
 			->setOrderBy('modified')
             ->setOrderDir('DESC')

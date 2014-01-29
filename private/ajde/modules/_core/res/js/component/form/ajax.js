@@ -48,7 +48,8 @@ AC.Form.Ajax = function() {
 			var data = $(this).serialize();
 			var form = this;
 			var before = function(jqXHR, settings) {
-				$(form).trigger('before', [jqXHR, settings]);
+                // we call triggerHandler down below, this is redundant
+//				$(form).trigger('before', [jqXHR, settings]);
 			};
 			var success = function(data) {
 				$('body').removeClass('loading');

@@ -24,7 +24,7 @@ implements Ajde_Shop_Transaction_Provider_Interface
 	 */
 	public static function getProvider($name, $transaction = null)
 	{
-		$providerClass = 'Ajde_Shop_Transaction_Provider_' . self::classnameToUppercase($name);
+		$providerClass = Ajde_Core_ExternalLibs::getClassname( 'Ajde_Shop_Transaction_Provider_' . self::classnameToUppercase($name) );
 		if (!Ajde_Core_Autoloader::exists($providerClass)) {
 			// TODO:
 			throw new Ajde_Exception('Payment provider ' . $name . ' not found');
