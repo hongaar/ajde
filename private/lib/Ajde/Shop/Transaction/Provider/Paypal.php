@@ -2,6 +2,11 @@
 
 class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provider
 {
+    protected function getMethod()
+    {
+        return '';
+    }
+
     public function getName() {
 		return 'PayPal';
 	}
@@ -25,10 +30,10 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
 		return array(
 			'cmd'			=> '_xclick',
 			'business'		=> Config::get('shopPaypalAccount'),
-			'notify_url'	=> Config::get('site_root') . 'shop/transaction:callback/paypal.html',
+			'notify_url'	=> Config::get('site_root') . $this->returnRoute . 'paypal' . $this->getMethod() . '.html',
 			'bn'			=> Config::get('ident') . '_BuyNow_WPS_' . strtoupper(Ajde_Lang::getInstance()->getShortLang()),
 			'amount'		=> $transaction->payment_amount,
-			'item_name'		=> Config::get('ident') . ': ' . Ajde_Component_String::makePlural($transaction->shipment_itemsqty, 'item'),
+			'item_name'		=> Config::get('sitename') . ': ' . Ajde_Component_String::makePlural($transaction->shipment_itemsqty, 'item'),
 			'quantity'		=> 1,
 			'address_ override' => 1,
 			'address1'		=> $transaction->shipment_address,
@@ -42,7 +47,7 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
 			'custom'		=> $transaction->secret,
 			'no_shipping'	=> 1, // do not prompt for an address
 			'no_note'		=> 1, // hide the text box and the prompt
-			'return'		=> Config::get('site_root') . 'shop/transaction:complete',
+			'return'		=> Config::get('site_root') . 'presale/transaction:complete',
 			'rm'			=> 1 // the buyer’s browser is redirected to the return URL by using the GET method, but no payment variables are included
 		);
 	}
@@ -91,7 +96,10 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
 				$res = fgets ($fp, 1024);
 				if (strcmp ($res, "VERIFIED") == 0) {
 					// check the payment_status is Completed
-					if ($payment_status == 'Completed') {					
+                    // accept Pending from PayPal (eChecks?)
+                    $acceptPending = true;
+
+					if ($payment_status == 'Completed' || ($acceptPending && $payment_status == 'Pending')) {
 						$details =	'AMOUNT: '			. $payment_amount		. PHP_EOL .
 									'CURRENCY: '		. $payment_currency		. PHP_EOL .
 									'PAYER_EMAIL: '		. $payer_email			. PHP_EOL .
@@ -104,7 +112,13 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
 							$transaction->save();
 						} else {
 							$transaction = null;
-						}						
+						}
+
+                        // Write pending to Log
+                        if ($payment_status == 'Pending') {
+                            Ajde_Log::log('Status is Pending but accepting now. PayPal payment with txn id ' . $txn_id . ' and transaction secret ' . $secret);
+                        }
+
 						return array(
 							'success' => true,
 							'transaction' => $transaction

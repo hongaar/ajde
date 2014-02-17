@@ -1,6 +1,7 @@
 div.spatial {
     min-height: 300px;
     position: relative;
+    display: inline-block;
 }
 
 div.spatial img, img.spatial {

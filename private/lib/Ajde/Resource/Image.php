@@ -96,6 +96,9 @@ class Ajde_Resource_Image extends Ajde_Resource
 	
 	public function getImageResource()
 	{
+        // try to allocate a lot of memory
+        ini_set( 'memory_limit', '150M' );
+
 		if (!isset($this->_image)) {
 			switch ($this->_type) {
 				case "jpg":

@@ -60,8 +60,10 @@
 			
             function placeMarker(x, y) {
                 $marker.css({                    
-                    left: (x * $(self).width()) + 'px',
-					top: (y * $(self).height()) + 'px'
+//                    left: (x * $(self).width()) + 'px',
+//					top: (y * $(self).height()) + 'px'
+                    left: (x * 100) + '%',
+                    top: (y * 100) + '%'
                 }).show();
             }
 
@@ -84,6 +86,11 @@
     if (typeof(google) !== 'undefined' && google.maps) {
         google.maps.event.addDomListener(window, 'load', GMapsInitialize);
     }
-    ImageInitialize();
+    $(window).resize(function() {
+        setTimeout(function() {
+            ImageInitialize();
+        }, 500);
+    }).resize();
+
 
 });

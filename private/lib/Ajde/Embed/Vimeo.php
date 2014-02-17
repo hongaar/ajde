@@ -14,7 +14,7 @@ class Ajde_Embed_Vimeo extends Ajde_Embed
 		$this->convertUrlToEmbed();
 		$this->_setHeight();
 		$this->_setWidth();
-		$this->_code = str_replace('portrait=0', 'portrait=0&amp;autoplay=1', $this->_code);
+		$this->_code = str_replace('portrait=0', 'portrait=0', $this->_code);
 		return $this->_code;
 	}
 	
