@@ -735,10 +735,10 @@ class NodeModel extends Ajde_Model_With_AclI18n
 		return parent::getMedia();
 	}
 	
-	public function getMediaTag($width = null, $height = null, $crop = null, $class = null)
+	public function getMediaTag($width = null, $height = null, $crop = null, $class = null, $attributes = array())
 	{
 		if ($this->hasNotEmpty('media')) {
-			return $this->getMedia()->getTag($width, $height, $crop, $class);
+			return $this->getMedia()->getTag($width, $height, $crop, $class,  $attributes);
 		}
 		return '';
 	}
