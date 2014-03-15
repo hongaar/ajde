@@ -2,30 +2,45 @@
 
 class Ajde_Log extends Ajde_Object_Static
 {
-	private static function _getFilename()
+    const CHANNEL_EXCEPTION     = 'Exception';
+    const CHANNEL_ERROR         = 'Error';
+    const CHANNEL_ROUTING       = 'Routing';
+    const CHANNEL_SECURITY      = 'Security';
+    const CHANNEL_INFO          = 'Info';
+    const CHANNEL_APPLICATION   = 'Application';
+
+    const LEVEL_EMERGENCY       = '1:Emergency';
+    const LEVEL_ALERT           = '2:Alert';
+    const LEVEL_CRITICAL        = '3:Critical';
+    const LEVEL_ERROR           = '4:Error';
+    const LEVEL_WARNING         = '5:Warning';
+    const LEVEL_NOTICE          = '6:Notice';
+    const LEVEL_INFORMATIONAL   = '7:Informational';
+    const LEVEL_DEBUG           = '8:Debug';
+
+	private static function getWriters()
 	{
-		return LOG_DIR . date("Ymd") . '.log';
+        $writerArray = Config::get('logWriter');
+        $writers = array();
+        foreach($writerArray as $writer) {
+            $getWriters[] = 'Ajde_Log_Writer_' . ucfirst($writer);
+        }
+        return $getWriters;
 	}
+
+    public static function _($message, $channel = self::CHANNEL_INFO, $level = self::LEVEL_INFORMATIONAL, $description = '', $code = '', $trace = '')
+    {
+        foreach(self::getWriters() as $writer)
+        {
+            try {
+                @call_user_func_array($writer . '::_', array($message, $channel, $level, $description, $code, $trace));
+                break;
+            } catch (Exception $e) {}
+        }
+    }
 	
 	public static function log($string)
 	{
-		$filename = self::_getFilename();
-		if (!is_writable(LOG_DIR))
-		{
-			// TODO, throw error here??
-			throw new Ajde_Exception(sprintf("Directory %s is not writable", LOG_DIR), 90014);
-		}
-		$fh = fopen($filename, 'a');
-		if (!$fh) {
-			/*
-			 * Don't throw an exception here, since this function is generally
-			 * called from an error handler
-			 */
-			return false;
-		}
-		fwrite($fh, PHP_EOL . PHP_EOL . date("H:i:sP") . ":" . PHP_EOL);
-		fwrite($fh, $string);
-		fwrite($fh, PHP_EOL . "Debug info - user agent: " . issetor($_SERVER["HTTP_USER_AGENT"]) . " - referer: " . issetor($_SERVER["HTTP_REFERER"]));
-		fclose($fh);
+		self::_($string);
 	}
 }

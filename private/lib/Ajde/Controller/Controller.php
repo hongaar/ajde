@@ -90,7 +90,7 @@ class Ajde_Controller extends Ajde_Object_Standard
 			}		
 					
 			if (Ajde_Core_Autoloader::exists('Ajde_Exception')) {
-				$exception = new Ajde_Exception("Controller $moduleController for module {$route->getModule()} not found",
+				$exception = new Ajde_Core_Exception_Routing("Controller $moduleController for module {$route->getModule()} not found",
 						90008);
 			} else {
 				// Normal exception here to prevent [Class 'Ajde_Exception' not found] errors...
@@ -121,7 +121,7 @@ class Ajde_Controller extends Ajde_Object_Standard
 		} elseif (method_exists($this, $emptyFunction)) {
 			$actionFunction = $emptyFunction;
 		} else {
-			$exception = new Ajde_Exception(sprintf("Action %s for module %s not found",
+			$exception = new Ajde_Core_Exception_Routing(sprintf("Action %s for module %s not found",
 						$this->getAction(),
 						$this->getModule()
 					), 90011);

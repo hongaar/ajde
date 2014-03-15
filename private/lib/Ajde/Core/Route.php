@@ -32,7 +32,7 @@ class Ajde_Core_Route extends Ajde_Object_Standard
 		// Get route parts
 		$routeParts = $this->_extractRouteParts();
 		if (empty($routeParts)) {
-			$exception = new Ajde_Exception(sprintf("Invalid route: %s",
+			$exception = new Ajde_Core_Exception_Routing(sprintf("Invalid route: %s",
 					$route), 90021);
 			Ajde::routingError($exception);
 		}

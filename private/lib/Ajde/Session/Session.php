@@ -62,7 +62,7 @@ class Ajde_Session extends Ajde_Object_Standard
 			//session_regenerate_id();
 			session_destroy();
 			// TODO:
-			$exception = new Ajde_Exception('Possible session hijacking detected. Bailing out.');
+			$exception = new Ajde_Core_Exception_Security('Possible session hijacking detected. Bailing out.');
 			if (Config::getInstance()->debug === true) {
 				throw $exception;
 			} else {

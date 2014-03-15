@@ -25,7 +25,7 @@ abstract class Ajde_Document extends Ajde_Object_Standard
 		$format = $route->getFormat();
 		$documentClass = "Ajde_Document_Format_" . ucfirst($format);
 		if (!Ajde_Core_Autoloader::exists($documentClass)) {
-			$exception = new Ajde_Exception("Document format $format not found",
+			$exception = new Ajde_Core_Exception_Routing("Document format $format not found",
 					90009);
 			Ajde::routingError($exception);
 		}

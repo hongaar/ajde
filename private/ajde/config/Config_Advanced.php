@@ -71,6 +71,7 @@ class Config_Advanced
 	// Performance
 	public $compressResources	= true;
 	public $debug 				= false;
+    public $logWriter           = array('db', 'file');
 	public $useCache			= true;
 	public $documentProcessors	= array(
 									'css'	=> array(

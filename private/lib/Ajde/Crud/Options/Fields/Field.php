@@ -484,6 +484,16 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 	public function setIconPackage($package) {
 		return $this->_set('iconPackage', $package);
 	}
+
+    /**
+     * Use max chars in list view
+     *
+     * @param string $package
+     * @return Ajde_Crud_Options_Fields_Field
+     */
+    public function setMaxChars($maxChars) {
+        return $this->_set('maxChars', $maxChars);
+    }
 	
 	/**
 	 * Sets the fields to clone when creating a translation

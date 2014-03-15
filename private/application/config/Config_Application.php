@@ -42,6 +42,7 @@ class Config_Application extends Config_Cms
 
 	//public $compressResources;
 	//public $debug;
+    //public $logWriter;
 	//public $useCache;
 	//public $documentProcessors;
 

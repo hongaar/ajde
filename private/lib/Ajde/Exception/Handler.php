@@ -22,11 +22,11 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 			dump($message);
 	
 			// TODO: only possible in PHP >= 5.3 ?
-			try
-			{
+//			try
+//			{
 				throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
-			} catch(Exception $exception) {
-			}
+//			} catch(Exception $exception) {
+//			}
 		}
 	}
 
@@ -58,6 +58,7 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 	}
 
 	const EXCEPTION_TRACE_HTML = 1;
+    const EXCEPTION_TRACE_ONLY = 3;
 	const EXCEPTION_TRACE_LOG = 2;
 
 	public static function trace(Exception $exception, $output = self::EXCEPTION_TRACE_HTML)
@@ -65,13 +66,8 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 		if (Ajde::app()->hasDocument() && Ajde::app()->getDocument()->getFormat() == 'json') {
 //			$output = self::EXCEPTION_TRACE_LOG;
 		}
-		if ($exception instanceof ErrorException) {
-			$type = "PHP Error " . self::getErrorType($exception->getSeverity());
-		} elseif ($exception instanceof Ajde_Exception) {
-			$type = "Uncaught application exception" . ($exception->getCode() ? ' ' . $exception->getCode() : '');
-		} else {
-			$type = "Uncaught PHP exception " . $exception->getCode();
-		}
+
+        $type = self::getTypeDescription($exception);
 
 		switch ($output) {
 			case self::EXCEPTION_TRACE_HTML:
@@ -147,6 +143,13 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 
 				$message = $style . $exceptionDump . $exceptionMessage . $traceMessage;
 				break;
+            case self::EXCEPTION_TRACE_ONLY:
+                $message = '';
+                foreach(array_reverse($exception->getTrace()) as $i => $line) {
+                    $message .= $i . '. ' . (isset($line['file']) ? $line['file'] : 'unknown file') . ' on line ' . (isset($line['line']) ? $line['line'] : 'unknown line');
+                    $message .= PHP_EOL;
+                }
+                break;
 			case self::EXCEPTION_TRACE_LOG:
 				$message = 'UNCAUGHT EXCEPTION' . PHP_EOL;
 				$message .= "\tRequest " . $_SERVER["REQUEST_URI"] . " triggered:" . PHP_EOL;
@@ -164,6 +167,48 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 		}
 		return $message;
 	}
+
+    public static function getTypeDescription(Exception $exception)
+    {
+        if ($exception instanceof ErrorException) {
+            $type = "PHP Error " . self::getErrorType($exception->getSeverity());
+        } elseif ($exception instanceof Ajde_Exception) {
+            $type = "Application exception" . ($exception->getCode() ? ' ' . $exception->getCode() : '');
+        } else {
+            $type = "PHP exception " . $exception->getCode();
+        }
+        return $type;
+    }
+
+    public static function getExceptionChannelMap(Exception $exception)
+    {
+        if ($exception instanceof ErrorException) {
+            return Ajde_Log::CHANNEL_ERROR;
+        } elseif ($exception instanceof Ajde_Core_Exception_Routing) {
+            return Ajde_Log::CHANNEL_ROUTING;
+        } elseif ($exception instanceof Ajde_Core_Exception_Security) {
+            return Ajde_Log::CHANNEL_SECURITY;
+        } elseif ($exception instanceof Ajde_Exception) {
+            return Ajde_Log::CHANNEL_APPLICATION;
+        } else {
+            return Ajde_Log::CHANNEL_EXCEPTION;
+        }
+    }
+
+    public static function getExceptionLevelMap(Exception $exception)
+    {
+        if ($exception instanceof ErrorException) {
+            return Ajde_Log::LEVEL_ERROR;
+        } elseif ($exception instanceof Ajde_Core_Exception_Routing) {
+            return Ajde_Log::LEVEL_WARNING;
+        } elseif ($exception instanceof Ajde_Core_Exception_Security) {
+            return Ajde_Log::LEVEL_WARNING;
+        } elseif ($exception instanceof Ajde_Exception) {
+            return Ajde_Log::LEVEL_ERROR;
+        } else {
+            return Ajde_Log::LEVEL_ERROR;
+        }
+    }
 	
 	public static function getErrorType($type)
 	{

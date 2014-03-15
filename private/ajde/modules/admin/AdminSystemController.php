@@ -233,4 +233,17 @@ class AdminSystemController extends AdminController
 		}
 		return $ret;
 	}
+
+    public function log()
+    {
+        Ajde::app()->getDocument()->setTitle("System log");
+        return $this->render();
+    }
+
+    public function logpanel()
+    {
+        $item = $this->getItem();
+        $this->getView()->assign('item', $item);
+        return $this->render();
+    }
 }

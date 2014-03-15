@@ -1,0 +1,78 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ 
+
+$options = new Ajde_Crud_Options();
+$options
+	->selectFields()
+        ->selectField('message')
+            ->setMaxChars(75)
+            ->up()
+        ->selectField('level')
+            ->setFunction('displayLevel')
+            ->up()
+        ->selectField('trace')
+            ->setDisableRichText(true)
+            ->up()
+        ->selectField('channel')
+            ->setFunction('displayChannel')
+            ->up()
+		->up()
+	->selectList()
+		->selectButtons()
+			->setEdit(false)
+            ->setNew(false)
+			->up()
+		->setMain('message')
+		->setShow(array('message', 'channel', 'level', 'request', 'time'))
+		->selectView()
+			->setOrderBy('time')
+            ->setOrderDir('DESC')
+			->up()
+        ->setPanelFunction('displayPanel')
+		->up()
+	->selectEdit()
+        ->selectLayout()
+            ->addRow()
+                ->addColumn()
+                    ->setSpan(8)
+                    ->addBlock()
+                        ->setShow(array('message', 'description'))
+                        ->up()
+                    ->addBlock()
+                        ->setShow(array('request', 'code', 'trace'))
+                        ->up()
+                    ->up()
+                ->addColumn()
+                    ->setSpan(4)
+                    ->addBlock()
+                        ->setTitle('Meta')
+                        ->setClass('sidebar')
+                        ->setShow(array('time', 'channel', 'level'))
+                        ->up()
+                    ->addBlock()
+                        ->setTitle('Client')
+                        ->setClass('sidebar')
+                        ->setShow(array('user_agent', 'referer', 'ip'))
+                        ->up()
+
+	->finished();
+
+$crud = $this->ACCrudList('log', $options);
+
+?>
+
+<div class="row-fluid">
+	<div class="span3 hideInIframe">
+		<?php echo $this->includeModule('admin/cms:menu'); ?>		
+	</div><!--/span-->
+	<div class="span9 expandInIframe">
+		
+		<div class="page-header">
+			<h1>
+				<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
+			</h1>
+		</div>		
+		
+		<?php echo $crud->output(); ?>
+		
+	</div><!--/span-->
+</div><!--/row-->

@@ -1,0 +1,88 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+
+/* @var $item LogModel */
+$item = $this->item;
+
+?>
+
+<h3>
+	<?php echo _e($item->getMessage()); ?>
+</h3>
+
+<div>
+	<div class="row-fluid">
+		<div class="span6">
+			<table class="table table-condensed">
+                <tr>
+                    <th>Time</th>
+                    <td>
+                        <?php
+                        $timestamp = new DateTime($item->get('time'));
+                        $timestamp = $timestamp->format('U');
+                        echo Ajde_Component_String::time2str($timestamp);
+                        ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Channel</th>
+                    <td>
+                        <?php echo $item->getChannel(); ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Level</th>
+                    <td>
+                        <?php echo $item->getLevel(); ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>
+                        <?php echo $item->getDescription(); ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th>User agent</th>
+                    <td>
+                        <?php echo $item->get('user_agent'); ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Referer</th>
+                    <td>
+                        <?php echo $item->getReferer(); ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th>IP</th>
+                    <td>
+                        <?php echo $item->getIp(); ?>
+                    </td>
+                </tr>
+			</table>
+		</div>
+		<div class="span6">
+			<table class="table table-condensed">
+                <tr>
+                    <th>Request</th>
+                    <td>
+                        <?php echo $item->getRequest(); ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Code</th>
+                    <td>
+                        <?php echo $item->getCode(); ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Trace</th>
+                    <td>
+                        <?php echo nl2br($item->getTrace()); ?>
+                    </td>
+                </tr>
+			</table>
+		</div>
+	</div>
+</div>

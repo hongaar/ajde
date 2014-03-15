@@ -259,10 +259,14 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 					</td>
 				<?php
 				// Text value
-				} else { ?>
+				} else {
+                    $maxChars = 50;
+                    if ($field->hasMaxChars()) {
+                        $maxChars = $field->getMaxChars();
+                    } ?>
 					<td <?php echo $gridData; ?> title="<?php echo $this->escape($value); ?>" <?php if ($crud->getOption('list.main', false) == $field->getName()) { echo 'class=\'main\''; } ?>>
-						<?php echo substr($this->escape($value), 0, 50); ?>
-						<?php if (strlen($this->escape($value)) > 50) { ?>
+						<?php echo substr($this->escape($value), 0, $maxChars); ?>
+						<?php if (strlen($this->escape($value)) > $maxChars) { ?>
 							...
 						<?php } ?>
 					</td>
