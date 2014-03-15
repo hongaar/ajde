@@ -1,0 +1,40 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */ 
+?>
+
+<div class="row-fluid">
+	<div class="span12">		
+		<div class="page-header">
+			<h1>
+				<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
+			</h1>
+		</div>			
+	</div>
+</div>
+
+<div class="row-fluid">
+	
+	<div class="span12">
+		<h3>1. Download app</h3>
+		<p>
+			Right-click this button and click <strong>Save link as...</strong>, then save the file to your desktop
+		</p>
+		<p>
+			<a class="btn btn-large btn-primary" href="admin/system:chromeAppDownload">Right-click me</a>
+		</p>
+		
+		<h3>3. Locate the downloaded file</h3>
+		<p>
+			Go to your desktop and locate the <code>app.crx</code> file you just downloaded, you will need it in the next step.
+		</p>
+		
+		<h3>3. Open extensions page</h3>		
+		<p>
+			Go to <img src="https://storage.googleapis.com/support-kms-prod/SNP_2696434_en_v1" alt="Chrome menu" /> &gt; <strong>Tools</strong> &gt; <strong>Extensions</strong>, and drop the <code>app.crx</code> file onto this page.
+		</p>
+		
+		<p>&nbsp;</p>
+		
+	</div>				
+	
+</div><!--/row-->

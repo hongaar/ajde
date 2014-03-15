@@ -1,0 +1,22 @@
+body {
+	background-image: url('../public/media/admin-bg.png');
+}
+
+body,
+legend,
+.nav-list>li>a, .nav-list .nav-header {
+	color: rgb(192, 192, 192);
+}
+
+.page-header h1 {
+	color: rgb(202, 129, 61);
+}
+
+.well,
+.form-actions {
+	background: rgba(255, 255, 255, 0.2);
+}
+
+.nav-list>li>a, .nav-list .nav-header {
+	text-shadow: inherit;
+}

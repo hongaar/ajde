@@ -1,0 +1,25 @@
+<?php
+/* @var $field Ajde_Crud_Field_Date */
+$field = $this->field;
+?>
+
+<?php if ($field->getIsAutoUpdate() === true || ($field->has('readonly') && $field->get('readonly')) ) {
+	if ($field->getValue() === 'CURRENT_TIMESTAMP') {
+		echo '';
+	} else {
+		echo $field->getValue();
+	}
+    if ($field->getIsAutoUpdate()) {
+        $field->setValue(null);
+    }
+    ?>
+	<div class='hidden'>
+		<input
+			<?php echo $field->getHtmlAttributes(); ?>
+		/>
+	</div>
+<?php } else { ?>
+	<input
+		<?php echo $field->getHtmlAttributes(); ?>
+	/>
+<?php } ?>

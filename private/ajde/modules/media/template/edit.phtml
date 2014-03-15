@@ -1,0 +1,70 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ ?>
+
+<h2>
+	Media
+</h2>
+
+<?php	
+
+$options = new Ajde_Crud_Options();
+$options	
+	->selectFields()
+		->selectField('name')
+			->setEmphasis(true)
+			->up()
+		->selectField('type')
+			->up()
+		->selectField('filename')
+			->setType('file')
+			->setSaveDir(UPLOAD_DIR)
+			->setExtensions(array('png', 'jpg'))
+			->setMultiple(false)
+			->setThumbDim(266, 100)
+			->up()
+		->selectField('embed')
+			->setDisableRichText(true)
+			->up()
+		->selectField('portfolio')
+			->up()		
+		->selectField('sort')
+			->setType('sort')
+			->up()
+		->up()			
+	->selectList()
+		->selectButtons()
+			->setNew(true)
+			->setEdit(true)
+			->up()
+		->setMain('name')
+		->setShow(array('name', 'type', 'sort'))
+		->setThumbDim(50, 50)
+		->selectView()
+			->setOrderBy('sort')
+			->up()
+		->up()
+	->selectEdit()
+		->selectLayout()
+			->addRow()
+				->addColumn()
+					->addBlock()
+						->setShow(array('name', 'type'))
+						->up()
+					->addBlock()
+						->setTitle('Content')
+						->setShow(array('pointer'))
+						->up()					
+					->up()
+				->addColumn()
+					->setWidth(300)
+					->setAlign('right')
+					->addBlock()
+						->setTitle('Metadata')
+						->setClass('sidebar')
+						->setShow(array('portfolio', 'sort'))
+						->up()					
+		
+	->finished();
+
+$crud = $this->ACCrudList('media', $options);
+
+echo $crud->output();

@@ -1,0 +1,26 @@
+/*#!less*/
+
+/**
+ * Author styles
+ *
+ * You can use LESS in your stylesheets
+ */
+ 
+ 
+body {
+	/*font-family: 'Roboto', sans-serif; */
+	padding-top: 80px;
+}
+
+body.loading, body.loading * {
+	cursor: progress !important;
+}
+
+h1, h2, h3, h4 {
+	/*font-family: 'PT Sans Narrow', sans-serif;
+	font-weight: normal;*/
+}
+
+.main {
+	padding: 0;
+}

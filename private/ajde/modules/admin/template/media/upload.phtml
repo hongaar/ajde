@@ -1,0 +1,63 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ ?>
+
+<div class="row-fluid">
+	<div class="span3">
+		<?php echo $this->includeModule('admin/cms:menu'); ?>		
+	</div><!--/span-->
+	<div class="span9">
+		
+		<div class="page-header">
+			<h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
+		</div>        
+        
+        <?php echo $this->ACAjaxForm('admin/media:upload', 'mediaUpload', 'form-horizontal'); ?>
+			<input type="hidden" name="filename" />
+			
+            <div class='row-fluid'>
+
+                <div class='column span12'>
+
+					<fieldset class='crud'>
+
+						<div class="controls">
+							<legend>Choose one or multiple files</legend>
+						</div>
+												
+						<div class="control-group">
+
+							<label class='control-label' for='in_files' title='' class='required'>
+								Files
+							</label>
+
+							<div class="controls">        
+								
+								<?php
+								$options = array(
+									'saveDir' => $this->uploaddir,
+									'extensions' => $this->extensions,
+									'multiple' => true,
+									'overwrite' => false
+								);
+								echo $this->ACAjaxUpload('files', $options);
+								?>
+								
+							</div>
+
+						</div>
+
+					</fieldset>
+
+				</div> <!-- /span -->
+                   		
+			</div> <!-- /row -->
+
+            <div class="form-actions">
+
+                <a href="admin/media:view" class="btn btn-success save">done</a>
+
+            </div>
+
+        </form>
+		
+	</div><!--/span-->
+</div><!--/row-->

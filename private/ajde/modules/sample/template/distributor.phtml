@@ -1,0 +1,42 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */
+
+$options = new Ajde_Crud_Options();
+$options	
+	->selectFields()
+		->selectField('name')
+			->setEmphasis(true)
+			->up()
+		->selectField('logo')
+			->setType('file')
+			->setSaveDir('public/media/upload/')
+			->setExtensions(array('png', 'jpg', 'pdf', 'docx'))
+			->setMultiple(false)
+			->setThumbDim(266, 100)
+			->up()
+		->up()
+	->selectEdit()
+		->selectLayout()
+			->addRow()
+				->addColumn()
+					->addBlock()
+						->setShow(array('name', 'place', 'country'))
+						->up()
+					->up()
+				->addColumn()
+					->setAlign('right')
+					->setWidth(300)
+					->addBlock()
+						->setClass('sidebar')
+						->setShow(array('logo'))
+		
+	->finished();
+
+$crud = $this->ACCrudList('distributor', $options);
+
+if ($crud->isNew()) {
+	echo '<h2>New distributor</h2>';
+} else {
+	echo '<h2>Edit distributor</h2>';
+}
+
+echo $crud->output();

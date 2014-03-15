@@ -1,0 +1,100 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ 
+
+$options = new Ajde_Crud_Options();
+$options	
+	->selectFields()
+		->selectField('mediatype')
+			->setOrderBy('sort')
+			->setIsRequired(false)
+			->up()
+		->selectField('name')
+			->setEmphasis(true)
+			->up()
+		->selectField('thumbnail')
+			->setType('file')
+			->setSaveDir($this->uploaddir)
+			->setExtensions(array())
+			->setMultiple(false)
+			->up()
+		->selectField('pointer')
+			->setType('media')
+			->setSaveDir($this->uploaddir)
+			->setExtensions($this->extensions)
+			->setMultiple(false)
+            ->setTypeField('type')
+            ->setThumbField('thumbnail')
+			->setFilenameField('name')
+			->setLabel('Source')
+			->up()
+		->selectField('sort')
+			->setType('sort')
+			->up()
+        ->selectField('added')
+			->setIsReadonly(true)
+			->up()
+		->up()			
+	->selectList()
+		->selectButtons()
+			->setNew(true)
+			->setEdit(true)
+			->addToolbarButton('upload', new Ajde_Core_Route('admin/media:uploadButton'))
+			->addToolbarHtml('mediatype', $this->includeModule('admin/media:typeBtn'))
+			->up()
+		->setMain('name')
+		->setShow(array('name', 'added', 'thumbnail'))
+		->setGridShow(array('thumbnail'))
+		->setThumbDim(300, 300)
+		->selectView()
+			->setViewType('grid')
+			->setOrderBy('added')
+            ->setOrderDir(Ajde_Query::ORDER_DESC)
+            ->setMainFilter('mediatype')
+            ->setMainFilterGrouper('category')
+			->up()
+		->up()
+	->selectEdit()
+		->selectLayout()
+			->addRow()
+				->addColumn()
+                    ->setSpan(8)
+					->addBlock()
+						->setShow(array('name', 'pointer'))
+						->up()					
+					->up()
+				->addColumn()
+					->setSpan(4)
+                    ->addBlock()
+						->setTitle('Metadata')
+						->setClass('sidebar well')
+						->setShow(array('added', 'updated', 'user', 'sort'))
+						->up()		
+									
+		
+	->finished();
+
+$crud = $this->ACCrudList('media', $options);
+
+if (Ajde::app()->getRequest()->has('new')) {
+	$user = UserModel::getLoggedIn();
+	$crud->setOption('fields.user.value', $user->getPK());
+}
+
+?>
+
+<div class="row-fluid">
+	<div class="span3 hideInIframe">
+		<?php echo $this->includeModule('admin/cms:menu'); ?>		
+	</div><!--/span-->
+	<div class="span9 expandInIframe">
+		
+		<div class="page-header">
+			<h1>
+				<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
+				<?php echo $this->ACCrudMainFilterBadge($crud, true); ?>
+			</h1>
+		</div>		
+		
+		<?php echo $crud->output(); ?>
+		
+	</div><!--/span-->
+</div><!--/row-->

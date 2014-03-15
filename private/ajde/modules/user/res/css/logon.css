@@ -1,0 +1,7 @@
+#rememberme {
+	float: left;
+}
+
+label[for=rememberme] {
+	margin-top: 0;
+}

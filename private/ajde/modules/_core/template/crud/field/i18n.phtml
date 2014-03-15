@@ -1,0 +1,104 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+
+/* @var $field Ajde_Crud_Field_I18n */
+$field = $this->field;
+
+if ($field->getValue()) {
+	$pk = $field->getValue();
+} else if ($field->getDefault()) {
+	$pk = $field->getDefault();
+} else {
+	$pk = null;
+}
+
+$item = $field->getCrud()->getModel();
+/* @var $item Ajde_Model_I18n */
+
+
+?>
+
+<select
+	data-placeholder="Choose an option"
+	<?php echo $field->getHtmlAttributes(); ?>	
+>
+	<?php if (!$field->getIsRequired() === true) { ?>
+		<option value=''></option>
+	<?php } ?>
+	<?php foreach($field->getValues() as $key => $option) { ?>
+		<option value='<?php echo $key; ?>'
+			<?php
+			if ($key == $pk) { echo "selected='selected'"; }
+			elseif ($field->hasReadonly() && $field->getReadonly() === true) { echo ' disabled="disabled" '; }
+			?>
+			><?php echo $option; ?></option>
+	<?php } ?>
+</select>
+
+<?php if ($item->isTranslatable()) {
+
+	$rootLang = $item->getRootLang(); ?>
+	
+	<div class='translations'>
+		Translate:<br/>
+		
+		
+		<?php if ($rootLang) {
+			$editRoute = Ajde::app()->getRoute()->buildRoute();
+			$editRoute .= '?edit=' . $rootLang->getPK();		
+			?>
+			<a href="<?php echo $editRoute; ?>">
+				<?php echo Ajde_Lang::niceName($rootLang->getLanguage()); ?>
+			</a>		
+		<?php }
+		foreach($field->getAvailableTranslations() as $lang => $translation) { ?>
+		
+			<?php if ($lang != $pk) {
+				if ($rootLang !== false && $rootLang->getLanguage() == $lang) {
+					break;
+				}
+				
+				$editRoute = Ajde::app()->getRoute()->buildRoute();
+				$cloneFields = '';
+				
+				if (isset($translation['model'])) {
+					$editRoute .= '?edit=' . $translation['model']->getPK();
+				} else {
+	// 				$cloneFields = 'data-clone="' . implode(',', $field->getFieldsToClone()) . '"';
+					
+					$editRoute .= '?new';
+					$editRoute .= '&prefill[' . $item->getLanguageField() . ']=' . $lang;
+					$editRoute .= '&prefill[' . $item->getLanguageRootField() . ']=' . ($rootLang === false ? $item->getPK() : $rootLang->getPK());
+					$editRoute .= '&hide[' . $item->getLanguageField() . ']=1';
+					
+					foreach($field->getFieldsToClone() as $cloneField) {
+						$editRoute .= '&prefill[' . $cloneField . ']=' . urlencode($item->get($cloneField));
+					}
+					
+					// prefill translated parent if available
+					// TODO: this is NodeModel specific
+					if ($item->has('parent')) {
+						$parent = $item->getParent();
+						$translatedParent = $parent->getTranslatedLazy($lang);
+						$editRoute .= '&prefill[parent]=' . $translatedParent->getPK();
+					}
+				}
+				?>
+				<a
+					href="<?php echo $editRoute; ?>"
+					<?php echo $cloneFields; ?>
+					<?php if (!isset($translation['model'])) { echo "class='new'"; } ?>
+				><?php echo $translation['name']; ?></a>
+			<?php } ?>
+			
+		<?php } ?>
+	</div>
+	
+<?php } else { ?>
+
+	<div class='translations'>
+		Item becomes translatable after saving
+	</div>
+	
+	
+<?php } ?>

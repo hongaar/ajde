@@ -1,0 +1,113 @@
+<?php
+
+/* @var $crud Ajde_Crud */
+$crud = $this->crud;
+$crudView = $crud->getCollectionView();
+
+$mainFilter = $crudView->getMainFilter();
+
+$filterField = $crud->getField($mainFilter);
+$filterFieldValues = $filterField->getValues();
+
+// do we have a value from the model?
+$currentFilter = $crud->getOption('fields.' . $mainFilter . '.value');
+if (!$currentFilter) {
+	$currentFilter = $crudView->getFilterForField($mainFilter);
+}
+
+$filteredBy = 'Filter';
+if (array_key_exists($currentFilter, $filterFieldValues)) {
+	$filteredBy = $filterFieldValues[$currentFilter];
+}
+
+$edit = Ajde::app()->getRequest()->has('edit');
+if ($edit) {
+	// Load id from querystring
+	$model = $crud->loadItem(Ajde::app()->getRequest()->getParam('edit', false));
+	$currentFilter = (string) $model->get($mainFilter);
+	$filteredBy = $filterFieldValues[$currentFilter];
+}
+
+// Open after page loaded?
+$autoOpen = false;
+if ($crud->getOperation() === 'edit') {
+    $autoOpen = true;
+}
+?>
+
+<<?php echo $edit ? 'span' : 'a href="#mainFilter" role="button" data-toggle="modal" class="mainFilterToggle"'; ?>>
+	<span class="mainFilterLabel"><?php echo $filteredBy; ?></span>
+	<?php if (!$edit) { ?>
+		<b class="caret"></b>
+	<?php } ?>
+</<?php echo $edit ? 'span' : 'a'; ?>>
+
+<!-- Modal -->
+<div
+	id="mainFilter"
+	class="modal hide fade"
+	data-refresh="<?php echo $this->refresh ? '1' : '0'; ?>"
+    data-autoopen="<?php echo $autoOpen ? '1' : '0'; ?>"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="mainFilter"
+	aria-hidden="true"
+>
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<h3 id="myModalLabel">Choose <?php echo _e(strtolower($filterField->getLabel())); ?></h3>
+	</div>
+	<div class="modal-body">
+
+		<?php if ( ! ($filterField instanceof Ajde_Crud_Field_Enum || $filterField instanceof Ajde_Crud_Field_Fk)) { ?>
+			<p>Field type is not supported by main filter</p>
+		<?php } else {
+			if ($crudView->hasMainFilterGrouper()) { 
+				$grouper = $crudView->getMainFilterGrouper();
+				// Assume we have a collection available, with sort field
+				$collectionName = ucfirst($mainFilter) . 'Collection';
+				$collection = new $collectionName();
+				/* @var $collection Ajde_Collection */
+				$collection->orderBy($grouper);
+				$collection->orderBy('sort');
+				$currentGrouper = ''; ?>
+			
+				<div class='mainFilterButtons'>
+					<?php foreach($collection as $item) {
+						/* @var $item Ajde_Model */
+						if ($item->get($grouper) <> $currentGrouper) {
+							$currentGrouper = $item->get($grouper); ?>
+							<div class="grouper">
+								<span class="badge badge-inverse"><?php echo ucfirst($currentGrouper); ?></span>
+							</div>
+						<?php } ?>
+						<a href='javascript:void(null);'
+						   data-name='<?php echo $filterField->getName(); ?>'
+						   data-value='<?php echo $item->getPK(); ?>'
+						   class='filter btn <?php if ($item->getPK() != $currentFilter) { echo 'btn-info'; } ?>'
+						   <?php if ($item->getPK() == $currentFilter) { echo 'data-init="true"'; } ?>
+						><?php echo _e($item->get($item->getDisplayField())); ?></a>
+					<?php } ?>
+				</div>
+			
+			<?php } else { ?>
+			
+				<div class='mainFilterButtons'>
+					<?php foreach($filterField->getValues() as $key => $option) { ?>
+						<a href='javascript:void(null);'
+						   data-name='<?php echo $filterField->getName(); ?>'
+						   data-value='<?php echo $key; ?>'
+						   class='filter btn <?php if ($key != $currentFilter) { echo 'btn-info'; } ?>'
+						   <?php if ($key == $currentFilter) { echo 'data-init="true"'; } ?>
+						><?php echo _e($option); ?></a>
+					<?php } ?>
+				</div>
+			
+			<?php } ?>
+
+		<?php } ?>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary btn-large all" data-name='<?php echo $filterField->getName(); ?>'>no filter</button>
+	</div>
+</div>

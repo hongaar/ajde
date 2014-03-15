@@ -1,0 +1,36 @@
+/*#!less*/
+
+body {
+	padding-top: 0;
+}
+
+.nav-collapse .navbar-text {
+	display: none;
+}
+
+.navbar .brand {
+	padding-left: 60px;
+
+	img {
+		width: 47px;
+		height: 61px;
+	}
+}
+
+.sidebar-nav {
+	padding: 5px 0 !important;
+}
+
+.menu-toggle {
+	margin: -5px 0;
+}
+
+.navbar-inverse .nav-collapse .nav>li>a, .navbar-inverse .nav-collapse .dropdown-menu a {
+	color: #fff !important;
+}
+
+.navbar .nav>li.divider {
+	border-left: none;
+	min-height: 1px;
+	border-bottom: 1px solid #808080;
+}

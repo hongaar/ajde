@@ -1,0 +1,115 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ 
+
+$options = new Ajde_Crud_Options();
+$options
+	->selectFields()
+		->selectField('name')
+			->setFunction('getTreeName')
+			->setEmphasis(true)
+			->up()
+		->selectField('type')
+			->up()
+		->selectField('parent')
+			->setType('fk')
+			->setModelName('menu')
+			->setUsePopupSelector(true)
+			->setListRoute('admin/setup:menus.crud')
+			->up()	
+		->selectField('sort')
+			->setType('sort')
+			->up()
+		->selectField('submenus')
+			->addShowOnlyWhen('type', 'submenu')
+			->setModelName('menu')
+			->setParent('parent')
+			->setType('multiple')
+			->setEditRoute('admin/menu:view.crud')
+			->addTableField('type')
+			->addSortField('sort')
+			->up()	
+		->selectField('node')
+			->setIsRequired(true)
+            ->addShowOnlyWhen('type', array('submenu', 'nodelink'))
+			->setLabel('Node link')
+			->up()		
+		->selectField('url')
+			->setIsRequired(true)
+			->addShowOnlyWhen('type', 'url')
+			->setDisableRichText(true)
+			->setTextInputHeight(1)
+			->setLabel('URL')
+			->up()
+		->selectField('lang')
+			->setFunction('displayLang')
+			->setType('i18n')
+			->setCloneFields(array(
+						
+			))
+			->up()
+		->up()
+	->selectList()
+		->selectButtons()
+			->setNew(true)
+			->setEdit(true)
+			->up()
+		->setMain('name')
+		->setShow(array('name', 'lang', 'sort'))
+		->selectView()
+			->setOrderBy('sort')
+			->up()
+		->up()
+	->selectEdit()
+		->selectLayout()
+			->addRow()
+				->addColumn()
+                    ->setSpan(9)
+					->addBlock()
+						->setClass('primary narrow sidebar')
+						->setShow(array('name'))
+						->up()
+					->addBlock()
+						->setClass('sidebar')
+						->setShow(array('type'))
+						->up()
+					->addBlock()
+						->setClass('sidebar well')
+						->setShow(array('submenus'))
+						->up()
+					->addBlock()
+						->setClass('sidebar well')
+						->setShow(array('node'))
+						->up()
+					->addBlock()
+						->setClass('sidebar well')
+						->setShow(array('url'))
+						->up()
+					->up()
+				->addColumn()
+					->setSpan(3)
+					->addBlock()
+						->setClass('narrow sidebar well')
+						->setShow(array('lang'))
+						->up()
+						
+	->finished();
+
+$crud = $this->ACCrudList('menu', $options);
+
+?>
+
+<div class="row-fluid">
+	<div class="span3 hideInIframe">
+		<?php echo $this->includeModule('admin/cms:setupmenu'); ?>		
+	</div><!--/span-->
+	<div class="span9 expandInIframe">
+		
+		<div class="page-header">
+			<h1>
+				<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
+			</h1>
+		</div>		
+		
+		<?php echo $crud->output(); ?>
+		
+	</div><!--/span-->
+</div><!--/row-->

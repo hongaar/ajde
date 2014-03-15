@@ -1,0 +1,38 @@
+div.toolbar {
+	margin-top: 20px;
+	padding-top: 20px;
+	border-top: 1px dashed #8ACAF3;
+	height: 60px;
+}
+
+div.toolbar .action {
+	float: right;
+}
+
+div.toolbar a {
+	white-space: nowrap;
+}
+
+dd.status, p.status {
+	display: inline-block;
+	background-color: #eee;
+	border: 1px solid silver;
+	padding: 5px;
+	margin: 0 0 20px 0;
+}
+
+dd.status.error {
+	background-color: #FF3333;
+	color: white;
+}
+
+.summary table td, .summary table th {
+	padding: 2px 7px;
+	text-align: left;
+	border-top: 1px solid silver;
+}
+.summary table tfoot td, .summary table thead th {
+	font-weight: bold;
+	border-top: 1px solid gray;
+	border-bottom: 1px solid gray;
+}

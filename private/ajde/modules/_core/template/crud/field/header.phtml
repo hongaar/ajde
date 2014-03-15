@@ -1,0 +1,40 @@
+<?php 
+/* @var $field Ajde_Crud_Field_Text */
+$field = $this->field;
+?>
+
+<?php 
+/* @var $field Ajde_Crud_Field */
+$field = $this->field;
+?>
+   
+<div
+	class="control-group
+	<?php if (
+			($field->hasHidden() && $field->getHidden() === true)
+//			|| $field->hasShowOnlyWhen()
+			) { echo 'hidden'; } ?>
+	<?php if ($field->hasShowOnlyWhen()) {
+		echo 'dynamic" ';
+		$showOnlyWhens = $field->getShowOnlyWhen();
+		foreach($showOnlyWhens as $key => $showOnlyWhen) {
+			echo 'data-show-' . $key . '="|' . implode('|', $showOnlyWhen) . '|"';
+		}
+		if ($field->hasDynamicSort()) {
+			$dynamicSorts = $field->getDynamicSort();
+			foreach($dynamicSorts as $key => $dynamicSort) {
+				echo 'data-sort-' . $key . '="|' . implode('|', $dynamicSort) . '|"';
+			}
+		}
+	} else {
+		echo '"';
+	} ?>
+>
+
+	<div class="controls">
+		<legend class="header">
+			<?php echo __($field->getLabel()); ?>
+		</legend>
+	</div>
+	        
+</div>

@@ -1,0 +1,46 @@
+.qq-upload-list {
+    text-align: left !important;
+}
+
+/* For the bootstrapped demos */
+li.alert-success {
+    background-color: #3fb618;
+}
+
+li.alert-error {
+    background-color: #ff0039;
+}
+
+.alert-error .qq-upload-failed-text {
+    display: inline;
+}
+
+.qq-progress-bar {
+    border-radius: 0;
+    background: #0f82f5;
+    height: 5px;
+    margin-bottom: 10px;
+}
+
+.qq-upload-drop-area {
+	font-family: "Open Sans",Calibri,Candara,Arial,sans-serif;
+	border: 2px dotted #0F82F5;
+	outline: 10px solid white;
+	height: 200%;
+	background: #FFF;
+	height: 200px;
+	width: 400px !important;
+}
+
+.qq-upload-drop-area-active {
+	border-color: #41bb19;
+}
+
+.qq-upload-drop-area span {
+	display: block;
+	position: relative;
+	top: auto;
+	width: auto;
+	margin-top: auto;
+	font-size: 16px;
+}

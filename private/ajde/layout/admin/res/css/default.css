@@ -1,0 +1,248 @@
+/*#!less*/
+
+body {
+	padding-top: 80px;
+}
+
+body.iframe {
+	padding-top: 0;
+}
+
+/* loading */
+
+body #main {
+	-webkit-transition: all 0.5s ease-out; 
+    -moz-transition: all 0.5s ease-out; 
+    -o-transition: all 0.5s ease-out; 
+    transition: all 0.5s ease-out; 
+}
+
+body.loading #main {
+	opacity: 0.2;
+}
+
+body #loading {
+	position: absolute;
+	z-index: 1050;
+	top: 0; right: 0; bottom: 0; left: 0;
+	display: block;
+	opacity: 0;
+	transition: opacity 0 linear 0.2s;
+	-webkit-transition: opacity 0 linear 0.2s;
+	top: -99999px;
+	height: 0;
+}
+
+body.loading #loading {
+	position: fixed;
+	top: 0;
+	height: inherit;
+	display: block;
+	opacity: 1;
+	-webkit-animation: overlay 1s ease-out 0.2s 1;
+}
+
+body #loading > div {
+	position: absolute;
+	margin: -130px -50px;
+	left: 50%;
+	top: 50%;
+}
+
+body.loading #loading > div {
+	-webkit-animation: spinner 0.3s ease-out 0.2s 1;
+}
+
+body #loading > div .spinner {
+	margin: 80px auto;
+	position: relative;
+	width: 100px;
+	height: 100px;
+	-webkit-border-radius: 50px;
+	   -moz-border-radius: 50px;
+			border-radius: 50px;
+	background: #fff;
+	text-align: center;
+	line-height: 100px;
+	color: black;
+	-webkit-box-shadow: 0 0 5px rgba(0,0,0,0.5);
+	-moz-box-shadow: 0 0 5px rgba(0,0,0,0.5);
+	box-shadow: 0 0 5px rgba(0,0,0,0.5);
+
+}
+
+body #loading > div .spinner:before {
+	content: "";
+	position: absolute;
+	  left: -20px;
+	   top: -20px;
+	bottom: -20px;
+	 right: -20px;
+	-webkit-border-radius: 70px;
+	   -moz-border-radius: 70px;
+			border-radius: 70px;
+	background: #000;
+	z-index: -2;
+}
+body #loading > div .spinner span {
+	position: absolute;
+	height: 0;
+	width: 0;
+	top: -20px;
+	left: -20px;
+	border-left: 70px solid rgba(0, 0, 0, 0);
+	border-right: 70px solid rgba(0, 0, 0, 0);
+	border-top: 70px solid rgba(0, 114, 230, 1);
+	border-bottom: 70px solid rgba(0, 0, 0, 0);	
+	-webkit-animation: ticktock 2s linear infinite;
+	border-radius: 70px;
+	overflow: visible;		
+	z-index: -1;
+}
+body #loading > div .spinner strong {
+	overflow: hidden;
+	display: block;
+	margin: 0 auto;
+}
+
+@-webkit-keyframes ticktock {
+	0%		{ -webkit-transform: rotate(0);	}
+	100%	{ -webkit-transform: rotate(360deg); }
+}
+
+@-webkit-keyframes overlay {
+	0%		{ opacity: 0; }
+	100%	{ opacity: 1; }
+}
+
+@-webkit-keyframes spinner {
+	0%		{ top: 0; }
+	100%	{ top: 50%; }
+}
+
+
+.btn, input, textarea, select, .uneditable-input {
+	font-weight: 300 !important;
+}
+
+select option.choose {
+	color: silver;
+}
+
+.navbar .brand {
+	padding-left: 50px;
+	padding-top: 13px;
+	
+	img {
+		position: absolute;
+		left: 0;
+		top: 0;
+		height: inherit;
+	}
+}
+
+.hero-unit {
+	background-image: url('../../public/media/admin-cover.png');
+	background-position: 50% 50%;
+	background-size: cover;
+	background-repeat: no-repeat;
+	h1 {
+		margin-bottom: 0.2em;
+		font-size: 2.2em;
+	}
+}
+
+.menu-toggle {
+	margin: -19px -19px 0 0;
+}
+
+.row-fluid > div {
+	-webkit-transition: width 0.5s ease;
+    -moz-transition: width 0.5s ease;
+    -o-transition: width 0.5s ease;
+    transition: width 0.5s ease;
+	
+	&.no-animation {
+		-webkit-transition: none;
+		-moz-transition: none;
+		-o-transition: none;
+		transition: none;
+	}
+}
+
+.chrome {
+	display: none;
+	min-height: 50px; 
+	
+	img {
+		margin-right: 10px;
+	}
+	
+	a {
+		font-weight: bold;
+	}
+}
+
+#no-chrome-warning {	
+	a {
+		color: white !important;
+	}
+}
+
+body.iframe .row-fluid > div {
+	-webkit-transition: none;
+	-moz-transition: none;
+	-o-transition: none;
+	transition: none;
+}
+
+.row-fluid .span0 {
+	width: 42px !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	overflow: hidden !important;	
+	
+	ul {
+		opacity: 0;
+		pointer-events: none;
+	}
+}
+
+.sidebar-nav {
+	white-space: nowrap;
+	margin-top: 110px;
+}
+
+.page-header h1 span.page {
+	color: silver;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 0.8em;
+}
+
+.ajde-footer {
+	font-size: 0.9em;
+}
+
+/** cosmo fixes **/
+.control-group.success .checkbox, .control-group.success .radio, .control-group.success input, .control-group.success select, .control-group.success textarea {
+	color: inherit;
+}
+
+/** autocomplete **/
+
+#node-search {
+	margin-bottom: 0;
+}
+#node-search.loading {
+	background-image: url('../../public/media/loading-cms.gif');
+	background-repeat: no-repeat;
+	background-position: 98% center;
+}
+#node-search-results {
+	
+}
+.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
+.autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+.autocomplete-selected { background: #F0F0F0; }
+.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }

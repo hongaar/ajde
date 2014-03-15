@@ -1,0 +1,65 @@
+/**
+ * Example styles for mobile layout
+ */
+ 
+h1, h2, h3, h4 {
+	font-size: 2em;
+	font-weight: normal;
+}
+
+h2 {
+	font-size: 1.5em;
+}
+
+h3, h4 {
+	font-weight: 700;
+	font-size: 1em;
+}
+
+p,ul,ol {
+	margin-bottom: 0.5em;
+}
+
+header {
+	padding: 10px 0;
+	margin-bottom: 10px;
+}
+
+header h4 {
+	font-size: 1em;
+	padding: 2px;
+	color: white;
+	
+	background-image: none;
+}
+
+nav li {
+	height: 2em;
+	display: inline-block;
+	padding: 0 2px;
+}
+
+nav a, nav a:active, nav a:visited {
+	font-size: 1.2em;
+	font-weight: 700;
+	text-decoration: none;
+	color: #9b0092;
+	border-bottom: 2px solid #f590ef;	
+}
+
+nav a:hover {
+	border-color: #9b0092;
+}
+
+dl.form.wide {
+	min-width: inherit;
+}
+
+dl.form.wide dt {
+	position: relative;
+	text-align: left;
+}
+
+dl.form.wide dd {
+	margin-left: 0;
+}

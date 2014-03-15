@@ -1,0 +1,49 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */
+
+/* @var $user UserModel */
+$user = $this->user; 
+$auth = $user->getPK() . ':' . $user->getCookieHash(false);
+
+?>
+
+<div class="container">
+    <div class="row-fluid">
+        <div class="span3 col-sm-3">
+            <div class="well sidebar-nav">
+                <a class="menu-toggle btn btn-normal pull-right"><i class="icon-resize-small"></i></a>
+                <ul class="nav nav-list">
+                    <li class="nav-header">User account</li>
+                    <li><a href="user/profile"><i class="icon-user"></i> Profile</a></li>
+                    <li><a href="user/social"><i class="icon-thumbs-up"></i> Social</a></li>
+                    <li><a href="user/settings"><i class="icon-cog"></i> Settings</a></li>
+                    <li><a href="user/app"><i class="icon-qrcode"></i> App</a></li>
+                    <li class="divider"></li>
+                    <li><a href="user/logoff"><i class="icon-share-alt"></i> Log off</a></li>
+                </ul>
+            </div><!--/.well -->
+        </div><!--/span-->
+        <div class="span9 col-sm-9">
+
+            <div class='page-header'>
+                <?php echo $this->user->displayGravatar(90, 'pull-left'); ?> &nbsp;
+                <h1> &nbsp; App</h1>
+            </div>
+
+            <div class="row-fluid">
+                <div class="span6 col-sm-6">
+                    <h2>Download our Android app</h2>
+                    <a href="javascript:alert('No known app for this project');">
+                        <img alt="Get it on Google Play"
+                            src="https://developer.android.com/images/brand/en_generic_rgb_wo_60.png" />
+                    </a>
+                </div>
+                <div class="span6 col-sm-6">
+                    <h2>Authenticate your app</h2>
+                    <input type="text" readonly value="<?php echo $auth; ?>" class="span12" />
+                    <p><?php echo $this->ACQrcode(array('text' => $auth)); ?></p>
+                </div>
+            </dl>
+        </div>
+    </div>
+</div>
+

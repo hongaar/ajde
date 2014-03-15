@@ -1,0 +1,126 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ ?>
+
+<div class="row-fluid">
+	<div class="span3">
+		<?php echo $this->includeModule('admin/cms:setupmenu'); ?>		
+	</div><!--/span-->
+	<div class="span9">
+		
+		<div class="page-header">
+			<h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
+		</div>		
+		
+<?php
+
+$options = new Ajde_Crud_Options();
+$options
+	->selectFields()
+		->selectField('name')
+			->setEmphasis(true)
+			->up()
+		->selectField('category')
+			->up()
+		->selectField('icon')
+			->setType('icon')
+			->setFunction('displayIcon')
+			->up()
+		->selectField('child_type')
+			->addShowOnlyWhen('children', 1)
+			->up()
+		->selectField('parent_type')
+			->addShowOnlyWhen('children', 1)
+			->up()
+		->selectField('sort')
+			->setType('sort')
+			->up()
+		->selectField('meta')
+			->setType('multiple')
+			->setEditRoute('admin/setup:meta.crud')
+			->setShowLabel(false)
+			->setCrossReferenceTable('nodetype_meta')
+			->addTableField('type')
+			->addSortField('sort')
+			->addPrefillField('target', 'node')
+			->setAdvancedFilter(array(
+				new Ajde_Filter_Where('target', Ajde_Filter::FILTER_EQUALS, 'node')
+			))
+			->up()
+
+        ->selectField('enabled')
+            ->setType('header')
+            ->up()
+		->selectField('title')				->setType('boolean')->setIsReadonly(true)->up()
+		->selectField('subtitle')			->setType('boolean')->up()
+		->selectField('content')			->setType('boolean')->up()
+		->selectField('summary')			->setType('boolean')->up()
+		->selectField('media')				->setType('boolean')->up()
+		->selectField('tag')				->setType('boolean')->up()
+		->selectField('additional_media')	->setType('boolean')->up()
+		->selectField('children')			->setType('boolean')->up()
+		->selectField('published')			->setType('boolean')->up()
+		->selectField('related_nodes')		->setType('boolean')->up()
+
+        ->selectField('required')
+            ->setType('header')
+            ->up()
+        ->selectField('required_title')				->addShowOnlyWhen('title', 1)->setType('boolean')->setIsReadonly(true)->up()
+        ->selectField('required_subtitle')			->addShowOnlyWhen('subtitle', 1)->setType('boolean')->up()
+        ->selectField('required_content')			->addShowOnlyWhen('content', 1)->setType('boolean')->up()
+        ->selectField('required_summary')			->addShowOnlyWhen('summary', 1)->setType('boolean')->up()
+        ->selectField('required_media')				->addShowOnlyWhen('media', 1)->setType('boolean')->up()
+        ->selectField('required_tag')				->addShowOnlyWhen('tag', 1)->setType('boolean')->up()
+        ->selectField('required_additional_media')	->addShowOnlyWhen('additional_media', 1)->setType('boolean')->up()
+        ->selectField('required_children')			->setLabel('Parent item')->addShowOnlyWhen('children', 1)->setType('boolean')->up()
+        ->selectField('required_related_nodes')		->addShowOnlyWhen('related_nodes', 1)->setType('boolean')->up()
+		->up()
+	->selectList()
+		->selectButtons()
+			->setNew(true)
+			->setEdit(true)
+//			->addItemButton('meta', 'meta')
+			->up()
+		->setMain('name')
+		->setShow(array('icon', 'name', 'category', 'sort'))
+		->selectView()
+			->setOrderBy('sort')
+			->up()
+		->up()
+	->selectEdit()
+		->selectLayout()
+			->addRow()
+				->addColumn()
+                    ->setSpan(8)
+					->addBlock()
+						->setClass('primary narrow')
+						->setShow(array('name'))
+						->up()					
+					->addBlock()
+						->setShow(array('category', 'icon', 'child_type', 'parent_type'))
+						->up()
+					->addBlock()
+						->setShow(array('meta'))
+						->setTitle('Meta fields')
+						->up()
+					->up()
+				->addColumn()
+					->setSpan(4)
+					->addBlock()
+						->setClass('well narrow')
+						->setShow(array('enabled', 'title', 'subtitle', 'content', 'summary', 'media', 'tag', 'additional_media', 'children', 'published', 'related_nodes'))
+                        ->up()
+                    ->addBlock()
+                        ->setClass('well narrow')
+                        ->setShow(array('required', 'required_title', 'required_subtitle', 'required_content', 'required_summary', 'required_media', 'required_tag', 'required_additional_media', 'required_children', 'required_related_nodes'))
+
+
+	->finished();
+
+$crud = $this->ACCrudList('nodetype', $options);
+
+echo $crud->output();
+
+?>
+
+		
+	</div><!--/span-->
+</div><!--/row-->

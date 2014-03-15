@@ -1,0 +1,102 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+
+// Fancybox
+$this->requireJsPublic('core/fancybox/jquery.fancybox.pack.js');
+$this->requireCssPublic('core/fancybox/jquery.fancybox.css');
+
+// Fancybox thumb helper
+$this->requireJsPublic('core/fancybox/helpers/jquery.fancybox-thumbs.js');
+$this->requireCssPublic('core/fancybox/helpers/jquery.fancybox-thumbs.css');
+
+// Lazyload
+$this->requireJsPublic('core/jquery.lazyload.min.js');
+
+/* @var $field Ajde_Crud_Field_File */
+$field = $this->field;
+
+$typeField = $field->getTypeField();
+$thumbField = $field->getThumbField();
+$filenameField = $field->hasFilenameField() ? $field->getFilenameField() : '';
+
+$crud = $field->getCrud();
+
+?>
+
+<div class='media'
+     data-typefield='<?php echo _e($typeField); ?>'
+     data-thumbfield='<?php echo _e($thumbField); ?>'
+	 data-filenamefield='<?php echo _e($filenameField); ?>'
+	 data-savedir='<?php echo _e($field->getSaveDir()); ?>'
+     >
+	
+	<div class='hidden'>
+		<input
+			<?php echo $field->getHtmlAttributes(); ?>
+		/>
+    </div>
+	
+	<div class='uploadControls <?php if ($field->getValue()) { echo 'hidden'; } ?>'>
+    
+		<?php 
+		$options = array(
+			'saveDir' => $field->getSaveDir(),
+			'extensions' => $field->getExtensions(),
+			'multiple' => $field->getMultiple(),
+			'overwrite' => $field->getOverwrite()
+		);
+		echo $this->ACAjaxUpload('_upload', $options);
+		?>
+
+		<div class='embed'>        
+			<input type='text' name='_embed' class='span12' placeholder='or paste embed code or URL here' />        
+		</div>
+    
+	</div>
+	
+    <div class='preview'>		
+		<?php if ($field->getValue()) {
+			
+			$extension = pathinfo($field->getValue(), PATHINFO_EXTENSION);
+			$type = $crud->getField($typeField)->getValue();
+			?>
+
+			<div class='btn-group pointerControls'>			
+				<?php if ($type === 'image') { ?>
+					<a class='imagePreview preview btn' title='<?php echo _e($field->getValue()); ?>' href='<?php echo $field->getSaveDir() . $field->getValue(); ?>' target='_blank'>
+						<img class='icon' src='<?php echo Ajde_Resource_FileIcon::_($extension); ?> ' />
+						<?php echo $field->getValue(); ?>
+					</a>
+				<?php } else if ($type === 'file') { ?>
+					<a class='filePreview preview btn' href='<?php echo $field->getSaveDir() . $field->getValue(); ?>' target='_blank'>
+						<img class='icon' src='<?php echo Ajde_Resource_FileIcon::_($extension); ?> ' />
+						<?php echo $field->getValue(); ?>
+					</a>
+				<?php } else { ?>
+					<a class='embedPreview preview btn' href='javascript:void(null);'>
+						embedded source
+					</a>
+				<?php } ?>				
+				<a href='javascript:void(null);' class='replaceMedia btn btn-warning'>replace</a>
+			</div>
+		
+			<?php
+		
+			if ($type === 'image') {
+				$thumbDim = $field->hasThumbDim() ? $field->getThumbDim() : array('width' => 750); ?>
+				<a class='imagePreview img' title='<?php echo _e($field->getValue()); ?>' href='<?php echo $field->getSaveDir() . $field->getValue(); ?>' target='_blank'>
+					<?php echo $this->ACImage(array(
+							'filename' => $field->getSaveDir() . $field->getValue(),
+							'width' => $thumbDim['width']
+						)); ?>
+				</a>
+			<?php } else if ($type === 'file') { 				
+			} else {
+				echo $field->getValue();
+			}
+		
+		} ?>
+
+	</div>
+        
+</div>

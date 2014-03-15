@@ -1,0 +1,57 @@
+<?php
+/* @var $crud Ajde_Crud */
+$crud = $this->crud;
+$editOptions = $crud->getOptions('edit');
+?>
+
+<?php echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudEdit'); ?>
+	
+	<dl class='crudEdit'>
+		
+		<?php
+		$fieldsShown = array();		
+		$fieldsToShow = $editOptions['show'];
+		
+		if ($fieldsToShow == '*' || !$fieldsToShow) {
+			$fieldsToShow = $crud->getFieldNames();
+		}
+		
+		foreach($fieldsToShow as $fieldName) {
+			$fieldsShown[] = $fieldName;
+			$field = $crud->getField($fieldName, false);
+			if (!$field) {
+				// Dynamically create a text field and fill with value from Model (if available)
+				$field = $crud->createField($crud->getFieldOptions($fieldName, array(
+					'name' => $fieldName,
+					'type' => 'text',
+					'length' => 255,
+					'default' => '',
+					'label' => ucfirst($fieldName),
+					'isRequired' => false,
+					'isPK' => false,				
+					'isAutoIncrement' => false,
+					'isAutoUpdate' => false,
+					'value' => $crud->getModel()->{"has".ucfirst($fieldName)}() ? $crud->getModel()->{"get".ucfirst($fieldName)}() : false
+				)));
+			}
+			
+			echo $field->getHtml();			
+		} ?>
+		
+		<div class='hidden'>
+		<?php foreach($crud->getFields() as $field) {
+			if (!in_array($field->getName(), $fieldsShown)) {
+				echo $field->getInput();
+			}
+		} ?>
+		</div>
+		
+		<dd class='toolbar'>
+			<button type="submit" class="button save">Save &amp; back</button>
+			<button type="submit" class="button apply">Apply</button>
+			<a href="javascript:void(null);" class='button cancel'>Cancel</a>
+		</dd>
+		
+		<div class='clearfix'></div>
+	</dl>
+</form>

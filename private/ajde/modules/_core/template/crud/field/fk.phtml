@@ -1,0 +1,85 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+
+/* @var $field Ajde_Crud_Field_Fk */
+$field = $this->field;
+
+if ($field->getValue()) {
+	if ($field->getValue() instanceof Ajde_Model) {
+		$pk = $field->getValue()->getPK();
+	} else {
+		$pk = $field->getValue();
+	}
+} else {
+	$pk = null;
+}
+
+if ($field->has('usePopupSelector') && $field->get('usePopupSelector')) { ?>
+
+	<select name="<?php echo $field->getName(); ?>" class="hide">
+		<option value=''></option>
+		<?php foreach($field->getValues() as $key => $option) { ?>
+			<option value='<?php echo $key; ?>'
+				<?php
+				if ($key == $pk) { echo "selected='selected'"; }
+				?>
+				><?php echo $option; ?></option>
+		<?php } ?>
+	</select>
+
+	<?php
+	
+	$this->requireJs('crud/field/picker');
+	$this->requireCss('crud/field/picker');
+	
+	$pickerMultiple = 0;
+	$pickerType = 'fk';
+	include 'picker.phtml';
+
+	?>
+
+<?php } elseif ($field->useRadio()) { ?>
+	
+	<fieldset class='picker-container'>
+		<?php
+		$counter = 0;
+		if (!$field->getIsRequired()) { 
+			$counter++; ?>
+			<input type="radio" <?php echo $field->getHtmlAttributes(); ?> id="radio_<?php echo $field->getName(); ?>" value="" 
+				<?php if (!$pk) { echo "checked='checked'"; } ?> 
+			/> 	
+			<label class="radio" for="radio_<?php echo $field->getName(); ?>"><span class="gray">None</span></label>
+		<?php } ?>		
+
+		<?php foreach($field->getValues() as $key => $option) {
+			$counter++; ?>
+			<input type="radio" <?php echo $field->getHtmlAttributes(); ?> id="radio_<?php echo $field->getName(); ?>_<?php echo $counter; ?>" value='<?php echo $key; ?>' <?php 
+				if ($key == $pk) { echo "checked='checked'"; }
+				elseif ($field->hasReadonly() && $field->getReadonly() === true) { echo ' disabled="disabled" '; } ?>				
+			/>
+			<label class="radio" for="radio_<?php echo $field->getName(); ?>_<?php echo $counter; ?>">
+				<?php echo $option; ?>
+			</label>
+		<?php } ?>
+	</fieldset>
+
+<?php } else { ?>
+
+	<select
+		data-placeholder="Choose an option"
+		<?php echo $field->getHtmlAttributes(); ?>	
+	>
+		<?php if (!$field->getIsRequired() === true) { ?>
+			<option value=''></option>
+		<?php } ?>
+		<?php foreach($field->getValues() as $key => $option) { ?>
+			<option value='<?php echo $key; ?>'
+				<?php
+				if ($key == $pk) { echo "selected='selected'"; }
+				elseif ($field->hasReadonly() && $field->getReadonly() === true) { echo ' disabled="disabled" '; }
+				?>
+				><?php echo $option; ?></option>
+		<?php } ?>
+	</select>
+
+<?php } ?>

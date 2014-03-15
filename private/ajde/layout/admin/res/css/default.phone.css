@@ -1,0 +1,51 @@
+/*#!less*/
+
+.row-fluid .span0 {
+	height: 30px !important;
+}
+
+.sidebar-nav {
+	margin-top: auto ;
+}
+
+table.crud.list {
+	
+	td, th {
+		display: block;
+		padding: 2px;
+	}
+	
+	th {
+		
+	}
+	
+}
+
+/**** CRUD GRID VIEW ****/	
+table.crud.grid {
+	display: block;
+
+	thead {
+		tr {			
+			&:first-child {
+				display: none;
+			}
+
+			th {
+				width: 100% !important;
+
+				&:first-child {
+					width: 0 !important;
+				}
+			}
+		}
+	}
+
+	tbody {
+		margin-left: 0 !important;
+
+		tr {				
+			width: 50% !important;
+		}
+	}	
+}

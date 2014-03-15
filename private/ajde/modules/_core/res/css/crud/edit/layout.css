@@ -1,0 +1,111 @@
+div.crudLayout div.row {
+	width: 100%;
+}
+
+div.crudLayout dl.crudEdit {
+	margin: 5px 5px 10px 5px;
+	padding: 0 10px 0 0;
+}
+
+div.crudLayout dl.crudEdit.toolbar {
+	padding-right: 0;
+}
+
+div.crudLayout dl.crudEdit.sidebar {
+	border: 2px solid #eee;	
+	background-color: #F7F7F7;
+	padding: 0 10px;
+}
+
+div.crudLayout dl.crudEdit dt {
+	display: block;
+	float: none;
+	clear: both;
+	overflow: hidden;	
+	width: auto;
+	min-height: available;
+	
+	text-align: left;
+	padding: 10px 0 0 0;
+	margin: 0;
+	font-weight: bold;
+}
+
+div.crudLayout dl.crudEdit.table dt {
+	display: table-cell;	
+	text-align: right;
+	float: left;
+	clear: left;
+	overflow: hidden;	
+	width: 150px;
+	padding: 8px 10px 0 0;
+}
+
+div.crudLayout dl.crudEdit dt.title {
+	font-size: 1.5em;
+	font-weight: normal;
+	width: auto;
+}
+
+div.crudLayout dl.crudEdit dt.required {
+	color: #e43c3c;
+	font-weight: bold;
+}
+
+div.crudLayout dl.crudEdit dd {
+	position: relative;
+	float: none;	
+	width: auto;
+	
+	border-top: none;
+	padding: 0 0 10px 0;
+	margin: 0;
+}
+
+div.crudLayout dl.crudEdit.table dd {
+	float: left;
+	padding: 6px 0 0 0;
+}
+
+div.crudLayout dl.crudEdit dd input[type=text] {
+	width: 100%;
+}
+
+div.crudLayout dl.crudEdit dd textarea {
+	width: 100%;
+}
+
+div.crudLayout dl.crudEdit.table dd span.help {
+	margin: 3px 0 0 10px;
+	position: relative;
+	right: auto;
+	top: auto;
+	z-index: inherit;
+}
+
+/* VALIDATION */
+
+div.crudLayout dl.crudEdit dd.validation_error {
+	background-color: transparent;
+}
+
+div.crudLayout dl.crudEdit dd.validation_error div.validation_message {
+	background-color: #e43c3c;
+	color: white;
+	padding: 5px 0 5px 5px;
+	width: 100%;
+	text-transform: uppercase;
+	font-size: 0.8em;
+	font-weight: bold;
+}
+
+/* FILE BROWSER */
+
+div.crudLayout dl.sidebar div.filebrowser {
+	position: relative;
+}
+
+div.crudLayout dl.sidebar div.browser {
+	position: absolute;
+	right: 0;
+}

@@ -1,1 +1,14 @@
-.idea/*
+# ignore windows files
+Thumbs.db
+desktop.ini
+
+# ignore IDE files
+nbproject/
+*.sublime-project
+*.sublime-workspace
+.buildpath
+.project
+.settings
+.idea
+_intellij_*
+PhpStorm-*

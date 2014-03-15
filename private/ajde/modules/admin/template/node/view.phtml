@@ -1,0 +1,40 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */
+
+$options = NodeController::getNodeOptions();
+
+$crud = $this->ACCrudList('node', $options);
+
+// join in some info to use later
+
+if (!Ajde::app()->getRequest()->has('new') && !Ajde::app()->getRequest()->has('edit')) {
+	$collection = $crud->getCollection();
+	
+	// add nodetype info
+	/* @var $collection NodeCollection */
+	$collection->joinNodetype();
+	$collection->getQuery()->addSelect('nodetype.name AS nodetype_name');		
+	$collection->getQuery()->addSelect('nodetype.icon AS nodetype_icon');
+}
+
+// allow crud output to render before we render MainFilter
+$crudOutput = $crud->output();
+
+?>
+
+<div class="row-fluid">
+	<div class="span3 hideInIframe">
+		<?php echo $this->includeModule('admin/cms:menu'); ?>		
+	</div><!--/span-->
+	<div class="span9 expandInIframe">
+		
+		<div class="page-header">
+			<h1>
+				<!--<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>-->
+				<?php echo $this->ACCrudMainFilterBadge($crud, true); ?>
+			</h1>
+		</div>		
+		
+		<?php echo $crudOutput; ?>
+		
+	</div><!--/span-->
+</div><!--/row-->

@@ -1,0 +1,80 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */
+
+$options = new Ajde_Crud_Options();
+$options
+	->selectFields()
+		->selectField('name')
+			->setEmphasis(true)
+			->up()		
+		->selectField('type')
+			->setShowLabel(false)
+			->up()
+		->selectField('target')
+//			->setValue('node')
+			->up()
+		->up()
+	->selectList()
+		->selectButtons()
+			->setNew(true)
+			->setEdit(true)
+			->up()
+		->setMain('name')
+		->setShow(array('name', 'target', 'type'))
+		->selectView()
+//			->addFilter('target', 'node')
+//			->setDisableFilter(true)
+			->up()
+		->up()
+	->selectEdit()
+		->selectLayout()
+			->addRow()
+				->addColumn()
+                    ->setSpan(8)
+					->addBlock()
+						->setShow(array('name', 'target'))
+						->up()
+					->addBlock()
+						->setTitle('Options')
+						->setShow(array())
+						->up()
+					->up()
+				->addColumn()
+                    ->setSpan(4)
+					->addBlock()
+						->setClass('sidebar well')
+						->setTitle('Field type')
+						->setShow(array('type'))
+						->up()
+					
+	->finished();
+
+/* @var $decorator Ajde_Crud_Cms_Meta_Decorator */
+$decorator = $this->decorator;
+$decorator->setActiveBlock(1);
+$decorator->setOptions($options);
+$decorator->decorateOptions();
+
+//var_dump($options->_stack['fields']);
+//var_dump($options->_stack['edit']['layout']['rows'][0]['columns'][0]['blocks'][1]['show']);
+
+$crud = $this->ACCrudList('meta', $options);
+//$crud->setSessionName('meta.node');
+	
+?>
+
+<div class="row-fluid">
+	<div class="span3 hideInIframe">
+		<?php echo $this->includeModule('admin/cms:setupmenu'); ?>		
+	</div><!--/span-->
+	<div class="span9 expandInIframe">
+		
+		<div class="page-header">
+			<h1>
+				<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
+			</h1>
+		</div>	
+
+		<?php echo $crud->output(); ?>
+		
+	</div><!--/span-->
+</div><!--/row-->

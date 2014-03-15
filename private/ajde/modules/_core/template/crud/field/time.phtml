@@ -1,0 +1,19 @@
+<?php $field = $this->field; ?>
+
+<?php if ($field->getIsAutoUpdate() === true) {
+	if ($field->getValue() === 'CURRENT_TIMESTAMP') {
+		echo '';
+	} else {
+		echo $field->getValue();
+	}
+	$field->setValue(null); ?>
+	<div class='visuallyhidden'>
+		<input
+			<?php echo $field->getHtmlAttributes(); ?>
+		/>
+	</div>
+<?php } else { ?>
+	<input
+		<?php echo $field->getHtmlAttributes(); ?>
+	/>
+<?php } ?>

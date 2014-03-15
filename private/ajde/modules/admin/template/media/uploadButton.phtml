@@ -1,0 +1,11 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ ?>
+
+<?php
+$options = array(
+	'saveDir' => $this->uploaddir,
+	'extensions' => $this->extensions,
+	'multiple' => true,
+	'overwrite' => false
+);
+echo $this->ACAjaxUpload('files', $options, 'uploadButton', 'uploadButton');
+?>

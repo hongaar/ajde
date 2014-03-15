@@ -1,0 +1,14 @@
+.jqtree-toggler:hover {
+	text-decoration: none;
+}
+
+li.jqtree-common:hover .jqtree-title {
+	text-decoration: underline;
+}
+
+.jqtree-tree .jqtree-loading > div .jqtree-title:after {
+	content: url(../../public/media/loading-cms.gif);
+	margin-left: 8px;
+	margin-top: 3px;
+	position: absolute;
+}

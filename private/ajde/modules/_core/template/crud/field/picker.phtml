@@ -1,0 +1,71 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+$this->requireJsPublic('core/fancybox/jquery.fancybox.pack.js');
+$this->requireCssPublic('core/fancybox/jquery.fancybox.css');
+
+/* @var $field Ajde_Crud_Field_Fk */
+$field = $this->field;
+
+/* @var $value Ajde_Model */
+$value = $field->getValue();
+	
+$useImage = $field->has('useImage') && $field->get('useImage') === true;
+$listRoute = ($field->has('listRoute') ? $field->get('listRoute') : false);
+$listRoute = $field->has('listRouteFunction') ? $field->getCrud()->getModel()->{$field->get('listRouteFunction')}() : $listRoute;
+
+?>
+
+<div class='picker <?php echo $pickerType; ?>'
+	data-list-route='<?php echo $listRoute; ?>'
+	data-list-multiple='<?php echo $pickerMultiple; ?>'
+	data-field='<?php echo $field->getName(); ?>'
+	data-use-image='<?php echo $useImage ? '1' : '0'; ?>'
+>
+	<div class="controls-row simple-selector">
+		<?php if ($field->hasReadonly() && $field->getReadonly() === true) {} else { ?>
+			<a href='javascript:void(null);' class='span2 btn choose'><i class='icon-folder-open icon-white'></i></a>
+		<?php } ?>
+		<div class='input
+			<?php if ($useImage && $value instanceof Ajde_Model && $value->hasLoaded()) { echo 'with-image'; } ?>'>
+			<?php			
+			if ($useImage) {
+				if ($value instanceof Ajde_Model && $value->hasLoaded()) {
+					$extraField = current($field->getTableFields());		
+					$filename = $field->getValue()->get($extraField['name']);
+					
+					$extension = pathinfo($filename, PATHINFO_EXTENSION);
+					if ($isImage = in_array(strtolower($extension), array('jpg', 'jpeg', 'png', 'gif'))) {
+						$thumbDim = $field->hasThumbDim() ? $field->getThumbDim() : array('width' => 75, 'height' => 75); ?>
+						<a class='imagePreview img' title='<?php echo _e($filename); ?>' href='<?php echo $extraField['saveDir'] . $filename; ?>' target='_blank'>
+							<?php echo $this->ACImage(array(
+									'filename' => $extraField['saveDir'] . $filename,
+									'width' => $thumbDim['width'],
+									'height' => $thumbDim['height'],
+									'crop' => true
+								)); ?>
+						</a>
+					<?php } else { ?>
+						<img class='icon' src='<?php echo Ajde_Resource_FileIcon::_($extension); ?>' />
+						<a class='filePreview preview' href='<?php echo $extraField['saveDir'] . $filename; ?>' target='_blank'><?php echo $filename; ?></a>
+					<?php } ?>
+				<?php } else { ?>
+					<input type="text" readonly="readonly" value="Please choose one" />
+				<?php } ?>
+			<?php } else { ?>
+				<input type="text" readonly="readonly" value="<?php 	
+					if ($value instanceof Ajde_Model && $value->hasLoaded()) {
+						echo _e($field->getValue()->get($field->getValue()->getDisplayField()));
+					} else if ($value instanceof Ajde_Model || empty($value)) {
+						echo 'Please choose one';
+					} else {
+						echo _e($field->getValue());
+					}
+					?>" />
+			<?php } ?>			
+		</div>        
+		<?php
+		if ($field->hasIsRequired() && $field->getIsRequired() === false) { ?>
+			<a href='javascript:void(null);' class='setnull'><i class='icon-remove'></i></a>
+		<?php } ?>   
+	</div>
+</div>

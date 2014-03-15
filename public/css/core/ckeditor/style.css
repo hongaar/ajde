@@ -1,0 +1,41 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:300,500,700);
+
+body {
+	margin: 4px 6px;
+}
+
+p, h1, h2, h3, ul, ol {
+	margin-top: 0;
+}
+
+body, .cke_editable {
+	font-family: "Roboto",Calibri,Candara,Arial,sans-serif;
+	font-size: 14px;
+	font-weight: 300;
+}
+
+a.btn-primary {
+	display: inline-block;
+	background-color: #eee;
+	color: gray;
+	padding: 2px 5px;
+}
+
+a.btn-default {
+    display: inline-block;
+    border: 1px solid #eee;
+    color: gray;
+    padding: 1px 4px;
+}
+
+.red {
+    color: #ec1c24;
+}
+
+.gray {
+    color: gray;
+}
+
+.silver {
+    color: silver;
+}

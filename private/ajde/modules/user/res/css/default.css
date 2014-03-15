@@ -1,0 +1,19 @@
+.status {
+	display: inline-block;
+	background-color: #eee;
+	border: 1px solid silver;
+	padding: 5px;
+	margin: 0 0 20px 0;
+}
+
+.status.error {
+	background-color: #FF3333;
+	color: white;
+}
+
+.btn-block {
+    padding-left: 12px !important;
+}
+.fa.pull-left {
+    margin-top: 3px;
+}

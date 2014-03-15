@@ -1,0 +1,205 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+$this->requireJsFirst('component/shortcut');
+$this->requireJsLibrary('jquery', '1.7');
+$expand = false;
+?>
+
+<div id="ajdeDebugger" <?php if (isset($this->warn)) { echo 'class="warning"'; } ?>>
+	<div id="ajdeDebuggerHeader"></div>
+	<div id="ajdeDebuggerContent">
+		<h4><img src="<?php echo MEDIA_DIR; ?>ajde-small.png" /> web console</h4>
+		<?php if (isset($this->warn)) { ?>
+			<?php foreach($this->warn as $message) { ?>
+				<div class="warn">
+					<?php echo $message; ?>
+				</div>
+			<?php } ?>
+		<?php } ?>
+		<dl>
+			<dt>1. Variables</dt>
+			<?php if (isset($this->dump)) { ?>
+				<dd class='summary'><a href='javascript:void(0)' onclick='$("#ajdeDebuggerDump div").slideToggle("fast");'>toggle all</a></dd>
+				<dd id='ajdeDebuggerDump' class='details' style='display: block'>
+					<table border=1>
+						<?php foreach($this->dump as $source => $var) {
+							if ($var[1] === true) { $expand = true; } ?>
+						<tr>
+							<td>
+								<a href='javascript:void(0)' onclick='$("#dump<?php echo md5($source); ?>").slideToggle("fast");'><?php echo $source; ?></a>
+								<div id='dump<?php echo md5($source); ?>' <?php if ($var[1] === false) { ?>style='display: none;'<?php } ?>>
+									<?php var_dump($var[0]); ?>
+								</div>
+							</td>
+						</tr>
+						<?php } ?>
+					</table>			
+				</dd>
+			<?php } else { ?>
+				<dd class='summary'>(none)</dd>
+				<dd id='ajdeDebuggerDump' class='details' style='display: none'></dd>
+			<?php } ?>
+			
+			<dt>2. Request</dt>
+			<dd class='summary'>
+				<a href='javascript:void(0)' onclick='$("#ajdeDebuggerRequest").slideToggle("fast");'>
+					<?php if (!$this->request->get('_route')) {
+						echo './ [root]';
+					} else {
+						echo './' . $this->request->get('_route');
+					} ?>
+				</a>
+			</dd>
+			<dd id='ajdeDebuggerRequest' class='details'>
+				<table border=1>
+					<tr>
+						<td>Calculated: <a href='<?php echo $this->request->getRoute(); ?>'><?php echo $this->request->getRoute(); ?></a></td>
+					</tr>
+					<tr>
+						<td>
+							<?php
+								// XSS prevention
+								$vars = $this->request->_data;
+								if (!function_exists('safeVars')) {
+									function safeVars(&$item, $key) {
+										if (is_array($item)) {
+											array_walk($item, "safeVars");
+										} else {
+											$item = htmlspecialchars($item);
+										}
+									}
+								}
+								array_walk($vars, "safeVars");
+								var_dump($vars);
+							?></td>
+					</tr>				
+				</table>			
+			</dd>
+					
+			<dt>3. Stage</dt>
+			<dd class='summary'><?php echo $this->configstage; ?></dd>		
+			
+			<dt>4. Language</dt>
+			<dd class='summary'><?php echo $this->lang; ?></dd>		
+			
+			<dt>5. Timer</dt>
+			<dd class='summary'>
+				<?php
+		        $table = '<table border=1><tr><th>Description</th><th colspan=\'2\'>Time (ms)</th></tr>';
+				
+				$tmpTimer = array(0);
+				$childrenTime = array();
+				$i = count($this->timers);
+				foreach (array_reverse($this->timers) as $entry) {
+					$i--;
+					if ($entry['level'] > 0) {
+						$orig = isset($tmpTimer[$entry['level'] - 1]) ? $tmpTimer[$entry['level'] - 1] : 0;
+						$tmpTimer[$entry['level'] - 1] = $orig + $entry['total']; 
+					}
+					if (array_key_exists($entry['level'], $tmpTimer)) {
+						$childrenTime[$i] = $tmpTimer[$entry['level']];
+						unset($tmpTimer[$entry['level']]);
+					}
+				}  
+		        foreach($this->timers as $key => $entry) {
+		        	if ($entry['level'] >= 0) {
+		        		$table .= '<tr><td>';
+		        		if ($entry['level'] > 0) {
+		        			$table .= str_repeat('&nbsp;&nbsp;&nbsp;', $entry['level']) . '<span style="color: gray;">└</span>&nbsp;';
+						}
+		            	$table .= $entry['description'] . '</td><td style=\'text-align: right;\'>';
+						if (array_key_exists($key, $childrenTime)) {
+							$table .= ((int) $entry['total'] - (int) $childrenTime[$key]);
+						} else {
+							$table .= $entry['total'];
+						}
+						$table .= '</td><td style=\'color: gray; text-align: right;\'>' . $entry['total'];
+		            	$table .= '</td></tr>';
+					}  
+		        }          
+		        $table .= '</table>';
+				echo '<a href=\'javascript:void(0)\' onclick=\'$("#ajdeDebuggerTimers").slideToggle("fast");\'>'. $this->timers[0]['total'] . ' ms</a>';
+				?>
+			</dd>
+			<dd id='ajdeDebuggerTimers' class='details'>
+				<?php echo $table; ?>		
+			</dd>
+			
+			<dt>6. Session</dt>
+			<dd class='summary'>
+				<a href='javascript:void(0)' onclick='$("#ajdeDebuggerSession").slideToggle("fast");'>
+					<?php echo count($this->session); ?> key(s)
+				</a>
+			</dd>
+			<dd id='ajdeDebuggerSession' class='details'>
+				<table border=1>
+					<tr>
+						<td align="right">
+							<a href='javascript:void(0)' onclick='$("#ajdeDebuggerSession div").slideToggle("fast");'>toggle all</a>
+						</td>
+					</tr>
+					<?php
+					$i = 0; 
+					foreach($this->session as $key => $val) {
+						$i++;
+						?>
+					<tr>
+						<td>
+							<?php echo $i; ?>. <a href='javascript:void(0)' onclick='$("#session<?php echo md5($key); ?>").slideToggle("fast");'><?php echo $key; ?></a>
+							<div id='session<?php echo md5($key); ?>' style='display: none;'>
+								<?php var_dump($val); ?>
+							</div>
+						</td>
+					</tr>
+					<?php } ?>
+				</table>			
+			</dd>
+			
+			<?php if (isset($this->acl)) { ?>
+			<dt>7. ACL</dt>
+			<dd class='summary'>		
+				<a href='javascript:void(0)' onclick='$("#ajdeDebuggerACL").slideToggle("fast");'>
+					Access <?php echo is_null(Ajde_Acl::$access) ? 'undetermined' : (Ajde_Acl::$access ? 'granted' : 'denied'); ?>
+				</a>
+			</dd>
+			<dd id='ajdeDebuggerACL' class='details'>
+				<?php
+				foreach($this->acl as $log) {  
+		            echo $log . '<br/>';
+		        }
+				?>	
+			</dd>
+			<?php } ?>
+			
+			<?php if (isset($this->database)) { ?>
+			<dt>8. Database</dt>
+			<dd class='summary'>		
+				<?php
+				$totalTime = 0;
+		        $table = '<table border=1><tr><th>Query</th><!--<th>Cache</th>--><th>Time (ms)</th></tr>';  
+		        foreach($this->database as $entry) {  
+		            $totalTime += $entry['time'];  
+		            $table .= '<tr><td>' . $entry['query'] . '</td>';
+					//$table .= '<td>' . ($entry['cache'] ? 'yes' : 'no') . '</td></tr>';
+		            $table .= '<td style=\'text-align: right;\'>' . $entry['time'] . '</td></tr>';  
+		        }          
+		        $table .= '</table>';
+				echo '<a href=\'javascript:void(0)\' onclick=\'$("#ajdeDebuggerQueries").slideToggle("fast");\'>' . count($this->database) . ' queries (' . $totalTime . ' ms)</a>';
+				?>
+			</dd>
+			<dd id='ajdeDebuggerQueries' class='details'>
+				<?php echo $table; ?>		
+			</dd>
+			<?php } ?>
+			
+		</dl>
+	</div>
+</div>
+<?php 
+if ($expand === true) { ?>
+<script>
+	$(document).ready(function() {
+		AC.Debugger.showDebugger(true);
+	});
+</script>
+<?php } ?>
