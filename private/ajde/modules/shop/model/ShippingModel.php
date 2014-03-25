@@ -10,7 +10,7 @@ class ShippingModel extends Ajde_Shop_Shipping
 		$this->addMethod(new TntModel());
 		
 		switch (strtolower($country)) {
-			case 'netherlands':
+			case 'the netherlands':
 				$this->addMethod(new PickupModel());				
 		}
 	}

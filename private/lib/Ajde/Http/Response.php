@@ -72,7 +72,7 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 
 	public static function setResponseType($code)
 	{
-		header("HTTP/1.0 ".$code." ".self::getResponseType($code));
+		header("HTTP/1.1 ".$code." ".self::getResponseType($code));
 		ob_get_clean();
 		header("Status: ".$code." ".self::getResponseType($code));
 	}

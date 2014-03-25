@@ -81,7 +81,11 @@ class Ajde_Db extends Ajde_Object_Singleton
 		$total = $success = 0;
 		foreach ($commands as $command){
 			if (trim($command)) {
-				$success += ($this->getConnection()->query($command) === false ? 0 : 1);
+                try {
+				    $success += ($this->getConnection()->query($command) === false ? 0 : 1);
+                } catch (Exception $e) {
+                    echo $e->getMessage() . "<br/>";
+                }
 				$total += 1;
 			}
 		}
