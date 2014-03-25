@@ -742,6 +742,14 @@ class NodeModel extends Ajde_Model_With_AclI18n
 		}
 		return '';
 	}
+
+    public function getMediaFilename($width = null, $height = null, $crop = null, $class = null, $attributes = array())
+    {
+        if ($this->hasNotEmpty('media')) {
+            return $this->getMedia()->getFilename($width, $height, $crop);
+        }
+        return '';
+    }
 	
 	public function getMediaAbsoluteUrl()
 	{

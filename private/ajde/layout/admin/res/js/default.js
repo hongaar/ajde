@@ -43,11 +43,13 @@
 				$('#main .row-fluid > div:eq(0)').removeClass('span3').addClass('span0');
 				$('#main .row-fluid > div:eq(1)').removeClass('span9').addClass('span11');
 				$('.menu-offset').removeClass('offset3').addClass('offset05');
+                $('.form-actions.fixed').addClass('no-offset');
 			} else {
 				$.cookie('collapsed-menu', 0);
 				$('#main .row-fluid > div:eq(0)').removeClass('span0 no-animation').addClass('span3');
 				$('#main .row-fluid > div:eq(1)').removeClass('span11 no-animation').addClass('span9');
 				$('.menu-offset').removeClass('offset05').addClass('offset3');
+                $('.form-actions.fixed').removeClass('no-offset');
 			}
 		});
 		if ($('.menu-toggle').length) {

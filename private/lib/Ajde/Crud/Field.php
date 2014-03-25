@@ -194,7 +194,7 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
         
         $text = '';
         foreach ($attributes as $k => $v) {
-			if ($v) {
+			if (strlen($v)) {
 				$text .= $k . '="' . $v . '" ';
 			}
         }

@@ -66,7 +66,11 @@ AC.Crud.Edit.Text = function() {
 			]);
 
 			CKEDITOR.config.resize_enabled = false;
+
+            // Remove all formatting when pasting text copied from websites or Microsoft Word
 			CKEDITOR.config.forcePasteAsPlainText = true;
+            CKEDITOR.config.pasteFromWordRemoveFontStyles = true;
+            CKEDITOR.config.pasteFromWordRemoveStyles = true;
 			
 			CKEDITOR.config.baseHref = document.getElementsByTagName('base')[0].href;            
 			CKEDITOR.config.contentsCss = [CKEDITOR.basePath + 'contents.css', 'public/css/core/ckeditor/style.css'];

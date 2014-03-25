@@ -29,7 +29,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 			$session = new Ajde_Session('AC.Form');
 			if (!isset($_POST['_token']) || !$session->has('formTime')) {
 				// TODO:
-				$exception = new Ajde_Exception('No form token received or no form time set, bailing out to prevent CSRF attack');
+				$exception = new Ajde_Core_Exception_Security('No form token received or no form time set, bailing out to prevent CSRF attack');
 				if (Config::getInstance()->debug === true) {
 					Ajde_Http_Response::setResponseType(Ajde_Http_Response::RESPONSE_TYPE_FORBIDDEN);
 					throw $exception;
@@ -45,9 +45,9 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 			if (!self::verifyFormToken($formToken) || !self::verifyFormTime()) {
 				// TODO:
 				if (!self::verifyFormToken($formToken)) {
-					$exception = new Ajde_Exception('No matching form token (got ' . self::_getHashFromSession($formToken) . ', expected ' . self::_tokenHash($formToken) . '), bailing out to prevent CSRF attack');
+					$exception = new Ajde_Core_Exception_Security('No matching form token (got ' . self::_getHashFromSession($formToken) . ', expected ' . self::_tokenHash($formToken) . '), bailing out to prevent CSRF attack');
 				} else {
-					$exception = new Ajde_Exception('Form token timed out, bailing out to prevent CSRF attack');
+					$exception = new Ajde_Core_Exception_Security('Form token timed out, bailing out to prevent CSRF attack');
 				}
 				if (Config::getInstance()->debug === true) {
 					Ajde_Http_Response::setResponseType(Ajde_Http_Response::RESPONSE_TYPE_FORBIDDEN);

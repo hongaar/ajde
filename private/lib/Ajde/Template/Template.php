@@ -16,7 +16,7 @@ class Ajde_Template extends Ajde_Object_Standard
 	protected function setFileinfo()
 	{
 		if (($fileInfo = $this->getFileInfo()) === false) {
-			$exception = new Ajde_Exception(sprintf("Template file in %s,
+			$exception = new Ajde_Core_Exception_Routing(sprintf("Template file in %s,
 					for action %s with format %s not found",
 					$this->getBase(), $this->getAction(), $this->getFormat()), 90010);
 			Ajde::routingError($exception);

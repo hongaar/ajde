@@ -16,12 +16,13 @@ if ($field->useRadio()) { ?>
 			<label class="radio" for="radio_<?php echo $field->getName(); ?>"><span class="gray">None</span></label>
 		<?php } ?>		
 
-		<?php foreach($options as $option) {
-			$counter++; 
+		<?php foreach($options as $k => $option) {
+			$counter++;
+            $k = trim($k);
 			$option = trim($option);
 			?>
-			<input type="radio" <?php echo $field->getHtmlAttributes(); ?> id="radio_<?php echo $field->getName(); ?>_<?php echo $counter; ?>" value='<?php echo $option; ?>' <?php 
-				if ($option == trim($field->getValue()) || ( !trim($field->getValue()) && $field->getDefault() == $option ) ) { echo "checked='checked'"; }
+			<input type="radio" <?php echo $field->getHtmlAttributes(); ?> id="radio_<?php echo $field->getName(); ?>_<?php echo $counter; ?>" value='<?php echo $k; ?>' <?php
+				if ($k == trim($field->getValue()) || ( !trim($field->getValue()) && $field->getDefault() == $k ) ) { echo "checked='checked'"; }
 				elseif ($field->hasReadonly() && $field->getReadonly() === true) { echo ' disabled="disabled" '; } ?>				
 			/>
 			<label class="radio" for="radio_<?php echo $field->getName(); ?>_<?php echo $counter; ?>">
@@ -38,11 +39,12 @@ if ($field->useRadio()) { ?>
 		<?php if (!$field->getIsRequired()) { ?>
 			<option value=''>Choose <?php echo strtolower($field->getLabel()); ?></option>
 		<?php } ?>
-		<?php foreach($options as $option) {
+		<?php foreach($options as $k => $option) {
+            $k = trim($k);
 			$option = trim($option); ?>
-			<option value='<?php echo $option; ?>'			
+			<option value='<?php echo $k; ?>'
 				<?php 
-				if ($option == trim($field->getValue())) { echo "selected='selected'"; }
+				if ($k == trim($field->getValue())) { echo "selected='selected'"; }
 				elseif ($field->hasReadonly() && $field->getReadonly() === true) { echo ' disabled="disabled" '; }
 				?>				
 				><?php echo __($option); ?></option>

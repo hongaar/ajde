@@ -18,8 +18,13 @@ class Ajde_Model_Validator_HasChildren extends Ajde_Model_ValidatorAbstract
         $pk = $this->getModel()->getPK();
         $model = $this->getModel();
 
+        // model not saved yet, we cannot validate now, return true
         if (empty($pk)) {
-            // model not saved yet, we cannot validate now, return true
+            return array('valid' => true);
+        }
+
+        // model uses simple selector (children are added on page update)
+        if ($this->has('simpleSelector') && $this->get('simpleSelector')) {
             return array('valid' => true);
         }
 

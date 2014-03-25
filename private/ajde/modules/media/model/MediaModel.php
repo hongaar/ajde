@@ -61,7 +61,7 @@ class MediaModel extends Ajde_Model
 		return $controller->invoke();
 	}
 	
-	public function getFilename($width = null, $height = null, $crop = null, $class = null)
+	public function getFilename($width = null, $height = null, $crop = null)
 	{
 		$path = $this->uploadDirectory . $this->thumbnail;
 		
