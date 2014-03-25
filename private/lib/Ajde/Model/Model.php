@@ -571,7 +571,13 @@ class Ajde_Model extends Ajde_Object_Standard
 					$values[] = (string) parent::_get($field);
 				}
 			} else {
-				parent::_set($field, null);
+                if ($this->has($field) && ($this->get($field) === 0 || $this->get($field) === '0')) {
+                    $sqlFields[] = $field;
+                    $sqlValues[] = '?';
+                    $values[] = (string) parent::_get($field);
+                } else {
+				    parent::_set($field, null);
+                }
 			}
 		}
 		$sql = 'INSERT INTO ' . $this->_table . ' (' . implode(', ', $sqlFields) . ') VALUES (' . implode(', ', $sqlValues) . ')';

@@ -312,7 +312,7 @@ class Ajde_Resource_Image extends Ajde_Resource
 	
 	protected function extension() {
 	    $path_info = pathinfo($this->_source);
-        return strtolower(issetor($path_info['extension']));
+	    return strtolower(issetor($path_info['extension']));
 	}
 	
 	protected function dir() {

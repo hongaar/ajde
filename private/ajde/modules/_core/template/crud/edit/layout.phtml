@@ -23,7 +23,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudEdit
 
 	<div class='data' data-listaction='<?php echo $crud->getListAction(); ?>'></div>
 
-	<?php if ($totalFields > $topToolbarTreshold) { ?>
+	<?php if (0 && $totalFields > $topToolbarTreshold) { // disabled, with fixed bottom bar ?>
     <div class="form-actions">
 
         <div class="btn-group">
@@ -112,7 +112,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudEdit
     } ?>
     </div>
 
-    <div class="form-actions">
+    <div class="form-actions fixed">
 		
 		<div class="btn-group">
 			<button type="submit" class="btn btn-success save" title='Save changes and go back to overview'><i class='icon-ok icon-white'></i> save &amp; back</button>

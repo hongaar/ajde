@@ -93,7 +93,12 @@ class Ajde_Model_Validator extends Ajde_Object_Standard
 				/* @var $fieldValidator Ajde_Model_ValidatorAbstract */
 				$value = null;
 				if ($this->_model->has($fieldName)) {
-					$value = (string) $this->_model->get($fieldName);
+					$value = $this->_model->get($fieldName);
+                    if (is_array($value)) {
+                        $value = implode(',', $value);
+                    } else {
+                        $value = (string) $value;
+                    }
 				}
 				// Only validate when dynamic field is shown
 				if ($this->shouldValidateDynamicField($fieldOptions[$fieldName])) {

@@ -1,3 +1,7 @@
+body {
+    margin-bottom: 70px;
+}
+
 div.crudLayout div.row {
 	width: 100%;
 }

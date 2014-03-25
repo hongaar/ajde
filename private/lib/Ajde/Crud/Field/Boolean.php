@@ -6,7 +6,7 @@ class Ajde_Crud_Field_Boolean extends Ajde_Crud_Field
 	{
 		$attributes = array();
 		$attributes['type'] = "hidden";
-		$attributes['value'] = $this->getValue();
+		$attributes['value'] = $this->getValue() ? '1' : '0';
 		return $attributes;
 	}	
 	

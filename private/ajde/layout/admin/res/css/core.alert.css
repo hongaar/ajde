@@ -20,9 +20,10 @@
 }
 
 #alert-content {	
-	margin: 15px 20px 15px;
+	margin: 25px 20px 25px;
 	color: white;
 	font-size: 20px;
+    text-align: center;
 }
 
 #alert-text {

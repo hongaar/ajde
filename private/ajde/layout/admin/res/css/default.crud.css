@@ -157,6 +157,24 @@ fieldset.crud {
 
 }
 
+.form-actions.fixed {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin-bottom: 0;
+    padding-left: 50px;
+    left: 0;
+
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+
+    &.no-offset {
+        left: 0 !important;
+    }
+}
+
 .fancybox-skin {
 	background-color: #fff;
 	-webkit-border-radius: 0;
@@ -191,6 +209,9 @@ body.iframe {
 	a.btn.showInIframe {
 		display: inline-block;
 	}
+    .form-actions.fixed {
+        left: 0 !important;
+    }
 }
 
 /** COLLAPSE FOR SIDEBAR AND SMALL SCREENS **/
@@ -763,5 +784,9 @@ table.crud {
 	.offset05 {
 		margin-left: 42px; 
 	}
+
+    .form-actions.fixed {
+        left: 20%;
+    }
 	
 }
