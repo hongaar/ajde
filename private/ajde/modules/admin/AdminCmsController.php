@@ -35,7 +35,7 @@ class AdminCmsController extends AdminController
 		$nodes->getQuery()->addSelect('id AS aid');
 		$nodes->getQuery()->addSelect('(SELECT count(b.id) FROM node b WHERE b.parent = aid) AS children');
 		$nodes->orderBy('sort');
-		
+
 		$json = array();
 		foreach($nodes as $node) {
 			/* @var $node NodeModel */

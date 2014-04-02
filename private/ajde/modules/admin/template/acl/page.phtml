@@ -3,60 +3,63 @@
 ?>
 
 <div class="row-fluid">
-	<div class="span12">		
+    <div class="span3">
+        <?php echo $this->includeModule('admin/cms:setupmenu'); ?>
+    </div><!--/span-->
+    <div class="span9">
 		<div class="page-header">
 			<h1>
 				<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
 			</h1>
 		</div>			
-	</div>
-</div>
 
-<div class="row-fluid">
-	<div class="span12">
-		
-		<?php echo $this->ACAjaxForm('admin/acl:page.json', 'AclPage', 'form-horizontal'); ?>
-			<input type="hidden" name="page" value="<?php echo $this->page; ?>" />
-			<input type="hidden" name="preset" value="<?php echo $this->preset; ?>" />
-			<fieldset>
-				<div class="controls">
-					<legend><?php echo $this->page . ': ' . $this->preset; ?></legend>
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="usergroup-public">
-						public
-					</label>
-					<div class="controls">
-						<input type="hidden" name="usergroup[public]" class="toggle" value="<?php echo AclModel::getPagePermission('public', $this->options['module'], $this->options['action'], $this->options['extra']); ?>" />
-						<div class="btn-group" data-toggle="buttons-radio">
-							<button type="button" data-value="" class="toggle btn">inherit</button>
-							<button type="button" data-value="allow" class="toggle btn btn-success">allow</button>
-							<button type="button" data-value="deny" class="toggle btn btn-danger">deny</button>
-						</div>
-					</div>
-				</div>
-				<?php foreach($this->usergroups as $usergroup) {
-					/* @var $usergroup UsergroupModel */ ?>
-					<div class="control-group">
-						<label class="control-label" for="usergroup-<?php echo $usergroup->getPK(); ?>"><?php echo $usergroup->name; ?></label>
-						<div class="controls">
-							<input type="hidden" name="usergroup[<?php echo $usergroup->getPK(); ?>]" class="toggle" value="<?php echo AclModel::getPagePermission($usergroup->getPK(), $this->options['module'], $this->options['action'], $this->options['extra']); ?>" />
-							<div class="btn-group" data-toggle="buttons-radio">
-								<button type="button" data-value="" class="toggle btn">inherit</button>
-								<button type="button" data-value="allow" class="toggle btn btn-success">allow</button>
-								<button type="button" data-value="deny" class="toggle btn btn-danger">deny</button>
-							</div>
-						</div>
-					</div>
-				<?php } ?>
-				<div class="form-actions">
-					<div class="btn-group">
-						<button type="submit" class="btn btn-primary">save changes</button>
-						<a href="admin/acl:view" class="btn">cancel</a>
-					</div>
-				</div>
-			</fieldset>
-		</form>				
-		
-	</div><!--/span-->
-</div><!--/row-->
+        <div class="row-fluid">
+            <div class="span12">
+
+                <?php echo $this->ACAjaxForm('admin/acl:page.json', 'AclPage', 'form-horizontal'); ?>
+                    <input type="hidden" name="page" value="<?php echo $this->page; ?>" />
+                    <input type="hidden" name="preset" value="<?php echo $this->preset; ?>" />
+                    <fieldset>
+                        <div class="controls">
+                            <legend><?php echo $this->page . ': ' . $this->preset; ?></legend>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="usergroup-public">
+                                public
+                            </label>
+                            <div class="controls">
+                                <input type="hidden" name="usergroup[public]" class="toggle" value="<?php echo AclModel::getPagePermission('public', $this->options['module'], $this->options['action'], $this->options['extra']); ?>" />
+                                <div class="btn-group" data-toggle="buttons-radio">
+                                    <button type="button" data-value="" class="toggle btn">inherit</button>
+                                    <button type="button" data-value="allow" class="toggle btn btn-success">allow</button>
+                                    <button type="button" data-value="deny" class="toggle btn btn-danger">deny</button>
+                                </div>
+                            </div>
+                        </div>
+                        <?php foreach($this->usergroups as $usergroup) {
+                            /* @var $usergroup UsergroupModel */ ?>
+                            <div class="control-group">
+                                <label class="control-label" for="usergroup-<?php echo $usergroup->getPK(); ?>"><?php echo $usergroup->name; ?></label>
+                                <div class="controls">
+                                    <input type="hidden" name="usergroup[<?php echo $usergroup->getPK(); ?>]" class="toggle" value="<?php echo AclModel::getPagePermission($usergroup->getPK(), $this->options['module'], $this->options['action'], $this->options['extra']); ?>" />
+                                    <div class="btn-group" data-toggle="buttons-radio">
+                                        <button type="button" data-value="" class="toggle btn">inherit</button>
+                                        <button type="button" data-value="allow" class="toggle btn btn-success">allow</button>
+                                        <button type="button" data-value="deny" class="toggle btn btn-danger">deny</button>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } ?>
+                        <div class="form-actions fixed">
+                            <div class="btn-group">
+                                <button type="submit" class="btn btn-primary">save changes</button>
+                                <a href="admin/acl:view" class="btn">cancel</a>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+
+            </div><!--/span-->
+        </div><!--/row-->
+    </div>
+</div>

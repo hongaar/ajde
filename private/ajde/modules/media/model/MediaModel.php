@@ -2,7 +2,7 @@
 
 class MediaModel extends Ajde_Model
 {
-	protected $_autoloadParents = false;
+	protected $_autoloadParents = true;
 	protected $_displayField = 'name';
 	
 	protected $uploadDirectory = UPLOAD_DIR;

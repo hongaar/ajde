@@ -1,0 +1,23 @@
+/*#!less*/
+
+table.crud.grid {
+    tr {
+        td.linkedModel {
+            position: absolute;
+            left: 8px;
+            top: 8px;
+            z-index: 99;
+
+            font-size: 0.8em;
+            text-transform: uppercase;
+            font-weight: bold;
+
+            background-color: rgba(255,255,255,0.5);
+            padding: 1px 5px;
+        }
+
+        &:hover td.linkedModel {
+            background-color: #e8f8fd;
+        }
+    }
+}

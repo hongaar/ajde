@@ -83,7 +83,7 @@ AC.Crud.Edit.Text = function() {
 
             // autogrow
             CKEDITOR.config.autoGrow_onStartup = true;
-            CKEDITOR.config.autoGrow_minHeight = 50;
+            CKEDITOR.config.autoGrow_minHeight = 150;
 			
 			// Optional configuration
 //			CKEDITOR.config.extraPlugins = 'autogrow';

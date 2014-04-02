@@ -12,11 +12,12 @@ $currentGrouper = '';
 <div class="well sidebar-nav">
 	<a class="menu-toggle btn btn-normal pull-right"><i class="icon-resize-small"></i></a>
 	<ul class="nav nav-list">
-		<li class="nav-header">Nodes</li>
+        <li class="nav-header">Content</li>
 <!--		<li><a href="admin/node:view?new&view[filter][nodetype]="><i class="icon-plus"></i> Add</a></li>-->
         <?php
         $extendedMenu = false;
         if ($extendedMenu) { ?>
+            <li class="nav-header">Nodes</li>
             <li class="divider"></li>
             <?php foreach ($nodeTypes as $nodeType) {
                 /* @var $nodeType NodetypeModel */
@@ -37,15 +38,16 @@ $currentGrouper = '';
             <?php } ?>
             <li class="divider"></li>
         <?php } else { ?>
-            <li><a href="admin/node:view"><i class="icon-file"></i> Overview</a></li>
+            <li><a href="admin/node:view"><i class="icon-file"></i> Node overview</a></li>
         <?php } ?>
-		<li class="nav-header">Media</li>
-		<li><a href="admin/media:view"><i class="icon-th-large"></i> Manager</a></li>
+		<!--<li class="nav-header">Media</li>-->
+		<li><a href="admin/media:view"><i class="icon-th-large"></i> Media manager</a></li>
 <!--		<li><a href="admin/media:view?new"><i class="icon-plus"></i> Add</a></li>-->
 <!--        <li><a href="admin/media:upload"><i class="icon-circle-arrow-up"></i> Upload files</a></li>-->
-		<li class="nav-header">Menus</li>
-		<li><a href="admin/menu:view"><i class="icon-bookmark"></i> Editor</a></li>
-		<li class="nav-header">Tags</li>
-		<li><a href="admin/tag:view"><i class="icon-tag"></i> Manager</a></li>
+		<!--<li class="nav-header">Menus</li>-->
+		<li><a href="admin/menu:view"><i class="icon-bookmark"></i> Menu editor</a></li>
+		<!--<li class="nav-header">Tags</li>-->
+		<li><a href="admin/tag:view"><i class="icon-tag"></i> Tag manager</a></li>
+        <li><a href="admin/email:view"><i class="icon-envelope"></i> E-mail manager</a></li>
 	</ul>
 </div><!--/.well -->

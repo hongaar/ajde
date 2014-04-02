@@ -89,7 +89,10 @@ if (Ajde::app()->getRequest()->has('new')) {
 ?>
 
 <div class="row-fluid">
-	<div class="span12">
+    <div class="span3">
+        <?php echo $this->includeModule('admin/cms:setupmenu'); ?>
+    </div><!--/span-->
+    <div class="span9">
 		
 		<div class="page-header">
 			<h1>

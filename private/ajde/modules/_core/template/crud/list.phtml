@@ -14,11 +14,16 @@ if (isset($listOptions['show'])) {
 } else {
 	$fieldsToShow = $crud->getFieldNames();
 }
-// Unset the main filter in fieldsToShow (otherwise it would be double up)
+
+// Do we have a main filter?
 $mainFilter = $crudView->getMainFilter();
-if ($mainFilter && in_array($mainFilter, $fieldsToShow)) {
-	unset($fieldsToShow[array_search($mainFilter, $fieldsToShow)]);
-}
+
+// Optional: unset the main filter in fieldsToShow (otherwise it would be double up)
+/*
+ * if ($mainFilter && in_array($mainFilter, $fieldsToShow)) {
+ *  unset($fieldsToShow[array_search($mainFilter, $fieldsToShow)]);
+ * }
+ */
 
 // Fields to show in grid view from gridShow option
 $gridFields = isset($listOptions['gridShow']) ? $crud->getOption('list.gridShow') : $fieldsToShow;
@@ -228,8 +233,11 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 						<?php echo $funcValue; ?>
 					</td>
 				<?php
-				// Linked Model
-				} elseif ($value instanceof Ajde_Model && $value->hasLoaded()) { ?>
+				// Linked Model (not loaded)
+                } elseif ($value instanceof Ajde_Model && !$value->hasLoaded()) { ?>
+                    <td <?php echo $gridData; ?> class="linkedModel <?php if ($crud->getOption('list.main', false) == $field->getName()) { echo 'main'; } ?>">(not set)</td>
+                <?php
+                } elseif ($value instanceof Ajde_Model && $value->hasLoaded()) { ?>
 					<td <?php echo $gridData; ?> class="linkedModel <?php if ($crud->getOption('list.main', false) == $field->getName()) { echo 'main'; } ?>" title="<?php echo $value->get($value->getDisplayField()); ?>"><?php echo $value->get($value->getDisplayField()); ?></td>
 				<?php
 				// Boolean
