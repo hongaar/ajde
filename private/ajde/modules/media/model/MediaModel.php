@@ -12,7 +12,7 @@ class MediaModel extends Ajde_Model
     {
 		// Download thumbnails
         $this->saveFileFromWeb();
-		
+
 		// Added
 		$this->added = new Ajde_Db_Function("NOW()");
 
@@ -42,7 +42,7 @@ class MediaModel extends Ajde_Model
 	
 	public function getPath()
 	{
-		return $this->getFilename(1024);
+		return $this->type == 'image' ? $this->getFilename(1024) : $this->uploadDirectory . $this->pointer;
 	}
 	
 	public function getTag($width = null, $height = null, $crop = null, $class = null, $attributes = array())
@@ -114,5 +114,47 @@ class MediaModel extends Ajde_Model
 
             $this->thumbnail = $filename . '.' . $ext;
         }
+    }
+
+    public function saveFileFromDrive($filename, $oauthToken)
+    {
+        if ($filename && $oauthToken && $this->has('pointer') &&
+            (substr(strtolower($this->pointer), 0, 24) === 'https://drive.google.com')) {
+
+            $basename = basename(parse_url($filename, PHP_URL_PATH));
+            $filename = pathinfo($basename, PATHINFO_FILENAME);
+            $ext = pathinfo($basename, PATHINFO_EXTENSION);
+
+            if (strtolower($ext) === 'jpeg') {
+                $ext = 'jpg';
+            }
+
+            if(!$this->replaceOldFile){
+                // don't overwrite previous files that were uploaded
+                while (is_file($this->uploadDirectory . $filename . '.' . $ext)) {
+                    $filename .= rand(10, 99);
+                }
+            }
+
+            $path = $this->uploadDirectory . $filename . '.' . $ext;
+
+//            $curlResult = Ajde_Http_Curl::get($this->pointer, $path, array(
+//                'Authorization: Bearer ' . $oauthToken
+//            ));
+
+            $curlResult = Ajde_Http_Curl::get($this->pointer, $path);
+
+            if (!$curlResult) {
+                return 'error';
+            }
+
+            $this->name = $filename;
+            $this->pointer = $filename . '.' . $ext;
+            $this->thumbnail = $this->pointer;
+
+            return true;
+        }
+
+        return false;
     }
 }

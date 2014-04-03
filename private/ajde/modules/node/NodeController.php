@@ -221,7 +221,7 @@ class NodeController extends Ajde_Controller
 				->setMain('title')
 				->setShow(array('title', 'lang', 'updated', 'published', 'sort'))
 				->setThumbDim(50, 50)
-				->setSearch(false)
+				->setSearch(true)
 				->selectView()
 					->setMainFilter('nodetype')
 					->setMainFilterGrouper('category')
@@ -275,7 +275,7 @@ class NodeController extends Ajde_Controller
                                 ->up()
 							->addBlock()
 								->setTitle('Metadata')
-								->setClass('sidebar well')
+								->setClass('well left')
 								->setShow(array('added', 'updated', 'parent', 'user', 'lang'))
 								->up()
 		->finished();

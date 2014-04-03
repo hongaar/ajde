@@ -1,0 +1,89 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */
+
+$fromName = Config::get('sitename');
+$fromEmail = Config::get('email');
+
+$options = new Ajde_Crud_Options();
+$options	
+	->selectFields()
+		->selectField('name')
+			->setEmphasis(true)
+			->up()
+        ->selectField('identifier')
+            ->setIsReadonly(true)
+            ->up()
+        ->selectField('module')
+            ->up()
+		->selectField('type')
+            ->setDefault('transactional')
+			->up()
+		->selectField('template')
+            ->setFilterLang('page')
+			->up()
+        ->selectField('from_name')
+            ->setDefault($fromName)
+			->up()
+        ->selectField('from_email')
+            ->setDefault($fromEmail)
+            ->up()
+		->up()			
+	->selectList()
+		->selectButtons()
+			->setNew(true)
+			->setEdit(true)
+			->up()
+		->setMain('name')
+		->setShow(array('name', 'module', 'type', 'template'))
+		->selectView()
+			->setOrderBy('name')
+			->up()
+		->up()
+	->selectEdit()
+		->selectLayout()
+			->addRow()
+				->addColumn()
+                    ->setSpan(8)
+					->addBlock()
+                        ->setClass('primary narrow sidebar')
+						->setShow(array('name'))
+						->up()
+                    ->addBlock()
+                        ->setClass('')
+                        ->setShow(array('identifier', 'type', 'module', 'template'))
+                        ->up()
+					->up()
+				->addColumn()
+					->setSpan(4)
+                    ->addBlock()
+						->setTitle('Sender')
+						->setClass('sidebar well')
+						->setShow(array('from_name', 'from_email'))
+						->up()		
+									
+		
+	->finished();
+
+$crud = $this->ACCrudList('email', $options);
+
+?>
+
+<div class="row-fluid">
+	<div class="span3 hideInIframe">
+		<?php echo $this->includeModule('admin/cms:menu'); ?>
+	</div><!--/span-->
+	<div class="span9 expandInIframe">
+		
+		<div class="page-header">
+			<h1>
+				<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
+			</h1>
+		</div>
+
+        <?php if (!Ajde::app()->getRequest()->has('edit') && !Ajde::app()->getRequest()->has('new')) {
+            echo $this->includeModule('admin/email:menu');
+        } ?>
+		
+		<?php echo $crud->output(); ?>
+		
+	</div><!--/span-->
+</div><!--/row-->

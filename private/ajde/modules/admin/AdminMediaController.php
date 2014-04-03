@@ -30,26 +30,51 @@ class AdminMediaController extends AdminController
 		$this->getView()->assign('uploaddir', $this->_uploaddir);
 		return $this->render();
 	}
+
+    public function driveButtonHtml()
+    {
+        $this->getView()->assign('extensions', $this->_extensions);
+        $this->getView()->assign('uploaddir', $this->_uploaddir);
+        return $this->render();
+    }
 	
 	public function uploadJson()
 	{
-		$filename = Ajde::app()->getRequest()->getPostParam('filename');
+		$filename = Ajde::app()->getRequest()->getPostParam('filename', false, Ajde_Http_Request::TYPE_HTML);
+
+        if (!$filename) {
+            return array('success' => false);
+        }
+
 		$mediatype = Ajde::app()->getRequest()->getPostParam('mediatype', false);
-		$extension = pathinfo($filename, PATHINFO_EXTENSION);
-		$title = pathinfo($filename, PATHINFO_FILENAME);
-						
-		Ajde_Model::register('media');
-		$media = new MediaModel();
-		
-		$media->mediatype = $mediatype;
-		$media->name = $title;
-		$media->pointer = $filename;
-		$media->thumbnail = $filename;
+        $name = Ajde::app()->getRequest()->getPostParam('name', false);
+        $oauthToken = Ajde::app()->getRequest()->getPostParam('oauthToken', false);
+
+        Ajde_Model::register('media');
+        $media = new MediaModel();
+
+        $media->mediatype = $mediatype;
+        $media->pointer = $filename;
+
+        // see if we can save a file from Google Drive
+        $driveResult = $media->saveFileFromDrive($name, $oauthToken);
+        if ($driveResult === true) {
+            $extension = pathinfo($media->pointer, PATHINFO_EXTENSION);
+        } else if ($driveResult === 'error') {
+            return array('success' => false);
+        } else {
+            $extension = pathinfo($filename, PATHINFO_EXTENSION);
+            $title = pathinfo($filename, PATHINFO_FILENAME);
+
+            $media->name = $title;
+            $media->thumbnail = $filename;
+        }
+
 		if (in_array(strtolower($extension), $this->_imageExtensions)) {
 			$media->type = 'image';
 		} else {
 			$media->type = 'file';
-		}		
+		}
 		$media->user = UserModel::getLoggedIn()->getPK();
 		
 		return array('success' => $media->insert());

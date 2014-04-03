@@ -1,0 +1,14 @@
+/*#!less*/
+
+.btn.drive.loading {
+    img {
+        display: none;
+    }
+    i {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+	    background-image: url('../../public/media/loading-cms.gif');
+	    background-position: 0 0;
+    }
+}

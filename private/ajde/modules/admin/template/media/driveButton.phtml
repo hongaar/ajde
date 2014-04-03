@@ -1,0 +1,111 @@
+<?php
+
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+$this->requireJsRemote("//apis.google.com/js/api.js?onload=onGoogleApiLoad");
+
+?>
+
+<script>
+    var DriveDoAuth;
+    var DriveCreatePicker;
+    var DriveResultHandler;
+
+    function onGoogleApiLoad() {
+
+        // The API developer key obtained from the Google Developers Console.
+        var developerKey = '<?php echo Config::get('driveGoogleKey'); ?>';
+
+        // The Client ID obtained from the Google Developers Console.
+        var clientId = '<?php echo Config::get('ssoGoogleKey'); ?>';
+
+        // Scope to use to access user's photos.
+        var scope = ['https://www.googleapis.com/auth/photos', 'https://www.googleapis.com/auth/drive.readonly'];
+
+        var authApiLoaded = false;
+        var pickerApiLoaded = false;
+
+        var oauthToken;
+        var onPicked;
+
+
+        // Use the API Loader script to load google.picker and gapi.auth.
+        function onApiLoad() {
+            gapi.load('auth', {'callback': onAuthApiLoad});
+            gapi.load('picker', {'callback': onPickerApiLoad});
+        }
+
+        function onAuthApiLoad() {
+            authApiLoaded = true;
+        }
+
+        function onPickerApiLoad() {
+            pickerApiLoaded = true;
+        }
+
+        function handleAuthResult(authResult, callbackOnSuccess) {
+            if (authResult && !authResult.error) {
+                oauthToken = authResult.access_token;
+                callbackOnSuccess();
+            }
+        }
+
+        // Do auth
+        DriveDoAuth = function(callback) {
+            window.gapi.auth.authorize({
+                'client_id': clientId,
+                'scope': scope,
+                'immediate': false
+            },
+            function(result) {
+                handleAuthResult(result, callback);
+            });
+        };
+
+        // Create and render a Picker object for picking user Photos.
+        DriveCreatePicker = function() {
+            if (pickerApiLoaded && !oauthToken) {
+                DriveDoAuth(DriveCreatePicker);
+            } else if (pickerApiLoaded && oauthToken) {
+                var picker = new google.picker.PickerBuilder().
+                    addViewGroup(
+                        new google.picker.ViewGroup(new google.picker.DocsView().
+                                                        setParent('root').
+                                                        setMode(google.picker.DocsViewMode.GRID).
+                                                        setIncludeFolders(true)).
+                            addView(google.picker.ViewId.DOCS_IMAGES).
+                            addView(google.picker.ViewId.PDFS)).
+                    setOAuthToken(oauthToken).
+                    setDeveloperKey(developerKey).
+                    setCallback(pickerCallback).
+                    build();
+                picker.setVisible(true);
+            }
+        };
+
+        // Register picker callback
+        DriveResultHandler = function(callback) {
+            onPicked = callback;
+        };
+
+        // A simple callback implementation.
+        function pickerCallback(data) {
+            if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
+                var doc = data[google.picker.Response.DOCUMENTS][0];
+
+                preview = doc[google.picker.Document.URL];
+                id = doc[google.picker.Document.ID];
+                download = 'https://drive.google.com/uc?export=download&id=' + id;
+                name = doc[google.picker.Document.NAME];
+
+                if (onPicked) {
+                    onPicked(download, name, oauthToken);
+                }
+            }
+        }
+
+        onApiLoad();
+
+    };
+</script>
+
+<a class="btn drive"><i></i><img src="public/media/_core/crud/google-drive_16.png" /> drive</a>

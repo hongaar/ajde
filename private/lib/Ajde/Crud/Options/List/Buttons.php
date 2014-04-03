@@ -83,6 +83,17 @@ class Ajde_Crud_Options_List_Buttons extends Ajde_Crud_Options
 		$toolbarHtml[$name] = $html;
 		return $this->_set('toolbarHtml', $toolbarHtml);
 	}
+
+    /**
+     * Do not group toolbar buttons
+     *
+     * @param boolean $value
+     * @return Ajde_Crud_Options_List_Buttons
+     */
+    public function setDoNotGroup($value)
+    {
+        return $this->_set('doNotGroup', $value);
+    }
 	
 	/**
 	 * Adds a custom button to the list toolbar

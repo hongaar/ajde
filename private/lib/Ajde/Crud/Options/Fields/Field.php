@@ -82,6 +82,14 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 	 * @return Ajde_Crud_Options_Fields_Field 
 	 */
 	public function setDefault($default) { return $this->_set('default', $default); }
+
+    /**
+     * Filter based on language
+     *
+     * @param mixed $mode On of false|'parent'|'page'
+     * @return Ajde_Crud_Options_Fields_Field
+     */
+    public function setFilterLang($mode) { return $this->_set('filterLang', $mode); }
 	
 	/**
 	 * Overrides whether the field has the auto increment attribute

@@ -68,6 +68,7 @@ class Config_Application extends Config_Cms
 
     public $ssoGoogleKey        = '514075591820.apps.googleusercontent.com';
     public $ssoGoogleSecret     = 'MS4EgiWPHZAaDko9lG_8oX52';
+    public $driveGoogleKey      = 'AIzaSyCJcdZdQ3tTineYykoy9mnj1NB4TW0hFfk';
 
 	//public $transactionProviders;
 	//public $currency;

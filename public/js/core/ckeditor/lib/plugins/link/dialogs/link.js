@@ -477,7 +477,18 @@ CKEDITOR.dialog.add( 'link', function( editor ) {
 			            		action : 'Browse',
 		            			url : 'admin/node:view.crud?multiple=0&link=1'
 				            }
-				        }
+				        },
+                        {
+                            type : 'button',
+                            id : 'browseMedia',
+                            label : 'Link to media',
+                            align: 'right',
+                            filebrowser :
+                            {
+                                action : 'Browse',
+                                url : 'admin/media:view.crud?multiple=0&link=1'
+                            }
+                        }
 				    ]
 				} 
 				]

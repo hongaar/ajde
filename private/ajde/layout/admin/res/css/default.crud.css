@@ -270,6 +270,12 @@ table.crud {
         font-size: 0.8em;
         color: #777;
     }
+
+    select, input[type=search] {
+        &.active {
+            border: 2px solid #eb6864;
+        }
+    }
     
     thead {
         tr {
@@ -295,6 +301,10 @@ table.crud {
 				.uploadButton {
 					min-width: 300px;
 				}
+
+                .toolbarButton {
+                    display: inline-block;
+                }
             }
 
             th {

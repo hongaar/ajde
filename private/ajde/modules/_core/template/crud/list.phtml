@@ -1,4 +1,5 @@
 <?php
+
 /* @var $this Ajde_Template_Parser_Phtml_Helper */
 /* @var $crud Ajde_Crud */
 $crud = $this->crud;
@@ -93,9 +94,12 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 				<?php foreach($fieldsToShow as $fieldName) {
 					$field = $crud->getField($fieldName); ?>
 					<th>
-						<?php if ($field instanceof Ajde_Crud_Field_Enum || $field instanceof Ajde_Crud_Field_Fk) {
+						<?php
+                        if ($mainFilter == $fieldName) {
+                            // skip this one
+                        } else if ($field instanceof Ajde_Crud_Field_Enum || $field instanceof Ajde_Crud_Field_Fk) {
 							$fieldFilter = $crudView->getFilterForField($field->getName()); ?>
-							<select class="filter span12" name="view[filter][<?php echo $field->getName(); ?>]">
+							<select class="filter span12 <?php if ($fieldFilter) echo 'active'; ?>" name="view[filter][<?php echo $field->getName(); ?>]">
 								<option value="" class="select"><?php echo __("No filter"); ?></option>
 								<?php foreach($field->getValues() as $key => $option) { ?>
 									<option value='<?php echo $key; ?>'			
@@ -105,7 +109,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 							</select>
 						<?php } else if ($field instanceof Ajde_Crud_Field_Boolean) {
                             $fieldFilter = $crudView->getFilterForField($field->getName()); ?>
-                            <select class="filter span12" name="view[filter][<?php echo $field->getName(); ?>]">
+                            <select class="filter span12 <?php if ($fieldFilter) echo 'active'; ?>" name="view[filter][<?php echo $field->getName(); ?>]">
                                 <option value="" class="select"><?php echo __("No filter"); ?></option>
                                     <option value='0' <?php if ('0' == $fieldFilter) { echo "selected='selected'"; } ?>><?php echo __('Off'); ?></option>
                                     <option value='1' <?php if ('1' == $fieldFilter) { echo "selected='selected'"; } ?>><?php echo __('On'); ?></option>
@@ -120,7 +124,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
             <th <?php if (!$crud->getOption('list.buttons.select', true)) { ?>class="hidden"<?php } ?>></th>
             <th colspan="<?php echo $columnCount + 1; ?>">
                 <?php if ($crud->getOption('list.search', true)) { ?>
-                    <input type="search" name="view[search]" class="span12 search" value="<?php echo $crudView->getSearch(); ?>" placeholder="<?php echo __("Search"); ?>"/>
+                    <input type="search" name="view[search]" class="span12 search <?php if ($crudView->getSearch()) echo 'active'; ?>" value="<?php echo $crudView->getSearch(); ?>" placeholder="<?php echo __("Search"); ?>"/>
                 <?php } ?>
             </th>
         </tr>
@@ -144,16 +148,19 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 					} ?>
 					<?php if ( ($buttons = $crud->getOption('list.buttons.toolbarButtons')) && count($buttons) ) { ?>
                         <div class="btn-group">
-							<?php if (count($buttons) == 1) {
-								$button = current($buttons); ?>
-								<?php if ($button['text'] instanceof Ajde_Core_Route) {
-									echo $this->includeModule($button['text']);
-								} else { ?>
-									<a href="javascript:void(null);" class='btn <?php echo $button['class']; ?>'>
-										<?php echo $button['text']; ?>
-									</a>							
-								<?php } ?>
-							<?php } else { ?>
+							<?php if (count($buttons) == 1 || $crud->getOption('list.buttons.doNotGroup')) {
+                                foreach($buttons as $button) { ?>
+                                    <div class="toolbarButton">
+                                        <?php if ($button['text'] instanceof Ajde_Core_Route) {
+                                            echo $this->includeModule($button['text']);
+                                        } else { ?>
+                                            <a href="javascript:void(null);" class='btn <?php echo $button['class']; ?>'>
+                                                <?php echo $button['text']; ?>
+                                            </a>
+                                        <?php } ?>
+                                    </div>
+                                <?php }
+                            } else { ?>
 								<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
 									actions <span class="caret"></span>
 								</a>
@@ -220,7 +227,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 						</td>
 					<?php } else { ?>
 						<td class='sortDisabled'>
-							not sorted
+							n/a
 						</td>
 					<?php } ?>
 				<?php

@@ -110,11 +110,15 @@ class Config_Advanced
         public $ssoFacebookKey      = false;
         public $ssoFacebookSecret   = false;
 
+        // Google
+        public $ssoGoogleKey        = false;
+        public $ssoGoogleSecret     = false;
+
 	// Shop
 	public $transactionProviders= array('paypal_creditcard', 'paypal', 'mollie_ideal');
 	public $currency			= '€';
 	public $currencyCode		= 'EUR';
-	public $defaultVAT			= 0.19;
+	public $defaultVAT			= 0.21;
 	public $shopSandboxPayment	= true;
 
 		// PayPal

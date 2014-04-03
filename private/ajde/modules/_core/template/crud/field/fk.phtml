@@ -18,13 +18,19 @@ if ($field->has('usePopupSelector') && $field->get('usePopupSelector')) { ?>
 
 	<select name="<?php echo $field->getName(); ?>" class="hide">
 		<option value=''></option>
-		<?php foreach($field->getValues() as $key => $option) { ?>
+		<?php
+        $keys = array();
+        foreach($field->getValues() as $key => $option) {
+            $keys[] = $key; ?>
 			<option value='<?php echo $key; ?>'
 				<?php
 				if ($key == $pk) { echo "selected='selected'"; }
 				?>
 				><?php echo $option; ?></option>
-		<?php } ?>
+		<?php }
+        if ($pk && !in_array($pk, $keys)) { ?>
+            <option value='<?php echo $pk; ?>' selected='selected'><?php echo $pk; ?></option>
+        <?php } ?>
 	</select>
 
 	<?php
@@ -51,7 +57,10 @@ if ($field->has('usePopupSelector') && $field->get('usePopupSelector')) { ?>
 			<label class="radio" for="radio_<?php echo $field->getName(); ?>"><span class="gray">None</span></label>
 		<?php } ?>		
 
-		<?php foreach($field->getValues() as $key => $option) {
+		<?php
+        $keys = array();
+        foreach($field->getValues() as $key => $option) {
+            $keys[] = $key;
 			$counter++; ?>
 			<input type="radio" <?php echo $field->getHtmlAttributes(); ?> id="radio_<?php echo $field->getName(); ?>_<?php echo $counter; ?>" value='<?php echo $key; ?>' <?php 
 				if ($key == $pk) { echo "checked='checked'"; }
@@ -60,7 +69,16 @@ if ($field->has('usePopupSelector') && $field->get('usePopupSelector')) { ?>
 			<label class="radio" for="radio_<?php echo $field->getName(); ?>_<?php echo $counter; ?>">
 				<?php echo $option; ?>
 			</label>
-		<?php } ?>
+		<?php }
+        if ($pk && !in_array($pk, $keys)) {
+            $counter++; ?>
+            <input type="radio" <?php echo $field->getHtmlAttributes(); ?> id="radio_<?php echo $field->getName(); ?>_<?php echo $counter; ?>" value='<?php echo $pk; ?>' checked='checked'
+            <?php if ($field->hasReadonly() && $field->getReadonly() === true) { echo ' disabled="disabled" '; } ?>
+                />
+            <label class="radio" for="radio_<?php echo $field->getName(); ?>_<?php echo $counter; ?>">
+                <?php echo $pk; ?>
+            </label>
+        <?php } ?>
 	</fieldset>
 
 <?php } else { ?>
@@ -72,14 +90,22 @@ if ($field->has('usePopupSelector') && $field->get('usePopupSelector')) { ?>
 		<?php if (!$field->getIsRequired() === true) { ?>
 			<option value=''></option>
 		<?php } ?>
-		<?php foreach($field->getValues() as $key => $option) { ?>
+		<?php
+        $keys = array();
+        foreach($field->getValues() as $key => $option) {
+            $keys[] = $key; ?>
 			<option value='<?php echo $key; ?>'
 				<?php
 				if ($key == $pk) { echo "selected='selected'"; }
 				elseif ($field->hasReadonly() && $field->getReadonly() === true) { echo ' disabled="disabled" '; }
 				?>
 				><?php echo $option; ?></option>
-		<?php } ?>
+		<?php }
+        if ($pk && !in_array($pk, $keys)) { ?>
+            <option value='<?php echo $pk; ?>' selected='selected' <?php if ($field->hasReadonly() && $field->getReadonly() === true) { echo ' disabled="disabled" '; } ?>>
+                <?php echo $pk; ?>
+            </option>
+        <?php } ?>
 	</select>
 
 <?php } ?>

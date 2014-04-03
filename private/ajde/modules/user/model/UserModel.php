@@ -125,11 +125,11 @@ class UserModel extends Ajde_User
 	public function sendResetMail($hash)
 	{
 		$resetLink = Config::get('site_root') . 'user/reset?h=' . $hash;
+
 		$mailer = new Ajde_Mailer();
-		$body = "Your password reset link:<br/>" . 
-				"<br/>" .
-				"<a href='" . $resetLink . "'>" . $resetLink . "</a>";
-		$mailer->SendQuickMail($this->getEmail(), Config::get('email'), Config::get('sitename'), "Password reset", $body);	
+        $mailer->sendUsingModel('user_reset_link', $this->getEmail(), $this->getFullname(), array(
+            'resetlink' => $resetLink
+        ));
 	}
 	
 	public function displayGravatar($width = 90, $class = '')

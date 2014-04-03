@@ -74,8 +74,9 @@ class Ajde_Http_Curl {
 	 * @return string
 	 * @throws Exception 
 	 */
-	static public function get($url, $toFile = false) {		
+	static public function get($url, $toFile = false, $header = false) {
 		$output = false;
+//        Ajde_Log::_('cURL URL', Ajde_Log::CHANNEL_INFO, Ajde_Log::LEVEL_INFORMATIONAL, $url);
 		try {
 			$ch = curl_init();
 			
@@ -87,6 +88,7 @@ class Ajde_Http_Curl {
 			curl_setopt($ch, CURLOPT_ENCODING, "");			// The contents of the "Accept-Encoding: " header. This enables decoding of the response. Supported encodings are "identity", "deflate", and "gzip". If an empty string, "", is set, a header containing all supported encoding types is sent.
 			curl_setopt($ch, CURLOPT_AUTOREFERER, true);	// TRUE to automatically set the Referer: field in requests where it follows a Location: redirect.
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);// FALSE to stop cURL from verifying the peer's certificate. Alternate certificates to verify against can be specified with the CURLOPT_CAINFO option or a certificate directory can be specified with the CURLOPT_CAPATH option. CURLOPT_SSL_VERIFYHOST may also need to be TRUE or FALSE if CURLOPT_SSL_VERIFYPEER is disabled (it defaults to 2).
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 			
 			if ($toFile !== false) {
 				
@@ -100,11 +102,26 @@ class Ajde_Http_Curl {
 				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 				curl_setopt($ch, CURLOPT_TIMEOUT, 300);
 				curl_setopt($ch, CURLOPT_FILE, $fp); // write curl response to file
+
+                if ($header) {
+                    curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+                }
 				
 				curl_exec($ch);
-				curl_close($ch);
+
 				fclose($fp);
 				$output = true;
+
+                $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+//                $verbose = curl_getinfo($ch);
+//                Ajde_Log::_('cURL result', Ajde_Log::CHANNEL_INFO, Ajde_Log::LEVEL_INFORMATIONAL, var_export($verbose, true));
+
+                curl_close($ch);
+
+                if (substr($http_status, 0, 1 == '4')) {
+                    return false;
+                }
 				
 			} else {
 				// Not possible in SAFE_MODE

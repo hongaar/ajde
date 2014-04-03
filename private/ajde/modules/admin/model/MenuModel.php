@@ -32,10 +32,13 @@ class MenuModel extends Ajde_Model_With_I18n
 	
 	public function displayLang()
 	{
+        Ajde::app()->getDocument()->getLayout()->getParser()->getHelper()->requireCssPublic('core/flags.css');
+
 		$lang = Ajde_Lang::getInstance();
 		$currentLang = $this->get('lang');
 		if ($currentLang) {
-			return $lang->getNiceName($currentLang);
+            $image = '<img src="" class="flag flag-' . strtolower(substr($currentLang, 3, 2)) . '" alt="' . $currentLang . '" />';
+            return $image . $lang->getNiceName($currentLang);
 		}
 		return '';
 	}
