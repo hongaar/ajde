@@ -1,0 +1,61 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+/* @var $form FormModel */
+
+$form = $this->form;
+$formId = $form->getPK();
+
+$options = new Ajde_Crud_Options();
+$options
+    ->selectFields()
+        ->selectField('name')
+        ->up()
+    ->up()
+    ->selectList()
+        ->selectButtons()
+            ->setNew(false)
+            ->setEdit(true)
+            ->setDelete(false)
+            ->setSelect(false)
+            ->up()
+        ->setShowHeader(false)
+        ->setShowFooter(false)
+        ->setSingleClickEdits(true)
+        ->setMain('name')
+        ->setShow(array('name'))
+        ->selectView()
+            ->setOrderBy('sort')
+            ->up()
+        ->up()
+    ->selectEdit()
+        ->setShow(array())
+        ->selectLayout()
+            ->addRow()
+                ->addColumn()
+                ->setSpan(12)
+                ->addBlock()
+                    ->up()
+                ->up()
+
+    ->finished();
+
+/* @var $decorator Ajde_Crud_Cms_Meta_Decorator */
+$decoratorFilters = array(
+    new Ajde_Filter_Where('target', Ajde_Filter::FILTER_EQUALS, 'form'),
+    new Ajde_Filter_Where('form_meta.form', Ajde_Filter::FILTER_EQUALS, $formId)
+);
+
+$decorator = $this->decorator;
+$decorator->setOptions($options);
+$decorator->decorateInputs('form_meta', 'form', 'sort', 'id', $decoratorFilters);
+
+$crud = $this->ACCrudEdit('form', $formId, $options);
+$crud->setAction('edit/form');
+
+$crudOutput = $crud->output();
+
+if (Ajde::app()->getRequest()->has('edit')) {
+    Ajde::app()->getDocument()->setTitle($crud->getItem()->get('name'));
+}
+
+echo $crudOutput;

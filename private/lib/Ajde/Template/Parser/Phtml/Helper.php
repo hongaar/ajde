@@ -236,6 +236,17 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	{
 		return Ajde_Component_Form::processStatic($this->getParser(), array('name' => $name, 'upload' => true, 'options' => $options, 'id' => $id, 'class' => $class));
 	}
+
+    /**
+     *
+     * @param string $route
+     * @param mixed $id
+     * @return string
+     */
+    public function ACEmbedForm($formId)
+    {
+        return Ajde_Component_Form::processStatic($this->getParser(), array('embed' => true, 'id' => $formId));
+    }
 	
 	/************************
 	 * Ajde_Component_Image

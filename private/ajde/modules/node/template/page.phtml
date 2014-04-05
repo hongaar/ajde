@@ -28,10 +28,14 @@ $node = $this->node;
 					</a>
 				<?php } ?>
 			</p>
+
+            <?php if ($formId = $node->getMetaValue('form')) {
+                echo $this->ACEmbedForm($formId);
+            } ?>
 		</div>
 		
 		<div class="col-12 col-lg-6 col-lg-offset-2 col-offset-2">
-			<?php echo $node->getMediaTag(800, null, false, 'img-responsive'); ?>
+			<?php echo $node->getMediaTag(800, 400, true, 'img-responsive'); ?>
 		</div>
 	
 	</div>

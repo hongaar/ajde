@@ -8,7 +8,7 @@ class Config_Application extends Config_Cms
 	public $sitename 			= 'Project name';
 	public $description			= 'Project description';
 	public $author				= 'Author name';
-	public $email				= 'info@example.nl';
+	public $email				= 'info@nabble.nl';
 	public $version 			= array(
 									'number' => '1',
 									'name' => 'version description'

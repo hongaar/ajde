@@ -193,9 +193,14 @@ AC.Crud.Edit = function() {
 					return false;
 				}
 			}
-		
-			infoHandler('Saving...');
-			$.post(url, data, function(data) {		
+
+            if (form.find(':input[name=form_submission]').val()) {
+			    infoHandler('Submitting...');
+            } else {
+                infoHandler('Saving...');
+            }
+
+			$.post(url, data, function(data) {
 								
 				if (data.success === false) {
 					

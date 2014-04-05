@@ -1,0 +1,18 @@
+<div class="well sidebar-nav">
+	<a class="menu-toggle btn btn-normal pull-right"><i class="icon-resize-small"></i></a>
+    <ul class="nav nav-list">
+        <li><a href="admin/acl:view">Overview</a></li>
+        <?php foreach($this->pagePermissions as $page => $options) { ?>
+            <li class="nav-header"><?php echo $page; ?></li>
+            <?php foreach($options as $preset => $options) { ?>
+                <li><a href="admin/acl:page?page=<?php echo $page; ?>&preset=<?php echo $preset; ?>"><?php echo ucfirst($preset); ?></a></li>
+            <?php } ?>
+        <?php } ?>
+        <?php foreach($this->modelPermissions as $model => $options) { ?>
+            <li class="nav-header"><?php echo $model; ?></li>
+            <?php foreach($options as $preset => $options) { ?>
+                <li><a href="admin/acl:model?model=<?php echo $model; ?>&preset=<?php echo $preset; ?>"><?php echo ucfirst($preset); ?></a></li>
+            <?php } ?>
+        <?php } ?>
+	</ul>
+</div><!--/.well -->

@@ -1,0 +1,80 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */
+
+
+$options = new Ajde_Crud_Options();
+$options
+    ->selectFields()
+        ->selectField('form')
+            ->setEmphasis(true)
+            ->setIsReadonly(true)
+            ->up()
+        ->selectField('entry_text')
+            ->setDisableRichText(true)
+            ->setIsReadonly(true)
+            ->up()
+        ->selectField('added')
+            ->setFunction('displayAgo')
+            ->up()
+        ->selectField('ip')
+            ->setIsReadonly(true)
+            ->up()
+        ->selectField('user')
+            ->setIsReadonly(true)
+            ->up()
+        ->up()
+    ->selectList()
+        ->selectButtons()
+            ->setNew(false)
+            ->setEdit(true)
+            ->up()
+        ->setMain('form')
+        ->setShow(array('form', 'added', 'ip', 'user'))
+        ->selectView()
+            ->setOrderBy('added')
+            ->setOrderDir(Ajde_Query::ORDER_DESC)
+            ->up()
+        ->up()
+    ->selectEdit()
+        ->selectLayout()
+            ->addRow()
+                ->addColumn()
+                    ->setSpan(9)
+                    ->addBlock()
+                        ->setShow(array('form', 'entry_text'))
+                        ->up()
+                    ->up()
+                ->addColumn()
+                    ->setSpan(3)
+                    ->addBlock()
+                        ->setTitle('Metadata')
+                        ->setClass('sidebar well')
+                        ->setShow(array('added', 'ip', 'user'))
+                        ->up()
+
+
+    ->finished();
+
+$crud = $this->ACCrudList('submission', $options);
+
+?>
+
+<div class="row-fluid">
+	<div class="span3 hideInIframe">
+		<?php echo $this->includeModule('admin/cms:menu'); ?>
+	</div><!--/span-->
+	<div class="span9 expandInIframe">
+		
+		<div class="page-header">
+			<h1>
+				<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
+			</h1>
+		</div>
+
+        <?php if (!Ajde::app()->getRequest()->has('edit') && !Ajde::app()->getRequest()->has('new')) {
+            echo $this->includeModule('admin/form:menu');
+        } ?>
+		
+		<?php echo $crud->output(); ?>
+		
+	</div><!--/span-->
+</div><!--/row-->

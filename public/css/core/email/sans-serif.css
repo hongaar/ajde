@@ -1,0 +1,36 @@
+body, a, p, li, span, div, td {
+    font-family: sans-serif;
+    color: #333;
+}
+
+a.btn-primary {
+    display: inline-block;
+    background-color: #888;
+    color: white !important;
+    padding: 10px 25px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    background-clip: padding-box;
+}
+
+a.btn-default {
+    display: inline-block;
+    border: 1px solid #888;
+    background-color: #e1e1e1;
+    padding: 10px 25px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    background-clip: padding-box;
+}
+
+.red {
+    color: #ec1c24;
+}
+
+.gray {
+    color: gray;
+}
+
+.silver {
+    color: silver;
+}

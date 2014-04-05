@@ -1,0 +1,26 @@
+/*#!less*/
+
+input, textarea {
+    &.span12 {
+        width: 100%;
+    }
+}
+
+input[type="radio"], input[type="checkbox"] {
+    display: block;
+    clear: left;
+    float: left;
+}
+
+label.radio {
+    padding-left: 5px;
+    display: block;
+    float: left;
+    margin: 0;
+}
+
+.control-group.error {
+    input, select, textarea {
+        border: 1px solid #eb6864;
+    }
+}

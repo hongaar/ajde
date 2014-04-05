@@ -2,7 +2,7 @@
 
 class TemplateModel extends Ajde_Model_With_I18n
 {
-	protected $_autoloadParents = false;
+	protected $_autoloadParents = true;
 	protected $_displayField = 'name';
 
     public function displayLang()
@@ -19,25 +19,47 @@ class TemplateModel extends Ajde_Model_With_I18n
     }
 
     /**
-     * @return bool|TemplateModel
+     * @return TemplateModel
      */
-    public static function getMaster()
+    public function getMaster()
     {
-        $master = new self();
-        if ($master->loadByField('name', 'master')) {
-            return $master;
-        }
-        return false;
+        return parent::getMaster();
     }
 
     public function getContent()
     {
-        if ($this->name != 'master' && $master = $this->getMaster()) {
-            $masterContent = $master->getContent();
-            return str_replace('%body%', parent::getContent(), $masterContent);
-        } else {
-            return parent::getContent();
+        $content = parent::getContent();
+        $style = $this->getStyle();
+
+        if ($style) {
+            $stylesheet = PUBLIC_DIR . 'css' . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'email' . DIRECTORY_SEPARATOR . $style . '.css';
+            if (!is_file($stylesheet)) {
+                throw new Ajde_Exception('Stylesheet ' . $stylesheet . ' not found');
+            }
+            $stylesheetContent = file_get_contents($stylesheet);
+            $content = "<html><body><style>" . $stylesheetContent . "</style>" . $content . "</body></html>";
         }
+
+        if ($this->getMaster() && $this->getMaster()->hasLoaded()) {
+            $masterContent = $this->getMaster()->getContent();
+            $content = str_replace('%body%', $content, $masterContent);
+        }
+
+        if ($style || ($this->getMaster() && $this->getMaster()->hasLoaded() && $this->getMaster()->getStyle())) {
+            $content = html_entity_decode( self::inlineCss($content) );
+        }
+
+        return $content;
+    }
+
+    public static function inlineCss($html)
+    {
+        $url = 'http://inlinestyler.torchboxapps.com/styler/convert/';
+        $data = array(
+            'returnraw' => '1',
+            'source' => $html
+        );
+        return Ajde_Http_Curl::post($url, $data);
     }
 
     public function getSubject()

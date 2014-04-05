@@ -30,6 +30,7 @@ abstract class Ajde_Acl_Proxy_Model extends Ajde_Model
 	
 	private function validationErrorRedirect()
 	{
+        Ajde_Log::_('ACL firewall hit', Ajde_Log::CHANNEL_SECURITY, Ajde_Log::LEVEL_INFORMATIONAL, implode(PHP_EOL, Ajde_Acl::$log));
 		Ajde::app()->getRequest()->set('message', __('You may not have the required permission to view this resource'));
 		Ajde::app()->getResponse()->dieOnCode(Ajde_Http_Response::RESPONSE_TYPE_UNAUTHORIZED);
 	}

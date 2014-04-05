@@ -1,0 +1,107 @@
+<?php
+/* @var $crud Ajde_Crud */
+$crud = $this->crud;
+$editOptions = $crud->getOptions('edit');
+
+// Total fields
+$rows = $crud->getOption('edit.layout.rows');
+$totalFields = 0;
+foreach($rows as $row) {
+	$columns = $row['columns'];
+	foreach($columns as $column) {
+		$blocks = $column['blocks'];
+		foreach($blocks as $block) {
+			$fieldsToShow = issetor($block['show']);
+            $totalFields += count($fieldsToShow);
+		}
+	}
+}
+
+echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudEdit ACEmbedForm form-horizontal');?>
+
+    <input type="hidden" name="form_submission" value="1" />
+
+    <?php
+
+    $fieldsShown = array();
+    foreach($rows as $row) {
+        $columns = $row['columns'];
+        ?>
+
+        <div class='row-fluid'>
+
+        <?php
+        foreach($columns as $key => $column) {
+
+            // Styles
+            $span = isset($column['span']) ? $column['span'] : '12';
+            ?>
+
+            <div class='column span<?php echo $span; ?>'>
+
+            <?php
+            $blocks = $column['blocks'];
+            foreach($blocks as $block) {
+                $fieldsToShow = issetor($block['show']);
+                $className = issetor($block['class']);
+                ?>
+
+                <fieldset class='crud <?php echo $className; ?>'>
+
+                    <?php if (isset($block['title'])) { ?>
+                        <div class="controls">
+                            <legend><?php echo $block['title']; ?></legend>
+                        </div>
+                    <?php } ?>
+
+                    <?php foreach( (isset($fieldsToShow) ? $fieldsToShow : array()) as $fieldName) {
+
+                        $fieldsShown[] = $fieldName;
+                        $field = $crud->getField($fieldName, false);
+                        if (!$field) {
+                            // Dynamically create a text field and fill with value from Model (if available)
+                            $field = $crud->createField($crud->getFieldOptions($fieldName, array(
+                                'name' => $fieldName,
+                                'type' => 'text',
+                                'length' => 255,
+                                'default' => '',
+                                'label' => ucfirst($fieldName),
+                                'isRequired' => false,
+                                'isPK' => false,				
+                                'isAutoIncrement' => false,
+                                'isAutoUpdate' => false,
+                                'value' => $crud->getModel()->{"has".ucfirst($fieldName)}() ? $crud->getModel()->{"get".ucfirst($fieldName)}() : false
+                            )));
+                        }
+                        echo $field->getHtml();
+                    } ?>
+                        
+                </fieldset>
+
+                <?php
+            } ?>
+
+            </div> <!-- /span -->
+            <?php
+        } ?>			
+        </div> <!-- /row -->
+        <?php
+    }
+
+    ?>
+
+    <div class='hidden'>
+    <?php foreach($crud->getFields() as $field) {
+        if (!in_array($field->getName(), $fieldsShown)) {
+            echo $field->getInput();
+        }
+    } ?>
+    </div>
+
+    <div class="form-actions fixed">
+
+        <button type="submit" class="btn btn-success save" title='Submit form'><i class='icon-ok icon-white'></i> submit</button>
+
+    </div>
+
+</form>

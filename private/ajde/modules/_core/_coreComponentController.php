@@ -129,7 +129,7 @@ class _coreComponentController extends Ajde_Controller
 		// to pass data through iframe you will need to encode all html tags
 		return $result;
 	}
-	
+
 	/************************
 	 * Ajde_Component_Image
 	 ************************/

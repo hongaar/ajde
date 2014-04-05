@@ -13,7 +13,7 @@ AC.Crud = function() {
 		
 		init: function() {		
 			isIframe = (window.location != window.parent.location) || window.opener;
-			
+
 			if (isIframe) {
 				$('body').addClass('iframe');
 				$('.expandInIframe').removeClass('span1 span2 span3 span4 span5 span6 span7 span8 span9 span10 span11').addClass('span12');

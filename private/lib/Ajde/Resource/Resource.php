@@ -104,7 +104,11 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
 
 		// TODO: performance gain?
 		// Ajde_Cache::getInstance()->addFile($linkFilename);
-		include $linkFilename;
+        if ($linkFilename) {
+		    include $linkFilename;
+        } else {
+            throw new Ajde_Exception('Link filename for ' . $url . ' not found');
+        }
 
 		$contents = ob_get_contents();
 		ob_end_clean();

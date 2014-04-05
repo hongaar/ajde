@@ -14,7 +14,8 @@ class Ajde_Component_Form extends Ajde_Component
 		return array(
 			'ajax' => 'ajax',
 			'route' => 'form',
-			'upload' => 'upload' 
+			'upload' => 'upload',
+            'embed' => 'embed'
 		);
 	}
 	
@@ -61,6 +62,12 @@ class Ajde_Component_Form extends Ajde_Component
 			
 			return $controller->invoke();
 			break;
+        case 'embed':
+            $controller = Ajde_Controller::fromRoute(new Ajde_Core_Route('form/view.html'));
+            $controller->setId($this->attributes['id']);
+
+            return $controller->invoke();
+            break;
 		}
 		// TODO:
 		throw new Ajde_Component_Exception();	

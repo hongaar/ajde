@@ -155,6 +155,9 @@ class _coreCrudController extends Ajde_Acl_Controller
 		$operation = Ajde::app()->getRequest()->getParam('operation');
 		$crudId = Ajde::app()->getRequest()->getParam('crudId');
 		$id = Ajde::app()->getRequest()->getPostParam('id', false);
+        if (Ajde::app()->getRequest()->getPostParam('form_submission', false)) {
+            $operation = 'submission';
+        }
 		
 		Ajde_Model::registerAll();
 		
@@ -162,6 +165,9 @@ class _coreCrudController extends Ajde_Acl_Controller
 			case 'delete':
 				return $this->delete($crudId, $id);
 				break;
+            case 'submission':
+                return $this->submission($crudId, $id);
+                break;
 			case 'save':
 				return $this->save($crudId, $id);
 				break;
@@ -385,6 +391,98 @@ class _coreCrudController extends Ajde_Acl_Controller
 			'displayField' => $model->get($model->getDisplayField()),
 			'success' => $success);
 	}
+
+    private function submission($crudId, $id)
+    {
+        $session = new Ajde_Session('AC.Crud');
+
+        /* @var $crud Ajde_Crud */
+        $crud = $session->getModel($crudId);
+
+        // verify that we have a valid crud model
+        if (!$crud) {
+            return array('success' => false);
+        }
+
+        /* @var $model FormModel */
+        $model = $crud->getModel();
+        $model->setOptions($crud->getOptions('model'));
+
+        // Get POST params
+        $post = $_POST;
+        $id = issetor($post["id"]);
+
+        // verify that we have a valid form model
+        if (!$id) {
+            return array('success' => false);
+        }
+
+        // load form
+        $model->loadByPK($id);
+        $model->populate($post);
+
+        // validate form
+        Ajde_Event::trigger($model, 'beforeCrudSave', array($crud));
+        if (!$model->validate($crud->getOptions('fields'))) {
+            return array('operation' => 'save', 'success' => false, 'errors' => $model->getValidationErrors());
+        }
+
+        // prepare submission
+        $values = array();
+        foreach($post as $key => $value) {
+            if (substr($key, 0, 5) === 'meta_') {
+                $metaId = str_replace('meta_', '', $key);
+                $metaName = MetaModel::getNameFromId($metaId);
+                $values[$metaName] = $value;
+            }
+        }
+
+        $entryText = '';
+        foreach($values as $k => $v) {
+            $entryText .= $k . ': ' . $v . PHP_EOL;
+        }
+
+        $submission = new SubmissionModel();
+        $submission->form = $id;
+        $submission->ip = $_SERVER["REMOTE_ADDR"];
+        $submission->user = Ajde_User::getLoggedIn();
+        $submission->entry = json_encode($values);
+        $submission->entry_text = $entryText;
+
+        $success = $submission->insert();
+
+        if ($success === true) {
+
+            // Destroy reference to crud instance
+            $session->destroy($crudId);
+
+            // set message for next page
+            Ajde_Session_Flash::alert( 'Form submitted succesfully' );
+
+            $mailer = new Ajde_Mailer();
+
+            // send email to administrator
+            $body = 'Form: ' . $model->displayField() . '<br/><br/>' . nl2br($entryText);
+            $mailer->SendQuickMail(Config::get('email'), Config::get('email'), Config::get('sitename'), 'New form submission', $body);
+
+            // send email to user
+            $email = $model->getEmail();            /* @var $email EmailModel */
+            $email_to = $model->getEmailTo();       /* @var $email MetaModel */
+            $email_address = issetor($post['meta_' . $email_to->getPK()]);
+            if ($email->hasLoaded() && $email_to->hasLoaded() && $email_address) {
+                $mailer->sendUsingModel($email->getIdentifier(), $email_address, $email_address, array(
+                    'entry' => nl2br($entryText)
+                ));
+            }
+
+        }
+
+        return array(
+            'operation' => 'save',
+            'id' => $model->getPK(),
+            'displayField' => $model->get($model->getDisplayField()),
+            'success' => $success);
+    }
 	
 	private function deleteMultiple($crudId, $id, $parentId = null, $fieldName = null, $all = false)
 	{

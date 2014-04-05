@@ -44,7 +44,7 @@ class Ajde_Document_Format_Html extends Ajde_Document
 	 */
 	public function getHead($resourceTypes = '*')
 	{
-		if (!is_array($resourceTypes)) {
+        if (!is_array($resourceTypes)) {
 			$resourceTypes = (array) $resourceTypes;
 		}
 		return $this->renderHead($resourceTypes);
@@ -65,7 +65,7 @@ class Ajde_Document_Format_Html extends Ajde_Document
 	}
 
 	public function renderHead(array $resourceTypes = array('*'))
-	{		
+	{
 		$code = '';
 		$code .= $this->renderResources($resourceTypes);		
 		return $code;

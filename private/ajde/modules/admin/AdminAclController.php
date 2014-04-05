@@ -17,8 +17,8 @@ class AdminAclController extends AdminController
 				'action' => '*',
 				'extra' => '*'
 			),
-			'dashboard' => array(
-				'module' => 'belay',
+			'administrator' => array(
+				'module' => 'admin',
 				'action' => '*',
 				'extra' => '*'
 			)
@@ -43,9 +43,24 @@ class AdminAclController extends AdminController
 				'module' => 'admin',
 				'action' => '*',
 				'extra' => 'tags'
-			)
+			),
+            'email' => array(
+                'module' => 'admin',
+                'action' => '*',
+                'extra' => 'email'
+            ),
+            'forms' => array(
+                'module' => 'admin',
+                'action' => '*',
+                'extra' => 'form'
+            )
 		),
 		'Admin functions' => array(
+            'shop' => array(
+                'module' => 'admin',
+                'action' => '*',
+                'extra' => 'shop'
+            ),
 			'settings' => array(
 				'module' => 'admin',
 				'action' => 'settings',
@@ -108,6 +123,14 @@ class AdminAclController extends AdminController
 	
 		return $this->render();
 	}
+
+    public function menu()
+    {
+        $this->getView()->assign('pagePermissions', $this->_pagePermissions);
+        $this->getView()->assign('modelPermissions', $this->_modelPermissions);
+
+        return $this->render();
+    }
 	
 	public function page()
 	{

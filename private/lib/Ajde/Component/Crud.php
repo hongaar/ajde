@@ -31,7 +31,7 @@ class Ajde_Component_Crud extends Ajde_Component
 			$id = issetor($this->attributes['id'], null);
 			$crud = new Ajde_Crud($this->attributes['model'], $options);
 			$crud->setId($id);
-			$crud->setAction('edit');
+			$crud->setAction('edit/layout');
 			return $crud;
 			break;
 		case 'mainfilter':
