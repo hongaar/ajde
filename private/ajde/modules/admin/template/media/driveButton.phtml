@@ -74,6 +74,7 @@ $this->requireJsRemote("//apis.google.com/js/api.js?onload=onGoogleApiLoad");
                                                         setIncludeFolders(true)).
                             addView(google.picker.ViewId.DOCS_IMAGES).
                             addView(google.picker.ViewId.PDFS)).
+                    enableFeature(google.picker.Feature.MULTISELECT_ENABLED).
                     setOAuthToken(oauthToken).
                     setDeveloperKey(developerKey).
                     setCallback(pickerCallback).
@@ -90,15 +91,19 @@ $this->requireJsRemote("//apis.google.com/js/api.js?onload=onGoogleApiLoad");
         // A simple callback implementation.
         function pickerCallback(data) {
             if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
-                var doc = data[google.picker.Response.DOCUMENTS][0];
+                var docs = data[google.picker.Response.DOCUMENTS];
 
-                preview = doc[google.picker.Document.URL];
-                id = doc[google.picker.Document.ID];
-                download = 'https://drive.google.com/uc?export=download&id=' + id;
-                name = doc[google.picker.Document.NAME];
+                for (var i in docs) {
+                        var doc = docs[i];
 
-                if (onPicked) {
-                    onPicked(download, name, oauthToken);
+                    preview = doc[google.picker.Document.URL];
+                    id = doc[google.picker.Document.ID];
+                    download = 'https://drive.google.com/uc?export=download&id=' + id;
+                    name = doc[google.picker.Document.NAME];
+
+                    if (onPicked) {
+                        onPicked(download, name, oauthToken);
+                    }
                 }
             }
         }

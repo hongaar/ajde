@@ -74,6 +74,8 @@ div.browser .results > a span.filename {
 	display: inline-block;
 	overflow: hidden;
 	white-space: nowrap;
+    position: relative;
+    top: 5px;
 }
 
 div.browser > a span.preview,

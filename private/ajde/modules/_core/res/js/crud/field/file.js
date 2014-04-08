@@ -45,6 +45,15 @@
 		e.preventDefault();
 		$browser = $(this).next();
 		var that = this;
+        setTimeout(function() {
+            $browser.css('margin-left', '');
+            var diff = $(window).width() - ($browser.width() + $browser.offset().left);
+            if (diff < 0) {
+                $browser.css('margin-left', diff - 25 + 'px');
+            } else {
+                $browser.css('margin-left', '');
+            }
+        }, 0);
 		$browser.slideToggle(function() {
 			$(this).trigger('scroll');
 			if ($(that).parents('.block.sidebar').length && $browser.is(':visible')) {

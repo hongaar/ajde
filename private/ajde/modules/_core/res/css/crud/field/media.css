@@ -14,7 +14,7 @@ div.filebrowser {
 	margin-top: 10px;
 }
 
-.ACAjaxUpload {
+div.media .ACAjaxUpload {
     float: left;
     margin-right: 10px;
 	position: absolute;

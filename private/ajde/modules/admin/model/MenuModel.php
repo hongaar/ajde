@@ -112,13 +112,16 @@ class MenuModel extends Ajde_Model_With_I18n
                 $current = 'active';
             }
 
-			$items[] = array(
-				'name' => $name,
-				'url' => $url,
-				'target' => $target,
-                'current' => $current,
-                'submenus' => $submenus
-			);
+            if ($item->type == 'Node link' && !$node->hasLoaded() ) {
+            } else {
+                $items[] = array(
+                    'name' => $name,
+                    'url' => $url,
+                    'target' => $target,
+                    'current' => $current,
+                    'submenus' => $submenus
+                );
+            }
 		}
 		
 		return $items;
