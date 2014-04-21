@@ -44,12 +44,14 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
         return $payment->getPaymentUrl();
     }
 
-    public function getRedirectParams() {
+    public function getRedirectParams($description = null) {
         return array();
     }
 
     public function updatePayment()
     {
+        $payment = false;
+
         $mollie = new Mollie_API_Client;
         $mollie->setApiKey($this->getApiKey());
 

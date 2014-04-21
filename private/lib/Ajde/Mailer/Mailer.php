@@ -43,6 +43,9 @@ class Ajde_Mailer extends PHPMailer
             // subject
             $this->Subject = $subject;
 
+            // utf8 please
+            $this->CharSet = "utf-8";
+
             // body
             $this->msgHTML($body);
 

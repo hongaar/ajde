@@ -94,7 +94,7 @@ abstract class Ajde_Shop_Cart extends Ajde_Model
 	 *
 	 * @param string $entity
 	 * @param integer $id
-	 * @return Ajde_Shop_Cart_Itemp 
+	 * @return Ajde_Shop_Cart_Item
 	 */
 	public function getItem($entity, $id)
 	{

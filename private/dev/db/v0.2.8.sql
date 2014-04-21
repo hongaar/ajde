@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `log` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
 
 
-ALTER TABLE `media` CHANGE `type` `type` ENUM('unknown','image','file','embed') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'unknown' COMMENT 'Type'
+ALTER TABLE `media` CHANGE `type` `type` ENUM('unknown','image','file','embed') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'unknown' COMMENT 'Type';
 
 ALTER TABLE `media` CHANGE `mediatype` `mediatype` INT(10) UNSIGNED NULL DEFAULT NULL COMMENT 'Category';
 
@@ -79,7 +79,7 @@ ALTER TABLE `template`
 ALTER TABLE  `template` ADD  `master` INT UNSIGNED NULL DEFAULT NULL AFTER  `lang_root` ,
 ADD INDEX (  `master` );
 
-ALTER TABLE  `template` ADD FOREIGN KEY (  `master` ) REFERENCES  `ajde_cms`.`template` (
+ALTER TABLE  `template` ADD FOREIGN KEY (  `master` ) REFERENCES  `template` (
 `id`
 ) ON DELETE SET NULL ON UPDATE SET NULL ;
 

@@ -6,7 +6,7 @@ interface Ajde_Shop_Transaction_Provider_Interface
 	public function getLogo();
 	public function usePostProxy();
 	public function getRedirectUrl($description = null);
-	public function getRedirectParams();
+	public function getRedirectParams($description = null);
 	public function updatePayment();
 }
 

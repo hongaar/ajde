@@ -19,7 +19,7 @@ class Ajde_Resource_Image extends Ajde_Resource
 		if (file_exists($file)) {
 			$this->_source = $file;
 		} else {
-			$this->_source = PUBLIC_DIR . 'images/notfound.png';
+			$this->_source = MEDIA_DIR . 'notfound.png';
 		}
 		$this->_type = $this->extension();
 	}
@@ -320,7 +320,7 @@ class Ajde_Resource_Image extends Ajde_Resource
 	
 	protected function extension() {
 	    $path_info = pathinfo($this->_source);
-	    return strtolower(issetor($path_info['extension']));
+        return strtolower(issetor($path_info['extension']));
 	}
 	
 	protected function dir() {
@@ -333,7 +333,7 @@ class Ajde_Resource_Image extends Ajde_Resource
 	    return $path_info['filename'];
 	}
 	
-	protected function fastimagecopyresampled (&$dst_image, $src_image, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h, $quality = 3) {
+	protected function fastimagecopyresampled (&$dst_image, $src_image, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h, $quality = 4) {
 		// Plug-and-Play fastimagecopyresampled function replaces much slower imagecopyresampled.
 		// Just include this function and change all "imagecopyresampled" references to "fastimagecopyresampled".
 		// Typically from 30 to 60 times faster when reducing high resolution images down to thumbnail size using the default quality setting.

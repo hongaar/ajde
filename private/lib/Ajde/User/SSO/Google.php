@@ -152,12 +152,11 @@ class Ajde_User_SSO_Google extends Ajde_User_SSO
     {
         $size = 150;
         if ($this->hasCredentials()) {
-//            $image = $this->getMe()->getImage();
-            $id = $this->getMe()->getId();
-            $image = 'https://plus.google.com/s2/photos/profile/' . $id . '?sz=' . $size;
-            return $image;
-        } else {
-            return false;
+            $image = $this->getMe()->getImage();
+            if ($image instanceof Google_Service_Plus_PersonImage) {
+                $url = $image->getUrl();
+                return str_replace('?sz=50', '?sz=' . $size, $url);
+            }
         }
     }
 

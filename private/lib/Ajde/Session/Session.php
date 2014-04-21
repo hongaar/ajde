@@ -55,7 +55,7 @@ class Ajde_Session extends Ajde_Object_Standard
 		// Ignore Google Chrome frame as it has a split personality
 		// @todo TODO: security issue!!
 		// @see http://www.chromium.org/developers/how-tos/chrome-frame-getting-started/understanding-chrome-frame-user-agent		
-		if (substr_count($_SERVER['HTTP_USER_AGENT'], 'chromeframe/') === 0 &&
+		if (isset($_SERVER['HTTP_USER_AGENT']) && substr_count($_SERVER['HTTP_USER_AGENT'], 'chromeframe/') === 0 &&
 				isset($_SESSION['client']) &&
 				$_SESSION['client'] !== md5($_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] . Config::get('secret'))) {
 			// TODO: overhead to call session_regenerate_id? is it not required??
@@ -77,7 +77,7 @@ class Ajde_Session extends Ajde_Object_Standard
 				}
 			}
 		} else {
-			$_SESSION['client'] = md5($_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] . Config::get('secret'));
+			$_SESSION['client'] = md5($_SERVER['REMOTE_ADDR'] . issetor($_SERVER['HTTP_USER_AGENT']) . Config::get('secret'));
 		}
 		
 		// remove cache headers invoked by session_start();

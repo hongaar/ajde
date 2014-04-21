@@ -25,7 +25,7 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
         return $this->ping($url) ? $url : false;
     }
 
-    public function getRedirectParams() {
+    public function getRedirectParams($description = null) {
         $transaction = $this->getTransaction();
         return array(
             'cmd'			=> '_xclick',
@@ -33,7 +33,7 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
             'notify_url'	=> Config::get('site_root') . $this->returnRoute . 'paypal' . $this->getMethod() . '.html',
             'bn'			=> Config::get('ident') . '_BuyNow_WPS_' . strtoupper(Ajde_Lang::getInstance()->getShortLang()),
             'amount'		=> $transaction->payment_amount,
-            'item_name'		=> Config::get('sitename') . ': ' . Ajde_Component_String::makePlural($transaction->shipment_itemsqty, 'item'),
+            'item_name'		=> issetor($description, Config::get('sitename') . ': ' . Ajde_Component_String::makePlural($transaction->shipment_itemsqty, 'item')),
             'quantity'		=> 1,
             'address_ override' => 1,
             'address1'		=> $transaction->shipment_address,
@@ -72,17 +72,17 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
         $fp = fsockopen ($this->isSandbox() ? 'ssl://www.sandbox.paypal.com' : 'ssl://www.paypal.com', 443, $errno, $errstr, 30);
 
         // assign posted variables to local variables
-        $item_name = $_POST['item_name'];
-        $item_number = $_POST['item_number'];
-        $payment_status = $_POST['payment_status'];
-        $payment_amount = $_POST['mc_gross'];
-        $payment_currency = $_POST['mc_currency'];
-        $txn_id = $_POST['txn_id'];
-        $receiver_email = $_POST['receiver_email'];
-        $payer_email = $_POST['payer_email'];
+        $item_name = issetor($_POST['item_name']);
+        $item_number = issetor($_POST['item_number']);
+        $payment_status = issetor($_POST['payment_status']);
+        $payment_amount = issetor($_POST['mc_gross']);
+        $payment_currency = issetor($_POST['mc_currency']);
+        $txn_id = issetor($_POST['txn_id']);
+        $receiver_email = issetor($_POST['receiver_email']);
+        $payer_email = issetor($_POST['payer_email']);
 
         Ajde_Model::register('shop');
-        $secret = $_POST['custom'];
+        $secret = issetor($_POST['custom']);
         $transaction = new TransactionModel();
 
         if (!$fp) {

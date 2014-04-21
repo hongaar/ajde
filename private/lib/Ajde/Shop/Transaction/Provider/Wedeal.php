@@ -53,7 +53,7 @@ class Ajde_Shop_Transaction_Provider_Wedeal extends Ajde_Shop_Transaction_Provid
 		}
 	}
 	
-	public function getRedirectParams() {
+	public function getRedirectParams($description = null) {
 		return array();
 	}
 	
