@@ -123,7 +123,7 @@ AC.Crud.Edit.Media = function() {
 			$('form.ACCrudEdit a.replaceMedia').on('click', onReplaceMedia);
                        
 			$pointer = $('.media .hidden :input:eq(0)')
-			$preview = $('.preview');			
+			$preview = $('.media .preview');
             $typefield = $(':input[name=' + $('.media').data('typefield') + ']');
             $thumbfield = $(':input[name=' + $('.media').data('thumbfield') + ']');
 			$filenamefield = $(':input[name=' + $('.media').data('filenamefield') + ']');

@@ -55,9 +55,9 @@ class Ajde_Cookie extends Ajde_Object_Standard
 	protected function reader()
 	{
 		if ($this->_secure) {
-			return unserialize(Ajde_Component_String::decrypt($_COOKIE[$this->_namespace]));
+			return @unserialize(Ajde_Component_String::decrypt($_COOKIE[$this->_namespace]));
 		} else {
-			return unserialize($_COOKIE[$this->_namespace]);
+			return @unserialize($_COOKIE[$this->_namespace]);
 		}
 	}
 	

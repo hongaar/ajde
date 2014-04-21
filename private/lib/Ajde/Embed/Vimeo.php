@@ -5,7 +5,7 @@ class Ajde_Embed_Vimeo extends Ajde_Embed
 	public function convertUrlToEmbed() {
 		if (substr($this->_code, 0, 7) == 'http://' || substr($this->_code, 0, 8) == 'https://') {
 			$vimid = $this->_getVimeoId();
-			$this->_code = '<iframe src="http://player.vimeo.com/video/' . $vimid . '?title=0&amp;byline=0&amp;portrait=0" width="400" height="225" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+			$this->_code = '<iframe id="player_' . $vimid . '" src="http://player.vimeo.com/video/' . $vimid . '?title=0&amp;byline=0&amp;portrait=0&amp;api=1&amp;player_id=player_' . $vimid . '" width="400" height="225" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
 		}
 	}
 	
@@ -32,7 +32,13 @@ class Ajde_Embed_Vimeo extends Ajde_Embed
 	public function getThumbnail() {
 		$vmid = $this->_getVimeoId();
 		if ($vmid) {
-			$hash = unserialize(Ajde_Http_Curl::get("http://vimeo.com/api/v2/video/$vmid.php"));
+            $response = Ajde_Http_Curl::get("http://vimeo.com/api/v2/video/$vmid.php");
+            try {
+			    $hash = unserialize($response);
+            } catch (Exception $e) {
+                Ajde_Exception_Log::logException(new Ajde_Exception("Could not parse result from Vimeo"));
+                return null;
+            }
 			return $hash[0]['thumbnail_large'];  
 		}
 		return null;
