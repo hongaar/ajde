@@ -31,6 +31,9 @@ $options
 		->selectField('debug')
 			->setType('boolean')
 			->up()
+        ->selectField('tester')
+            ->setType('boolean')
+            ->up()
         ->selectField('address')
             ->setLength(0)
             ->setDisableRichText(true)
@@ -78,7 +81,7 @@ $options
 					->addBlock()
 						->setTitle('Security')
 						->setClass('well')
-						->setShow(array('usergroup', 'nodes', 'debug'))
+						->setShow(array('usergroup', 'nodes', 'debug', 'tester'))
 
 	->finished();
 

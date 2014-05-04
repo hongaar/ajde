@@ -27,6 +27,14 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
 
     public function getRedirectParams($description = null) {
         $transaction = $this->getTransaction();
+
+        // NOOOO.. THE UGLY HACKING
+        $return = Config::get('site_root') . 'presale/transaction:complete';
+        $method = $transaction->shipment_method;
+        if ($method == 'presale-remainder') {
+            $return = Config::get('site_root') . 'presale/transaction:confirm_complete';
+        }
+
         return array(
             'cmd'			=> '_xclick',
             'business'		=> Config::get('shopPaypalAccount'),
@@ -47,7 +55,7 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
             'custom'		=> $transaction->secret,
             'no_shipping'	=> 1, // do not prompt for an address
             'no_note'		=> 1, // hide the text box and the prompt
-            'return'		=> Config::get('site_root') . 'presale/transaction:complete',
+            'return'		=> $return,
             'rm'			=> 1 // the buyer’s browser is redirected to the return URL by using the GET method, but no payment variables are included
         );
     }
@@ -83,7 +91,9 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
 
         Ajde_Model::register('shop');
         $secret = issetor($_POST['custom']);
+
         $transaction = new TransactionModel();
+        $changed = false;
 
         if (!$fp) {
             // HTTP ERROR
@@ -117,8 +127,7 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
                             $transaction->payment_details = $details;
                             $transaction->payment_status = 'completed';
                             $transaction->save();
-                        } else {
-                            $transaction = null;
+                            $changed = true;
                         }
 
                         // Write pending to Log
@@ -128,11 +137,15 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
 
                         return array(
                             'success' => true,
+                            'changed' => $changed,
                             'transaction' => $transaction
                         );
                     } else {
-                        $transaction->payment_status = 'refused';
-                        $transaction->save();
+                        if ($transaction->payment_status != 'refused') {
+                            $transaction->payment_status = 'refused';
+                            $transaction->save();
+                            $changed = true;
+                        }
                         Ajde_Log::log('Status is not Completed but ' . $payment_status . ' for PayPal payment with txn id ' . $txn_id . ' and transaction secret ' . $secret);
                     }
                     // check that txn_id has not been previously processed
@@ -147,8 +160,11 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
                         Ajde_Log::log('Could not find transaction for PayPal payment with txn id ' . $txn_id . ' and transaction secret ' . $secret);
                     } else {
                         // log for manual investigation
-                        $transaction->payment_status = 'refused';
-                        $transaction->save();
+                        if ($transaction->payment_status != 'refused') {
+                            $transaction->payment_status = 'refused';
+                            $transaction->save();
+                            $changed = true;
+                        }
                         Ajde_Log::log('Validation failed for PayPal payment with txn id ' . $txn_id);
 
                     }
@@ -158,6 +174,7 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
         }
         return array(
             'success' => false,
+            'changed' => $changed,
             'transaction' => $transaction
         );
     }

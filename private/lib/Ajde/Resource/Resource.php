@@ -118,8 +118,12 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
 	public function getContents() {
 		ob_start();
 
-		Ajde_Cache::getInstance()->addFile($this->getFilename());
-		include $this->getFilename();
+        $filename = $this->getFilename();
+
+		Ajde_Cache::getInstance()->addFile($filename);
+        if (is_file($filename)) {
+		    include $filename;
+        }
 		
 		$contents = ob_get_contents();
 		ob_end_clean();

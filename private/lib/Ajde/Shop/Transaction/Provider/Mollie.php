@@ -56,6 +56,7 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
         $mollie->setApiKey($this->getApiKey());
 
         $transaction = new TransactionModel();
+        $changed = false;
 
         // see if we are here for the webhook or user return url
         $mollie_id = Ajde::app()->getRequest()->getPostParam('id', false); // from webhook
@@ -77,7 +78,7 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
                 $payment = $mollie->payments->get($mollie_id);
                 $order_id = $payment->metadata->order_id;
                 $transaction->loadByField('secret', $order_id);
-            } catch(Mollie_API_Exception $e) {
+            } catch (Mollie_API_Exception $e) {
                 Ajde_Exception_Log::logException($e);
                 $payment = false;
             }
@@ -87,6 +88,7 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
             Ajde_Log::log('Could not find transaction for Mollie payment for mollie id ' . $mollie_id . ' and transaction secret ' . $order_id);
             return array(
                 'success' => false,
+                'changed' => $changed,
                 'transaction' => $transaction
             );
         }
@@ -106,9 +108,11 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
 
         switch($payment->status) {
             case "open":
-                $transaction->payment_status = 'requested';
-                $transaction->save();
-                $transaction = null;
+                if ($transaction->payment_status != 'requested') {
+                    $transaction->payment_status = 'requested';
+                    $transaction->save();
+                    $changed = true;
+                }
                 break;
             case "paidout":
             case "paid":
@@ -117,8 +121,7 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
                 if ($transaction->payment_status != 'completed') {
                     $transaction->payment_status = 'completed';
                     $transaction->save();
-                } else {
-                    $transaction = null;
+                    $changed = true;
                 }
                 break;
             case "cancelled":
@@ -126,8 +129,7 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
                 if ($transaction->payment_status != 'cancelled') {
                     $transaction->payment_status = 'cancelled';
                     $transaction->save();
-                } else {
-                    $transaction = null;
+                    $changed = true;
                 }
                 break;
             case "expired":
@@ -135,14 +137,14 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
                 if ($transaction->payment_status != 'refused') {
                     $transaction->payment_status = 'refused';
                     $transaction->save();
-                } else {
-                    $transaction = null;
+                    $changed = true;
                 }
                 break;
         }
 
         return array(
             'success' => $paid,
+            'changed' => $changed,
             'transaction' => $transaction
         );
     }
