@@ -22,6 +22,16 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 		self::dieOnCode(self::RESPONSE_TYPE_SERVERERROR);
 	}
 
+    public static function redirectUnauthorized()
+    {
+        self::dieOnCode(self::RESPONSE_TYPE_UNAUTHORIZED);
+    }
+
+    public static function redirectForbidden()
+    {
+        self::dieOnCode(self::RESPONSE_TYPE_FORBIDDEN);
+    }
+
 	public static function dieOnCode($code)
 	{		
 		self::setResponseType($code);		

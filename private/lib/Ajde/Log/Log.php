@@ -38,6 +38,11 @@ class Ajde_Log extends Ajde_Object_Static
             } catch (Exception $e) {}
         }
     }
+
+    public static function d($message, $description = '')
+    {
+        self::_($message, self::CHANNEL_INFO, self::LEVEL_INFORMATIONAL, $description);
+    }
 	
 	public static function log($string)
 	{

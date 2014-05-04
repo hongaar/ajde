@@ -92,7 +92,7 @@ class Config_Advanced
 	
 	// Mailer
 	public $mailer				= 'mail'; // One of: mail|smtp
-	public $mailerSmtpHost		= false;
+    public $mailerConfig		= array();
 	public $mailerDebug			= false;
 
 	// Custom libraries

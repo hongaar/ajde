@@ -1,4 +1,4 @@
-<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ 
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */
 
 $options = new Ajde_Crud_Options();
 $options
@@ -48,7 +48,7 @@ $options
             ->setNew(false)
 			->up()
 		->setMain('comment')
-		->setShow(array('comment', 'name', 'payment_provider', 'payment_amount', 'payment_status', 'modified'))
+        ->setShow(array('comment', 'name', 'payment_provider', 'payment_amount', 'payment_status', 'shipment_method', 'added'))
 		->selectView()
 			->setOrderBy('modified')
             ->setOrderDir('DESC')
@@ -91,17 +91,17 @@ $crud = $this->ACCrudList('transaction', $options);
 
 <div class="row-fluid">
 	<div class="span3 hideInIframe">
-		<?php echo $this->includeModule('admin/cms:menu'); ?>		
+		<?php echo $this->includeModule('admin/cms:menu'); ?>
 	</div><!--/span-->
 	<div class="span9 expandInIframe">
-		
+
 		<div class="page-header">
 			<h1>
 				<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
 			</h1>
-		</div>		
-		
+		</div>
+
 		<?php echo $crud->output(); ?>
-		
+
 	</div><!--/span-->
 </div><!--/row-->

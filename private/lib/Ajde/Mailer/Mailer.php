@@ -10,7 +10,10 @@ class Ajde_Mailer extends PHPMailer
         parent::__construct($exceptions);
         if (Config::get('mailer') == 'smtp') {
         	$this->isSMTP();
-        	$this->Host = Config::get('mailerSmtpHost');
+            $configs = Config::get('mailerConfig');
+            foreach($configs as $k => $v) {
+                $this->$k = $v;
+            }
         } else {
         	$this->isMail();
         }

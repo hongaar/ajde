@@ -36,6 +36,9 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
 	{
 		$this->secret = $this->generateSecret();
 		$this->ip = $_SERVER["REMOTE_ADDR"];
+
+        // Added
+        $this->added = new Ajde_Db_Function("NOW()");
 	}
 	
 	public function generateSecret($length = 255)

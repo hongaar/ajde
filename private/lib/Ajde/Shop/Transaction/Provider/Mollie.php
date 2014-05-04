@@ -96,6 +96,11 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
         // what to return?
         $paid = false;
 
+        $payment_details = $payment->details;
+        if (is_object($payment_details) || is_array($payment_details)) {
+            $payment_details = json_encode($payment_details);
+        }
+
         // save details
         $details =
             'PAYMENT STATUS: '		    . (string) $payment->status             . PHP_EOL .
@@ -103,7 +108,7 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
             'PAYMENT AT: '              . (string) $payment->paidDatetime       . PHP_EOL .
             'CANCELLED AT: '            . (string) $payment->cancelledDatetime  . PHP_EOL .
             'EXPIRED AT: '              . (string) $payment->expiredDatetime    . PHP_EOL .
-            'PAYER DETAILS: '		    . (string) $payment->details;
+            'PAYER DETAILS: '		    . (string) $payment_details;
         $transaction->payment_details = $details;
 
         switch($payment->status) {
