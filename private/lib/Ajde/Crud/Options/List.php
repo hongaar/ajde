@@ -69,6 +69,14 @@ class Ajde_Crud_Options_List extends Ajde_Crud_Options
      * @return Ajde_Crud_Options_List
      */
     public function setShowToolbar($show)	{ return $this->_set('showToolbar', $show); }
+
+    /**
+     * Enables the export button
+     *
+     * @param boolean $show
+     * @return Ajde_Crud_Options_List
+     */
+    public function setAllowExport($allow)	{ return $this->_set('allowExport', $allow); }
 	
 	/**
 	 * Shows the table header

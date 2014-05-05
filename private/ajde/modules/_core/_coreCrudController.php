@@ -35,7 +35,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 		if (Ajde::app()->getRequest()->has('output') && Ajde::app()->getRequest()->get('output') == 'table') {
 			Ajde::app()->getDocument()->setLayout(new Ajde_Layout('empty'));
 		}
-				
+
 		$crud = $this->getCrudInstance();
 		/* @var $crud Ajde_Crud */
 		if (!$crud) {
@@ -47,12 +47,35 @@ class _coreCrudController extends Ajde_Acl_Controller
 		
 		// just preload it
 		$crud->getCollectionView();
-		
-		$view = $crud->getTemplate();		
-		$view->assign('crud', $crud);
-		
-		return $view->render();
+
+        if (Ajde::app()->getRequest()->has('output') && Ajde::app()->getRequest()->get('output') == 'excel') {
+            $url = '_core/crud:exportBuffer';
+
+            $exporter = $crud->export('excel');
+
+            $exportSession = new Ajde_Session('export');
+            $exportSession->setModel('exporter', $exporter);
+
+            $this->redirect($url);
+
+            return false;
+        }
+
+        $view = $crud->getTemplate();
+        $view->assign('crud', $crud);
+
+        return $view->render();
 	}
+
+    public function exportBuffer()
+    {
+        $exportSession = new Ajde_Session('export');
+
+        $exporter = $exportSession->getModel('exporter');
+        /* @var $exporter Ajde_Crud_Export_Interface */
+        echo $exporter->send();
+        exit;
+    }
 	
 	public function editDefault()
 	{

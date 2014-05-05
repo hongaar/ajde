@@ -28,6 +28,7 @@ AC.Crud.List = function() {
             $('form.ACCrudList thead a.listView').live('click', AC.Crud.List.activateListView);
             $('form.ACCrudList thead a.gridView').live('click', AC.Crud.List.activateGridView);
             $('form.ACCrudList thead a.filterToggle').live('click', AC.Crud.List.toggleFilters);
+            $('form.ACCrudList thead a.exportExcel').live('click', AC.Crud.List.exportExcel);
 
 			$('form.ACCrudList input.id').live('click', AC.Crud.List.checkboxHandler);
 			$('form.ACCrudList input.toggleSelect').live('click', AC.Crud.List.toggleSelectHandler);
@@ -501,6 +502,28 @@ AC.Crud.List = function() {
 			
 			form.find('tr.filters').toggleClass('visible');
 			form.find('input[name=\'view[filterVisible]\']').val( $('tr.filters').hasClass('visible') ? '1' : '0' );
+        },
+
+        exportExcel: function(e) {
+            var form = $(this).parents('form');
+            var data = form.serializeArray();
+
+            var count = 0;
+            for (var elm in data) {
+                if (data[elm].name.substr(0, 5) !== 'view[') {
+                    delete data[elm];
+                }
+            }
+            data.push({
+                name: 'output',
+                value: 'excel'
+            });
+            var url = document.location.href;
+
+            var params = $.param(data);
+            url = url + '?' + params;
+
+            window.location.href = (url);
         }
 
 	};

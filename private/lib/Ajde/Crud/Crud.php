@@ -39,6 +39,76 @@ class Ajde_Crud extends Ajde_Object_Standard
 		$controller->setCrudInstance($this);
 		return $controller->invoke();
 	}
+
+    public function export($format = 'excel')
+    {
+        $exporterClass = 'Ajde_Crud_Export_' . ucfirst($format);
+        $exporter = new $exporterClass;
+        /* @var $exporter Ajde_Crud_Export_Interface */
+
+        $table = array();
+
+        $fieldsToShow = $this->getFieldNames();
+
+        $headers = array();
+
+        foreach($fieldsToShow as $fieldName) {
+            $field = $this->getField($fieldName);
+
+            $headers[] = $field->getLabel();
+        }
+
+        $table[] = $headers;
+
+        // remove limit
+        $cView = $this->getCollectionView();
+        $cView->setPageSize(9999999999);
+
+        foreach($items = $this->getItems() as $model) {
+		    /* @var $model Ajde_Model */
+		    $this->fireCrudLoadedOnModel($model);
+
+            $row = array();
+
+            foreach($fieldsToShow as $fieldName) {
+
+                $field = $this->getField($fieldName);
+                $value = $model->has($fieldName) ? $model->get($fieldName) : false;
+
+                // Sort
+                if ($this->getField($fieldName) instanceof Ajde_Crud_Field_Sort) {
+                    $row[] = $value;
+                // Display function
+//                } elseif ($field->hasFunction() && $field->getFunction()) {
+//                    $displayFunction = $field->getFunction();
+//                    $displayFunctionArgs = $field->hasFunctionArgs() ? $field->getFunctionArgs() : array();
+//                    $funcValue = call_user_func_array(array($model, $displayFunction), $displayFunctionArgs);
+//                    $row[] = $funcValue;
+                // Linked Model (not loaded)
+                } elseif ($value instanceof Ajde_Model && !$value->hasLoaded()) {
+                    $row[] = "(not set)";
+                // Linked Model
+                } elseif ($value instanceof Ajde_Model && $value->hasLoaded()) {
+                    $row[] = $value->get($value->getDisplayField());
+                // Boolean
+                } elseif ($field instanceof Ajde_Crud_Field_Boolean) {
+                    $row[] = $value;
+                // File
+                } elseif ($this->getField($fieldName) instanceof Ajde_Crud_Field_File) {
+                    $row[] = Config::get('site_root') . $field->getSaveDir() . $value;
+                // Text value
+                } else {
+                    $row[] = strip_tags($value);
+                }
+
+            }
+
+            $table[] = $row;
+        }
+
+        $exporter->prepare($this->getSessionName(), $table);
+        return $exporter;
+    }
 	
 	/**
 	 * GETTERS & SETTERS 

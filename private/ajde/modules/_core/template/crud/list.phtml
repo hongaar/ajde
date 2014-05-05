@@ -194,6 +194,9 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 				<?php if ($showFilters && !$crudView->getDisableFilter()) { ?>
 					&nbsp; <a href="javascript:void(null);" class='btn filterToggle <?php echo $crudView->getFilterVisible() ? 'active' : ''; ?>' data-toggle="button" title='Toggle filters'><i class='icon-filter'></i></a>
 				<?php } ?>
+                <?php if ($crud->getOption('list.allowExport', true)) { ?>
+                    &nbsp; <a href="javascript:void(null);" class='btn btn-success exportExcel' data-toggle="button" title='Export to Excel'><i class='icon-download-alt icon-white'></i></a>
+                <?php } ?>
             </td>
 		</tr>
         <?php } ?>
@@ -393,7 +396,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 					<?php echo __("Show"); ?>
 				</span>
 				<select name="view[pageSize]" class="pageSize">
-					<?php foreach(array(5, 10, 25, 50, 100) as $pageSize) { ?>
+					<?php foreach(array(5, 10, 25, 50, 100, 250, 500, 1000) as $pageSize) { ?>
 					<option <?php if ($crudView->getPageSize() == $pageSize) { echo 'selected'; } ?> value="<?php echo $pageSize; ?>"><?php echo $pageSize; ?></option>
 					<?php } ?>
 				</select>

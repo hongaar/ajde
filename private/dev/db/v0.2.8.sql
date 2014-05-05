@@ -145,3 +145,7 @@ ALTER TABLE `form`
 ALTER TABLE `submission`
   ADD CONSTRAINT `submission_ibfk_1` FOREIGN KEY (`user`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
   ADD CONSTRAINT `submission_ibfk_2` FOREIGN KEY (`form`) REFERENCES `form` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
+
+
+ALTER TABLE `transaction` ADD COLUMN `added`  timestamp NULL DEFAULT NULL COMMENT 'Added' AFTER `secret_archive`;
+ALTER TABLE `user` ADD COLUMN `tester`  tinyint(1) NULL DEFAULT 0 COMMENT 'Tester' AFTER `debug`;
