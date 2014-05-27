@@ -306,11 +306,25 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 		if (!$view->isEmpty('filter')) {
 			foreach($view->getFilter() as $fieldName => $filterValue) {
 				if ($filterValue != '') {
-					$this->addFilter(new Ajde_Filter_Where((string) $this->getTable() . '.' . $fieldName, Ajde_Filter::FILTER_EQUALS, $filterValue));
+                    $fieldType = $this->getTable()->getFieldProperties($fieldName, 'type');
+                    if ($fieldType == Ajde_Db::FIELD_TYPE_DATE) {
+                        // date fields
+                        $start = $filterValue['start'] ? date( 'Y-m-d H:i:s', strtotime($filterValue['start'] . ' 00:00:00')) : false;
+                        $end = $filterValue['end'] ? date( 'Y-m-d H:i:s', strtotime($filterValue['end'] . ' 23:59:59')) : false;
+                        if ($start) {
+                            $this->addFilter(new Ajde_Filter_Where((string) $this->getTable() . '.' . $fieldName, Ajde_Filter::FILTER_GREATEROREQUAL, $start));
+                        }
+                        if ($end) {
+                            $this->addFilter(new Ajde_Filter_Where((string) $this->getTable() . '.' . $fieldName, Ajde_Filter::FILTER_LESSOREQUAL, $end));
+                        }
+                    } else {
+                        // non-date fields
+                        $this->addFilter(new Ajde_Filter_Where((string) $this->getTable() . '.' . $fieldName, Ajde_Filter::FILTER_EQUALS, $filterValue));
+                    }
 				}
 			}
 		}
-		
+
 		// SEARCH
 		if (!$view->isEmpty('search')) {
 			$this->addTextFilter($view->getSearch());
@@ -335,7 +349,10 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 			switch ($fieldProperties['type']) {
 				case Ajde_Db::FIELD_TYPE_TEXT:
 				case Ajde_Db::FIELD_TYPE_ENUM:
-					$searchFilter->addFilter(new Ajde_Filter_Where((string) $this->getTable() . '.' . $fieldName, Ajde_Filter::FILTER_LIKE, '%' . $text . '%', Ajde_Query::OP_OR));
+                    $searchFilter->addFilter(new Ajde_Filter_Where((string) $this->getTable() . '.' . $fieldName, Ajde_Filter::FILTER_LIKE, '%' . $text . '%', Ajde_Query::OP_OR));
+                    break;
+                case Ajde_Db::FIELD_TYPE_NUMERIC:
+					$searchFilter->addFilter(new Ajde_Filter_Where('CAST(' . (string) $this->getTable() . '.' . $fieldName . ' AS CHAR)', Ajde_Filter::FILTER_LIKE, '%' . $text . '%', Ajde_Query::OP_OR));
 					break;
 				default:
 					break;

@@ -39,4 +39,20 @@ class Ajde_Crud_Options_Edit extends Ajde_Crud_Options
 	 * @return Ajde_Crud_Options_Edit
 	 */
 	public function setAction($action)	{ return $this->_set('action', $action); }
+
+    /**
+     * Whether the view is read only
+     *
+     * @param boolean $isReadonly
+     * @return Ajde_Crud_Options_Edit
+     */
+    public function setIsReadonly($isReadonly) { return $this->_set('readonly', $isReadonly); }
+
+    /**
+     * Enables / disable autosave
+     *
+     * @param boolean $enabled
+     * @return Ajde_Crud_Options_Edit
+     */
+    public function setAutosave($enabled) { return $this->_set('autosave', $enabled); }
 }

@@ -142,6 +142,11 @@ class _coreCrudController extends Ajde_Acl_Controller
 				$crud->setOption('fields.' . $field . '.hidden', true);	
 			}
 		}
+
+        // Read only entire view?
+        if ($crud->getOption('edit.readonly', false)) {
+            $crud->setReadOnlyForAllFields();
+        }
 		
 		// Reload Crud fields in case they were already loaded
 		$crud->loadFields();

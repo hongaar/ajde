@@ -5,24 +5,31 @@ $field = $this->field;
 
 <?php if (!$field->getLength()) { ?>
 
-<textarea
-	<?php if ($field->hasDisableRichText() && $field->getDisableRichText()) {
-		echo 'class=\'noRichText span12\'';
-	} else {
-        echo 'class=\'span12\'';
-    } ?>
-	style='<?php if ($field->hasTextInputHeight()) {
-		echo 'height: '. $field->getTextInputHeight() . 'em !important;';
-	} if ($field->hasTextInputWidth()) {
-		echo 'width: '. $field->getTextInputWidth() . 'em !important;';
-	} ?>'
-	name='<?php echo $field->getName(); ?>'
-	<?php if ($field->hasReadonly() && $field->getReadonly() === true) {
-		echo ' readonly="readonly" ';	
-	} ?>
->
-<?php echo $field->getValue(); ?>
-</textarea>
+    <?php if ( ($field->hasReadonly() && $field->getReadonly() === true) && !($field->hasDisableRichText() && $field->getDisableRichText()) ) { ?>
+
+        <?php echo _c($field->getValue()); ?>
+
+    <?php } else { ?>
+
+        <textarea
+            <?php if ($field->hasDisableRichText() && $field->getDisableRichText()) {
+                echo 'class=\'noRichText span12\'';
+            } else {
+                echo 'class=\'span12\'';
+            } ?>
+            style='<?php if ($field->hasTextInputHeight()) {
+                echo 'height: '. $field->getTextInputHeight() . 'em !important;';
+            } if ($field->hasTextInputWidth()) {
+                echo 'width: '. $field->getTextInputWidth() . 'em !important;';
+            } ?>'
+            name='<?php echo $field->getName(); ?>'
+            <?php if ($field->hasReadonly() && $field->getReadonly() === true) {
+                echo ' readonly="readonly" ';
+            } ?>
+        ><?php echo $field->getValue(); ?>
+        </textarea>
+
+    <?php } ?>
 
 <?php } else { ?>
 

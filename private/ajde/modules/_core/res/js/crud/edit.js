@@ -28,7 +28,7 @@ AC.Crud.Edit = function() {
 				var self = this;
 				AC.Crud.Edit.saveHandler.call(self, e, 'edit');
 			});
-			
+
 			AC.Shortcut.add('Ctrl+S', AC.Crud.Edit.saveHandler);
 			AC.Shortcut.add('Ctrl+Alt+S', function(e) {
 				var self = this;
@@ -46,9 +46,15 @@ AC.Crud.Edit = function() {
 					$(this).stop(true, true).hide('fast');
 				}
 			});
+
+            // Set form input elements
+            $input = $('form.ACCrudEdit :input');
 			
 			// Dirty handler for form input elements
-            $('form.ACCrudEdit :input').on('change', AC.Crud.Edit.setDirty);
+            $input.on('change', AC.Crud.Edit.setDirty);
+
+            // Trigger autosave on form input elements
+            $input.on('change', AC.Crud.Edit.setDirty);
 			
 		},
             

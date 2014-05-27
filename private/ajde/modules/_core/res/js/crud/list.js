@@ -35,6 +35,7 @@ AC.Crud.List = function() {
 			$('form.ACCrudList td.toolbar a.new').live('click', AC.Crud.List.newHandler);
 			$('form.ACCrudList td.toolbar a.delete').live('click', AC.Crud.List.multipleDeleteHandler);
 			$('form.ACCrudList td.buttons a.edit').live('click', AC.Crud.List.editHandler);
+            $('form.ACCrudList td.buttons a.view').live('click', AC.Crud.List.viewHandler);
 			$('form.ACCrudList td.buttons a.delete').live('click', AC.Crud.List.deleteHandler);
 
 			$('form.ACCrudList td.buttons a.prev').live('click', AC.Crud.List.prevHandler);
@@ -43,6 +44,7 @@ AC.Crud.List = function() {
 			$('form.ACCrudList td.buttons select.pageSize').live('change', AC.Crud.List.pageSizeHandler);
 			$('form.ACCrudList th a.order').live('click', AC.Crud.List.orderHandler);
 			$('form.ACCrudList th select.filter').live('change', AC.Crud.List.filterSelectHandler);
+            $('form.ACCrudList th input.filter').live('change', AC.Crud.List.filterSelectHandler);
 			$('form.ACCrudList th input[name=\'view[search]\']').live('keypress', AC.Crud.List.searchBoxHandler);
 			$('form.ACCrudList th input[name=\'view[search]\']').live('search', AC.Crud.List.searchBoxHandler);
 			$('form.ACCrudList th a.search').live('click', AC.Crud.List.searchButtonHandler);
@@ -251,6 +253,16 @@ AC.Crud.List = function() {
 				window.location.href = window.location.pathname + '?edit=' + id;
 			}
 		},
+
+        viewHandler: function(e) {
+            if ($(this).data('url')) {
+                e.stopPropagation();
+                e.preventDefault();
+                window.open($(this).data('url'));
+            } else {
+                AC.Crud.List.editHandler.call(this, e);
+            }
+        },
 
 		multipleDeleteHandler: function(e, id) {
 			id = id || false;

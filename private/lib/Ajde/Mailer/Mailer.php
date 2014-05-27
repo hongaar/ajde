@@ -53,7 +53,12 @@ class Ajde_Mailer extends PHPMailer
             $this->msgHTML($body);
 
             // send!
-            return $this->send();
+            $status = $this->send();
+
+            // log
+            MailerlogModel::log($fromEmail, $fromName, $toEmail, $toName, $subject, $body, $status ? 1 : 0);
+
+            return $status;
 
         } else {
             throw new Ajde_Exception('Email with identifier ' . $identifier . ' not found');
@@ -96,7 +101,7 @@ class Ajde_Mailer extends PHPMailer
         return $string;
     }
     
-	public function SendQuickMail($to, $from, $fromName, $subject, $body) {	
+	public function SendQuickMail($to, $from, $fromName, $subject, $body, $toName = '') {
 		// set class to use PHP mail function
 		// $this->IsMail();
 		
@@ -104,7 +109,7 @@ class Ajde_Mailer extends PHPMailer
 		$this->clearAllRecipients();
 		
 		// to
-		$this->addAddress($to);
+		$this->addAddress($to, $toName);
 		
 		// from
 		$this->From = $from;
@@ -123,9 +128,14 @@ class Ajde_Mailer extends PHPMailer
 		
 		// set html content type
 		$this->isHTML(true);
-		
+
 		// send!
-		return $this->send();
+		$status = $this->send();
+
+        // log
+        MailerlogModel::log($from, $fromName, $to, $toName, $subject, $body, $status ? 1 : 0);
+
+        return $status;
 	}
 	
 	public function addAddress($address, $name = '')

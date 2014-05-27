@@ -1,0 +1,82 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */
+
+$options = new Ajde_Crud_Options();
+$options	
+	->selectFields()
+		->selectField('status')
+            ->setType('boolean')
+			->up()
+		->up()
+	->selectList()
+		->selectButtons()
+			->setNew(false)
+			->setEdit(false)
+            ->setView(true)
+			->up()
+		->setMain('subject')
+		->setShow(array('to_email', 'to_name', 'subject', 'sent_on', 'status'))
+		->selectView()
+			->setOrderBy('sent_on')
+            ->setOrderDir('DESC')
+			->up()
+		->up()
+	->selectEdit()
+        ->setIsReadonly(true)
+		->selectLayout()
+			->addRow()
+				->addColumn()
+                    ->setSpan(8)
+                    ->addBlock()
+                        ->setClass('primary narrow sidebar')
+                        ->setShow(array('subject'))
+                        ->up()
+                    ->addBlock()
+                        ->setClass('sidebar')
+                        ->setShow(array('body'))
+                        ->up()
+					->up()
+				->addColumn()
+					->setSpan(4)
+                    ->addBlock()
+                        ->setTitle('Recipient')
+                        ->setClass('well')
+                        ->setShow(array('to_email', 'to_name'))
+                        ->up()
+                    ->addBlock()
+                        ->setTitle('Sender')
+                        ->setClass('well')
+                        ->setShow(array('from_email', 'from_name'))
+                        ->up()
+                    ->addBlock()
+						->setTitle('Metadata')
+						->setClass('well')
+						->setShow(array('sent_on', 'status'))
+						->up()		
+									
+		
+	->finished();
+
+$crud = $this->ACCrudList('mailerlog', $options);
+
+?>
+
+<div class="row-fluid">
+	<div class="span3 hideInIframe">
+		<?php echo $this->includeModule('admin/cms:menu'); ?>		
+	</div><!--/span-->
+	<div class="span9 expandInIframe">
+		
+		<div class="page-header">
+			<h1>
+				<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
+			</h1>
+		</div>
+
+        <?php if (!Ajde::app()->getRequest()->has('edit') && !Ajde::app()->getRequest()->has('new')) {
+            echo $this->includeModule('admin/email:menu');
+        } ?>
+		
+		<?php echo $crud->output(); ?>
+		
+	</div><!--/span-->
+</div><!--/row-->

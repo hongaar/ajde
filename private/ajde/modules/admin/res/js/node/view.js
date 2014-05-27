@@ -5,15 +5,15 @@ if (typeof App.Admin.Node === "undefined") {App.Admin.Node = function(){}};
 
 App.Admin.Node.View = function() {
 
-	var viewHandler = function(e) {
-		e.stopPropagation();
-		e.preventDefault();
-		var row = $(this).parents('tr');
-		var id = row.find('input[type=checkbox]').attr('value');
-		window.location.href = 'sample/view/' + id + '.html';
-		return false;
-	};
-	
+//	var viewHandler = function(e) {
+//		e.stopPropagation();
+//		e.preventDefault();
+//		var row = $(this).parents('tr');
+//		var id = row.find('input[type=checkbox]').attr('value');
+//		window.location.href = 'sample/view/' + id + '.html';
+//		return false;
+//	};
+//
 	var addChildHandler = function(e) {
 		e.stopPropagation();
 		e.preventDefault();
@@ -28,7 +28,7 @@ App.Admin.Node.View = function() {
 	return {
 
 		init: function() {
-			$('form.ACCrudList td.buttons a.btn.view').live('click', viewHandler);
+//			$('form.ACCrudList td.buttons a.btn.view').live('click', viewHandler);
 			$('form.ACCrudList td.buttons a.btn.add-child').live('click', addChildHandler);
 		}
 

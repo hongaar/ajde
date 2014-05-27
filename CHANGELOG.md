@@ -2,6 +2,26 @@
 Due to a bug in the auto-updater, updating from a version prior to v0.2.2 doesn't work. Please use Git instead.
 
 
+#### v0.2.8
+
+ - **NEW** Form / submissions manager
+ - **NEW** E-mail / template / archive manager
+ - **NEW** Log to DB table instead of files by default
+ - **NEW** Import media files from Google Drive
+ - **NEW** Export CRUD view to Excel
+ - **NEW** Filter on dates
+ - **FIX** Lots of small bugfixes
+
+
+#### v0.2.7
+
+ - **NEW** Shop carts and transactions in administrator
+ - **NEW** Change slug of nodes
+ - **NEW** Added Mollie Payment Service Gateway adapter
+ - **NEW** Get picture from SSO provider
+ - **FIX** Spatial field bug
+
+
 #### v0.2.6
 
  - **NEW** Login with Facebook, Twitter & Google+

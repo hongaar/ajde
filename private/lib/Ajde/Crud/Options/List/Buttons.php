@@ -41,7 +41,23 @@ class Ajde_Crud_Options_List_Buttons extends Ajde_Crud_Options
 	 * @return Ajde_Crud_Options_List_Buttons 
 	 */
 	public function setEdit($show) { return $this->_set('edit', $show); }
-	
+
+    /**
+     * Show the view button
+     *
+     * @param boolean $show
+     * @return Ajde_Crud_Options_List_Buttons
+     */
+    public function setView($show) { return $this->_set('view', $show); }
+
+    /**
+     * Sets the view URL
+     *
+     * @param string $function
+     * @return Ajde_Crud_Options_List_Buttons
+     */
+    public function setViewUrlFunction($function) { return $this->_set('viewUrlFunction', $function); }
+
 	/**
 	 * Shows checkboxes
 	 * 

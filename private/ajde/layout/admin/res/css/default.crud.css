@@ -271,9 +271,9 @@ table.crud {
         color: #777;
     }
 
-    select, input[type=search] {
+    select, input[type=search], input[type=date] {
         &.active {
-            border: 2px solid #eb6864;
+            border: 2px solid #007fff;
         }
     }
     
@@ -318,7 +318,7 @@ table.crud {
                     font-size: 1.5em;
                     line-height: 1.5em;
                     height: auto;
-                    border: 1px solid #007fff;
+//                    border: 1px solid #007fff;
 
                     -moz-appearance:    textfield;
                     -webkit-appearance: textfield;

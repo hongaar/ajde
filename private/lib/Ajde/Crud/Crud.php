@@ -367,6 +367,13 @@ class Ajde_Crud extends Ajde_Object_Standard
 		}
 		return $this->_fields;
 	}
+
+    public function setReadOnlyForAllFields()
+    {
+        foreach($this->getModel()->getTable()->getFieldNames() as $fieldName) {
+            $this->setOption('fields.' . $fieldName . '.readonly', true);
+        }
+    }
 	
 	public function loadFields()
 	{

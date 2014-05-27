@@ -73,7 +73,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 					$orderDir = Ajde_Query::ORDER_DESC;
 					$class = 'asc';
 				}
-                if ($field instanceof Ajde_Crud_Field_Enum || $field instanceof Ajde_Crud_Field_Fk) {
+                if ($field instanceof Ajde_Crud_Field_Enum || $field instanceof Ajde_Crud_Field_Fk || $field instanceof Ajde_Crud_Field_Boolean || $field instanceof Ajde_Crud_Field_Date) {
                     $showFilters = true;
                 }
 				?>
@@ -99,6 +99,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
                             // skip this one
                         } else if ($field instanceof Ajde_Crud_Field_Enum || $field instanceof Ajde_Crud_Field_Fk) {
 							$fieldFilter = $crudView->getFilterForField($field->getName()); ?>
+
 							<select class="filter span12 <?php if ($fieldFilter) echo 'active'; ?>" name="view[filter][<?php echo $field->getName(); ?>]">
 								<option value="" class="select"><?php echo __("No filter"); ?></option>
 								<?php foreach($field->getValues() as $key => $option) { ?>
@@ -109,11 +110,17 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 							</select>
 						<?php } else if ($field instanceof Ajde_Crud_Field_Boolean) {
                             $fieldFilter = $crudView->getFilterForField($field->getName()); ?>
-                            <select class="filter span12 <?php if ($fieldFilter) echo 'active'; ?>" name="view[filter][<?php echo $field->getName(); ?>]">
+                            <select class="filter span12 <?php if (strlen($fieldFilter)) echo 'active'; ?>" name="view[filter][<?php echo $field->getName(); ?>]">
                                 <option value="" class="select"><?php echo __("No filter"); ?></option>
                                     <option value='0' <?php if ('0' == $fieldFilter) { echo "selected='selected'"; } ?>><?php echo __('Off'); ?></option>
                                     <option value='1' <?php if ('1' == $fieldFilter) { echo "selected='selected'"; } ?>><?php echo __('On'); ?></option>
                             </select>
+                        <?php } else if ($field instanceof Ajde_Crud_Field_Date) {
+                            $fieldFilter = $crudView->getFilterForField($field->getName());
+                            $start = $fieldFilter['start'];
+                            $end = $fieldFilter['end']; ?>
+                            <input class="filter span6 <?php if (strlen($start)) echo 'active'; ?>" name="view[filter][<?php echo $field->getName(); ?>][start]" type="date" value="<?php echo _c($start); ?>" title="Start date" />
+                            <input class="filter span6 <?php if (strlen($end)) echo 'active'; ?>" name="view[filter][<?php echo $field->getName(); ?>][end]" type="date" value="<?php echo _c($end); ?>" title="End date" />
                         <?php } ?>
 					</th>
 				<?php } ?>
@@ -330,6 +337,9 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
                     <?php } ?>
                     <?php if ($crud->getOption('list.buttons.edit', true)) { ?>
                         <a href="javascript:void(null);" class='btn btn-small btn-primary edit'><i class='icon-pencil icon-white'></i></a>
+                    <?php } ?>
+                    <?php if ($crud->getOption('list.buttons.view', false)) { ?>
+                        <a href="javascript:void(null);" class='btn btn-small btn-primary view' <?php if ($urlFunction = $crud->getOption('list.buttons.viewUrlFunction', false)) { $output = $model->{$urlFunction}(); echo 'data-url="' . $output . '"'; } ?>><i class='icon-eye-open icon-white'></i></a>
                     <?php } ?>
                     <?php if ($crud->getOption('list.buttons.delete', true)) { ?>
                         <a href="javascript:void(null);" class='btn btn-small btn-danger delete'><i class='icon-trash icon-white'></i></a>
