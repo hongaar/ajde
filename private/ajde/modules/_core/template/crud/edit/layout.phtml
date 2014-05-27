@@ -33,6 +33,8 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudEdit
             <div class="btn-group">
                 <button type="submit" class="btn btn-success save" title='Save changes and go back to overview'><i class='icon-ok icon-white'></i> save &amp; back</button>
                 <button type="submit" class="btn btn-primary apply" title='Save changes'>save</button>
+                <a href="javascript:void(null);" class='btn btn-primary cancel' title='Go back to overview'>back</a>
+                <span class="autosave-status"></span>
             </div>
             <a href="javascript:void(null);" class='btn pull-right cancel' title='Go back to overview'>back</a>
         <?php } else { ?>
@@ -126,6 +128,8 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudEdit
             <div class="btn-group">
                 <button type="submit" class="btn btn-success save" title='Save changes and go back to overview'><i class='icon-ok icon-white'></i> save &amp; back</button>
                 <button type="submit" class="btn btn-primary apply" title='Save changes'>save</button>
+                <a href="javascript:void(null);" class='btn btn-primary cancel' title='Go back to overview'>back</a>
+                <span class="autosave-status"></span>
             </div>
             <a href="javascript:void(null);" class='btn pull-right cancel' title='Go back to overview'>back</a>
         <?php } else { ?>

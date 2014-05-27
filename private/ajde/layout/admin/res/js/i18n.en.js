@@ -10,7 +10,7 @@ i18n = function() {
 		loading : "Loading...",
 		saving: "Saving...",
 		timeoutWarning: "The current page is about to time out",
-		timeoutCountdown: "The current page is about to time out, please click here within %s seconds to prevent this",
+		timeoutCountdown: "The current page is about to time out, please click here to prevent this",
 		timedout: "Session timed out, please refresh the page."
 	}
 }();

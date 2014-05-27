@@ -10,6 +10,7 @@ AC.Crud.Edit = function() {
 	
 	var isIframe = false;
     var isDirty = false;
+    var autosaveInterval = 500;
 	
 	return {
 		
@@ -48,13 +49,13 @@ AC.Crud.Edit = function() {
 			});
 
             // Set form input elements
-            $input = $('form.ACCrudEdit :input');
+            input = ':input';
 			
 			// Dirty handler for form input elements
-            $input.on('change', AC.Crud.Edit.setDirty);
+            $('form.ACCrudEdit').find(input).on('change', AC.Crud.Edit.setDirty);
 
             // Trigger autosave on form input elements
-            $input.on('change', AC.Crud.Edit.setDirty);
+            $('form.ACCrudEdit.autosave').find(input).on('change', AC.Crud.Edit.autoSave);
 			
 		},
             
@@ -145,6 +146,11 @@ AC.Crud.Edit = function() {
 				window.location.href = window.location.pathname;
 			}
 		},
+
+        autoSave: function(e) {
+            var self = this;
+            AC.Crud.Edit.saveHandler.call(self, e, 'autosave');
+        },
 		
 		saveHandler: function(e, returnTo) {
 			returnTo = typeof(returnTo) === 'undefined' ? 'list' : returnTo;
