@@ -1,12 +1,14 @@
 <?php
 
-class NodeModel extends Ajde_Model_With_AclI18n
+class NodeModel extends Ajde_Model_With_AclI18nRevision
 {
 	protected $_autoloadParents = false;
 	protected $_displayField = 'title';
 	protected $_hasMeta = true;
 	
 	protected $_shadowModel;
+
+    protected $_ignoreFieldInRevision = array('updated', 'added', 'level', 'sort', 'lang_root');
 	
 	public static $_parentAclCache = array();
 	
@@ -227,7 +229,7 @@ class NodeModel extends Ajde_Model_With_AclI18n
 				return "<i class='icon-time' title='Queued' />";
 			} else if (($end = $this->get('published_end')) &&
 					strtotime($end) < time()) {
-				return "<i class='icon-time' title='Expired' />";
+				return "<i class='icon-remove' title='Expired' />";
 			} else {
 				return "<i class='icon-ok' title='Yes' />";
 			}
@@ -314,6 +316,9 @@ class NodeModel extends Ajde_Model_With_AclI18n
 	{
         // filter slug
         $this->slug = $this->_sluggify($this->slug);
+        if (empty($this->slug)) {
+            $this->slug = $this->_makeSlug();
+        }
 
 		$this->shadowCall('beforeSave');	
 	}
@@ -332,7 +337,7 @@ class NodeModel extends Ajde_Model_With_AclI18n
 //		$this->sort = $min - 1;
 		
 		// Slug
-		$this->_setSlug();
+        $this->slug = $this->_makeSlug();
 		
 		$this->shadowCall('beforeInsert');
 	}
@@ -398,7 +403,7 @@ class NodeModel extends Ajde_Model_With_AclI18n
     public function getSlug()
     {
         if (!$this->hasSlug()) {
-            $this->_makeSlug();
+            $this->slug = $this->_makeSlug();
         }
         return $this->slug;
     }
@@ -413,7 +418,7 @@ class NodeModel extends Ajde_Model_With_AclI18n
         do {
             $ghost->reset();
             $slug = $this->_sluggify($name);
-            $slug = $slug . ($uniqifier > 0 ? $uniqifier : '');
+            $slug = $slug . ($uniqifier > 0 ? '-' . $uniqifier : '');
             $ghost->loadBySlug($slug);
             $uniqifier++;
             if ($uniqifier >= 100) {
@@ -702,7 +707,7 @@ class NodeModel extends Ajde_Model_With_AclI18n
 			if (!$this->getNodetype() instanceof Ajde_Model) {
 				$this->loadParents();
 			}
-			$nodetype = str_replace(' ', '_', strtolower($this->getNodetype()->displayField()));
+//			$nodetype = str_replace(' ', '_', strtolower($this->getNodetype()->displayField()));
 //			$url = '-' . $nodetype . '/' . $this->getSlug();
             $url = $this->getFullUrl();
 			return $relative ? $url : Config::get('site_root') . $url;

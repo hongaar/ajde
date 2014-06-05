@@ -319,10 +319,11 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 	public function initRoute()
 	{
 		$route = $this->getRoute();
-		$langInstance = Ajde_Lang::getInstance();
-		if ($route->hasLang()) {			
-			$langInstance->setGlobalLang($route->getLang());
-		}
+        // TODO: lang now set in Ajde_Core_Route constructor, side effects?
+//		$langInstance = Ajde_Lang::getInstance();
+//		if ($route->hasLang()) {
+//			$langInstance->setGlobalLang($route->getLang());
+//		}
 		return $route;
 	}
 

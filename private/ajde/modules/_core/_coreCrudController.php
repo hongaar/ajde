@@ -9,7 +9,13 @@ class _coreCrudController extends Ajde_Acl_Controller
 	 * Ajde_Component_Crud
 	 ************************/
 	
-	public function beforeInvoke($allowed = array()) {
+	public function beforeInvoke($allowed = array())
+    {
+        // disable cache and auto translations
+        Ajde_Cache::getInstance()->disable();
+        Ajde_Lang::getInstance()->disableAutoTranslationOfModels();
+
+        // try to get the crud instance
 		$crud = $this->getCrudInstance();
 		if (!$crud && Ajde::app()->getRequest()->has('crudId')) {
 			Ajde_Model::registerAll();
@@ -20,14 +26,12 @@ class _coreCrudController extends Ajde_Acl_Controller
 			/* @var $crud Ajde_Crud */
 			$this->setAclParam($crud->getSessionName());
 		}
+
 		return parent::beforeInvoke();
 	}
 	
 	public function listHtml()
 	{
-		$cache = Ajde_Cache::getInstance();
-		$cache->disable();
-		
 		if (Ajde::app()->getRequest()->has('edit') || Ajde::app()->getRequest()->has('new')) {
 			return $this->editDefault();			
 		}
@@ -66,6 +70,17 @@ class _coreCrudController extends Ajde_Acl_Controller
 
         return $view->render();
 	}
+
+    public function revisionsHtml()
+    {
+        $this->setAction('edit/revisions');
+
+        $this->getView()->assign('revisions', $this->getRevisions());
+        $this->getView()->assign('model', $this->getModel());
+        $this->getView()->assign('crud', $this->getCrud());
+
+        return $this->render();
+    }
 
     public function exportBuffer()
     {
@@ -378,7 +393,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 			$model->loadByPK($id);
 		}
 		$model->populate($post);
-		
+
 		Ajde_Event::trigger($model, 'beforeCrudSave', array($crud));
 
 		if (!$model->validate($crud->getOptions('fields'))) {
@@ -405,14 +420,19 @@ class _coreCrudController extends Ajde_Acl_Controller
 		}
 		
 		if ($success === true) {
-			// Destroy reference to crud instance
-			$session->destroy($crudId);
-			
-			if (Ajde::app()->getRequest()->getParam('fromIframe', '0') != 1) {
-				// Set flash alert
-				Ajde_Session_Flash::alert( 'Record ' . ($operation == 'insert' ? 'added' : 'saved') . ': ' . $model->get($model->getDisplayField()) );
-			}
+
+            if (Ajde::app()->getRequest()->getParam('fromAutoSave', '0') != 1) {
+
+                // Destroy reference to crud instance
+                $session->destroy($crudId);
+
+                if (Ajde::app()->getRequest()->getParam('fromIframe', '0') != 1) {
+                    // Set flash alert
+                    Ajde_Session_Flash::alert( 'Record ' . ($operation == 'insert' ? 'added' : 'saved') . ': ' . $model->get($model->getDisplayField()) );
+                }
+            }
 		}
+
 		return array(
 			'operation' => $operation,
 			'id' => $model->getPK(),

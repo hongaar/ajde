@@ -224,11 +224,15 @@ class Ajde_Model extends Ajde_Object_Standard
 		$this->_data = array_merge($this->_data, $array);
 	}
 
-	public function getValues() {
+	public function getValues($recursive = true) {
 		$return = array();
 		foreach($this->_data as $k => $v) {
 			if ($v instanceof Ajde_Model) {
-				$return[$k] = $v->getValues();
+                if ($recursive) {
+				    $return[$k] = $v->getValues();
+                } else {
+                    @$return[$k] = (string) $v;
+                }
 			} else {
 				$return[$k] = $v;
 			}
@@ -295,13 +299,15 @@ class Ajde_Model extends Ajde_Object_Standard
 		return $this->getTable() . '_meta';
 	}
 	
-	public function populateMeta($values = false)
+	public function populateMeta($values = false, $override = true)
 	{
 		if (!$values) {
 			$values = $this->getMetaValues();
 		}
 		foreach($values as $metaId => $value) {
-			$this->set('meta_' . $metaId, $value);
+            if ($override || !$this->has('meta_' . $metaId)) {
+			    $this->set('meta_' . $metaId, $value);
+            }
 		}
 	}
 		

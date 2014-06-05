@@ -10,11 +10,7 @@ $fieldOptions = $crud->getOptions('fields');
 $crudView = $crud->getCollection()->getView();
 
 // Which fields to show?
-if (isset($listOptions['show'])) {
-	$fieldsToShow = $crud->getOption('list.show');
-} else {
-	$fieldsToShow = $crud->getFieldNames();
-}
+$fieldsToShow = $crudView->getColumns();
 
 // Do we have a main filter?
 $mainFilter = $crudView->getMainFilter();
@@ -56,7 +52,35 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 		data-editaction='<?php echo $crud->getEditAction(); ?>'
 		data-newaction='<?php echo $crud->getNewAction(); ?>'
 	>
-	<thead <?php if (!$crud->getOption('list.showHeader', true)) { echo 'class="hidden"'; } ?>>        
+	<thead <?php if (!$crud->getOption('list.showHeader', true)) { echo 'class="hidden"'; } ?>>
+        <?php if (!$crudView->getDisableFilter()) { ?>
+            <tr class="filters view <?php echo $crudView->getFilterVisible() ? 'visible' : ''; ?>">
+                <th <?php if (!$crud->getOption('list.buttons.select', true)) { ?>class="hidden"<?php } ?>></th>
+                <td colspan="<?php echo $columnCount + 1; ?>">
+<!--                    <div class="pull-left" style="width: 50%">-->
+<!--                        <b>view</b> <select name="view[view]" class="view">-->
+<!--                            <optgroup label="Built-in">-->
+<!--                                <option value="default1">Default 1</option>-->
+<!--                                <option value="default2">Default 2</option>-->
+<!--                            </optgroup>-->
+<!--                            <optgroup label="Custom">-->
+<!--                                <option>Custom 1</option>-->
+<!--                                <option>Custom 2</option>-->
+<!--                                <option>Custom 3</option>-->
+<!--                            </optgroup>-->
+<!--                        </select>-->
+<!--                    </div>-->
+                    <div class="pull-right" style="width: 50%; text-align: right;">
+                        <b>columns</b> <select name="view[columns][]" class="columns span10 chosen" multiple data-placeholder="Pick columns">
+                            <?php foreach($crud->getFieldLabels() as $fieldName => $fieldLabel) { ?>
+                                <option value="<?php echo _c($fieldName); ?>" <?php if (in_array($fieldName, $fieldsToShow)) { echo 'selected'; } ?>><?php echo _c($fieldLabel); ?></option>
+                            <?php } ?>
+                        </select> <a href="javascript:void(null)" class="resetColumns">reset</a>
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+        <?php } ?>
 		<tr <?php if (!$crud->getOption('list.showColumnNames', true)) { echo 'class="hidden"'; } ?>>
 			<th width="10" <?php if (!$crud->getOption('list.buttons.select', true)) { ?>class="hidden"<?php } ?>>
 				<input type="hidden" name="view[orderBy]" value="<?php echo $crudView->getOrderBy(); ?>" />
@@ -97,6 +121,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 						<?php
                         if ($mainFilter == $fieldName) {
                             // skip this one
+                            echo '<small style="color: silver; font-weight: 300;">see above</small>';
                         } else if ($field instanceof Ajde_Crud_Field_Enum || $field instanceof Ajde_Crud_Field_Fk) {
 							$fieldFilter = $crudView->getFilterForField($field->getName()); ?>
 
@@ -115,12 +140,19 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
                                     <option value='0' <?php if ('0' == $fieldFilter) { echo "selected='selected'"; } ?>><?php echo __('Off'); ?></option>
                                     <option value='1' <?php if ('1' == $fieldFilter) { echo "selected='selected'"; } ?>><?php echo __('On'); ?></option>
                             </select>
+                        <?php } else if ($field instanceof Ajde_Crud_Field_Text || $field instanceof Ajde_Crud_Field_File) {
+                            if ($crud->getModel()->isFieldEncrypted($field->getName())) {
+                                echo '<small style="color: silver; font-weight: 300;">encrypted</small>';
+                            } else {
+                                $fieldFilter = $crudView->getFilterForField($field->getName()); ?>
+                                <input class="filter span12 <?php if (strlen($fieldFilter)) echo 'active'; ?>" name="view[filter][<?php echo $field->getName(); ?>]" type="text" value="<?php echo _e($fieldFilter); ?>" />
+                            <?php } ?>
                         <?php } else if ($field instanceof Ajde_Crud_Field_Date) {
                             $fieldFilter = $crudView->getFilterForField($field->getName());
                             $start = $fieldFilter['start'];
                             $end = $fieldFilter['end']; ?>
-                            <input class="filter span6 <?php if (strlen($start)) echo 'active'; ?>" name="view[filter][<?php echo $field->getName(); ?>][start]" type="date" value="<?php echo _c($start); ?>" title="Start date" />
-                            <input class="filter span6 <?php if (strlen($end)) echo 'active'; ?>" name="view[filter][<?php echo $field->getName(); ?>][end]" type="date" value="<?php echo _c($end); ?>" title="End date" />
+                            <input class="filter span12 <?php if (strlen($start)) echo 'active'; ?>" name="view[filter][<?php echo $field->getName(); ?>][start]" type="date" value="<?php echo _c($start); ?>" title="Start date" /><br/>
+                            <input class="filter span12 <?php if (strlen($end)) echo 'active'; ?>" name="view[filter][<?php echo $field->getName(); ?>][end]" type="date" value="<?php echo _c($end); ?>" title="End date" />
                         <?php } ?>
 					</th>
 				<?php } ?>
@@ -254,6 +286,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
                 } elseif ($value instanceof Ajde_Model && !$value->hasLoaded()) { ?>
                     <td <?php echo $gridData; ?> class="linkedModel <?php if ($crud->getOption('list.main', false) == $field->getName()) { echo 'main'; } ?>">(not set)</td>
                 <?php
+                // Linked Model (loaded)
                 } elseif ($value instanceof Ajde_Model && $value->hasLoaded()) { ?>
 					<td <?php echo $gridData; ?> class="linkedModel <?php if ($crud->getOption('list.main', false) == $field->getName()) { echo 'main'; } ?>" title="<?php echo $value->get($value->getDisplayField()); ?>"><?php echo $value->get($value->getDisplayField()); ?></td>
 				<?php

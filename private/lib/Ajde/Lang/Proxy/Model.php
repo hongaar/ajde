@@ -33,19 +33,47 @@ abstract class Ajde_Lang_Proxy_Model extends Ajde_Model
 	 */
 	public function getTranslated($lang)
 	{
+        $autoTranslate = Ajde_Lang::getInstance()->autoTranslateModels();
+        Ajde_Lang::getInstance()->disableAutoTranslationOfModels();
+
 		$modelName = $this->toCamelCase($this->_tableName) . 'Model';
+        /* @var $translation Ajde_Lang_Proxy_Model */
 		$translation = new $modelName();
+
+        // if this is the root model, search for a translated leaf
 		$exist = $translation->loadByFields(array(
 				$this->languageRootField => $this->getPK(),
 				$this->languageField => $lang
 			));
+        $exist = $exist & $translation->hasLoaded();
+
+        // if this is a translation, see if the root has the right language
+        if (!$exist && $this->has($this->languageRootField)) {
+            $exist = $translation->loadByFields(array(
+                $this->getTable()->getPK() => $this->get($this->languageRootField),
+                $this->languageField => $lang
+            ));
+            $exist = $exist & $translation->hasLoaded();
+        }
+
+        // if this is a translation, see if there is another matching translation
+        if (!$exist && $this->has($this->languageRootField)) {
+            $exist = $translation->loadByFields(array(
+                $this->languageRootField => $this->get($this->languageRootField),
+                $this->languageField => $lang
+            ));
+            $exist = $exist & $translation->hasLoaded();
+        }
+
+        Ajde_Lang::getInstance()->autoTranslateModels($autoTranslate);
+
 		return $exist ? $translation : false;
 	}
 	
 	/**
 	 * 
 	 * @param string $lang
-	 * @return Ajde_Lang_Proxy_Acl_Model
+	 * @return Ajde_Lang_Proxy_Model
 	 */
 	public function getTranslatedLazy($lang)
 	{
@@ -55,16 +83,23 @@ abstract class Ajde_Lang_Proxy_Model extends Ajde_Model
 	
 	/**
 	 * 
-	 * @return Ajde_Model_I18n|boolean
+	 * @return Ajde_Lang_Proxy_Model|boolean
 	 */
 	public function getRootLang()
 	{
 		if ($this->hasNotEmpty($this->languageRootField)) {
 			$this->loadParent($this->languageRootField);
-			return $this->get($this->languageRootField);
+			$translated = $this->get($this->languageRootField);
+            return $translated;
 		} 
 		return false;
 	}
+
+    public function loadParent($column)
+    {
+        $return = parent::loadParent($column);
+        return $return;
+    }
 	
 	public function getTranslations()
 	{
@@ -74,7 +109,7 @@ abstract class Ajde_Lang_Proxy_Model extends Ajde_Model
 		}
 		
 		$collection = $this->getCollection();
-		/* @var $collection Ajde_Lang_Proxy_Acl_Collection */
+		/* @var $collection Ajde_Lang_Proxy_Collection */
 		
 		$collection->addFilter(new Ajde_Filter_Where($this->languageRootField, Ajde_Filter::FILTER_EQUALS, $rootLang->getPK()));
 		return $collection;
@@ -83,11 +118,11 @@ abstract class Ajde_Lang_Proxy_Model extends Ajde_Model
 	protected function _load($sql, $values, $populate = true)
 	{
 		$return = parent::_load($sql, $values, $populate);
-		if ($return) {
+		if (Ajde_Lang::getInstance()->autoTranslateModels() && $return) {
 			// get translation
 			$lang = Ajde_Lang::getInstance();
 			if ( $translation = $this->getTranslated($lang->getLang()) ) {
-				/* @var $translation Ajde_Lang_Proxy_Acl_Model */
+				/* @var $translation Ajde_Lang_Proxy_Model */
 				$this->reset();
 				$this->loadFromValues($translation->values());
 				

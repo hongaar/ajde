@@ -45,6 +45,8 @@ AC.Crud.List = function() {
 			$('form.ACCrudList th a.order').live('click', AC.Crud.List.orderHandler);
 			$('form.ACCrudList th select.filter').live('change', AC.Crud.List.filterSelectHandler);
             $('form.ACCrudList th input.filter').live('change', AC.Crud.List.filterSelectHandler);
+            $('form.ACCrudList td a.resetColumns').live('click', AC.Crud.List.filterResetColumns);
+            $('form.ACCrudList td select.columns').live('change', AC.Crud.List.filterSelectHandler);
 			$('form.ACCrudList th input[name=\'view[search]\']').live('keypress', AC.Crud.List.searchBoxHandler);
 			$('form.ACCrudList th input[name=\'view[search]\']').live('search', AC.Crud.List.searchBoxHandler);
 			$('form.ACCrudList th a.search').live('click', AC.Crud.List.searchButtonHandler);
@@ -73,6 +75,19 @@ AC.Crud.List = function() {
 				});
 			}
 		},
+
+        initView: function() {
+            // Chosen
+            setTimeout(function() {
+                var filtersVisible = $('.filters.view').hasClass('visible');
+                if (!filtersVisible) $('.filters.view').addClass('visible');
+                $("select.chosen").chosen({
+                    allow_single_deselect: true,
+                    search_contains: true
+                });
+                if (!filtersVisible) $('.filters.view').removeClass('visible');
+            }, 0);
+        },
 			
 		initPicker: function() {
 			if (isIframe) {
@@ -247,11 +262,18 @@ AC.Crud.List = function() {
 			var form = $(this).parents('form');
 			
 			if (row.parents('table').data('editaction')) {
-                debugger;
 				window.location.href = row.parents('table').data('editaction') + '?edit=' + id;
 			} else {
 				window.location.href = window.location.pathname + '?edit=' + id;
 			}
+
+            // clear selection
+            if(document.selection && document.selection.empty) {
+                document.selection.empty();
+            } else if(window.getSelection) {
+                var sel = window.getSelection();
+                sel.removeAllRanges();
+            }
 		},
 
         viewHandler: function(e) {
@@ -419,6 +441,12 @@ AC.Crud.List = function() {
 			AC.Crud.List.updateView(this);
 		},
 
+        filterResetColumns: function(e) {
+            $('form.ACCrudList td select.columns option').removeAttr('selected');
+            AC.Crud.List.resetPage(this);
+            AC.Crud.List.updateView(this);
+        },
+
 		searchBoxHandler: function(e) {
 			var self = this;
 			if (e.type == 'search' && !$(this).val()) {
@@ -472,6 +500,7 @@ AC.Crud.List = function() {
 				form.find('tbody').css({opacity: 1});
 				AC.Crud.List.initMove();
 				AC.Crud.List.initPicker();
+                AC.Crud.List.initView();
 				if (typeof c == 'function') {
 					c();
 				}

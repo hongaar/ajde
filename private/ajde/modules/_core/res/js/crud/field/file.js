@@ -38,6 +38,7 @@
 		$fileupload = $filelist.prev();
 		$filelist.remove();
 		$fileupload.removeClass('hidden');
+        $fileupload.find('input[type=hidden]').trigger('change');
 		return false;
 	});
 	
@@ -77,7 +78,7 @@
 		$(this).parent().find('a').removeClass('active');
 		$(this).addClass('active');
 		var filename = $(this).find('span.filename').text();
-		$(this).parents('div.fileupload:eq(0)').find('input').val(filename);
+		$(this).parents('div.fileupload:eq(0)').find('input[type=hidden]').val(filename).trigger('change');
 	});
 	
 	$('div.browser > a span.filePreview').click(function(e) {

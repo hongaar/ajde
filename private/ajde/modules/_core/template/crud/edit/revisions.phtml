@@ -1,0 +1,177 @@
+<?php
+/* @var $revisions RevisionCollection */
+$revisions = $this->revisions;
+
+/* @var $model Ajde_Model */
+global $model;
+$model = $this->model;
+
+/* @var $crud Ajde_Crud */
+global $crud;
+$crud = $this->crud;
+
+
+// create shadow model
+/* @var $shadowModel Ajde_Model */
+global $shadowModel;
+$modelName = get_class($model);
+$shadowModel = new $modelName;
+$shadowModel->loadByPK($model->getPK());
+
+function showValue($value, RevisionModel $revision, $old = '', $showDiff = false)
+{
+    global $crud, $model, $shadowModel;
+
+    $field = $crud->getField($revision->field);
+    $shadowModel->set($revision->field, $value);
+
+    // Sort
+    if ($field instanceof Ajde_Crud_Field_Sort) {
+        return 'Sort value of ' . $value;
+        // Linked Model (not loaded)
+    } elseif ($field instanceof Ajde_Crud_Field_Fk && !$value) {
+        return '(not set)';
+        // Linked Model (loaded)
+    } elseif ($field instanceof Ajde_Crud_Field_Fk) {
+        if ($field->hasModelName()) {
+            $className = ucfirst($field->getModelName()) . 'Model';
+            $child = new $className;
+            /* @var $child Ajde_Model */
+            $child->loadByPK($value);
+            return $child->get($child->getDisplayField());
+        } else {
+            $shadowModel->loadParent($revision->field);
+            $fk = $shadowModel->get($revision->field);
+
+            // image?
+            if ($field->hasUseImage() && $field->getUseImage()) {
+
+                $extraField = current($field->getTableFields());
+                $filename = $fk->get($extraField['name']);
+                $extension = pathinfo($filename, PATHINFO_EXTENSION);
+                if ($isImage = in_array(strtolower($extension), array('jpg', 'jpeg', 'png', 'gif'))) {
+                    $thumbDim = array('width' => 75, 'height' => 75);
+                    return Ajde_Component_Image::getImageTag($extraField['saveDir'] . $filename, $thumbDim['width'], $thumbDim['height'], true);
+                } else {
+                    return $filename;
+                }
+            } else {
+                $fk = $shadowModel->get($revision->field);
+                return $fk->get($fk->getDisplayField());
+            }
+        }
+        // Boolean
+    } elseif ($field instanceof Ajde_Crud_Field_Boolean) {
+        return $field->getHtmlList($value);
+        // File
+    } elseif ($field instanceof Ajde_Crud_Field_File) {
+        $extension = pathinfo($value, PATHINFO_EXTENSION);
+        if (in_array(strtolower($extension), array('jpg', 'jpeg', 'png', 'gif'))) {
+            $filename = $field->getSaveDir() . $value;
+        } else {
+            $filename = MEDIA_DIR . 'nothumb.png';
+        }
+        return $this->ACImage(array(
+            'filename' => $filename,
+            'width' => $crud->getOption('list.thumbDim.width', 75),
+            'height' => $crud->getOption('list.thumbDim.height', 75),
+            'crop' => true
+            ));
+        // Text value
+    } elseif ($field instanceof Ajde_Crud_Field_Text && $showDiff) {
+        return '###' . nl2br(str_replace('\r\n', '<br/>', trim(Ajde_Component_String::textDiff(strip_tags(html_entity_decode($old)), strip_tags(html_entity_decode($value)), 30))));
+    } else {
+        return $value;
+    }
+}
+
+
+?>
+
+<h3 class="revisions">Revisions <a href="javascript:void(null);"><small>toggle</small></a></h3>
+
+<table class="table table-hover table-condensed revisions">
+    <colgroup>
+        <col width="125" />
+        <col width="175" />
+        <col width="150" />
+        <col width="1*" />
+    </colgroup>
+    <thead>
+        <tr>
+            <th>Updated at</th>
+            <th>By</th>
+            <th>Field</th>
+            <th>Change</th>
+        </tr>
+    </thead>
+    <tbody>
+
+<?php
+$lastDay = false;
+$lastUser = false;
+$same = false;
+$i = 0;
+foreach($revisions as $revision) {
+    /* @var $revision RevisionModel */
+    $timestamp = new DateTime($revision->time);
+    $time = $timestamp->format('U');
+    $day = $timestamp->format('dmY');
+    ?>
+        <tr class="<?php echo $i > 5 ? 'collapsed ' : ''; echo ($lastDay == $day && $lastUser == $revision->user) ? 'repeat' : ''; ?>">
+            <td class="time" title="<?php echo $revision->time; ?>">
+                <?php echo Ajde_Component_String::time2str($time);
+                ?>
+            </td>
+            <td class="user">
+                <?php
+                $revision->loadParent('user');
+                $user = $revision->user;
+                /* @var $user UserModel */
+                echo $user->getFullname();
+                ?>
+            </td>
+            <td class="field">
+                <?php
+                $fieldOptions = $crud->getField($revision->field);
+                echo $fieldOptions->getLabel();
+                ?>
+            </td>
+            <td class="rev">
+                <?php
+                $old = $revision->old;
+                $new = $revision->new;
+
+                if ($old == '') { ?>
+                    <span class="label label-success">
+                        <?php echo showValue($new, $revision); ?></span>
+                <?php } else if ($new == '') { ?>
+                    <span class="label">
+                        <?php echo showValue($old, $revision); ?></span>
+                    <i class="icon-chevron-right"></i>
+                    <span class="label label-important">
+                        <?php echo '(deleted)'; ?></span>
+                <?php } else {
+                    $diff = showValue($new, $revision, $old, true);
+                    if (substr($diff, 0, 3) === '###') {
+                        $diff = substr($diff, 3);
+                        echo "<div class='text-diff'>" . $diff . "</div>";
+                    } else { ?>
+                        <span class="label">
+                            <?php echo showValue($old, $revision); ?></span>
+                        <i class="icon-chevron-right"></i>
+                        <span class="label label-info">
+                            <?php echo showValue($new, $revision); ?></span>
+                    <?php } ?>
+                <?php } ?>
+            </td>
+        </tr>
+    <?php
+    $lastDay = $day;
+    $lastUser = $revision->user;
+    $i++;
+}
+?>
+
+    </tbody>
+</table>

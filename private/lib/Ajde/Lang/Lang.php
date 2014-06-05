@@ -4,6 +4,9 @@ class Ajde_Lang extends Ajde_Object_Singleton
 {
 	protected $_adapter = null;
 	protected $_lang;
+
+    protected $_autoTranslationOfModels = true;
+
 	protected static $_niceNames = array(
 	    'aa' => 'Afar',
 	    'ab' => 'Abkhaz',
@@ -256,6 +259,24 @@ class Ajde_Lang extends Ajde_Object_Singleton
 		}
 		return $defaultLang = Config::get("lang");
 	}
+
+    public function disableAutoTranslationOfModels()
+    {
+        $this->_autoTranslationOfModels = false;
+    }
+
+    public function enableAutoTranslationOfModels()
+    {
+        $this->_autoTranslationOfModels = true;
+    }
+
+    public function autoTranslateModels($enabled = null)
+    {
+        if (isset($enabled)) {
+            $this->_autoTranslationOfModels = $enabled;
+        }
+        return $this->_autoTranslationOfModels;
+    }
 	
 	protected function getLanguagesFromHeader()
 	{

@@ -50,12 +50,32 @@ AC.Crud.Edit = function() {
 
             // Set form input elements
             input = ':input';
-			
-			// Dirty handler for form input elements
-            $('form.ACCrudEdit').find(input).on('change', AC.Crud.Edit.setDirty);
 
-            // Trigger autosave on form input elements
-            $('form.ACCrudEdit.autosave').find(input).on('change', AC.Crud.Edit.autoSave);
+            // Trigger dirty and autosave on form input elements
+            if (!isIframe) {
+                // Dirty handler for form input elements
+                $('form.ACCrudEdit:not(.autosave)').find(input).on('change', AC.Crud.Edit.setDirty);
+
+                // Autosave handlers
+                $('form.ACCrudEdit.autosave').find(input).not('.noAutosave').on('change', AC.Crud.Edit.autoSave);
+                $('body').on('click', '.autosave-retry', AC.Crud.Edit.autoSave);
+
+                // Hide non-autosave buttons
+                $('form.ACCrudEdit.autosave').each(function() {
+                    $(this).find('.regular-group').hide();
+                });
+                $('form.ACCrudEdit:not(.autosave)').each(function() {
+                    $(this).find('.autosave-group').hide();
+                });
+            } else {
+                // Dirty handler for form input elements
+                $('form.ACCrudEdit').find(input).on('change', AC.Crud.Edit.setDirty);
+
+                // Hide autosave buttons
+                $('form.ACCrudEdit.autosave').each(function() {
+                    $(this).find('.autosave-group').hide();
+                });
+            }
 			
 		},
             
@@ -69,6 +89,13 @@ AC.Crud.Edit = function() {
                     return 'You have unsaved changes, are you sure you want to navigate away from this page?';
                 }
             });            
+        },
+
+        setClean: function(e) {
+            $(this).parents('form.ACCrudEdit').find('.btn.cancel')
+                .text('back')
+                .removeClass('btn-danger');
+            isDirty = false;
         },
 			
 		dynamicFields: function(e) {
@@ -139,6 +166,7 @@ AC.Crud.Edit = function() {
 		},
 		
 		cancelHandler: function() {
+            if ($(this).attr('disabled')) return;
 			if (isIframe) {
 				parent.$.fancybox.close();
 			} else {
@@ -155,7 +183,8 @@ AC.Crud.Edit = function() {
 		saveHandler: function(e, returnTo) {
 			returnTo = typeof(returnTo) === 'undefined' ? 'list' : returnTo;
 			var form = $(this).parents('form.ACCrudEdit');
-			var disableOnSave = 'button.save, button.apply, button.cancel';
+            var self = this;
+			var disableOnSave = 'button.save, button.apply, a.cancel';
 			
 			if (!form.length) {
 				form = $('form.ACCrudEdit:eq(0)');
@@ -172,6 +201,7 @@ AC.Crud.Edit = function() {
 			var options = {
 				operation	: 'save',
 				fromIframe	: (isIframe ? '1' : '0'),
+                fromAutoSave: (returnTo == 'autosave' ? '1' : '0'),
 				crudId		: form.attr('id')					
 			};
 			
@@ -182,11 +212,7 @@ AC.Crud.Edit = function() {
 			form.find(':input').parent().removeClass('validation_error');
 			form.find('span.validation-message').remove();
 			AC.Crud.Edit.equalizeForm();
-			
-			// Set loading state and disable submit button
-			$('body').addClass('loading');
-			form.find(disableOnSave).attr('disabled', 'disabled');
-			
+
 			// remove hidden meta fields
 			for (var elm in data) {
 				if (data[elm].name.substring(0, 5) === 'meta_') {
@@ -206,10 +232,23 @@ AC.Crud.Edit = function() {
 				}
 			}
 
-            if (form.find(':input[name=form_submission]').val()) {
-			    infoHandler('Submitting...');
+            // ========= Set loading UI feedback
+
+            // Disable submit button
+            form.find(disableOnSave).attr('disabled', 'disabled');
+
+            if (returnTo == 'autosave') {
+                $('.autosave-status').addClass('active').text('Saving...');
             } else {
-                infoHandler('Saving...');
+                // Set loading state
+                $('body').addClass('loading');
+
+                // Show info banner
+                if (form.find(':input[name=form_submission]').val()) {
+                    infoHandler('Submitting...');
+                } else {
+                    infoHandler('Saving...');
+                }
             }
 
 			$.post(url, data, function(data) {
@@ -217,6 +256,8 @@ AC.Crud.Edit = function() {
 				if (data.success === false) {
 					
 					$('body').removeClass('loading');
+                    $('.autosave-status').removeClass('active').html('Changes not saved, <a class="autosave-retry" href="javascript:void(null);">try again</a>');
+                    AC.Crud.Edit.setDirty.call(self, e);
 					form.find(disableOnSave).attr('disabled', null);
 				
 					if (data.errors) {
@@ -237,8 +278,10 @@ AC.Crud.Edit = function() {
 							$input.parents('.controls').append($message.fadeIn());
 							AC.Crud.Edit.equalizeForm();
 						}
-						$.scrollTo($('.control-group.error:first'), 800, { axis: 'y', offset: -70 });
-						warningHandler('Please correct the errors in this form');
+                        if (returnTo != 'autosave') {
+						    $.scrollTo($('.control-group.error:first'), 800, { axis: 'y', offset: -70 });
+						    warningHandler('Please correct the errors in this form');
+                        }
 					} else {
 						errorHandler(i18n.applicationError);
 					}
@@ -249,6 +292,13 @@ AC.Crud.Edit = function() {
 						if (fn(data) === false) {
 							
 							$('body').removeClass('loading');
+                            setTimeout(function() {
+                                $('.autosave-status').removeClass('active').text("All changes saved").addClass('flash');
+                                setTimeout(function() {
+                                    $('.autosave-status').removeClass('flash');
+                                }, 50);
+                            }, 100);
+                            AC.Crud.Edit.setClean.call(self, e);
 							form.find(disableOnSave).attr('disabled', null);
 							
 							return;
@@ -261,7 +311,22 @@ AC.Crud.Edit = function() {
 							parent.AC.Crud.Edit.Multiple.newSaved(data.id, data.displayField);
 						}
 					} else {
-                        if (returnTo) {
+                        if (returnTo == 'autosave') {
+                            setTimeout(function() {
+                                $('.autosave-status').removeClass('active').text("All changes saved").addClass('flash');
+                                setTimeout(function() {
+                                    $('.autosave-status').removeClass('flash');
+                                }, 50);
+                            }, 100);
+                            AC.Crud.Edit.setClean.call(self, e);
+                            form.find(disableOnSave).attr('disabled', null);
+                            // set id in case in insert operation
+                            if (data.operation === 'insert') {
+                                form.find(':input[name=id]').val(data.id);
+                            }
+                            // replace url
+                            history.replaceState({}, false, location.href.replace('?new', '?edit=' + data.id));
+                        } else if (returnTo) {
                             window.location.href = window.location.pathname + '?' + returnTo + '=' + data.id;
                         } else {
                             $('body').removeClass('loading');
@@ -273,6 +338,8 @@ AC.Crud.Edit = function() {
 			}, 'json').error(function(jqXHR, message, exception) {
 				
 				$('body').removeClass('loading');
+                $('.autosave-status').removeClass('active').html('Changes not saved, <a class="autosave-retry" href="javascript:void(null);">try again</a>');
+                AC.Crud.Edit.setDirty.call(self, e);
 				form.find(disableOnSave).attr('disabled', null);
 				
 				if (typeof $(form[0]).data('onError') === 'function') {

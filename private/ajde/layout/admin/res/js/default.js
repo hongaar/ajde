@@ -19,9 +19,13 @@
         
         // Chosen
 		setTimeout(function() {
+            var filtersVisible = $('.filters.view').hasClass('visible');
+            if (!filtersVisible) $('.filters.view').addClass('visible');
 			$("select.chosen").chosen({
-				allow_single_deselect: true
+				allow_single_deselect: true,
+                search_contains: true
 			});
+            if (!filtersVisible) $('.filters.view').removeClass('visible');
 		}, 100);
 		
 		// Picker

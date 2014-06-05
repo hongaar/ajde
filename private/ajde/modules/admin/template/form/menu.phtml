@@ -1,4 +1,6 @@
-<div class="form-actions text-center">
-    <a class="btn btn-primary" href="admin/form:view">Form manager</a>
-    <a class="btn btn-primary" href="admin/form:submission">View submissions</a>
-</div>
+<nav class="page-actions">
+    <a class="<?php if (Ajde::app()->getRoute()->getAction() == 'view') echo 'active'; ?>" href="admin/form:view">
+        <i class="icon-chevron-right"></i> Form manager</a>
+    <a class="<?php if (Ajde::app()->getRoute()->getAction() == 'submission') echo 'active'; ?>" href="admin/form:submission">
+        <i class="icon-chevron-right"></i> View submissions</a>
+</nav>

@@ -26,8 +26,7 @@ $field = $this->field;
             <?php if ($field->hasReadonly() && $field->getReadonly() === true) {
                 echo ' readonly="readonly" ';
             } ?>
-        ><?php echo $field->getValue(); ?>
-        </textarea>
+        ><?php echo $field->getValue(); ?></textarea>
 
     <?php } ?>
 

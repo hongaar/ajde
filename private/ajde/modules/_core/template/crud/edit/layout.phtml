@@ -29,18 +29,23 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudEdit
 	<?php if (0 && $totalFields > $topToolbarTreshold) { // disabled, with fixed bottom bar ?>
     <div class="form-actions">
 
-        <?php if (!$readOnly) { ?>
-            <div class="btn-group">
-                <button type="submit" class="btn btn-success save" title='Save changes and go back to overview'><i class='icon-ok icon-white'></i> save &amp; back</button>
-                <button type="submit" class="btn btn-primary apply" title='Save changes'>save</button>
-                <a href="javascript:void(null);" class='btn btn-primary cancel' title='Go back to overview'>back</a>
-                <span class="autosave-status"></span>
+        <?php if ($autosave) { ?>
+            <div class="autosave-group">
+                <a href="javascript:void(null);" class='autosave btn btn-primary cancel' title='Go back to overview'>back</a>
+                <span class="autosave autosave-status"></span>
             </div>
-            <a href="javascript:void(null);" class='btn pull-right cancel' title='Go back to overview'>back</a>
-        <?php } else { ?>
-            <a href="javascript:void(null);" class='btn btn-primary cancel' title='Go back to overview'>back</a>
         <?php } ?>
-
+        <div class="regular-group">
+            <?php if (!$readOnly) { ?>
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-success save" title='Save changes and go back to overview'><i class='icon-ok icon-white'></i> save &amp; back</button>
+                    <button type="submit" class="btn btn-primary apply" title='Save changes'>save</button>
+                </div>
+                <a href="javascript:void(null);" class='btn pull-right cancel' title='Go back to overview'>back</a>
+            <?php } else { ?>
+                <a href="javascript:void(null);" class='btn btn-primary cancel' title='Go back to overview'>back</a>
+            <?php } ?>
+        </div>
 
     </div>
 	<?php } ?>
@@ -114,6 +119,14 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudEdit
 
     ?>
 
+    <?php
+    $model = $crud->getItem();
+    if ($model instanceof Ajde_Model_With_AclI18nRevision || $model instanceof Ajde_Model_With_Revision) {
+        /* @var $model Ajde_Model_Revision */
+        echo $model->getRevisionsHtml($crud);
+    }
+    ?>
+
     <div class='hidden'>
     <?php foreach($crud->getFields() as $field) {
         if (!in_array($field->getName(), $fieldsShown)) {
@@ -124,17 +137,23 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudEdit
 
     <div class="form-actions fixed">
 
-        <?php if (!$readOnly) { ?>
-            <div class="btn-group">
-                <button type="submit" class="btn btn-success save" title='Save changes and go back to overview'><i class='icon-ok icon-white'></i> save &amp; back</button>
-                <button type="submit" class="btn btn-primary apply" title='Save changes'>save</button>
-                <a href="javascript:void(null);" class='btn btn-primary cancel' title='Go back to overview'>back</a>
-                <span class="autosave-status"></span>
+        <?php if ($autosave) { ?>
+            <div class="autosave-group">
+                <a href="javascript:void(null);" class='autosave btn btn-primary cancel' title='Go back to overview'>back</a>
+                <span class="autosave autosave-status"></span>
             </div>
-            <a href="javascript:void(null);" class='btn pull-right cancel' title='Go back to overview'>back</a>
-        <?php } else { ?>
-            <a href="javascript:void(null);" class='btn btn-primary cancel' title='Go back to overview'>back</a>
         <?php } ?>
+        <div class="regular-group">
+            <?php if (!$readOnly) { ?>
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-success save" title='Save changes and go back to overview'><i class='icon-ok icon-white'></i> save &amp; back</button>
+                    <button type="submit" class="btn btn-primary apply" title='Save changes'>save</button>
+                </div>
+                <a href="javascript:void(null);" class='btn pull-right cancel' title='Go back to overview'>back</a>
+            <?php } else { ?>
+                <a href="javascript:void(null);" class='btn btn-primary cancel' title='Go back to overview'>back</a>
+            <?php } ?>
+        </div>
 
     </div>
 

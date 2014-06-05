@@ -35,10 +35,12 @@ class MetaModel extends Ajde_Model
 	
 	public function parseForCrud(Ajde_Crud $crud)
 	{
-		$options = json_decode($this->get('options'));
-		foreach($options as $key => $value) {
-			$this->set($key, $value);
-		}	
+        if ($this->has('options')) {
+            $options = json_decode($this->get('options'));
+            foreach($options as $key => $value) {
+                $this->set($key, $value);
+            }
+        }
 	}
 	
 	public function prepareCrudSave(Ajde_Controller $controller, Ajde_Crud $crud)

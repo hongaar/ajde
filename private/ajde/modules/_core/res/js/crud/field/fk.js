@@ -46,7 +46,7 @@ AC.Crud.Edit.Fk = function() {
 			$(that).find('div.input').removeClass('with-image');
 			
 			if (!ids || !ids.length) {
-				$select.val('');
+				$select.val('').trigger('change');
 				if ($(that).data('use-image') == '1') {
 					$(that).find('div.input').html('<input type="text" readonly="readonly" value="Please choose one" />');
 				} else {
@@ -70,8 +70,10 @@ AC.Crud.Edit.Fk = function() {
 						// new item for select element?
 						if ($select.val() != id) {
 							$select.append('<option value=' + id + '>' + display + '</option>');
-							$select.val(id);
-						}
+							$select.val(id).trigger('change');
+						} else {
+                            $select.trigger('change');
+                        }
 					
 						// update display
 						if ($(that).data('use-image') == '1') {

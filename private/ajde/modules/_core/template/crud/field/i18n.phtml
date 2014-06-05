@@ -13,7 +13,7 @@ if ($field->getValue()) {
 }
 
 $item = $field->getCrud()->getModel();
-/* @var $item Ajde_Model_I18n */
+/* @var $item Ajde_Lang_Proxy_Model */
 
 
 ?>
@@ -41,15 +41,13 @@ $item = $field->getCrud()->getModel();
 	
 	<div class='translations'>
 		Translate:
-		
-		
+
 		<?php if ($rootLang) {
-			$editRoute = Ajde::app()->getRoute()->buildRoute();
+			$editRoute = Ajde::app()->getRoute()->buildRoute(false);
 			$editRoute .= '?edit=' . $rootLang->getPK();		
 			?>
 			<a href="<?php echo $editRoute; ?>">
-				<?php echo Ajde_Lang::niceName($rootLang->getLanguage()); ?>
-			</a>		
+				<?php echo Ajde_Lang::niceName($rootLang->getLanguage()); ?></a>
 		<?php }
 		foreach($field->getAvailableTranslations() as $lang => $translation) { ?>
 		
@@ -58,7 +56,7 @@ $item = $field->getCrud()->getModel();
 					break;
 				}
 				
-				$editRoute = Ajde::app()->getRoute()->buildRoute();
+				$editRoute = Ajde::app()->getRoute()->buildRoute(false);
 				$cloneFields = '';
 				
 				if (isset($translation['model'])) {

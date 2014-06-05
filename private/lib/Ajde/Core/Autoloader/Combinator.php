@@ -26,7 +26,7 @@ class Ajde_Core_Autoloader_Combinator
 				" extends $extends",
 				$contents
 		);
-		
+
 		$return = eval($contents);
 		
 		if ($return === false) {

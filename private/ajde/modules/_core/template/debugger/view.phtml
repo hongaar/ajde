@@ -28,7 +28,7 @@ $expand = false;
 							<td>
 								<a href='javascript:void(0)' onclick='$("#dump<?php echo md5($source); ?>").slideToggle("fast");'><?php echo $source; ?></a>
 								<div id='dump<?php echo md5($source); ?>' <?php if ($var[1] === false) { ?>style='display: none;'<?php } ?>>
-									<?php var_dump($var[0]); ?>
+									<pre><?php var_dump($var[0]); ?></pre>
 								</div>
 							</td>
 						</tr>
@@ -70,7 +70,9 @@ $expand = false;
 									}
 								}
 								array_walk($vars, "safeVars");
+                                echo '<pre>';
 								var_dump($vars);
+                                echo '</pre>';
 							?></td>
 					</tr>				
 				</table>			
@@ -147,7 +149,7 @@ $expand = false;
 						<td>
 							<?php echo $i; ?>. <a href='javascript:void(0)' onclick='$("#session<?php echo md5($key); ?>").slideToggle("fast");'><?php echo $key; ?></a>
 							<div id='session<?php echo md5($key); ?>' style='display: none;'>
-								<?php var_dump($val); ?>
+								<pre><?php var_dump($val); ?></pre>
 							</div>
 						</td>
 					</tr>

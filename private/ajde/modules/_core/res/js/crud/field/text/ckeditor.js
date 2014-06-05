@@ -11,9 +11,17 @@ AC.Crud.Edit.Text = function() {
 		// make sure no conflict with previous instances occur
 		CKEDITOR.instances = {};
 
+        var triggerChangeTimeout = 1000;
+        var changeTimer;
+
 		d = elm.ckeditor( function() {
 			this.on('change', function() {
 				AC.Crud.Edit.setDirty.call(this.element.$);
+//                var element = $(this.element.$);
+//                clearTimeout(changeTimer);
+//                changeTimer = setTimeout(function() {
+//                    element.trigger("change");
+//                }, triggerChangeTimeout);
 				$(this.element.$).parents('.control-group').removeClass('error');
 			});
 			this.on('focus', function() {
@@ -21,6 +29,7 @@ AC.Crud.Edit.Text = function() {
 			});
 			this.on('blur', function() {
 				$(this.element.$).nextAll('.cke_chrome').removeClass('active');
+                $(this.element.$).trigger("change");
 			});
 //			var self = this;
 //			$(window).on('resize', function() {

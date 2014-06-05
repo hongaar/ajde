@@ -37,7 +37,7 @@ div.multiple div.picker {
 div.multipleToolbar {
 	margin: 10px 0;
 	
-	.chzn-container .chzn-single {
+	.chosen-container .chosen-single {
 		height: 24px;
 		top: -1px;
 	}

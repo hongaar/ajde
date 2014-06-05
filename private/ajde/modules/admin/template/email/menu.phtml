@@ -1,5 +1,8 @@
-<div class="form-actions text-center">
-    <a class="btn btn-primary" href="admin/email:view">E-mail manager</a>
-    <a class="btn btn-primary" href="admin/email:template">Edit templates</a>
-    <a class="btn btn-primary" href="admin/email:history">History</a>
-</div>
+<nav class="page-actions">
+    <a class="<?php if (Ajde::app()->getRoute()->getAction() == 'view') echo 'active'; ?>" href="admin/email:view">
+        <i class="icon-chevron-right"></i> E-mail manager</a>
+    <a class="<?php if (Ajde::app()->getRoute()->getAction() == 'template') echo 'active'; ?>" href="admin/email:template">
+        <i class="icon-chevron-right"></i> Edit templates</a>
+    <a class="<?php if (Ajde::app()->getRoute()->getAction() == 'history') echo 'active'; ?>" href="admin/email:history">
+        <i class="icon-chevron-right"></i> History</a>
+</nav>

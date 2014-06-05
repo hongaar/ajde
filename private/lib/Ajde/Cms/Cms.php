@@ -2,6 +2,8 @@
 
 class Ajde_Cms extends Ajde_Object_Singleton
 {
+    private $_homepageSet = false;
+
 	public static function getInstance()
 	{
 		static $instance;
@@ -15,13 +17,16 @@ class Ajde_Cms extends Ajde_Object_Singleton
 	
 	public function __bootstrap()
 	{
-		Ajde_Event::register('Ajde_Application', 'onAfterRequestCreated', array($this, 'setHomepage'));
+		Ajde_Event::register('Ajde_Core_Route', 'onAfterLangSet', array($this, 'setHomepage'));
         Ajde_Event::register('Ajde_Core_Route', 'onAfterRouteSet', array($this, 'detectSlug'));
 		return true;
 	}
 	
-	public function setHomepage()
+	public function setHomepage(Ajde_Core_Route $route)
 	{
+        if ($this->_homepageSet) return;
+        $this->_homepageSet = true;
+
 		$homepageNodeId = (int) SettingModel::byName('homepage');
 		
 		if ($homepageNodeId) {
@@ -36,6 +41,7 @@ class Ajde_Cms extends Ajde_Object_Singleton
     {
         $slug = $route->getRoute();
 
+        $slug = trim($slug, '/');
         $lastSlash = strrpos($slug, '/');
         if ($lastSlash !== false) {
             $slug = substr($slug, $lastSlash + 1);

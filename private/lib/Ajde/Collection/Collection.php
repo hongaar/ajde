@@ -317,8 +317,11 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
                         if ($end) {
                             $this->addFilter(new Ajde_Filter_Where((string) $this->getTable() . '.' . $fieldName, Ajde_Filter::FILTER_LESSOREQUAL, $end));
                         }
+                    } else if ($fieldType == Ajde_Db::FIELD_TYPE_TEXT) {
+                        // text fields (fuzzy)
+                        $this->addFilter(new Ajde_Filter_Where((string) $this->getTable() . '.' . $fieldName, Ajde_Filter::FILTER_LIKE, '%' . $filterValue . '%'));
                     } else {
-                        // non-date fields
+                        // non-date fields (exact match)
                         $this->addFilter(new Ajde_Filter_Where((string) $this->getTable() . '.' . $fieldName, Ajde_Filter::FILTER_EQUALS, $filterValue));
                     }
 				}

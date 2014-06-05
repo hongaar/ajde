@@ -84,7 +84,15 @@ class Ajde_Crud_Options_List_View extends Ajde_Crud_Options
 	
 	
 	/** UI ELEMENTS **/
-	
+
+    /**
+     * Sets the view name
+     *
+     * @param string $name
+     * @return Ajde_Crud_Options_List_View
+     */
+    public function setName($name) { return $this->_set('name', $name); }
+
 	/**
 	 * Sets the list view
 	 * 

@@ -2,7 +2,7 @@
 
 class MenuModel extends Ajde_Model_With_I18n
 {
-	protected $_autoloadParents = false;
+	protected $_autoloadParents = true;
 	protected $_displayField = 'name';
 	
 	public function __construct() {

@@ -21,7 +21,9 @@ class Ajde_Collection_View extends Ajde_Object_Standard
 			'filterVisible' => false,
 			'disableFilter' => false,
 			'mainFilter'	=> '',
-			'mainFilterGrouper' => ''
+			'mainFilterGrouper' => '',
+
+            'columns'       => array()
 		);		
 		$options = array_merge($defaultOptions, $listOptions);
 		$this->setOptions($options);	
@@ -70,6 +72,16 @@ class Ajde_Collection_View extends Ajde_Object_Standard
 		}	
 		return $this->_rowCount;
 	}
+
+    public function setColumns($columns)
+    {
+        $this->set('columns', $columns);
+    }
+
+    public function getColumns()
+    {
+        return $this->get('columns');
+    }
 	
 	public function getPageCount(Ajde_Collection $collection = null)
 	{

@@ -27,6 +27,23 @@
 }
 
 fieldset.crud {
+
+    position: relative;
+
+    margin-bottom: 40px;
+    border: 10px solid white;
+    outline: 1px solid #eee;
+
+    -webkit-transition: all 0.1s ease-out;
+    transition: all 0.1s ease-out;
+
+    &:hover {
+        outline: 20px solid #eee;
+        border: 10px solid #eee;
+        background-color: #eee;
+        z-index: 10;
+    }
+
     input.emphasis[type=text] {
         font-size: 1.5em;
         height: auto;
@@ -47,8 +64,15 @@ fieldset.crud {
 	a.imagePreview img {
 		background-image: url('../../public/media/checkerboard.png');
 	}
+
+    > div.controls {
+        margin-left: 190px;
+    }
 	
 	div.control-group {
+
+        margin: 10px;
+
 		&:last-child {
 /*			margin-bottom: 0;*/
 		}
@@ -87,7 +111,21 @@ fieldset.crud {
 	}
     
     &.sidebar {
-        
+        legend {
+            background-color: #eee;
+            text-indent: 10px;
+        }
+    }
+
+    &.well {
+        div.control-group {
+            margin: 10px 0 10px 0;
+        }
+
+        legend {
+            background-color: inherit;
+            text-indent: inherit;
+        }
     }
 	
 	&.primary {
@@ -110,7 +148,7 @@ fieldset.crud {
 	}
     
     &:last-child {
-        margin-bottom: 0;
+//        margin-bottom: 0;
     }
 	
 	&.narrow {
@@ -157,21 +195,62 @@ fieldset.crud {
 
 }
 
-.form-actions.fixed {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    margin-bottom: 0;
-    padding-left: 50px;
-    left: 0;
+.page-actions {
+    margin-top: -30px;
+    background-color: #f8f8f8;
+    padding: 10px;
+    margin-bottom: 20px;
 
-    -webkit-transition: all 0.3s ease-out;
-    -moz-transition: all 0.3s ease-out;
-    -o-transition: all 0.3s ease-out;
-    transition: all 0.3s ease-out;
+    a {
 
-    &.no-offset {
-        left: 0 !important;
+
+        &.active {
+            color: black;
+        }
+    }
+}
+
+.form-actions {
+
+    .autosave-status {
+        margin-left: 10px;
+
+        -webkit-transition: background-color 1s ease-out, color 1s ease-out;
+        transition: background-color 1s ease-out, color 1s ease-out;
+
+        &.flash {
+            background-color: #0f82f5;
+            color: white;
+
+            -webkit-transition: all 0s ease-out;
+            transition: all 0s ease-out;
+        }
+
+        &.active {
+            background-image: url('../../public/media/loading-cms.gif');
+            background-repeat: no-repeat;
+            background-position: 0 50%;
+            padding-left: 20px;
+        }
+    }
+
+    &.fixed {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        margin-bottom: 0;
+        padding-left: 50px;
+        left: 0;
+        z-index: 20;
+
+        -webkit-transition: all 0.3s ease-out;
+        -moz-transition: all 0.3s ease-out;
+        -o-transition: all 0.3s ease-out;
+        transition: all 0.3s ease-out;
+
+        &.no-offset {
+            left: 0 !important;
+        }
     }
 }
 
@@ -186,7 +265,7 @@ fieldset.crud {
 	-webkit-border-radius: 0;
 	-moz-border-radius: 0;
 	border-radius: 0;
-	background: transparent;	
+	background: transparent;
 }
 
 body .showInIframe {
@@ -241,30 +320,34 @@ body.iframe {
         padding-right: 10px;
         padding-left: 10px;
     }
-    
+
     .form-horizontal .control-label {
         float: none;
         width: auto;
         text-align: left;
     }
-    
+
     .form-horizontal .controls {
         margin-left: 0 !important;
     }
-	
+
 	.form-horizontal fieldset.short {
 		.control-label {
 			float: left;
-		}		
+		}
 	}
 }
 
 table.crud {
-	
+
 	td, th {
 		border-top: 0;
 	}
-	
+
+    th {
+        vertical-align: top;
+    }
+
     select, input {
         margin-bottom: 0;
         font-size: 0.8em;
@@ -276,20 +359,43 @@ table.crud {
             border: 2px solid #007fff;
         }
     }
-    
+
+    input[type=date]:first-child {
+        margin-bottom: 2px;
+    }
+
     thead {
         tr {
             &.filters {
                 display: none;
-				
+
 				&.visible {
 					display: table-row;
 				}
+
+                &.view {
+                    border-bottom: 1px solid #eee;
+
+                    td {
+                        padding-bottom: 40px;
+                    }
+                }
+
+                b, a {
+                    text-transform: uppercase;
+                    font-weight: bold;
+                    font-size: 0.8em;
+                    color: @gray;
+                }
+
+                .chosen-container {
+                    text-align: left;
+                }
             }
-            
+
             &.toolbar {
 				white-space: nowrap;
-				
+
                 .itemAction {
                     display: none;
 
@@ -297,7 +403,7 @@ table.crud {
                         display: inline-block;
                     }
 				}
-				
+
 				.uploadButton {
 					min-width: 300px;
 				}
@@ -325,7 +431,7 @@ table.crud {
                     appearance: textfield;
                 }
             }
-			
+
 			td {
 				&:last-child {
 					text-align: right;
@@ -333,39 +439,39 @@ table.crud {
 			}
         }
     }
-    
+
     tbody {
         tr {
             cursor: pointer;
-            
+
             &.tDnD_whileDrag td {
                 background-color: lighten(#0072e6, 45%);
             }
-			
+
 			&.checked {
 				td {
 					background-color: lighten(#0072e6, 45%);
-					
+
 					&:first-child {
 						opacity: 1 !important;
 					}
 				}
 			}
-			
+
             td {
                 vertical-align: middle;
                 white-space: nowrap;
-                
+
                 &.main {
                     font-weight: bold;
 /*					position: relative;
-					
+
 					span.title {
 						position: absolute;
 						left: 150px;
 					}*/
                 }
-                
+
                 &.sort {
                     vertical-align: middle;
                     text-align: center;
@@ -385,47 +491,47 @@ table.crud {
                 &.sortDisabled {
                     color: gray;
                 }
-				
+
 				&.buttons {
 					text-align: right;
-					
+
 					a.btn-left {
 						text-align: left;
 					}
-					
+
 					span.text-slide {
 						display: inline-block;
 						max-width: 0;
 						overflow: hidden;
 						height: 15px;
-						
-			      -webkit-transition: all 0.3s ease-out; 
-				     -moz-transition: all 0.3s ease-out; 
-				       -o-transition: all 0.3s ease-out; 
-				          transition: all 0.3s ease-out; 
-										
+
+			      -webkit-transition: all 0.3s ease-out;
+				     -moz-transition: all 0.3s ease-out;
+				       -o-transition: all 0.3s ease-out;
+				          transition: all 0.3s ease-out;
+
 					}
-					
+
 					&:hover {
-						
+
 						span.text-slide {
 							max-width: 100px;
 						}
-					
+
 					}
 				}
-				
+
 				.thumbContainer {
 					height: 30px;
 					overflow: hidden;
-					
+
 					img {
 						position: relative;
-						top: -200%;
+						top: -75%;
 						max-width: inherit;
 					}
 				}
-				
+
 				.tree-spacer {
 					display: none;
 					border-left: 3px solid #ddd;
@@ -437,97 +543,97 @@ table.crud {
 					position: relative;
 					top: 8px;
 				}
-				
+
 				.tree-spacer.last {
-					border-bottom: 3px solid #ddd;		
+					border-bottom: 3px solid #ddd;
 					height: 25px;
 					top: -4px;
 				}
             }
-            
+
             input.id {
                 margin: 0;
             }
-			
+
 			&:first-child {
 				.tree-spacer {
 					height: 19px;
 					margin-bottom: -9px;
 				}
-				
+
 				.tree-spacer.last {
 					border-color: transparent;
-					border-bottom: 3px solid #ddd;	
+					border-bottom: 3px solid #ddd;
 					height: 46px;
 					margin-bottom: -8px;
 				}
 			}
-			
+
 			&.panel {
 				max-height: 0;
 				overflow: hidden;
 				z-index: 4;
-				
+
 				position: fixed;
 				bottom: -20px;
 				left: 0;
 				right: 0;
-				
+
 				background-color: #cde6ff;
-				
+
   /*-webkit-box-shadow: 0px 0px 10px 5px #8a8a8a;
           box-shadow: 0px 0px 10px 5px #8a8a8a;*/
-          
-  -webkit-transition: all 0.3s ease-out; 
-     -moz-transition: all 0.3s ease-out; 
-       -o-transition: all 0.3s ease-out; 
-          transition: all 0.3s ease-out; 
-          
+
+  -webkit-transition: all 0.3s ease-out;
+     -moz-transition: all 0.3s ease-out;
+       -o-transition: all 0.3s ease-out;
+          transition: all 0.3s ease-out;
+
           		opacity: 0.9;
-          		
+
           		pointer-events: none;
-				
+
 				table {
 					background-color: inherit !important;
 				}
-				
+
 				th {
 					text-align: right;
 				}
 
 				td, th {
 					cursor: default !important;
-					background-color: inherit !important;	
+					background-color: inherit !important;
 					white-space: normal;
-					
+
 					input {
 						cursor: pointer;
 						border: 1px solid transparent;
-						
+
 						&:hover {
 							background-color: #e8f8fd;
 						}
-						
+
 						&:focus {
 							border: 1px solid #eee;
 							cursor: default;
 							z-index: 10;
-							
+
 							&:invalid {
 								border-color: #E9322D;
 							}
 						}
 					}
-					
-					
-					
+
+
+
 					h3 {
 						font-size: 1.2em;
 						line-height: 1.2em;
 						margin: 0 0 8px 0;
 						padding: 8px 5px 4px 5px;
 						border-bottom: 1px solid #EEE;
-						
+
 						input {
 							font-size: 1em;
 							position: relative;
@@ -535,50 +641,50 @@ table.crud {
 							color: black;
 						}
 					}
-					
+
 					table {
 						margin-bottom: 0;
-						
+
 						td {
 							position: relative;
-							
+
 							> span {
 								padding-left: 7px;
 							}
 						}
-												
+
 						input {
 							/*position: absolute;*/
 							top: 3px;
 							font-size: 1em;
 							margin-top: -3px;
-							
+
 							&.input-large {
 								width: 210px !important;
 							}
 						}
-						
+
 						img.padding-right {
 							padding-right: 10px;
 						}
 					}
 				}
-				
+
 				&.expand {
 					bottom: 0;
 					z-index: 3;
-					
+
   -webkit-transition: inherit;
-     -moz-transition: inherit; 
-       -o-transition: inherit; 
-          transition: inherit; 
-          
+     -moz-transition: inherit;
+       -o-transition: inherit;
+          transition: inherit;
+
 					max-height: 300px;
 				}
 			}
         }
     }
-    
+
     tfoot {
 		tr {
 
@@ -586,13 +692,13 @@ table.crud {
 				&:last-child {
 					text-align: right;
 					white-space: nowrap;
-					
+
 					span {
 						font-size: 0.8em;
 						color: #777;
 					}
 				}
-				
+
 				.pagination {
 					margin: 0;
 
@@ -606,20 +712,20 @@ table.crud {
 			}
 		}
     }
-	
+
 	/**** GRID VIEW ****/
-	
+
 	&.grid {
-		
+
 		thead {
 			display: block;
-			
+
 			tr {
 				width: 100%;
-				
+
 				th {
 					width: 50%;
-					
+
 					&:first-child {
 						width: 0;
 						padding: 0;
@@ -627,33 +733,33 @@ table.crud {
 				}
 			}
 		}
-		
+
 		tbody {
 			display: block;
 			margin-left: 37px;
-			
-			tr {				
+
+			tr {
 				display: block;
 				position: relative;
 				width: 20%;
 				float: left;
 				padding-bottom: 1px;
-				
+
 				&:last-child {
 					padding-bottom: 10px;
-					
+
 					td.buttons {
 						bottom: 10px;
 					}
 				}
-								
+
 				td {
 					display: block;
 					border: 0;
 					overflow: hidden;
 					text-overflow: ellipsis;
 					margin-right: 1px;
-					
+
 					&:first-child {
 						/*float: left;*/
 						position: absolute;
@@ -661,28 +767,28 @@ table.crud {
 						opacity: 0;
 						z-index: 99;
 					}
-					
+
 					&.main {
 						font-size: 1.2em;
 						background-color: black;
 						color: white;
 					}
-					
+
 					&.buttons {
 						position: absolute;
 						z-index: 100;
 						bottom: 1px;
-						right: 8px;					
+						right: 8px;
 						padding: 0;
 						opacity: 0;
 					}
-					
+
 					&.sort,
 					&.sortDisabled,
 					&[data-grid=hide] {
 						display: none;
 					}
-					
+
 					.thumbContainer {
 						height: auto;
 
@@ -691,12 +797,12 @@ table.crud {
 							max-width: 100%;
 						}
 					}
-					
+
 					.tree-spacer {
 						display: none;
 					}
 				}
-				
+
 				&:hover {
 					td {
 						&:first-child {
@@ -707,32 +813,32 @@ table.crud {
 						}
 					}
 				}
-				
+
 				&.panel {
 					display: none;
 				}
 			}
 		}
-		
+
 		tfoot {
 			clear: both;
 			display: block;
-			
+
 			tr {
 				width: 100%;
-				
+
 				td {
 					width: 50%;
-					
+
 					&:first-child {
 						padding: 15px;
 						width: auto;
 					}
 				}
 			}
-		}		
+		}
 	}
-	
+
 	&.sorted {
 		.tree-spacer {
 			display: inline-block;
@@ -746,11 +852,11 @@ table.crud {
 	margin-bottom: 10px;
 }
 
-.mainFilterButtons div.grouper {	
+.mainFilterButtons div.grouper {
 	margin-top: 10px;
 	line-height: 9px;
 	height: 10px;
-	
+
 	span.badge {
 		clear: both;
 		float: none;
@@ -759,16 +865,65 @@ table.crud {
 		padding: 3px 7px;
 		text-transform: uppercase;
 	}
-	
+
 	&:first-of-type {
 		margin-top: 0;
 	}
 }
 
+table.revisions {
+    table-layout: fixed;
+
+    tr.collapsed {
+        td {
+            display: none;
+            position: relative;
+        }
+    }
+    tr.repeat {
+        td {
+            border: none;
+        }
+        .time {
+            color: silver;
+            font-size: 0.8em;
+        }
+        .user {
+            text-indent: -9999px;
+        }
+    }
+    tr {
+        .time, .user, .field {
+            white-space: nowrap;
+        }
+    }
+
+    .label {
+        padding: 5px 1px 5px 5px;
+    }
+
+    .text-diff {
+        display: inline-block;
+        font-family: monospace;
+
+        ins {
+            background-color: #dfd;
+        }
+
+        del {
+            background-color: #fdd;
+        }
+
+        span {
+            background-color: #eee;
+        }
+    }
+}
+
 @media screen and (min-width: 980px) {
-	
+
 	.sidebar-nav {
-		
+
 		position: fixed;
 		top: 50px;
 		left: 0;
@@ -778,25 +933,25 @@ table.crud {
 		overflow-y: auto;
 		overflow-x: hidden;
 		width: 20%;
-	
+
 	}
-	
+
 	.span0 .sidebar-nav {
 		width: inherit;
 		padding: 14px 0;
 		overflow: hidden;
 	}
-	
+
 	.span0 .sidebar-nav .menu-toggle {
 		float: none;
 	}
-	
+
 	.offset05 {
-		margin-left: 42px; 
+		margin-left: 42px;
 	}
 
     .form-actions.fixed {
         left: 20%;
     }
-	
+
 }

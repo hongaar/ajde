@@ -11,7 +11,7 @@ $field = $this->field;
 
 	<input
 		type='checkbox'
-		class='autoUpdateCrud'
+		class='autoUpdateCrud noAutosave'
 		<?php
 		if ($field->getValue()) echo 'checked="checked"';
 		if ($this->id) { echo 'id="' . $this->id . '"'; } else { echo 'id="check_' . $field->getName() . '"'; }

@@ -125,7 +125,9 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 						$exceptionDump .= '<h2>Dumps</h2>';
 						foreach($dumps as $dump) {
 							ob_start();
+                            echo '<pre>';
 							var_dump($dump[0]);
+                            echo '</pre>';
 							$exceptionDump  .= ob_get_clean();
 						}			
 					} 

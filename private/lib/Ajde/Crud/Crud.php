@@ -509,6 +509,7 @@ class Ajde_Crud extends Ajde_Object_Standard
 				$crudView = $viewSession->get($sessionName);
 			} else {
 				$crudView = new Ajde_Collection_View($sessionName, $this->getOption('list.view', array()));
+                $crudView->setColumns($this->getOption('list.show', $this->getFieldNames()));
 			}
 
             // somehow, when altering crudView, session gets updated as well
@@ -516,6 +517,10 @@ class Ajde_Crud extends Ajde_Object_Standard
 
 			if (empty($viewParams)) {
 				$viewParams = Ajde::app()->getRequest()->getParam('view', array());
+                // if we have params, but no columns, assume a reset
+                if (!empty($viewParams) && !isset($viewParams['columns'])) {
+                    $viewParams['columns'] = $this->getOption('list.show', $this->getFieldNames());
+                }
 			}
 			$crudView->setOptions($viewParams);
 

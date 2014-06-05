@@ -15,9 +15,12 @@ class Ajde_Core_Route extends Ajde_Object_Standard
 			$langInstance = Ajde_Lang::getInstance();
 			if ($lang = $langInstance->getAvailableLang($shortLang)) {
 				$this->set("lang", $lang);
-				$route = substr($route, 3); 
+				$route = substr($route, 3);
+                // set global lang
+                $langInstance->setGlobalLang($lang);
 			}
 		}
+        Ajde_Event::trigger($this, 'onAfterLangSet');
 		if (!$route) {
 			$route = Config::get('homepageRoute');
 		}
@@ -48,10 +51,10 @@ class Ajde_Core_Route extends Ajde_Object_Standard
 		return $this->_route = $this->buildRoute();
 	}
 	
-	public function buildRoute()
+	public function buildRoute($includeLang = true)
 	{
 		$route = '';
-		if ($this->hasLang()) {
+		if ($includeLang && $this->hasLang()) {
 			$route .= substr($this->getLang(), 0, 2) . '/';
 		}
 		$route .= $this->getModule() . '/';

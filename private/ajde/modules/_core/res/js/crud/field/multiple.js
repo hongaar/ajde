@@ -15,7 +15,8 @@ AC.Crud.Edit.Multiple = function() {
 		var form = $(options.that).parents('form');
 		form.find('input.operation').val(options.operation);
 		var field = $(options.that).parents('div.multiple:eq(0)').attr('data-field');
-		var parentId = $(options.that).parents('div.multiple:eq(0)').attr('data-parent-id');
+//		var parentId = $(options.that).parents('div.multiple:eq(0)').attr('data-parent-id');
+        var parentId = $(options.that).parents('form.ACCrudEdit').find(':input[name=id]').val();
 
 		if (!parentId) {
 			errorHandler('Please click \'save\' before adding a ' + field);
@@ -197,7 +198,8 @@ AC.Crud.Edit.Multiple = function() {
 		},
 
 		newHandler: function(e) {
-			var parentId = $(this).parents('div.multiple:eq(0)').attr('data-parent-id');
+//			var parentId = $(this).parents('div.multiple:eq(0)').attr('data-parent-id');
+            var parentId = $(this).parents('form.ACCrudEdit').find(':input[name=id]').val();
 			var field = $(this).parents('div.multiple:eq(0)').attr('data-field');
 			if (!parentId) {
 				errorHandler('Please click \'save\' before adding a ' + field);

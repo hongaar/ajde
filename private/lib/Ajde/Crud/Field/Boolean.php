@@ -14,8 +14,8 @@ class Ajde_Crud_Field_Boolean extends Ajde_Crud_Field
 	{
 		$value = issetor($value, $this->hasValue() ? $this->getValue() : false);
 		return $value ?
-			"<i class='icon-ok' title='Yes' />" :
-			"<i class='icon-remove' title='No' />";
+			"<i class='icon-ok' title='Yes'></i>" :
+			"<i class='icon-remove' title='No'></i>";
 			
 	}
 }

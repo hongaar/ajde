@@ -389,6 +389,36 @@ class Ajde_Component_String extends Ajde_Component
 			return false;
 		}
 	}
+
+    public static function textDiff($from, $to, $truncate = false)
+    {
+        require_once 'lib/finediff.php';
+        $diff = new FineDiff($from, $to, FineDiff::$wordGranularity);
+        if (!$truncate) {
+            return $diff->renderDiffToHTML();
+        } else {
+            $html = $diff->renderDiffToHTML();
+
+            // find first change
+            $firstDel = strpos($html, "<del>");
+            $firstIns = strpos($html, "<ins>");
+            if ($firstDel === false) $firstDel = $firstIns;
+            if ($firstIns === false) $firstIns = $firstDel;
+            $first = min($firstDel, $firstIns);
+            $first = max(0, $first - $truncate);
+
+            // find last change
+            $lastDel = strrpos($html, "</del>");
+            $lastIns = strrpos($html, "</ins>");
+            if ($lastDel === false) $lastDel = $lastIns;
+            if ($lastIns === false) $lastIns = $lastDel;
+            $last = max($lastDel, $lastIns);
+            $last = min(strlen($html), $last + $truncate);
+
+            // create truncated string
+            return ($first > 0 ? '<span>....</span> ' : '') . substr($html, $first, $last - $first) . ($last < strlen($html)  ? ' <span>....</span>' : '');
+        }
+    }
 	
 	public static function time2str($date, $today = false)
 	{
