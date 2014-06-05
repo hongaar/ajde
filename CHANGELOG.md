@@ -10,7 +10,9 @@ Due to a bug in the auto-updater, updating from a version prior to v0.2.2 doesn'
  - **NEW** Import media files from Google Drive
  - **NEW** Export CRUD view to Excel
  - **NEW** Filter on dates
- - **FIX** Lots of small bugfixes
+ - **NEW** Revisions
+ - **FIX** I18n fixes
+ - **FIX** Lots of small bugfixes, updates and small new features
 
 
 #### v0.2.7

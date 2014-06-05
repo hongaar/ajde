@@ -149,3 +149,54 @@ ALTER TABLE `submission`
 
 ALTER TABLE `transaction` ADD COLUMN `added`  timestamp NULL DEFAULT NULL COMMENT 'Added' AFTER `secret_archive`;
 ALTER TABLE `user` ADD COLUMN `tester`  tinyint(1) NULL DEFAULT 0 COMMENT 'Tester' AFTER `debug`;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mailerlog`
+--
+
+CREATE TABLE IF NOT EXISTS `mailerlog` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `sent_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Sent on',
+  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'Status',
+  `from_name` varchar(255) DEFAULT NULL COMMENT 'Sender name',
+  `from_email` varchar(255) NOT NULL COMMENT 'Sender',
+  `to_name` varchar(255) DEFAULT NULL COMMENT 'Recipient name',
+  `to_email` varchar(255) NOT NULL COMMENT 'Recipient',
+  `subject` varchar(255) NOT NULL COMMENT 'Subject',
+  `body` text NOT NULL COMMENT 'Message',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `revision`
+--
+
+CREATE TABLE IF NOT EXISTS `revision` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `model` varchar(255) NOT NULL COMMENT 'Model',
+  `user` int(10) unsigned DEFAULT NULL COMMENT 'User',
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Time',
+  `foreignkey` int(10) unsigned NOT NULL COMMENT 'Foreign key',
+  `field` varchar(255) NOT NULL COMMENT 'Field',
+  `old` text NOT NULL COMMENT 'Old value',
+  `new` text NOT NULL COMMENT 'New value',
+  PRIMARY KEY (`id`),
+  KEY `user` (`user`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=151 ;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `revision`
+--
+ALTER TABLE `revision`
+  ADD CONSTRAINT `revision_ibfk_1` FOREIGN KEY (`user`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
