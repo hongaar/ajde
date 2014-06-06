@@ -3,6 +3,7 @@
 abstract class Ajde_Model_Revision extends Ajde_Model
 {
     protected $_ignoreFieldInRevision = array();
+    protected $_ignoreFieldInRevisionIfEmpty = array();
 
     public function getRevisionsHtml($crud = null)
     {
@@ -59,6 +60,20 @@ abstract class Ajde_Model_Revision extends Ajde_Model
         foreach($this->_ignoreFieldInRevision as $ignoreField) {
             unset($oldValues[$ignoreField]);
             unset($newValues[$ignoreField]);
+        }
+
+        // ignore fields
+        foreach($this->_ignoreFieldInRevision as $ignoreField) {
+            unset($oldValues[$ignoreField]);
+            unset($newValues[$ignoreField]);
+        }
+
+        // ignore fields
+        foreach($this->_ignoreFieldInRevisionIfEmpty as $ignoreField) {
+            if (!isset($newValues[$ignoreField]) || empty($newValues[$ignoreField])) {
+                unset($oldValues[$ignoreField]);
+                unset($newValues[$ignoreField]);
+            }
         }
 
         if ($diffs = array_diff_assoc($oldValues, $newValues)) {
