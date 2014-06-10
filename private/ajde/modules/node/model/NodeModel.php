@@ -9,6 +9,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 	protected $_shadowModel;
 
     protected $_ignoreFieldInRevision = array('updated', 'added', 'level', 'sort', 'lang_root');
+    protected $_ignoreFieldInRevisionIfEmpty = array('slug');
 	
 	public static $_parentAclCache = array();
 	
@@ -316,8 +317,9 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 	{
         // filter slug
         $this->slug = $this->_sluggify($this->slug);
+
         if (empty($this->slug)) {
-            $this->slug = $this->_makeSlug();
+            $this->slug = new Ajde_Db_Function('slug');
         }
 
 		$this->shadowCall('beforeSave');	
