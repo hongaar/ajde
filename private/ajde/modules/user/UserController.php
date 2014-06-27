@@ -16,7 +16,7 @@ class UserController extends Ajde_User_Controller
 	public function beforeInvoke()
 	{
 		if (
-				substr($_GET['_route'], 0, 5) == 'admin' ||
+                ( isset($_GET['_route']) && substr($_GET['_route'], 0, 5) == 'admin') ||
 				( isset($_GET['returnto']) && substr($_GET['returnto'], 0, 5) == 'admin' ) ||
 				( ($user = $this->getLoggedInUser()) && $user->getUsergroup()->id != UserModel::USERGROUP_USERS) ) {
 			Ajde::app()->getDocument()->setLayout(new Ajde_Layout(Config::get('adminLayout')));
@@ -422,7 +422,7 @@ class UserController extends Ajde_User_Controller
 				'success' => false,
 				'message' => __("Please provide a full name")
 			);
-        } else if (!$provider->getData()) {
+        } else if ($provider && !$provider->getData()) {
             $return = array(
                 'success' => false,
                 'message' => __("Something went wrong with fetching your credentials from an external service")

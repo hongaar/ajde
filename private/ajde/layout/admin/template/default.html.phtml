@@ -1,6 +1,10 @@
 <?php
 /* @var $this Ajde_Template_Parser_Phtml_Helper */
 
+// load all models
+Ajde_Model::registerAll();
+
+// Font
 $this->requireGWebFont('Roboto', array(300, 500, 700));
 
 // Twitter bootstrap

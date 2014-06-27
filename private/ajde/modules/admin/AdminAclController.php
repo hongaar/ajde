@@ -5,7 +5,7 @@
 
 class AdminAclController extends AdminController
 {	
-	private $_pagePermissions = array(
+	public $_pagePermissions = array(
 		'Main' => array(
 			'all pages' => array(
 				'module' => '*',
@@ -83,8 +83,8 @@ class AdminAclController extends AdminController
 			)
 		)
 	);
-	
-	private $_modelPermissions = array(
+
+    public $_modelPermissions = array(
 		'Node types' => array(
 			'all' => array(
 				'model' => 'node',
@@ -104,7 +104,9 @@ class AdminAclController extends AdminController
 				'model' => 'node',
 				'extra' => $type->id
 			);
-		}		
+		}
+
+        Ajde_Event::trigger($this, 'initAclTypes');
 		
 		parent::__construct($action, $format);
 	}

@@ -111,22 +111,37 @@ class Ajde_Controller extends Ajde_Object_Standard
 		$timerKey = Ajde::app()->addTimer((string) $this->_route);
 		$action = issetor($action, $this->getAction());
 		$format = issetor($format, $this->getFormat());
+        $method = strtolower($_SERVER['REQUEST_METHOD']);
+
+        $tryTheseFunctions = array();
+
 		$emptyFunction = $action;
 		$defaultFunction = $action . "Default";
 		$formatFunction = $action . ucfirst($format);
-		if (method_exists($this, $formatFunction)) {
-			$actionFunction = $formatFunction;
-		} elseif (method_exists($this, $defaultFunction)) {
-			$actionFunction = $defaultFunction;
-		} elseif (method_exists($this, $emptyFunction)) {
-			$actionFunction = $emptyFunction;
-		} else {
+
+        $tryTheseFunctions[] = $method . $formatFunction;
+        $tryTheseFunctions[] = $method . $defaultFunction;
+        $tryTheseFunctions[] = $method . $emptyFunction;
+        $tryTheseFunctions[] = $formatFunction;
+        $tryTheseFunctions[] = $defaultFunction;
+        $tryTheseFunctions[] = $emptyFunction;
+
+        $invokeFunction = '';
+
+        foreach($tryTheseFunctions as $tryFunction) {
+            if (method_exists($this, $tryFunction)) {
+                $invokeFunction = $tryFunction;
+            }
+        }
+
+		if (!$invokeFunction) {
 			$exception = new Ajde_Core_Exception_Routing(sprintf("Action %s for module %s not found",
 						$this->getAction(),
 						$this->getModule()
 					), 90011);
 			Ajde::routingError($exception);
 		}
+
 		$return = true;
 		if (method_exists($this, 'beforeInvoke')) {
 			$return = $this->beforeInvoke();
@@ -136,7 +151,7 @@ class Ajde_Controller extends Ajde_Object_Standard
 			}
 		}		
 		if ($return === true) {
-			$return = $this->$actionFunction();
+			$return = $this->$invokeFunction();
 			if (method_exists($this, 'afterInvoke')) {
 				$this->afterInvoke();
 			}	
