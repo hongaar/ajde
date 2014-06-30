@@ -16,6 +16,9 @@ class AdminController extends Ajde_Acl_Controller
 		Ajde_Cache::getInstance()->disable();
         Ajde_Lang::getInstance()->disableAutoTranslationOfModels();
 
+        // load all models
+        Ajde_Model::registerAll();
+
 		return parent::beforeInvoke($allowed);
 	}
 	

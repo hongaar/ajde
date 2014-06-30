@@ -300,6 +300,11 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 	{
 		return $this->getParam($key, $default, $type, true);
 	}
+
+    public function getPostRaw($key, $default = null)
+    {
+        return $this->getParam($key, $default, self::TYPE_RAW, true);
+    }
 	
 	public function hasPostParam($key)
 	{

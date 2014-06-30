@@ -38,7 +38,7 @@ function showValue($value, RevisionModel $revision, $old = '', $showDiff = false
             $child = new $className;
             /* @var $child Ajde_Model */
             $child->loadByPK($value);
-            return $child->get($child->getDisplayField());
+            return $child->has($child->getDisplayField()) ? $child->get($child->getDisplayField()) : ucfirst($field->getModelName());
         } else {
             $shadowModel->loadParent($revision->field);
             $fk = $shadowModel->get($revision->field);
