@@ -234,7 +234,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 					&nbsp; <a href="javascript:void(null);" class='btn filterToggle <?php echo $crudView->getFilterVisible() ? 'active' : ''; ?>' data-toggle="button" title='Toggle filters'><i class='icon-filter'></i></a>
 				<?php } ?>
                 <?php if ($crud->getOption('list.allowExport', true)) { ?>
-                    &nbsp; <a href="javascript:void(null);" class='btn btn-success exportExcel' data-toggle="button" title='Export to Excel'><i class='icon-download-alt icon-white'></i></a>
+                    &nbsp; <a href="javascript:void(null);" class='btn exportExcel' data-toggle="button" title='Export to Excel'><i class='icon-download-alt'></i></a>
                 <?php } ?>
             </td>
 		</tr>

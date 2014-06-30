@@ -45,7 +45,7 @@ class MediaModel extends Ajde_Model
 		return $this->type == 'image' ? $this->getFilename(1024) : $this->uploadDirectory . $this->pointer;
 	}
 	
-	public function getTag($width = null, $height = null, $crop = null, $class = null, $attributes = array())
+	public function getTag($width = null, $height = null, $crop = null, $class = null, $attributes = array(), $lazy = false)
 	{
 		$path = $this->uploadDirectory . $this->thumbnail;
 		
@@ -58,8 +58,14 @@ class MediaModel extends Ajde_Model
 		$controller->setImage($image);			
 		$controller->setExtraClass($class);
         $controller->setAttributes($attributes);
+        $controller->setLazy($lazy);
 		return $controller->invoke();
 	}
+
+    public function getLazyTag($width = null, $height = null, $crop = null, $class = null, $attributes = array())
+    {
+        return $this->getTag($width, $height, $crop, $class, $attributes, true);
+    }
 	
 	public function getFilename($width = null, $height = null, $crop = null)
 	{
