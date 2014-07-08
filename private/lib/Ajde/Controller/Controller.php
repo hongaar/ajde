@@ -115,13 +115,13 @@ class Ajde_Controller extends Ajde_Object_Standard
 
         $tryTheseFunctions = array();
 
-		$emptyFunction = $action;
-		$defaultFunction = $action . "Default";
-		$formatFunction = $action . ucfirst($format);
+        $formatFunction = $action . ucfirst($format);
+        $defaultFunction = $action . "Default";
+        $emptyFunction = $action;
 
-        $tryTheseFunctions[] = 'do' . ucfirst($method) . $formatFunction;
-        $tryTheseFunctions[] = 'do' . ucfirst($method) . $defaultFunction;
-        $tryTheseFunctions[] = 'do' . ucfirst($method) . $emptyFunction;
+        $tryTheseFunctions[] = $formatFunction . ucfirst($method);
+        $tryTheseFunctions[] = $defaultFunction . ucfirst($method);
+        $tryTheseFunctions[] = $emptyFunction . ucfirst($method);
         $tryTheseFunctions[] = $formatFunction;
         $tryTheseFunctions[] = $defaultFunction;
         $tryTheseFunctions[] = $emptyFunction;
