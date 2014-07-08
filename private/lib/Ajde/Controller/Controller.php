@@ -119,9 +119,9 @@ class Ajde_Controller extends Ajde_Object_Standard
 		$defaultFunction = $action . "Default";
 		$formatFunction = $action . ucfirst($format);
 
-        $tryTheseFunctions[] = $method . $formatFunction;
-        $tryTheseFunctions[] = $method . $defaultFunction;
-        $tryTheseFunctions[] = $method . $emptyFunction;
+        $tryTheseFunctions[] = 'do' . ucfirst($method) . $formatFunction;
+        $tryTheseFunctions[] = 'do' . ucfirst($method) . $defaultFunction;
+        $tryTheseFunctions[] = 'do' . ucfirst($method) . $emptyFunction;
         $tryTheseFunctions[] = $formatFunction;
         $tryTheseFunctions[] = $defaultFunction;
         $tryTheseFunctions[] = $emptyFunction;
@@ -131,8 +131,10 @@ class Ajde_Controller extends Ajde_Object_Standard
         foreach($tryTheseFunctions as $tryFunction) {
             if (method_exists($this, $tryFunction)) {
                 $invokeFunction = $tryFunction;
+                break;
             }
         }
+//        dump(get_class($this) . '::' .  $invokeFunction);
 
 		if (!$invokeFunction) {
 			$exception = new Ajde_Core_Exception_Routing(sprintf("Action %s for module %s not found",

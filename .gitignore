@@ -12,3 +12,4 @@ nbproject/
 .idea
 _intellij_*
 PhpStorm-*
+vendor/*

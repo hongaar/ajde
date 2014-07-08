@@ -36,7 +36,7 @@ class Ajde_Component_Form extends Ajde_Component
 			$controller = Ajde_Controller::fromRoute(new Ajde_Core_Route('_core/component:formAjax'));
 			$formAction = new Ajde_Core_Route($this->attributes['route']);
 			$formAction->setFormat(issetor($this->attributes['format'], 'json'));
-			
+
 			$controller->setFormAction($formAction->__toString());
 			$controller->setFormFormat(issetor($this->attributes['format'], 'json'));
 			$controller->setFormId(issetor($this->attributes['id'], spl_object_hash($this)));
