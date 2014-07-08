@@ -1,8 +1,17 @@
 <img
-	src='<?php echo $this->href; ?>'
 	<?php if ($this->width) { echo "width='$this->width' "; } ?>
 	<?php if ($this->height) { echo "height='$this->height' "; } ?>
-	<?php if ($this->extraClass) { echo "class='$this->extraClass' "; } ?>
+    <?php if ($this->lazy) {
+        echo "data-original='$this->href' ";
+        if ($this->extraClass) {
+            echo "class='lazy $this->extraClass' ";
+        } else {
+            echo "class='lazy' ";
+        }
+    } else {
+        echo "src='$this->href' ";
+        if ($this->extraClass) { echo "class='$this->extraClass' "; }
+    } ?>
     <?php if ($this->attributes) { foreach($this->attributes as $k => $v) {
         echo $k . '="' . _e($v) . '" ';
     } } ?>

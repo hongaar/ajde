@@ -745,13 +745,18 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 		return parent::getMedia();
 	}
 	
-	public function getMediaTag($width = null, $height = null, $crop = null, $class = null, $attributes = array())
+	public function getMediaTag($width = null, $height = null, $crop = null, $class = null, $attributes = array(), $lazy = false)
 	{
 		if ($this->hasNotEmpty('media')) {
-			return $this->getMedia()->getTag($width, $height, $crop, $class,  $attributes);
+			return $this->getMedia()->getTag($width, $height, $crop, $class,  $attributes, $lazy);
 		}
 		return '';
 	}
+
+    public function getMediaLazyTag($width = null, $height = null, $crop = null, $class = null, $attributes = array())
+    {
+        return $this->getMediaTag($width, $height, $crop, $class, $attributes, true);
+    }
 
     public function getMediaFilename($width = null, $height = null, $crop = null, $class = null, $attributes = array())
     {

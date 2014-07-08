@@ -13,6 +13,10 @@ $this->requireJsFirst('i18n.' . Ajde_Lang::getInstance()->getShortLang());
 // Alert bar
 $this->requireJsFirst('core.alert'); $this->requireCssFirst('core.alert');
 
+// Lazy images
+$this->requireJsPublic('core/jquery.lazyload.min.js');
+$this->requireJsFirst('core.lazy');
+
 // Example styles
 $this->requireCssTop('core.1140');
 $this->requireGWebFont('Open Sans Condensed', array(300));
