@@ -8,7 +8,8 @@ $(document).ready(function() {
             } else {
                 if ($('#returnto').val()) {
                     $('body').addClass('loading');
-                    window.location.href = $('#returnto').val();
+                    // IE fix (going level up?)
+                    window.location.href = $('base').attr('href') + $('#returnto').val();
                 } else {
                     $('body').addClass('loading');
                     window.location.reload(true);

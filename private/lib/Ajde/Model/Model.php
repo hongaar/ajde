@@ -768,7 +768,7 @@ class Ajde_Model extends Ajde_Object_Standard
 
 	public function hash()
 	{
-		$str = implode($this->values());
+		$str = implode('', $this->valuesAsSingleDimensionArray());
 		return md5($str);
 	}
 

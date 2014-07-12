@@ -18,8 +18,9 @@ $(document).ready(function() {
 			if (data.postproxy) {			
 				$('#postproxy').html(data.postproxy);
 				$('#postproxy form:eq(0)').submit();
-			} else if (data.redirect) {				
-				window.location.href = data.redirect;
+			} else if (data.redirect) {
+                // IE fix (going level up?)
+                window.location.href = $('base').attr('href') + data.redirect;
 			} else {
 				AC.Core.Alert.error('Something went wrong...');
 			}

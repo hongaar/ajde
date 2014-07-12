@@ -110,6 +110,23 @@ abstract class Ajde_Object_Magic extends Ajde_Object
 	{
 		return $this->_data;
 	}
+
+    public final function valuesAsSingleDimensionArray()
+    {
+        $array = array();
+        foreach($this->_data as $k => $item) {
+            if (is_string($item)) {
+                $array[$k] = $item;
+            } else if (is_array($item)) {
+                $array[$k] = serialize($item);
+            } else if ($item instanceof Ajde_Object_Magic) {
+                $array[$k] = serialize($item->valuesAsSingleDimensionArray());
+            } else if (is_object($item)) {
+                $array[$k] = serialize($item);
+            }
+        }
+        return $array;
+    }
 	
 	/**
 	 * Translates a camel case string into a string with underscores (e.g. firstName -&gt; first_name)

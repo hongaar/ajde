@@ -7,7 +7,8 @@ class Ajde_Session extends Ajde_Object_Standard
 	public function __bootstrap()
 	{
 		// Session name
-		session_name(Config::get('ident') . '_session');		
+		$sessionName = Config::get('ident') . '_session';
+        session_name($sessionName);
 		
 		// Session lifetime
 		$lifetime	= Config::get("sessionLifetime");
@@ -44,9 +45,11 @@ class Ajde_Session extends Ajde_Object_Standard
 			// @see http://www.php.net/manual/en/function.session-set-cookie-params.php#100672
 			//session_regenerate_id();
 			
-			// Set cookie manually
+			// Set cookie manually if session_start didn't just sent a cookie
 			// @see http://www.php.net/manual/en/function.session-set-cookie-params.php#100657
-			setcookie(session_name(), session_id(), time() + ($lifetime * 60), $path, $domain, $secure, $httponly);
+            if (isset($_COOKIE[$sessionName])) {
+			    setcookie(session_name(), session_id(), time() + ($lifetime * 60), $path, $domain, $secure, $httponly);
+            }
 		}
 		
 		// Strengthen session security with REMOTE_ADDR and HTTP_USER_AGENT

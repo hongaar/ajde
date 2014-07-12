@@ -12,20 +12,7 @@ $user = $this->user;
 
 <div class="container">
     <div class="row-fluid">
-        <div class="span3 col-sm-3">
-            <div class="well sidebar-nav">
-                <a class="menu-toggle btn btn-normal pull-right"><i class="icon-resize-small"></i></a>
-                <ul class="nav nav-list">
-                    <li class="nav-header">User account</li>
-                    <li><a href="user/profile"><i class="icon-user"></i> Profile</a></li>
-                    <li><a href="user/social"><i class="icon-thumbs-up"></i> Social</a></li>
-                    <li><a href="user/settings"><i class="icon-cog"></i> Settings</a></li>
-                    <li><a href="user/app"><i class="icon-qrcode"></i> App</a></li>
-                    <li class="divider"></li>
-                    <li><a href="user/logoff"><i class="icon-share-alt"></i> Log off</a></li>
-                </ul>
-            </div><!--/.well -->
-        </div><!--/span-->
+        <?php echo $this->includeModule('user/menu'); ?>
         <div class="span9 col-sm-9">
 
             <div class='page-header'>
@@ -37,7 +24,7 @@ $user = $this->user;
             $model = new SsoModel();
             $hasPassword = $user->hasPassword();
             foreach($this->sso as $sso) {
-                $staticClass = "Ajde_User_SSO_" . ucfirst($sso);
+                $staticClass = "Ajde_User_Sso_" . ucfirst($sso);
                 $icon = call_user_func(array($staticClass, 'getIconName'));
                 $color = call_user_func(array($staticClass, 'getColor'));
                 ?>

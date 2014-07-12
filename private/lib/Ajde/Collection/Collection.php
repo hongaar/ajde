@@ -380,11 +380,12 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 				foreach($this->getFilter('join') as $join) {
 					call_user_func_array(array($this->getQuery(), 'addJoin'), $join);
 				}
-			}
-			if (!empty($this->_filters)) {
 				foreach($this->getFilter('where') as $where) {
 					call_user_func_array(array($this->getQuery(), 'addWhere'), $where);
 				}
+                foreach($this->getFilter('having') as $having) {
+                    call_user_func_array(array($this->getQuery(), 'addHaving'), $having);
+                }
 			}
 		}
 		$this->_sqlInitialized = true;
@@ -493,4 +494,11 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 		}
 		return $this->_items;
 	}
+
+    public function deleteAll()
+    {
+        foreach($this as $item) {
+            $item->delete();
+        }
+    }
 }

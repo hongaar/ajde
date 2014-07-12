@@ -33,8 +33,10 @@ class Ajde_Log extends Ajde_Object_Static
         foreach(self::getWriters() as $writer)
         {
             try {
-                @call_user_func_array($writer . '::_', array($message, $channel, $level, $description, $code, $trace));
-                break;
+                $result = @call_user_func_array($writer . '::_', array($message, $channel, $level, $description, $code, $trace));
+                if ($result) {
+                    break;
+                }
             } catch (Exception $e) {}
         }
     }

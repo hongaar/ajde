@@ -7,7 +7,11 @@ class Ajde_Crud_Field_Time extends Ajde_Crud_Field
 	{		
 		$attributes = array();
 		$attributes['type'] = 'time';
-		$attributes['value'] = Ajde_Component_String::escape( date('H:i', strtotime($this->getValue()) ) );
+        if ($this->getValue()) {
+		    $attributes['value'] = Ajde_Component_String::escape( date('H:i', strtotime($this->getValue()) ) );
+        } else {
+            $attributes['value'] = '';
+        }
 		if ($this->hasReadonly() && $this->getReadonly() === true) {
 			$attributes['readonly'] = 'readonly';	
 		}		

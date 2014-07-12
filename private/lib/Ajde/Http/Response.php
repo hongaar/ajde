@@ -22,11 +22,17 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 		self::dieOnCode(self::RESPONSE_TYPE_SERVERERROR);
 	}
 
+    /**
+     * Use only when user is not logged in, or for failed logon attempts
+     */
     public static function redirectUnauthorized()
     {
         self::dieOnCode(self::RESPONSE_TYPE_UNAUTHORIZED);
     }
 
+    /**
+     * Use for ACL declines / requests with no permission granted for the current user
+     */
     public static function redirectForbidden()
     {
         self::dieOnCode(self::RESPONSE_TYPE_FORBIDDEN);

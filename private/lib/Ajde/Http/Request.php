@@ -77,7 +77,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 
 	public static function getRefferer()
 	{
-		return $_SERVER['HTTP_REFERER'];
+		return @$_SERVER['HTTP_REFERER'];
 	}
 
     // From http://stackoverflow.com/a/10372836/938297

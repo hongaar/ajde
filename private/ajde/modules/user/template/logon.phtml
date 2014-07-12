@@ -57,7 +57,7 @@ $this->requireCssRemote("//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-a
             foreach($this->sso as $sso) { ?>
                 <div style="margin-bottom: 5px;">
                     <?php
-                    $staticClass = "Ajde_User_SSO_" . ucfirst($sso);
+                    $staticClass = "Ajde_User_Sso_" . ucfirst($sso);
                     $icon = call_user_func(array($staticClass, 'getIconName'));
                     $color = call_user_func(array($staticClass, 'getColor'));
                     ?>
