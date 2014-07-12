@@ -47,8 +47,8 @@ define('AJDE', true);
 	ini_set('display_errors', 1);
 	ini_set('display_startup_errors', 1);
 
-	// Uncomment to hide uncatchable fatal errors
-	//ini_set('display_errors', 0);
+	// Comment to show uncatchable fatal errors
+	ini_set('display_errors', 0);
 
 //	--------------------
 //	Try to catch fatal errors
@@ -56,7 +56,7 @@ define('AJDE', true);
 	function shutdown()
 	{
 		if (($error = error_get_last()) && in_array($error['type'], array(E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR))) {
-//            chdir(__DIR__);
+            chdir(__DIR__);
 			$exception = new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line']);
 			if (Config::get('debug') === true) {
 				echo Ajde_Exception_Handler::trace($exception);
