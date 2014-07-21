@@ -160,6 +160,11 @@ class Ajde_User_Sso_Google extends Ajde_User_Sso
         }
     }
 
+    public function getProfileSuggestion()
+    {
+        return '';
+    }
+
     public function getUidHash()
     {
         if ($this->hasCredentials()) {

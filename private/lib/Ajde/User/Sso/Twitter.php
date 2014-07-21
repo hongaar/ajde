@@ -139,6 +139,11 @@ class Ajde_User_Sso_Twitter extends Ajde_User_Sso
         return false;
     }
 
+    public function getProfileSuggestion()
+    {
+        return '';
+    }
+
     public function getAvatarSuggestion()
     {
         if ($this->hasCredentials()) {
