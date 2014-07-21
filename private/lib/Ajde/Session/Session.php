@@ -113,6 +113,7 @@ class Ajde_Session extends Ajde_Object_Standard
 			$_SESSION[$this->_namespace] = null;
 			$this->reset(); 
 		}
+        Ajde_Cache::getInstance()->updateHash($this->hash());
 	}
 	
 	public function setModel($name, $object)
@@ -147,7 +148,13 @@ class Ajde_Session extends Ajde_Object_Standard
 			throw new Ajde_Exception('It is not allowed to store a Model directly in the session, use Ajde_Session::setModel() instead.');
 		}
 		$_SESSION[$this->_namespace][$key] = $value;
+        Ajde_Cache::getInstance()->updateHash($this->hash());
 	}
+
+    public function hash()
+    {
+        return serialize($_SESSION[$this->_namespace]);
+    }
 	
 	public function getOnce($key)
 	{

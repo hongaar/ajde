@@ -15,7 +15,7 @@ class UserController extends Ajde_User_Controller
 	
 	public function beforeInvoke()
 	{
-        $adminAccess = Ajde_Acl::validatePage('admin', '', '');
+        $adminAccess = false; //Ajde_Acl::validatePage('admin', '', '');
 		if (
                 ( isset($_GET['_route']) && substr($_GET['_route'], 0, 5) == 'admin') ||
 				( isset($_GET['returnto']) && substr($_GET['returnto'], 0, 5) == 'admin' ) ||

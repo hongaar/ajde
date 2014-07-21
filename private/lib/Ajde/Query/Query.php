@@ -123,6 +123,12 @@ class Ajde_Query extends Ajde_Object_Standard
 			}
 		}
 
+        // GROUP BY
+        if (!empty($this->groupBy)) {
+            $sql .= ' GROUP BY';
+            $sql .= ' ' . implode(', ', $this->groupBy);
+        }
+
         // HAVING
         if (!empty($this->having)) {
             $first = true;
@@ -135,12 +141,6 @@ class Ajde_Query extends Ajde_Object_Standard
                 $first = false;
             }
         }
-		
-		// GROUP BY
-		if (!empty($this->groupBy)) {
-			$sql .= ' GROUP BY';			
-			$sql .= ' ' . implode(', ', $this->groupBy);
-		}
 		
 		// ORDER BY
 		if (!empty($this->orderBy)) {

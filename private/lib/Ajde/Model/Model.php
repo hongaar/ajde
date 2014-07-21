@@ -816,13 +816,19 @@ class Ajde_Model extends Ajde_Object_Standard
 	private function _recurseChildren($collection, $collectionName, $parentField, $levelField, $sortField, $updatedField = 'updated') {
 		static $sort;
 		static $level;
-		foreach($collection as $item) {			
-			/* @var $item Ajde_Model */
+        /** @var $item Ajde_Acl_Proxy_Model */
+        foreach($collection as $item) {
 			$sort++;
 			$item->set($sortField, $sort);
 			$item->set($levelField, $level);
 			$item->set($updatedField, new Ajde_Db_Function($updatedField));
-			$item->save();
+            if ($item instanceof Ajde_Acl_Proxy_Model) {
+                if ($item->validateAccess('update', false)) {
+			        $item->save();
+                }
+            } else {
+                $item->save();
+            }
 			// Look for children
 			$children = new $collectionName();
 			$children->addFilter(new Ajde_Filter_Where($parentField, Ajde_Filter::FILTER_EQUALS, $item->getPK()));
