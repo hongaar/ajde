@@ -36,7 +36,9 @@ abstract class Ajde_Model_Revision extends Ajde_Model
         $shadowModel = new $modelName;
         /* @var $shadowModel Ajde_Model */
         $shadowModel->loadByPK($this->getPK());
-        $shadowModel->populateMeta();
+        if ($shadowModel->_hasMeta) {
+            $shadowModel->populateMeta();
+        }
 
         // old values
         $oldValues = $shadowModel->values();
@@ -45,7 +47,9 @@ abstract class Ajde_Model_Revision extends Ajde_Model
         }
 
         // populate meta of current model, but don't override
-        $this->populateMeta(false, false);
+        if ($this->_hasMeta) {
+            $this->populateMeta(false, false);
+        }
 
         // new values
         $newValues = $this->values();
@@ -54,12 +58,6 @@ abstract class Ajde_Model_Revision extends Ajde_Model
 //                die('hier');
             }
             @$newValue = (string) $newValue;
-        }
-
-        // ignore fields
-        foreach($this->_ignoreFieldInRevision as $ignoreField) {
-            unset($oldValues[$ignoreField]);
-            unset($newValues[$ignoreField]);
         }
 
         // ignore fields

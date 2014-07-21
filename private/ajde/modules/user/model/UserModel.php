@@ -88,6 +88,14 @@ class UserModel extends Ajde_User
             $this->set($fieldName, $filename . '.' . $extension);
         }
     }
+
+    public function copyAvatarFromSso(SsoModel $sso)
+    {
+        if ($sso->hasNotEmpty('avatar')) {
+            $this->set('avatar', $sso->get('avatar'));
+            $this->save();
+        }
+    }
 	
 	public function emailLink()
 	{

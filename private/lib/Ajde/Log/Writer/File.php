@@ -35,5 +35,7 @@ class Ajde_Log_Writer_File extends Ajde_Log_Writer_Abstract
         fwrite($fh, "\tReferer: " . self::getReferer() . PHP_EOL);
         fwrite($fh, "\tIP: " . self::getIP() . PHP_EOL);
 		fclose($fh);
+
+        return true;
 	}
 }

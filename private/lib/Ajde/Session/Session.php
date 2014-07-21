@@ -7,7 +7,8 @@ class Ajde_Session extends Ajde_Object_Standard
 	public function __bootstrap()
 	{
 		// Session name
-		session_name(Config::get('ident') . '_session');		
+		$sessionName = Config::get('ident') . '_session';
+        session_name($sessionName);
 		
 		// Session lifetime
 		$lifetime	= Config::get("sessionLifetime");
@@ -38,16 +39,6 @@ class Ajde_Session extends Ajde_Object_Standard
 				
 		// Start the session!
 		session_start();
-				
-		if ($lifetime > 0) {
-			// Force send new cookie with updated lifetime (forcing keep-alive)
-			// @see http://www.php.net/manual/en/function.session-set-cookie-params.php#100672
-			//session_regenerate_id();
-			
-			// Set cookie manually
-			// @see http://www.php.net/manual/en/function.session-set-cookie-params.php#100657
-			setcookie(session_name(), session_id(), time() + ($lifetime * 60), $path, $domain, $secure, $httponly);
-		}
 		
 		// Strengthen session security with REMOTE_ADDR and HTTP_USER_AGENT
 		// @see http://shiflett.org/articles/session-hijacking
@@ -60,24 +51,43 @@ class Ajde_Session extends Ajde_Object_Standard
 				$_SESSION['client'] !== md5($_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] . Config::get('secret'))) {
 			// TODO: overhead to call session_regenerate_id? is it not required??
 			//session_regenerate_id();
+
+            // thoroughly destroy the current session
 			session_destroy();
+            unset($_SESSION);
+            setcookie(session_name(), session_id(), time() - 3600, $path, $domain, $secure, $httponly);
+
 			// TODO:
 			$exception = new Ajde_Core_Exception_Security('Possible session hijacking detected. Bailing out.');
 			if (Config::getInstance()->debug === true) {
 				throw $exception;
 			} else {
-				Ajde_Exception_Log::logException($exception);
-				// don't redirect for resource items, as they should have no side effect
+				// don't redirect/log for resource items, as they should have no side effect
 				// this makes it possible for i.e. web crawlers/error pages to view resources
 				$request = Ajde_Http_Request::fromGlobal();
-				$route = $request->initRoute();	
+				$route = $request->initRoute();
 				Ajde::app()->setRequest($request);
-				if (!in_array($route->getFormat(), array('css','js'))) {	
-					Ajde_Http_Response::dieOnCode(Ajde_Http_Response::RESPONSE_TYPE_FORBIDDEN);
+				if (!in_array($route->getFormat(), array('css','js'))) {
+                    Ajde_Exception_Log::logException($exception);
+                    Ajde_Cache::getInstance()->disable();
+                    // Just destroying the session should be enough
+//					Ajde_Http_Response::dieOnCode(Ajde_Http_Response::RESPONSE_TYPE_FORBIDDEN);
 				}
 			}
 		} else {
 			$_SESSION['client'] = md5($_SERVER['REMOTE_ADDR'] . issetor($_SERVER['HTTP_USER_AGENT']) . Config::get('secret'));
+
+            if ($lifetime > 0) {
+                // Force send new cookie with updated lifetime (forcing keep-alive)
+                // @see http://www.php.net/manual/en/function.session-set-cookie-params.php#100672
+                //session_regenerate_id();
+
+                // Set cookie manually if session_start didn't just sent a cookie
+                // @see http://www.php.net/manual/en/function.session-set-cookie-params.php#100657
+                if (isset($_COOKIE[$sessionName])) {
+                    setcookie(session_name(), session_id(), time() + ($lifetime * 60), $path, $domain, $secure, $httponly);
+                }
+            }
 		}
 		
 		// remove cache headers invoked by session_start();
@@ -103,6 +113,7 @@ class Ajde_Session extends Ajde_Object_Standard
 			$_SESSION[$this->_namespace] = null;
 			$this->reset(); 
 		}
+        Ajde_Cache::getInstance()->updateHash($this->hash());
 	}
 	
 	public function setModel($name, $object)
@@ -137,7 +148,13 @@ class Ajde_Session extends Ajde_Object_Standard
 			throw new Ajde_Exception('It is not allowed to store a Model directly in the session, use Ajde_Session::setModel() instead.');
 		}
 		$_SESSION[$this->_namespace][$key] = $value;
+        Ajde_Cache::getInstance()->updateHash($this->hash());
 	}
+
+    public function hash()
+    {
+        return serialize($_SESSION[$this->_namespace]);
+    }
 	
 	public function getOnce($key)
 	{

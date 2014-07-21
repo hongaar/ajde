@@ -60,7 +60,7 @@ class Ajde_Db_PDOStatement extends PDOStatement {
 		//	$log['cache'] = true;
 		//}  
 		} catch (Exception $e) {
-		if (Config::get('debug') === true) {
+		    if (Config::get('debug') === true) {
 				if (isset($this->queryString)) dump($this->queryString);
 				dump('Go to ' . Config::get('site_root') . '?install=1 to install DB');
 				throw new Ajde_Db_Exception($e->getMessage());

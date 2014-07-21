@@ -24,6 +24,6 @@ class Ajde_Log_Writer_Db extends Ajde_Log_Writer_Abstract
             'referer' => self::getReferer(),
             'ip' => self::getIP()
         ));
-        $log->insert();
+        return $log->insert();
 	}
 }

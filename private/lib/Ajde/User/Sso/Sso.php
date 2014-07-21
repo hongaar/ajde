@@ -1,6 +1,6 @@
 <?php
 
-abstract class Ajde_User_SSO
+abstract class Ajde_User_Sso implements Ajde_User_Sso_Interface
 {
     public function getUser()
     {

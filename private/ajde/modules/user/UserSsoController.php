@@ -1,6 +1,6 @@
 <?php 
 
-class UserSSOController extends Ajde_User_Controller
+class UserSsoController extends Ajde_User_Controller
 {
 	protected $_allowedActions = array(
 		'login',
@@ -23,7 +23,7 @@ class UserSSOController extends Ajde_User_Controller
             Ajde_Http_Response::redirectNotFound();
         }
 
-        $classname = 'Ajde_User_SSO_' . ucfirst($this->_providername);
+        $classname = 'Ajde_User_Sso_' . ucfirst($this->_providername);
         $this->_provider = new $classname;
 
         return parent::beforeInvoke();
@@ -40,6 +40,9 @@ class UserSSOController extends Ajde_User_Controller
     {
         // from querystring?
         $returnto = Ajde::app()->getRequest()->getParam('returnto', '');
+        if (empty($returnto)) {
+            $returnto = Ajde_Http_Response::REDIRECT_HOMEPAGE;
+        }
 
         // from session?
         $returntoSession = new Ajde_Session('returnto');
@@ -73,10 +76,12 @@ class UserSSOController extends Ajde_User_Controller
                     'provider' => $this->_providername,
                     'username' => $this->_provider->getUsernameSuggestion(),
                     'avatar' => $this->_provider->getAvatarSuggestion(),
+                    'profile' => $this->_provider->getProfileSuggestion(),
                     'uid' => $this->_provider->getUidHash(),
                     'data' => serialize($this->_provider->getData())
                 ));
                 $sso->insert();
+                $user->copyAvatarFromSso($sso);
                 $this->redirect($returnto);
             // No match found, redirect to register page
             } else {

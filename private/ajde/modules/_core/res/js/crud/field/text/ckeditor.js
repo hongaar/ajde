@@ -88,7 +88,7 @@ AC.Crud.Edit.Text = function() {
 			CKEDITOR.config.removeButtons = '';
 			
 			CKEDITOR.config.extraPlugins = 'onchange,justify,autogrow';
-			CKEDITOR.config.extraAllowedContent = 'a(*)';
+			CKEDITOR.config.extraAllowedContent = 'a(*); img(*); div(*)';
 
             // autogrow
             CKEDITOR.config.autoGrow_onStartup = true;

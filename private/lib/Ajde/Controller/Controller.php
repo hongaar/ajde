@@ -85,7 +85,7 @@ class Ajde_Controller extends Ajde_Object_Standard
 				$notFoundRoute = new Ajde_Core_Route(Config::getInstance()->responseCodeRoute[Ajde_Http_Response::RESPONSE_TYPE_NOTFOUND]);
 				if ($route->buildRoute() == $notFoundRoute->buildRoute()) {
 					Ajde_Http_Response::setResponseType(404);
-					die('<h2>Ouch, something broke.</h2><p>This is serious. We tried to give you a nice error page, but even that failed.</p><button onclick="location.href=\'./\';">Go back to homepage</button>');
+					die('<h2>Ouch, something broke.</h2><p>This is serious. We tried to give you a nice error page, but even that failed.</p><button onclick="location.href=\''.Config::get('site_root').'\';">Go back to homepage</button>');
 				}
 			}		
 					

@@ -40,7 +40,8 @@ class Ajde_Component_Image extends Ajde_Component
                 issetor($this->attributes['width']),
                 issetor($this->attributes['height']),
                 Ajde_Component_String::toBoolean(issetor($this->attributes['crop'], true)),
-                issetor($this->attributes['class'], '')
+                issetor($this->attributes['class'], ''),
+                issetor($this->attributes['lazy'], false)
             );
 			break;
 		case 'image':
@@ -51,7 +52,7 @@ class Ajde_Component_Image extends Ajde_Component
 		throw new Ajde_Component_Exception('Missing required attributes for component call');	
 	}
 
-    public static function getImageTag($filename, $width = null, $height = null, $crop = true, $class = '')
+    public static function getImageTag($filename, $width = null, $height = null, $crop = true, $class = '', $lazy = false)
     {
         $image = new Ajde_Resource_Image($filename);
         $image->setWidth($width);
@@ -61,6 +62,8 @@ class Ajde_Component_Image extends Ajde_Component
         $controller = Ajde_Controller::fromRoute(new Ajde_Core_Route('_core/component:image'));
         $controller->setImage($image);
         $controller->setExtraClass($class);
+        $controller->setLazy($lazy);
+
         return $controller->invoke();
     }
 }

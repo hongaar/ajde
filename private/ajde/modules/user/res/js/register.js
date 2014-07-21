@@ -53,7 +53,8 @@ $(document).ready(function() {
                 $('.status-text').text(data.message);
             } else {
                 if (data.returnto !== false) {
-                    window.location.href = data.returnto;
+                    // IE fix (going level up?)
+                    window.location.href = $('base').attr('href') + data.returnto;
                 } else {
                     window.location.href = 'user';
                 }
@@ -75,6 +76,7 @@ $(document).ready(function() {
 	
 	$('#registerform :input').on('keydown', function() {
 		$('.status-text').text('');
+        $('.give-status').removeClass('error');
 	});
 	
 });
