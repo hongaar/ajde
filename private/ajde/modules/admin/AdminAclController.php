@@ -42,7 +42,7 @@ class AdminAclController extends AdminController
 			'tags' => array(
 				'module' => 'admin',
 				'action' => '*',
-				'extra' => 'tags'
+				'extra' => 'tag'
 			),
             'email' => array(
                 'module' => 'admin',
