@@ -34,3 +34,7 @@ a.btn-default {
 .silver {
     color: silver;
 }
+
+table {
+    background-color: #eee;
+}

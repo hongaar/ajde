@@ -261,6 +261,16 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	{
 		return Ajde_Component_Image::processStatic($this->getParser(), $attributes);
 	}
+
+    /**
+     *
+     * @param string $target
+     * @return string
+     */
+    public function ACLazyImage($attributes)
+    {
+        return Ajde_Component_Image::processStatic($this->getParser(), array_merge($attributes, array('lazy' => true)));
+    }
 	
 	/************************
 	 * Ajde_Component_Qrcode

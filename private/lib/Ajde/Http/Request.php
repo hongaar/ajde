@@ -77,8 +77,19 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 
 	public static function getRefferer()
 	{
-		return $_SERVER['HTTP_REFERER'];
+		return @$_SERVER['HTTP_REFERER'];
 	}
+
+    // From http://stackoverflow.com/a/10372836/938297
+    public static function getRealIp() {
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            return $_SERVER['HTTP_CLIENT_IP'];
+        } else if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            return $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else {
+            return $_SERVER['REMOTE_ADDR'];
+        }
+    }
 	
 	/**
 	 * Security
@@ -289,6 +300,11 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 	{
 		return $this->getParam($key, $default, $type, true);
 	}
+
+    public function getPostRaw($key, $default = null)
+    {
+        return $this->getParam($key, $default, self::TYPE_RAW, true);
+    }
 	
 	public function hasPostParam($key)
 	{

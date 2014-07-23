@@ -10,7 +10,11 @@ AC.Crud.Edit = function() {
 	
 	var isIframe = false;
     var isDirty = false;
-    var autosaveInterval = 500;
+
+    var autosaveThrottleTimer;
+    var autosaveTimer;
+    var autosaveThrottleActive = false;
+    var autosaveThrottleTimeout = 2000;
 	
 	return {
 		
@@ -54,7 +58,8 @@ AC.Crud.Edit = function() {
             // Trigger dirty and autosave on form input elements
             if (!isIframe) {
                 // Dirty handler for form input elements
-                $('form.ACCrudEdit:not(.autosave)').find(input).on('change', AC.Crud.Edit.setDirty);
+//                $('form.ACCrudEdit:not(.autosave)').find(input).on('change', AC.Crud.Edit.setDirty);
+                $('form.ACCrudEdit').find(input).on('change', AC.Crud.Edit.setDirty);
 
                 // Autosave handlers
                 $('form.ACCrudEdit.autosave').find(input).not('.noAutosave').on('change', AC.Crud.Edit.autoSave);
@@ -84,6 +89,7 @@ AC.Crud.Edit = function() {
                     .text('discard changes')
                     .addClass('btn-danger');
             isDirty = true;
+            $('.autosave-status').removeClass('active').html('Save pending...');
             $(window).on("beforeunload", function(e) {
                 if (isDirty) {
                     return 'You have unsaved changes, are you sure you want to navigate away from this page?';
@@ -177,7 +183,22 @@ AC.Crud.Edit = function() {
 
         autoSave: function(e) {
             var self = this;
-            AC.Crud.Edit.saveHandler.call(self, e, 'autosave');
+            if (!autosaveThrottleActive) {
+                autosaveThrottleActive = true;
+                AC.Crud.Edit.saveHandler.call(self, e, 'autosave');
+            } else {
+                if (!autosaveTimer) {
+                    autosaveTimer = setTimeout(function() {
+                        autosaveThrottleActive = true;
+                        AC.Crud.Edit.saveHandler.call(self, e, 'autosave');
+                        autosaveTimer = null;
+                    }, autosaveThrottleTimeout);
+                }
+            }
+            clearTimeout(autosaveThrottleTimer);
+            autosaveThrottleTimer = setTimeout(function() {
+                autosaveThrottleActive = false
+            }, autosaveThrottleTimeout);
         },
 		
 		saveHandler: function(e, returnTo) {

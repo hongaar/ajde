@@ -2,13 +2,13 @@
 
 /*********************
  * AJDE OPEN WEB FRAMEWORK
- * https://github.com/hongaar/ajde
- *********************/
+ * https://github.com/nabble/ajde
+  *********************/
 
 //	--------------------
 //	We're running index.php
 //	--------------------
-	define('AJDE', true);
+define('AJDE', true);
 	
 //	--------------------
 //	Which version of Ajde are we running?
@@ -47,8 +47,8 @@
 	ini_set('display_errors', 1);
 	ini_set('display_startup_errors', 1);
 
-	// Uncomment to hide uncatchable fatal errors
-	//ini_set('display_errors', 0);
+	// Comment to show uncatchable fatal errors
+	ini_set('display_errors', 0);
 
 //	--------------------
 //	Try to catch fatal errors
@@ -56,6 +56,7 @@
 	function shutdown()
 	{
 		if (($error = error_get_last()) && in_array($error['type'], array(E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR))) {
+            chdir(__DIR__);
 			$exception = new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line']);
 			if (Config::get('debug') === true) {
 				echo Ajde_Exception_Handler::trace($exception);
@@ -63,7 +64,7 @@
 				// Use native PHP error log function, as Ajde_Exception_Log does not work
 				error_log($error['message'] . ', ' . $error['type'] . ', ' . $error['file'] . ', ' . $error['line']);
 				Ajde_Http_Response::dieOnCode(Ajde_Http_Response::RESPONSE_TYPE_SERVERERROR);
-			}
+            }
 		}
 	}
 	register_shutdown_function('shutdown');

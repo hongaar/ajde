@@ -15,10 +15,11 @@ class UserController extends Ajde_User_Controller
 	
 	public function beforeInvoke()
 	{
+        $adminAccess = false; //Ajde_Acl::validatePage('admin', '', '');
 		if (
-				substr($_GET['_route'], 0, 5) == 'admin' ||
+                ( isset($_GET['_route']) && substr($_GET['_route'], 0, 5) == 'admin') ||
 				( isset($_GET['returnto']) && substr($_GET['returnto'], 0, 5) == 'admin' ) ||
-				( ($user = $this->getLoggedInUser()) && $user->getUsergroup()->id != UserModel::USERGROUP_USERS) ) {
+                $adminAccess ) {
 			Ajde::app()->getDocument()->setLayout(new Ajde_Layout(Config::get('adminLayout')));
 		}
 		Ajde_Cache::getInstance()->disable();
@@ -30,6 +31,11 @@ class UserController extends Ajde_User_Controller
 	{
 		return $this->profile();
 	}
+
+    public function menu()
+    {
+        return $this->render();
+    }
 	
 	public function app()
 	{
@@ -377,7 +383,7 @@ class UserController extends Ajde_User_Controller
                 Ajde_Http_Response::redirectNotFound();
             }
 
-            $classname = 'Ajde_User_SSO_' . ucfirst($providername);
+            $classname = 'Ajde_User_Sso_' . ucfirst($providername);
             /* @var $provider Ajde_User_SSO_Interface */
             $provider = new $classname;
         }
@@ -422,7 +428,7 @@ class UserController extends Ajde_User_Controller
 				'success' => false,
 				'message' => __("Please provide a full name")
 			);
-        } else if (!$provider->getData()) {
+        } else if ($provider && !$provider->getData()) {
             $return = array(
                 'success' => false,
                 'message' => __("Something went wrong with fetching your credentials from an external service")
@@ -438,10 +444,12 @@ class UserController extends Ajde_User_Controller
                         'provider' => $providername,
                         'username' => $provider->getUsernameSuggestion(),
                         'avatar' => $provider->getAvatarSuggestion(),
+                        'profile' => $provider->getProfileSuggestion(),
                         'uid' => $provider->getUidHash(),
                         'data' => serialize($provider->getData())
                     ));
                     $sso->insert();
+                    $user->copyAvatarFromSso($sso);
                 }
 				$user->login();
                 $user->storeCookie($this->includeDomain);

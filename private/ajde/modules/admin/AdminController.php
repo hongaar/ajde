@@ -16,6 +16,9 @@ class AdminController extends Ajde_Acl_Controller
 		Ajde_Cache::getInstance()->disable();
         Ajde_Lang::getInstance()->disableAutoTranslationOfModels();
 
+        // load all models
+        Ajde_Model::registerAll();
+
 		return parent::beforeInvoke($allowed);
 	}
 	
@@ -36,6 +39,12 @@ class AdminController extends Ajde_Acl_Controller
 		Ajde::app()->getDocument()->setTitle("Admin dashboard");
 		return $this->render();
 	}
+
+    public function overview()
+    {
+        $this->setAction('view');
+        return $this->view();
+    }
 	
 	public function menu()
 	{

@@ -57,11 +57,11 @@ $this->requireCssRemote("//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-a
             foreach($this->sso as $sso) { ?>
                 <div style="margin-bottom: 5px;">
                     <?php
-                    $staticClass = "Ajde_User_SSO_" . ucfirst($sso);
+                    $staticClass = "Ajde_User_Sso_" . ucfirst($sso);
                     $icon = call_user_func(array($staticClass, 'getIconName'));
                     $color = call_user_func(array($staticClass, 'getColor'));
                     ?>
-                    <a class="btn btn-primary btn-block" style="border: 0; background-color: #<?php echo $color; ?>;" href="user/sso:login?returnto=<?php echo _e( $this->returnto ? $this->returnto : $_GET['_route'] ); ?>&amp;provider=<?php echo $sso; ?>">
+                    <a class="btn btn-primary btn-block" style="border: 0; background-color: #<?php echo $color; ?>;" href="user/sso:login?returnto=<?php echo _e( $this->returnto ? $this->returnto : issetor($_GET['_route']) ); ?>&amp;provider=<?php echo $sso; ?>">
                         <i class="fa fa-<?php echo $icon; ?> pull-left"></i> sign in using <?php echo ucfirst($sso); ?>
                     </a>
                 </div>

@@ -1,5 +1,7 @@
-html{margin-bottom:10px !important}* html
-body{margin-bottom:10px !important}
+/*#!less*/
+
+//html{margin-bottom:10px !important}* html
+//body{margin-bottom:10px !important}
 
 #ajdeDebugger {
 	position: fixed;
@@ -8,16 +10,20 @@ body{margin-bottom:10px !important}
 	width: 100%;
 	margin: 0;
 	padding: 0;
-	background-color: white;
 	z-index: 9999;
 	font-family: monospace;
 	font-size: 12px;
 }
 
 #ajdeDebuggerHeader {
+    transition: all 0.3s;
 	height: 10px;
-	background-color: #eb6864;
+    background-color: rgba(255,255,255,0);
 	cursor: pointer;
+
+    &:hover {
+        background-color: #eb6864;
+    }
 }
 
 #ajdeDebugger.warning #ajdeDebuggerHeader {
@@ -25,6 +31,7 @@ body{margin-bottom:10px !important}
 }
 
 #ajdeDebuggerContent {
+    background-color: white;
 	padding: 0 10px 0 10px;
 	overflow-y: scroll;
 	overflow-x: auto;

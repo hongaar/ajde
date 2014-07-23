@@ -2,6 +2,10 @@
 /* @var $revisions RevisionCollection */
 $revisions = $this->revisions;
 
+/** @var $helper Ajde_Template_Parser_Phtml_Helper */
+global $helper;
+$helper = $this;
+
 /* @var $model Ajde_Model */
 global $model;
 $model = $this->model;
@@ -20,7 +24,7 @@ $shadowModel->loadByPK($model->getPK());
 
 function showValue($value, RevisionModel $revision, $old = '', $showDiff = false)
 {
-    global $crud, $model, $shadowModel;
+    global $crud, $model, $shadowModel, $helper;
 
     $field = $crud->getField($revision->field);
     $shadowModel->set($revision->field, $value);
@@ -38,7 +42,7 @@ function showValue($value, RevisionModel $revision, $old = '', $showDiff = false
             $child = new $className;
             /* @var $child Ajde_Model */
             $child->loadByPK($value);
-            return $child->get($child->getDisplayField());
+            return $child->has($child->getDisplayField()) ? $child->get($child->getDisplayField()) : ucfirst($field->getModelName());
         } else {
             $shadowModel->loadParent($revision->field);
             $fk = $shadowModel->get($revision->field);
@@ -57,7 +61,11 @@ function showValue($value, RevisionModel $revision, $old = '', $showDiff = false
                 }
             } else {
                 $fk = $shadowModel->get($revision->field);
-                return $fk->get($fk->getDisplayField());
+                if ($fk->has($fk->getDisplayField())) {
+                    return $fk->get($fk->getDisplayField());
+                } else {
+                    return $value;
+                }
             }
         }
         // Boolean
@@ -71,7 +79,7 @@ function showValue($value, RevisionModel $revision, $old = '', $showDiff = false
         } else {
             $filename = MEDIA_DIR . 'nothumb.png';
         }
-        return $this->ACImage(array(
+        return $helper->ACImage(array(
             'filename' => $filename,
             'width' => $crud->getOption('list.thumbDim.width', 75),
             'height' => $crud->getOption('list.thumbDim.height', 75),
@@ -93,8 +101,8 @@ function showValue($value, RevisionModel $revision, $old = '', $showDiff = false
 <table class="table table-hover table-condensed revisions">
     <colgroup>
         <col width="125" />
-        <col width="175" />
-        <col width="150" />
+        <col width="200" />
+        <col width="200" />
         <col width="1*" />
     </colgroup>
     <thead>

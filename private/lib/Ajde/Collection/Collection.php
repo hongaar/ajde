@@ -334,9 +334,9 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 		}
 	}
 	
-	public function addTextFilter($text, $operator = Ajde_Query::OP_AND)
+	public function addTextFilter($text, $operator = Ajde_Query::OP_AND, $condition = Ajde_Filter::CONDITION_WHERE)
 	{
-		$searchFilter = $this->getTextFilterGroup($text, $operator);
+		$searchFilter = $this->getTextFilterGroup($text, $operator, $condition);
         if ($searchFilter !== false) {
             $this->addFilter($searchFilter);
         } else {
@@ -344,18 +344,21 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
         }
 	}
 	
-	public function getTextFilterGroup($text, $operator = Ajde_Query::OP_AND)
+	public function getTextFilterGroup($text, $operator = Ajde_Query::OP_AND, $condition = Ajde_Filter::CONDITION_WHERE)
 	{
-		$searchFilter = new Ajde_Filter_WhereGroup($operator);
+        $groupClass = 'Ajde_Filter_' . ucfirst($condition) . 'Group';
+        $filterClass = 'Ajde_Filter_' . ucfirst($condition);
+
+		$searchFilter = new $groupClass($operator);
 		$fieldOptions = $this->getTable()->getFieldProperties();
 		foreach($fieldOptions as $fieldName => $fieldProperties) {
 			switch ($fieldProperties['type']) {
 				case Ajde_Db::FIELD_TYPE_TEXT:
 				case Ajde_Db::FIELD_TYPE_ENUM:
-                    $searchFilter->addFilter(new Ajde_Filter_Where((string) $this->getTable() . '.' . $fieldName, Ajde_Filter::FILTER_LIKE, '%' . $text . '%', Ajde_Query::OP_OR));
+                    $searchFilter->addFilter(new $filterClass((string) $this->getTable() . '.' . $fieldName, Ajde_Filter::FILTER_LIKE, '%' . $text . '%', Ajde_Query::OP_OR));
                     break;
                 case Ajde_Db::FIELD_TYPE_NUMERIC:
-					$searchFilter->addFilter(new Ajde_Filter_Where('CAST(' . (string) $this->getTable() . '.' . $fieldName . ' AS CHAR)', Ajde_Filter::FILTER_LIKE, '%' . $text . '%', Ajde_Query::OP_OR));
+					$searchFilter->addFilter(new $filterClass('CAST(' . (string) $this->getTable() . '.' . $fieldName . ' AS CHAR)', Ajde_Filter::FILTER_LIKE, '%' . $text . '%', Ajde_Query::OP_OR));
 					break;
 				default:
 					break;
@@ -380,11 +383,12 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 				foreach($this->getFilter('join') as $join) {
 					call_user_func_array(array($this->getQuery(), 'addJoin'), $join);
 				}
-			}
-			if (!empty($this->_filters)) {
 				foreach($this->getFilter('where') as $where) {
 					call_user_func_array(array($this->getQuery(), 'addWhere'), $where);
 				}
+                foreach($this->getFilter('having') as $having) {
+                    call_user_func_array(array($this->getQuery(), 'addHaving'), $having);
+                }
 			}
 		}
 		$this->_sqlInitialized = true;
@@ -471,8 +475,9 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 	public function hash()
 	{
 		$str = '';
-		foreach($this as $item) {
-			$str .= implode($item->values());
+        /** @var $item Ajde_Model */
+        foreach($this as $item) {
+			$str .= implode('', $item->valuesAsSingleDimensionArray());
 		}
 		return md5($str);
 	}
@@ -493,4 +498,11 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 		}
 		return $this->_items;
 	}
+
+    public function deleteAll()
+    {
+        foreach($this as $item) {
+            $item->delete();
+        }
+    }
 }

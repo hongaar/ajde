@@ -78,11 +78,14 @@ $expand = false;
 				</table>			
 			</dd>
 					
-			<dt>3. Stage</dt>
+			<dt>Stage</dt>
 			<dd class='summary'><?php echo $this->configstage; ?></dd>		
 			
-			<dt>4. Language</dt>
-			<dd class='summary'><?php echo $this->lang; ?></dd>		
+			<dt>Language</dt>
+			<dd class='summary'><?php echo $this->lang; ?></dd>
+
+            <dt>Timezone</dt>
+            <dd class='summary'><?php echo date_default_timezone_get(); ?></dd>
 			
 			<dt>5. Timer</dt>
 			<dd class='summary'>

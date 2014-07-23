@@ -18,7 +18,7 @@
 
 			<p>
 				<?php // Use $_GET['_route'] to avoid getting the current route, i.e. as with Ajde::app()->getRoute() ?>
-				<a class='btn btn-primary' href="user/logoff?returnto=<?php echo isset($this->returnto) ? $this->returnto : $_GET['_route']; ?>"><?php echo __('login as a different user'); ?></a>
+				<a class='btn btn-primary' href="user/logoff?returnto=<?php echo isset($this->returnto) ? $this->returnto : issetor($_GET['_route']); ?>"><?php echo __('login as a different user'); ?></a>
 				<a class='btn' href="user/profile"><?php echo __('view profile'); ?></a>
 			</p>
 		</fieldset>
