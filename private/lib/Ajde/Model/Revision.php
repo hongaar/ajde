@@ -5,6 +5,8 @@ abstract class Ajde_Model_Revision extends Ajde_Model
     protected $_ignoreFieldInRevision = array();
     protected $_ignoreFieldInRevisionIfEmpty = array();
 
+    const DEFAULT_LIMIT = 50;
+
     public function getRevisionsHtml($crud = null)
     {
         if (!$this->getPK()) {
@@ -15,6 +17,7 @@ abstract class Ajde_Model_Revision extends Ajde_Model
         $revisions->addFilter(new Ajde_Filter_Where('model', Ajde_Filter::FILTER_EQUALS, $this->getModelName()));
         $revisions->addFilter(new Ajde_Filter_Where('foreignkey', Ajde_Filter::FILTER_EQUALS, $this->getPK()));
         $revisions->orderBy('time', 'DESC');
+        $revisions->limit(self::DEFAULT_LIMIT);
 
         $controller = Ajde_Controller::fromRoute(new Ajde_Core_Route('_core/crud:revisions'));
         $controller->setRevisions($revisions);

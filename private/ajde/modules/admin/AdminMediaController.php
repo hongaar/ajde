@@ -33,9 +33,13 @@ class AdminMediaController extends AdminController
 
     public function driveButtonHtml()
     {
-        $this->getView()->assign('extensions', $this->_extensions);
-        $this->getView()->assign('uploaddir', $this->_uploaddir);
-        return $this->render();
+		if (Config::get('driveGoogleKey'))
+		{
+			$this->getView()->assign('extensions', $this->_extensions);
+			$this->getView()->assign('uploaddir', $this->_uploaddir);
+			return $this->render();
+		}
+		return '';
     }
 	
 	public function uploadJson()

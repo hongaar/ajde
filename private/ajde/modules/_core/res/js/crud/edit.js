@@ -89,7 +89,7 @@ AC.Crud.Edit = function() {
                     .text('discard changes')
                     .addClass('btn-danger');
             isDirty = true;
-            $('.autosave-status').removeClass('active').html('Save pending...');
+            $('.autosave-status').removeClass('active').html('<a style="cursor: pointer;">Save now</a>');
             $(window).on("beforeunload", function(e) {
                 if (isDirty) {
                     return 'You have unsaved changes, are you sure you want to navigate away from this page?';
