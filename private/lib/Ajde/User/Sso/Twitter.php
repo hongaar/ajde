@@ -1,6 +1,6 @@
 <?php
 
-class Ajde_User_SSO_Twitter extends Ajde_User_SSO
+class Ajde_User_Sso_Twitter extends Ajde_User_Sso
 {
     private $_session;
     private $_credentials = false;
@@ -137,6 +137,11 @@ class Ajde_User_SSO_Twitter extends Ajde_User_SSO
     public function getNameSuggestion()
     {
         return false;
+    }
+
+    public function getProfileSuggestion()
+    {
+        return '';
     }
 
     public function getAvatarSuggestion()

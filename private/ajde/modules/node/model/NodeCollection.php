@@ -126,14 +126,15 @@ class NodeCollection extends Ajde_Collection_With_AclI18n
 	
 	public function joinMetaAs($metaId, $as)
 	{
-		$rand = 'table' . md5(microtime(true));
-		$this->addFilter(new Ajde_Filter_Join('node_meta ' . $rand, $rand . '.node', 'node.id'));
-		$this->addFilter(new Ajde_Filter_Join('meta', 'meta.id', $rand . '.meta'));
-		$this->addFilter(new Ajde_Filter_Where('meta.id', Ajde_Filter::FILTER_EQUALS, $metaId));
-		$this->getQuery()->addSelect($rand . '.value AS ' . $as);
+        $nodemeta = 'table' . md5('nodemeta'.rand(0,999).microtime(true));
+        $meta = 'table' . md5('meta'.rand(0,999).microtime(true));
+		$this->addFilter(new Ajde_Filter_Join('node_meta ' . $nodemeta, $nodemeta . '.node', 'node.id'));
+		$this->addFilter(new Ajde_Filter_Join('meta ' . $meta, $meta . '.id', $nodemeta . '.meta'));
+		$this->addFilter(new Ajde_Filter_Where($meta . '.id', Ajde_Filter::FILTER_EQUALS, $metaId));
+		$this->getQuery()->addSelect($nodemeta . '.value AS ' . $as);
 		return $this;
 	}
-	
+
 	public function joinNodetype()
 	{
 		$this->addFilter(new Ajde_Filter_Join('nodetype', 'nodetype.id', 'node.nodetype'));

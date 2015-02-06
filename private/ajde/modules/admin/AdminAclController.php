@@ -6,7 +6,7 @@
 class AdminAclController extends AdminController
 {	
 	public $_pagePermissions = array(
-		'Main' => array(
+		'General' => array(
 			'all pages' => array(
 				'module' => '*',
 				'action' => '*',
@@ -42,7 +42,7 @@ class AdminAclController extends AdminController
 			'tags' => array(
 				'module' => 'admin',
 				'action' => '*',
-				'extra' => 'tags'
+				'extra' => 'tag'
 			),
             'email' => array(
                 'module' => 'admin',
@@ -85,6 +85,12 @@ class AdminAclController extends AdminController
 	);
 
     public $_modelPermissions = array(
+        'General' => array(
+            'all models' => array(
+                'model' => '*',
+                'extra' => '*'
+            )
+        ),
 		'Node types' => array(
 			'all' => array(
 				'model' => 'node',

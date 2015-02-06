@@ -129,6 +129,10 @@ class Ajde_Http_Curl {
 				// curl_setopt($ch, CURLOPT_HEADER, false);		// TRUE to include the header in the output.
 				// curl_setopt($ch, CURLOPT_MAXREDIRS, 10);		// The maximum amount of HTTP redirections to follow. Use this option alongside CURLOPT_FOLLOWLOCATION.
 				$output = self::_curl_exec_follow($ch, 10, false);
+
+//                $verbose = curl_getinfo($ch);
+//                Ajde_Log::_('cURL result', Ajde_Log::CHANNEL_INFO, Ajde_Log::LEVEL_INFORMATIONAL, var_export($verbose, true));
+
 				curl_close($ch);
 			}
 						
@@ -158,17 +162,27 @@ class Ajde_Http_Curl {
 			curl_setopt($ch, CURLOPT_FORBID_REUSE, false);
 
 			do {
-				$data = curl_exec($ch);
-				if (curl_errno($ch))
-					break;
-				$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-				if ($code != 301 && $code != 302)
-					break;
-				$header_start = strpos($data, "\r\n")+2;
-				$headers = substr($data, $header_start, strpos($data, "\r\n\r\n", $header_start)+2-$header_start);
-				if (!preg_match("!\r\n(?:Location|URI): *(.*?) *\r\n!", $headers, $matches))
-					break;
-				curl_setopt($ch, CURLOPT_URL, $matches[1]);
+                $data = curl_exec($ch);
+                if (curl_errno($ch))
+                    break;
+                $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                if ($code != 301 && $code != 302)
+                    break;
+                $header_start = strpos($data, "\r\n")+2;
+                $headers = substr($data, $header_start, strpos($data, "\r\n\r\n", $header_start)+2-$header_start);
+
+                $headers = explode(PHP_EOL, $headers);
+                $redirectFound = false;
+                foreach($headers as $header) {
+                    if (preg_match("/(?:Location|URI): (.*)/", $header, $matches)) {
+                        $redirectFound = $matches[1];
+                    }
+                }
+                if ($redirectFound === false) {
+                    break;
+                }
+
+                curl_setopt($ch, CURLOPT_URL, $redirectFound);
 			} while (--$redirects);
 			if (!$redirects)
 				trigger_error('Too many redirects. When following redirects, libcurl hit the maximum amount.', E_USER_WARNING);

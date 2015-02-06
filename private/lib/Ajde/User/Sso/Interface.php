@@ -1,6 +1,6 @@
 <?php
 
-interface Ajde_User_SSO_Interface
+interface Ajde_User_Sso_Interface
 {
     public static function getIconName();
     public static function getColor();
@@ -19,6 +19,7 @@ interface Ajde_User_SSO_Interface
     public function getEmailSuggestion();
     public function getNameSuggestion();
     public function getAvatarSuggestion();
+    public function getProfileSuggestion();
 
     public function getUidHash();
     public function getData();

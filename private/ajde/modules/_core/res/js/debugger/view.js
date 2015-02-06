@@ -10,14 +10,14 @@ AC.Debugger = function() {
 
 		init: function() {
 
-			AC.Shortcut.add('Ctrl+1', function() { this.toggleSection('#ajdeDebuggerDump div'); });
-			AC.Shortcut.add('Ctrl+2', function() { this.toggleSection('#ajdeDebuggerRequest'); });
-			AC.Shortcut.add('Ctrl+3', function() {  });
-			AC.Shortcut.add('Ctrl+4', function() {  });
-			AC.Shortcut.add('Ctrl+5', function() { this.toggleSection('#ajdeDebuggerTimers'); });
-			AC.Shortcut.add('Ctrl+6', function() { this.toggleSection('#ajdeDebuggerSession'); });
-			AC.Shortcut.add('Ctrl+7', function() { this.toggleSection('#ajdeDebuggerACL'); });
-			AC.Shortcut.add('Ctrl+8', function() { this.toggleSection('#ajdeDebuggerQueries'); });
+			AC.Shortcut.add('Alt+1', function() { this.toggleSection('#ajdeDebuggerDump div'); });
+			AC.Shortcut.add('Alt+2', function() { this.toggleSection('#ajdeDebuggerRequest'); });
+			AC.Shortcut.add('Alt+3', function() {  });
+			AC.Shortcut.add('Alt+4', function() {  });
+			AC.Shortcut.add('Alt+5', function() { this.toggleSection('#ajdeDebuggerTimers'); });
+			AC.Shortcut.add('Alt+6', function() { this.toggleSection('#ajdeDebuggerSession'); });
+			AC.Shortcut.add('Alt+7', function() { this.toggleSection('#ajdeDebuggerACL'); });
+			AC.Shortcut.add('Alt+8', function() { this.toggleSection('#ajdeDebuggerQueries'); });
 			AC.Shortcut.add('Esc', this.toggleDebugger);
 
 			$('#ajdeDebuggerHeader').click(this.toggleDebugger);

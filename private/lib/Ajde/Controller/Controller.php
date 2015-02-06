@@ -85,7 +85,7 @@ class Ajde_Controller extends Ajde_Object_Standard
 				$notFoundRoute = new Ajde_Core_Route(Config::getInstance()->responseCodeRoute[Ajde_Http_Response::RESPONSE_TYPE_NOTFOUND]);
 				if ($route->buildRoute() == $notFoundRoute->buildRoute()) {
 					Ajde_Http_Response::setResponseType(404);
-					die('<h2>Ouch, something broke.</h2><p>This is serious. We tried to give you a nice error page, but even that failed.</p><button onclick="location.href=\'./\';">Go back to homepage</button>');
+					die('<h2>Ouch, something broke.</h2><p>This is serious. We tried to give you a nice error page, but even that failed.</p><button onclick="location.href=\''.Config::get('site_root').'\';">Go back to homepage</button>');
 				}
 			}		
 					
@@ -115,13 +115,13 @@ class Ajde_Controller extends Ajde_Object_Standard
 
         $tryTheseFunctions = array();
 
-		$emptyFunction = $action;
-		$defaultFunction = $action . "Default";
-		$formatFunction = $action . ucfirst($format);
+        $formatFunction = $action . ucfirst($format);
+        $defaultFunction = $action . "Default";
+        $emptyFunction = $action;
 
-        $tryTheseFunctions[] = $method . $formatFunction;
-        $tryTheseFunctions[] = $method . $defaultFunction;
-        $tryTheseFunctions[] = $method . $emptyFunction;
+        $tryTheseFunctions[] = $formatFunction . ucfirst($method);
+        $tryTheseFunctions[] = $defaultFunction . ucfirst($method);
+        $tryTheseFunctions[] = $emptyFunction . ucfirst($method);
         $tryTheseFunctions[] = $formatFunction;
         $tryTheseFunctions[] = $defaultFunction;
         $tryTheseFunctions[] = $emptyFunction;
@@ -131,8 +131,10 @@ class Ajde_Controller extends Ajde_Object_Standard
         foreach($tryTheseFunctions as $tryFunction) {
             if (method_exists($this, $tryFunction)) {
                 $invokeFunction = $tryFunction;
+                break;
             }
         }
+//        dump(get_class($this) . '::' .  $invokeFunction);
 
 		if (!$invokeFunction) {
 			$exception = new Ajde_Core_Exception_Routing(sprintf("Action %s for module %s not found",

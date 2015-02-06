@@ -13,3 +13,4 @@ nbproject/
 _intellij_*
 PhpStorm-*
 public/media
+vendor/*

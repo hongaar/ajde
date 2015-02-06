@@ -1,6 +1,6 @@
 <?php
 
-class Ajde_User_SSO_Google extends Ajde_User_SSO
+class Ajde_User_Sso_Google extends Ajde_User_Sso
 {
     private $_session;
     private $_provider;
@@ -158,6 +158,11 @@ class Ajde_User_SSO_Google extends Ajde_User_SSO
                 return str_replace('?sz=50', '?sz=' . $size, $url);
             }
         }
+    }
+
+    public function getProfileSuggestion()
+    {
+        return '';
     }
 
     public function getUidHash()

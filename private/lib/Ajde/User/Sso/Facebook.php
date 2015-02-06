@@ -1,6 +1,6 @@
 <?php
 
-class Ajde_User_SSO_Facebook extends Ajde_User_SSO
+class Ajde_User_Sso_Facebook extends Ajde_User_Sso
 {
     private $_provider;
     private $_credentials = false;
@@ -93,7 +93,7 @@ class Ajde_User_SSO_Facebook extends Ajde_User_SSO
 
     public function isAuthenticated()
     {
-        if (Ajde::app()->getRequest()->getParam('error', false) == 'access_denied') {
+        if (Ajde::app()->getRequest()->getParam('error_code', false)) {
             return false;
         }
         return true;
@@ -103,7 +103,21 @@ class Ajde_User_SSO_Facebook extends Ajde_User_SSO
     {
         if ($this->hasCredentials()) {
             $me = $this->getMe();
-            return $me['username'];
+            if (isset($me['username'])) {
+                return $me['username'];
+            } else if (isset($me['name'])) {
+                $name = explode(' ', $me['name']);
+                return $name[0];
+            }
+        }
+        return false;
+    }
+
+    public function getProfileSuggestion()
+    {
+        if ($this->hasCredentials()) {
+            $me = $this->getMe();
+            return 'https://www.facebook.com/' . $me['id'];
         } else {
             return false;
         }
@@ -113,7 +127,7 @@ class Ajde_User_SSO_Facebook extends Ajde_User_SSO
     {
         if ($this->hasCredentials()) {
             $me = $this->getMe();
-            return $me['email'];
+            return isset($me['email']) ? $me['email'] : '';
         } else {
             return false;
         }
