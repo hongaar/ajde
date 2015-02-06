@@ -218,6 +218,22 @@ class Ajde_Component_String extends Ajde_Component
 			return $str;
 		}
 	}
+
+    public static function ltrim($str, $start, $delim = '...') {
+        $pos = strpos($str, ' ', $start);
+        return $delim . substr($str, $pos);
+    }
+
+    public static function highlight($str, $search, $trim = 100, $delim = '...') {
+        $str = str_ireplace($search, '<span class="highlight">' . $search . '</span>', $str);
+        if ($trim) {
+            if (($first = strpos($str, '<span class="highlight">')) > ($trim / 2)) {
+                $str = self::ltrim($str, $first - ($trim / 2));
+            }
+            $str = self::trim($str, $trim, $delim);
+        }
+        return $str;
+    }
 	
 	/**
 	 *  UrlLinker - facilitates turning plain text URLs into HTML links.

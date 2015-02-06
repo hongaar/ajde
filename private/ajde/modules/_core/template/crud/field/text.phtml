@@ -13,9 +13,9 @@ $field = $this->field;
 
         <textarea
             <?php if ($field->hasDisableRichText() && $field->getDisableRichText()) {
-                echo 'class=\'noRichText span12\'';
+                echo 'class=\'noRichText span12 form-control\'';
             } else {
-                echo 'class=\'span12\'';
+                echo 'class=\'span12 form-control\'';
             } ?>
             style='<?php if ($field->hasTextInputHeight()) {
                 echo 'height: '. $field->getTextInputHeight() . 'em !important;';

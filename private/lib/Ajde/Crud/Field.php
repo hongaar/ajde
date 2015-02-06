@@ -166,7 +166,14 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
 			$attributes['name'] = $this->getName();
 			if (!key_exists('id', $attributes)) {
 				$attributes['id'] = 'in_' . $this->getName();
-			}        
+			}
+            if ($this->hasNotEmpty('class')) {
+                if (key_exists('class', $attributes)) {
+                    $attributes['class'] .= ' ' . $this->getClass();
+                } else {
+                    $attributes['class'] = $this->getClass();
+                }
+            }
 			if ($this->_useSpan !== false) {
 				if (key_exists('class', $attributes)) {
 					$attributes['class'] .= ' span' . $this->_useSpan;

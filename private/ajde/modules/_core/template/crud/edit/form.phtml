@@ -73,6 +73,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudEdit
                                 'value' => $crud->getModel()->{"has".ucfirst($fieldName)}() ? $crud->getModel()->{"get".ucfirst($fieldName)}() : false
                             )));
                         }
+                        $field->setClass('form-control');
                         echo $field->getHtml();
                     } ?>
                         

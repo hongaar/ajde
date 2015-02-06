@@ -47,7 +47,7 @@ function showValue($value, RevisionModel $revision, $old = '', $showDiff = false
             if ($field->hasUseImage() && $field->getUseImage()) {
 
                 $extraField = current($field->getTableFields());
-                $filename = $fk->get($extraField['name']);
+                $filename = $fk->has($extraField['name']) ? $fk->get($extraField['name']) : '';
                 $extension = pathinfo($filename, PATHINFO_EXTENSION);
                 if ($isImage = in_array(strtolower($extension), array('jpg', 'jpeg', 'png', 'gif'))) {
                     $thumbDim = array('width' => 75, 'height' => 75);

@@ -44,6 +44,15 @@ class MediaModel extends Ajde_Model
 	{
 		return $this->type == 'image' ? $this->getFilename(1024) : $this->uploadDirectory . $this->pointer;
 	}
+
+    /**
+     * @return Ajde_Resource_Image
+     */
+    public function getResource()
+    {
+        $path = $this->uploadDirectory . $this->thumbnail;
+        return new Ajde_Resource_Image($path);
+    }
 	
 	public function getTag($width = null, $height = null, $crop = null, $class = null, $attributes = array(), $lazy = false)
 	{
