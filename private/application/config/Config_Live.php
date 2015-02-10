@@ -10,7 +10,8 @@ class Config_Live extends Config_Application {
 
 	function __construct() {
 		parent::__construct();
-		$this->documentProcessors['html'][] = 'Compressor';
+		$this->documentProcessors['html'] = array();
+//		$this->documentProcessors['html'][] = 'Compressor';
 	}
 	
 }

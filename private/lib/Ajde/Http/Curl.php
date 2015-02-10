@@ -52,7 +52,7 @@ class Ajde_Http_Curl {
 			curl_setopt($ch, CURLOPT_MAXREDIRS, 10);		// The maximum amount of HTTP redirections to follow. Use this option alongside CURLOPT_FOLLOWLOCATION.
 			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);	// The number of seconds to wait while trying to connect. Use 0 to wait indefinitely.
 			curl_setopt($ch, CURLOPT_TIMEOUT, 5);			// The maximum number of seconds to allow cURL functions to execute.
-			curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; rv:1.7.3) Gecko/20041001 Firefox/0.10.1" ); // The contents of the "User-Agent: " header to be used in a HTTP request.
+			curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2049.0 Safari/537.36')" ); // The contents of the "User-Agent: " header to be used in a HTTP request.
 			curl_setopt($ch, CURLOPT_ENCODING, "");			// The contents of the "Accept-Encoding: " header. This enables decoding of the response. Supported encodings are "identity", "deflate", and "gzip". If an empty string, "", is set, a header containing all supported encoding types is sent.
 			curl_setopt($ch, CURLOPT_AUTOREFERER, true);	// TRUE to automatically set the Referer: field in requests where it follows a Location: redirect.
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);// FALSE to stop cURL from verifying the peer's certificate. Alternate certificates to verify against can be specified with the CURLOPT_CAINFO option or a certificate directory can be specified with the CURLOPT_CAPATH option. CURLOPT_SSL_VERIFYHOST may also need to be TRUE or FALSE if CURLOPT_SSL_VERIFYPEER is disabled (it defaults to 2).
@@ -84,7 +84,7 @@ class Ajde_Http_Curl {
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);	// TRUE to return the transfer as a string of the return value of curl_exec() instead of outputting it out directly.			
 			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);	// The number of seconds to wait while trying to connect. Use 0 to wait indefinitely.
 			curl_setopt($ch, CURLOPT_TIMEOUT, 5);			// The maximum number of seconds to allow cURL functions to execute.
-			curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; rv:1.7.3) Gecko/20041001 Firefox/0.10.1" ); // The contents of the "User-Agent: " header to be used in a HTTP request.
+			curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2049.0 Safari/537.36')" ); // The contents of the "User-Agent: " header to be used in a HTTP request.
 			curl_setopt($ch, CURLOPT_ENCODING, "");			// The contents of the "Accept-Encoding: " header. This enables decoding of the response. Supported encodings are "identity", "deflate", and "gzip". If an empty string, "", is set, a header containing all supported encoding types is sent.
 			curl_setopt($ch, CURLOPT_AUTOREFERER, true);	// TRUE to automatically set the Referer: field in requests where it follows a Location: redirect.
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);// FALSE to stop cURL from verifying the peer's certificate. Alternate certificates to verify against can be specified with the CURLOPT_CAINFO option or a certificate directory can be specified with the CURLOPT_CAPATH option. CURLOPT_SSL_VERIFYHOST may also need to be TRUE or FALSE if CURLOPT_SSL_VERIFYPEER is disabled (it defaults to 2).
