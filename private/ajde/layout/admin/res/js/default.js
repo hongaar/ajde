@@ -119,17 +119,17 @@
 		}
 		
 		// Force Chrome
-		var umb_check = setInterval(function() {
-			if (window.UMB) {
-				clearInterval(umb_check);
-			}
-			if (UMB && UMB.getCurrentBrowser() !== 'chrome') {
-				$('#no-chrome-warning').fadeIn();
-			}
-			if (UMB && UMB.getCurrentBrowser() === 'chrome') {
-				$('#chrome-app').fadeIn();
-			}
-		}, 1000);
+		//var umb_check = setInterval(function() {
+		//	if (window.UMB) {
+		//		clearInterval(umb_check);
+		//	}
+		//	if (UMB && UMB.getCurrentBrowser() !== 'chrome') {
+		//		$('#no-chrome-warning').fadeIn();
+		//	}
+		//	if (UMB && UMB.getCurrentBrowser() === 'chrome') {
+		//		$('#chrome-app').fadeIn();
+		//	}
+		//}, 1000);
 		
 		
 	};

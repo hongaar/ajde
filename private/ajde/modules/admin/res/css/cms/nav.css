@@ -12,3 +12,13 @@ li.jqtree-common:hover .jqtree-title {
 	margin-top: 3px;
 	position: absolute;
 }
+ul.jqtree-tree li.jqtree-selected > .jqtree-element, ul.jqtree-tree li.jqtree-selected > .jqtree-element:hover {
+	background: black !important;
+	color: white !important;
+	text-shadow: none !important;
+	margin-left: -5px;
+}
+ul.jqtree-tree li.jqtree-selected > .jqtree-element .jqtree-title, ul.jqtree-tree li.jqtree-selected > .jqtree-element:hover .jqtree-title {
+	color: white !important;
+	padding: 5px;
+}

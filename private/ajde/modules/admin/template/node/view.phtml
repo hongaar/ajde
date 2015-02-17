@@ -21,9 +21,10 @@ $crudOutput = $crud->output();
 
 ?>
 
+<div data-node-id="<?php echo Ajde::app()->getRequest()->getParam('edit', ''); ?>"></div>
 <div class="row-fluid">
 	<div class="span3 hideInIframe">
-		<?php echo $this->includeModule('admin/cms:menu'); ?>
+		<?php echo $this->includeModule('admin/cms:nav'); ?>
 	</div><!--/span-->
 	<div class="span9 expandInIframe">
 		
