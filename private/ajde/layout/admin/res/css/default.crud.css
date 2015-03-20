@@ -717,6 +717,10 @@ table.crud {
 
 	&.grid {
 
+        td, th {
+            padding: 8px;
+        }
+
 		thead {
 			display: block;
 

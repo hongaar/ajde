@@ -1,0 +1,58 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */ 
+?>
+
+<div class="row-fluid">
+    <div class="span3">
+        <?php echo $this->includeModule('admin/cms:setupmenu'); ?>
+    </div><!--/span-->
+    <div class="span9">
+		<div class="page-header">
+			<h1>
+				<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
+			</h1>
+		</div>			
+
+
+        <div class="row-fluid">
+
+            <div class="span12">
+
+                <h2>Unused media</h2>
+
+                <?php /** @var MediaModel $media */
+                foreach($this->unused as $media) { ?>
+                    <div style="display: inline-block; max-width: 25%; margin: 10px; float: left;">
+                        <?php echo $media->getTag(400, null, false, 'img-polaroid'); ?>
+                        <h4><?php echo _e($media->pointer); ?></h4>
+                    </div>
+                <?php } ?>
+
+                <?php if (!$this->unused->count()) echo '<p>No unused media</p>'; ?>
+
+                <div class="clearfix"></div>
+
+                <h2>Orphan files</h2>
+
+                <?php foreach($this->cleaning as $file) { ?>
+                    <div style="display: inline-block; max-width: 25%; margin: 10px; float: left;">
+                        <img src="public/media/upload/<?php echo _c($file); ?>" class="img-polaroid"/>
+                        <h4><?php echo $file; ?></h4>
+                    </div>
+                <?php } ?>
+
+                <?php if (empty($this->cleaning)) echo '<p>No orphans</p>'; ?>
+
+                <div class="clearfix"></div>
+
+                <div class="form-actions">
+                    <a href="admin/system:doDeleteunused" class="btn btn-warning">delete unused media</a>
+                    <a href="admin/system:doCleanuploads" class="btn btn-warning">clean orphan files</a>
+                    <a href="admin/system:doCleanthumbs" class="btn">refresh all thumbnails</a>
+                </div>
+
+            </div>
+
+        </div><!--/row-->
+    </div>
+</div>

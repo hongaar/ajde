@@ -246,4 +246,96 @@ class AdminSystemController extends AdminController
         $this->getView()->assign('item', $item);
         return $this->render();
     }
+
+    private function _unused()
+    {
+        $used = new MediaCollection();
+        $unused = new MediaCollection();
+        $unused->addFilter(new Ajde_Filter_Where('id', Ajde_Filter::FILTER_EQUALS, '-9999'));
+
+        $db = Ajde_Db::getInstance()->getConnection();
+
+        /** @var MediaModel $media */
+        foreach($used as $media)
+        {
+            $stmt = $db->query('SELECT id FROM node WHERE media = ' . $media->getPK());
+            $stmt->execute();
+            $node = $stmt->rowCount();
+
+            $stmt = $db->query('SELECT id FROM node_media WHERE media = ' . $media->getPK());
+            $stmt->execute();
+            $nodeMedia = $stmt->rowCount();
+
+            if ($node == 0 && $nodeMedia == 0) {
+                $unused->add($media);
+            }
+        }
+
+        return $unused;
+    }
+
+    private function _tobecleaned()
+    {
+        $allMedia = new MediaCollection();
+        $toBeCleaned = Ajde_FS_Find::findFilenames(UPLOAD_DIR, '*.*');
+
+        foreach($allMedia as $media)
+        {
+            if (($index = array_search($media->pointer, $toBeCleaned)) !== false) {
+                unset($toBeCleaned[$index]);
+            }
+
+            if (($index = array_search($media->thumbnail, $toBeCleaned)) !== false) {
+                unset($toBeCleaned[$index]);
+            }
+        }
+        return $toBeCleaned;
+    }
+
+    public function cleanuploads()
+    {
+        $toBeCleaned = $this->_tobecleaned();
+
+        $unused = $this->_unused();
+
+        Ajde::app()->getDocument()->setTitle("Clean uploads");
+        $this->getView()->assign('cleaning', $toBeCleaned);
+        $this->getView()->assign('unused', $unused);
+        return $this->render();
+    }
+
+    public function doCleanuploads()
+    {
+        $toBeCleaned = $this->_tobecleaned();
+
+        foreach($toBeCleaned as $file)
+        {
+            unlink(UPLOAD_DIR . $file);
+        }
+
+        Ajde_Session_Flash::alert('Orphan files cleaned');
+        return $this->redirect(Ajde_Http_Response::REDIRECT_REFFERER);
+    }
+
+    public function doDeleteunused()
+    {
+        $unused = $this->_unused();
+        $unused->deleteAll();
+
+        Ajde_Session_Flash::alert('Unused media deleted');
+        return $this->redirect(Ajde_Http_Response::REDIRECT_REFFERER);
+    }
+
+    public function doCleanthumbs()
+    {
+        $toBeCleaned = Ajde_FS_Find::findFilenames(UPLOAD_DIR . Ajde_Resource_Image::$_thumbDir . DIRECTORY_SEPARATOR, '*.*');
+
+        foreach($toBeCleaned as $file)
+        {
+            unlink(UPLOAD_DIR . Ajde_Resource_Image::$_thumbDir . DIRECTORY_SEPARATOR . $file);
+        }
+
+        Ajde_Session_Flash::alert('Thumbnails will be refreshed next time they are loaded');
+        return $this->redirect(Ajde_Http_Response::REDIRECT_REFFERER);
+    }
 }

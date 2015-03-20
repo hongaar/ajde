@@ -232,6 +232,7 @@ AC.Crud.Edit = function() {
 			// clean up errors
 			form.find(':input').parent().removeClass('validation_error');
 			form.find('span.validation-message').remove();
+            form.find('.control-group').removeClass('error');
 			AC.Crud.Edit.equalizeForm();
 
 			// remove hidden meta fields
@@ -325,7 +326,7 @@ AC.Crud.Edit = function() {
 							return;
 						}
 					}					
-					if (isIframe) {
+					if (isIframe && parent.AC && parent.AC.Crud && parent.AC.Crud.Edit) {
 						if (data.operation === 'save') {
 							parent.AC.Crud.Edit.Multiple.editSaved(data.id, data.displayField);
 						} else {

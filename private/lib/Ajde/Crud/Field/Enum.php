@@ -12,7 +12,7 @@ class Ajde_Crud_Field_Enum extends Ajde_Crud_Field
 	 *
 	 * @var int 
 	 */
-    private $_radioTreshold = 15;
+    private $_radioTreshold = 9;
 	
 	public function getValues()
 	{

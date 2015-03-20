@@ -14,3 +14,5 @@ _intellij_*
 PhpStorm-*
 public/media
 vendor/*
+/node_modules/
+/vendor/

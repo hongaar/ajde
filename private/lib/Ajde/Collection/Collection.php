@@ -499,6 +499,19 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 		return $this->_items;
 	}
 
+    public function add($item)
+    {
+        $this->_items[] = $item;
+    }
+
+    public function merge(Ajde_Collection $collection)
+    {
+        foreach($collection as $item)
+        {
+            $this->add($item);
+        }
+    }
+
     public function deleteAll()
     {
         foreach($this as $item) {

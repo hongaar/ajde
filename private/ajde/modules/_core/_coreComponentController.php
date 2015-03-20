@@ -102,11 +102,10 @@ class _coreComponentController extends Ajde_Controller
 		$overwrite = $options['overwrite'];
 		
 		// max file size in bytes
-		$max_upload = (int)(ini_get('upload_max_filesize'));
-		$max_post = (int)(ini_get('post_max_size'));
-		$memory_limit = (int)(ini_get('memory_limit'));
-		$upload_mb = min($max_upload, $max_post, $memory_limit);
-		$sizeLimit = $upload_mb * 1024 * 1024;
+		$max_upload = Ajde_Component_String::toBytes(ini_get('upload_max_filesize'));
+		$max_post = Ajde_Component_String::toBytes(ini_get('post_max_size'));
+		$memory_limit = Ajde_Component_String::toBytes(ini_get('memory_limit'));
+		$sizeLimit = min($max_upload, $max_post, $memory_limit);
 		
 		$uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
 		$result = $uploader->handleUpload($saveDir, $overwrite);

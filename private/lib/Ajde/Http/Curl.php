@@ -56,6 +56,7 @@ class Ajde_Http_Curl {
 			curl_setopt($ch, CURLOPT_ENCODING, "");			// The contents of the "Accept-Encoding: " header. This enables decoding of the response. Supported encodings are "identity", "deflate", and "gzip". If an empty string, "", is set, a header containing all supported encoding types is sent.
 			curl_setopt($ch, CURLOPT_AUTOREFERER, true);	// TRUE to automatically set the Referer: field in requests where it follows a Location: redirect.
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);// FALSE to stop cURL from verifying the peer's certificate. Alternate certificates to verify against can be specified with the CURLOPT_CAINFO option or a certificate directory can be specified with the CURLOPT_CAPATH option. CURLOPT_SSL_VERIFYHOST may also need to be TRUE or FALSE if CURLOPT_SSL_VERIFYPEER is disabled (it defaults to 2).
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);// 1 to check the existence of a common name in the SSL peer certificate. 2 to check the existence of a common name and also verify that it matches the hostname provided. In production environments the value of this option should be kept at 2 (default value).
 			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
 				"Content-Type: application/x-www-form-urlencoded",
 				"Content-Length: $postContentLen"
@@ -67,13 +68,15 @@ class Ajde_Http_Curl {
 		}
 		return $output;
 	}
-	
-	/**
-	 *
-	 * @param string $url
-	 * @return string
-	 * @throws Exception 
-	 */
+
+    /**
+     *
+     * @param string $url
+     * @param bool|string $toFile
+     * @param bool|array $header
+     * @return string
+     * @throws Exception
+     */
 	static public function get($url, $toFile = false, $header = false) {
 		$output = false;
 //        Ajde_Log::_('cURL URL', Ajde_Log::CHANNEL_INFO, Ajde_Log::LEVEL_INFORMATIONAL, $url);

@@ -12,7 +12,7 @@ class Ajde_Resource_Image extends Ajde_Resource
 	protected $_type;
 	protected $_image;
 
-    private $_thumbDir = '.thumbnails';
+    public static $_thumbDir = '.thumbnails';
 	
 	public function __construct($file)
 	{
@@ -173,13 +173,13 @@ class Ajde_Resource_Image extends Ajde_Resource
 		}
 
         // see if we have a thumb folder
-        $thumbPath = $this->dir() . '/' . $this->_thumbDir;
+        $thumbPath = $this->dir() . '/' . self::$_thumbDir;
         if (!is_dir($thumbPath)) {
             @mkdir($thumbPath);
         }
 		
 		$filename = $this->dir();
-		$filename .= '/' . $this->_thumbDir . '/';
+		$filename .= '/' . self::$_thumbDir . '/';
 		$filename .= $this->filename();
 		$filename .= '_' . $width . 'x' . $height;
 		$filename .= ($crop ? 'c' : '');

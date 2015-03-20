@@ -54,7 +54,7 @@ class TemplateModel extends Ajde_Model_With_I18n
 
     public static function inlineCss($html)
     {
-        $url = 'http://inlinestyler.torchboxapps.com/styler/convert/';
+        $url = 'https://inlinestyler.torchbox.com:443/styler/convert/';
         $data = array(
             'returnraw' => '1',
             'source' => $html

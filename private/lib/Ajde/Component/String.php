@@ -481,4 +481,20 @@ class Ajde_Component_String extends Ajde_Component
 			return date('F Y', $date);
 		}
 	}
+
+	public static function toBytes($str)
+	{
+		$val = trim($str);
+		$last = strtolower($str[strlen($str) - 1]);
+		switch ($last)
+		{
+			case 'g':
+				$val *= 1024;
+			case 'm':
+				$val *= 1024;
+			case 'k':
+				$val *= 1024;
+		}
+		return $val;
+	}
 }

@@ -13,7 +13,7 @@ class Ajde_Model extends Ajde_Object_Standard
 	
 	protected $_hasMeta = false;	
 	protected $_metaLookup = array();
-	protected $_metaValues = array();
+	public $_metaValues = array();
 	
 	protected $_validators = array();
 	

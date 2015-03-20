@@ -48,7 +48,9 @@ $this->requireCss('default.mobile', 'html', null, Ajde_Document_Format_Html::RES
 		<base href='<?php echo Config::get('lang_root'); ?>' />
 		
 		<!-- Canonical URL -->
-		<link rel="canonical" href="<?php echo Config::get('site_root') . Ajde::app()->getController()->getCanonicalUrl(); ?>" />
+        <?php if (Ajde::app()->hasController()) { ?>
+            <link rel="canonical" href="<?php echo Config::get('site_root') . Ajde::app()->getController()->getCanonicalUrl(); ?>" />
+        <?php } ?>
 		
 		<!-- require JavaScript and cookies -->		
 		<noscript>

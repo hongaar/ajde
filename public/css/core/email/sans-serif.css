@@ -35,6 +35,11 @@ a.btn-default {
     color: silver;
 }
 
+body, html, div.wrapper  {
+    padding: 40px;
+    background-color: #f3f3f3;
+}
+
 table {
-    background-color: #eee;
+    background-color: white;
 }
