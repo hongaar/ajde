@@ -5,6 +5,8 @@ class SubmissionModel extends Ajde_Model
 	protected $_autoloadParents = true;
 	protected $_displayField = 'id';
 
+    protected $_jsonFields = array('entry');
+
     public function displayAgo()
     {
         $timestamp = new DateTime($this->get('added'));

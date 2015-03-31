@@ -22,8 +22,8 @@
 
                 <?php /** @var MediaModel $media */
                 foreach($this->unused as $media) { ?>
-                    <div style="display: inline-block; max-width: 25%; margin: 10px; float: left;">
-                        <?php echo $media->getTag(400, null, false, 'img-polaroid'); ?>
+                    <div style="display: inline-block; max-width: 20%; margin: 10px; float: left;">
+                        <?php echo $media->getTag(200, 200, false, 'img-polaroid'); ?>
                         <h4><?php echo _e($media->pointer); ?></h4>
                     </div>
                 <?php } ?>
@@ -35,7 +35,7 @@
                 <h2>Orphan files</h2>
 
                 <?php foreach($this->cleaning as $file) { ?>
-                    <div style="display: inline-block; max-width: 25%; margin: 10px; float: left;">
+                    <div style="display: inline-block; max-width: 20%; margin: 10px; float: left;">
                         <img src="public/media/upload/<?php echo _c($file); ?>" class="img-polaroid"/>
                         <h4><?php echo $file; ?></h4>
                     </div>
@@ -46,9 +46,9 @@
                 <div class="clearfix"></div>
 
                 <div class="form-actions">
-                    <a href="admin/system:doDeleteunused" class="btn btn-warning">delete unused media</a>
-                    <a href="admin/system:doCleanuploads" class="btn btn-warning">clean orphan files</a>
-                    <a href="admin/system:doCleanthumbs" class="btn">refresh all thumbnails</a>
+                    <a href="admin/system:doCleanthumbs" class="btn btn-success" style="margin-bottom: 5px;">refresh all thumbnails</a> safe<br/>
+                    <a href="admin/system:doCleanuploads" class="btn btn-warning" style="margin-bottom: 5px;">clean orphan files</a> pretty safe<br/>
+                    <a href="admin/system:doDeleteunused" class="btn btn-danger">delete unused media</a> dangerous, could be used as download, etc<br/>
                 </div>
 
             </div>

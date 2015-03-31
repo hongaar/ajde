@@ -11,7 +11,7 @@ class Ajde_Collection_View extends Ajde_Object_Standard
 
 		$defaultOptions = array(
 			'page'			=> 1,
-			'pageSize'		=> 25,
+			'pageSize'		=> 100,
 			'filter'		=> array(),
 			'search'		=> null,
 			'orderBy'		=> null,

@@ -354,7 +354,7 @@ table.crud {
         color: #777;
     }
 
-    select, input[type=search], input[type=date] {
+    select, input[type=search], input[type=date], input[type=text] {
         &.active {
             border: 2px solid #007fff;
         }

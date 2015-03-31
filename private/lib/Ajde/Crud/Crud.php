@@ -51,11 +51,29 @@ class Ajde_Crud extends Ajde_Object_Standard
         $fieldsToShow = $this->getFieldNames();
 
         $headers = array();
+        $items = $this->getItems();
 
         foreach($fieldsToShow as $fieldName) {
-            $field = $this->getField($fieldName);
 
-            $headers[] = $field->getLabel();
+            // JSON
+            if ($items->count() && ($first = current($items->items())) && $first->isFieldJson($fieldName)) {
+                $maxJsonFields = 0;
+                $useJsonFields = [];
+                foreach ($items as $model) {
+                    $jsonFields = (array)@json_decode($model->has($fieldName) ? $model->get($fieldName) : '');
+                    if (count($jsonFields) > $maxJsonFields) {
+                        $useJsonFields = array_keys($jsonFields);
+                        $maxJsonFields = count($jsonFields);
+                    }
+                }
+                foreach ($useJsonFields as $key) {
+                    $headers[] = $key;
+                }
+            // Normal
+            } else {
+                $field = $this->getField($fieldName);
+                $headers[] = $field->getLabel();
+            }
         }
 
         $table[] = $headers;
@@ -64,7 +82,7 @@ class Ajde_Crud extends Ajde_Object_Standard
         $cView = $this->getCollectionView();
         $cView->setPageSize(9999999999);
 
-        foreach($items = $this->getItems() as $model) {
+        foreach($items as $model) {
 		    /* @var $model Ajde_Model */
 		    $this->fireCrudLoadedOnModel($model);
 
@@ -75,8 +93,15 @@ class Ajde_Crud extends Ajde_Object_Standard
                 $field = $this->getField($fieldName);
                 $value = $model->has($fieldName) ? $model->get($fieldName) : false;
 
-                // Sort
-                if ($this->getField($fieldName) instanceof Ajde_Crud_Field_Sort) {
+                // JSON
+                if ($model->isFieldJson($fieldName)) {
+                    foreach(($jsonFields = (array) @json_decode($value)) as $item) {
+                        $row[] = $item;
+                    }
+                    for($i = 0; $i < ($maxJsonFields - count($jsonFields)); $i++) {
+                        $row[] = '';
+                    }
+                } else if ($this->getField($fieldName) instanceof Ajde_Crud_Field_Sort) {
                     $row[] = $value;
                 // Display function
 //                } elseif ($field->hasFunction() && $field->getFunction()) {

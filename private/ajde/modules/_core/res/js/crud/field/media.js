@@ -45,7 +45,7 @@ AC.Crud.Edit.Media = function() {
 			preview = "<a href='" + saveDir + filename + "' target='_blank'>" + filename + "</a>";
 			thumb = '';
 		}
-	
+
 		if (!$filenamefield.val()) {
 			$filenamefield.val(getFilename(filename));
 		}

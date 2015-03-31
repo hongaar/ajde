@@ -44,14 +44,37 @@ AC.Crud.Edit.Text = function() {
 			width		: '100%',
 			height		: elm.height(),
 			filebrowserImageBrowseUrl : 'admin/media:view.crud?multiple=0&media=1',
-		    filebrowserWindowWidth  : 800,
-		    filebrowserWindowHeight : 500
+		    filebrowserWindowWidth  : '100%',
+		    filebrowserWindowHeight : '100%'
 		});
 	};
 
 	return {
 
 		init: function() {
+
+            var removeEmptyPFilter = {
+                elements : {
+                    p : function( element ) {
+                        var child = element.children[0];
+                        if (!(element.previous && element.next) && child && !child.children
+                            && (!child.value || CKEDITOR.tools.trim( child.value ).match( /^(?:&nbsp;|\xa0|<br \/>)$/ ))) {
+                            return false;
+                        }
+                        return element;
+                    }
+                }
+            };
+
+            CKEDITOR.plugins.add( 'removeEmptyP',
+            {
+                init: function( editor )
+                {
+                    // Give the filters lower priority makes it get applied after the default ones.
+                    editor.dataProcessor.htmlFilter.addRules( removeEmptyPFilter, 100 );
+                    editor.dataProcessor.dataFilter.addRules( removeEmptyPFilter, 100 );
+                }
+            });
 
 			CKEDITOR.config.toolbar_Ajde =
 			[
@@ -80,6 +103,8 @@ AC.Crud.Edit.Text = function() {
             //CKEDITOR.config.forcePasteAsPlainText = true;
             CKEDITOR.config.pasteFromWordRemoveFontStyles = true;
             CKEDITOR.config.pasteFromWordRemoveStyles = true;
+
+            CKEDITOR.config.autoParagraph = false;
 			
 			CKEDITOR.config.baseHref = document.getElementsByTagName('base')[0].href;            
 			CKEDITOR.config.contentsCss = [CKEDITOR.basePath + 'contents.css', 'public/css/core/ckeditor/style.css'];
@@ -87,8 +112,8 @@ AC.Crud.Edit.Text = function() {
 			CKEDITOR.config.removePlugins = 'elementspath';
 			CKEDITOR.config.removeButtons = '';
 			
-			CKEDITOR.config.extraPlugins = 'onchange,justify,autogrow';
-			CKEDITOR.config.extraAllowedContent = 'a(*); img(*); div(*)';
+			CKEDITOR.config.extraPlugins = 'removeEmptyP,onchange,justify,autogrow';
+			CKEDITOR.config.extraAllowedContent = 'a[data-overlay](*); img(*); div(*)';
 
             // autogrow
             CKEDITOR.config.autoGrow_onStartup = true;

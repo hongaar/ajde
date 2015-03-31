@@ -10,6 +10,7 @@ class Ajde_Model extends Ajde_Object_Standard
 	protected $_tableName;
 	protected $_displayField = null;
 	protected $_encrypedFields = array();
+    protected $_jsonFields = array();
 	
 	protected $_hasMeta = false;	
 	protected $_metaLookup = array();
@@ -477,6 +478,23 @@ class Ajde_Model extends Ajde_Object_Standard
 	{
 		return in_array($field, $this->getEncryptedFields());
 	}
+
+    /**
+     * @return array
+     */
+    public function getJsonFields()
+    {
+        return $this->_jsonFields;
+    }
+
+    /**
+     * @param string $field
+     * @return bool
+     */
+    public function isFieldJson($field)
+    {
+        return in_array($field, $this->getJsonFields());
+    }
 
 	/**
 	 *

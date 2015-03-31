@@ -62,8 +62,16 @@ AC.Crud.Edit = function() {
                 $('form.ACCrudEdit').find(input).on('change', AC.Crud.Edit.setDirty);
 
                 // Autosave handlers
-                $('form.ACCrudEdit.autosave').find(input).not('.noAutosave').on('change', AC.Crud.Edit.autoSave);
+                $('form.ACCrudEdit.autosave').find(input).not('.noAutosave').on('change', function(e) {
+                    var self = this;
+                    setTimeout(function() {
+                        AC.Crud.Edit.autoSave.call(self, e);
+                    }, 100);
+                });
                 $('body').on('click', '.autosave-retry', AC.Crud.Edit.autoSave);
+                //$('body').on('click', '.autosave-force', function(e) {
+                //    if (!autosaveThrottleActive) AC.Crud.Edit.autoSave.call(this, e);
+                //});
 
                 // Hide non-autosave buttons
                 $('form.ACCrudEdit.autosave').each(function() {
@@ -89,7 +97,7 @@ AC.Crud.Edit = function() {
                     .text('discard changes')
                     .addClass('btn-danger');
             isDirty = true;
-            $('.autosave-status').removeClass('active').html('<a style="cursor: pointer;">Save now</a>');
+            $('.autosave-status').removeClass('active').html('<a class="autosave-force" href="javascript:void(null);">Save now</a>');
             $(window).on("beforeunload", function(e) {
                 if (isDirty) {
                     return 'You have unsaved changes, are you sure you want to navigate away from this page?';
