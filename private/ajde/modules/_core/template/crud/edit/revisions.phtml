@@ -26,7 +26,11 @@ function showValue($value, RevisionModel $revision, $old = '', $showDiff = false
 {
     global $crud, $model, $shadowModel, $helper;
 
-    $field = $crud->getField($revision->field);
+    try {
+        $field = $crud->getField($revision->field);
+    } catch (Ajde_Exception $e) {
+        return $value;
+    }
     $shadowModel->set($revision->field, $value);
 
     // Sort
@@ -141,8 +145,12 @@ foreach($revisions as $revision) {
             </td>
             <td class="field">
                 <?php
-                $fieldOptions = $crud->getField($revision->field);
-                echo $fieldOptions->getLabel();
+                try {
+                    $fieldOptions = $crud->getField($revision->field);
+                    echo $fieldOptions->getLabel();
+                } catch (Ajde_Exception $e) {
+                    echo '(deleted field)';
+                }
                 ?>
             </td>
             <td class="rev">
