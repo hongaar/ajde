@@ -4,50 +4,52 @@
 
 ;
 (function($) {
-	
-	var bootstrap = function() {	
-		
-		var url = "admin/cms:nav.json";
-		var tree = $('#nav-tree');
 
-		tree.tree({
-			data: [],
-			dragAndDrop: false,
-			autoOpen: false,
-			dataUrl: url
-		});
+    var bootstrap = function() {
 
-		var refreshTree = function() {
+        var url = "admin/cms:nav.json";
+        var tree = $('#nav-tree');
 
-			$.get(url, function(data) {
+        tree.tree({
+            autoEscape: false,
+            data: [],
+            dragAndDrop: false,
+            autoOpen: false,
+            dataUrl: url
+        });
 
-				tree.tree('loadData', data);
+        var refreshTree = function() {
 
-				if ($('div[data-node-id]').length) {
-					var nodeId = $('div[data-node-id]').data('node-id');
-					var node = tree.tree('getNodeById', nodeId);
-					tree.tree('selectNode', node);
-					tree.tree('openNode', node, false);
-				}
+            $.get(url, function(data) {
 
-			}, 'json');
 
-		};
-		refreshTree();
+                tree.tree('loadData', data);
 
-		$('a.refresh-nav').click(refreshTree);
+                var nodeId = $('div[data-node-id]').data('node-id');
+                if (nodeId) {
+                    var node = tree.tree('getNodeById', nodeId);
+                    tree.tree('selectNode', node);
+                    tree.tree('openNode', node, false);
+                }
 
-		tree.bind(
-			'tree.click',
-			function(event) {
-				// The clicked node is 'event.node'
-				var node = event.node;
-				window.location.href = 'admin/node:view?edit=' + node.id;
-			}
-		);
-		
-	};
+            }, 'json');
 
-	$(document).ready(bootstrap);
+        };
+        refreshTree();
+
+        $('a.refresh-nav').click(refreshTree);
+
+        tree.bind(
+            'tree.click',
+            function(event) {
+                // The clicked node is 'event.node'
+                var node = event.node;
+                window.location.href = 'admin/node:view?edit=' + node.id;
+            }
+        );
+
+    };
+
+    $(document).ready(bootstrap);
 
 })(jQuery);
