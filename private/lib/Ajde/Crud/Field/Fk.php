@@ -92,7 +92,7 @@ class Ajde_Crud_Field_Fk extends Ajde_Crud_Field_Enum
 	}
 	
 	public function getValues()
-	{		
+	{
 		if ($this->hasFilter()) {
 			$filter = $this->getFilter();
 			$group = new Ajde_Filter_WhereGroup();

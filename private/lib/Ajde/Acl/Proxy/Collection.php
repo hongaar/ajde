@@ -44,7 +44,9 @@ class Ajde_Acl_Proxy_Collection extends Ajde_Collection
 	public function load() {
 		parent::load();
 		if ($this->count()) {
+            $aclTimer = Ajde::app()->addTimer("<i>ACL validation for collection</i>");
 			$this->validateModels();
+            Ajde::app()->endTimer($aclTimer);
 		}
 		return $this->_items;		
 	}

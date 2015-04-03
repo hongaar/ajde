@@ -128,11 +128,15 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudEdit
     ?>
 
     <div class='hidden'>
-    <?php foreach($crud->getFields() as $field) {
-        if (!in_array($field->getName(), $fieldsShown)) {
-            echo $field->getInput();
-        }
-    } ?>
+        <?php foreach($crud->getFields() as $field) {
+            if (!in_array($field->getName(), $fieldsShown)) {
+                /** @var Ajde_Crud_Field $field */
+                ?>
+                <input type="hidden" name="<?php echo _e($field->getName()); ?>" value="<?php echo _e($field->getValue()); ?>" />
+                <?php
+//                echo $field->getInput();
+            }
+        } ?>
     </div>
 
     <div class="form-actions fixed">

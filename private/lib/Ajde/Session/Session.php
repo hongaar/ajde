@@ -16,7 +16,7 @@ class Ajde_Session extends Ajde_Object_Standard
 		// Security garbage collector
 		ini_set('session.gc_maxlifetime', ($lifetime == 0 ? 180 * 60 : $lifetime * 60)); // PHP session garbage collection timeout in minutes
 		ini_set('session.gc_divisor', 100);		// Set divisor and probability for cronjob Ubuntu/Debian
-		ini_set('session.gc_probability', 1);	// @see http://www.php.net/manual/en/function.session-save-path.php#98106
+//		ini_set('session.gc_probability', 1);	// @see http://www.php.net/manual/en/function.session-save-path.php#98106
 
         // Set session save path
 		if ( Config::get('sessionSavepath') ) { 
@@ -43,12 +43,15 @@ class Ajde_Session extends Ajde_Object_Standard
 		// Strengthen session security with REMOTE_ADDR and HTTP_USER_AGENT
 		// @see http://shiflett.org/articles/session-hijacking
 
+        // Removed REMOTE_ADDR, use HTTP_X_FORWARDED_FOR if available
+        $remoteIp = Ajde_Http_Request::getClientIP();
+
 		// Ignore Google Chrome frame as it has a split personality
 		// @todo TODO: security issue!!
 		// @see http://www.chromium.org/developers/how-tos/chrome-frame-getting-started/understanding-chrome-frame-user-agent		
 		if (isset($_SERVER['HTTP_USER_AGENT']) && substr_count($_SERVER['HTTP_USER_AGENT'], 'chromeframe/') === 0 &&
 				isset($_SESSION['client']) &&
-				$_SESSION['client'] !== md5($_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] . Config::get('secret'))) {
+				$_SESSION['client'] !== md5($remoteIp . $_SERVER['HTTP_USER_AGENT'] . Config::get('secret'))) {
 			// TODO: overhead to call session_regenerate_id? is it not required??
 			//session_regenerate_id();
 
@@ -75,7 +78,7 @@ class Ajde_Session extends Ajde_Object_Standard
 				}
 			}
 		} else {
-			$_SESSION['client'] = md5($_SERVER['REMOTE_ADDR'] . issetor($_SERVER['HTTP_USER_AGENT']) . Config::get('secret'));
+			$_SESSION['client'] = md5($remoteIp . issetor($_SERVER['HTTP_USER_AGENT']) . Config::get('secret'));
 
             if ($lifetime > 0) {
                 // Force send new cookie with updated lifetime (forcing keep-alive)

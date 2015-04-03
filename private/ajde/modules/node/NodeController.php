@@ -10,10 +10,10 @@ class NodeController extends Ajde_Controller
 	
 	public function getCanonicalUrl()
 	{
-		
-		return $this->node->getUrl();
+
+		return $this->node->getSlug();
 	}
-	
+
 	public function beforeInvoke()
 	{
 		Ajde_Model::register('acl');

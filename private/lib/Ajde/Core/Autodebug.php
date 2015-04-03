@@ -14,6 +14,7 @@ class Ajde_Core_Autodebug extends Ajde_Object_Singleton
 		if ( ($user = Ajde_User::getLoggedIn()) && $user->getDebug()) {
 			$config = Config::getInstance();
 			$config->debug = true;
+
             if (!in_array('Debugger', $config->documentProcessors['html'])) {
                 $config->documentProcessors['html'][] = 'Debugger';
             }

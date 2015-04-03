@@ -57,7 +57,7 @@ AC.Crud.Mainfilter = function() {
 			form.filter('.ACCrudList').find('select[name="view[filter][' + name + ']"]').val(value);
 			
 			// for edit
-			form.filter('.ACCrudEdit').find('select[name="' + name + '"]').val(value);
+			form.filter('.ACCrudEdit').find(':input[name="' + name + '"]').val(value);
 			
 			$('#mainFilter').modal('hide');
 			$('.mainFilterLabel').text($(this).text());
@@ -66,7 +66,7 @@ AC.Crud.Mainfilter = function() {
 				AC.Crud.List.updateView(form.children(':eq(0)'));
 			} else {
 				// Call dynamic fields update
-				AC.Crud.Edit.dynamicFields.call(form.filter('.ACCrudEdit').find('select[name="' + name + '"]'));
+				AC.Crud.Edit.dynamicFields.call(form.filter('.ACCrudEdit').find(':input[name="' + name + '"]'));
 			
 				// Refresh?
 //				if ($('#mainFilter').data('refresh') == 1) {

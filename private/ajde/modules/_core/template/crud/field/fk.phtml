@@ -20,14 +20,14 @@ if ($field->has('usePopupSelector') && $field->get('usePopupSelector')) { ?>
 		<option value=''></option>
 		<?php
         $keys = array();
-        foreach($field->getValues() as $key => $option) {
-            $keys[] = $key; ?>
-			<option value='<?php echo $key; ?>'
-				<?php
-				if ($key == $pk) { echo "selected='selected'"; }
-				?>
-				><?php echo $option; ?></option>
-		<?php }
+//        foreach($field->getValues() as $key => $option) {
+//            $keys[] = $key; ?>
+<!--			<option value='--><?php //echo $key; ?><!--'-->
+<!--				--><?php
+//				if ($key == $pk) { echo "selected='selected'"; }
+//				?>
+<!--				>--><?php //echo $option; ?><!--</option>-->
+<!--		--><?php //}
         if ($pk && !in_array($pk, $keys)) { ?>
             <option value='<?php echo $pk; ?>' selected='selected'><?php echo $pk; ?></option>
         <?php } ?>
