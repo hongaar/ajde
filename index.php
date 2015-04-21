@@ -8,12 +8,12 @@
 //	--------------------
 //	We're running index.php
 //	--------------------
-define('AJDE', true);
+    define('AJDE', true);
 	
 //	--------------------
 //	Which version of Ajde are we running?
 //	--------------------	
-	define('AJDE_VERSION', 'v0.2.8');
+	define('AJDE_VERSION', 'v0.3.0');
 
 /*********************
  * ERROR REPORTING

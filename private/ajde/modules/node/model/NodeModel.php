@@ -822,4 +822,15 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 		}
 		return $this->_metaValues;
 	}
+
+    public function featuredImage($width = 800)
+    {
+        if ($this->hasNotEmpty('media')) return $this->getMedia()->getFilename($width);
+
+        foreach($this->getChildren() as $child) {
+            if ($child->hasNotEmpty('media')) return $child->getMedia()->getFilename($width);
+        }
+
+        return false;
+    }
 }

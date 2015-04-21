@@ -278,7 +278,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 					$displayFunction = $field->getFunction();
 					$displayFunctionArgs = $field->hasFunctionArgs() ? $field->getFunctionArgs() : array();
 					$funcValue = call_user_func_array(array($model, $displayFunction), $displayFunctionArgs); ?>
-					<td <?php echo $gridData; ?> title="<?php echo _e(strip_tags($funcValue)); ?>" <?php if ($crud->getOption('list.main', false) == $field->getName()) { echo 'class=\'main\''; } ?>>
+					<td <?php echo $gridData; ?> title="<?php echo _e(strip_tags($funcValue)); ?>" class="<?php if ($field->hasClassname()) { echo $field->getClassname(); } if ($crud->getOption('list.main', false) == $field->getName()) { echo ' main'; } ?>">
 						<?php echo $funcValue; ?>
 					</td>
 				<?php
@@ -322,7 +322,8 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
                     if ($field->hasMaxChars()) {
                         $maxChars = $field->getMaxChars();
                     } ?>
-					<td <?php echo $gridData; ?> title="<?php echo $this->escape($value); ?>" <?php if ($crud->getOption('list.main', false) == $field->getName()) { echo 'class=\'main\''; } ?>>
+					<td <?php echo $gridData; ?> title="<?php echo $this->escape($value); ?>"
+                        class="<?php if ($field->hasClassname()) { echo $field->getClassname(); } if ($crud->getOption('list.main', false) == $field->getName()) { echo ' main'; } ?>">
 						<?php echo substr($this->escape($value), 0, $maxChars); ?>
 						<?php if (strlen($this->escape($value)) > $maxChars) { ?>
 							...

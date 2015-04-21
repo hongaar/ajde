@@ -44,6 +44,9 @@ $this->requireJsFirst('core.lazy');
 		<meta name='description' content='<?php echo _e(Ajde::app()->getDocument()->getDescription()); ?>' />
 		<meta name='author' content='<?php echo _e(Config::get('author')); ?>' />
 		<?php echo Ajde::app()->getDocument()->getMeta(); ?>
+        <?php if (Ajde::app()->getDocument()->hasNotEmpty('featuredImage')) { ?>
+            <meta property="og:image" content="<?php echo Config::get('site_root') . Ajde::app()->getDocument()->getFeaturedImage(); ?>" />
+        <?php } ?>
 		
 		<!-- Mobile presentation meta tags -->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">

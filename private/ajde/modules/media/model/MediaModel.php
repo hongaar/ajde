@@ -29,6 +29,12 @@ class MediaModel extends Ajde_Model
 	{
 		$this->saveFileFromWeb();
 	}
+
+    public function afterDelete()
+    {
+        // TODO: Delete files?
+        // dump($this);
+    }
 	
 	/**
 	 *
@@ -153,11 +159,11 @@ class MediaModel extends Ajde_Model
 
             $path = $this->uploadDirectory . $filename . '.' . $ext;
 
-//            $curlResult = Ajde_Http_Curl::get($this->pointer, $path, array(
-//                'Authorization: Bearer ' . $oauthToken
-//            ));
+            $curlResult = Ajde_Http_Curl::get($this->pointer, $path, array(
+                'Authorization: Bearer ' . $oauthToken
+            ));
 
-            $curlResult = Ajde_Http_Curl::get($this->pointer, $path);
+//            $curlResult = Ajde_Http_Curl::get($this->pointer, $path);
 
             if (!$curlResult) {
                 return 'error';
@@ -171,5 +177,12 @@ class MediaModel extends Ajde_Model
         }
 
         return false;
+    }
+
+    public function displayType()
+    {
+        $extension = pathinfo($this->pointer, PATHINFO_EXTENSION);
+        if ($this->getType() == 'embed') $extension = 'mpg';
+        return "<img class='icon' src='" . Ajde_Resource_FileIcon::_($extension) . "'' />";
     }
 }

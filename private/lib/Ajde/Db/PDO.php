@@ -35,7 +35,6 @@ class Ajde_Db_PDO extends PDO
 			} else {
 				Ajde_Exception_Log::logException($e);
 				die('DB connection problem. <a href="?install=1">Install database?</a>');
-				return false;
 			}
 		}		
 			

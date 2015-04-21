@@ -6,9 +6,11 @@
 (function($) {
 
     var bootstrap = function() {
-        $("img.lazy").lazyload({
-            effect : "fadeIn"
-        });
+        if (jQuery().lazyload) {
+            $("img.lazy").lazyload({
+                effect : "fadeIn"
+            });
+        }
     };
 
     $(document).ready(bootstrap);

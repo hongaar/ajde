@@ -67,7 +67,6 @@ class Ajde_Db_PDOStatement extends PDOStatement {
 			} else {
 				Ajde_Exception_Log::logException($e);
 				die('DB connection problem. <a href="?install=1">Install database?</a>');
-				return false;
 			}	
 		}
         $time = microtime(true) - $start;  

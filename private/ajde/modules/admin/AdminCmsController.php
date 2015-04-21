@@ -39,7 +39,7 @@ class AdminCmsController extends AdminController
 				/* @var $node NodeModel */
 
 				$nodeArray = array(
-					"label" => $node->getTitle(),
+					"label" => $this->navLabel($node),
 					"id" => $node->getPK()
 				);
 
@@ -70,7 +70,7 @@ class AdminCmsController extends AdminController
 				/* @var $node NodeModel */
 				$children = $node->get('children');
 				$json[] = array(
-					"label" => $node->getTitle(),
+					"label" => $this->navLabel($node),
 					"id" => $node->getPK(),
 					"load_on_demand" => $children ? true : false
 				);
@@ -80,6 +80,14 @@ class AdminCmsController extends AdminController
 		}
 	}
 
+    private function navLabel($node)
+    {
+        $nodetype = $node->has('nodetype_name') ? $node->get('nodetype_name') : $node->getNodetype()->displayField();
+        $icon = $node->has('nodetype_icon') ? $node->get('nodetype_icon') : $node->getNodetype()->getIcon();
+        $label = '<span class="badge-icon" title="' . _e($nodetype) . '"><i class="'. $icon . '"></i></span>';
+        return $label . ' <span class="title">' . _c($node->getTitle()) . '</span>';
+    }
+
 	private function navChildrenArray($collection)
 	{
 		$childrenArray = array();
@@ -88,7 +96,7 @@ class AdminCmsController extends AdminController
 			/* @var $node NodeModel */
 
 			$nodeArray = array(
-				"label" => $node->getTitle(),
+				"label" => $this->navLabel($node),
 				"id" => $node->getPK()
 			);
 

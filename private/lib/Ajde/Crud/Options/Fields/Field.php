@@ -154,6 +154,14 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 	 * @return Ajde_Crud_Options_Fields_Field 
 	 */
 	public function setFunction($function) { return $this->_set('function', $function); }
+
+    /**
+     * Sets the class of the cell for the list view
+     *
+     * @param string $function
+     * @return Ajde_Crud_Options_Fields_Field
+     */
+    public function setListClass($className) { return $this->_set('classname', $className); }
 	
 	/**
 	 * Sets the display function arguments of the model for the list view

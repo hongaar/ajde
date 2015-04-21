@@ -2,9 +2,28 @@
 
 table.crud.grid {
     tr {
-        td.linkedModel {
+        td.main {
             position: absolute;
             left: 8px;
+            right: 8px;
+            bottom: 9px;
+            z-index: 99;
+
+            font-size: 0.9em !important;
+            text-transform: none;
+            font-weight: normal;
+
+            background-color: rgba(0,0,0,0.5) !important;
+//            background-color: transparent !important;
+
+//            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+
+            padding: 3px 10px;
+        }
+
+        td.linkedModel {
+            position: absolute;
+            left: (8px + 5px + 16px);
             top: 8px;
             z-index: 99;
 
@@ -16,8 +35,28 @@ table.crud.grid {
             padding: 1px 5px;
         }
 
-        &:hover td.linkedModel {
+        td.type {
+            position: absolute;
+            left: 8px;
+            top: 8px;
+            z-index: 99;
+
+            font-size: 0.8em;
+            text-transform: uppercase;
+            font-weight: bold;
+
+            background-color: rgba(255,255,255,0.5);
+            padding: 0 0 2px 5px;
+
+            width: 16px;
+        }
+
+        &:hover td.linkedModel, &:hover td.type {
             background-color: #e8f8fd;
+        }
+
+        &:last-child td.main {
+            bottom: 18px;
         }
     }
 }

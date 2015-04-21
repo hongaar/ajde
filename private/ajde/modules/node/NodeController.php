@@ -61,6 +61,11 @@ class NodeController extends Ajde_Controller
 		$action = str_replace(' ', '_', strtolower($nodetype->get($nodetype->getDisplayField())));
 		$this->setAction($action);
 
+        // featured image
+        if ($image = $node->featuredImage()) {
+            Ajde::app()->getDocument()->setFeaturedImage($image);
+        }
+
         // pass node to document, only first
         $layout = Ajde::app()->getDocument()->getLayout();
         if (!$layout->hasAssigned('node')) {

@@ -17,6 +17,7 @@ class Ajde_Resource_FileIcon extends Ajde_Resource
 		'pdf' => 'document-pdf',
 		'mp3' => 'document-music', 'wav' => 'document-music',
 		'zip' => 'folder-zipper',
+        'mpg' => 'film', 'avi' => 'film'
 	);
 	
 	public function __construct($fileExtension)
