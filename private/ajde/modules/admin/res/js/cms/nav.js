@@ -22,7 +22,6 @@
 
             $.get(url, function(data) {
 
-
                 tree.tree('loadData', data);
 
                 var nodeId = $('div[data-node-id]').data('node-id');
