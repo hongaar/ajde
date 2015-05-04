@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @property bool ignoreAccessControl
+ */
 class NodeModel extends Ajde_Model_With_AclI18nRevision
 {
 	protected $_autoloadParents = false;
@@ -530,11 +533,13 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 	{
 		return $this->findRoot(false, $load);
 	}
-	
-	/**
-	 * 
-	 * @return NodeModel|boolean
-	 */
+
+    /**
+     *
+     * @param bool $accessChecks
+     * @param bool $load
+     * @return bool|NodeModel
+     */
 	public function findRoot($accessChecks = true, $load = true)
 	{
 		$node = new self();

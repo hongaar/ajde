@@ -185,10 +185,22 @@ class Ajde_Acl extends Ajde_Model
 		return false;
 	}
 
-	public static function doValidation($entity, $module, $action, $extra, $ownerCallback = false, $parentCallback = false)
+    /**
+     * @param string $entity
+     * @param string $module
+     * @param string $action
+     * @param string $extra
+     * @param bool $ownerCallback
+     * @param bool $parentCallback
+     * @param bool $determineWildcard
+     * @return bool
+     */
+    public static function doValidation($entity, $module, $action, $extra, $ownerCallback = false, $parentCallback = false, $determineWildcard = false)
 	{
 		$uid = self::getUserId();
 		$usergroup = self::getUsergroupId();
+
+        $isWildcard = false;
 		
 		$callbackHash = '';
 		if ($ownerCallback !== false && $parentCallback !== false) {
@@ -327,7 +339,7 @@ class Ajde_Acl extends Ajde_Model
 			/**
 			 * Oempfff... now let's traverse and set the order
 			 * 
-			 * TODO: It seems that we can just load the entire ACL table in the collection
+			 * Update: It seems that we can just load the entire ACL table in the collection
 			 * and use this traversal to find matching rules instead of executing this
 			 * overly complicated SQL query constructed above...
 			 */
@@ -360,7 +372,8 @@ class Ajde_Acl extends Ajde_Model
 					case "allow":
 						Ajde_Acl::$log[] = $key . ' match with ACL rule id ' . $rule->getPK() . ' allows access for '.$module.'/'.$action.$extra.' (public)';
 						$access = true;
-						break;
+                        $isWildcard = $rule->extra == '*';
+						break 2;
 					case "deny":
 					default:
 						Ajde_Acl::$log[] = $key . ' match with ACL rule id ' . $rule->getPK() . ' denies access for '.$module.'/'.$action.$extra.' (public)';
@@ -378,6 +391,8 @@ class Ajde_Acl extends Ajde_Model
 							if (call_user_func_array($ownerCallback, array($uid, $usergroup))) {
 								Ajde_Acl::$log[] = $key . ' match with ACL rule id ' . $rule->getPK() . ' allows access for '.$module.'/'.$action.$extra.' (owner)';
 								$access = true;
+                                $isWildcard = $rule->extra == '*';
+                                break 2;
 							} else {
 								Ajde_Acl::$log[] = $key . ' match with ACL rule id ' . $rule->getPK() . ' denies access for '.$module.'/'.$action.$extra.' (owner)';
 								// TODO: or inherit?
@@ -388,6 +403,8 @@ class Ajde_Acl extends Ajde_Model
 							if (call_user_func_array($parentCallback, array($uid, $usergroup))) {
 								Ajde_Acl::$log[] = $key . ' match with ACL rule id ' . $rule->getPK() . ' allows access for '.$module.'/'.$action.$extra.' (parent)';
 								$access = true;
+                                $isWildcard = $rule->extra == '*';
+                                break 2;
 							} else {
 								Ajde_Acl::$log[] = $key . ' match with ACL rule id ' . $rule->getPK() . ' denies access for '.$module.'/'.$action.$extra.' (parent)';
 								// TODO: or inherit?
@@ -397,7 +414,8 @@ class Ajde_Acl extends Ajde_Model
 						case "allow":
 							Ajde_Acl::$log[] = $key . ' match with ACL rule id ' . $rule->getPK() . ' allows access for '.$module.'/'.$action.$extra;
 							$access = true;
-							break;
+                            $isWildcard = $rule->extra == '*';
+							break 2;
 					}
 				} else {
 					Ajde_Acl::$log[] = $key . ' match with ACL rule id ' . $rule->getPK() . ' denies access for '.$module.'/'.$action.$extra.' (not logged in)';
@@ -410,6 +428,8 @@ class Ajde_Acl extends Ajde_Model
 			Ajde_Acl::$log[] = 'No match in ACL rules denies access for '.$module.'/'.$action.$extra;
 			$access = false;
 		}
+
+        if ($determineWildcard) return $isWildcard;
 		
 		return $access;	
 	}

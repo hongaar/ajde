@@ -1,8 +1,9 @@
 <?php
 /* @var $this Ajde_Template_Parser_Phtml_Helper */
 
-// Include jQuery 1.7
-$this->requireJsLibrary('jquery', '1.7');
+// Include some libraries, in reverse order of appearance
+$this->requireJsLibrary('jquery/2.1.3/jquery.min.js');
+$this->requireJsLibrary('html5shiv/3.7.2/html5shiv.min.js');
 
 // Twitter Bootstrap
 $this->requireCssPublic('core/bootstrap/bootstrap3-journal.min.css');
@@ -44,8 +45,8 @@ $this->requireJsFirst('core.lazy');
 		<meta name='description' content='<?php echo _e(Ajde::app()->getDocument()->getDescription()); ?>' />
 		<meta name='author' content='<?php echo _e(Config::get('author')); ?>' />
 		<?php echo Ajde::app()->getDocument()->getMeta(); ?>
-        <?php if (Ajde::app()->getDocument()->hasNotEmpty('featuredImage')) { ?>
-            <meta property="og:image" content="<?php echo Config::get('site_root') . Ajde::app()->getDocument()->getFeaturedImage(); ?>" />
+        <?php if (Ajde::app()->getDocument()->hasNotEmpty('featuredImage')) {
+            ?><meta property="og:image" content="<?php echo Config::get('site_root') . Ajde::app()->getDocument()->getFeaturedImage(); ?>" />
         <?php } ?>
 		
 		<!-- Mobile presentation meta tags -->

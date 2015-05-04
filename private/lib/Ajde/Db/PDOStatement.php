@@ -17,37 +17,48 @@ class Ajde_Db_PDOStatement extends PDOStatement {
     protected function __construct($dbh) {
         $this->dbh = $dbh;
     }
-	
-    /** 
-    * When execute is called record the time it takes and 
-    * then log the query 
-    * @return PDO result set 
-    */  
-    public function execute($input_parameters = null) {
-    	//$cache = Ajde_Db_Cache::getInstance();
-        if (count($input_parameters)) {
-		    $log = array('query' => vsprintf(str_replace("?", "%s", $this->queryString), $input_parameters));
-        } else {
-            $log = array('query' => '[PS] ' . $this->queryString);
-        }
-        // add backtrace
-        $i = 0;
-        foreach(array_reverse(debug_backtrace()) as $item) {
-            try {
-                $line = issetor($item['line']);
-                $file = issetor($item['file']);
-                $source[] = sprintf("%s. <em>%s</em>%s<strong>%s</strong> (%s on line %s)",
-                    $i,
-                    !empty($item['class']) ? $item['class'] : '&lt;unknown class&gt;', // Assume of no classname is available, dumped from template.. (naive)
-                    !empty($item['type']) ? $item['type'] : '::',
-                    !empty($item['function']) ? $item['function'] : '&lt;unknown function&gt;',
-                    $file,
-                    $line);
-            } catch (Exception $e) {}
 
-            $i++;
+    /**
+     * When execute is called record the time it takes and
+     * then log the query
+     * @param array $input_parameters
+     * @return PDO result set
+     * @throws Ajde_Db_Exception
+     * @throws Ajde_Exception
+     */
+    public function execute($input_parameters = null) {
+        $log = array();
+        if (Config::get('debug') === true) {
+            //$cache = Ajde_Db_Cache::getInstance();
+            if (count($input_parameters)) {
+                $log = array('query' => vsprintf(str_replace("?", "%s", $this->queryString), $input_parameters));
+            } else {
+                $log = array('query' => '[PS] ' . $this->queryString);
+            }
+            // add backtrace
+            $i = 0;
+            foreach (array_reverse(debug_backtrace()) as $item) {
+                try {
+                    $line = issetor($item['line']);
+                    $file = issetor($item['file']);
+                    $source[] = sprintf("%s. <em>%s</em>%s<strong>%s</strong> (%s on line %s)",
+                        $i,
+                        !empty($item['class']) ? $item['class'] : '&lt;unknown class&gt;', // Assume of no classname is available, dumped from template.. (naive)
+                        !empty($item['type']) ? $item['type'] : '::',
+                        !empty($item['function']) ? $item['function'] : '&lt;unknown function&gt;',
+                        $file,
+                        $line);
+                } catch (Exception $e) {
+                }
+
+                $i++;
+            }
+            $hash = md5(implode('', $source) . microtime());
+
+
+            $log['query'] = '<a href="javascript:void(0)" onclick="$(\'#' . $hash . '\').slideToggle(\'fast\');" style="color: black;">' . $log['query'] . '</a>';
+            $log['query'] .= '<div id="' . $hash . '" style="display: none;">' . implode('<br/>', $source) . '</div>';
         }
-        $log['query'] = implode('<br/>', $source) . '<br/><br/><span style="font-size: 1.5em;">' . $log['query'] . '</span>';
         // start timer
 		$start = microtime(true);
 		try {

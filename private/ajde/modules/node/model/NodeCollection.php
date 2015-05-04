@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @property bool ignoreAccessControl
+ * @property bool autoRedirect
+ */
 class NodeCollection extends Ajde_Collection_With_AclI18n
 {
 	public function filterPublished()
