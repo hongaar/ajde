@@ -520,7 +520,10 @@ class Ajde_Model extends Ajde_Object_Standard
 		foreach($this->getTable()->getFieldNames() as $field) {
 			// Don't save a field is it's empty or not set
 			if ($this->has($field)) {
-				if ($this->getTable()->getFieldProperties($field, 'isAutoUpdate') && !$this->get($field) instanceof Ajde_Db_Function) {
+                if ($this->getTable()->getFieldProperties($field, 'type') === Ajde_Db::FIELD_TYPE_DATE && parent::_get($field) instanceof DateTime) {
+                    $sqlSet[] = $field . ' = ?';
+                    $values[] = parent::_get($field)->format('Y-m-d h:i:s');
+                } elseif ($this->getTable()->getFieldProperties($field, 'isAutoUpdate') && !$this->get($field) instanceof Ajde_Db_Function) {
 					// just ignore this field
 				} elseif ($this->isEmpty($field) && !$this->getTable()->getFieldProperties($field, 'isRequired')) {
 					$sqlSet[] = $field . ' = NULL';
@@ -581,7 +584,11 @@ class Ajde_Model extends Ajde_Object_Standard
 		
 		foreach($this->getTable()->getFieldNames() as $field) {
 			// Don't save a field is it's empty or not set
-			if ($this->has($field) && !$this->isEmpty($field)) {
+            if ($this->has($field) && $this->getTable()->getFieldProperties($field, 'type') === Ajde_Db::FIELD_TYPE_DATE && parent::_get($field) instanceof DateTime) {
+                $sqlFields[] = $field;
+                $sqlValues[] = '?';
+                $values[] = parent::_get($field)->format('Y-m-d h:i:s');
+            } else if ($this->has($field) && !$this->isEmpty($field)) {
 				if ($this->get($field) instanceof Ajde_Db_Function) {
 					$sqlFields[] = $field;
 					$sqlValues[] = (string) $this->get($field);
@@ -589,7 +596,7 @@ class Ajde_Model extends Ajde_Object_Standard
                     $sqlFields[] = $field;
                     $pointValues = explode(' ', (string) parent::_get($field));
 					$sqlValues[] = 'PointFromWKB(POINT(' . str_replace(',', '.', (double) $pointValues[0]) . ',' . str_replace(',', '.', (double) $pointValues[1]) . '))';
-				} else {
+                } else {
 					$sqlFields[] = $field;
 					$sqlValues[] = '?';
 					$values[] = (string) parent::_get($field);

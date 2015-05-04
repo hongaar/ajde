@@ -17,7 +17,14 @@ class Ajde_Core_Bootstrap
 		
 		foreach($cue as $className)
 		{
-			$timer = Ajde::app()->addTimer($className);
+            if (is_object($className) && ($className instanceof Closure)) {
+                $timer = Ajde::app()->addTimer('(closure)');
+                $className->__invoke();
+                Ajde::app()->endTimer($timer);
+                return;
+            }
+
+            $timer = Ajde::app()->addTimer($className);
 			
 			// See if $className is a subclass of Ajde_Object
 			if (!method_exists($className, "__getPattern")) {

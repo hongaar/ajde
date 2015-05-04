@@ -42,10 +42,15 @@ class Ajde_Component_Js extends Ajde_Component_Resource
 		}
 	}
 	
-	public function requireJsLibrary($library, $version)
+	public function requireJsLibrary($library, $version = false)
 	{
-		$url = Ajde_Resource_JsLibrary::getUrl($library, $version);
-		$resource = new Ajde_Resource_Remote(Ajde_Resource::TYPE_JAVASCRIPT, $url);
-		$this->getParser()->getDocument()->addResource($resource, Ajde_Document_Format_Html::RESOURCE_POSITION_TOP);
+        if ($version === false) {
+            $url = Ajde_Resource_JsLibrary::getCdnJsUrl($library);
+        } else {
+            $url = Ajde_Resource_JsLibrary::getUrl($library, $version);
+        }
+
+        $resource = new Ajde_Resource_Remote(Ajde_Resource::TYPE_JAVASCRIPT, $url);
+        $this->getParser()->getDocument()->addResource($resource, Ajde_Document_Format_Html::RESOURCE_POSITION_TOP);
 	}
 }

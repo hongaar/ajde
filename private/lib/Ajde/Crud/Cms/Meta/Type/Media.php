@@ -45,6 +45,9 @@ class Ajde_Crud_Cms_Meta_Type_Media extends Ajde_Crud_Cms_Meta_Type
         if ($meta->getOption('popup')) {
             $field->setListRoute('admin/media:view.crud');
             $field->setUsePopupSelector(true);
+            $field->setUseImage(true);
+            $field->addTableFileField('thumbnail', UPLOAD_DIR);
+            $field->setThumbDim(600, 200);
         }
 //		$field->setUseImage(true);
 //		$field->addTableFileField('thumbnail', UPLOAD_DIR);

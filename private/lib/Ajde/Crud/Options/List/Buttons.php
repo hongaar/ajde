@@ -114,9 +114,9 @@ class Ajde_Crud_Options_List_Buttons extends Ajde_Crud_Options
 	/**
 	 * Adds a custom button to the list toolbar
 	 * 
-	 * @param name $name Identifier of the button
-	 * @param text $text Text to display
-	 * @param type $class Optional classname to add
+	 * @param string $name Identifier of the button
+	 * @param string $text Text to display
+	 * @param string $class Optional classname to add
 	 * @return Ajde_Crud_Options_List_Buttons 
 	 */
 	public function addToolbarButton($name, $text, $class = null) { 

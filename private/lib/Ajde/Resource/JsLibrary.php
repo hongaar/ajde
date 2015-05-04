@@ -21,6 +21,8 @@ class Ajde_Resource_JsLibrary extends Ajde_Object_Static
 		'webfont' 		=> 'webfont.js'
 	);
 
+    public static $cdnJsBase = 'https://cdnjs.cloudflare.com/ajax/libs/';
+
 	public static function getUrl($name, $version)
 	{
 		if (array_key_exists($name, $libraries = self::$libraries))
@@ -34,4 +36,9 @@ class Ajde_Resource_JsLibrary extends Ajde_Object_Static
 				available', $name), 90013);
 		}
 	}
+
+    public static function getCdnJsUrl($suffix)
+    {
+        return self::$cdnJsBase . $suffix;
+    }
 }

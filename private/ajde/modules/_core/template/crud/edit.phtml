@@ -10,7 +10,7 @@ $editOptions = $crud->getOptions('edit');
 		
 		<?php
 		$fieldsShown = array();		
-		$fieldsToShow = $editOptions['show'];
+		$fieldsToShow = isset($editOptions['show']) ? $editOptions['show'] : false;
 		
 		if ($fieldsToShow == '*' || !$fieldsToShow) {
 			$fieldsToShow = $crud->getFieldNames();

@@ -49,7 +49,7 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	 * @param string $version
 	 * @return void 
 	 */
-	public function requireJsLibrary($name, $version)
+	public function requireJsLibrary($name, $version = false)
 	{
 		return Ajde_Component_Js::processStatic($this->getParser(), array('library' => $name, 'version' => $version));
 	}
@@ -318,11 +318,12 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	 * Ajde_Component_Crud
 	 ************************/
 
-	/**
-	 *
-	 * @param mixed $model
-	 * @return Ajde_Crud
-	 */
+    /**
+     *
+     * @param mixed $model
+     * @param array|Ajde_Crud_Options $options
+     * @return Ajde_Crud
+     */
 	public function ACCrudList($model, $options = array())
 	{
 		return Ajde_Component_Crud::processStatic($this->getParser(),
