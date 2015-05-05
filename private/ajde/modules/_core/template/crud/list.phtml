@@ -245,7 +245,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 		/* @var $model Ajde_Model */
 		$crud->fireCrudLoadedOnModel($model);
 		?>
-		<tr id="row-<?php echo $model->getPK(); ?>" data-path="<?php if (method_exists($model, 'getPath')) { echo _e($model->getPath()); } ?>" class="<?php if ($crud->getOption('list.rowClassFunction', false)) { echo $model->{$crud->getOption('list.rowClassFunction')}(); } ?>">
+		<tr id="row-<?php echo $model->getPK(); ?>" data-path="<?php if (method_exists($model, 'getSlug')) { echo _e($model->getSlug()); } ?>" class="<?php if ($crud->getOption('list.rowClassFunction', false)) { echo $model->{$crud->getOption('list.rowClassFunction')}(); } ?>">
 			<td class="<?php if (!$crud->getOption('list.buttons.select', true)) { ?>hidden<?php } ?>">
 				<input type="checkbox" class="id nopicker" name="id[]" value="<?php echo $model->getPK(); ?>" />
 			</td>

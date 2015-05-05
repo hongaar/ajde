@@ -18,7 +18,7 @@ $field = $this->field;
 <?php //	data-parent-id='<? php echo $field->getCrud()->getModel()->getPK(); ? >' ?>
 	data-dynamic='<?php echo ($field->hasTableFields() ? '1' : '0'); ?>'
     data-simple='<?php echo ($field->hasSimpleSelector() && $field->getSimpleSelector() ? '1' : '0'); ?>'
-	<?php 
+	<?php
 	if ($field->hasPrefillField()) { ?>
 	data-prefill='<?php echo implode(',', array_keys($field->getPrefillField())); ?>'
 		<?php foreach ($field->getPrefillField() as $fieldName => $value) { ?>
@@ -26,9 +26,9 @@ $field = $this->field;
 		<?php }
 	} ?>
 >
-    
+
     <?php if ($field->hasSimpleSelector() && $field->getSimpleSelector()) { // simple ?>
-        
+
         <div class="controls-row simple-selector">
 			<a href='javascript:void(null);' class='span2 btn btn-success new newMultiple' data-select='<?php echo $field->getName(); ?>'><i class='icon-plus icon-white'></i></a>
             <div class='input'>
@@ -36,27 +36,27 @@ $field = $this->field;
                 $ids = array();
                 foreach($children as $child) {
                     $ids[] = $child->getPK();
-                } ?>            
+                } ?>
                 <select class='chosen' name='<?php echo $field->getName(); ?>[]' multiple='multiple' data-placeholder="<?php echo __('Choose some options'); ?>">
-                    <?php foreach($field->getValues() as $model) { 
+                    <?php foreach($field->getValues() as $model) {
                         /* @var $model Ajde_Model */ ?>
                         <option value='<?php echo $model->getPK(); ?>' <?php if (in_array($model->getPK(), $ids)) { echo 'selected="selected"'; } ?> >
                             <?php echo $model->get($model->getDisplayField()); ?>
                         </option>
                     <?php } ?>
                 </select>
-            </div>           
+            </div>
         </div>
 
-    
+
     <?php } else { // advanced ?>
-    
+
         <div class='multipleToolbar'>
             <a href='javascript:void(null);' class='btn btn-success new newMultiple' data-select='<?php echo $field->getName(); ?>'><i class='icon-plus icon-white'></i></a>
             <?php if ($field->hasCrossReferenceTable()) { ?>
 				<span class="or">or</span>
-				
-				<?php if ($field->has('usePopupSelector') && $field->get('usePopupSelector')) { 
+
+				<?php if ($field->has('usePopupSelector') && $field->get('usePopupSelector')) {
 
 					$this->requireJs('crud/field/picker');
 					$this->requireCss('crud/field/picker');
@@ -68,11 +68,11 @@ $field = $this->field;
 					?>
 
 				<?php } else { ?>
-				
+
 					<div class='btn-group'>
 						<select class='chosen' name='<?php echo $field->getName(); ?>' data-placeholder="<?php echo __('Choose existing'); ?>">
-							<option value='' class='choose'></option>					
-							<?php foreach($field->getValues() as $model) { 
+							<option value='' class='choose'></option>
+							<?php foreach($field->getValues() as $model) {
 								/* @var $model Ajde_Model */ ?>
 								<option value='<?php echo $model->getPK(); ?>'>
 									<?php echo $model->get($model->getDisplayField()); ?>
@@ -81,9 +81,9 @@ $field = $this->field;
 						</select>
 						<a href='javascript:void(null);' class='btn add addMultiple'><i class='icon-ok icon-white'></i></a>
 					</div>
-				
+
 				<?php } ?>
-				
+
             <?php } ?>
         </div>
 
@@ -102,7 +102,7 @@ $field = $this->field;
 							<?php } else { ?>
 								<th><?php echo $field->getModel()->getTable()->getFieldProperties($extraField['name'], 'label'); ?></th>
 							<?php }
-                        } 
+                        }
                     } ?>
                     <th></th>
                 </tr>
@@ -120,7 +120,7 @@ $field = $this->field;
 									$sortTable = $field->getCrossReferenceTable();
 									$pk = $field->getCrossReferenceTable() . '.id';
 								}
-								$this->requireJsPublic('core/jquery.tablednd.js', Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST); ?>						
+								$this->requireJsPublic('core/jquery.tablednd.js', Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST); ?>
 								<td class='sort'
 									data-table='<?php echo $sortTable; ?>'
 									data-field='<?php echo $extraField['name']; ?>'
@@ -131,7 +131,7 @@ $field = $this->field;
 							<?php } else { ?>
 								<td></td>
 							<?php } ?>
-                        <?php } 
+                        <?php }
                     } ?>
                     <td class='buttons'>
 						<div class='btn-group'>
@@ -144,7 +144,11 @@ $field = $this->field;
                 </tr>
                 <?php foreach($field->getChildren() as $child) {
                     /* @var $child Ajde_Model */ ?>
-                    <?php $child->loadParents(); 
+                    <?php
+
+                    // TODO: side effects?
+//                    $child->loadParents();
+
 					$pk = $child->getPK();
 					if ($field->hasCrossReferenceTable()) {
 						$pk = $child->get('crossId');
@@ -152,16 +156,16 @@ $field = $this->field;
                     <tr id="row-<?php echo $pk; ?>" data-id='<?php echo $child->getPK(); ?>'>
                         <td><?php echo $child->getPK(); ?></td>
                         <td class='main'>
-                            <?php 
+                            <?php
                             $value = $child->get($child->getDisplayField());
                             if ($value instanceof Ajde_Model && $value->hasLoaded()) {
                                 echo $value->get($value->getDisplayField());
                             } else {
-                              echo $value;   
+                                echo $value;
                            } ?>
                         </td>
                         <?php if ($field->hasTableFields()) {
-                            foreach ($field->getTableFields() as $extraField) { 
+                            foreach ($field->getTableFields() as $extraField) {
                                 $value	= $child->has($extraField['name']) ? $child->get($extraField['name']) : false;
                                 $type	= $extraField['type'];
                                 if ($type == 'file' && $value) { ?>
@@ -177,7 +181,7 @@ $field = $this->field;
                                                         'height' => $thumbDim['height'],
                                                         'crop' => true
                                                     )); ?>
-                                            </a>									
+                                            </a>
                                         <?php } else { ?>
                                             <img class='icon' src='<?php echo Ajde_Resource_FileIcon::_($extension); ?> ' />
                                             <a class='filePreview preview' href='<?php echo $extraField['saveDir'] . $value; ?>' target='_blank'><?php echo $value; ?></a>
@@ -212,10 +216,10 @@ $field = $this->field;
 											echo $value->get($value->getDisplayField());
 										} else {
 											echo $value;
-										} ?>								
+										} ?>
 									</td>
                                 <?php }
-                            } 
+                            }
                         } ?>
                         <td class='buttons'>
 							<div class='btn-group'>
@@ -225,11 +229,11 @@ $field = $this->field;
 								</a>
 							</div>
                         </td>
-                    </tr>	
+                    </tr>
                 <?php } ?>
             </tbody>
         </table>
-    
+
     <?php } // simple or advanced ?>
-	
+
 </div>

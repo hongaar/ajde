@@ -698,24 +698,11 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
     public function getPath()
 	{
         return $this->getUrl();
-//		if ($this->getPK()) {
-//			if (!$this->getNodetype() instanceof Ajde_Model) {
-//				$this->loadParents();
-//			}
-//			$nodetype = str_replace(' ', '_', strtolower($this->getNodetype()->displayField()));
-//			return '-' . $nodetype . '/' . $this->getSlug();
-//		}
-//		return false;
 	}
 		
 	public function getUrl($relative = true)
 	{
 		if ($this->getPK()) {
-			if (!$this->getNodetype() instanceof Ajde_Model) {
-				$this->loadParents();
-			}
-//			$nodetype = str_replace(' ', '_', strtolower($this->getNodetype()->displayField()));
-//			$url = '-' . $nodetype . '/' . $this->getSlug();
             $url = $this->getFullUrl();
 			return $relative ? $url : Config::get('site_root') . $url;
 		}
@@ -725,7 +712,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
     public function getFullUrl()
     {
         if (($parent = $this->getParent()) && $parent->hasLoaded()) {
-            return $parent->getSlug() . '/' . $this->getSlug();
+            return $parent->getFullUrl() . '/' . $this->getSlug();
         }
         return $this->getSlug();
     }

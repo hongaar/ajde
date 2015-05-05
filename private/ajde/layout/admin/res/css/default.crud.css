@@ -56,7 +56,11 @@ fieldset.crud {
     textarea.noRichText {
     	height: 10em;
     }
-	
+
+    .chosen-container {
+        width: 100% !important;
+    }
+
 	span.validation-message {
 		color: #fff !important;
 	}

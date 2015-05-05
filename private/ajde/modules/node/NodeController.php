@@ -221,7 +221,7 @@ class NodeController extends Ajde_Controller
 					->setNew(true)
 					->setEdit(true)
                     ->setView(true)
-                    ->setViewUrlFunction('getUrl')
+                    ->setViewUrlFunction('getSlug')
 		//			->addItemButton('view', 'view')
 					->addItemButton('child', 'addChildButton', 'btn-success add-child', false, true)
 					->up()
