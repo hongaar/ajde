@@ -310,7 +310,11 @@ AC.Crud.Edit = function() {
 						}
                         if (returnTo != 'autosave') {
 						    $.scrollTo($('.control-group.error:first'), 800, { axis: 'y', offset: -70 });
-						    warningHandler('Please correct the errors in this form');
+                            if (form.find(':input[name=form_submission]').val()) {
+                                AC.Core.Alert.hide();
+                            } else {
+                                warningHandler('Please correct the errors in this form');
+                            }
                         }
 					} else {
 						errorHandler(i18n.applicationError);

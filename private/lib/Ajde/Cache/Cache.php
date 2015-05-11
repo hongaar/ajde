@@ -98,6 +98,15 @@ class Ajde_Cache extends Ajde_Object_Singleton
 		return $serverETag == $this->getHash();
 	}
 
+    public function modifiedSince()
+    {
+        if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']))
+        {
+            return $this->getLastModified() > strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']);
+        }
+        return false;
+    }
+
 	public function setContents($contents)
 	{
 		$this->set('contents', $contents);
@@ -123,7 +132,7 @@ class Ajde_Cache extends Ajde_Object_Singleton
 		}
 		
 		// Content
-		if ($this->ETagMatch() && $this->isEnabled()) {	
+		if (($this->ETagMatch() && !$this->modifiedSince()) && $this->isEnabled()) {
 			$response->setResponseType(Ajde_Http_Response::RESPONSE_TYPE_NOT_MODIFIED);			
 			$response->setData(false);
 		} else {

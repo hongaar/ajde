@@ -505,7 +505,7 @@ class _coreCrudController extends Ajde_Acl_Controller
             $session->destroy($crudId);
 
             // set message for next page
-            Ajde_Session_Flash::alert( 'Form submitted succesfully' );
+            Ajde_Session_Flash::alert( 'Form submitted successfully' );
 
             $mailer = new Ajde_Mailer();
 

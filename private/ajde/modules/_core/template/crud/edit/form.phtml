@@ -101,7 +101,9 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudEdit
 
     <div class="form-actions fixed">
 
-        <button type="submit" class="btn btn-success save" title='Submit form'><i class='icon-ok icon-white'></i> submit</button>
+        <button type="submit" class="btn btn-success save" title='Submit form'><i class='icon-ok icon-white'></i>
+            <?php echo _e($this->submitText); ?>
+        </button>
 
     </div>
 

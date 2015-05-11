@@ -51,6 +51,9 @@ $decorator->decorateInputs('form_meta', 'form', 'sort', 'id', $decoratorFilters)
 
 $crud = $this->ACCrudEdit('form', $formId, $options);
 $crud->setAction('edit/form');
+$crud->setTemplateData(array(
+    'submitText' => $form->submit_text
+));
 
 $crudOutput = $crud->output();
 

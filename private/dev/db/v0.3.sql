@@ -56,3 +56,6 @@ INSERT INTO `setting_meta` VALUES (78, 3, 19, 999, 'https://plus.google.com/+exa
 INSERT INTO `setting_meta` VALUES (79, 3, 20, 999, 'https://www.pinterest.com/example');
 INSERT INTO `setting_meta` VALUES (81, 1, 35, 999, 'j F Y');
 INSERT INTO `setting_meta` VALUES (82, 2, 14, 999, 'UA-XXXXXXXX-X');
+
+ALTER TABLE `form` ADD COLUMN `submit_text`  varchar(255) NULL DEFAULT 'Submit' AFTER `email_to`;
+

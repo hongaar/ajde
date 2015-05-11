@@ -62,19 +62,21 @@ class Ajde_Crud_Options_List_View extends Ajde_Crud_Options
 	 * @return Ajde_Crud_Options_List_View 
 	 */
 	public function setOrderBy($orderBy) { return $this->_set('orderBy', $orderBy); }
-	
-	/**
-	 * Sets the parent and sort fields for rendering a tree view
-	 * 
-	 * @param string $orderBy
-	 * @return Ajde_Crud_Options_List_View 
-	 */
+
+    /**
+     * Sets the parent and sort fields for rendering a tree view
+     *
+     * @param string $parentField
+     * @param string $sortField
+     * @return Ajde_Crud_Options_List_View
+     * @internal param string $orderBy
+     */
 	public function setTreeView($parentField, $sortField) { return $this->_set('treeView', array('parent' => $parentField, 'sort' => $sortField)); }
 	
 	/**
 	 * Sets the ordering direction
 	 * 
-	 * @param enum $dir (Ajde_Query::ORDER_ASC|Ajde_Query::ORDER_DESC)
+	 * @param string $dir (Ajde_Query::ORDER_ASC|Ajde_Query::ORDER_DESC)
 	 * @return Ajde_Crud_Options_List_View 
 	 */
 	public function setOrderDir($dir) { return $this->_set('orderDir', $dir); }

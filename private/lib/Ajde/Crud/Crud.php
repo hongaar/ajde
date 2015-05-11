@@ -10,6 +10,8 @@ class Ajde_Crud extends Ajde_Object_Standard
 	//protected $_operation = null;
 	protected $_operation = 'list';
 
+    protected $_templateData = array();
+
 	public function __construct($model, $options = array()) {
 		if ($model instanceof Ajde_Model) {
 			$this->_model = $model;
@@ -564,18 +566,24 @@ class Ajde_Crud extends Ajde_Object_Standard
 	
 	public function getTemplate()
 	{
-		$defaultTemplate = new Ajde_Template(MODULE_DIR . '_core/', 'crud/' . $this->getOperation());
-		Ajde::app()->getDocument()->autoAddResources($defaultTemplate);
+        $template = new Ajde_Template(MODULE_DIR . '_core/', 'crud/' . $this->getOperation());
+		Ajde::app()->getDocument()->autoAddResources($template);
 		if ($this->getOperation() !== $this->getAction()) {
-			$defaultTemplate = new Ajde_Template(MODULE_DIR . '_core/', 'crud/' . $this->getAction());
+			$template = new Ajde_Template(MODULE_DIR . '_core/', 'crud/' . $this->getAction());
 		}
 		if ($this->_hasCustomTemplate()) {			
 			$base = $this->_getCustomTemplateBase();
 			$action = $this->_getCustomTemplateAction();
-			return new Ajde_Template($base, $action);
+            $template = new Ajde_Template($base, $action);
 		}
-		return $defaultTemplate;
+        $template->assignArray($this->_templateData);
+		return $template;
 	}
+
+    public function setTemplateData($array)
+    {
+        $this->_templateData = (array) $array;
+    }
 		
 	private function _hasCustomTemplate()
 	{
