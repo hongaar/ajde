@@ -181,7 +181,7 @@ class MediaModel extends Ajde_Model
 
     public function displayType()
     {
-        $extension = pathinfo($this->pointer, PATHINFO_EXTENSION);
+        $extension = strtolower(pathinfo($this->pointer, PATHINFO_EXTENSION));
         if ($this->getType() == 'embed') $extension = 'mpg';
         return "<img class='icon' src='" . Ajde_Resource_FileIcon::_($extension) . "'' />";
     }

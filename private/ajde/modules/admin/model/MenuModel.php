@@ -79,8 +79,6 @@ class MenuModel extends Ajde_Model_With_I18n
         $collection->filterByParent($this->id);
         $collection->orderBy('sort');
 
-        $node = new NodeModel();
-
         $currentParentUrl = false;
         if ($current = Ajde_Cms::getInstance()->getRoutedNode()) {
             $currentParentUrl = ($current->getParent()  && $current->getParent()->hasLoaded()) ? $current->getParent()->getUrl() : false;
@@ -93,6 +91,8 @@ class MenuModel extends Ajde_Model_With_I18n
             $target = "";
             $submenus = array();
             $current = '';
+
+            $node = new NodeModel();
 
             if ($item->type == 'URL') {
                 $url = $item->url;
@@ -124,6 +124,7 @@ class MenuModel extends Ajde_Model_With_I18n
             if ($item->type == 'Node link' && !$node->hasLoaded() ) {
             } else {
                 $items[] = array(
+                    'node' => $node,
                     'name' => $name,
                     'url' => $url,
                     'target' => $target,

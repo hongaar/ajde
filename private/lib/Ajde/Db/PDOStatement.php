@@ -27,7 +27,7 @@ class Ajde_Db_PDOStatement extends PDOStatement {
      * @throws Ajde_Exception
      */
     public function execute($input_parameters = null) {
-        $log = array();
+        $log = array('entry' => '');
         if (Config::get('debug') === true) {
             //$cache = Ajde_Db_Cache::getInstance();
             if (count($input_parameters)) {
@@ -37,6 +37,7 @@ class Ajde_Db_PDOStatement extends PDOStatement {
             }
             // add backtrace
             $i = 0;
+            $source = array();
             foreach (array_reverse(debug_backtrace()) as $item) {
                 try {
                     $line = issetor($item['line']);
@@ -54,7 +55,6 @@ class Ajde_Db_PDOStatement extends PDOStatement {
                 $i++;
             }
             $hash = md5(implode('', $source) . microtime());
-
 
             $log['query'] = '<a href="javascript:void(0)" onclick="$(\'#' . $hash . '\').slideToggle(\'fast\');" style="color: black;">' . $log['query'] . '</a>';
             $log['query'] .= '<div id="' . $hash . '" style="display: none;">' . implode('<br/>', $source) . '</div>';
