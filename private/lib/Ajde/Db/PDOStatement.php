@@ -27,7 +27,7 @@ class Ajde_Db_PDOStatement extends PDOStatement {
      * @throws Ajde_Exception
      */
     public function execute($input_parameters = null) {
-        $log = array('entry' => '');
+        $log = array('query' => '');
         if (Config::get('debug') === true) {
             //$cache = Ajde_Db_Cache::getInstance();
             if (count($input_parameters)) {
