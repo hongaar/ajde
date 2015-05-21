@@ -14,8 +14,7 @@ $node = $this->node;
 	</div>
 	
 	<div class="row">
-		
-		<div class="col-xs-12 col-lg-4">
+		<div class="col-sm-6">
 			<?php echo _c($node->content); ?>
 			
 			<p>
@@ -31,11 +30,33 @@ $node = $this->node;
                 echo $this->ACEmbedForm($formId);
             } ?>
 		</div>
-		
-		<div class="col-xs-12 col-lg-6 col-lg-offset-2 col-offset-2">
-			<?php echo $node->getMediaLazyTag(800, 400, true, 'img-responsive'); ?>
+		<div class="col-sm-6">
+            <?php if (($media = $node->getMedia()) && $media->hasLoaded()) { ?>
+                <figure>
+                    <?php echo $media->getLazyTag(800, null, null, 'img-responsive'); ?>
+                    <?php if ($media->caption) { echo _c($media->caption); } ?>
+                </figure>
+            <?php } ?>
+
+            <?php foreach($node->getAdditionalMedia() as $media) {
+                /* @var $media MediaModel */ ?>
+                <?php if ($media->getType() == 'embed')
+                {
+                    $embed = Ajde_Embed::fromCode($media->getPointer());
+                    $embed->setHeight('10px');
+                    $embed->setWidth('100%');
+
+                    echo "<div class='embed'>";
+                    echo $embed->getCode();
+                    echo "</div>";
+                } else { ?>
+                    <figure>
+                        <?php echo $media->getLazyTag(800, null, null, 'img-responsive'); ?>
+                        <?php if ($media->caption) { echo _c($media->caption); } ?>
+                    </figure>
+                <?php } ?>
+            <?php } ?>
 		</div>
-	
 	</div>
 	
 </div>
