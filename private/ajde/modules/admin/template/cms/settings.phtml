@@ -50,6 +50,7 @@ if (Ajde::app()->getRequest()->has('edit')) {
 }
 
 $crud = $this->ACCrudList('setting', $options);
+$crud->setSessionName('cms.setting');
 
 $crudOutput = $crud->output();
 

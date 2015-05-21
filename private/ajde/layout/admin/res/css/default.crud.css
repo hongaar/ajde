@@ -529,6 +529,8 @@ table.crud {
 					height: 30px;
 					overflow: hidden;
 
+                    background-image: url('../../public/media/checkerboard.png');
+
 					img {
 						position: relative;
 						top: -75%;
