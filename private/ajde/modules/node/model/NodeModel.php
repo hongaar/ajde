@@ -483,8 +483,9 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 		return true;
 	}
 	
-	public function filterPublished() {
-		if (false === $this->checkPublished()) {
+	public function filterPublished()
+    {
+        if (false === $this->checkPublished()) {
 			$this->reset();
 		}
 	}

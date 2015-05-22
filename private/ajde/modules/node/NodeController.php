@@ -27,6 +27,7 @@ class NodeController extends Ajde_Controller
 	public function view()
 	{
 		// we want to display published nodes only
+
 		Ajde::app()->getRequest()->set('filterPublished', true);
 		
 		// get the current slug		
