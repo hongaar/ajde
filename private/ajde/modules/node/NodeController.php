@@ -3,11 +3,11 @@
 class NodeController extends Ajde_Controller
 {
 	/**
-	 * 
+	 *
 	 * @var NodeModel
 	 */
 	protected $node;
-	
+
 	public function getCanonicalUrl()
 	{
         if ($this->node->hasLoaded()) return $this->node->getSlug();
@@ -23,40 +23,46 @@ class NodeController extends Ajde_Controller
 		Ajde_Model::register('tag');
 		return true;
 	}
-	
+
 	public function view()
 	{
 		// we want to display published nodes only
+        if (!(UserModel::getLoggedIn() && UserModel::getLoggedIn()->isAdmin())) {
+            Ajde::app()->getRequest()->set('filterPublished', true);
+        }
 
-		Ajde::app()->getRequest()->set('filterPublished', true);
-		
-		// get the current slug		
-		$slug = $this->getSlug();
-		
-		/* @var $node NodeModel */
-		$node = $this->getModel();
-		$node->loadBySlug($slug);
-		$this->node = $node;
-				
-		// check if we have a hit
-		if (!$node->hasLoaded()) {
-			Ajde::app()->getResponse()->redirectNotFound();
-		}
-		
-		Ajde_Event::trigger($this, 'onAfterNodeLoaded', array($node));
-		
-		// update cache
-		Ajde_Cache::getInstance()->updateHash($node->hash());
-		Ajde_Cache::getInstance()->updateHash($node->getChildren()->hash());
-		
+        // get the current slug
+        $slug = $this->getSlug();
+
+        /* @var $node NodeModel */
+        $node = $this->getModel();
+        $node->loadBySlug($slug);
+        $this->node = $node;
+
+        if ($node->checkPublished() === false) {
+            Ajde_Dump::warn('Previewing unpublished node');
+        }
+
+        // check if we have a hit
+        if (!$node->hasLoaded()) {
+            Ajde::app()->getResponse()->redirectNotFound();
+        }
+
+        Ajde_Event::trigger($this, 'onAfterNodeLoaded', array($node));
+
+        // update cache
+        Ajde_Cache::getInstance()->updateHash($node->hash());
+        Ajde_Cache::getInstance()->updateHash($node->getChildren()->hash());
+        Ajde_Cache::getInstance()->addLastModified(strtotime($node->updated));
+
 		// set title
 		if (!Ajde::app()->getDocument()->hasNotEmpty('title')) {
 			Ajde::app()->getDocument()->setTitle($node->getTitle());
-		}	
+		}
 		if ($node->summary) {
 			Ajde::app()->getDocument()->setDescription($node->summary);
-		}	
-				
+		}
+
 		// set template
 		$nodetype = $node->getNodetype();
 		$action = str_replace(' ', '_', strtolower($nodetype->get($nodetype->getDisplayField())));
@@ -79,7 +85,7 @@ class NodeController extends Ajde_Controller
 		// render the temnplate
 		return $this->render();
 	}
-	
+
 	public static function getNodeOptions()
 	{
 		// show only
@@ -93,12 +99,12 @@ class NodeController extends Ajde_Controller
 				if (!isset($showOnlyWhen[$field])) {
 					$showOnlyWhen[$field] = array();
 				}
-				if ($nodetype->get($field) == 1) {					
+				if ($nodetype->get($field) == 1) {
 					$showOnlyWhen[$field][] = $nodetype->getPK();
 				}
 			}
 		}
-		
+
 		$options = new Ajde_Crud_Options();
 		$options
 			->selectFields()
@@ -149,7 +155,7 @@ class NodeController extends Ajde_Controller
 					->setShowLabel(true)
 					->setUsePopupSelector(true)
 					->setListRouteFunction('listRouteParent')
-					->up()	
+					->up()
 				->selectField('published')
 					->addShowOnlyWhen('nodetype', $showOnlyWhen['published'])
 					->setFunction('displayPublished')
@@ -287,7 +293,7 @@ class NodeController extends Ajde_Controller
 								->setShow(array('added', 'updated', 'parent', 'user', 'lang'))
 								->up()
 		->finished();
-		
+
 		/* @var $decorator Ajde_Crud_Cms_Meta_Decorator */
 		$decorator = new Ajde_Crud_Cms_Meta_Decorator();
 		$decorator->setActiveBlock(1);
@@ -295,18 +301,18 @@ class NodeController extends Ajde_Controller
 		$decorator->decorateInputs('nodetype_meta', 'nodetype', 'sort', 'nodetype', array(
 			new Ajde_Filter_Where('target', Ajde_Filter::FILTER_EQUALS, 'node')
 		));
-				
+
 		if (Ajde::app()->getRequest()->has('new')) {
 			// set owner
 			$user = UserModel::getLoggedIn();
 			$options->selectFields()->selectField('user')->setValue($user->getPK())->finished();
             $options->selectFields()->selectField('slug')->setIsReadonly(true)->finished();
-			
+
 			if (!UserModel::isAdmin()) {
 				$currentUser = UserModel::getLoggedIn();
 				$subquery = "(SELECT user_node.user FROM user_node WHERE user_node.node IN (SELECT user_node.node FROM user_node WHERE user_node.user = " . (int) $currentUser->getPK() . " GROUP BY user_node.node))";
 				$userFilters = array(new Ajde_Filter_Where('user.id', Ajde_Filter::FILTER_IN, new Ajde_Db_Function($subquery)));
-				$options->selectFields()->selectField('user')->setAdvancedFilter($userFilters);				
+				$options->selectFields()->selectField('user')->setAdvancedFilter($userFilters);
 			}
 		}
 		if (Ajde::app()->getRequest()->has('edit')) {
@@ -317,7 +323,7 @@ class NodeController extends Ajde_Controller
 				->finished();
 			}
 		}
-					
+
 		return $options;
 	}
 }
