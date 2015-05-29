@@ -1,3 +1,7 @@
+.sidebar-nav .btn-group {
+    margin-bottom: 30px;
+}
+
 .jqtree-toggler:hover {
 	text-decoration: none;
 }
@@ -13,12 +17,21 @@ li.jqtree-common:hover .jqtree-title {
 	position: absolute;
 }
 ul.jqtree-tree li.jqtree-selected > .jqtree-element, ul.jqtree-tree li.jqtree-selected > .jqtree-element:hover {
-	background: black !important;
-	color: white !important;
+	background: #aaa !important;
 	text-shadow: none !important;
-	margin-left: -5px;
+//	margin-left: -5px;
 }
 ul.jqtree-tree li.jqtree-selected > .jqtree-element .jqtree-title, ul.jqtree-tree li.jqtree-selected > .jqtree-element:hover .jqtree-title {
 	color: white !important;
-	padding: 5px;
+//	padding: 5px;
+}
+
+ul.jqtree-tree .jqtree-toggler {
+    left: -12px;
+    top: 22%;
+    color: #aaa;
+}
+
+hr {
+    border-bottom: 1px solid #999;
 }
