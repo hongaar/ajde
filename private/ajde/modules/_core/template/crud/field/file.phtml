@@ -29,8 +29,9 @@ $field = $this->field;
 	echo $this->ACAjaxUpload($field->getName(), $options); ?>
 	
 	<div class='filebrowser'>
-		<a href='javascript:void(0);' class='button search toggleFileBrowser'><?php echo _e('Choose existing'); ?></a>
-		<div class='browser'>
+		<span class="filebrowser-control">or &nbsp; <a href='javascript:void(0);' class='btn search toggleFileBrowser'><i class="icon-search"></i> <?php echo _e('choose existing'); ?></a></span>
+        <div class='browser'>
+            <input class="span12 search" type="search" placeholder="search"/>
 			<?php
 			$filelist = Ajde_FS_Find::findFiles($field->getSaveDir(), "{*." . implode(',*.', Ajde_FS_Find::mkglobi($field->getExtensions())) . "}", GLOB_BRACE);
 			$exclude = preg_grep("/_[0-9]+x[0-9]+c?/i", $filelist);
@@ -39,7 +40,7 @@ $field = $this->field;
 					continue;
 				}
 				$extension = pathinfo($file, PATHINFO_EXTENSION);
-				echo "<a href='javascript:void(0);'>";										
+				echo "<a href='javascript:void(0);' title='" . _e(str_replace(Config::get('local_root') . DIRECTORY_SEPARATOR . $field->getSaveDir(), '', $file)) . "'>";
 					if ($isImage = in_array(strtolower($extension), array('jpg', 'jpeg', 'png', 'gif'))) {
 						// Don't use $this->ACImage() to support lazy loading
 						$image = new Ajde_Resource_Image($file);

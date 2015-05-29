@@ -56,13 +56,15 @@ AC.Form.Upload = function() {
                             elm.parents('form').find('button.save, button.apply').attr('disabled', 'disabled');
                             // Disable upload button
                             if (elm.attr('data-multiple') == '0') {
-    							elm.find('.qq-upload-button').hide();
+    							elm.find('.qq-upload-button').css('visibility', 'hidden');
+                                elm.next('.filebrowser').find('.filebrowser-control').css('visibility', 'hidden');
                             }
                         },
                         onProgress: function(id, fileName, loaded, total) {},
                         onComplete: function(id, fileName, responseJSON) {
                             if (responseJSON.error) {
-                                elm.find('.qq-upload-button').show();
+                                elm.find('.qq-upload-button').css('visibility', 'visible');
+                                elm.next('.filebrowser').find('.filebrowser-control').css('visibility', 'visible');
                                 elm.parents('form').find('button.save, button.apply').attr('disabled', null);
                             } else {
 								elm.trigger('completeUpload', [id, fileName, responseJSON]);
@@ -95,7 +97,8 @@ AC.Form.Upload = function() {
                             }
                         },
                         onCancel: function(id, fileName) {
-                            elm.find('.qq-upload-button').show();
+                            elm.find('.qq-upload-button').css('visibility', 'visible');
+                            elm.next('.filebrowser').find('.filebrowser-control').css('visibility', 'visible');
                             elm.parents('form').find('button.save, button.apply').attr('disabled', null);
                         }
                     },

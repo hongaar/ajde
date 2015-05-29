@@ -44,7 +44,7 @@
 	
 	$('a.toggleFileBrowser').click(function(e) {
 		e.preventDefault();
-		$browser = $(this).next();
+		$browser = $(this).parent().next();
 		var that = this;
         setTimeout(function() {
             $browser.css('margin-left', '');
@@ -66,10 +66,25 @@
 	});
 	
 	$('a.toggleFileBrowser').toggle(function() {
-		$(this).text('Close file browser');
+		$(this).html('<i class="icon-remove"></i> close file browser');
 	}, function() {
-		$(this).text('Choose existing');
-	})
+		$(this).html('<i class="icon-search"></i> choose existing');
+	});
+
+    $('div.browser input.search').bind('input', function(e) {
+        var q = $(this).val().toLowerCase();
+        if (q == '') {
+            $('div.browser > a').show();
+        } else {
+            $('div.browser > a').each(function () {
+                if ($(this).find('span.filename').text().toLowerCase().indexOf(q) > -1) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        }
+    });
 	
 	$('div.browser > a').click(function(e) {
 		// Fired from preview link?

@@ -37,10 +37,12 @@ $field = $this->field;
 
     <?php } ?>
 
-    <div class="controls">        
-        <?php if ($field->hasIsPK() && $field->getIsPK() === true) :
-            echo $field->getHtmlPK();
-        endif; ?>
+    <?php if ($field->hasIsPK() && $field->getIsPK() === true) :
+        echo '<div class="pk controls">';
+        echo $field->getHtmlPK();
+    else:
+        echo '<div class="controls">';
+    endif; ?>
         <?php echo $field->getInput(); ?>
         <?php if ($field->hasHelp()) :
             echo "<span class='help-inline'>" . $field->getHelp() . "</span>";

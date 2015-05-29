@@ -10,6 +10,7 @@ $autosave = $crud->getOption('edit.autosave', true);
 
 // Total fields
 $rows = $crud->getOption('edit.layout.rows');
+
 $totalFields = 0;
 foreach($rows as $row) {
 	$columns = $row['columns'];
@@ -73,6 +74,11 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudEdit
             foreach($blocks as $block) {
                 $fieldsToShow = issetor($block['show']);
                 $className = issetor($block['class']);
+
+                if ($fieldsToShow == '*' || !$fieldsToShow) {
+                    $fieldsToShow = $crud->getFieldNames();
+                }
+
                 ?>
 
                 <fieldset class='crud <?php echo $className; ?>'>

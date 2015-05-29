@@ -70,12 +70,13 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 <!--                            </optgroup>-->
 <!--                        </select>-->
 <!--                    </div>-->
-                    <div class="pull-right" style="width: 50%; text-align: right;">
-                        <b>columns</b> <select name="view[columns][]" class="columns span10 chosen" multiple data-placeholder="Pick columns">
+                    <div class="pull-right">
+                        <b>columns</b> <a href="javascript:void(null)" class="resetColumns">reset</a>
+                        <select name="view[columns][]" class="columns span10 chosen" multiple data-placeholder="Pick columns">
                             <?php foreach($crud->getFieldLabels() as $fieldName => $fieldLabel) { ?>
                                 <option value="<?php echo _c($fieldName); ?>" <?php if (in_array($fieldName, $fieldsToShow)) { echo 'selected'; } ?>><?php echo _c($fieldLabel); ?></option>
                             <?php } ?>
-                        </select> <a href="javascript:void(null)" class="resetColumns">reset</a>
+                        </select>
                     </div>
                 </td>
                 <td></td>

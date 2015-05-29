@@ -496,7 +496,7 @@ AC.Crud.List = function() {
 			var url = document.location.href;
 
 			$.get(url, data, function(response) {
-				form.html($(response).find('form.ACCrudList').html());
+				form.html($(response).first('form.ACCrudList').html());
 				form.find('tbody').css({opacity: 1});
 				AC.Crud.List.initMove();
 				AC.Crud.List.initPicker();

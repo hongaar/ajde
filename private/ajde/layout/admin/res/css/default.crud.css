@@ -41,7 +41,7 @@ fieldset.crud {
         outline: 20px solid #eee;
         border: 10px solid #eee;
         background-color: #eee;
-        z-index: 10;
+        z-index: 30;
     }
 
     input.emphasis[type=text] {
@@ -382,6 +382,15 @@ table.crud {
 
                     td {
                         padding-bottom: 40px;
+
+                        > div {
+                            width: 75%;
+                            text-align: right;
+                        }
+                    }
+
+                    select {
+                        width: 100% !important;
                     }
                 }
 
@@ -394,6 +403,11 @@ table.crud {
 
                 .chosen-container {
                     text-align: left;
+                    width: 100% !important;
+                }
+
+                input, select {
+                    width: auto !important;
                 }
             }
 
@@ -425,6 +439,7 @@ table.crud {
                 }
 
                 input.search {
+                    width: 100%;
                     font-size: 1.5em;
                     line-height: 1.5em;
                     height: auto;

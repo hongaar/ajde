@@ -111,7 +111,16 @@ class _coreCrudController extends Ajde_Acl_Controller
 				if ($crud->getOption('edit.layout')) {
 					$crud->setAction('edit/layout');
 				} else {
-					$crud->setAction('edit');
+                    // Automatically switch to layouts now
+//					$crud->setAction('edit');
+
+                    // Insert layout and set action
+                    $show = $crud->getOption('edit.show');
+                    $editOptions = new Ajde_Crud_Options_Edit();
+                    $editOptions->selectLayout()->addRow()->addColumn()->setSpan(12)->addBlock()->setShow($show)->finished();
+                    $crud->setOption('edit', $editOptions->getArray());
+                    $crud->setAction('edit/layout');
+
 				}
 			}
 		}

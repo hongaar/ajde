@@ -1,3 +1,7 @@
+div.fileupload {
+    position: relative;
+}
+
 div.filelist img.icon {
 	vertical-align: middle;
 }
@@ -10,8 +14,9 @@ div.filelist a.imagePreview.img {
 }
 
 div.filebrowser {
-	float: left;
-	margin-top: 10px;
+    position: absolute;
+    left: 120px;
+    top: 0;
 }
 
 div.browser {
@@ -23,6 +28,8 @@ div.browser {
 	width: 700px;
 	overflow: auto;
 	margin-top: 10px;
+    border: 1px solid white;
+    padding-bottom: 10px;
 }
 
 div.browser > a,
@@ -111,4 +118,10 @@ div.webbrowser input.webimage {
     width: 250px !important;
     margin: 10px;
     padding: 2px;
+}
+
+div.browser {
+    input.search {
+        background-color: #eee;
+    }
 }
