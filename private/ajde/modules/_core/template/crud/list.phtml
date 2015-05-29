@@ -2,6 +2,11 @@
 
 /* @var $this Ajde_Template_Parser_Phtml_Helper */
 /* @var $crud Ajde_Crud */
+
+$this->requireJsPublic('core/jqueryui/sortable/jquery-ui.min.js');
+$this->requireJsPublic('core/selectize/selectize.min.js');
+$this->requireCssPublic('core/selectize/selectize.css');
+
 $crud = $this->crud;
 $listOptions = $crud->getOptions('list');
 $fieldOptions = $crud->getOptions('fields');
@@ -70,12 +75,21 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 <!--                            </optgroup>-->
 <!--                        </select>-->
 <!--                    </div>-->
-                    <div class="pull-right">
-                        <b>columns</b> <a href="javascript:void(null)" class="resetColumns">reset</a>
-                        <select name="view[columns][]" class="columns span10 chosen" multiple data-placeholder="Pick columns">
-                            <?php foreach($crud->getFieldLabels() as $fieldName => $fieldLabel) { ?>
-                                <option value="<?php echo _c($fieldName); ?>" <?php if (in_array($fieldName, $fieldsToShow)) { echo 'selected'; } ?>><?php echo _c($fieldLabel); ?></option>
-                            <?php } ?>
+                    <div class="container">
+                        <label>
+                            <b>columns</b> <a href="javascript:void(null)" class="resetColumns">reset</a>
+                        </label>
+                        <select name="view[columns][]" class="columns selectize" multiple data-placeholder="Pick columns">
+                            <?php
+                            $fieldLabels = $crud->getFieldLabels();
+                            foreach($fieldsToShow as $fieldName) { ?>
+                                <option value="<?php echo _c($fieldName); ?>" selected><?php echo _c($fieldLabels[$fieldName]); ?></option>
+                            <?php }
+                            foreach($fieldLabels as $fieldName => $fieldLabel) {
+                                if (!in_array($fieldName, $fieldsToShow)) { ?>
+                                    <option value="<?php echo _c($fieldName); ?>"><?php echo _c($fieldLabel); ?></option>
+                                <?php }
+                            } ?>
                         </select>
                     </div>
                 </td>

@@ -133,6 +133,8 @@ AC.Crud.Edit = function() {
 					val = $this.val();
 				}
 				val = val.toLowerCase().replace(/ /g, '');
+
+                if (val == '') val = '%EMPTY%';
 				
 				if (val) {
 					

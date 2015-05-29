@@ -19,6 +19,7 @@ AC.Crud.List = function() {
 	return {
 
 		init: function() {
+
 			$('form.ACCrudList tbody tr').live('click', AC.Crud.List.trHandler);
 			$('form.ACCrudList tbody tr').live('dblclick', AC.Crud.List.editHandler);
 			
@@ -62,6 +63,7 @@ AC.Crud.List = function() {
 			// Sub init
 			AC.Crud.List.initPicker();
 			AC.Crud.List.initMove();
+            AC.Crud.List.initAdditionalControls();
 		},
 
 		initMove: function() {
@@ -76,6 +78,12 @@ AC.Crud.List = function() {
 			}
 		},
 
+        initAdditionalControls: function() {
+            $('select.selectize').selectize({
+                plugins: ['remove_button', 'drag_drop']
+            });
+        },
+
         initView: function() {
             // Chosen
             setTimeout(function() {
@@ -86,6 +94,7 @@ AC.Crud.List = function() {
                     search_contains: true
                 });
                 if (!filtersVisible) $('.filters.view').removeClass('visible');
+                AC.Crud.List.initAdditionalControls();
             }, 0);
         },
 			
@@ -496,7 +505,7 @@ AC.Crud.List = function() {
 			var url = document.location.href;
 
 			$.get(url, data, function(response) {
-				form.html($(response).first('form.ACCrudList').html());
+				form.html($(response).find('form.ACCrudList').html());
 				form.find('tbody').css({opacity: 1});
 				AC.Crud.List.initMove();
 				AC.Crud.List.initPicker();

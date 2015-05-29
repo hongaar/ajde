@@ -29,7 +29,9 @@ class Ajde_Mailer extends PHPMailer
             $fromName = $email->getFromName();
             $fromEmail = $email->getFromEmail();
             $subject = $this->replaceData($template->getSubject(), $data);
-            $body = $this->rel2abs($this->replaceData($template->getContent(), $data));
+
+            $markup = $this->rel2abs($this->replaceData($template->getMarkup(), $data));
+            $body = PHP_EOL . $this->rel2abs($this->replaceData($template->getContent($markup), $data));
 
             // reset recipients
             $this->clearAllRecipients();

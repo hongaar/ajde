@@ -179,10 +179,13 @@ class Ajde_Crud extends Ajde_Object_Standard
 //		}
 		return $this->_operation;
 	}
-	
-	/**
-	 * OPTIONS
-	 */
+
+    /**
+     * OPTIONS
+     * @param $name
+     * @param bool|mixed $default
+     * @return array|bool
+     */
 	
 	public function getOption($name, $default = false)
 	{
@@ -539,7 +542,7 @@ class Ajde_Crud extends Ajde_Object_Standard
                 $crudView->setColumns($this->getOption('list.show', $this->getFieldNames()));
 			}
 
-            // somehow, when altering crudView, session gets updated as well
+            // somehow, when altering crudView, the instance in the session gets updated as well, and we don't want that
             $crudView = clone $crudView;
 
 			if (empty($viewParams)) {

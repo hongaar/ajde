@@ -70,8 +70,8 @@ div.browser .results > a img.thumb {
 div.browser > a.active,
 div.browser .results > a.active {
 	background-color: #eee;
-	border: 1px solid #6FBE15;
-	outline: 2px solid #c6ed9a;
+	border: 1px solid #0f82f5;
+	outline: 1px solid #0f82f5;
 }
 
 div.browser > a span.filename,

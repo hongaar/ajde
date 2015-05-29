@@ -26,6 +26,10 @@
 	}
 }
 
+h1 .mainFilterToggle {
+    margin-left: 10px;
+}
+
 fieldset.crud {
 
     position: relative;
@@ -67,6 +71,9 @@ fieldset.crud {
 	
 	a.imagePreview img {
 		background-image: url('../../public/media/checkerboard.png');
+        &.icon {
+            background-image: none;
+        }
 	}
 
     > div.controls {
@@ -382,9 +389,13 @@ table.crud {
 
                     td {
                         padding-bottom: 40px;
+                    }
 
-                        > div {
-                            width: 75%;
+                    .container {
+                        width: 75%;
+                        float: right;
+
+                        label {
                             text-align: right;
                         }
                     }

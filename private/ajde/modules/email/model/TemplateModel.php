@@ -26,10 +26,11 @@ class TemplateModel extends Ajde_Model_With_I18n
         return parent::getMaster();
     }
 
-    public function getContent()
+    public function getContent($markup = '', $inlineCss = true)
     {
-        $content = parent::getContent();
-        $style = $this->getStyle();
+        $content = $markup . parent::getContent();
+        $master = $this->getMaster()->hasLoaded() ? $this->getMaster() : false;
+        $style = $this->hasNotEmpty('style') ? $this->getStyle() : false;
 
         if ($style) {
             $stylesheet = PUBLIC_DIR . 'css' . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'email' . DIRECTORY_SEPARATOR . $style . '.css';
@@ -40,12 +41,12 @@ class TemplateModel extends Ajde_Model_With_I18n
             $content = "<html><body><style>" . $stylesheetContent . "</style>" . $content . "</body></html>";
         }
 
-        if ($this->getMaster() && $this->getMaster()->hasLoaded()) {
-            $masterContent = $this->getMaster()->getContent();
+        if ($master) {
+            $masterContent = $master->getContent('', false);
             $content = str_replace('%body%', $content, $masterContent);
         }
 
-        if ($style || ($this->getMaster() && $this->getMaster()->hasLoaded() && $this->getMaster()->getStyle())) {
+        if ($inlineCss && ($style || ($master && $master->getStyle()))) {
             $content = html_entity_decode( self::inlineCss($content) );
         }
 

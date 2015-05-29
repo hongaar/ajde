@@ -246,3 +246,15 @@ body.iframe .row-fluid > div {
 .autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
 .autocomplete-selected { background: #F0F0F0; }
 .autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+
+.selectize-input, .selectize-input.dropdown-active, .selectize-input.focus {
+    border: 1px solid #eee;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+.selectize-input.dropdown-active, .selectize-input.focus {
+    border-color: rgba(82,168,236,0.8);
+}

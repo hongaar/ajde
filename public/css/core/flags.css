@@ -5,6 +5,8 @@
 
     margin-top: -2px;
     margin-right: 4px;
+
+    line-height: 0;
 }
 
 .flag.flag-ad {background-position: -16px 0}

@@ -6,7 +6,8 @@
 
 .uploadButton .qq-uploader {
 	position: absolute;
-	top: -15px;	
+	top: -15px;
+    width: auto !important;
 }
 
 .uploadButton ul.qq-upload-list {

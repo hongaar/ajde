@@ -266,7 +266,15 @@ class AdminSystemController extends AdminController
             $stmt->execute();
             $nodeMedia = $stmt->rowCount();
 
-            if ($node == 0 && $nodeMedia == 0) {
+            $meta = 0;
+            $stmt = $db->query('SELECT * FROM node_meta INNER JOIN meta ON meta.id = node_meta.meta AND node_meta.`value` <> \'\' AND meta.type = \'media\' AND node_meta.`value` = ' . $media->getPK());
+            $stmt->execute();
+            $meta += $stmt->rowCount();
+            $stmt = $db->query('SELECT * FROM setting_meta INNER JOIN meta ON meta.id = setting_meta.meta AND setting_meta.`value` <> \'\' AND meta.type = \'media\' AND setting_meta.`value` = ' . $media->getPK());
+            $stmt->execute();
+            $meta += $stmt->rowCount();
+
+            if ($node == 0 && $nodeMedia == 0 && $meta == 0) {
                 $unused->add($media);
             }
         }
