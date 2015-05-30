@@ -10,20 +10,27 @@ li.jqtree-common:hover .jqtree-title {
 	text-decoration: underline;
 }
 
+.jqtree-tree .jqtree-title .badge-icon i {
+    opacity: 0.5;
+}
+
 .jqtree-tree .jqtree-loading > div .jqtree-title:after {
 	content: url(../../public/media/loading-cms.gif);
 	margin-left: 8px;
 	margin-top: 3px;
 	position: absolute;
 }
-ul.jqtree-tree li.jqtree-selected > .jqtree-element, ul.jqtree-tree li.jqtree-selected > .jqtree-element:hover {
-	background: #aaa !important;
-	text-shadow: none !important;
-//	margin-left: -5px;
+
+ul.jqtree-tree li > .jqtree-element:hover {
+    background: #ddd !important;
 }
+ul.jqtree-tree li.jqtree-selected > .jqtree-element {
+    background: #aaa !important;
+    text-shadow: none !important;
+}
+
 ul.jqtree-tree li.jqtree-selected > .jqtree-element .jqtree-title, ul.jqtree-tree li.jqtree-selected > .jqtree-element:hover .jqtree-title {
 	color: white !important;
-//	padding: 5px;
 }
 
 ul.jqtree-tree .jqtree-toggler {

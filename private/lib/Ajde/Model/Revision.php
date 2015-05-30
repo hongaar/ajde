@@ -32,6 +32,20 @@ abstract class Ajde_Model_Revision extends Ajde_Model
         return $this->_tableName = $this->fromCamelCase($modelNameCC);
     }
 
+    public function purgeRevisions()
+    {
+        if (!$this->getPK()) {
+            return false;
+        }
+
+        $revisions = new RevisionCollection();
+        $revisions->addFilter(new Ajde_Filter_Where('model', Ajde_Filter::FILTER_EQUALS, $this->getModelName()));
+        $revisions->addFilter(new Ajde_Filter_Where('foreignkey', Ajde_Filter::FILTER_EQUALS, $this->getPK()));
+        $revisions->deleteAll();
+
+        return true;
+    }
+
     public function save()
     {
         // check all changed fields

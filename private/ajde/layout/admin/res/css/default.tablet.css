@@ -21,10 +21,6 @@ body {
 	padding: 5px 0 !important;
 }
 
-.menu-toggle {
-	margin: -5px 0;
-}
-
 .navbar-inverse .nav-collapse .nav>li>a, .navbar-inverse .nav-collapse .dropdown-menu a {
 	color: #fff !important;
 }

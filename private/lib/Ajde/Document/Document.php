@@ -109,15 +109,28 @@ abstract class Ajde_Document extends Ajde_Object_Standard
 	
 	public function getDescription()
 	{
-		$projectDescription = Config::get('description');
 		if ($this->has('description')) {
 			return $this->get('description');
 		} else {
-			return $projectDescription;
+			return Config::get('description');
 		}
-	}	
-	
-	public function render()
+	}
+
+    public function setAuthor($author)
+    {
+        $this->set('author', $author);
+    }
+
+    public function getAuthor()
+    {
+        if ($this->has('author')) {
+            return $this->get('author');
+        } else {
+            return Config::get('author');
+        }
+    }
+
+    public function render()
 	{
 		return $this->getLayout()->getContents();
 	}

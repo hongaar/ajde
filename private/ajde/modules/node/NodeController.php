@@ -59,9 +59,15 @@ class NodeController extends Ajde_Controller
 		if (!Ajde::app()->getDocument()->hasNotEmpty('title')) {
 			Ajde::app()->getDocument()->setTitle($node->getTitle());
 		}
+        // set summary
 		if ($node->summary) {
 			Ajde::app()->getDocument()->setDescription($node->summary);
 		}
+        // set author
+        $node->loadParent('user');
+        /** @var UserModel $owner */
+        $owner = $node->getUser();
+        Ajde::app()->getDocument()->setAuthor($owner->getFullname());
 
 		// set template
 		$nodetype = $node->getNodetype();

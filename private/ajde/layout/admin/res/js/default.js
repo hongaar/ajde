@@ -42,17 +42,17 @@
 	
 		// Toggled menu
 		$('.menu-toggle').on('click', function() {
-			if ($('#main .row-fluid > div:eq(0)').hasClass('span3')) {
+			if ($('#main .row-fluid > div:eq(0)').hasClass('span2')) {
 				$.cookie('collapsed-menu', 1);
-				$('#main .row-fluid > div:eq(0)').removeClass('span3').addClass('span0');
-				$('#main .row-fluid > div:eq(1)').removeClass('span9').addClass('span11');
-				$('.menu-offset').removeClass('offset3').addClass('offset05');
+				$('#main .row-fluid > div:eq(0)').removeClass('span2').addClass('span0');
+				$('#main .row-fluid > div:eq(1)').removeClass('span10').addClass('span11');
+				$('.menu-offset').removeClass('offset2').addClass('offset05');
                 $('.form-actions.fixed').addClass('no-offset');
 			} else {
 				$.cookie('collapsed-menu', 0);
-				$('#main .row-fluid > div:eq(0)').removeClass('span0 no-animation').addClass('span3');
-				$('#main .row-fluid > div:eq(1)').removeClass('span11 no-animation').addClass('span9');
-				$('.menu-offset').removeClass('offset05').addClass('offset3');
+				$('#main .row-fluid > div:eq(0)').removeClass('span0 no-animation').addClass('span2');
+				$('#main .row-fluid > div:eq(1)').removeClass('span11 no-animation').addClass('span10');
+				$('.menu-offset').removeClass('offset05').addClass('offset2');
                 $('.form-actions.fixed').removeClass('no-offset');
 			}
 		});

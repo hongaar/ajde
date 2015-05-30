@@ -688,6 +688,10 @@ class Ajde_Model extends Ajde_Object_Standard
 			return false;
 		}
 		$parentModel = $this->getParentModel($column);
+        if ($parentModel === false) {
+            // TODO:
+            throw new Ajde_Exception('Could not load parent model \'' . $column . "'");
+        }
 		if ($parentModel->getTable()->getPK() != $this->getParentField($column)) {
 			// TODO:
 			throw new Ajde_Exception('Constraints on non primary key fields are currently not supported');
@@ -704,6 +708,7 @@ class Ajde_Model extends Ajde_Object_Standard
 	public function getParentModel($column)
 	{
 		$parentModelName = ucfirst($this->getParentTable($column)) . 'Model';
+        if (!Ajde_Core_Autoloader::exists($parentModelName)) return false;
 		return new $parentModelName();
 	}
 	

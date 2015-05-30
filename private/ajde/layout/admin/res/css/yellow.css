@@ -1,0 +1,46 @@
+/*#!less*/
+
+body {
+    background-color: rgba(252, 253, 239, 1);
+}
+
+fieldset.crud {
+    background-color: white;
+
+    &.well {
+        background-color: #eee;
+    }
+}
+
+.sidebar-nav {
+    background-color: rgba(252, 253, 239, 1);
+    border-right: 1px solid #007fff;
+
+    hr {
+        margin: 20px -19px;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .sidebar-nav {
+        border-right: 0;
+    }
+}
+
+hr {
+    border-top: 0 !important;
+    border-bottom: 1px solid #007fff !important;
+}
+
+.table-striped tbody>tr:not(:hover):not(.checked):nth-child(odd)>td, .table-striped tbody>tr:not(:hover):not(.checked):nth-child(odd)>th {
+    background-color: white;
+}
+
+.hero-unit {
+    background-size: contain;
+    background-color: transparent;
+}
+
+.form-actions {
+    background-color: rgba(252, 253, 239, 1);
+    border-top: 1px solid #007fff;
+}

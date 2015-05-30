@@ -2,7 +2,7 @@
 
 abstract class Ajde_User extends Ajde_Model
 {	
-	protected $_autoloadParents = true;
+	protected $_autoloadParents = false;
 	protected $_displayField = 'fullname';
 	
 	public $usernameField = 'username';

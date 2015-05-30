@@ -12,8 +12,8 @@ $this->requireCssPublic('core/bootstrap/bootstrap-cosmo.css', Ajde_Document_Form
 $this->requireCssPublic('core/bootstrap/bootstrap-responsive.css', Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST);
 $this->requireCss('bootstrap');
 
-// Dark style
-//$this->requireCss('dark');
+// Style
+$this->requireCss('yellow');
 
 // Include jQuery 1.7
 $this->requireJsLibrary('jquery', '1.7');
@@ -254,8 +254,6 @@ $currentGrouper = '';
             </div>
 
             <div class="clearfix"></div>
-
-			<hr>
 			
 			<?php
 			$chromeapp = new Ajde_Session('env');
@@ -277,10 +275,9 @@ $currentGrouper = '';
 
             <div class="row-fluid">
                 <footer class="menu-offset">
-                    <span class="pull-right ajde-footer">
-                        Powered by <a href="https://github.com/hongaar/ajde"><img src="<?php echo MEDIA_DIR; ?>ajde-small.png" /></a> web administration platform
-                    </span>
-                    <p>&copy; <?php echo date('Y'); ?> <?php echo Config::get('author'); ?></p>
+                    <p class="text-center ajde-footer">
+                        Powered by <a href="https://github.com/hongaar/ajde"><img src="<?php echo MEDIA_DIR; ?>ajde-small.png" style="height: 15px;" /></a> web administration platform
+                    </p>
                 </footer>
             </div>
 
@@ -308,13 +305,15 @@ $currentGrouper = '';
 		</script>
 		
 		<!-- updatemybrowser.org widget -->
+        <!--
 		<script>
 		(function() {
 			var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
 			s.src = '//updatemybrowser.org/umb.js';
 			var b = document.getElementsByTagName('script')[0]; b.parentNode.insertBefore(s, b);
-		})();	
+		})();
 		</script>
+		-->
 		
 	</body>
 </html>

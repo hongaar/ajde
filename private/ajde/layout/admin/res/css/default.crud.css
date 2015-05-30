@@ -252,7 +252,7 @@ fieldset.crud {
         margin-bottom: 0;
         padding-left: 50px;
         left: 0;
-        z-index: 20;
+        z-index: 50;
 
         -webkit-transition: all 0.3s ease-out;
         -moz-transition: all 0.3s ease-out;
@@ -982,7 +982,11 @@ table.revisions {
 		margin-bottom: 0;
 		overflow-y: auto;
 		overflow-x: hidden;
-		width: 20%;
+		width: 16%;
+
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
 
 	}
 
@@ -1001,7 +1005,7 @@ table.revisions {
 	}
 
     .form-actions.fixed {
-        left: 20%;
+        left: 16%;
     }
 
 }

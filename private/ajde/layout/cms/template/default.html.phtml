@@ -25,120 +25,118 @@ $this->requireJsFirst('core.lazy');
 // $this->requireGWebFont('Roboto', array(400, 700));
 
 ?>
-
 <!DOCTYPE html>
-<html
-	lang='<?php echo Ajde_Lang::getInstance()->getShortLang(); ?>'
-	id='<?php echo Config::get('ident'); ?>'
-	data-lifetime='<?php echo (Config::get('sessionLifetime') == 0 ? 180 : Config::get('sessionLifetime')); ?>'
-	data-alert='<?php echo _e(Ajde_Session_Flash::get('alert')); ?>'>
-	
-	<head>
-	
-		<!-- UTF-8 please (also in the headers, just to be sure) -->
-		<meta charset='utf-8'>
-		
-		<!-- Document title -->
-		<title><?php echo _e(Ajde::app()->getDocument()->getFullTitle()); ?></title>
-				
-		<!-- Some content meta tags -->
-		<meta name='description' content='<?php echo _e(Ajde::app()->getDocument()->getDescription()); ?>' />
-		<meta name='author' content='<?php echo _e(Config::get('author')); ?>' />
-		<?php echo Ajde::app()->getDocument()->getMeta(); ?>
+<html lang='<?php echo Ajde_Lang::getInstance()->getShortLang(); ?>' id='<?php echo Config::get('ident'); ?>' data-lifetime='<?php echo (Config::get('sessionLifetime') == 0 ? 180 : Config::get('sessionLifetime')); ?>' data-alert='<?php echo _e(Ajde_Session_Flash::get('alert')); ?>'>
+
+    <head>
+
+        <!-- UTF-8 please (also in the headers, just to be sure) -->
+        <meta charset='utf-8'>
+
+        <!-- Document title -->
+        <title><?php echo _e(Ajde::app()->getDocument()->getFullTitle()); ?></title>
+
+        <!-- Some meta / open graph tags -->
+        <meta name='description' content='<?php echo _e(Ajde::app()->getDocument()->getDescription()); ?>' />
+        <meta name='author' content='<?php echo _e(Ajde::app()->getDocument()->getAuthor()); ?>' />
+        <?php echo Ajde::app()->getDocument()->getMeta(); ?>
+
         <?php if (Ajde::app()->getDocument()->hasNotEmpty('featuredImage')) {
             ?><meta property="og:image" content="<?php echo Config::get('site_root') . Ajde::app()->getDocument()->getFeaturedImage(); ?>" />
         <?php } ?>
-		
-		<!-- Mobile presentation meta tags -->
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		
-		<!-- Define the root of the site -->
-		<base href='<?php echo Config::get('lang_root'); ?>' />
-		
-		<!-- Canonical URL -->
+
+        <!-- Mobile presentation meta tags -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Define the root of the site -->
+        <base href='<?php echo Config::get('lang_root'); ?>' />
+
+        <!-- Canonical URL -->
         <?php if (Ajde::app()->hasController()) {
             ?><link rel="canonical" href="<?php echo Config::get('site_root') . Ajde::app()->getController()->getCanonicalUrl(); ?>" />
         <?php } ?>
-		
-		<!-- require JavaScript and cookies -->		
-		<noscript>
-			<meta http-equiv="refresh" content="0;url=main/nojavascript.html?returnto=<?php echo urlencode(Ajde::app()->getRoute()->getOriginalRoute()); ?>" />
-		</noscript>				
-		<script defer="defer">
-			if (navigator.cookieEnabled === false) {
+
+        <!-- Require JavaScript and cookies -->
+        <noscript>
+            <meta http-equiv="refresh" content="0;url=main/nojavascript.html?returnto=<?php echo urlencode(Ajde::app()->getRoute()->getOriginalRoute()); ?>" />
+        </noscript>
+        <script defer="defer">
+            if (navigator.cookieEnabled === false) {
                 document.location.href='main/nocookies.html?returnto=<?php echo urlencode(Ajde::app()->getRoute()->getOriginalRoute()); ?>';
-			}
-		</script>
-		
-		<!-- Favicon -->
-		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
-		
-		<!-- Stylesheets -->
-		<?php echo $this->getDocument()->getHead('css'); ?>
+            }
+        </script>
+
+        <!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+
+        <!-- Stylesheets -->
+        <?php echo $this->getDocument()->getHead('css'); ?>
 
     </head>
 
     <body class="loading">
-		
-		<!--  Bootstrap navbar -->	
-		<div class="navbar navbar-inverse navbar-fixed-top">
-			<div class="container">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="."><?php echo _e(Config::get('sitename')); ?></a>
-				<div class="nav-collapse collapse">
-					<ul class="nav navbar-nav">
-						<?php
-						$menu = new MenuModel();
-						$menu->loadByName('mainmenu');
-						foreach($menu->getLinks() as $link) {
-							/* @var $link NodeModel */ ?>						
-							<li><a href='<?php echo _e($link->getUrl()); ?>'><?php echo _e($link->getName()); ?></a></li>
-						<?php } ?>
-					</ul>
-				</div>
-			</div>
-		</div>
-		
-		<!-- Page content -->
-		<?php echo $this->getDocument()->getBody(); ?>
-				
-		<footer class='container'>
-			<div class='row'>
-				<div class='col-sm-12'>
-					&copy; <?php echo date('Y'); ?> <?php echo Config::get('author'); ?>
-				</div>
-			</div>
-		</footer>
-		
-		<!-- The scripts -->
-		<?php echo $this->getDocument()->getScripts(); ?>
-		
-		<!-- Google Analytics -->
-		<script>
-		var _gaq = _gaq || [];
-        <?php if ($gap = SettingModel::byName('google_analytics_property')) { ?>
-		    _gaq.push(['_setAccount', '<?php echo $gap; ?>']);
-        <?php } else { ?>
+
+        <!--  Bootstrap navbar -->
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="."><?php echo _e(Config::get('sitename')); ?></a>
+                <div class="nav-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <?php
+                        $menu = new MenuModel();
+                        $menu->loadByName('mainmenu');
+                        foreach($menu->getLinks() as $link) {
+                            /* @var $link NodeModel */ ?>
+                            <li><a href='<?php echo _e($link->getUrl()); ?>'><?php echo _e($link->getName()); ?></a></li>
+                        <?php } ?>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page content -->
+        <?php echo $this->getDocument()->getBody(); ?>
+
+        <footer class='container'>
+            <div class='row'>
+                <div class='col-sm-12'>
+                    &copy; <?php echo date('Y'); ?> <?php echo Config::get('author'); ?>
+                </div>
+            </div>
+        </footer>
+
+        <!-- The scripts -->
+        <?php echo $this->getDocument()->getScripts(); ?>
+
+        <!-- Google Analytics -->
+        <script>
+            var _gaq = _gaq || [];
+            <?php if ($gap = SettingModel::byName('google_analytics_property')) { ?>
+            _gaq.push(['_setAccount', '<?php echo $gap; ?>']);
+            <?php } else { ?>
             _gaq.push(['_setAccount', 'UA-XXXXX-X']);
-        <?php } ?>
-		_gaq.push(['_trackPageview']);
-		(function() {
-			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-		})();
-		</script>
-		
-	</body>
+            <?php } ?>
+            _gaq.push(['_trackPageview']);
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+
+    </body>
 </html>
 
+<?php if (Config::get('debug')) { ?>
 <!-- Some debugging info -->
 <!--[<pre>
 	<?php $version = Config::get('version'); echo Config::get('ident') . ', v' . $version['number'] . ' (' . $version['name'] . ')'; ?> 
 	Cache <?php echo Ajde_Cache::getInstance()->isEnabled() ? 'enabled' : 'disabled' ?> 
 	Last modified on <?php echo date("r", Ajde_Cache::getInstance()->getLastModified()); ?> 
 </pre><![-->
+<?php } ?>

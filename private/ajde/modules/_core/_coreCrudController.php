@@ -235,6 +235,9 @@ class _coreCrudController extends Ajde_Acl_Controller
 			case 'getMultipleRow':
 				return $this->getMultipleRow($crudId);
 				break;
+            case 'purgeRevisions':
+                return $this->purgeRevisions($crudId);
+                break;
 			default:
 				return array('operation' => $operation, 'success' => false);
 				break;
@@ -729,4 +732,21 @@ class _coreCrudController extends Ajde_Acl_Controller
 			'data' => $ret
 		);
 	}
+
+    private function purgeRevisions($crudId)
+    {
+        $session = new Ajde_Session('AC.Crud');
+        /* @var $crud Ajde_Crud */
+        $crud = $session->getModel($crudId);
+        /* @var $model Ajde_Model */
+        $model = $crud->getModel();
+
+        $success = $model->purgeRevisions();
+
+        return array(
+            'operation' => 'purgeRevisions',
+            'success' => $success,
+            'message' => 'Revisions purged'
+        );
+    }
 }

@@ -37,8 +37,8 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 
     /**
      *
-     * @param string $id
-     * @return NodeModel|boolean
+     * @param $slug
+     * @return bool|NodeModel
      */
     public static function fromSlug($slug)
     {

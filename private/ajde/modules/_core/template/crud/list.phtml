@@ -83,7 +83,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
                             <?php
                             $fieldLabels = $crud->getFieldLabels();
                             foreach($fieldsToShow as $fieldName) { ?>
-                                <option value="<?php echo _c($fieldName); ?>" selected><?php echo _c($fieldLabels[$fieldName]); ?></option>
+                                <option value="<?php echo _c($fieldName); ?>" selected><?php echo _c(issetor($fieldLabels[$fieldName], $fieldName)); ?></option>
                             <?php }
                             foreach($fieldLabels as $fieldName => $fieldLabel) {
                                 if (!in_array($fieldName, $fieldsToShow)) { ?>
@@ -270,6 +270,11 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 				<input type="checkbox" class="id nopicker" name="id[]" value="<?php echo $model->getPK(); ?>" />
 			</td>
 			<?php foreach($fieldsToShow as $fieldName) {
+
+                // Try to load linked model
+                try {
+                    $model->loadParent($fieldName);
+                } catch (Exception $e) {}
 
 				$field = $crud->getField($fieldName);
 				$value = $model->has($fieldName) ? $model->get($fieldName) : false;

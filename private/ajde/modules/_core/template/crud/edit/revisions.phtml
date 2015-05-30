@@ -100,7 +100,13 @@ function showValue($value, RevisionModel $revision, $old = '', $showDiff = false
 
 ?>
 
-<h3 class="revisions">Revisions <a href="javascript:void(null);"><small>toggle</small></a></h3>
+<h3 class="revisions">
+    Revisions
+    <div class="btn-group pull-right">
+        <a class="showall btn btn-small" href="javascript:void(null);">show all</a>
+        <a class="purge btn btn-small btn-danger" href="javascript:void(null);" data-model="">purge</a>
+    </div>
+</h3>
 
 <table class="table table-hover table-condensed revisions">
     <colgroup>
@@ -124,6 +130,11 @@ $lastDay = false;
 $lastUser = false;
 $same = false;
 $i = 0;
+if (!count($revisions)) { ?>
+    <tr>
+        <td colspan="4">No revisions</td>
+    </tr>
+<?php }
 foreach($revisions as $revision) {
     /* @var $revision RevisionModel */
     $timestamp = new DateTime($revision->time);

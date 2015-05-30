@@ -11,13 +11,35 @@ if ($OOChartsApiKey = SettingModel::byName('oocharts_api_key')) {
 	</div><!--/span-->
 	<div class="span8">
 		<div class="hero-unit">
-			<h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
-			<p>Yay, you reached the dashboard!</p>
+			<h1><?php echo _e(Config::get('sitename')); ?> back-end</h1>
+			<p>Welcome back, <?php echo _e(UserModel::getLoggedIn()->getFullname()); ?>!</p>
 			<p>
 				<a href="admin/node:view" class="btn btn-primary btn-large">node overview &raquo;</a>
 				<a href="admin/node:view?new" class="btn btn-primary btn-large">add node &raquo;</a>
 			</p>
 		</div>
+        <div class="row-fluid text-center">
+            <div class="span4">
+                <h2>Media</h2>
+                <p>Files and embedded media such as video and audio</p>
+                <p><a class="btn" href="admin/media:view">media manager &raquo;</a></p>
+            </div>
+            <div class="span4">
+                <h2>Menus</h2>
+                <p>Manage what nodes users can access from the menus</p>
+                <p><a class="btn" href="admin/menu:view">menu editor &raquo;</a></p>
+            </div>
+            <div class="span4">
+                <h2>Settings</h2>
+                <p>Change various other options of your site</p>
+                <p><a class="btn" href="admin/cms:settings">change settings &raquo;</a></p>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12">
+                <hr/>
+            </div>
+        </div>
         <div class="row-fluid">
             <div class="span12">
                 <h2>Recently changed nodes</h2>
@@ -151,22 +173,5 @@ if ($OOChartsApiKey = SettingModel::byName('oocharts_api_key')) {
 
             </div>
         </div>
-		<div class="row-fluid">
-			<div class="span4">
-				<h2>Media</h2>
-				<p>Files and embedded media such as video and audio</p>
-				<p><a class="btn" href="admin/media:view">media manager &raquo;</a></p>
-			</div><!--/span-->
-			<div class="span4">
-				<h2>Menus</h2>
-				<p>Manage what nodes users can access from the menus</p>
-				<p><a class="btn" href="admin/menu:view">menu editor &raquo;</a></p>
-			</div><!--/span-->
-			<div class="span4">
-				<h2>Settings</h2>
-				<p>Change some options of your site</p>
-				<p><a class="btn" href="admin/cms:settings">change settings &raquo;</a></p>
-			</div><!--/span-->
-		</div><!--/row-->
-	</div><!--/span-->
-</div><!--/row-->
+	</div>
+</div>
