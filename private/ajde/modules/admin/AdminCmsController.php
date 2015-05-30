@@ -16,13 +16,21 @@ class AdminCmsController extends AdminController
 	{
 		return $this->render();
 	}
-	
+
 	public function nav()
 	{
 		return $this->render();
 	}
-	
-	public function navJson()
+
+    public function settingsmenu()
+    {
+        $settings = new SettingCollection();
+
+        $this->getView()->assign('settings', $settings);
+        return $this->render();
+    }
+
+    public function navJson()
 	{
 		$recursive = true;
 		$parent = Ajde::app()->getRequest()->getInt('node', false);

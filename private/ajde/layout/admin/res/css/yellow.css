@@ -32,7 +32,7 @@ hr {
 }
 
 .table-striped tbody>tr:not(:hover):not(.checked):nth-child(odd)>td, .table-striped tbody>tr:not(:hover):not(.checked):nth-child(odd)>th {
-    background-color: white;
+    background-color: rgb(244, 245, 231);
 }
 
 .hero-unit {

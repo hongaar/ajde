@@ -33,6 +33,9 @@ $autoOpen = false;
 if ($crud->getOperation() === 'edit') {
     $autoOpen = true;
 }
+
+$edit = false;
+
 ?>
 
 <<?php echo $edit ? 'span' : 'a href="#mainFilter" role="button" data-toggle="modal" class="mainFilterToggle"'; ?>>

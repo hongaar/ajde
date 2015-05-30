@@ -255,15 +255,19 @@ class _coreCrudController extends Ajde_Acl_Controller
 		}
 		
 		$success = true;
+        $deleted = 0;
 		foreach($id as $elm) {
 			$model->loadByPK($elm);
-			$success = $success * $model->delete();
+            if ($result = $model->delete()) {
+                $deleted++;
+            }
+			$success = $success * $result;
 		}
 		
 		return array(
 			'operation' => 'delete',
 			'success' => (bool) $success,
-			'message' => Ajde_Component_String::makePlural(count($id), 'record') . ' deleted'
+			'message' => Ajde_Component_String::makePlural($deleted, 'record') . ' deleted'
 		);
 	}
 	

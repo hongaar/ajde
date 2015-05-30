@@ -343,7 +343,7 @@ AC.Crud.List = function() {
 						AC.Core.Alert.flash(response.message);
 						form.find('td.toolbar .button.multiple').removeClass('show');
 					} else {
-						errorHandler('Not all records could be deleted');
+						errorHandler('Not all records could be deleted (possible object relation)');
 						AC.Crud.List.updateView(self);
 					}
 				}, 'json').error(function(jqXHR, message, exception) {

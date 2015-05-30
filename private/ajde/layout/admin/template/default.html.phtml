@@ -4,16 +4,20 @@
 // load all models
 Ajde_Model::registerAll();
 
-// Font
+// ============== STYLES
+
+// Default style
+$this->requireCssPublic('core/bootstrap/bootstrap-cosmo.css', Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST);
 $this->requireGWebFont('Roboto', array(300, 500, 700));
 
+// Yellow accents
+$this->requireCss('yellow');
+
+// =====================
+
 // Twitter bootstrap
-$this->requireCssPublic('core/bootstrap/bootstrap-cosmo.css', Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST);
 $this->requireCssPublic('core/bootstrap/bootstrap-responsive.css', Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST);
 $this->requireCss('bootstrap');
-
-// Style
-$this->requireCss('yellow');
 
 // Include jQuery 1.7
 $this->requireJsLibrary('jquery', '1.7');
@@ -134,6 +138,28 @@ $currentGrouper = '';
 					<div class="nav-collapse collapse">
 						<?php if ($user) { ?>
 							<ul class="nav pull-right">
+                                <?php if ($user && (string) $user->getUsergroup() == UserModel::USERGROUP_ADMINS) { ?>
+                                    <li class="dropdown">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="admin/setup:nodes">Setup <b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li class="nav-header">Meta setup</li>
+                                            <li><a href="admin/setup:nodes">Nodes</a></li>
+                                            <li><a href="admin/setup:media">Media</a></li>
+                                            <li><a href="admin/setup:menus">Menus</a></li>
+                                            <li><a href="admin/setup:settings">Settings</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="admin/setup:meta">Meta fields</a></li>
+                                            <li class="nav-header">Access</li>
+                                            <li><a href="admin/user:view">Users</a></li>
+                                            <li><a href="admin/acl:view">Pages &amp; models</a></li>
+                                            <li class="nav-header">Maintenance</li>
+                                            <li><a href="admin/system:cleanuploads">Clean uploads</a></li>
+                                            <li><a href="admin/system:check">System check</a></li>
+                                            <li><a href="admin/system:update">Update</a></li>
+                                            <li><a href="admin/system:log">Log</a></li>
+                                        </ul>
+                                    </li>
+                                <?php } ?>
 								<li class="dropdown">
 									<a class="dropdown-toggle" data-toggle="dropdown" href="user">
                                         <?php echo Ajde_Resource_Image_Gravatar::get($user->getEmail(), 18, 'identicon', 'g', true); ?> &nbsp;
@@ -207,28 +233,6 @@ $currentGrouper = '';
                                 </li>
                                 <?php echo Ajde_Event::trigger('Ajde_Layout', 'onAdminMenu'); ?>
                                 <li><a href="admin/cms:settings">Settings</a></li>
-							<?php }
-							if ($user && (string) $user->getUsergroup() == UserModel::USERGROUP_ADMINS) { ?>
-								<li class="dropdown">
-									<a class="dropdown-toggle" data-toggle="dropdown" href="admin/setup:nodes">Setup <b class="caret"></b></a>
-									<ul class="dropdown-menu">
-										<li class="nav-header">Meta setup</li>
-										<li><a href="admin/setup:nodes">Nodes</a></li>
-										<li><a href="admin/setup:media">Media</a></li>
-										<li><a href="admin/setup:menus">Menus</a></li>
-										<li><a href="admin/setup:settings">Settings</a></li>
-                                        <li class="divider"></li>
-										<li><a href="admin/setup:meta">Meta fields</a></li>
-										<li class="nav-header">Access</li>
-										<li><a href="admin/user:view">Users</a></li>
-										<li><a href="admin/acl:view">Pages &amp; models</a></li>	
-										<li class="nav-header">Maintenance</li>
-                                        <li><a href="admin/system:cleanuploads">Clean uploads</a></li>
-										<li><a href="admin/system:check">System check</a></li>
-										<li><a href="admin/system:update">Update</a></li>
-                                        <li><a href="admin/system:log">Log</a></li>
-									</ul>
-								</li>
 							<?php } ?>
 							<li><a href="./">View site</a></li>
 						</ul>

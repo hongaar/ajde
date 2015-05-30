@@ -1,0 +1,12 @@
+<div class="well sidebar-nav">
+	<a class="menu-toggle btn btn-normal pull-right"><i class="icon-resize-small"></i></a>
+    <ul class="nav nav-list">
+        <li class="nav-header">Settings</li>
+        <?php /** @var SettingModel $setting */
+        foreach($this->settings as $setting) { ?>
+            <li <?php if ($setting->getPK() == Ajde::app()->getRequest()->getParam('edit', false)) { echo 'class="active"'; } ?>>
+                <a href="admin/cms:settings?edit=<?php echo $setting->getPK(); ?>"><?php echo ucfirst($setting->getName()); ?></a>
+            </li>
+        <?php } ?>
+    </ul>
+</div>

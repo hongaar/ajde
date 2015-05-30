@@ -69,9 +69,11 @@ AC.Crud.Edit = function() {
                     }, 100);
                 });
                 $('body').on('click', '.autosave-retry', AC.Crud.Edit.autoSave);
-                //$('body').on('click', '.autosave-force', function(e) {
-                //    if (!autosaveThrottleActive) AC.Crud.Edit.autoSave.call(this, e);
-                //});
+                $('body').on('click', '.autosave-force', function(e) {
+                    //if (!autosaveThrottleActive) {
+                        AC.Crud.Edit.autoSave.call(this, e);
+                    //}
+                });
 
                 // Hide non-autosave buttons
                 $('form.ACCrudEdit.autosave').each(function() {
@@ -198,6 +200,7 @@ AC.Crud.Edit = function() {
                 AC.Crud.Edit.saveHandler.call(self, e, 'autosave');
             } else {
                 if (!autosaveTimer) {
+                    $('.autosave-status').text('Saving due any moment now');
                     autosaveTimer = setTimeout(function() {
                         autosaveThrottleActive = true;
                         AC.Crud.Edit.saveHandler.call(self, e, 'autosave');

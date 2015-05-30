@@ -57,7 +57,7 @@ AC.Crud.Mainfilter = function() {
 			form.filter('.ACCrudList').find('select[name="view[filter][' + name + ']"]').val(value);
 			
 			// for edit
-			form.filter('.ACCrudEdit').find(':input[name="' + name + '"]').val(value);
+			form.filter('.ACCrudEdit').find(':input[name="' + name + '"]').val(value).trigger('change');
 			
 			$('#mainFilter').modal('hide');
 			$('.mainFilterLabel').text($(this).text());

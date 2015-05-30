@@ -635,7 +635,11 @@ class Ajde_Model extends Ajde_Object_Standard
 		$pk = $this->getTable()->getPK();
 		$sql = 'DELETE FROM '.$this->_table.' WHERE '.$pk.' = ? LIMIT 1';
 		$statement = $this->getConnection()->prepare($sql);
-		$return = $statement->execute(array($id));
+        try {
+            $return = $statement->execute(array($id));
+        } catch (Ajde_Db_IntegrityException $e) {
+            return false;
+        }
         if (method_exists($this, 'afterDelete')) {
 			$this->afterDelete();
 		}

@@ -11,7 +11,7 @@ li.jqtree-common:hover .jqtree-title {
 }
 
 .jqtree-tree .jqtree-title .badge-icon i {
-    opacity: 0.5;
+    opacity: 0.2;
 }
 
 .jqtree-tree .jqtree-loading > div .jqtree-title:after {
@@ -22,15 +22,15 @@ li.jqtree-common:hover .jqtree-title {
 }
 
 ul.jqtree-tree li > .jqtree-element:hover {
-    background: #ddd !important;
+    background: #e8f8fd !important;
 }
 ul.jqtree-tree li.jqtree-selected > .jqtree-element {
-    background: #aaa !important;
+    background: #cde6ff !important;
     text-shadow: none !important;
 }
 
 ul.jqtree-tree li.jqtree-selected > .jqtree-element .jqtree-title, ul.jqtree-tree li.jqtree-selected > .jqtree-element:hover .jqtree-title {
-	color: white !important;
+    color: black !important;
 }
 
 ul.jqtree-tree .jqtree-toggler {
