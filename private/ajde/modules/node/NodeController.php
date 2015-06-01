@@ -258,7 +258,7 @@ class NodeController extends Ajde_Controller
 								->setShow(array('title', 'subtitle', 'content', 'summary'))
 								->up()
 							->addBlock()
-								->setClass('')
+								->setClass('meta')
 								->up()
 							->addBlock()
 								->setClass('')

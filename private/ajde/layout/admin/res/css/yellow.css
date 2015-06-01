@@ -40,7 +40,7 @@ hr {
     background-color: transparent;
 }
 
-.form-actions {
+form:not(.well) .form-actions {
     background-color: rgba(252, 253, 239, 1);
     border-top: 1px solid #007fff;
 }

@@ -1,11 +1,16 @@
 <?php
 /* @var $this Ajde_Template_Parser_Phtml_Helper */
 
-$this->requireGWebFont('Roboto', array(300, 500, 700));
+// ============== STYLES
+
+// Default style
 $this->requireCss('default');
+$this->requireCssPublic('core/bootstrap/bootstrap-cosmo.css', Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST);
+$this->requireGWebFont('Roboto', array(300, 500, 700));
+
+// =====================
 
 // Twitter bootstrap
-$this->requireCssPublic('core/bootstrap/bootstrap-cosmo.css', Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST);
 $this->requireCssPublic('core/bootstrap/bootstrap-responsive.css', Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST);
 $this->requireCss('bootstrap');
 

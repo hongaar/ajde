@@ -42,10 +42,16 @@ fieldset.crud {
     transition: all 0.1s ease-out;
 
     &:hover {
-        outline: 20px solid #eee;
-        border: 10px solid #eee;
-        background-color: #eee;
+        outline: 20px solid #f2f2f2;
+        border: 10px solid #f2f2f2;
+        background-color: #f2f2f2;
         z-index: 30;
+
+        &.sidebar, &.meta {
+            legend {
+                background-color: white;
+            }
+        }
     }
 
     input.emphasis[type=text] {
@@ -121,7 +127,7 @@ fieldset.crud {
 		}
 	}
     
-    &.sidebar {
+    &.sidebar, &.meta {
         legend {
             background-color: #eee;
             text-indent: 10px;
@@ -988,12 +994,16 @@ table.revisions {
         -moz-box-sizing: border-box;
         box-sizing: border-box;
 
-	}
+        -webkit-transition: background-color 0.3s ease-out;
+        transition: background-color 0.3s ease-out;
+    }
 
 	.span0 .sidebar-nav {
 		width: inherit;
 		padding: 14px 0;
 		overflow: hidden;
+
+        background-color: #dfdfdf;
 	}
 
 	.span0 .sidebar-nav .menu-toggle {
