@@ -29,6 +29,11 @@ class AdminController extends Ajde_Acl_Controller
 	{
 		
 	}
+
+    public function nav()
+    {
+        return $this->render();
+    }
 	
 	/**
 	 * Default action for controller, returns the 'view.phtml' template body
