@@ -75,7 +75,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudEdit
                 $fieldsToShow = issetor($block['show']);
                 $className = issetor($block['class']);
 
-                if ($fieldsToShow == '*' || !$fieldsToShow) {
+                if ($fieldsToShow == '*' || $fieldsShown == array('*')) {
                     $fieldsToShow = $crud->getFieldNames();
                 }
 

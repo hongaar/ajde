@@ -13,6 +13,9 @@ class Ajde_Resource_Image extends Ajde_Resource
 	protected $_image;
 
     public static $_thumbDir = '.thumbnails';
+
+    const ORIENTATION_PORTRAIT = 'portrait';
+    const ORIENTATION_LANDSCAPE = 'landscape';
 	
 	public function __construct($file)
 	{
@@ -187,6 +190,11 @@ class Ajde_Resource_Image extends Ajde_Resource
 		$filename .= $this->extension();
 		return $filename;
 	}
+
+    public function getOrientation()
+    {
+        return ($this->getHeight() >= $this->getWidth()) ? self::ORIENTATION_PORTRAIT : self::ORIENTATION_LANDSCAPE;
+    }
 	
 	public function getHeight($calculate = true)
 	{

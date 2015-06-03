@@ -68,12 +68,6 @@ $user = UserModel::getLoggedIn();
 // Node types
 Ajde_Model::register('admin');
 
-$nodeTypes = new NodetypeCollection();
-$nodeTypes->orderBy('category');
-$nodeTypes->orderBy('sort');
-
-$currentGrouper = '';
-
 ?>
 <!-- Inspired by HTML5 Boilerplate -->
 <!doctype html>

@@ -1,9 +1,15 @@
 ;$(document).ready(function() {
 	
 	// Lazyload
-	$('div.browser img').lazyload({
-		container: $("div.browser")
-	});
+    var i = 0;
+    $('div.browser').each(function() {
+        i++;
+        var $browser = $(this);
+        $browser.attr('id', 'browser' + i);
+        $browser.find('img').lazyload({
+            container: $('#browser' + i)
+        });
+    });
 	
 	var updateChooseThis = function() {
 		var that = this;
@@ -67,16 +73,19 @@
 	
 	$('a.toggleFileBrowser').toggle(function() {
 		$(this).html('<i class="icon-remove"></i> close file browser');
+        $('fieldset.crud').addClass('notransition');
 	}, function() {
 		$(this).html('<i class="icon-search"></i> choose existing');
+        $('fieldset.crud').removeClass('notransition');
 	});
 
     $('div.browser input.search').bind('input', function(e) {
         var q = $(this).val().toLowerCase();
+        var $browser = $(this).parents('.browser');
         if (q == '') {
-            $('div.browser > a').show();
+            $browser.find('> a').show();
         } else {
-            $('div.browser > a').each(function () {
+            $browser.find('> a').each(function () {
                 if ($(this).find('span.filename').text().toLowerCase().indexOf(q) > -1) {
                     $(this).show();
                 } else {
@@ -84,6 +93,7 @@
                 }
             });
         }
+        $browser.trigger('scroll');
     });
 	
 	$('div.browser > a').click(function(e) {
@@ -94,6 +104,7 @@
 		$(this).addClass('active');
 		var filename = $(this).find('span.filename').text();
 		$(this).parents('div.fileupload:eq(0)').find('input[type=hidden]').val(filename).trigger('change');
+        $(this).parents('.filebrowser').find('a.toggleFileBrowser').addClass('btn-success')
 	});
 	
 	$('div.browser > a span.filePreview').click(function(e) {

@@ -137,7 +137,13 @@ class _coreComponentController extends Ajde_Controller
 		/* @var $image Ajde_Resource_Image */
 		$image = $this->getImage();
 		$this->setAction('image/show');
-		$this->getView()->assign('href', $image->getLinkUrl());
+
+        if ($this->hasAbsoluteUrl() && $this->getAbsoluteUrl()) {
+            $this->getView()->assign('href', Config::get('site_root') . $image->getLinkUrl());
+        } else {
+            $this->getView()->assign('href', $image->getLinkUrl());
+        }
+
 		$this->getView()->assign('width', $image->getWidth(false));
 		$this->getView()->assign('height', $image->getHeight(false));
 		$this->getView()->assign('extraClass', $this->getExtraClass());
