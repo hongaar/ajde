@@ -16,3 +16,4 @@ public/media
 vendor/*
 /node_modules/
 /vendor/
+/private/vendor/

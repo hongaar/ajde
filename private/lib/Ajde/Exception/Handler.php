@@ -63,8 +63,9 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 
 	public static function trace(Exception $exception, $output = self::EXCEPTION_TRACE_HTML)
 	{
-		if (Ajde::app()->hasDocument() && Ajde::app()->getDocument()->getFormat() == 'json') {
-//			$output = self::EXCEPTION_TRACE_LOG;
+        $simpleJsonTrace = false;
+		if ($simpleJsonTrace && Ajde::app()->hasDocument() && Ajde::app()->getDocument()->getFormat() == 'json') {
+			$output = self::EXCEPTION_TRACE_LOG;
 		}
 
         $type = self::getTypeDescription($exception);
@@ -107,7 +108,7 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 					);
 				}
 				
-				$exceptionMessage = sprintf("<div style='background-color:#F1F1F1;background-image: url(\"" . Config::get('site_root') . MEDIA_DIR . "_core/warning_48.png\"); background-repeat: no-repeat; background-position: 10px 10px; border: 1px solid silver; padding: 10px 10px 10px 70px;'><h3 style='margin:0;'>%s:</h3><h2 style='margin:0;'>%s</h2> Exception thrown in %s%s</div><h3>Trace:</h3>\n",
+				$exceptionMessage = sprintf("<summary style='background-image: url(\"" . Config::get('site_root') . MEDIA_DIR . "_core/warning_48.png\");'><h3 style='margin:0;'>%s:</h3><h2 style='margin:0;'>%s</h2> Exception thrown in %s%s</summary><h3>Trace:</h3>\n",
 						$type,
 						$exception->getMessage(),
 						self::embedScript(
@@ -134,8 +135,8 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 				}
 				
 				$style = false;
-				if (file_exists(MODULE_DIR . '_core/res/css/debugger/handler.css')) {
-					$style = file_get_contents(MODULE_DIR . '_core/res/css/debugger/handler.css');
+				if (file_exists(CORE_DIR . MODULE_DIR . '_core/res/css/debugger/handler.css')) {
+					$style = file_get_contents(CORE_DIR . MODULE_DIR . '_core/res/css/debugger/handler.css');
 				}
 				if ($style === false) {
 					// For shutdown() call
@@ -143,7 +144,11 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 				}
 				$style = '<style>' . $style . '</style>';
 
-				$message = $style . $exceptionDump . $exceptionMessage . $traceMessage;
+                $collapsed = '<div id="details">' . $exceptionDump . $exceptionMessage . $traceMessage . '</div>';
+
+                $header = '<header><h1><img src="' . Config::get('site_root') . MEDIA_DIR . 'ajde-small.png">Something went wrong</h1><a href="javascript:history.go(-1);">Go back</a> <a href="#details">Show details</a></header>';
+
+				$message = $style . $header . $collapsed;
 				break;
             case self::EXCEPTION_TRACE_ONLY:
                 $message = '';

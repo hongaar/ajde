@@ -1,0 +1,134 @@
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */
+
+$options = new Ajde_Crud_Options();
+$options
+	->selectFields()
+		->selectField('title')
+			->setEmphasis(true)
+			->up()
+		->selectField('image')
+			->setType('file')
+			->setSaveDir('public/media/upload/')
+			->setExtensions(array('png', 'jpg', 'pdf', 'docx'))
+			->setMultiple(false)
+			->setLabel('Plaatje')
+			->setLength(255)
+			->setIsRequired(false)
+			->setDefault('')
+			->setIsAutoIncrement(false)
+			->setHelp('Please select an image, or drag and drop here, this is a long helptext spanning several lines. So you can see the transition effect. Oh yeah')
+			->setThumbDim(266, 100)
+			->up()
+		->selectField('published')
+			->setType('boolean')
+			->setHelp('Post is visible or not')
+			->up()
+		->selectField('sort')
+			->setType('sort')
+			->up()
+		->selectField('unitprice')
+			->setHelp('Sets the unit price, oh yeah... Sets the unit price, oh yeah... Sets the unit price, oh yeah... Sets the unit price, oh yeah... Sets the unit price, oh yeah... ')
+			->up()
+		->selectField('url')
+			->setIsReadonly(true)
+			->setLabel('URL')
+			->up()
+		->selectField('download')
+			->setType('multiple')
+			->setHelp('Add downloads to this sample')
+			->setEditRoute('sample/download.crud')
+			->setShowLabel(false)
+			->up()
+		->selectField('distributor')
+			->setType('multiple')
+			->setEditRoute('sample/distributor.crud')
+			->addTableField('place')
+			->addTableFileField('logo', 'public/media/upload/')
+			->setThumbDim(30, 30)
+			->setShowLabel(false)
+			->setCrossReferenceTable('sample_distributor')
+			->up()
+		->selectField('encrypted_field')
+			->setDisableRichText(true)
+			->setTextInputHeight(4)
+			->up()
+		->up()
+	->selectList()
+		->selectButtons()
+			->setNew(true)
+			->setEdit(true)
+			->addItemButton('view', 'View article', 'view')
+			->up()
+		->setMain('title')
+		->setShow(array('title', 'updated', 'image', 'published', 'type', 'sort'))
+		->setThumbDim(50, 50)
+		->selectView()
+			->setOrderBy('sort')
+			->up()
+		->up()
+	->selectEdit()
+		->selectLayout()
+			->addRow()
+				->addColumn()
+					->addBlock()
+						->setShow(array('title', 'content'))
+						->up()
+					->addBlock()
+						->setTitle('Pricing')
+						->setClass('table')
+						->setShow(array('unitprice', 'vat'))
+						->up()
+					->addBlock()
+						->setTitle('Downloads')
+						->setShow(array('download'))
+						->up()
+					->addBlock()
+						->setTitle('Distributors')
+						->setShow(array('distributor'))
+						->up()
+					->up()
+				->addColumn()
+					->setWidth(300)
+					->setAlign('right')
+					->addBlock()
+						->setTitle('Metadata')
+						->setClass('sidebar')
+						->setShow(array('updated', 'published', 'url', 'user', 'sort'))
+						->up()
+					->addBlock()
+						->setTitle('Media')
+						->setClass('sidebar')
+						->setShow(array('image', 'type'))
+						->up()
+					->addBlock()
+						->setTitle('Extra')
+						->setClass('sidebar')
+						->setShow(array('optional_field', 'required_field', 'encrypted_field'))
+
+	->finished();
+
+$crud = $this->ACCrudList('product', $options);
+
+if (Ajde::app()->getRequest()->has('new')) {
+    $user = UserModel::getLoggedIn();
+    $crud->setOption('fields.user.value', $user->getPK());
+}
+
+?>
+
+<div class="row-fluid">
+	<div class="span2 hideInIframe">
+		<?php echo $this->includeModule('admin/cms:menu'); ?>		
+	</div><!--/span-->
+	<div class="span10 expandInIframe">
+		
+		<div class="page-header">
+			<h1>
+				<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
+			</h1>
+		</div>		
+		
+		<?php echo $crud->output(); ?>
+		
+	</div><!--/span-->
+</div><!--/row-->

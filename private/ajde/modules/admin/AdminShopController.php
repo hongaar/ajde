@@ -1,7 +1,13 @@
 <?php 
 
 class AdminShopController extends AdminController
-{	
+{
+    public function products()
+    {
+        Ajde::app()->getDocument()->setTitle("Product catalogue");
+        return $this->render();
+    }
+
 	public function carts()
 	{
 		Ajde::app()->getDocument()->setTitle("Carts overview");

@@ -5,6 +5,8 @@ class TemplateModel extends Ajde_Model_With_I18n
 	protected $_autoloadParents = true;
 	protected $_displayField = 'name';
 
+    protected static $_cssInliner = 'emogrifier';
+
     public function displayLang()
     {
         Ajde::app()->getDocument()->getLayout()->getParser()->getHelper()->requireCssPublic('core/flags.css');
@@ -47,12 +49,24 @@ class TemplateModel extends Ajde_Model_With_I18n
         }
 
         if ($inlineCss && ($style || ($master && $master->getStyle()))) {
-            $content = html_entity_decode( self::inlineCss($content) );
+            $content = html_entity_decode( self::applyCssInliner($content) );
         }
 
         return $content;
     }
 
+    public static function applyCssInliner($html) {
+        /** @var Ajde_Mailer_CssInliner_CssInlinerInterface $inliner */
+        $inlinerClass = 'Ajde_Mailer_CssInliner_' . ucfirst(self::$_cssInliner);
+        return call_user_func($inlinerClass . '::inlineCss', $html);
+    }
+
+    /**
+     * @param $html
+     * @return string
+     * @throws Exception
+     * @deprecated Use applyCssInliner instead
+     */
     public static function inlineCss($html)
     {
         $url = 'https://inlinestyler.torchbox.com:443/styler/convert/';

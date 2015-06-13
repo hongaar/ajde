@@ -40,7 +40,7 @@ class Ajde_Crud_Options_Edit_Layout_Rows_Row_Columns_Column extends Ajde_Crud_Op
 	 * 
 	 * @param integer $pixels
 	 * @return Ajde_Crud_Options_Edit_Layout_Rows_Row_Columns_Column
-     * @deprecated
+     * @deprecated Use setSpan instead
 	 */
 	public function setWidth($pixels) { return $this->_set('width', $pixels); }
 	
@@ -49,7 +49,7 @@ class Ajde_Crud_Options_Edit_Layout_Rows_Row_Columns_Column extends Ajde_Crud_Op
 	 * 
 	 * @param enum $align ('left'|'right')
 	 * @return Ajde_Crud_Options_Edit_Layout_Rows_Row_Columns_Column
-     * @deprecated
+     * @deprecated Use column order instead
 	 */
 	public function setAlign($alignment) { return $this->_set('align', $alignment); }
     

@@ -96,8 +96,10 @@ $user = UserModel::getLoggedIn();
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="admin/shop">Shop <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                    <li><a href="admin/shop:carts">Carts</a></li>
+                    <li><a href="admin/shop:products">Product catalogue</a></li>
+                    <li class="divider"></li>
                     <li><a href="admin/shop:transactions">Transactions</a></li>
+                    <li><a href="admin/shop:carts">Carts</a></li>
                 </ul>
             </li>
             <?php echo Ajde_Event::trigger('Ajde_Layout', 'onAdminMenu'); ?>

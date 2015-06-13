@@ -13,7 +13,7 @@
 //	--------------------
 //	Which version of Ajde are we running?
 //	--------------------	
-	define('AJDE_VERSION', 'v0.3.0');
+	define('AJDE_VERSION', 'v0.3.1');
 
 /*********************
  * ERROR REPORTING
@@ -84,23 +84,29 @@
 	
 	define('TEMPLATE_DIR',		'template' . DIRECTORY_SEPARATOR);
 	
-	define('LIB_DIR',			PRIVATE_DIR.'lib' . DIRECTORY_SEPARATOR);
-	define('VAR_DIR',			PRIVATE_DIR.'var' . DIRECTORY_SEPARATOR);
-	define('DEV_DIR',			PRIVATE_DIR.'dev' . DIRECTORY_SEPARATOR);
+	define('LIB_DIR',			PRIVATE_DIR . 'lib' . DIRECTORY_SEPARATOR);
+	define('VAR_DIR',			PRIVATE_DIR . 'var' . DIRECTORY_SEPARATOR);
+	define('DEV_DIR',			PRIVATE_DIR . 'dev' . DIRECTORY_SEPARATOR);
 	
-	define('MEDIA_DIR',			PUBLIC_DIR.'media' . DIRECTORY_SEPARATOR);
+	define('MEDIA_DIR',			PUBLIC_DIR . 'media' . DIRECTORY_SEPARATOR);
 	
-	define('UPLOAD_DIR',		MEDIA_DIR.'upload' . DIRECTORY_SEPARATOR);
-    define('AVATAR_DIR',        UPLOAD_DIR.'avatar' . DIRECTORY_SEPARATOR);
+	define('UPLOAD_DIR',		MEDIA_DIR . 'upload' . DIRECTORY_SEPARATOR);
+    define('AVATAR_DIR',        UPLOAD_DIR . 'avatar' . DIRECTORY_SEPARATOR);
 	
-	define('CACHE_DIR',			VAR_DIR.'cache' . DIRECTORY_SEPARATOR);
-	define('LOG_DIR',			VAR_DIR.'log' . DIRECTORY_SEPARATOR);
-	define('TMP_DIR',			VAR_DIR.'tmp' . DIRECTORY_SEPARATOR);
+	define('CACHE_DIR',			VAR_DIR . 'cache' . DIRECTORY_SEPARATOR);
+	define('LOG_DIR',			VAR_DIR . 'log' . DIRECTORY_SEPARATOR);
+	define('TMP_DIR',			VAR_DIR . 'tmp' . DIRECTORY_SEPARATOR);
 
-	define('CORE_DIR',			PRIVATE_DIR.'ajde' . DIRECTORY_SEPARATOR);
-	define('APP_DIR',			PRIVATE_DIR.'application' . DIRECTORY_SEPARATOR);	
+    define('VENDOR_DIR',		PRIVATE_DIR . 'vendor' . DIRECTORY_SEPARATOR);
+	define('CORE_DIR',			PRIVATE_DIR . 'ajde' . DIRECTORY_SEPARATOR);
+	define('APP_DIR',			PRIVATE_DIR . 'application' . DIRECTORY_SEPARATOR);
 	
-	define('LANG_DIR',			APP_DIR.'lang' . DIRECTORY_SEPARATOR);
+	define('LANG_DIR',			APP_DIR . 'lang' . DIRECTORY_SEPARATOR);
+
+//	--------------------
+//	Require composer autoload.php if available
+//	--------------------
+    if (is_file(VENDOR_DIR . 'autoload.php')) require_once VENDOR_DIR . 'autoload.php';
 	
 //	--------------------
 //	Zend requires include path to be set to the LIB directory
@@ -110,7 +116,7 @@
 //	--------------------
 //	Configure the autoloader
 //	--------------------
-	require_once(LIB_DIR."Ajde/Core/Autoloader.php");
+	require_once LIB_DIR . 'Ajde/Core/Autoloader.php';
 	Ajde_Core_Autoloader::register();
 
 /*********************

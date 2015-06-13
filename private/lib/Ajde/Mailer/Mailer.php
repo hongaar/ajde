@@ -54,6 +54,8 @@ class Ajde_Mailer extends PHPMailer
             // body
             $this->msgHTML($body);
 
+            die($body);
+
             // send!
             $status = $this->send();
 
