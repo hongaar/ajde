@@ -23,7 +23,8 @@ class Ajde_Cms extends Ajde_Object_Singleton
     public function __bootstrap()
     {
         Ajde_Event::register('Ajde_Core_Route', 'onAfterLangSet', array($this, 'setHomepage'));
-        Ajde_Event::register('Ajde_Core_Route', 'onAfterRouteSet', array($this, 'detectSlug'));
+        Ajde_Event::register('Ajde_Core_Route', 'onAfterRouteSet', array($this, 'detectNodeSlug'));
+        Ajde_Event::register('Ajde_Core_Route', 'onAfterRouteSet', array($this, 'detectShopSlug'));
         return true;
     }
 
@@ -42,7 +43,7 @@ class Ajde_Cms extends Ajde_Object_Singleton
         }
     }
 
-    public function detectSlug(Ajde_Core_Route $route)
+    public function detectNodeSlug(Ajde_Core_Route $route)
     {
         $slug = $route->getRoute();
 
@@ -59,6 +60,25 @@ class Ajde_Cms extends Ajde_Object_Singleton
             $routes = Config::get('routes');
             array_unshift($routes, array('%^(' . preg_quote($slug) . ')$%' => array('slug')));
             Config::getInstance()->routes = $routes;
+        }
+    }
+
+    public function detectShopSlug(Ajde_Core_Route $route)
+    {
+        $slug = $route->getRoute();
+
+        $slug = trim($slug, '/');
+        $lastSlash = strrpos($slug, '/');
+        if ($lastSlash !== false) {
+            $lastSlugPart = substr($slug, $lastSlash + 1);
+
+            $product = ProductModel::fromSlug($lastSlugPart);
+            if ($product) {
+                $route->setRoute($slug);
+                $routes = Config::get('routes');
+                array_unshift($routes, array('%^(shop)/(' . preg_quote($lastSlugPart) . ')$%' => array('module', 'slug')));
+                Config::getInstance()->routes = $routes;
+            }
         }
     }
 

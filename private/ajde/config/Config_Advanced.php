@@ -115,7 +115,7 @@ class Config_Advanced
         public $ssoGoogleSecret     = false;
 
 	// Shop
-	public $transactionProviders= array('paypal_creditcard', 'paypal', 'mollie_ideal');
+	public $transactionProviders= array('paypal_creditcard', 'paypal', 'mollie_ideal', 'test');
 	public $currency			= '€';
 	public $currencyCode		= 'EUR';
 	public $defaultVAT			= 0.21;

@@ -5,97 +5,100 @@
 $transaction = $this->transaction;
 ?>
 
-<h2>Order</h2>
+<div class="container main">
 
-<?php if ($transaction->hasLoaded() === false) { ?>
-	
-	<h4>Order not found</h4>
-	<p><a href='shop'>Back to shop</a></p>
+    <h2>Order</h2>
 
-<?php } else { ?>
+    <?php if ($transaction->hasLoaded() === false) { ?>
 
-	<h4>Details</h4>
-	<dl>
-		<dt>Full name</dt>
-		<dd><?php echo _e($transaction->name); ?></dd>
+        <h4>Order not found</h4>
+        <p><a href='shop'>Back to shop</a></p>
 
-		<dt>E-mail address</dt>
-		<dd><?php echo _e($transaction->email); ?></dd>
+    <?php } else { ?>
 
-		<dt>&nbsp;</dt>
-		<dd><hr/></dd>		
+        <h4>Details</h4>
+        <dl>
+            <dt>Full name</dt>
+            <dd><?php echo _e($transaction->name); ?></dd>
 
-		<dt>Address</dt>
-		<dd><?php echo _e($transaction->shipment_address); ?></dd>
+            <dt>E-mail address</dt>
+            <dd><?php echo _e($transaction->email); ?></dd>
 
-		<dt>Zipcode</dt>
-		<dd><?php echo _e($transaction->shipment_zipcode); ?></dd>
+            <dt>&nbsp;</dt>
+            <dd><hr/></dd>
 
-		<dt>City</dt>
-		<dd><?php echo _e($transaction->shipment_city); ?></dd>
+            <dt>Address</dt>
+            <dd><?php echo _e($transaction->shipment_address); ?></dd>
 
-		<dt>Region</dt>
-		<dd><?php echo _e($transaction->shipment_region); ?></dd>
+            <dt>Zipcode</dt>
+            <dd><?php echo _e($transaction->shipment_zipcode); ?></dd>
 
-		<dt>Country</dt>
-		<dd><?php echo _e($transaction->shipment_country); ?></dd>
+            <dt>City</dt>
+            <dd><?php echo _e($transaction->shipment_city); ?></dd>
 
-		<dt>&nbsp;</dt>
-		<dd><hr/></dd>		
+            <dt>Region</dt>
+            <dd><?php echo _e($transaction->shipment_region); ?></dd>
 
-		<dt>Comment</dt>
-		<dd><?php echo _e($transaction->comment); ?></dd>
+            <dt>Country</dt>
+            <dd><?php echo _e($transaction->shipment_country); ?></dd>
 
-		<dt>&nbsp;</dt>
-		<dd><hr/></dd>
+            <dt>&nbsp;</dt>
+            <dd><hr/></dd>
 
-		<dt>Products</dt>
-		<dd class='summary'><?php echo _c($transaction->shipment_description); ?></dd>
-		
-		<dt>&nbsp;</dt>
-		<dd><hr/></dd>
+            <dt>Comment</dt>
+            <dd><?php echo _e($transaction->comment); ?></dd>
 
-		<dt>Shipment method</dt>
-		<dd><?php echo _e($transaction->shipment_method); ?></dd>
-		
-		<dt>&nbsp;</dt>
-		<dd><hr/></dd>
+            <dt>&nbsp;</dt>
+            <dd><hr/></dd>
 
-		<dt>Status</dt>
-		<dd>
-			<?php switch($transaction->payment_status) {
-				case 'pending':
-					echo 'Not paid';
-					break;
-				case 'requested':
-					echo 'Payment in progress';
-					break;
-				case 'refused':
-					echo 'Payment refused';
-					break;
-				case 'cancelled':
-					echo 'Cancelled';
-					break;
-				case 'completed':
-					echo 'Paid';
-					break;
-			} ?>
-		</dd>
-	</dl>
+            <dt>Products</dt>
+            <dd class='summary'><?php echo _c($transaction->shipment_description); ?></dd>
 
-	<div class='clearfix'></div>
+            <dt>&nbsp;</dt>
+            <dd><hr/></dd>
 
-	<?php if ($this->source == 'session' && $transaction->payment_status == 'pending') { ?>
-	<div class='toolbar'>
-		<a href='shop/transaction:setup' class='action'>Continue with order</a>
-		<a href='shop/transaction:cancel'>Cancel order</a>
-	</div>
-	<?php } elseif ($this->source == 'session' && $transaction->payment_status == 'refused') { ?>
-	<div class='toolbar'>
-		<a href='shop/transaction:payment' class='action'>Reset payment and try again</a>
-		<a href='shop/transaction:cancel'>Cancel order</a>
-	</div>
-	<?php } ?>
-	
-	
-<?php } ?>
+            <dt>Shipment method</dt>
+            <dd><?php echo _e($transaction->shipment_method); ?></dd>
+
+            <dt>&nbsp;</dt>
+            <dd><hr/></dd>
+
+            <dt>Status</dt>
+            <dd>
+                <?php switch($transaction->payment_status) {
+                    case 'pending':
+                        echo 'Not paid';
+                        break;
+                    case 'requested':
+                        echo 'Payment in progress';
+                        break;
+                    case 'refused':
+                        echo 'Payment refused';
+                        break;
+                    case 'cancelled':
+                        echo 'Cancelled';
+                        break;
+                    case 'completed':
+                        echo 'Paid';
+                        break;
+                } ?>
+            </dd>
+        </dl>
+
+        <div class='clearfix'></div>
+
+        <?php if ($this->source == 'session' && $transaction->payment_status == 'pending') { ?>
+            <div class='toolbar'>
+                <a href='shop/transaction:setup' class='action'>Continue with order</a>
+                <a href='shop/transaction:cancel'>Cancel order</a> or <a href='shop'>continue shopping</a>
+            </div>
+        <?php } elseif ($this->source == 'session' && $transaction->payment_status == 'refused') { ?>
+            <div class='toolbar'>
+                <a href='shop/transaction:resetPayment' class='action'>Reset payment and try again</a>
+                <a href='shop/transaction:cancel'>Cancel order</a>
+            </div>
+        <?php } ?>
+
+    <?php } ?>
+
+</div>

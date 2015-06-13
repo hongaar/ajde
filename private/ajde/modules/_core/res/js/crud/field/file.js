@@ -104,7 +104,9 @@
 		$(this).addClass('active');
 		var filename = $(this).find('span.filename').text();
 		$(this).parents('div.fileupload:eq(0)').find('input[type=hidden]').val(filename).trigger('change');
-        $(this).parents('.filebrowser').find('a.toggleFileBrowser').addClass('btn-success')
+        var toggle = $(this).parents('.filebrowser').find('a.toggleFileBrowser');
+        toggle.addClass('btn-success').trigger('click');
+        toggle.parent().next().slideUp();
 	});
 	
 	$('div.browser > a span.filePreview').click(function(e) {

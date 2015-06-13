@@ -6,9 +6,7 @@ $(document).ready(function() {
 	var errorHandler	= AC.Core.Alert.error;
 	
 	var redirect = true;
-	
-	$('select[name=shipment_country]').jqCombo();
-	
+
 	$('form.transactionSetup').bind('result', function(event, data) {
 		if (data.success === false) {
 			$('dd.status').addClass('error');

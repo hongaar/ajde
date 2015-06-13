@@ -1,0 +1,16 @@
+<div class="container main">
+    <p>Confirm payment of €
+    <?php
+
+    $txn_id = $_GET['txn'];
+    $txn = new TransactionModel();
+    $txn->loadByPK($txn_id);
+
+    echo $txn->payment_amount;
+    ?>
+    </p>
+    <p>
+        <a class='btn btn-success' href='<?php echo Config::get('site_root') . 'shop/transaction:callback/test.html?r=1&txn=' . $txn_id; ?>'>Authorize payment</a>
+        <a class='btn btn-danger' href='<?php echo Config::get('site_root') . 'shop/transaction:callback/test.html?r=0&txn=' . $txn_id; ?>'>Refuse payment</a>
+    </p>
+</div>

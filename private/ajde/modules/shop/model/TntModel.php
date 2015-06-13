@@ -11,9 +11,9 @@ class TntModel extends Ajde_Shop_Shipping_Method
 		if ($total > 500) {
 			return 0;
 		} else if ($total > 100) {
-			return 15.95;
+			return ShippingModel::isEUCountry($this->getTransaction()->shipment_country) ? 15.95 : 22.50;
 		} else {
-			return 7.50;
+            return ShippingModel::isEUCountry($this->getTransaction()->shipment_country) ? 7.50 : 12.50;
 		}
 	}
 

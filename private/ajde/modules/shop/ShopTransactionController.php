@@ -485,4 +485,10 @@ class ShopTransactionController extends ShopController
 			Ajde_Log::log('Mail to ' . $transaction->email . ' failed');
 		}
 	}
+
+    public function test()
+    {
+        $this->setAction('test/confirm');
+        return $this->render();
+    }
 }

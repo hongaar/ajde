@@ -26,6 +26,14 @@ class Ajde_Resource_Image extends Ajde_Resource
 		}
 		$this->_type = $this->extension();
 	}
+
+    public function getUrl($width = null, $height = null, $crop = false)
+    {
+        $this->setWidth($width);
+        $this->setHeight($height);
+        $this->setCrop($crop);
+        return $this->getLinkUrl();
+    }
 	
 	public function getLinkUrl()
 	{

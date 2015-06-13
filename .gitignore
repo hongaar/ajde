@@ -12,8 +12,6 @@ nbproject/
 .idea
 _intellij_*
 PhpStorm-*
-public/media
-vendor/*
 /node_modules/
 /vendor/
 /private/vendor/

@@ -2,6 +2,11 @@
 
 class AdminShopController extends AdminController
 {
+    public function menu()
+    {
+        return $this->render();
+    }
+
     public function products()
     {
         Ajde::app()->getDocument()->setTitle("Product catalogue");

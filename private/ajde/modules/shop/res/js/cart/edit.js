@@ -18,7 +18,7 @@ $(document).ready(function() {
 	});
 	
 	$('form.editCart').bind('result', function(e, response) {
-		$(this).html($(response).filter('form.editCart').html());
+		$(this).html($(response).first('form.editCart').html());
 	});
 	
 	$('form.editCart').bind('error', function(event, jqXHR, message, exception) {

@@ -1,10 +1,48 @@
 <?php
 /* @var $this Ajde_Template_Parser_Phtml_Helper */
+/* @var $products ProductCollection */
+
+$products = $this->products;
 ?>
 
-<h2>Shopping</h2>
+<div class="container main">
 
-<p>
-	<a class='action' href='sample'>Shop for items</a>
-	<a class='action' href='shop/cart:view'>View cart</a>
-</p>
+    <div class="row">
+        <div class="col-sm-12">
+            <h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="row">
+                <?php foreach($products as $product) {
+                    /* @var $product ProductModel */ ?>
+                    <div class="col-sm-6">
+                        <h3><?php echo _e($product->title); ?></h3>
+                        <?php if ($image = $product->getImage()) { ?>
+                            <figure>
+                                <img src="<?php echo _e($image->getUrl(600, 200, true)); ?>" class="img-responsive" />
+                            </figure>
+                        <?php } ?>
+                        <p>
+                            € <?php echo $product->getFormattedPriceInclVat(); ?>
+                        </p>
+                        <p>
+                            <a class="btn btn-default" href="<?php echo _e($product->getSlug()); ?>">Details</a>
+                        </p>
+                        <p>
+                            <?php echo $this->includeModule('shop/cart:add/html/product:' . $product->getPK()); ?>
+                        </p>
+                    </div>
+                <?php } ?>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div id='cart'>
+                <?php echo $this->includeModule('shop/cart:widget/html/quickcheckout'); ?>
+            </div>
+        </div>
+    </div>
+
+</div>
