@@ -21,11 +21,11 @@ table.cart td {
 	vertical-align: middle;
 }
 
-table.cart td.price {
+table.cart .price {
 	text-align: right;
 }
 
-table.cart td.qty {
+table.cart .qty {
 	text-align: right;
 	padding-right: 5px;
 }

@@ -1,7 +1,7 @@
 div.toolbar {
 	margin-top: 20px;
 	padding-top: 20px;
-	border-top: 1px dashed #8ACAF3;
+	border-top: 2px solid #5cb85c;
 	height: 60px;
 }
 
@@ -13,15 +13,15 @@ div.toolbar a {
 	white-space: nowrap;
 }
 
-dd.status, p.status {
-	display: inline-block;
+div.status, dd.status, p.status {
+//	display: inline-block;
 	background-color: #eee;
 	border: 1px solid silver;
 	padding: 5px;
 	margin: 0 0 20px 0;
 }
 
-dd.status.error {
+dd.status.error, div.status.error{
 	background-color: #FF3333;
 	color: white;
 }

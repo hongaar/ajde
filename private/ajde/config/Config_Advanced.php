@@ -115,6 +115,7 @@ class Config_Advanced
         public $ssoGoogleSecret     = false;
 
 	// Shop
+    public $shopOfferLogin      = true;
 	public $transactionProviders= array('paypal_creditcard', 'paypal', 'mollie_ideal', 'test');
 	public $currency			= '€';
 	public $currencyCode		= 'EUR';
@@ -142,7 +143,8 @@ class Config_Advanced
 									'Ajde_User_Autologon',
 									'Ajde_Core_Autodebug',
 									'Ajde_Shop_Cart_Merge',
-									'Ajde_Cms'
+									'Ajde_Cms',
+                                    'Bootstrap'
 									);
 
 	function __construct()

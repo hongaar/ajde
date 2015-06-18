@@ -218,9 +218,9 @@ class ShopTransactionController extends ShopController
 		}
 		
 		// Insert new transaction
-		if ($method === 'insert') {				
-			$this->updateFromCart($transaction);
-			if ($transaction->insert()) {					
+		if ($method === 'insert') {
+			if ($transaction->insert()) {
+                $this->updateFromCart($transaction);
 				$session = new Ajde_Session('AC.Shop');
 				$session->set('currentTransaction', $transaction->getPK());				
 				if (!$transaction->shipment_itemsqty > 0) {
@@ -279,6 +279,9 @@ class ShopTransactionController extends ShopController
 			$transaction->shipment_itemstotal		= 0;
 			$transaction->payment_amount			= 0;
 		}
+
+        $transaction->setItemsFromCart($cart);
+        $transaction->save();
 	}
 	
 	public function update()
@@ -289,10 +292,11 @@ class ShopTransactionController extends ShopController
 		$session = new Ajde_Session('AC.Shop');
 		if ($session->has('currentTransaction') && $transaction->loadByPK($session->get('currentTransaction'))) {
 			$this->updateFromCart($transaction);
-			$transaction->save();
 		}
-		$this->setAction('view');
-		return $this->view();
+        Ajde_Session_Flash::alert(__('Your order has been updated', 'shop'));
+        $this->redirect('shop/transaction:setup');
+//		$this->setAction('view');
+//		return $this->view();
 	}
 	
 	public function cancel()
@@ -306,8 +310,9 @@ class ShopTransactionController extends ShopController
 			$transaction->payment_status = 'cancelled';
 			$transaction->save();
 			$session->destroy();
-		}				
-		$this->redirect('shop/checkout');
+		}
+        Ajde_Session_Flash::alert(__('Your order has been cancelled', 'shop'));
+		$this->redirect('shop');
 	}
 	
 	public function payment()
@@ -467,7 +472,27 @@ class ShopTransactionController extends ShopController
 	}
 	
 	public function mailUser(TransactionModel $transaction)
-	{
+    {
+        $viewLink = Config::get('site_root') . 'shop/transaction:view/' . $transaction->secret . '.html';
+
+        $mailer = new Ajde_Mailer();
+        $mailer->sendUsingModel('your_order', $transaction->email, $transaction->name, array(
+            'viewlink' => $viewLink
+        ));
+    }
+
+    /**
+     * @param TransactionItemModel $transaction
+     * @deprecated use mailUser
+     * @throws Ajde_Core_Exception_Deprecated
+     * @throws Ajde_Exception
+     * @throws Exception
+     * @throws phpmailerException
+     */
+    public function mailUserDeprecated(TransactionItemModel $transaction)
+    {
+        throw new Ajde_Core_Exception_Deprecated();
+
 		$mailer = new Ajde_Mailer();
 
 		$mailer->IsMail(); // use php mail()

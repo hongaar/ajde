@@ -34,7 +34,7 @@
             }
 
             google.maps.event.addListener(map, 'click', function(event) {
-                input.val(prepareForSql(event.latLng));
+                input.val(prepareForSql(event.latLng)).trigger('change');
                 placeMarker(event.latLng);
             });
 
@@ -71,7 +71,7 @@
                 var offset = $(this).offset();
                 var x = (e.pageX - offset.left) / $(this).width();
                 var y = (e.pageY - offset.top) / $(this).height();
-                input.val(x + ' ' + y);
+                input.val(x + ' ' + y).trigger('change');
                 placeMarker(x, y);
             });
 

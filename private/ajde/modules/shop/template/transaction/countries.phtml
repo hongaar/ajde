@@ -1,6 +1,6 @@
 <?php 
 
-function countryList($selectedCountry, $name, $preferCountries = array())
+function countryList($selectedCountry, $name, $preferCountries = array(), $class = '')
 {
 	$countriesList = array(
 		"Afghanistan",
@@ -207,7 +207,7 @@ function countryList($selectedCountry, $name, $preferCountries = array())
 		}
 	}
 	
-	echo '<select required name=\'' . $name . '\'>';	
+	echo '<select required name=\'' . $name . '\' class=\'' . $class . '\'>';
 		echo '<option value=\'\'>Please select a country</option>';
 		foreach($countriesList as $country) { ?>
 			<option value="<?php echo _e($country); ?>" <?php if (strtolower($country) == strtolower($selectedCountry)) { echo 'selected=\'selected\''; } ?>><?php echo _e($country); ?></option>

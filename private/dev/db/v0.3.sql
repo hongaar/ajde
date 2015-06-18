@@ -64,6 +64,5 @@ INSERT INTO `setting_meta` VALUES (83, 1, 50, 999, null);
 
 ALTER TABLE `template` ADD COLUMN `markup`  text NULL COMMENT 'Markup' AFTER `content`;
 
-ALTER TABLE `email` MODIFY COLUMN `from_name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'Name' AFTER `template`,
-MODIFY COLUMN `from_email`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'E-mail address' AFTER `from_name`;
+ALTER TABLE `email` MODIFY COLUMN `from_name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'Name' AFTER `template`, MODIFY COLUMN `from_email`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'E-mail address' AFTER `from_name`;
 

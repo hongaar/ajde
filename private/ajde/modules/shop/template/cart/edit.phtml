@@ -4,9 +4,11 @@
 
 <div class="container main">
 
-    <?php echo $this->ACAjaxForm('shop/cart:edit', null, 'editCart', 'body'); ?>
+    <div class="page-header">
+        <h2><?php echo __('Edit shopping cart', 'shop'); ?></h2>
+    </div>
 
-        <h2>Edit shopping cart</h2>
+    <?php echo $this->ACAjaxForm('shop/cart:edit', null, 'editCart', 'body'); ?>
 
         <input type='hidden' name='update' value='1' />
 
@@ -14,23 +16,25 @@
             <colgroup>
                 <col />
                 <col width="100" />
+                <col width="200" />
                 <col width="150" />
-                <col width="100" />
                 <col width="50" />
             </colgroup>
             <thead>
                 <tr>
-                    <th>Description</th>
-                    <th>Unit price</th>
-                    <th>Quantity</th>
-                    <th>Total incl. VAT</th>
+                    <th><?php echo __('Product', 'shop'); ?></th>
+                    <th><?php echo __('Price', 'shop'); ?></th>
+                    <th><?php echo __('Quantity', 'shop'); ?></th>
+                    <th><?php echo __('Total incl. VAT', 'shop'); ?></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 <?php if ($this->items->length() === 0) { ?>
                     <tr>
                         <td colspan='4'>
-                            <a href='shop'>Do some shopping</a>, <?php echo __('your cart is empty'); ?><br/>&nbsp;
+                            <?php echo __('Your cart is empty', 'shop'); ?><br/>
+                            <a href='shop'><?php echo __('To the shop', 'shop'); ?></a>
                         </td>
                     </tr>
                 <?php } ?>
@@ -45,15 +49,15 @@
                         <td>€ <?php echo money_format('%!i', $item->getUnitprice() * (1+$item->getVATPercentage())); ?></td>
                         <td>
                             <input type='number' class='qty' name='qty[<?php echo $item->getPK(); ?>]' value='<?php echo $item->getQty(); ?>' />
-                            <input type='button' value='Update' />
+                            <input type='button' value='<?php echo __('Update', 'shop'); ?>' class="btn btn-default btn-sm" />
                         </td>
                         <td><?php echo $item->getFormattedTotal(); ?></td>
-                        <td><a href='javascript:void(0);' class='delete' data-id='<?php echo $item->getPK(); ?>'><?php echo __('delete'); ?></a></td>
+                        <td><a href='javascript:void(0);' class='delete btn btn-danger btn-sm' data-id='<?php echo $item->getPK(); ?>'><?php echo __('delete'); ?></a></td>
                     </tr>
                 <?php } ?>
                 <tfoot>
                     <tr>
-                        <td colspan='2'><?php echo __('Total'); ?></td>
+                        <td colspan='2'><?php echo __('Total', 'shop'); ?></td>
                         <td></td>
                         <td><?php echo $this->items->getFormattedTotal(); ?></td>
                         <td></td>
@@ -63,8 +67,11 @@
         </table>
 
         <?php if ($this->items->length() !== 0) { ?>
-            <div class='toolbar'>
-                <a class='action' href='shop/checkout'>Checkout</a>
+            <div class='toolbar text-right'>
+                <a class='btn btn-success btn-lg' href='shop/checkout'>
+                    <?php echo __('Checkout', 'shop'); ?>
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                </a>
             </div>
         <?php } ?>
 

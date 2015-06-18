@@ -661,6 +661,11 @@ class Ajde_Model extends Ajde_Object_Standard
 		return $this->getTable()->getParents();
 	}
 
+    public function exists()
+    {
+        return !!$this->getPK();
+    }
+
 	public function hasLoaded()
 	{
 		return !empty($this->_data);

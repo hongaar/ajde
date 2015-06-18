@@ -149,12 +149,12 @@ abstract class Ajde_Shop_Cart extends Ajde_Model
 	public function getHtmlSummaryTable()
 	{
 		$items = $this->getItems();
-		$table = '<table><thead>';
+		$table = '<table class="table table-condensed"><thead>';
 		$table .= '<tr>';
-			$table .= '<th>Quantity</th>';
-			$table .= '<th>Description</th>';
-			$table .= '<th>VAT</th>';
-			$table .= '<th>Total</th>';
+			$table .= '<th>' . __('Quantity') . '</th>';
+			$table .= '<th>' . __('Description') . '</th>';
+			$table .= '<th>' . __('VAT') . '</th>';
+			$table .= '<th>' . __('Total') . '</th>';
 		$table .= '</tr></thead><tbody>';
 		foreach($items as $item) {
 			/* @var $item Ajde_Shop_Cart_Item */
@@ -167,7 +167,7 @@ abstract class Ajde_Shop_Cart extends Ajde_Model
 		}
 		$table .= '</tbody><tfoot><tr>';
 			$table .= '<td>' . $this->countQty() . '</td>';
-			$table .= '<td>Total</td>';
+			$table .= '<td>' . __('Total') . '</td>';
 			$table .= '<td>' . $items->getFormattedVATAmount() . '</td>';
 			$table .= '<td>' . $items->getFormattedTotal() . '</td>';
 		$table .= '</tr></tfoot>';

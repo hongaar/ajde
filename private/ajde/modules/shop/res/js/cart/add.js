@@ -10,7 +10,7 @@ $(document).ready(function() {
 			errorHandler(data.message);
 		} else {
 			$('#cart_widget').trigger('refresh', {});
-			AC.Core.Alert.flash('Item is now added to your shopping cart');			
+			AC.Core.Alert.flash(i18n.shopAddedItem);
 		}
 	});
 	$('form.addToCart').bind('error', function(event, jqXHR, message, exception) {

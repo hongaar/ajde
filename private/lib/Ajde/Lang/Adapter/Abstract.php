@@ -13,7 +13,7 @@ abstract class Ajde_Lang_Adapter_Abstract
 			foreach(debug_backtrace() as $item) {			
 				if (!empty($item['class'])) {
 					if (is_subclass_of($item['class'], "Ajde_Controller")) {
-						$module = strtolower(str_replace("Controller", "", $item['class']));
+                        $module = current(explode('_', Ajde_Component_String::toSnakeCase($item['class'])));
 						break;
 					}
 				}

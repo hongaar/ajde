@@ -25,7 +25,7 @@ class _coreDebuggerController extends Ajde_Controller
 		$view->assign('request', Ajde::app()->getRequest());
 		
 		// Get Configuration stage
-		$view->assign('configstage', Config::$stage);
+		$view->assign('configstage', Config::getStage());
 		
 		// Get database queries 
 		if (Ajde_Core_Autoloader::exists('Ajde_Db_PDO')) {

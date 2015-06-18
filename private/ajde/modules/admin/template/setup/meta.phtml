@@ -1,5 +1,8 @@
 <?php /* @var $this Ajde_Template_Parser_Phtml_Helper */
 
+/* @var $decorator Ajde_Crud_Cms_Meta_Decorator */
+$decorator = $this->decorator;
+
 $options = new Ajde_Crud_Options();
 $options
 	->selectFields()
@@ -7,7 +10,9 @@ $options
 			->setEmphasis(true)
 			->up()		
 		->selectField('type')
+            ->setType('enum')
 			->setShowLabel(false)
+            ->setOptions($decorator->getMetaObject()->getTypesNiceNames())
 			->up()
 		->selectField('target')
 //			->setValue('node')
@@ -48,8 +53,6 @@ $options
 					
 	->finished();
 
-/* @var $decorator Ajde_Crud_Cms_Meta_Decorator */
-$decorator = $this->decorator;
 $decorator->setActiveBlock(1);
 $decorator->setOptions($options);
 $decorator->decorateOptions();

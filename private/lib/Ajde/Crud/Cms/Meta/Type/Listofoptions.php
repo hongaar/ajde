@@ -2,6 +2,8 @@
 
 class Ajde_Crud_Cms_Meta_Type_Listofoptions extends Ajde_Crud_Cms_Meta_Type
 {
+    protected $niceName = 'List of options';
+
 	public function getFields()
 	{
 		$this->required();

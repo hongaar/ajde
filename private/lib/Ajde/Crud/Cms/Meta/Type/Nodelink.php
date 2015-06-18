@@ -2,6 +2,8 @@
 
 class Ajde_Crud_Cms_Meta_Type_Nodelink extends Ajde_Crud_Cms_Meta_Type
 {
+    protected $niceName = 'Node link';
+
 	public function getFields()
 	{
 		$this->required();

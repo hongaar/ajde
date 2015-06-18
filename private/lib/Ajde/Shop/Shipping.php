@@ -52,4 +52,12 @@ abstract class Ajde_Shop_Shipping extends Ajde_Object_Standard
 		}
 		return false;
 	}
+
+    /**
+     * @return Ajde_Shop_Shipping_Method
+     */
+    public function getCurrentMethod()
+    {
+        return $this->getMethod( $this->getTransaction()->shipment_method );
+    }
 }

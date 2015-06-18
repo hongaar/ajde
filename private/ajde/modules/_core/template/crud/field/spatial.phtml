@@ -1,4 +1,6 @@
-<?php 
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+
 /* @var $field Ajde_Crud_Field */
 $field = $this->field;
 ?>
@@ -32,12 +34,11 @@ if ($field->hasUseImage() && $field->getUseImage()) {
     
     $apiKey = Config::get('apiKeys');
     $apiKey = $apiKey['google'];
+
+    $this->requireJsRemote('https://maps.googleapis.com/maps/api/js?key=' . $apiKey . '&sensor=false');
+
     ?>
 
     <div class="spatial gmaps"></div>
-
-    <script type="text/javascript"
-        src="https://maps.googleapis.com/maps/api/js?key=<?php echo $apiKey; ?>&sensor=false">
-    </script>
     
 <?php } ?>

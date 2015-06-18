@@ -3,6 +3,15 @@
 abstract class Ajde_Shop_Transaction extends Ajde_Model
 {
 	protected $_shippingModel;
+    protected $_itemModel;
+
+    public function __construct() {
+        parent::__construct();
+
+        $this->setEncryptedFields(array(
+            'ip', 'name', 'email', 'shipment_address', 'shipment_zipcode', 'shipment_city', 'shipment_region', 'shipment_country', 'shipment_description', 'shipment_trackingcode', 'shipment_secret'
+        ));
+    }
 	
 	// Payment
 	
@@ -39,6 +48,9 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
 
         // Added
         $this->added = new Ajde_Db_Function("NOW()");
+
+        // Event
+        Ajde_Event::trigger($this, 'onCreate');
 	}
 	
 	public function generateSecret($length = 255)
@@ -91,5 +103,48 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
 			return 'Order not found';
 		}		
 	}
+
+    public function setItemsFromCart(Ajde_Shop_Cart $cart)
+    {
+        // We can only add items if transaction exists
+        if (!$this->exists()) throw new Ajde_Exception('Can only add items to transaction if it exists');
+
+        // Clear current items
+        $items = new TransactionItemCollection();
+        $items->addFilter(new Ajde_Filter_Where('transaction', Ajde_Filter::FILTER_EQUALS, $this->getPK()));
+        $items->deleteAll();
+
+        // Add items
+        /** @var Ajde_Shop_Cart_Item $item */
+        foreach($cart->getItems() as $cartItem) {
+            $item = new TransactionItemModel();
+            $item->transaction = $this->getPK();
+            $item->entity = $cartItem->entity;
+            $item->entity_id = $cartItem->entity_id;
+            $item->unitprice = $cartItem->unitprice;
+            $item->qty = $cartItem->qty;
+            $item->insert();
+        }
+    }
+
+    /**
+     *
+     * @return Ajde_Collection
+     */
+    public function getItems()
+    {
+        $collectionClass = $this->_itemModel;
+        $collection = new $collectionClass();
+        $collection->addFilter(new Ajde_Filter_Where('transaction', Ajde_Filter::FILTER_EQUALS, $this->getPK()));
+        return $collection;
+    }
+
+    public function paid()
+    {
+        Ajde_Event::trigger($this, 'onPaid');
+
+        $this->payment_status = 'completed';
+        $this->save();
+    }
 	
 }

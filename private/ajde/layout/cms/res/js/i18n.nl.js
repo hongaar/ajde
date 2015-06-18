@@ -11,6 +11,10 @@ i18n = function() {
 		saving: "Bezig met opslaan...",
 		timeoutWarning: "De huidige pagina is bijna verlopen",
 		timeoutCountdown: "De huidige pagina is bijna verlopen, klik op 'Verder' binnen %s seconde om dit te voorkomen",
-		timedout: "Pagina is verlopen, vernieuw de pagina a.u.b."
+		timedout: "Pagina is verlopen, vernieuw de pagina a.u.b.",
+
+        shopAddedItem : "Product toegevoegd aan uw winkelwagen",
+        shopNextStep: "We gaan door naar de volgende stap...",
+        shopRedirectingPaymentProvider: "Een moment geduld a.u.b., u wordt binnen enkele ogenblikken doorverbonden met de betalingenprovider..."
 	}
 }();

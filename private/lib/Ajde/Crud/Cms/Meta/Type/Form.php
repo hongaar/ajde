@@ -26,7 +26,7 @@ class Ajde_Crud_Cms_Meta_Type_Form extends Ajde_Crud_Cms_Meta_Type
 	public function usePopup()
 	{
 		$field = $this->fieldFactory('popup');
-		$field->setLabel('Choose node from advanced list');
+		$field->setLabel('Choose form from advanced list');
 		$field->setType('boolean');
 		$this->addField($field);
 	}

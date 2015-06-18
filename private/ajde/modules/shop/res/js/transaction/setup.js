@@ -9,8 +9,8 @@ $(document).ready(function() {
 
 	$('form.transactionSetup').bind('result', function(event, data) {
 		if (data.success === false) {
-			$('dd.status').addClass('error');
-			$('dd.status').text(data.message);
+			$('.status').addClass('error');
+			$('.status').text(data.message);
 			if (typeof redirect === 'function') {
 				redirect();
 				redirect = true;
@@ -29,17 +29,20 @@ $(document).ready(function() {
 	});
 	$('form.transactionSetup').bind('submit', function(event) {
 		saveToLeave = true;
-		$('dd.status').removeClass('error');
-		$("dd.status").text('Getting ready for next step...');
+		$('.status').removeClass('error');
+		$('.status').text(i18n.shopNextStep);
 		return true;
 	});
-	
-	$('select[name=shipment_country]').on('change', function(e) {
+
+	$(':input[name=shipment_country]').on('change', function(e) {
 		var self = this;
 		redirect = function() {
 			$('#shipment').trigger('refresh', {country: $(self).val()});
 		};
-		$('form.transactionSetup').submit();		
+		$('form.transactionSetup').submit();
 	});
+    //setTimeout(function() {
+    //    $(':input[name=shipment_country]').trigger('change');
+    //}, 0);
 	
 });

@@ -7,7 +7,7 @@ class Ajde_Shop_Transaction_Provider_Test extends Ajde_Shop_Transaction_Provider
     }
 
     public function getLogo() {
-        return 'http://www.dotafire.com/images/skill/faceless-void-time-lock.png';
+        return 'https://lh4.ggpht.com/wKrDLLmmxjfRG2-E-k5L5BUuHWpCOe4lWRF7oVs1Gzdn5e5yvr8fj-ORTlBF43U47yI=w75';
     }
 
     public function usePostProxy() {
@@ -16,7 +16,7 @@ class Ajde_Shop_Transaction_Provider_Test extends Ajde_Shop_Transaction_Provider
 
     public function getRedirectUrl($description = null)
     {
-        return 'shop/transaction:test?txn=' . $this->getTransaction()->getPK();
+        return Config::get('site_root') . 'shop/transaction:test?txn=' . $this->getTransaction()->getPK();
     }
 
     public function getRedirectParams($description = null) {
@@ -33,8 +33,7 @@ class Ajde_Shop_Transaction_Provider_Test extends Ajde_Shop_Transaction_Provider
 
         if ($result) {
             $transaction->payment_details = 'paid with test';
-            $transaction->payment_status = 'completed';
-            $transaction->save();
+            $transaction->paid();
 
             return array(
                 'success' => true,

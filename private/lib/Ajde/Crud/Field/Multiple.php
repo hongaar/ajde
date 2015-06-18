@@ -153,8 +153,18 @@ class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
 			if ($this->getSortField()) {
 				$collection->orderBy($crossReferenceTable . '.' . $this->getSortField());
 			}
+
+            if ($this->hasCrossRefConstraints()) {
+                $constraints = $this->getCrossRefConstraints();
+                $group = new Ajde_Filter_WhereGroup();
+                foreach($constraints as $k => $v) {
+                    $group->addFilter(new Ajde_Filter_Where($k, Ajde_Filter::FILTER_EQUALS, $v));
+                }
+                $collection->addFilter($group);
+            }
 			
 //			echo $collection->getEmulatedSql();
+
 		} else {
 			$collection = $this->getCollection();
 			$collection->addFilter(new Ajde_Filter_Where($this->getParentName(), Ajde_Filter::FILTER_EQUALS, (string) $this->_crud->getModel()));

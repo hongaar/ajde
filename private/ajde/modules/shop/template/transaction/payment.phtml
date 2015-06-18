@@ -7,70 +7,92 @@ $transaction = $this->transaction;
 
 <div class="container main">
 
-    <h2>Payment</h2>
+    <div class="page-header">
+        <h2><?php echo __('Payment') ?></h2></h2>
+    </div>
 
     <?php if ($transaction->hasLoaded() === false) { ?>
 
-        <h4>Order not found</h4>
-        <p><a href='shop'>Back to shop</a></p>
+        <h4><?php echo __('Order not found') ?></h4>
+        <p><a href='shop'><?php echo __('Back to shop') ?></a></p>
 
     <?php } else { ?>
 
-        <?php echo $this->ACAjaxForm('shop/transaction:payment', null, 'transactionPayment'); ?>
+        <?php echo $this->ACAjaxForm('shop/transaction:payment', null, 'transactionPayment form-horizontal'); ?>
 
-            <h4>Choose method</h4>
-            <dl class='form wide'>
-                <dt>Total payable amount</dt>
-                <dd><?php echo $transaction->getFormattedTotal(); ?></dd>
+            <div class="status">
+                <?php echo __('Please choose your method of payment') ?>
+            </div>
 
-                <dt>&nbsp;</dt>
-                <dd><hr/></dd>
+            <div class="row">
+                <div class="col-md-12">
 
-                <?php
-                if ($transaction->payment_status == 'completed') {
-                    echo '<dt></dt><dd>This transaction is already paid for.</dd></dl>';
-                } elseif ($transaction->payment_status != 'pending') { ?>
-
-                    <dt>&nbsp;</dt>
-                    <dd>
-                        <p>
-                            Payment was already initiated for this order. If
-                            you canceled your payment, you can now reset the payment
-                            status of this transaction and try again.<br/>
-                            <br/>
-                            <a href="shop/transaction:resetPayment" class='action'>Reset payment</a> or go to the <a href="shop/transaction:view">overview of this order</a>
-                        </p>
-                    </dd>
-
-                    </dl>
-
-                <?php } else { ?>
-
-                    <dt>&nbsp;</dt>
-                    <dd class="status"><?php echo __('Please choose your method of payment') ?></dd>
-
-                    <dt>Payment provider:</dt>
-                    <dd class='provider'>
-                        <?php foreach($transaction->getProviders() as $key => $provider) {
-                            /* @var $provider Ajde_Shop_Transaction_Provider */ ?>
-                        <input type='radio' name='provider' value='<?php echo _e($key); ?>' id='<?php echo _e($key); ?>' /><label for='<?php echo _e($key); ?>'>
-                            <?php if ($provider->getLogo()) { ?>
-                                <img src='<?php echo _e($provider->getLogo()); ?>' alt='<?php echo _e($provider->getName()); ?>' width='75' style='vertical-align: middle;' />
-                            <?php } else { ?>
-                                <?php echo _e($provider->getName()); ?>
-                            <?php } ?>
-                        </label>
-                        <?php } ?>
-                    </dd>
-
-                    </dl>
-
-                    <div class='toolbar'>
-                        <input type='submit' class='action' value='Pay &amp; complete order' />
-                        <a href='shop/transaction:setup'>Edit shipping details</a>
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label"><?php echo __('Total payable amount', 'shop') ?></label>
+                        <div class="col-sm-7" style="padding-top: 7px;">
+                            <?php echo $transaction->getFormattedTotal(); ?>
+                        </div>
                     </div>
 
-                <?php } ?>
+                    <?php if ($transaction->payment_status == 'completed') { ?>
+
+                        <div class="col-sm-7 col-sm-offset-5">
+                            <p><?php echo __('This transaction is already paid for.') ?></p>
+                        </div>
+
+                    <?php } elseif ($transaction->payment_status != 'pending') { ?>
+
+                        <div class="col-sm-7 col-sm-offset-5">
+                            <p>
+                                <?php echo __('Payment was already initiated for this order. If you canceled your payment, you can now reset the payment status of this transaction and try again.') ?>
+                            </p>
+                            <p>
+                                <a href="shop/transaction:resetPayment" class="btn btn-info">
+                                    <span class="glyphicon glyphicon-repeat"></span>
+                                    <?php echo __('Try again'); ?>
+                                </a>
+                                <?php echo __('or'); ?> <a href="shop/transaction:view"><?php echo __('View current order'); ?></a>
+                            </p>
+                        </div>
+
+                    <?php } else { ?>
+
+                        <div class="form-group">
+                            <label class="col-sm-5 control-label"><?php echo __('Choose payment method', 'shop') ?></label>
+                            <div class="col-sm-7 provider">
+
+                                <?php foreach($transaction->getProviders() as $key => $provider) {
+                                    /* @var $provider Ajde_Shop_Transaction_Provider */ ?>
+                                    <label for='<?php echo _e($key); ?>'>
+                                        <input type='radio' name='provider' value='<?php echo _e($key); ?>' id='<?php echo _e($key); ?>' />
+                                        <?php if ($provider->getLogo()) { ?>
+                                            <img src='<?php echo _e($provider->getLogo()); ?>' alt='<?php echo _e($provider->getName()); ?>' width='75' style='vertical-align: middle;' />
+                                        <?php } else { ?>
+                                            <?php echo _e($provider->getName()); ?>
+                                        <?php } ?>
+                                    </label>
+                                <?php } ?>
+
+                            </div>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class='toolbar'>
+                            <button type='submit' class='pull-right btn btn-success btn-lg'>
+                                <?php echo _e(__('Pay and complete order', 'shop')); ?>
+                                <span class="glyphicon glyphicon-chevron-right"></span>
+                            </button>
+                            <a href='shop/transaction:setup'>
+                                <span class="glyphicon glyphicon-chevron-left"></span>
+                                <?php echo __('Edit shipping details', 'shop'); ?>
+                            </a>
+                        </div>
+
+                    <?php } ?>
+
+                </div>
+            </div>
 
         </form>
 

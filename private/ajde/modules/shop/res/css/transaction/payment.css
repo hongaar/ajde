@@ -1,5 +1,22 @@
-form.transactionPayment dd.provider label {
-	margin-right: 30px;
+/*#!less*/
+
+form.transactionPayment .provider label {
+    display: inline-block;
+    margin: 0 0 10px 0;
+    padding: 5px;
+    vertical-align: top;
+
+    cursor: pointer;
+
+    border-radius: 5px;
+
+    &:hover {
+        background-color: #eee;
+    }
+
+    &.active {
+        background-color: #5cb85c;
+    }
 }
 
 #postproxy {

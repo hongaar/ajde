@@ -66,6 +66,17 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 	 * @return Ajde_Crud_Options_Fields_Field 
 	 */
 	public function setLength($length) { return $this->_set('length', $length); }
+
+    /**
+     * Sets the options for an ENUM/SET field
+     *
+     * @param $array
+     * @return $this
+     */
+    public function setOptions($array)
+    {
+        return $this->_set('length', implode(', ', $array));
+    }
 	
 	/**
 	 * Overrides whether the field is required
@@ -202,8 +213,22 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 	 * @param string $table
 	 * @return Ajde_Crud_Options_Fields_Field 
 	 */
-	public function setCrossReferenceTable($table) { return $this->_set('crossReferenceTable', $table); }	
-	
+	public function setCrossReferenceTable($table) { return $this->_set('crossReferenceTable', $table); }
+
+    /**
+     * Sets an extra constraint for the cross reference table
+     *
+     * @param string $field
+     * @param string $value
+     * @return Ajde_Crud_Options_Fields_Field
+     */
+    public function addCrossReferenceTableConstraint($field, $value)
+    {
+        $constraints = ($this->has('crossRefConstraints') ? $this->get('crossRefConstraints') : array());
+        $constraints[$field] = $value;
+        return $this->_set('crossRefConstraints', $constraints);
+    }
+
 	/**
 	 * Display the label?
 	 * 

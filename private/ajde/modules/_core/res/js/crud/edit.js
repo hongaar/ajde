@@ -126,9 +126,13 @@ AC.Crud.Edit = function() {
 				
 				// get value
 				if ($this.attr('type') === 'radio') {
+                    // Don't execute for unchecked radio boxes
+                    if (!$this.is(':checked')) return;
+
 					if ($this.filter(':checked').length) {
 						val = $(':input[name=' + name + ']:checked').val();
 					}
+                    //if (!val) return; // Don't execute for empty (unchecked) values
 				} else if ($this[0].nodeName === 'SELECT') {
 					val = $this.find('option:selected').val();
 				} else {

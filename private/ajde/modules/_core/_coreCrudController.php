@@ -573,14 +573,35 @@ class _coreCrudController extends Ajde_Acl_Controller
 			if ($all === true) {
 				$parentField = (string) $model->getTable();
 				$sql = 'DELETE FROM '.$fieldProperties['crossReferenceTable'].' WHERE '.$parentField.' = ?';
+                $values = array($parentId);
+
+                // Setup constraints
+                if (isset($fieldProperties['crossRefConstraints'])) {
+                    foreach($fieldProperties['crossRefConstraints'] as $k => $v) {
+                        $sql .= ' AND ' . $k . ' = ?';
+                        $values[] = $v;
+                    }
+                }
+
 				$statement = $model->getConnection()->prepare($sql);
-				$success = $statement->execute(array($parentId));		
+				$success = $statement->execute($values);
 			} else {
 				$childField = isset($fieldProperties['childField']) ? $fieldProperties['childField'] : $modelName;
 				$parentField = (string) $model->getTable();
-				$sql = 'DELETE FROM '.$fieldProperties['crossReferenceTable'].' WHERE '.$parentField.' = ? AND '.$childField.' = ? LIMIT 1';
+				$sql = 'DELETE FROM '.$fieldProperties['crossReferenceTable'].' WHERE '.$parentField.' = ? AND '.$childField.' = ?';
+                $values = array($parentId, $id);
+
+                // Setup constraints
+                if (isset($fieldProperties['crossRefConstraints'])) {
+                    foreach($fieldProperties['crossRefConstraints'] as $k => $v) {
+                        $sql .= ' AND ' . $k . ' = ?';
+                        $values[] = $v;
+                    }
+                }
+
+                $sql .= ' LIMIT 1';
 				$statement = $model->getConnection()->prepare($sql);
-				$success = $statement->execute(array($parentId, $id));			
+				$success = $statement->execute($values);
 			}
 		} else {
 			$childClass = ucfirst($modelName) . 'Model';
@@ -593,7 +614,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 		return array(
 			'operation' => 'deleteMultiple',			
 			'success' => $success,
-			'message' => ucfirst($fieldName) . (isset($fieldProperties['crossReferenceTable']) ? ' disconnected' : ' deleted')
+			'message' => ucfirst($modelName) . (isset($fieldProperties['crossReferenceTable']) ? ' disconnected' : ' deleted')
 		);
 	}
 	
@@ -624,9 +645,18 @@ class _coreCrudController extends Ajde_Acl_Controller
 			
 			// Already in there?
 			$parentField = (string) $model->getTable();
-			$sql = 'SELECT * FROM '.$fieldProperties['crossReferenceTable'].' WHERE '.$parentField.' = ? AND '.$childField.' = ? LIMIT 1';
+            $values = array($parentId, $id);
+			$sql = 'SELECT * FROM ' . $fieldProperties['crossReferenceTable'];
+            $sql .= ' WHERE ' . $parentField . ' = ? AND ' . $childField . ' = ?';
+            if (isset($fieldProperties['crossRefConstraints'])) {
+                foreach($fieldProperties['crossRefConstraints'] as $k => $v) {
+                    $sql .= ' AND ' . $k . ' = ?';
+                    $values[] = $v;
+                }
+            }
+            $sql .= ' LIMIT 1';
 			$statement = $model->getConnection()->prepare($sql);
-			$success = $statement->execute(array($parentId, $id));			
+			$success = $statement->execute($values);
 			$result = $statement->fetch(PDO::FETCH_ASSOC);	
 			if ($success === true && $result !== false && !empty($result)) {
 				return array(
@@ -634,10 +664,11 @@ class _coreCrudController extends Ajde_Acl_Controller
 					'success' => false,
 					'message' => ucfirst($fieldName) . ' already connected'
 				);
-			}			
+			}
 			
 			// Sql to use when no sorting
-			$endSql = ') VALUES (?, ?)';
+            $fieldList = '';
+            $valueList = '?, ?';
 			$values = array($parentId, $id);
 			
 			// Sort fields?
@@ -655,13 +686,23 @@ class _coreCrudController extends Ajde_Acl_Controller
 						} else {
 							$sortValue = $result['max'] + 1;
 						}
-						$endSql = ', ' . $extraField['name'] . ') VALUES (?, ?, ?)';
+                        $fieldList .= ', ' . $extraField['name'];
+                        $valueList = '?, ?, ?';
 						$values[] = $sortValue;
 					}
 				}
 			}
+
+            // Setup constraints
+            if (isset($fieldProperties['crossRefConstraints'])) {
+                foreach($fieldProperties['crossRefConstraints'] as $k => $v) {
+                    $fieldList .= ', ' .$k;
+                    $valueList .= ', ?';
+                    $values[] = $v;
+                }
+            }
 			
-			$sql = 'INSERT INTO ' . $fieldProperties['crossReferenceTable'] . ' (' . $parentField . ', ' . $childField . $endSql;
+			$sql = 'INSERT INTO ' . $fieldProperties['crossReferenceTable'] . ' (' . $parentField . ', ' . $childField . $fieldList . ') VALUES (' . $valueList . ')';
 			$statement = $model->getConnection()->prepare($sql);
 			$success = $statement->execute($values);
 			$lastId = $model->getConnection()->lastInsertId();
@@ -673,7 +714,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 			'operation' => 'addMultiple',			
 			'success' => $success,
 			'lastId' => $lastId,
-			'message' => $success ? ucfirst($fieldName) . ' added' : 'An error occured'
+			'message' => $success ? ucfirst($modelName) . ' added' : 'An error occured'
 		);
 	}
 	

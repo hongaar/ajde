@@ -4,78 +4,114 @@
 
 <div class="container main">
 
-    <h2>Shipping details</h2>
+    <div class="page-header">
+        <h2><?php echo __('Shipping details') ?></h2>
+    </div>
 
-    <?php echo $this->ACAjaxForm('shop/transaction:setup', null, 'transactionSetup'); ?>
+    <?php echo $this->ACAjaxForm('shop/transaction:setup', null, 'transactionSetup form-horizontal'); ?>
 
-        <h4>Your name and address</h4>
-        <dl class='form wide'>
-            <dt>&nbsp;</dt>
-            <dd class="status"><?php echo __('Please fill in your details') ?></dd>
+        <div class="status">
+            <?php echo __('Please fill in your details', 'shop') ?>
+        </div>
 
-            <dt>Full name</dt>
-            <dd>
-                <input type='text' name='name' required value='<?php echo _e($this->name); ?>' />
-            </dd>
+        <div class="row">
+            <div class="col-md-6">
 
-            <dt>E-mail address</dt>
-            <dd>
-                <input type='text' name='email' required value='<?php echo _e($this->email); ?>' />
-            </dd>
+                <div class="col-sm-7 col-sm-offset-5">
+                    <h4><?php echo __('Your name and address', 'shop') ?></h4>
+                </div>
 
-            <dt>&nbsp;</dt>
-            <dd><hr/></dd>
+                <div class="form-group">
+                    <label for="name" class="col-sm-5 control-label"><?php echo __('Full name', 'shop') ?></label>
+                    <div class="col-sm-7">
+                        <input type='text' name='name' class="form-control" required value='<?php echo _e($this->name); ?>' />
+                    </div>
+                </div>
 
-            <dt>Address</dt>
-            <dd>
-                <input type='text' name='shipment_address' required value='<?php echo _e($this->address); ?>' />
-            </dd>
+                <div class="form-group">
+                    <label for="email" class="col-sm-5 control-label"><?php echo __('E-mail address', 'shop') ?></label>
+                    <div class="col-sm-7">
+                        <input type='text' name='email' class="form-control" required value='<?php echo _e($this->email); ?>' />
+                    </div>
+                </div>
 
-            <dt>Zipcode</dt>
-            <dd>
-                <input type='text' name='shipment_zipcode' required value='<?php echo _e($this->zipcode); ?>' />
-            </dd>
+                <hr/>
 
-            <dt>City</dt>
-            <dd>
-                <input type='text' name='shipment_city' required value='<?php echo _e($this->city); ?>' />
-            </dd>
+                <div class="form-group">
+                    <label for="shipment_address" class="col-sm-5 control-label"><?php echo __('Address', 'shop') ?></label>
+                    <div class="col-sm-7">
+                        <input type='text' name='shipment_address' class="form-control" required value='<?php echo _e($this->address); ?>' />
+                    </div>
+                </div>
 
-            <dt>Region</dt>
-            <dd>
-                <input type='text' name='shipment_region' value='<?php echo _e($this->region); ?>' /> (optional)
-            </dd>
+                <div class="form-group">
+                    <label for="shipment_zipcode" class="col-sm-5 control-label"><?php echo __('Zipcode', 'shop') ?></label>
+                    <div class="col-sm-7">
+                        <input type='text' name='shipment_zipcode' class="form-control" required value='<?php echo _e($this->zipcode); ?>' />
+                    </div>
+                </div>
 
-            <dt>Country</dt>
-            <dd>
-                <?php include 'countries.phtml'; ?>
-                <?php countryList($this->country, 'shipment_country', array('The Netherlands')); ?>
-            </dd>
+                <div class="form-group">
+                    <label for="shipment_city" class="col-sm-5 control-label"><?php echo __('City', 'shop') ?></label>
+                    <div class="col-sm-7">
+                        <input type='text' name='shipment_city' class="form-control" required value='<?php echo _e($this->city); ?>' />
+                    </div>
+                </div>
 
-            <?php if ($this->user) { ?>
-            <dt></dt>
-            <dd>
-                <input type='checkbox' name='save_details' checked="checked" id='save_details' /><label for='save_details'>Save shipping details for next order</label>
-            </dd>
-            <?php } ?>
+                <div class="form-group">
+                    <label for="shipment_region" class="col-sm-5 control-label"><?php echo __('Region', 'shop') ?></label>
+                    <div class="col-sm-7">
+                        <input type='text' name='shipment_region' class="form-control" value='<?php echo _e($this->region); ?>' placeholder="<?php echo __('Optional', 'shop') ?>" />
+                    </div>
+                </div>
 
-            <dt>&nbsp;</dt>
-            <dd><hr/></dd>
+                <div class="form-group">
+                    <label for="shipment_country" class="col-sm-5 control-label"><?php echo __('Country', 'shop') ?></label>
+                    <div class="col-sm-7">
+                        <?php
+                        $countries = Ajde_Core_Autoloader::getFile(MODULE_DIR . 'shop' . DIRECTORY_SEPARATOR . TEMPLATE_DIR . DIRECTORY_SEPARATOR . 'transaction' . DIRECTORY_SEPARATOR, 'countries.phtml');
+                        include $countries;
+                        ?>
+                        <?php countryList($this->country, 'shipment_country', array('The Netherlands'), 'form-control'); ?>
+                    </div>
+                </div>
 
-            <dt>Comment</dt>
-            <dd>
-                <textarea name='comment' rows="7" cols="50"><?php echo _e($this->comment); ?></textarea><br/>
-                 (optional)
-            </dd>
-        </dl>
+                <?php if ($this->user) { ?>
+                    <div class="form-group">
+                        <div class="col-sm-7 col-sm-offset-5">
+                            <div class="checkbox">
+                                <label for='save_details'>
+                                    <input type='checkbox' name='save_details' checked="checked" id='save_details' />
+                                    <?php echo __('Save shipping details for next order', 'shop') ?>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
 
-        <div id='shipment'>
-            <?php echo $this->includeModule('shop/transaction:shipment'); ?>
+            </div>
+            <div class="col-md-6">
+
+                <div id='shipment'>
+                    <?php echo $this->includeModule('shop/transaction:shipment'); ?>
+                </div>
+
+                <div class="form-group">
+                    <label for="comment" class="col-sm-5 control-label"><?php echo __('Comment', 'shop') ?></label>
+                    <div class="col-sm-7">
+                        <textarea name='comment' rows="7" cols="50" class="form-control" placeholder="<?php echo __('Optional', 'shop') ?>"><?php echo _e($this->comment); ?></textarea>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
         <div class='toolbar'>
-            <input type='submit' class='action' value='Proceed to payment' />
-            <a href='shop/transaction:view'>Order overview</a>
+            <button type='submit' class='pull-right btn btn-success btn-lg'>
+                <?php echo __('Proceed to payment', 'shop'); ?>
+                <span class="glyphicon glyphicon-chevron-right"></span>
+            </button>
+            <a href='shop/transaction:view'><?php echo __('View current order', 'shop') ?></a>
         </div>
 
     </form>

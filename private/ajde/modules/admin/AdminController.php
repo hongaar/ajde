@@ -2,6 +2,8 @@
 
 class AdminController extends Ajde_Acl_Controller
 {
+    protected $_allowedActions = array('nav');
+
 	/**
 	 * Optional function called before controller is invoked
 	 * When returning false, invocation is cancelled

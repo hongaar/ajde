@@ -41,7 +41,9 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
         $transaction->payment_providerid = $payment->id;
         $transaction->save();
 
-        return $payment->getPaymentUrl();
+        $url = $payment->getPaymentUrl();
+
+        return $this->ping($url) ? $url : false;
     }
 
     public function getRedirectParams($description = null) {
@@ -123,9 +125,9 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
             case "paid":
                 $paid = true;
                 // update transaction only once
-                if ($transaction->payment_status != 'completed') {
-                    $transaction->payment_status = 'completed';
-                    $transaction->save();
+                if ($transaction->payment_status != 'completed')
+                {
+                    $transaction->paid();
                     $changed = true;
                 }
                 break;

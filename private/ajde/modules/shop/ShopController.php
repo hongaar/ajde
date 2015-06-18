@@ -120,6 +120,11 @@ class ShopController extends Ajde_Acl_Controller
 				
 		$cart = new CartModel();
 		$cart->loadCurrent();
+
+        // Can we skip this step?
+        if (!$transaction->hasLoaded() && !Config::get('shopOfferLogin') && $cart->hasItems()) {
+            $this->redirect('shop/transaction:setup');
+        }
 		
 		$this->getView()->assign('cart', $cart);
 		$this->getView()->assign('user', $this->getLoggedInUser());

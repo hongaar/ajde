@@ -1,0 +1,13 @@
+/*#!less*/
+
+table.order {
+    > tbody > tr > td:not(.left):first-child {
+        text-align: right;
+    }
+    > tbody > tr > td:not(:first-child) {
+        font-weight: bold;
+    }
+    img {
+        float: right;
+    }
+}

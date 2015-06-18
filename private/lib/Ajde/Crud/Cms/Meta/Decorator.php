@@ -23,6 +23,14 @@ class Ajde_Crud_Cms_Meta_Decorator extends Ajde_Object_Standard
 	public function __construct() {
 		$this->meta = new Ajde_Crud_Cms_Meta();
 	}
+
+    /**
+     * @return Ajde_Crud_Cms_Meta
+     */
+    public function getMetaObject()
+    {
+        return $this->meta;
+    }
 	
 	public function setActiveRow($row)
 	{

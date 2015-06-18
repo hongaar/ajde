@@ -144,9 +144,13 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 				}
 				$style = '<style>' . $style . '</style>';
 
-                $collapsed = '<div id="details">' . $exceptionDump . $exceptionMessage . $traceMessage . '</div>';
-
-                $header = '<header><h1><img src="' . Config::get('site_root') . MEDIA_DIR . 'ajde-small.png">Something went wrong</h1><a href="javascript:history.go(-1);">Go back</a> <a href="#details">Show details</a></header>';
+                if (Ajde::app()->getRequest()->isAjax()) {
+                    $collapsed = $exceptionDump . $exceptionMessage . $traceMessage;
+                    $header = '';
+                } else {
+                    $collapsed = '<div id="details">' . $exceptionDump . $exceptionMessage . $traceMessage . '</div>';
+                    $header = '<header><h1><img src="' . Config::get('site_root') . MEDIA_DIR . 'ajde-small.png">Something went wrong</h1><a href="javascript:history.go(-1);">Go back</a> <a href="#details">Show details</a></header>';
+                }
 
 				$message = $style . $header . $collapsed;
 				break;

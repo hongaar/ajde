@@ -5,12 +5,19 @@ abstract class Ajde_Crud_Cms_Meta_Type extends Ajde_Crud_Cms_Meta_Fieldlist
 	private $_forbiddenFieldNames = array(
 		'values', 'options', 'type'
 	);
+
+    protected $niceName = false;
 	
 	public function className()
 	{
 		$className = get_class($this);
 		return strtolower(substr($className, strrpos($className, '_') + 1));	
 	}
+
+    public function niceName()
+    {
+        return $this->niceName ? $this->niceName : ucfirst($this->className());
+    }
 	
 	/**
 	 * Gets called before model save of this meta type

@@ -20,7 +20,10 @@ class Ajde_Crud_Cms_Meta extends Ajde_Crud_Cms_Meta_Fieldlist
 	public function __construct() {
 		
 	}
-	
+
+    /**
+     * @return Ajde_Crud_Cms_Meta_Type[]
+     */
 	public function getTypes()
 	{
 		if (!$this->_types) {
@@ -31,9 +34,23 @@ class Ajde_Crud_Cms_Meta extends Ajde_Crud_Cms_Meta_Fieldlist
 				$className = "Ajde_Crud_Cms_Meta_Type_" . ucfirst($filename);
 				$this->_types[strtolower($filename)] = new $className();
 			}
+            ksort($this->_types);
 		}
 		return $this->_types;
 	}
+
+    /**
+     * @return array
+     */
+    public function getTypesNiceNames()
+    {
+        $list = array();
+        foreach($this->getTypes() as $type)
+        {
+            $list[] = $type->niceName();
+        }
+        return $list;
+    }
 	
 	/**
 	 * 

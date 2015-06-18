@@ -7,95 +7,186 @@ $transaction = $this->transaction;
 
 <div class="container main">
 
-    <h2>Order</h2>
+    <div class="page-header">
+        <h2><?php echo __('Order'); ?></h2>
+    </div>
 
     <?php if ($transaction->hasLoaded() === false) { ?>
 
-        <h4>Order not found</h4>
-        <p><a href='shop'>Back to shop</a></p>
+        <h4><?php echo __('Order not found'); ?></h4>
+        <p><a href='shop'><?php echo __('Back to shop'); ?></a></p>
 
     <?php } else { ?>
 
-        <h4>Details</h4>
-        <dl>
-            <dt>Full name</dt>
-            <dd><?php echo _e($transaction->name); ?></dd>
+        <div class="row">
+            <div class="col-md-6">
 
-            <dt>E-mail address</dt>
-            <dd><?php echo _e($transaction->email); ?></dd>
+                <table class="table table-condensed order">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>
+                                <h4><?php echo __('Details'); ?></h4>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><?php echo __('Full name', 'shop') ?></td>
+                            <td><?php echo _e($transaction->name); ?></td>
+                        </tr>
+                        <tr>
+                            <td><?php echo __('E-mail address', 'shop') ?></td>
+                            <td><?php echo _e($transaction->email); ?></td>
+                        </tr>
+                        <tr>
+                            <td><?php echo __('Address', 'shop') ?></td>
+                            <td><?php echo _e($transaction->shipment_address); ?></td>
+                        </tr>
+                        <tr>
+                            <td><?php echo __('Zipcode', 'shop') ?></td>
+                            <td><?php echo _e($transaction->shipment_zipcode); ?></td>
+                        </tr>
+                        <tr>
+                            <td><?php echo __('City', 'shop') ?></td>
+                            <td><?php echo _e($transaction->shipment_city); ?></td>
+                        </tr>
+                        <tr>
+                            <td><?php echo __('Region', 'shop') ?></td>
+                            <td><?php echo _e($transaction->shipment_region); ?></td>
+                        </tr>
+                        <tr>
+                            <td><?php echo __('Country', 'shop') ?></td>
+                            <td><?php echo _e($transaction->shipment_country); ?></td>
+                        </tr>
+                    </tbody>
+                </table>
 
-            <dt>&nbsp;</dt>
-            <dd><hr/></dd>
+                <table class="table table-condensed order">
+                    <thead>
+                    <tr>
+                        <th>
+                            <h4><?php echo __('Comment'); ?></h4>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="left">
+                            <?php echo _e($transaction->comment); ?>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
 
-            <dt>Address</dt>
-            <dd><?php echo _e($transaction->shipment_address); ?></dd>
+            </div>
+            <div class="col-md-6">
 
-            <dt>Zipcode</dt>
-            <dd><?php echo _e($transaction->shipment_zipcode); ?></dd>
+                <table class="table table-condensed order">
+                    <thead>
+                    <tr>
+                        <th>
+                            <h4><?php echo __('Order'); ?></h4>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class='summary'>
+                            <?php echo _c($transaction->shipment_description); ?>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
 
-            <dt>City</dt>
-            <dd><?php echo _e($transaction->shipment_city); ?></dd>
+                <table class="table table-condensed order">
+                    <thead>
+                        <tr>
+                            <th>
+                                <h4><?php echo __('Shipment method'); ?></h4>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="left">
+                                <?php echo _c($transaction->getShipping()->getCurrentMethod()->getDescription()); ?>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 
-            <dt>Region</dt>
-            <dd><?php echo _e($transaction->shipment_region); ?></dd>
+                <table class="table table-condensed order">
+                    <thead>
+                        <tr>
+                            <th>
+                                <h4><?php echo __('Status'); ?></h4>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="left">
+                                <?php switch($transaction->payment_status) {
+                                    case 'pending':
+                                        echo __('Not paid');
+                                        break;
+                                    case 'requested':
+//                                        echo __('Payment in progress');
+                                        ?>
 
-            <dt>Country</dt>
-            <dd><?php echo _e($transaction->shipment_country); ?></dd>
+                                        <p>
+                                            <?php echo __('Payment was already initiated for this order. If you canceled your payment, you can now reset the payment status of this transaction and try again.') ?>
+                                        </p>
+                                        <p>
+                                            <a href="shop/transaction:resetPayment" class="btn btn-info">
+                                                <span class="glyphicon glyphicon-repeat"></span>
+                                                <?php echo __('Try again'); ?>
+                                            </a>
+                                        </p>
 
-            <dt>&nbsp;</dt>
-            <dd><hr/></dd>
+                                        <?php
+                                        break;
+                                    case 'refused':
+                                        echo __('Payment refused');
+                                        break;
+                                    case 'cancelled':
+                                        echo __('Cancelled');
+                                        break;
+                                    case 'completed': ?>
 
-            <dt>Comment</dt>
-            <dd><?php echo _e($transaction->comment); ?></dd>
+                                        <p>
+                                            <img src='<?php echo _e($transaction->getProvider()->getLogo()); ?>' width='75' style='vertical-align: middle;' class="pull-right" />
+                                            <?php echo __('Paid'); ?> <?php echo __('with'); ?>
+                                            <?php echo $transaction->getProvider()->getName(); ?>
+                                        </p>
 
-            <dt>&nbsp;</dt>
-            <dd><hr/></dd>
+                                        <?php break;
+                                } ?>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 
-            <dt>Products</dt>
-            <dd class='summary'><?php echo _c($transaction->shipment_description); ?></dd>
-
-            <dt>&nbsp;</dt>
-            <dd><hr/></dd>
-
-            <dt>Shipment method</dt>
-            <dd><?php echo _e($transaction->shipment_method); ?></dd>
-
-            <dt>&nbsp;</dt>
-            <dd><hr/></dd>
-
-            <dt>Status</dt>
-            <dd>
-                <?php switch($transaction->payment_status) {
-                    case 'pending':
-                        echo 'Not paid';
-                        break;
-                    case 'requested':
-                        echo 'Payment in progress';
-                        break;
-                    case 'refused':
-                        echo 'Payment refused';
-                        break;
-                    case 'cancelled':
-                        echo 'Cancelled';
-                        break;
-                    case 'completed':
-                        echo 'Paid';
-                        break;
-                } ?>
-            </dd>
-        </dl>
-
-        <div class='clearfix'></div>
+            </div>
+        </div>
 
         <?php if ($this->source == 'session' && $transaction->payment_status == 'pending') { ?>
             <div class='toolbar'>
-                <a href='shop/transaction:setup' class='action'>Continue with order</a>
-                <a href='shop/transaction:cancel'>Cancel order</a> or <a href='shop'>continue shopping</a>
+                <a href='shop/transaction:setup' class='btn btn-success btn-lg pull-right'>
+                    <?php echo __('Continue with order'); ?>
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                </a>
+                <a href='shop/transaction:cancel' class="btn btn-danger"><?php echo __('Cancel order'); ?></a>
+                <?php echo __('or'); ?>
+                <a href='shop'><?php echo __('continue shopping'); ?></a>
             </div>
         <?php } elseif ($this->source == 'session' && $transaction->payment_status == 'refused') { ?>
             <div class='toolbar'>
-                <a href='shop/transaction:resetPayment' class='action'>Reset payment and try again</a>
-                <a href='shop/transaction:cancel'>Cancel order</a>
+                <a href='shop/transaction:resetPayment' class='btn btn-success btn-lg pull-right'>
+                    <?php echo __('Reset payment and try again'); ?>
+                </a>
+                <a href='shop/transaction:cancel' class="btn btn-danger"><?php echo __('Cancel order'); ?></a>
             </div>
         <?php } ?>
 

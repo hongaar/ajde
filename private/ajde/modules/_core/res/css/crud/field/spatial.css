@@ -8,6 +8,10 @@ div.spatial img, img.spatial {
     /*max-width: inherit;*/
 }
 
+div.spatial.gmaps {
+    display: block;
+}
+
 div.spatial.gmaps img {
     max-width: none;
 }

@@ -18,13 +18,15 @@ class Config
 		'/127\.0\.0\.1/',
 		'/10\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/',
 		'/172\.[1-3][0-9]\.[0-9]{1,3}\.[0-9]{1,3}/',
-		'/192\.168\.[0-9]{1,3}\.[0-9]{1,3}/'
+		'/192\.168\.[0-9]{1,3}\.[0-9]{1,3}/',
+        '/109\.237\.220\.206/'
 	);
 
-	/**
-	 *
-	 * @return Config_Application
-	 */
+    /**
+     *
+     * @param string $stage
+     * @return Config_Application
+     */
 	public static function getInstance($stage = null) {
 		$stage = self::_getStage($stage);
 		static $instance = array();
@@ -42,11 +44,13 @@ class Config
 		return $instance[$stage];
 	}
 
-	/**
-	 *
-	 * @param string $param
-	 * @return mixed
-	 */
+    /**
+     *
+     * @param string $param
+     * @param string $stage
+     * @return mixed
+     * @throws Ajde_Exception
+     */
 	public static function get($param, $stage = null) {
 		$stage = self::_getStage($stage);
 		$instance = self::getInstance($stage);
@@ -81,7 +85,7 @@ class Config
 	private static function _getAutoStage()
 	{
 		foreach(self::$local as $pattern)
-		if (preg_match($pattern, $_SERVER['REMOTE_ADDR'])) {
+		if (preg_match($pattern, $_SERVER['SERVER_ADDR'])) {
 			return self::STAGE_DEV;
 		}
 		return self::STAGE_LIVE;

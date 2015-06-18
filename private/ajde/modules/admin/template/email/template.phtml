@@ -74,6 +74,12 @@ $options
 
 $crud = $this->ACCrudList('template', $options);
 
+if (Ajde::app()->getRequest()->hasNotEmpty('edit')) {
+    $crud->setOption('fields.master.advancedFilter', array(
+        new Ajde_Filter_Where('id', Ajde_Filter::FILTER_EQUALSNOT, Ajde::app()->getRequest()->get('edit'))
+    ));
+}
+
 ?>
 
 <div class="row-fluid">

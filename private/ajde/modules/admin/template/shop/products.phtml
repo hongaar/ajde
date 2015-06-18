@@ -24,6 +24,9 @@ $options
 		->selectField('sort')
 			->setType('sort')
 			->up()
+        ->selectField('stock')
+			->setLabel('Stock')
+			->up()
 		->selectField('unitprice')
 			->setHelp('Sets the unit price')
 			->up()
@@ -47,7 +50,7 @@ $options
             ->setViewUrlFunction('getSlug')
 			->up()
 		->setMain('title')
-		->setShow(array('title', 'updated', 'image', 'unitprice', 'vat', 'published', 'sort'))
+		->setShow(array('title', 'image', 'unitprice', 'vat', 'stock', 'published', 'sort', 'updated'))
 		->selectView()
 			->setOrderBy('sort')
 			->up()
@@ -76,7 +79,7 @@ $options
 					->addBlock()
 						->setTitle('Metadata')
 						->setClass('well')
-						->setShow(array('updated', 'published', 'slug', 'user'))
+						->setShow(array('updated', 'stock', 'published', 'slug', 'user'))
 						->up()
 
 	->finished();
