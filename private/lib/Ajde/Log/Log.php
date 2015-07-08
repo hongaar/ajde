@@ -21,7 +21,7 @@ class Ajde_Log extends Ajde_Object_Static
 	private static function getWriters()
 	{
         $writerArray = Config::get('logWriter');
-        $writers = array();
+        $getWriters = array();
         foreach($writerArray as $writer) {
             $getWriters[] = 'Ajde_Log_Writer_' . ucfirst($writer);
         }

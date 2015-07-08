@@ -202,15 +202,12 @@ Ajde_Model::register('admin');
 		</script>
 		
 		<!-- updatemybrowser.org widget -->
-        <!--
-		<script>
-		(function() {
-			var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
-			s.src = '//updatemybrowser.org/umb.js';
-			var b = document.getElementsByTagName('script')[0]; b.parentNode.insertBefore(s, b);
-		})();
-		</script>
-		-->
+        <script>
+            (function(u) {
+                var s = document.createElement('script'); s.async = true; s.src = u;
+                var b = document.getElementsByTagName('script')[0]; b.parentNode.insertBefore(s, b);
+            })('//updatemybrowser.org/umb.js');
+        </script>
 		
 	</body>
 </html>
