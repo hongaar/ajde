@@ -7,15 +7,13 @@ body {
     max-width: 80%;
     padding: 40px;
     border-radius: 10px;
-    background-color: white;
 
     font: 13px sans-serif;
 }
 
 header {
     background: #f8f8f8;
-    border-bottom: 1px solid #b62c27;
-    border-radius: 10px 10px 0 0;
+    border-radius: 10px;
     padding: 40px;
     margin: -40px -40px 40px -40px;
 }
@@ -30,14 +28,24 @@ h1 img {
 
 #details {
     max-height: 0;
+    opacity: 0;
     overflow: hidden;
 
-    -webkit-transition: all 10s ease-out;
-    transition: all 10s ease-out;
+    margin: -50px -40px 40px -40px;
+    padding: 40px;
+
+    background-color: #FFF;
+    border-top: 1px solid #b62c27;
+
+    border-radius: 0 0 10px 10px;
+
+    -webkit-transition: max-height 10s ease-out;
+    transition: max-height 10s ease-out;
 }
 
 #details:target {
     max-height: 9999px;
+    opacity: 1;
 }
 
 summary {
