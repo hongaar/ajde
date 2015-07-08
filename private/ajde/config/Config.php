@@ -60,6 +60,18 @@ class Config
 			throw new Ajde_Exception("Config parameter $param not set", 90004);
 		}
 	}
+
+    /**
+     *
+     * @param string $param
+     * @param mixed $value
+     * @return mixed
+     * @throws Ajde_Exception
+     */
+    public static function set($param, $value) {
+        $instance = self::getInstance();
+        $instance->$param = $value;
+    }
 	
 	public static function getAll($stage = null)
 	{

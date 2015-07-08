@@ -1,13 +1,13 @@
 <?php
 
-class Ajde_Shop_Transaction_Provider_Test extends Ajde_Shop_Transaction_Provider
+class Ajde_Shop_Transaction_Provider_Iban extends Ajde_Shop_Transaction_Provider
 {
     public function getName() {
-        return 'Test';
+        return __('IBAN bank transfer', 'shop');
     }
 
     public function getLogo() {
-        return MEDIA_DIR . '_core/shop/test.png';
+        return MEDIA_DIR . '_core/shop/iban.png';
     }
 
     public function usePostProxy() {
@@ -16,7 +16,7 @@ class Ajde_Shop_Transaction_Provider_Test extends Ajde_Shop_Transaction_Provider
 
     public function getRedirectUrl($description = null)
     {
-        return Config::get('site_root') . 'shop/transaction:test?txn=' . $this->getTransaction()->getPK();
+        return Config::get('site_root') . 'shop/transaction:iban?txn=' . $this->getTransaction()->getPK();
     }
 
     public function getRedirectParams($description = null) {
@@ -32,8 +32,8 @@ class Ajde_Shop_Transaction_Provider_Test extends Ajde_Shop_Transaction_Provider
         $result = !!$_GET['r'];
 
         if ($result) {
-            $transaction->payment_details = 'paid with test';
-            $transaction->paid();
+            $transaction->payment_status = 'requested';
+            $transaction->save();
 
             return array(
                 'success' => true,
@@ -41,9 +41,6 @@ class Ajde_Shop_Transaction_Provider_Test extends Ajde_Shop_Transaction_Provider
                 'transaction' => $transaction
             );
         } else {
-            $transaction->payment_status = 'refused';
-            $transaction->save();
-
             return array(
                 'success' => false,
                 'changed' => true,

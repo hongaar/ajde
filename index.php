@@ -23,7 +23,7 @@
 //	Check PHP version
 //	--------------------
 	if (version_compare(PHP_VERSION, '5.3.0') < 0) {
-		die('<h3>Ajde requires PHP/5.2.3 or higher.<br>You are currently running PHP/'.phpversion().'.</h3><p>You should contact your host to see if they can upgrade your version of PHP.</p>');
+		die('<h3>Ajde requires PHP/5.3.0 or higher.<br>You are currently running PHP/'.phpversion().'.</h3><p>You should contact your host to see if they can upgrade your version of PHP.</p>');
 	}
 
 //	--------------------

@@ -135,6 +135,10 @@ class Config_Advanced
         public $shopMollieLiveKey           = 'live_key';
         public $shopMollieTestKey           = 'test_key';
 
+    // PDF generator
+    public $pdfMethod           = 'web2pdf';
+    public $pdfWeb2PdfApi       = '';
+
     // Which modules should we call on bootstrapping?
 	public $bootstrap			= array(
 									'Ajde_Exception_Handler',

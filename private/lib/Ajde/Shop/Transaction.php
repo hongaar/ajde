@@ -76,6 +76,17 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
 	}
 	
 	// Helpers
+
+    public function getOrderId()
+    {
+        return date('Y') . str_pad($this->id + 1000, 6, '0', STR_PAD_LEFT);
+    }
+
+    public function displayOrderId()
+    {
+        $secret = '<span data-secret="' . $this->getSecret() . '"></span>';
+        return $secret . $this->getOrderId();
+    }
 	
 	protected function _format($value)
 	{

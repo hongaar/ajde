@@ -11,12 +11,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: _;gettext;gettext_noop;__\n"
 "X-Poedit-Basepath: .\n"
-"X-Poedit-Language: English\n"
+"X-Poedit-Language: Dutch\n"
 "X-Poedit-SearchPath-0: C:\\Documents and Settings\\Joram\\My Documents\\www\\ajde\\trunk\n"
 
 #: C:\Documents
 #: and Settings\Joram\My
 #: Documents\www\ajde\trunk/private/application/modules/main/template/view.phtml:1
 msgid "welcome"
-msgstr "Welcome to the default homepage"
+msgstr "Welkom op de standaard homepage"
 

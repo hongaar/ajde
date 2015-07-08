@@ -42,6 +42,16 @@ abstract class Ajde_User extends Ajde_Model
 		return ((string) self::getLoggedIn()->getUsergroup() == self::USERGROUP_ADMINS);
 	}
 
+    public static function isDebugger()
+    {
+        return ( ($user = self::getLoggedIn()) && $user->getDebug() );
+    }
+
+    public static function isTester()
+    {
+        return ( ($user = self::getLoggedIn()) && $user->getTester() );
+    }
+
     public function hasPassword()
     {
         return !$this->verifyHash('');

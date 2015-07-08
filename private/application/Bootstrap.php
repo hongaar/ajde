@@ -12,6 +12,11 @@ class Bootstrap extends Ajde_Object_Singleton
     {
         Ajde_Event::register('TransactionModel', 'onPaid', array($this, 'onTransactionPaid'));
         Ajde_Event::register('TransactionModel', 'onCreate', array($this, 'onTransactionCreated'));
+
+        if (UserModel::isTester()) {
+            Config::set('transactionProviders', array('mollie_ideal', 'iban', 'test'));
+        }
+
         return true;
     }
 

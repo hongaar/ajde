@@ -46,6 +46,20 @@ class ShopController extends Ajde_Acl_Controller
 		return $this->render();
 	}
 
+    public function legal()
+    {
+        if (!Ajde::app()->getDocument()->has('title')) {
+            Ajde::app()->getDocument()->setTitle('Legal');
+        }
+
+        return $this->render();
+    }
+
+    public function legalBody()
+    {
+        return $this->render();
+    }
+
     public function item()
     {
         // we want to display published nodes only

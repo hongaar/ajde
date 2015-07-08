@@ -80,7 +80,7 @@ AC.Crud.Edit.Text = function() {
 			[
 				{ name: 'basicstyles',	items : [ 'Styles','Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ] },
 				{ name: 'paragraph',	items : [ 'NumberedList','BulletedList','-','JustifyLeft','JustifyCenter','JustifyRight','-','Outdent','Indent' ] },
-				{ name: 'links',		items : [ 'Link','Unlink' ] },
+				{ name: 'links',		items : [ 'Link','Unlink','Anchor' ] },
 				{ name: 'insert',		items : [ 'Image','Table','SpecialChar' ] },
 				{ name: 'tools',		items : [ 'Maximize', 'ShowBlocks','Source' ] }
 			];

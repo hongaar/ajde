@@ -5,7 +5,7 @@ class TemplateModel extends Ajde_Model_With_I18n
 	protected $_autoloadParents = true;
 	protected $_displayField = 'name';
 
-    protected static $_cssInliner = 'emogrifier';
+    protected static $_cssInliner = 'emogrifier'; // one of passthrough|emogrifier|torchbox
 
     public function displayLang()
     {
@@ -69,12 +69,7 @@ class TemplateModel extends Ajde_Model_With_I18n
      */
     public static function inlineCss($html)
     {
-        $url = 'https://inlinestyler.torchbox.com:443/styler/convert/';
-        $data = array(
-            'returnraw' => '1',
-            'source' => $html
-        );
-        return Ajde_Http_Curl::post($url, $data);
+        throw new Ajde_Core_Exception_Deprecated('Use applyCssInliner instead');
     }
 
     public function getSubject()

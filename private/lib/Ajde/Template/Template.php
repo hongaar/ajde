@@ -159,6 +159,11 @@ class Ajde_Template extends Ajde_Object_Standard
 		return $this->_table[$key];
 	}
 
+    public function getAllAssigned()
+    {
+        return $this->_table;
+    }
+
 	public function getContents()
 	{
 		if (!isset($this->_contents))

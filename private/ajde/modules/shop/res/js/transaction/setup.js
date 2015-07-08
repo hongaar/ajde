@@ -17,7 +17,7 @@ $(document).ready(function() {
 			}
 		} else {
 			if (redirect === true) {
-				window.location.href = 'shop/transaction:payment';
+				window.location.href = $('base').attr('href') + 'shop/transaction:payment';
 			} else if (typeof redirect === 'function') {
 				redirect();
 				redirect = true;

@@ -7,7 +7,9 @@ class ShopTransactionController extends ShopController
 	{
 		Ajde_Model::register($this);			
 		$transaction = new TransactionModel();
-		
+
+        Ajde::app()->getDocument()->setTitle(__('Your order'));
+
 		// Get from ID
 		if ($this->hasNotEmpty('id')) {
 			if ($transaction->loadByField('secret', $this->getId()) !== false) {
@@ -24,6 +26,35 @@ class ShopTransactionController extends ShopController
 		$this->getView()->assign('transaction', $transaction);
 		return $this->render();
 	}
+
+    public function export()
+    {
+        Ajde_Model::register($this);
+        $transaction = new TransactionModel();
+
+        // Get from ID
+        if (!($this->hasNotEmpty('id') && $transaction->loadByField('secret', $this->getId()) !== false))
+        {
+            Ajde::app()->getResponse()->redirectNotFound();
+        }
+
+        /** @var Ajde_Document_Format_Generated $doc */
+        $doc = Ajde::app()->getDocument();
+        $url = Config::get('site_root') . 'shop/transaction:view/' . $this->getId() . '.html';
+        $filename = $transaction->getOrderId();
+
+        if ($this->getFormat() === 'pdf')
+        {
+            $pdf = $doc->generate(array(
+                'url' => $url,
+                'filename' => $filename
+            ));
+            $doc->setContentType('application/pdf');
+            Ajde::app()->getResponse()->addHeader('Content-Disposition', 'attachment; filename="' . $filename . '.pdf"');
+
+            return $pdf;
+        }
+    }
 		
 	public function setup()
 	{
@@ -336,6 +367,14 @@ class ShopTransactionController extends ShopController
 		Ajde_Model::register($this);
 		$transaction = new TransactionModel();		
 		$session = new Ajde_Session('AC.Shop');
+
+        // Get transaction from ID if available
+        if ($this->hasNotEmpty('id')) {
+            if ($transaction->loadByField('secret', $this->getId()) !== false) {
+                $session->set('currentTransaction', $transaction->getPK());
+            }
+        }
+
 		if ($session->has('currentTransaction') && $transaction->loadByPK($session->get('currentTransaction'))) {
 			$transaction->payment_provider = null;
 			$transaction->payment_status = 'pending';
@@ -343,6 +382,7 @@ class ShopTransactionController extends ShopController
 			$transaction->secret = $transaction->generateSecret();
 			$transaction->save();
 		}
+
 		$this->redirect('shop/transaction:payment');
 	}
 		
@@ -456,19 +496,10 @@ class ShopTransactionController extends ShopController
 		
 	public function mailUpdateAdmin(TransactionModel $transaction, $subject = null)
 	{
-		$recipient = Config::get('email');
-		$mailer = new Ajde_Mailer();
+        $recipient = Config::get('email');
 
-		$mailer->IsMail(); // use php mail()
-		$mailer->AddAddress($recipient, 'Site admin');
-		$mailer->From = $recipient;
-		$mailer->FromName = Config::get('sitename');
-		$mailer->Subject = (isset($subject) ? $subject : 'Order update');
-		$mailer->Body = $transaction->getOverviewHtml();
-		$mailer->IsHTML(true);
-		if (!$mailer->Send()) {
-			Ajde_Log::log('Mail to ' . $recipient . ' failed');
-		}
+        $mailer = new Ajde_Mailer();
+        $mailer->SendQuickMail($recipient, $recipient, Config::get('sitename'), isset($subject) ? $subject : 'Order update', $transaction->getOverviewHtml());
 	}
 	
 	public function mailUser(TransactionModel $transaction)
@@ -514,6 +545,12 @@ class ShopTransactionController extends ShopController
     public function test()
     {
         $this->setAction('test/confirm');
+        return $this->render();
+    }
+
+    public function iban()
+    {
+        $this->setAction('iban/confirm');
         return $this->render();
     }
 }

@@ -1,0 +1,44 @@
+/*#!less*/
+
+body {
+    margin: 0 0.5cm;
+    padding: 0;
+    font-size: 0.9em;
+}
+
+a[href]:after {
+    content: none;
+}
+
+.col-sm-6 {
+    width: 50%;
+    float: left;
+}
+
+header {
+    width: 100%;
+    height: auto;
+    text-align: right;
+    margin: 0;
+
+    .row {
+        width: 50%;
+        display: inline-block;
+    }
+
+    .logo {
+        width: 100%;
+
+        img {
+            margin: 0;
+        }
+    }
+    
+    .featured {
+        display: none !important;
+    }
+}
+
+footer {
+    display: none;
+}

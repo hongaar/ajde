@@ -4,32 +4,26 @@
 
 <div class="container">
 
-<div class="row-fluid">
+    <div class="row row-fluid">
+        <div class="span12 col-md-12">
+            <div class="page-header">
+                <h1><?php echo __("We're sorry, something went wrong"); ?></h1>
+            </div>
+        </div>
+    </div>
 
-	<div class="span12 col-12">
-		<div class="page-header">
-			<h1><?php echo __("We're sorry, something went wrong"); ?></h1>
-		</div>
-	</div>
-	
-</div>
-	
-<div class="row-fluid">
-	
-	<div class="span8 col-12 col-lg-4">			
-		<p>
-        	We tried everything we could to render the page you're looking for,
-			but encountered some internal problems.
-		</p>
-        <a class='action btn btn-primary' href='.'>
-        	<?php echo __("Take me to the homepage"); ?>
-        </a>
-	</div>
-	
-	<div class="span4 col-12 col-lg-6 col-lg-offset-2 col-offset-2">
-		<img src="public/media/404.png" class="img-responsive" />
-	</div>
-	
-</div><!--/row-->
+    <div class="row row-fluid">
+        <div class="span8 col-md-12 col-lg-4">
+            <p>
+                <?php echo __('We tried everything we could to render the page you\'re looking for, but encountered some internal problems.'); ?>
+            </p>
+            <a class='action btn btn-primary' href='.'>
+                <?php echo __("Take me to the homepage"); ?>
+            </a>
+        </div>
+        <div class="span4 col-md-12 col-lg-6 col-lg-offset-2 col-offset-2">
+            <img src="public/media/404.png" class="img-responsive" />
+        </div>
+    </div>
 
 </div>

@@ -25,13 +25,66 @@ class AdminShopController extends AdminController
         return $this->render();
     }
 
+    public function markPaidJson()
+    {
+        Ajde_Model::register('shop');
+
+        $id = Ajde::app()->getRequest()->getPostParam('id', false);
+
+        $transaction = new TransactionModel();
+
+        if (!is_array($id)) {
+            $id = array($id);
+        }
+
+        $c = 0;
+
+        foreach($id as $elm) {
+            $transaction->loadByPK($elm);
+            if ($transaction->payment_status !== 'completed') {
+                $transaction->paid();
+                $c++;
+            }
+        }
+
+        return array(
+            'success' => true,
+            'message' => Ajde_Component_String::makePlural($c, 'transaction') . ' marked as paid'
+        );
+    }
+
     public static function getTransactionOptions()
     {
         $options = new Ajde_Crud_Options();
         $options
             ->selectFields()
+                ->selectField('id')
+                    ->setLabel('Order ID')
+                    ->setFunction('displayOrderId')
+                    ->up()
                 ->selectField('name')
                     ->setEmphasis(true)
+                    ->up()
+                ->selectField('added')
+                    ->setIsReadonly(true)
+                    ->up()
+                ->selectField('user')
+                    ->setIsReadonly(true)
+                    ->up()
+                ->selectField('ip')
+                    ->setIsReadonly(true)
+                    ->up()
+                ->selectField('payment_provider')
+                    ->setIsReadonly(true)
+                    ->up()
+                ->selectField('payment_details')
+                    ->setIsReadonly(true)
+                    ->up()
+                ->selectField('payment_providerid')
+                    ->setIsReadonly(true)
+                    ->up()
+                ->selectField('shipment_description')
+                    ->setIsReadonly(true)
                     ->up()
                 ->selectField('secret')
                     ->setIsReadonly(true)
@@ -61,35 +114,46 @@ class AdminShopController extends AdminController
                     ->setLength(255)
                     ->up()
                 ->selectField('payment_amount')
+                    ->setIsReadonly(true)
                     ->setFunction('getFormattedTotal')
                     ->setLabel('Payment total')
                     ->up()
                 ->selectField('shipment_cost')
+                    ->setIsReadonly(true)
                     ->setLabel('Shipment costs incl. VAT')
                     ->up()
                 ->selectField('shipment_itemstotal')
+                    ->setIsReadonly(true)
                     ->setLabel('Total incl. VAT')
                     ->up()
                 ->selectField('shipment_address')
                     ->setDisableRichText(true)
                     ->setLength(0)
                     ->up()
+                ->selectField('shipment_itemsqty')
+                    ->setIsReadonly(true)
+                    ->up()
+                ->selectField('shipment_itemsvatamount')
+                    ->setIsReadonly(true)
+                    ->up()
                 ->up()
             ->selectList()
                 ->selectButtons()
-                    ->setEdit(false)
+                    ->setEdit(true)
                     ->setNew(false)
-                    ->setView(true)
+                    ->setView(false)
+                    ->addToolbarButton('paid', 'mark as paid', 'paid itemAction btn-success')
+                    ->addItemButton('link', '<i class="icon-share-alt icon-white"></i>', 'link btn-primary')
                     ->up()
                 ->setMain('name')
-                ->setShow(array('name', 'added', 'comment', 'payment_provider', 'payment_amount', 'payment_status', 'shipment_method'))
+                ->setShow(array('id', 'name', 'comment', 'payment_provider', 'payment_amount', 'payment_status', 'added'))
                 ->selectView()
-                    ->setOrderBy('modified')
+                    ->setOrderBy('id')
                     ->setOrderDir('DESC')
                     ->up()
                 ->up()
             ->selectEdit()
-                ->setIsReadonly(true)
+//                ->setIsReadonly(true)
                 ->selectLayout()
                     ->addRow()
                         ->addColumn()

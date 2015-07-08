@@ -20,13 +20,13 @@ $product = $this->product;
                     <?php echo _c($product->content); ?>
                     <p>
                         € <?php echo $product->getFormattedPriceInclVat(); ?>
-                        <small>incl. € <?php echo $product->getFormattedVat(); ?> VAT</small>
+                        <small>incl. € <?php echo $product->getFormattedVat(); ?> <?php echo __('VAT'); ?></small>
                     </p>
                     <p>
                         <?php echo $this->includeModule('shop/cart:add/html/product:' . $product->getPK()); ?>
                     </p>
                     <p>
-                        <a href="shop">Back</a>
+                        <a href="shop"><?php echo __('Back'); ?></a>
                     </p>
                 </div>
                 <div class="col-sm-6">

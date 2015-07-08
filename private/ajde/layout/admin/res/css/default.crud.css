@@ -49,7 +49,7 @@ fieldset.crud {
 
         &.sidebar, &.meta {
             legend {
-                background-color: white;
+//                background-color: white;
             }
         }
     }
@@ -84,6 +84,11 @@ fieldset.crud {
 
     > div.controls {
         margin-left: 190px;
+        margin-right: 10px;
+    }
+
+    legend {
+        border-bottom: 1px solid #0F82F5;
     }
 	
 	div.control-group {
@@ -93,6 +98,13 @@ fieldset.crud {
 		&:last-child {
 /*			margin-bottom: 0;*/
 		}
+
+        .container {
+            width: inherit;
+            .row {
+                margin-left: 0;
+            }
+        }
 		
 		.help-inline {
 			background-color: #EEE;

@@ -1,13 +1,18 @@
 /*#!less*/
 
 table.order {
-    > tbody > tr > td:not(.left):first-child {
-        text-align: right;
+    img {
+        float: right;
+    }
+}
+
+table.order-table {
+    > tbody > tr > td:first-child {
+        white-space: nowrap;
+        padding-right: 20px;
     }
     > tbody > tr > td:not(:first-child) {
         font-weight: bold;
-    }
-    img {
-        float: right;
+        width: 80%;
     }
 }

@@ -17,19 +17,19 @@ class MainController extends Ajde_Controller
 	
 	public function code403()
 	{
-		Ajde::app()->getDocument()->setTitle("Forbidden");
+		Ajde::app()->getDocument()->setTitle(__("Forbidden"));
 		return $this->render();
 	}
 	
 	public function code404()
 	{
-		Ajde::app()->getDocument()->setTitle("Not Found");
+		Ajde::app()->getDocument()->setTitle(__("Not Found"));
 		return $this->render();
 	}
 
 	public function code500()
 	{
-		Ajde::app()->getDocument()->setTitle("Internal Server Error");
+		Ajde::app()->getDocument()->setTitle(__("Internal Server Error"));
 		return $this->render();
 	}
 	

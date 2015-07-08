@@ -1,0 +1,20 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+?>
+
+<div class="container main">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <hr/>
+            <?php echo $this->includeModule('shop/legal.body'); ?>
+        </div>
+    </div>
+
+</div>

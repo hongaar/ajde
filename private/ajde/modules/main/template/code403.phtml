@@ -4,31 +4,26 @@
 
 <div class="container">
 
-<div class="row-fluid">
+    <div class="row row-fluid">
+        <div class="span12 col-md-12">
+            <div class="page-header">
+                <h1><?php echo __("We've taken a security measure"); ?></h1>
+            </div>
+        </div>
+    </div>
 
-	<div class="span12 col-12">
-		<div class="page-header">
-			<h1><?php echo __("We've taken a security measure"); ?></h1>
-		</div>
-	</div>
-	
-</div>
-	
-<div class="row-fluid">
-	
-	<div class="span8 col-12 col-lg-4">			
-		<p>
-        	You may have looked this page up some time, or from another location or device, and it has expired.
-		</p>
-        <a class='action btn btn-primary' href='javascript:void(0);' onclick='window.location.reload(true);'>
-        	<?php echo __("Reload this page"); ?>
-        </a>
-	</div>
-	
-	<div class="span4 col-12 col-lg-6 col-lg-offset-2 col-offset-2">
-		<img src="public/media/404.png" class="img-responsive" />
-	</div>
-	
-</div><!--/row-->
+    <div class="row row-fluid">
+        <div class="span8 col-md-12 col-lg-4">
+            <p>
+                <?php echo __('You may have looked this page up some time, or from another location or device, and it has expired.'); ?>
+            </p>
+            <a class='action btn btn-primary' href='javascript:void(0);' onclick='window.location.reload(true);'>
+                <?php echo __("Reload this page"); ?>
+            </a>
+        </div>
+        <div class="span4 col-md-12 col-lg-6 col-lg-offset-2 col-offset-2">
+            <img src="public/media/404.png" class="img-responsive" />
+        </div>
+    </div>
 
 </div>

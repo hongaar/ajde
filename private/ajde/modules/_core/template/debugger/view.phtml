@@ -151,7 +151,7 @@ $expand = false;
 						<td>
 							<?php echo $i; ?>. <a href='javascript:void(0)' onclick='$("#session<?php echo md5($key); ?>").slideToggle("fast");'><?php echo $key; ?></a>
 							<div id='session<?php echo md5($key); ?>' style='display: none;'>
-								<pre><?php var_dump($val); ?></pre>
+								<pre><?php echo htmlentities(var_export($val, true)); ?></pre>
 							</div>
 						</td>
 					</tr>

@@ -3,12 +3,27 @@
 
 /* @var $transaction Ajde_Shop_Transaction */
 $transaction = $this->transaction;
+
+$this->requireCss('transaction/view.print', 'html', null, Ajde_Document_Format_Html::RESOURCE_POSITION_LAST, 'media="print"');
 ?>
 
 <div class="container main">
 
     <div class="page-header">
-        <h2><?php echo __('Order'); ?></h2>
+        <div class="hidden-print btn-group pull-right">
+            <a class="btn btn-primary" onclick="window.print();">
+                <i class="glyphicon glyphicon-print"></i>
+                <?php echo __('Print'); ?>
+            </a>
+            <a class="btn btn-default" href="shop/transaction:export/<?php echo $transaction->getSecret(); ?>.pdf">
+                <i class="glyphicon glyphicon-file"></i>
+                <?php echo __('PDF'); ?>
+            </a>
+        </div>
+
+        <h2>
+            <?php echo __('Order'); ?>
+        </h2>
     </div>
 
     <?php if ($transaction->hasLoaded() === false) { ?>
@@ -19,14 +34,36 @@ $transaction = $this->transaction;
     <?php } else { ?>
 
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-sm-12">
 
-                <table class="table table-condensed order">
+                <div class="pull-right">
+                    <?php echo $this->includeModule('shop/legal.body'); ?>
+                </div>
+
+                <table class="order order-table" style="margin-bottom: 50px;">
+                    <tbody>
+                        <tr>
+                            <td><?php echo __('Order ID') ?></td>
+                            <td><?php echo _e($transaction->getOrderId()); ?></td>
+                        </tr>
+                        <tr>
+                            <td><?php echo __('Date') ?></td>
+                            <td><?php echo _e(strftime('%e %B %Y', strtotime($transaction->added))); ?></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+
+                <table class="table table-condensed order order-table">
                     <thead>
                         <tr>
-                            <th></th>
-                            <th>
-                                <h4><?php echo __('Details'); ?></h4>
+                            <th colspan="2">
+                                <h4><?php echo __('Your details'); ?></h4>
                             </th>
                         </tr>
                     </thead>
@@ -66,7 +103,7 @@ $transaction = $this->transaction;
                     <thead>
                     <tr>
                         <th>
-                            <h4><?php echo __('Comment'); ?></h4>
+                            <h4><?php echo __('Your comment'); ?></h4>
                         </th>
                     </tr>
                     </thead>
@@ -80,7 +117,7 @@ $transaction = $this->transaction;
                 </table>
 
             </div>
-            <div class="col-md-6">
+            <div class="col-sm-6">
 
                 <table class="table table-condensed order">
                     <thead>
@@ -110,7 +147,10 @@ $transaction = $this->transaction;
                     <tbody>
                         <tr>
                             <td class="left">
-                                <?php echo _c($transaction->getShipping()->getCurrentMethod()->getDescription()); ?>
+                                <?php
+                                if ($shipping = $transaction->getShipping()->getCurrentMethod()) {
+                                    echo _c($shipping->getDescription());
+                                } ?>
                             </td>
                         </tr>
                     </tbody>
@@ -139,9 +179,9 @@ $transaction = $this->transaction;
                                             <?php echo __('Payment was already initiated for this order. If you canceled your payment, you can now reset the payment status of this transaction and try again.') ?>
                                         </p>
                                         <p>
-                                            <a href="shop/transaction:resetPayment" class="btn btn-info">
+                                            <a href="shop/transaction:resetPayment/<?php echo $transaction->getSecret(); ?>.html" class="btn btn-info">
                                                 <span class="glyphicon glyphicon-repeat"></span>
-                                                <?php echo __('Try again'); ?>
+                                                <?php echo __('Reset payment'); ?>
                                             </a>
                                         </p>
 
@@ -172,7 +212,7 @@ $transaction = $this->transaction;
         </div>
 
         <?php if ($this->source == 'session' && $transaction->payment_status == 'pending') { ?>
-            <div class='toolbar'>
+            <div class='toolbar hidden-print'>
                 <a href='shop/transaction:setup' class='btn btn-success btn-lg pull-right'>
                     <?php echo __('Continue with order'); ?>
                     <span class="glyphicon glyphicon-chevron-right"></span>
@@ -182,7 +222,7 @@ $transaction = $this->transaction;
                 <a href='shop'><?php echo __('continue shopping'); ?></a>
             </div>
         <?php } elseif ($this->source == 'session' && $transaction->payment_status == 'refused') { ?>
-            <div class='toolbar'>
+            <div class='toolbar hidden-print'>
                 <a href='shop/transaction:resetPayment' class='btn btn-success btn-lg pull-right'>
                     <?php echo __('Reset payment and try again'); ?>
                 </a>

@@ -63,7 +63,7 @@ $transaction = $this->transaction;
 
                                 <?php foreach($transaction->getProviders() as $key => $provider) {
                                     /* @var $provider Ajde_Shop_Transaction_Provider */ ?>
-                                    <label for='<?php echo _e($key); ?>'>
+                                    <label for='<?php echo _e($key); ?>' data-toggle="tooltip" data-placement="right" title="<?php echo _e($provider->getName()); ?>">
                                         <input type='radio' name='provider' value='<?php echo _e($key); ?>' id='<?php echo _e($key); ?>' />
                                         <?php if ($provider->getLogo()) { ?>
                                             <img src='<?php echo _e($provider->getLogo()); ?>' alt='<?php echo _e($provider->getName()); ?>' width='75' style='vertical-align: middle;' />
@@ -71,6 +71,7 @@ $transaction = $this->transaction;
                                             <?php echo _e($provider->getName()); ?>
                                         <?php } ?>
                                     </label>
+                                    <br/>
                                 <?php } ?>
 
                             </div>

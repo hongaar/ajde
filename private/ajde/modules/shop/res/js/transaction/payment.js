@@ -37,7 +37,11 @@ $(document).ready(function() {
 
     $('form.transactionPayment .provider label').on('click', function(e) {
         $('form.transactionPayment .provider label').removeClass('active');
+        $(this).find('input').attr('checked', 'checked');
         $(this).addClass('active');
     });
-	
+
+    // Tooltip
+    $('[data-toggle="tooltip"]').tooltip();
+
 });

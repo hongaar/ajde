@@ -53,6 +53,9 @@ class Ajde_Crud extends Ajde_Object_Standard
         $fieldsToShow = $this->getFieldNames();
 
         $headers = array();
+
+        $this->getCollection()->getView()->setPageSize(9999999999);
+
         $items = $this->getItems();
 
         foreach($fieldsToShow as $fieldName) {
@@ -79,10 +82,6 @@ class Ajde_Crud extends Ajde_Object_Standard
         }
 
         $table[] = $headers;
-
-        // remove limit
-        $cView = $this->getCollectionView();
-        $cView->setPageSize(9999999999);
 
         foreach($items as $model) {
 		    /* @var $model Ajde_Model */
