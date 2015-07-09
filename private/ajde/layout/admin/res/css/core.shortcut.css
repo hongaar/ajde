@@ -1,0 +1,49 @@
+/*#!less*/
+
+.ajde-shortcut {
+    display: inline-block;
+
+    position: fixed;
+    
+    top: 50%; // 35px;
+    left: -35px;
+    margin-top: -15px;
+
+    width: 100px;
+    height: 30px;
+
+    -webkit-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+
+    z-index: 1040;
+
+    background-color: #ffffff;
+    color: #F36D69;
+
+    font-family: "Courier New", Courier, mono;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 30px;
+
+    -webkit-box-shadow: -1px 1px 4px 0 rgba(0,0,0,0.1);
+    box-shadow: -1px 1px 4px 0 rgba(0,0,0,0.1);
+
+    &.site {
+        background-color: #F36D69;
+        color: #ffffff;
+
+        &:hover {
+            background-color: #ffffff;
+            color: #F36D69;
+        }
+    }
+
+    &:hover {
+        background-color: #F36D69;
+        color: #ffffff;
+    }
+
+}

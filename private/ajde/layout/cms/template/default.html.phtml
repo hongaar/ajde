@@ -13,15 +13,20 @@ $this->requireJsPublic('core/bootstrap/bootstrap3.min.js');
 $this->requireJsFirst('i18n.' . Ajde_Lang::getInstance()->getShortLang());
 
 // Alert bar
-$this->requireJsFirst('core.alert');
-$this->requireCssFirst('core.alert');
+$this->requireJsFirst('core.alert', 'html', LAYOUT_DIR . 'admin/');
+$this->requireCssFirst('core.alert', 'html', LAYOUT_DIR . 'admin/');
 
 // Lazy images
 $this->requireJsPublic('core/jquery.lazyload.min.js');
 $this->requireJsFirst('core.lazy');
 
+if (($user = UserModel::getLoggedIn()) && $user->isAdmin()) {
+    // Shortcut
+    $this->requireCss('core.shortcut', 'html', LAYOUT_DIR . 'admin/');
+    $this->requireJs('core.shortcut', 'html', LAYOUT_DIR . 'admin/');
+}
+
 // Example styles
-// $this->requireGWebFont('PT Sans Narrow', array(400));
 // $this->requireGWebFont('Roboto', array(400, 700));
 
 ?>
@@ -85,22 +90,34 @@ $this->requireJsFirst('core.lazy');
 
     <body class="loading">
 
+        <?php if ($user && $user->isAdmin()) {
+        ?><!-- Admin shortcut -->
+        <a class="ajde-shortcut admin" href="admin" target="admin">admin</a>
+        <?php } ?>
+
         <!--  Bootstrap navbar -->
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="."><?php echo _e(Config::get('sitename')); ?></a>
-                <div class="nav-collapse collapse">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="."><?php echo _e(Config::get('sitename')); ?></a>
+                </div>
+                <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
                         <?php
                         $menu = new MenuModel();
                         $menu->loadByName('mainmenu');
                         foreach($menu->getItems() as $item) { ?>
-                            <li><a href='<?php echo _e($item['url']); ?>'><?php echo _e($item['name']); ?></a></li>
+                            <li class='<?php echo $item['current']; ?>'>
+                                <a href='<?php echo _e($item['url']); ?>'>
+                                    <?php echo _e($item['name']); ?>
+                                </a>
+                            </li>
                         <?php } ?>
                     </ul>
                 </div>

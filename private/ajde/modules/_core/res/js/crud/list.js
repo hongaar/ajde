@@ -57,7 +57,7 @@ AC.Crud.List = function() {
 			});
 		
 			// Popup functions
-			isIframe = (window.location != window.parent.location) || window.opener;
+			isIframe = (window.location != window.parent.location); // || window.opener
 			disableMultiple = ( $('form.ACCrudList table').data('disable-multiple') == '1' );
 			
 			// Sub init

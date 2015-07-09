@@ -29,9 +29,11 @@ class Ajde_Document_Format_Pdf extends Ajde_Document_Format_Generated
             'bin/wkhtmltopdf-i386';
 
         $snappy = new \Knp\Snappy\Pdf(Config::get('local_root') . '/' . VENDOR_DIR . $bin);
+
         $snappy->setOption('print-media-type', true);
         $snappy->setOption('disable-javascript', true);
         $snappy->setOption('lowquality', false);
+        $snappy->setOption('load-error-handling', 'ignore');
 
         // Use $snappy->getOptions() to see all possible options
         // @see http://wkhtmltopdf.org/usage/wkhtmltopdf.txt

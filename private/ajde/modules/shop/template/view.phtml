@@ -20,21 +20,29 @@ $products = $this->products;
                 <?php foreach($products as $product) {
                     /* @var $product ProductModel */ ?>
                     <div class="col-sm-6">
-                        <h3><?php echo _e($product->title); ?></h3>
-                        <?php if ($image = $product->getImage()) { ?>
-                            <figure>
-                                <img src="<?php echo _e($image->getUrl(600, 200, true)); ?>" class="img-responsive" />
-                            </figure>
-                        <?php } ?>
-                        <p>
-                            € <?php echo $product->getFormattedPriceInclVat(); ?>
-                        </p>
-                        <p>
-                            <a class="btn btn-default" href="<?php echo _e($product->getSlug()); ?>">Details</a>
-                        </p>
-                        <p>
-                            <?php echo $this->includeModule('shop/cart:add/html/product:' . $product->getPK()); ?>
-                        </p>
+                        <div class="panel panel-default">
+                            <h3 class="panel-heading" style="margin: 0;">
+                                <a href="<?php echo _e($product->getSlug()); ?>">
+                                    <?php echo _e($product->title); ?>
+                                </a>
+                            </h3>
+                            <a class="panel-body" href="<?php echo _e($product->getSlug()); ?>">
+                                <?php if ($image = $product->getImage()) { ?>
+                                    <figure>
+                                        <img src="<?php echo _e($image->getUrl(600, 200, true)); ?>" class="img-responsive" />
+                                    </figure>
+                                <?php } ?>
+                                <p>
+                                    <?php echo Ajde_Component_String::trim(strip_tags($product->content), 100); ?>
+                                </p>
+                                <h3>
+                                    € <?php echo $product->getFormattedPriceInclVat(); ?>
+                                </h3>
+                            </a>
+                            <div class="panel-footer">
+                                <?php echo $this->includeModule('shop/cart:add/html/product:' . $product->getPK()); ?>
+                            </div>
+                        </div>
                     </div>
                 <?php } ?>
             </div>

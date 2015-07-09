@@ -5,7 +5,6 @@ abstract class Ajde_Api_Controller extends Ajde_Acl_Controller
 	public function beforeInvoke($allowed = array()) {
 
 		$token = Ajde::app()->getRequest()->getParam('token', false);
-
         if ($token) {
             Ajde_Model::register('user');
             $user = new UserModel();
@@ -14,9 +13,14 @@ abstract class Ajde_Api_Controller extends Ajde_Acl_Controller
             if ($user->loadByPK($uid)) {
                 if ($user->getCookieHash(false) === $hash) {
                     $user->login();
-                    return parent::beforeInvoke($allowed);
                 }
             }
+        }
+
+        $user = UserModel::getLoggedIn();
+
+        if ($user) {
+            return parent::beforeInvoke($allowed);
         }
 		
 		Ajde::app()->getRequest()->set('message', __('You may not have the required permission to view this page'));

@@ -39,7 +39,7 @@ abstract class Ajde_User extends Ajde_Model
 	
 	public static function isAdmin()
 	{
-		return ((string) self::getLoggedIn()->getUsergroup() == self::USERGROUP_ADMINS);
+		return (($user = self::getLoggedIn()) && (string) self::getLoggedIn()->getUsergroup() == self::USERGROUP_ADMINS);
 	}
 
     public static function isDebugger()

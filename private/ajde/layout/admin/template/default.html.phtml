@@ -13,6 +13,10 @@ $this->requireGWebFont('Roboto', array(300, 500, 700));
 // Yellow accents
 $this->requireCss('yellow');
 
+// Shortcut
+$this->requireCss('core.shortcut');
+$this->requireJs('core.shortcut');
+
 // =====================
 
 // Twitter bootstrap
@@ -119,6 +123,9 @@ Ajde_Model::register('admin');
 	<!--[if IE 8 ]>    <body class='ie8 oldie'> <![endif]-->
 	<!--[if IE 9 ]>    <body class='ie9'> <![endif]-->
 	<!--[if (gt IE 9)|!(IE)]><!--> <body> <!--<![endif]-->
+
+        <!-- Admin shortcut -->
+        <a class="ajde-shortcut site" href="./" target="site">site</a>
 		
 		<div class="navbar navbar-fixed-top">
 			<div class="navbar-inner">
@@ -154,7 +161,7 @@ Ajde_Model::register('admin');
 			
 			<?php
 			$chromeapp = new Ajde_Session('env');
-			if (Ajde::app()->getRequest()->getInt('chromeapp', false) === 1) {
+			if (Ajde::app()->hasRequest() && Ajde::app()->getRequest()->getInt('chromeapp', false) === 1) {
 				$chromeapp->set('chromeapp', 1);
 			}
 			if (!$chromeapp->has('chromeapp')) { ?>

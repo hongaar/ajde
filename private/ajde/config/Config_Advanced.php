@@ -116,7 +116,7 @@ class Config_Advanced
 
 	// Shop
     public $shopOfferLogin      = true;
-	public $transactionProviders= array('paypal_creditcard', 'paypal', 'mollie_ideal', 'test');
+	public $transactionProviders= array('paypal_creditcard', 'paypal', 'mollie_ideal', 'iban');
 	public $currency			= '€';
 	public $currencyCode		= 'EUR';
 	public $defaultVAT			= 0.21;
@@ -136,7 +136,7 @@ class Config_Advanced
         public $shopMollieTestKey           = 'test_key';
 
     // PDF generator
-    public $pdfMethod           = 'web2pdf';
+    public $pdfMethod           = 'snappy';
     public $pdfWeb2PdfApi       = '';
 
     // Which modules should we call on bootstrapping?

@@ -8,7 +8,7 @@ class CartItemModel extends Ajde_Shop_Cart_Item
 	{
 		$entity = $this->getEntity();
 		if (!$entity instanceof Ajde_Model || !$entity->hasLoaded()) {
-			return '(item is unavailable)';
+			return __('(item is unavailable)');
 		}
 		return $entity->getTitle();
 	}

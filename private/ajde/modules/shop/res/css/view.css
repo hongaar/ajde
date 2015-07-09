@@ -1,0 +1,17 @@
+/*#!less*/
+
+a.panel-body {
+    display: block;
+
+    p {
+        color: initial;
+    }
+
+    &:hover {
+        text-decoration: none;
+
+        h3 {
+            text-decoration: underline;
+        }
+    }
+}

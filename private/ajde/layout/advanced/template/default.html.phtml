@@ -11,7 +11,8 @@ $this->requireJsLibrary('jquery', '1.7');
 $this->requireJsFirst('i18n.' . Ajde_Lang::getInstance()->getShortLang());
 
 // Alert bar
-$this->requireJsFirst('core.alert'); $this->requireCssFirst('core.alert');
+$this->requireJsFirst('core.alert', 'html', LAYOUT_DIR . 'admin/');
+$this->requireCssFirst('core.alert', 'html', LAYOUT_DIR . 'admin/');
 
 // Lazy images
 $this->requireJsPublic('core/jquery.lazyload.min.js');

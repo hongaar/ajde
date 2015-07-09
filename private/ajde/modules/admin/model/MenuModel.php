@@ -81,7 +81,7 @@ class MenuModel extends Ajde_Model_With_I18n
 
         $currentParentUrl = false;
         if ($current = Ajde_Cms::getInstance()->getRoutedNode()) {
-            $currentParentUrl = ($current->getParent()  && $current->getParent()->hasLoaded()) ? $current->getParent()->getUrl() : false;
+            $currentParentUrl = ($current->getParent() && $current->getParent()->hasLoaded()) ? $current->getParent()->getUrl() : false;
         }
 
         $items = array();

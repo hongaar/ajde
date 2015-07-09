@@ -133,7 +133,7 @@ class ProductModel extends Ajde_Model
 
     private function _makeSlug()
     {
-        $name = $this->title;
+        $name = $this->has('title') ? $this->title : '';
 
         $ghost = new self();
         $uniqifier = 0;
