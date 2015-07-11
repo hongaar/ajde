@@ -46,12 +46,6 @@ fieldset.crud {
         border: 10px solid #f2f2f2;
         background-color: #f2f2f2;
         z-index: 30;
-
-        &.sidebar, &.meta {
-            legend {
-//                background-color: white;
-            }
-        }
     }
 
     input.emphasis[type=text] {
@@ -83,12 +77,17 @@ fieldset.crud {
 	}
 
     > div.controls {
-        margin-left: 190px;
         margin-right: 10px;
+        margin-left: 10px !important;
+    }
+    
+    &.well > div.controls {
+        margin-right: 0;
+        margin-left: 0 !important;
     }
 
     legend {
-        border-bottom: 1px solid #0F82F5;
+        color: #0F82F5;
     }
 	
 	div.control-group {
@@ -138,22 +137,10 @@ fieldset.crud {
 			}
 		}
 	}
-    
-    &.sidebar, &.meta {
-        legend {
-            background-color: #eee;
-            text-indent: 10px;
-        }
-    }
 
     &.well {
         div.control-group {
             margin: 10px 0 10px 0;
-        }
-
-        legend {
-            background-color: inherit;
-            text-indent: inherit;
         }
     }
 	

@@ -58,7 +58,8 @@ class Ajde_Mailer extends PHPMailer
             $status = $this->send();
 
             // log
-            MailerlogModel::log($fromEmail, $fromName, $toEmail, $toName, $subject, $body, $status ? 1 : 0);
+            if (class_exists('MailerlogModel'))
+                MailerlogModel::log($fromEmail, $fromName, $toEmail, $toName, $subject, $body, $status ? 1 : 0);
 
             return $status;
 
@@ -135,7 +136,8 @@ class Ajde_Mailer extends PHPMailer
 		$status = $this->send();
 
         // log
-        MailerlogModel::log($from, $fromName, $to, $toName, $subject, $body, $status ? 1 : 0);
+        if (class_exists('MailerlogModel'))
+            MailerlogModel::log($from, $fromName, $to, $toName, $subject, $body, $status ? 1 : 0);
 
         return $status;
 	}

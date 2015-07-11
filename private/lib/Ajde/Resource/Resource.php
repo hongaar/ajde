@@ -4,28 +4,28 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
 {
 	const TYPE_JAVASCRIPT	= 'js';
 	const TYPE_STYLESHEET	= 'css';
-	
+
 	public function  __construct($type)
 	{
 		$this->setType($type);
 	}
-	
+
 	public function __toString()
 	{
 		return implode(", ", $this->_data);
 	}
-	
+
 	abstract public function getFilename();
 	abstract protected function getLinkUrl();
 
 	public function getType() {
 		return $this->get('type');
 	}
-	
+
 	public function setPosition($position) {
 		$this->set('position', $position);
 	}
-	
+
 	public function getPosition() {
 		return $this->get('position');
 	}
@@ -44,7 +44,7 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
 			$layout = new Ajde_Layout(Config::get("layout"));
 		}
 		$format = issetor($format, 'html');
-		
+
 		$dirPrefixPatterns = array(
 				APP_DIR, CORE_DIR
 		);
@@ -56,7 +56,7 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
 		}
 		return false;
 	}
-	
+
 	protected static function exist($filename)
 	{
 		if (is_file($filename)) {
@@ -64,31 +64,31 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
 		}
 		return false;
 	}
-	
+
 	public static function encodeFingerprint($array)
 	{
 		return self::_urlEncode(serialize($array));
 	}
-	
+
 	public static function decodeFingerprint($fingerprint)
 	{
 		return unserialize(self::_urlDecode($fingerprint));
 	}
-	
-	public static function _urlDecode($string) { 
+
+	public static function _urlDecode($string) {
 //		return self::_rotUrl($string);
 		return base64_decode($string);
 	}
-	
-	public static function _urlEncode($string) { 
+
+	public static function _urlEncode($string) {
 //		return self::_rotUrl($string);
 		return base64_encode($string);
 	}
-	
-	public static function _rotUrl($string) { 
-		return strtr($string, 
-			'/-:?=&%#{}"; QXJKVWPYRHGB abcdefghijklmnopqrstuv123456789ACDEFILMNOSTUwxyz', 
-			'QXJKVWPYRHGB /-:?=&%#{}"; 123456789ACDEFILMNOSTUabcdefghijklmnopqrstuvwxyz'); 
+
+	public static function _rotUrl($string) {
+		return strtr($string,
+			'/-:?=&%#{}"; QXJKVWPYRHGB abcdefghijklmnopqrstuv123456789ACDEFILMNOSTUwxyz',
+			'QXJKVWPYRHGB /-:?=&%#{}"; 123456789ACDEFILMNOSTUabcdefghijklmnopqrstuvwxyz');
 	}
 
 	public function getLinkCode()
@@ -96,7 +96,7 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
 		ob_start();
 
 		// variables for use in included link template
-		$url = $this->getLinkUrl();		
+		$url = $this->getLinkUrl();
 		$arguments = $this->hasArguments() ? $this->getArguments() : '';
 
 		// create temporary resource for link filename
@@ -114,7 +114,7 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
 		ob_end_clean();
 		return $contents;
 	}
-	
+
 	public function getContents() {
 		ob_start();
 
@@ -124,7 +124,7 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
         if (is_file($filename)) {
 		    include $filename;
         }
-		
+
 		$contents = ob_get_contents();
 		ob_end_clean();
 		return $contents;

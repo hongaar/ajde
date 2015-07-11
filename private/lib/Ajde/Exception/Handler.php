@@ -143,6 +143,7 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 					$style = 'body {font: 13px sans-serif;} a {color: #005D9A;} a:hover {color: #9A0092;} h2 {color: #005D9A;} span > a {color: #9A0092;}';
 				}
 				$style = '<style>' . $style . '</style>';
+				$script = '<script>document.getElementsByTagName("base")[0].href="";</script>';
 
                 if (Ajde::app()->getRequest()->isAjax()) {
                     $collapsed = $exceptionDump . $exceptionMessage . $traceMessage;
@@ -152,7 +153,7 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
                     $header = '<header><h1><img src="' . Config::get('site_root') . MEDIA_DIR . 'ajde-small.png">Something went wrong</h1><a href="javascript:history.go(-1);">Go back</a> <a href="#details">Show details</a></header>';
                 }
 
-				$message = $style . $header . $collapsed;
+				$message = $style . $script . $header . $collapsed;
 				break;
             case self::EXCEPTION_TRACE_ONLY:
                 $message = '';
