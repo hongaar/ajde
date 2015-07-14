@@ -70,6 +70,9 @@ if (($user = UserModel::getLoggedIn()) && $user->isAdmin()) {
             ?><link rel='canonical' href='<?php echo Config::get('site_root') . Ajde::app()->getController()->getCanonicalUrl(); ?>' />
         <?php } ?>
 
+        <!-- Language links -->
+        <?php echo $this->includeModule('lang/links'); ?>
+
         <!-- Require JavaScript and cookies -->
         <noscript>
             <meta http-equiv='refresh' content='0;url=main/nojavascript.html?returnto=<?php echo urlencode(Ajde::app()->getRoute()->getOriginalRoute()); ?>' />
