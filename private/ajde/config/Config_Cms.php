@@ -29,6 +29,7 @@ class Config_Cms extends Config_Advanced
 								);
 
 	//public $titleFormat;
+	//public $multiLang;
 	//public $lang;
 	//public $langAutodetect;
 	//public $langAdapter;

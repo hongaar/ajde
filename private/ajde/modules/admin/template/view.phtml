@@ -95,6 +95,10 @@ if ($OOChartsApiKey = SettingModel::byName('oocharts_api_key')) {
                         ->setShowFooter(false)
                         ->setShowToolbar(false)
                         ->setSingleClickEdits(true)
+                        ->selectView()
+                            ->setOrderBy('added')
+                            ->setOrderDir('DESC')
+                            ->setPageSize(10)
                     ->finished();
 
                 $crud = $this->ACCrudList('transaction', $options);

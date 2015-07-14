@@ -1,0 +1,14 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+$this->requireCssPublic('core/flags.css');
+
+$lang = Ajde_Lang::getInstance();
+
+
+foreach($lang->getAvailableNiceNames() as $k => $v) { ?>
+
+    <a href="<?php echo $lang->getAlternateUrl($k); ?>">
+        <?php echo '<img src="" class="flag flag-' . strtolower(substr($k, 3, 2)) . '" alt="' . $v . '" />'; ?>
+        <?php echo $v; ?></a> &nbsp;
+
+<?php } ?>

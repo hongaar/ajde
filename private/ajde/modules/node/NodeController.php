@@ -10,7 +10,9 @@ class NodeController extends Ajde_Controller
 
 	public function getCanonicalUrl()
 	{
-        if ($this->node->hasLoaded()) return $this->node->getSlug();
+        if ($this->node->hasLoaded()) return Config::get('multiLang') ?
+			Ajde_Lang::getInstance()->getShortLang() . '/' . $this->node->getSlug() :
+			$this->node->getSlug();
         return '';
 	}
 

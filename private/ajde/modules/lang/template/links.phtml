@@ -1,0 +1,9 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+$this->requireCssPublic('core/flags.css');
+
+$lang = Ajde_Lang::getInstance();
+
+foreach($lang->getAvailableNiceNames() as $k => $v) {
+    ?><link rel="alternate" href="<?php echo $lang->getAlternateUrl($k); ?>" hreflang="<?php echo $lang->getShortLang($k); ?>" />
+<?php } ?>
