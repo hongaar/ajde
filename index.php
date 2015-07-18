@@ -13,7 +13,7 @@
 //	--------------------
 //	Which version of Ajde are we running?
 //	--------------------	
-	define('AJDE_VERSION', 'v0.3.1');
+	define('AJDE_VERSION', 'v0.3.3');
 
 /*********************
  * ERROR REPORTING
