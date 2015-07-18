@@ -1,6 +1,23 @@
-#### AUTO-UPDATE NOTE ####
-Due to a bug in the auto-updater, updating from a version prior to v0.2.2 doesn't work. Please use Git instead.
+#### v1.0.0-alpha
 
+ - **NEW** PHP namespaces
+
+#### v0.3.x-dev
+
+ - Better multi-language
+ 
+#### v0.3.2
+
+ - Better shop, include models for products
+
+#### v0.3.1
+
+ - **IMPORTANT NOTE** PHP 5.3 is now a minimum requirement
+ - Composer package
+
+#### v0.3.0
+
+ - Much has changed...
 
 #### v0.2.8
 

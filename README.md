@@ -255,7 +255,7 @@ When using the Ajde_User extension, user cookies are hashed with the client IP a
 License
 -------------------------
 
-Copyright (c) 2013 Joram van den Boezem
+Copyright (c) 2015 Joram van den Boezem
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
