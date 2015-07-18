@@ -1,5 +1,8 @@
 <?php
 /* @var $this Ajde_Template_Parser_Phtml_Helper */
+
+/** @var Ajde_Shop_Transaction $transaction */
+$transaction = $this->transaction;
 ?>
 
 <div class="container main">
@@ -9,8 +12,27 @@
     <p>
         <?php echo __('Your order has been received. We will notify you as soon as we are shipping your order.') ?>
     </p>
-    <p>
-        <a href='shop'><?php echo __('Back to shop') ?></a>
-    </p>
+
+    <?php if ($transaction->hasLoaded()) { ?>
+        <hr/>
+        <h4><?php echo __('Your order'); ?></h4>
+        <p>
+            <?php echo _c($transaction->shipment_description); ?>
+        </p>
+        <div class='toolbar'>
+            <a href="shop/transaction:view/<?php echo $transaction->secret; ?>.html" class="pull-right btn btn-info btn-lg">
+                <span class="glyphicon glyphicon-info-sign"></span>
+                <?php echo __('More order details'); ?>
+            </a>
+            <a href='shop'><?php echo __('Back to shop') ?></a>
+        </div>
+        <p>
+
+        </p>
+    <?php } else { ?>
+        <p>
+            <a href='shop'><?php echo __('Back to shop') ?></a>
+        </p>
+    <?php } ?>
 
 </div>

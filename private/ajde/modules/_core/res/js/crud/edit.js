@@ -284,9 +284,9 @@ AC.Crud.Edit = function() {
 
                 // Show info banner
                 if (form.find(':input[name=form_submission]').val()) {
-                    infoHandler('Submitting...');
+                    infoHandler(i18n.formSubmitting);
                 } else {
-                    infoHandler('Saving...');
+                    infoHandler(i18n.saving);
                 }
             }
 
@@ -320,9 +320,10 @@ AC.Crud.Edit = function() {
                         if (returnTo != 'autosave') {
 						    $.scrollTo($('.control-group.error:first'), 800, { axis: 'y', offset: -70 });
                             if (form.find(':input[name=form_submission]').val()) {
-                                AC.Core.Alert.hide();
+								warningHandler(i18n.formPleaseCorrect);
+                                //AC.Core.Alert.hide();
                             } else {
-                                warningHandler('Please correct the errors in this form');
+                                warningHandler(i18n.formPleaseCorrect);
                             }
                         }
 					} else {

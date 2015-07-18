@@ -2,7 +2,7 @@
 
 abstract class Ajde_Shop_Transaction extends Ajde_Model
 {
-	protected $_shippingModel;
+    protected $_shippingModel;
     protected $_itemModel;
 
     public function __construct() {
@@ -12,70 +12,70 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
             'ip', 'name', 'email', 'shipment_address', 'shipment_zipcode', 'shipment_city', 'shipment_region', 'shipment_country', 'shipment_description', 'shipment_trackingcode', 'shipment_secret'
         ));
     }
-	
-	// Payment
-	
-	public static function getProviders()
-	{
-		return self::_getProviders();
-	}
-	
-	private static function _getProviders()
-	{
-		$return = array();
-		$providers = Config::get('transactionProviders');	
-		foreach($providers as $provider) {
-			$return[$provider] = Ajde_Shop_Transaction_Provider::getProvider($provider);
-		}
-		return $return;
-	}
-	
-	/**
-	 *
-	 * @return Ajde_Shop_Transaction_Provider
-	 */
-	public function getProvider()
-	{
-		return Ajde_Shop_Transaction_Provider::getProvider($this->payment_provider, $this);
-	}
-	
-	// Update IP / Secret
-	
-	public function beforeInsert()
-	{
-		$this->secret = $this->generateSecret();
-		$this->ip = $_SERVER["REMOTE_ADDR"];
+
+    // Payment
+
+    public static function getProviders()
+    {
+        return self::_getProviders();
+    }
+
+    private static function _getProviders()
+    {
+        $return = array();
+        $providers = Config::get('transactionProviders');
+        foreach($providers as $provider) {
+            $return[$provider] = Ajde_Shop_Transaction_Provider::getProvider($provider);
+        }
+        return $return;
+    }
+
+    /**
+     *
+     * @return Ajde_Shop_Transaction_Provider
+     */
+    public function getProvider()
+    {
+        return Ajde_Shop_Transaction_Provider::getProvider($this->payment_provider, $this);
+    }
+
+    // Update IP / Secret
+
+    public function beforeInsert()
+    {
+        $this->secret = $this->generateSecret();
+        $this->ip = $_SERVER["REMOTE_ADDR"];
 
         // Added
         $this->added = new Ajde_Db_Function("NOW()");
 
         // Event
         Ajde_Event::trigger($this, 'onCreate');
-	}
-	
-	public function generateSecret($length = 255)
-	{
-		return substr(sha1(mt_rand()), 0, $length);
-	}
-	
-	// Shipping
-	
-	/**
-	 *
-	 * @return Ajde_Shop_Shipping
-	 */
-	public function getShipping()
-	{
-		return $this->_getShippingModel();
-	}	
-	
-	private function _getShippingModel()
-	{
-		$shippingModelName = $this->_shippingModel;
-		return new $shippingModelName($this);
-	}
-	
-	// Helpers
+    }
+
+    public function generateSecret($length = 255)
+    {
+        return substr(sha1(mt_rand()), 0, $length);
+    }
+
+    // Shipping
+
+    /**
+     *
+     * @return Ajde_Shop_Shipping
+     */
+    public function getShipping()
+    {
+        return $this->_getShippingModel();
+    }
+
+    private function _getShippingModel()
+    {
+        $shippingModelName = $this->_shippingModel;
+        return new $shippingModelName($this);
+    }
+
+    // Helpers
 
     public function getOrderId()
     {
@@ -87,33 +87,57 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
         $secret = '<span data-secret="' . $this->getSecret() . '"></span>';
         return $secret . $this->getOrderId();
     }
-	
-	protected function _format($value)
-	{
-		return money_format('%!i', $value);
-	}
-	
-	public function getTotal()
-	{
-		return $this->payment_amount;
-	}
-	
-	public function getFormattedTotal()
-	{
-		return Config::get('currency') . '&nbsp;' . $this->_format($this->getTotal());
-	}
-	
-	public function getOverviewHtml()
-	{
-		if ($this->hasLoaded()) {
-			$view = new Ajde_View(MODULE_DIR . 'shop/', 'transaction/view');
-			$view->assign('source', 'id');
-			$view->assign('transaction', $this);
-			return $view->render();
-		} else  {
-			return 'Order not found';
-		}		
-	}
+
+    protected function _format($value)
+    {
+        return money_format('%!i', $value);
+    }
+
+    public function getTotal()
+    {
+        return $this->payment_amount;
+    }
+
+    public function getFormattedTotal()
+    {
+        return Config::get('currency') . '&nbsp;' . $this->_format($this->getTotal());
+    }
+
+    public function getOverviewHtml()
+    {
+        if ($this->hasLoaded()) {
+            $view = new Ajde_View(MODULE_DIR . 'shop/', 'transaction/view');
+            $view->assign('source', 'id');
+            $view->assign('transaction', $this);
+            return $view->render();
+        } else  {
+            return 'Order not found';
+        }
+    }
+
+    /**
+     * @param Ajde_Shop_Cart $cart
+     * @return bool
+     */
+    public function isSameAsCart(Ajde_Shop_Cart $cart)
+    {
+        $transactionItems = $this->getItems()->toArray();
+        $cartItems = $cart->getItems()->toArray();
+
+        $same = false;
+
+        $transformer = function($elm) {
+            return $elm['entity'] . ':' . $elm['entity_id'] . ':' . $elm['qty'];
+        };
+
+        $transactionItems = array_map($transformer, $transactionItems);
+        $cartItems = array_map($transformer, $cartItems);
+
+        sort($transactionItems);
+        sort($cartItems);
+
+        return $transactionItems === $cartItems;
+    }
 
     public function setItemsFromCart(Ajde_Shop_Cart $cart)
     {
@@ -157,5 +181,5 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
         $this->payment_status = 'completed';
         $this->save();
     }
-	
+
 }

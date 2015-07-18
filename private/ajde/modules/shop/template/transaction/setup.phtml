@@ -8,6 +8,31 @@
         <h2><?php echo __('Shipping details') ?></h2>
     </div>
 
+    <div class="row form-group">
+        <div class="col-xs-12">
+            <ul class="nav nav-pills nav-justified thumbnail setup-panel">
+                <li>
+                    <a href="shop/checkout">
+                        <h4 class="list-group-item-heading">1. <?php echo __('Review', 'shop'); ?></h4>
+                        <p class="list-group-item-text"><?php echo __('Review your shopping cart', 'shop'); ?></p>
+                    </a>
+                </li>
+                <li class="active">
+                    <a>
+                        <h4 class="list-group-item-heading">2. <?php echo __('Your details', 'shop'); ?></h4>
+                        <p class="list-group-item-text"><?php echo __('Your name, address and shipping'); ?></p>
+                    </a>
+                </li>
+                <li class="disabled">
+                    <a>
+                        <h4 class="list-group-item-heading">3. <?php echo __('Payment', 'shop'); ?></h4>
+                        <p class="list-group-item-text"><?php echo __('Payment and order confirmation'); ?></p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
     <?php echo $this->ACAjaxForm('shop/transaction:setup', null, 'transactionSetup form-horizontal'); ?>
 
         <div class="status">

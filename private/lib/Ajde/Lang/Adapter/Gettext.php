@@ -2,39 +2,43 @@
 
 class Ajde_Lang_Adapter_Gettext extends Ajde_Lang_Adapter_Abstract
 {
-	protected $_gettext;
-	protected $_lang;
-	protected $_dictionary;
-	
-	public function __construct()
-	{
-		//$lang = Ajde_Lang::getInstance()->getLang();
-   		//$newSystemLocale = setlocale(LC_ALL, $lang);
-		// if ($lang !== $newSystemLocale) {
-			// // TODO: now this adapter is not working properly...
-		// }
-		//bindtextdomain(Config::get('ident'), rtrim(LANG_DIR, DIRECTORY_SEPARATOR));
-		//textdomain(Config::get('ident'));
-		
-		// Dammit you gettext, try the Zend_Translate approach here...
-		
-		$this->_lang = Ajde_Lang::getInstance()->getLang();
-		$this->_gettext = new Zend_Translate_Adapter_Gettext();
-		
-		$filename = LANG_DIR . $this->_lang . '/LC_MESSAGES/' . Config::get('ident') . '.mo';
-		$this->_gettext->_loadTranslationData($filename, $this->_lang);
-		$this->_dictionary = $this->_gettext->get($this->_lang);
-		
-	}
-	
-	public function get($ident, $module = null)
-	{
-		if (isset($this->_dictionary[$ident])) {
-			return $this->_dictionary[$ident];
-		} else {
-			return $ident;
-		}
-	}
+    protected $_gettext;
+    protected $_lang;
+    protected $_dictionary;
+
+    public function __construct()
+    {
+        //$lang = Ajde_Lang::getInstance()->getLang();
+        //$newSystemLocale = setlocale(LC_ALL, $lang);
+        // if ($lang !== $newSystemLocale) {
+        // // TODO: now this adapter is not working properly...
+        // }
+        //bindtextdomain(Config::get('ident'), rtrim(LANG_DIR, DIRECTORY_SEPARATOR));
+        //textdomain(Config::get('ident'));
+
+        // Dammit you gettext, try the Zend_Translate approach here...
+
+        $this->_lang = Ajde_Lang::getInstance()->getLang();
+        $this->_gettext = new Zend_Translate_Adapter_Gettext();
+
+        $filename = LANG_DIR . $this->_lang . '/LC_MESSAGES/' . Config::get('ident') . '.mo';
+        $this->_gettext->_loadTranslationData($filename, $this->_lang);
+        $this->_dictionary = $this->_gettext->get($this->_lang);
+
+    }
+
+    public function get($ident, $module = null)
+    {
+        if (isset($this->_dictionary[$ident]))
+        {
+            return $this->_dictionary[$ident];
+        }
+        else
+        {
+            $this->log($ident, $module);
+            return $ident;
+        }
+    }
 }
 
 /**
@@ -42,13 +46,13 @@ class Ajde_Lang_Adapter_Gettext extends Ajde_Lang_Adapter_Abstract
  * the host system, and have a accordingly named language directory structure,
  * we use the Zend_Translate implementation, which is a plain *.mo file reader,
  * much better thank you...
- * 
+ *
  * For background:
  * @see http://php.net/manual/en/function.setlocale.php
  * @see http://stackoverflow.com/questions/1646249/php-gettext-problems-like-non-thread-safe
- * 
+ *
  * Tweaked the original Zend_Translate_Adapter_Gettext class to suit our needs here!
- * Changes are commented with 'AJDE :' 
+ * Changes are commented with 'AJDE :'
  */
 
 /**
@@ -128,14 +132,14 @@ class Zend_Translate_Adapter_Gettext extends Ajde_Object_Standard {
         $this->_bigEndian = false;
         $this->_file      = @fopen($filename, 'rb');
         if (!$this->_file) {
-        	// AJDE : Changed to use Ajde_Exception
+            // AJDE : Changed to use Ajde_Exception
             // require_once 'Zend/Translate/Exception.php';
             // throw new Zend_Translate_Exception('Error opening translation file \'' . $filename . '\'.');
             throw new Ajde_Exception('Error opening translation file \'' . $filename . '\'.');
         }
         if (@filesize($filename) < 10) {
             @fclose($this->_file);
-			// AJDE : Changed to use Ajde_Exception
+            // AJDE : Changed to use Ajde_Exception
             // require_once 'Zend/Translate/Exception.php';
             // throw new Zend_Translate_Exception('\'' . $filename . '\' is not a gettext file');
             throw new Ajde_Exception('\'' . $filename . '\' is not a gettext file');
@@ -149,7 +153,7 @@ class Zend_Translate_Adapter_Gettext extends Ajde_Object_Standard {
             $this->_bigEndian = true;
         } else {
             @fclose($this->_file);
-			// AJDE : Changed to use Ajde_Exception
+            // AJDE : Changed to use Ajde_Exception
             // require_once 'Zend/Translate/Exception.php';
             // throw new Zend_Translate_Exception('\'' . $filename . '\' is not a gettext file');
             throw new Ajde_Exception('\'' . $filename . '\' is not a gettext file');

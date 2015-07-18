@@ -28,7 +28,7 @@ $field = $this->field;
 
     <?php if (($field->hasShowLabel() && $field->getShowLabel() !== false) || !$field->hasShowLabel()) { ?>
         <label class='control-label' for='in_<?php echo $field->getName(); ?>' title='<?php echo $field->getLabel(); ?>' class='<?php if ($field->getIsRequired() === true) { echo 'required'; } ?>'>
-            <?php echo __($field->getLabel()); ?>    
+            <?php echo $field->getLabel(); ?>
 
             <?php if ($field->getIsRequired() === true) :
                 echo $field->getHtmlRequired();

@@ -188,7 +188,7 @@ abstract class Ajde_User extends Ajde_Model
 			throw new Ajde_Exception('SHA-256 algorithm not available for hashing');
 		}
 		$userSecret	= $this->get('secret');
-		$appSecret	= Config::get('secret');
+		$appSecret	= Config::secret();
 		if ($includeDomain) {
 			$hash = hash("sha256", $userSecret . $appSecret . $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
 		} else {
@@ -259,7 +259,6 @@ abstract class Ajde_User extends Ajde_Model
 	{
 		// @todo exception
 		throw new Ajde_Exception('Please implement sendResetMail in UserModel');
-		return false;
 	}
 	
 	public function getResetHash()
@@ -273,7 +272,7 @@ abstract class Ajde_User extends Ajde_Model
 			throw new Ajde_Exception('SHA-256 algorithm not available for hashing');
 		}
 		$userSecret	= $this->get('secret');
-		$appSecret	= Config::get('secret');
+		$appSecret	= Config::secret();
 		$hash = strtotime("+1 month") . ':' . hash("sha256", $userSecret . $appSecret . microtime() . rand());
 
 		if (empty($hash)) {

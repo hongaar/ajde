@@ -10,7 +10,7 @@ $this->requireCssPublic('core/bootstrap/bootstrap3-journal.min.css');
 $this->requireJsPublic('core/bootstrap/bootstrap3.min.js');
 
 // Some JavaScript i18n
-$this->requireJsFirst('i18n.' . Ajde_Lang::getInstance()->getShortLang());
+$this->requireJsFirst('i18n.' . Ajde_Lang::getInstance()->getShortLang(), 'html', LAYOUT_DIR . 'admin/');
 
 // Alert bar
 $this->requireJsFirst('core.alert', 'html', LAYOUT_DIR . 'admin/');
@@ -18,7 +18,7 @@ $this->requireCssFirst('core.alert', 'html', LAYOUT_DIR . 'admin/');
 
 // Lazy images
 $this->requireJsPublic('core/jquery.lazyload.min.js');
-$this->requireJsFirst('core.lazy');
+$this->requireJsFirst('core.lazy', 'html', LAYOUT_DIR . 'admin/');
 
 if (($user = UserModel::getLoggedIn()) && $user->isAdmin()) {
     // Shortcut
@@ -26,7 +26,7 @@ if (($user = UserModel::getLoggedIn()) && $user->isAdmin()) {
     $this->requireJs('core.shortcut', 'html', LAYOUT_DIR . 'admin/');
 }
 
-// Example styles
+// Font loading example
 // $this->requireGWebFont('Roboto', array(400, 700));
 
 ?>

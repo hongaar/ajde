@@ -145,7 +145,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 								<?php foreach($field->getValues() as $key => $option) { ?>
 									<option value='<?php echo $key; ?>'
 										<?php if ($key == $fieldFilter) { echo "selected='selected'"; } ?>
-										><?php echo __($option); ?></option>
+										><?php echo $option; ?></option>
 								<?php } ?>
 							</select>
 						<?php } else if ($field instanceof Ajde_Crud_Field_Boolean) {
@@ -484,7 +484,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 			<?php foreach($filterField->getValues() as $key => $option) { ?>
 				<option value='<?php echo $key; ?>'
 					<?php if ($key == $currentFilter) { echo "selected='selected'"; } ?>
-					><?php echo __($option); ?></option>
+					><?php echo $option; ?></option>
 			<?php } ?>
 		</select>
 

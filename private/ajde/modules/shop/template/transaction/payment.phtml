@@ -11,6 +11,31 @@ $transaction = $this->transaction;
         <h2><?php echo __('Payment') ?></h2></h2>
     </div>
 
+    <div class="row form-group">
+        <div class="col-xs-12">
+            <ul class="nav nav-pills nav-justified thumbnail setup-panel">
+                <li>
+                    <a href="shop/checkout">
+                        <h4 class="list-group-item-heading">1. <?php echo __('Review', 'shop'); ?></h4>
+                        <p class="list-group-item-text"><?php echo __('Review your shopping cart', 'shop'); ?></p>
+                    </a>
+                </li>
+                <li>
+                    <a href="shop/transaction:setup">
+                        <h4 class="list-group-item-heading">2. <?php echo __('Your details', 'shop'); ?></h4>
+                        <p class="list-group-item-text"><?php echo __('Your name, address and shipping'); ?></p>
+                    </a>
+                </li>
+                <li class="active">
+                    <a>
+                        <h4 class="list-group-item-heading">3. <?php echo __('Payment', 'shop'); ?></h4>
+                        <p class="list-group-item-text"><?php echo __('Payment and order confirmation'); ?></p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
     <?php if ($transaction->hasLoaded() === false) { ?>
 
         <h4><?php echo __('Order not found') ?></h4>

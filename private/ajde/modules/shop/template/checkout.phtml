@@ -3,6 +3,9 @@
 
 /* @var $transaction Ajde_Shop_Transaction */
 $transaction = $this->transaction;
+
+/** @var Ajde_Shop_Cart $cart */
+$cart = $this->cart;
 ?>
 
 <div class="container main">
@@ -11,17 +14,44 @@ $transaction = $this->transaction;
         <h2><?php echo __('Checkout', 'shop'); ?></h2>
     </div>
 
-    <?php if ($transaction->hasLoaded()) { ?>
+    <div class="row form-group">
+        <div class="col-xs-12">
+            <ul class="nav nav-pills nav-justified thumbnail setup-panel">
+                <li class="active">
+                    <a>
+                        <h4 class="list-group-item-heading">1. <?php echo __('Review', 'shop'); ?></h4>
+                        <p class="list-group-item-text"><?php echo __('Review your shopping cart', 'shop'); ?></p>
+                    </a>
+                </li>
+                <li class="disabled">
+                    <a>
+                        <h4 class="list-group-item-heading">2. <?php echo __('Your details', 'shop'); ?></h4>
+                        <p class="list-group-item-text"><?php echo __('Your name, address and shipping'); ?></p>
+                    </a>
+                </li>
+                <li class="disabled">
+                    <a>
+                        <h4 class="list-group-item-heading">3. <?php echo __('Payment', 'shop'); ?></h4>
+                        <p class="list-group-item-text"><?php echo __('Payment and order confirmation'); ?></p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <?php if ($transaction->hasLoaded() && !$transaction->isSameAsCart($cart)) { ?>
 
         <h4><?php echo __('You have an unfinished order', 'shop'); ?></h4>
 
         <?php if ($transaction->payment_status == 'pending') { ?>
 
-            <?php if ($this->cart->hasItems()) { ?>
+            <?php if ($cart->hasItems()) { ?>
 
                 <p>
-                    <?php echo __('Update this order in progress by replacing the items from your cart in the current order', 'shop'); ?>
+                    <?php echo __('Update this order in progress by replacing the items from your cart in the current order', 'shop'); ?>:
                 </p>
+
+                <?php echo $this->includeModule('shop/cart:widget'); ?>
 
                 <div class='toolbar'>
                     <a class='btn btn-success btn-lg pull-right' href='shop/transaction:update'>
@@ -57,7 +87,7 @@ $transaction = $this->transaction;
             <a class='btn btn-default btn-sm' href="shop/cart:edit"><?php echo __('Edit shopping cart', 'shop'); ?></a>
         </p>
 
-        <?php if (Config::get('shopOfferLogin')) { ?>
+        <?php if (Config::get('shopOfferLogin') && !$transaction->hasLoaded()) { ?>
 
             <hr/>
 
@@ -79,12 +109,21 @@ $transaction = $this->transaction;
         <?php } ?>
 
         <?php if ($this->cart->hasItems()) { ?>
-            <div class='toolbar text-right'>
-                <a class='btn btn-success btn-lg' href='shop/transaction:setup'>
-                    <?php echo __('Proceed with checkout', 'shop'); ?>
-                    <span class="glyphicon glyphicon-chevron-right"></span>
-                </a>
-            </div>
+            <?php if ($transaction->hasLoaded() && $transaction->isSameAsCart($cart)) { ?>
+                <div class='toolbar text-right'>
+                    <a class='btn btn-success btn-lg' href='shop/transaction:update'>
+                        <?php echo __('Proceed with checkout', 'shop'); ?>
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </a>
+                </div>
+            <?php } else { ?>
+                <div class='toolbar text-right'>
+                    <a class='btn btn-success btn-lg' href='shop/transaction:setup'>
+                        <?php echo __('Proceed with checkout', 'shop'); ?>
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </a>
+                </div>
+            <?php } ?>
         <?php } else { ?>
             <hr/>
             <p>

@@ -354,8 +354,7 @@ class Ajde_Lang extends Ajde_Object_Singleton
     public function get($ident, $module = null)
     {
         // TODO:
-        throw new Ajde_Core_Exception_Deprecated();
-        return $this->getAdapter()->get($ident, $module);
+        throw new Ajde_Core_Exception_Deprecated('Use Ajde_Lang::translate() instead');
     }
 
     public function getNiceName($lang = null)

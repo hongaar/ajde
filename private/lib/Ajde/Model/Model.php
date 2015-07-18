@@ -825,7 +825,7 @@ class Ajde_Model extends Ajde_Object_Standard
 
 	public function isEncrypted($field)
 	{
-		return substr_count(Ajde_Component_String::decrypt(parent::_get($field)), self::ENCRYPTION_PREFIX . Config::get('secret'));
+		return substr_count(Ajde_Component_String::decrypt(parent::_get($field)), self::ENCRYPTION_PREFIX . Config::secret());
 	}
 
 	public function encrypt($field)
@@ -840,7 +840,7 @@ class Ajde_Model extends Ajde_Object_Standard
 	
 	public function doEncrypt($string)
 	{
-		return Ajde_Component_String::encrypt(self::ENCRYPTION_PREFIX . Config::get('secret') . $string);
+		return Ajde_Component_String::encrypt(self::ENCRYPTION_PREFIX . Config::secret() . $string);
 	}
 
 	public function decrypt($field)
@@ -848,7 +848,7 @@ class Ajde_Model extends Ajde_Object_Standard
 		if (!$this->isEncrypted($field)) {
 			return parent::_get($field);
 		}
-		$decrypted = str_replace( self::ENCRYPTION_PREFIX . Config::get('secret'), '', Ajde_Component_String::decrypt(parent::_get($field)) );
+		$decrypted = str_replace( self::ENCRYPTION_PREFIX . Config::secret(), '', Ajde_Component_String::decrypt(parent::_get($field)) );
 		return $decrypted;
 	}
 	

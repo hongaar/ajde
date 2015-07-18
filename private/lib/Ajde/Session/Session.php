@@ -51,7 +51,7 @@ class Ajde_Session extends Ajde_Object_Standard
 		// @see http://www.chromium.org/developers/how-tos/chrome-frame-getting-started/understanding-chrome-frame-user-agent		
 		if (isset($_SERVER['HTTP_USER_AGENT']) && substr_count($_SERVER['HTTP_USER_AGENT'], 'chromeframe/') === 0 &&
 				isset($_SESSION['client']) &&
-				$_SESSION['client'] !== md5($remoteIp . $_SERVER['HTTP_USER_AGENT'] . Config::get('secret'))) {
+				$_SESSION['client'] !== md5($remoteIp . $_SERVER['HTTP_USER_AGENT'] . Config::secret())) {
 			// TODO: overhead to call session_regenerate_id? is it not required??
 			//session_regenerate_id();
 
@@ -78,7 +78,7 @@ class Ajde_Session extends Ajde_Object_Standard
 				}
 			}
 		} else {
-			$_SESSION['client'] = md5($remoteIp . issetor($_SERVER['HTTP_USER_AGENT']) . Config::get('secret'));
+			$_SESSION['client'] = md5($remoteIp . issetor($_SERVER['HTTP_USER_AGENT']) . Config::secret());
 
             if ($lifetime > 0) {
                 // Force send new cookie with updated lifetime (forcing keep-alive)
