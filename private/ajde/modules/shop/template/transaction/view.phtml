@@ -170,29 +170,33 @@ $this->requireCss('transaction/view.print', 'html', null, Ajde_Document_Format_H
                             <td class="left">
                                 <?php switch($transaction->payment_status) {
                                     case 'pending':
-                                        echo __('Not paid');
+                                        if (!($this->source == 'session' && $transaction->payment_status == 'pending')) { ?>
+                                            <p>
+                                                <a href="shop/transaction:resetPayment/<?php echo $transaction->getSecret(); ?>.html" class="btn btn-info btn-sm pull-right">
+                                                    <span class="glyphicon glyphicon-repeat"></span>
+                                                    <?php echo __('Pay now'); ?>
+                                                </a>
+                                                <?php echo __('Not paid'); ?>
+                                            </p>
+                                            <?php
+                                        } else {
+                                            echo __('Not paid');
+                                        }
                                         break;
                                     case 'requested':
-//                                        echo __('Payment in progress');
-                                        ?>
-
+                                    case 'refused':
+                                    case 'cancelled': ?>
                                         <p>
-                                            <?php echo __('Payment was already initiated for this order. If you canceled your payment, you can now reset the payment status of this transaction and try again.') ?>
+                                            <?php echo __('paymentStatus' . ucfirst($transaction->payment_status)); ?>.
+                                            <?php echo __('You can make a new payment for this order.') ?>
                                         </p>
                                         <p>
                                             <a href="shop/transaction:resetPayment/<?php echo $transaction->getSecret(); ?>.html" class="btn btn-info">
                                                 <span class="glyphicon glyphicon-repeat"></span>
-                                                <?php echo __('Reset payment'); ?>
+                                                <?php echo __('Retry payment'); ?>
                                             </a>
                                         </p>
-
                                         <?php
-                                        break;
-                                    case 'refused':
-                                        echo __('Payment refused');
-                                        break;
-                                    case 'cancelled':
-                                        echo __('Cancelled');
                                         break;
                                     case 'completed': ?>
 
