@@ -8,7 +8,7 @@ $transaction = $this->transaction;
 <div class="container main">
 
     <div class="page-header">
-        <h2><?php echo __('Payment') ?></h2></h2>
+        <h2><?php echo __('Payment') ?></h2>
     </div>
 
     <div class="row form-group">
@@ -49,76 +49,95 @@ $transaction = $this->transaction;
                 <?php echo __('Please choose your method of payment') ?>
             </div>
 
-            <div class="row">
-                <div class="col-md-12">
+            <div class="col-sm-8 col-sm-offset-2">
 
-                    <div class="form-group">
-                        <label class="col-sm-5 control-label"><?php echo __('Total payable amount', 'shop') ?></label>
-                        <div class="col-sm-7" style="padding-top: 7px;">
-                            <?php echo $transaction->getFormattedTotal(); ?>
-                        </div>
-                    </div>
+                <h4><?php echo __('Order summary'); ?></h4>
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th><?php echo __('Description'); ?></th>
+                            <th class="text-right"><?php echo __('Amount'); ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><?php echo Ajde_Component_String::makePlural($transaction->shipment_itemsqty, 'item'); ?></td>
+                            <td class="text-right"><?php echo $transaction->getFormattedItemsTotal(); ?></td>
+                        </tr>
+                        <tr>
+                            <td><?php echo __('Shipping with'); ?> <?php echo $transaction->getShipping()->getCurrentMethod()->getDescription(); ?></td>
+                            <td class="text-right"><?php echo $transaction->getFormattedShippingTotal(); ?></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th><?php echo __('Total payable amount', 'shop') ?></th>
+                            <th class="text-right"><?php echo $transaction->getFormattedTotal(); ?></th>
+                        </tr>
+                    </tfoot>
+                </table>
 
-                    <?php if ($transaction->payment_status == 'completed') { ?>
+            <hr/>
 
-                        <div class="col-sm-7 col-sm-offset-5">
-                            <p><?php echo __('This transaction is already paid for.') ?></p>
-                        </div>
-
-                    <?php } elseif ($transaction->payment_status != 'pending') { ?>
-
-                        <div class="col-sm-7 col-sm-offset-5">
-                            <p>
-                                <?php echo __('Payment was already initiated for this order. If you canceled your payment, you can now reset the payment status of this transaction and try again.') ?>
-                            </p>
-                            <p>
-                                <a href="shop/transaction:resetPayment" class="btn btn-info">
-                                    <span class="glyphicon glyphicon-repeat"></span>
-                                    <?php echo __('Try again'); ?>
-                                </a>
-                                <?php echo __('or'); ?> <a href="shop/transaction:view"><?php echo __('View current order'); ?></a>
-                            </p>
-                        </div>
-
-                    <?php } else { ?>
-
-                        <div class="form-group">
-                            <label class="col-sm-5 control-label"><?php echo __('Choose payment method', 'shop') ?></label>
-                            <div class="col-sm-7 provider">
-
-                                <?php foreach($transaction->getProviders() as $key => $provider) {
-                                    /* @var $provider Ajde_Shop_Transaction_Provider */ ?>
-                                    <label for='<?php echo _e($key); ?>' data-toggle="tooltip" data-placement="right" title="<?php echo _e($provider->getName()); ?>">
-                                        <input type='radio' name='provider' value='<?php echo _e($key); ?>' id='<?php echo _e($key); ?>' />
-                                        <?php if ($provider->getLogo()) { ?>
-                                            <img src='<?php echo _e($provider->getLogo()); ?>' alt='<?php echo _e($provider->getName()); ?>' width='75' style='vertical-align: middle;' />
-                                        <?php } else { ?>
-                                            <?php echo _e($provider->getName()); ?>
-                                        <?php } ?>
-                                    </label>
-                                    <br/>
-                                <?php } ?>
-
-                            </div>
-                        </div>
-
-                        <div class="clearfix"></div>
-
-                        <div class='toolbar'>
-                            <button type='submit' class='pull-right btn btn-success btn-lg'>
-                                <?php echo _e(__('Pay and complete order', 'shop')); ?>
-                                <span class="glyphicon glyphicon-chevron-right"></span>
-                            </button>
-                            <a href='shop/transaction:setup'>
-                                <span class="glyphicon glyphicon-chevron-left"></span>
-                                <?php echo __('Edit shipping details', 'shop'); ?>
-                            </a>
-                        </div>
-
-                    <?php } ?>
-
-                </div>
             </div>
+
+            <?php if ($transaction->payment_status == 'completed') { ?>
+
+                <div class="col-sm-7 col-sm-offset-5">
+                    <p><?php echo __('This transaction is already paid for.') ?></p>
+                </div>
+
+            <?php } elseif ($transaction->payment_status != 'pending') { ?>
+
+                <div class="col-sm-7 col-sm-offset-5">
+                    <p>
+                        <?php echo __('Payment was already initiated for this order. If you canceled your payment, you can now reset the payment status of this transaction and try again.') ?>
+                    </p>
+                    <p>
+                        <a href="shop/transaction:resetPayment" class="btn btn-info">
+                            <span class="glyphicon glyphicon-repeat"></span>
+                            <?php echo __('Try again'); ?>
+                        </a>
+                        <?php echo __('or'); ?> <a href="shop/transaction:view"><?php echo __('View current order'); ?></a>
+                    </p>
+                </div>
+
+            <?php } else { ?>
+
+                <div class="form-group">
+                    <label class="col-sm-5 control-label"><?php echo __('Choose payment method', 'shop') ?></label>
+                    <div class="col-sm-7 provider">
+
+                        <?php foreach($transaction->getProviders() as $key => $provider) {
+                            /* @var $provider Ajde_Shop_Transaction_Provider */ ?>
+                            <label for='<?php echo _e($key); ?>' data-toggle="tooltip" data-placement="right" title="<?php echo _e($provider->getName()); ?>">
+                                <input type='radio' name='provider' value='<?php echo _e($key); ?>' id='<?php echo _e($key); ?>' />
+                                <?php if ($provider->getLogo()) { ?>
+                                    <img src='<?php echo _e($provider->getLogo()); ?>' alt='<?php echo _e($provider->getName()); ?>' width='75' style='vertical-align: middle;' />
+                                <?php } else { ?>
+                                    <?php echo _e($provider->getName()); ?>
+                                <?php } ?>
+                            </label>
+                            <br/>
+                        <?php } ?>
+
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class='toolbar'>
+                    <button type='submit' class='pull-right btn btn-success btn-lg'>
+                        <?php echo _e(__('Pay and complete order', 'shop')); ?>
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </button>
+                    <a href='shop/transaction:setup'>
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                        <?php echo __('Edit shipping details', 'shop'); ?>
+                    </a>
+                </div>
+
+            <?php } ?>
 
         </form>
 

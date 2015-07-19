@@ -150,6 +150,7 @@ $this->requireCss('transaction/view.print', 'html', null, Ajde_Document_Format_H
                                 <?php
                                 if ($shipping = $transaction->getShipping()->getCurrentMethod()) {
                                     echo _c($shipping->getDescription());
+                                    echo "<span class='pull-right'>" . $transaction->getFormattedShippingTotal() . "</span>";
                                 } ?>
                             </td>
                         </tr>

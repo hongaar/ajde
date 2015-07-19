@@ -103,6 +103,16 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
         return Config::get('currency') . '&nbsp;' . $this->_format($this->getTotal());
     }
 
+    public function getFormattedItemsTotal()
+    {
+        return Config::get('currency') . '&nbsp;' . $this->_format($this->shipment_itemstotal);
+    }
+
+    public function getFormattedShippingTotal()
+    {
+        return Config::get('currency') . '&nbsp;' . $this->_format($this->shipment_cost);
+    }
+
     public function getOverviewHtml()
     {
         if ($this->hasLoaded()) {
