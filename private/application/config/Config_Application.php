@@ -33,8 +33,8 @@ class Config_Application extends Config_Cms
     //public $requirePostToken;
     //public $postWhitelistRoutes;
 
-    // Replace with random string
-    // i.e. use '$ openssl rand -base64 32'
+    // Replace with random 16 character string
+    // i.e. use '$ openssl rand -base64 16 | cut -c1-16'
     public $secret              = 'RANDOMSTRING';
 
     //public $cookieDomain;
