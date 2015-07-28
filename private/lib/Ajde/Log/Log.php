@@ -28,8 +28,17 @@ class Ajde_Log extends Ajde_Object_Static
         return $getWriters;
 	}
 
+    private static function shouldLog($level)
+    {
+        $configLevel = current(explode(':', Config::get('logLevel')));
+        $logLevel = current(explode(':', $level));
+        return $configLevel >= $logLevel;
+    }
+
     public static function _($message, $channel = self::CHANNEL_INFO, $level = self::LEVEL_INFORMATIONAL, $description = '', $code = '', $trace = '')
     {
+        if (!self::shouldLog($level)) return;
+
         foreach(self::getWriters() as $writer)
         {
             try {

@@ -53,6 +53,7 @@ class Config_Cms extends Config_Advanced
 	//public $compressResources;
 	//public $debug;
     //public $logWriter;
+	//public $logLevel;
 	//public $useCache;
 	//public $documentProcessors;
 

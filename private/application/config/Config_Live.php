@@ -8,6 +8,8 @@ class Config_Live extends Config_Application {
 	public $debug 				= false;
 	public $useCache			= true;
 
+	public $logLevel			= '4:Error';
+
 	function __construct() {
 		parent::__construct();
 		$this->documentProcessors['html'] = array();

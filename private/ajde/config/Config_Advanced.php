@@ -73,6 +73,7 @@ class Config_Advanced
 	public $compressResources	= true;
 	public $debug 				= false;
     public $logWriter           = array('db', 'file');
+	public $logLevel			= '5:Warning';
 	public $useCache			= true;
 	public $documentProcessors	= array(
 									'css'	=> array(

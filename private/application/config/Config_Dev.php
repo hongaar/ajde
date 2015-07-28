@@ -8,6 +8,8 @@ class Config_Dev extends Config_Application {
 	public $debug 				= true;
 	public $useCache			= false;
 
+	public $logLevel			= '8:Debug';
+
     // Mail
     // Uncomment to use Gmail SMPT server locally
 //    public $mailer				= 'smtp';
