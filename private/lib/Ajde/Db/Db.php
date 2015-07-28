@@ -75,7 +75,7 @@ class Ajde_Db extends Ajde_Object_Singleton
 		}
 	
 		// convert to array
-		$commands = explode(";", $commands);
+		$commands = explode(";" . PHP_EOL, $commands);
 	
 		// run commands
 		$total = $success = 0;
