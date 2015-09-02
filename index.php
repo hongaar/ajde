@@ -12,7 +12,7 @@ define('AJDE', true);
 
 // --------------------
 // Which version of Ajde are we running?
-// -------------------- 
+// --------------------
 define('AJDE_VERSION', 'v0.3.3');
 
 /*********************
