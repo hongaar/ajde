@@ -7,24 +7,25 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 	const TYPE_INTEGER 	= 3;
 	const TYPE_FLOAT 	= 4;
 	const TYPE_RAW	 	= 5;
-	
+
 	const FORM_MIN_TIME	= 0; 	// minimum time to have a post form returned (seconds)
-	const FORM_MAX_TIME	= 3600;	// timeout of post forms (seconds) 
-	
+	const FORM_MAX_TIME	= 3600;	// timeout of post forms (seconds)
+
 	/**
 	 * @var Ajde_Core_Route
 	 */
 	protected $_route = null;
 	protected $_postData = array();
-	
-	/**
-	 * @return Ajde_Http_Request
-	 */
+
+    /**
+     * @return Ajde_Http_Request
+     * @throws Ajde_Core_Exception_Security
+     */
 	public static function fromGlobal()
 	{
 		$instance = new self();
 		if (!empty($_POST) && self::requirePostToken() && !self::_isWhitelisted()) {
-			
+
 			// Measures against CSRF attacks
 			$session = new Ajde_Session('AC.Form');
 			if (!isset($_POST['_token']) || !$session->has('formTime')) {
@@ -37,7 +38,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 					// Prevent inf. loops
 					unset($_POST);
 					// Rewrite
-					Ajde_Exception_Log::logException($exception);	
+					Ajde_Exception_Log::logException($exception);
 					Ajde_Http_Response::dieOnCode(Ajde_Http_Response::RESPONSE_TYPE_FORBIDDEN);
 				}
 			}
@@ -56,7 +57,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 					// Prevent inf. loops
 					unset($_POST);
 					// Rewrite
-					Ajde_Exception_Log::logException($exception);	
+					Ajde_Exception_Log::logException($exception);
 					Ajde_Http_Response::dieOnCode(Ajde_Http_Response::RESPONSE_TYPE_FORBIDDEN);
 				}
 			}
@@ -67,7 +68,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 		foreach($global as $key => $value)
 		{
 			$instance->set($key, $value);
-		}		
+		}
 		$instance->_postData = $_POST;
 		if (!empty($instance->_postData)) {
 			Ajde_Cache::getInstance()->disable();
@@ -90,7 +91,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
             return $_SERVER['REMOTE_ADDR'];
         }
     }
-	
+
 	/**
 	 * Security
 	 */
@@ -98,17 +99,17 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 	{
 		return Config::getInstance()->autoEscapeString == true;
 	}
-	
+
 	private static function autoCleanHtml()
 	{
 		return Config::getInstance()->autoCleanHtml == true;
 	}
-	
+
 	private static function requirePostToken()
 	{
 		return Config::getInstance()->requirePostToken == true;
 	}
-	
+
 	/**
 	 * CSRF prevention token
 	 */
@@ -126,17 +127,17 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 		self::markFormTime();
 		return $token;
 	}
-	
+
 	public static function verifyFormToken($requestToken)
 	{
 		return (self::_tokenHash($requestToken) === self::_getHashFromSession($requestToken));
 	}
-	
+
 	private static function _tokenHash($token)
 	{
 		return md5($token . $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] . Config::secret());
 	}
-	
+
 	private static function _isWhitelisted()
 	{
 		$route = issetor($_GET['_route'], false);
@@ -147,7 +148,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 		}
 		return false;
 	}
-	
+
 	private static function _getTokenDictionary(&$session = null)
 	{
 		if (!isset($session)) {
@@ -159,13 +160,13 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 		}
 		return $tokenDictionary;
 	}
-	
+
 	private static function _getHashFromSession($token)
 	{
 		$tokenDictionary = self::_getTokenDictionary();
-		return (issetor($tokenDictionary[$token], ''));		
+		return (issetor($tokenDictionary[$token], ''));
 	}
-	
+
 	public static function markFormTime()
 	{
 		$time = time();
@@ -173,7 +174,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 		$session->set('formTime', $time);
 		return $time;
 	}
-	
+
 	public static function verifyFormTime()
 	{
 		$session = new Ajde_Session('AC.Form');
@@ -185,12 +186,20 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 			return true;
 		}
 	}
-	
+
 	public static function isAjax()
 	{
 		return (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
 	}
-	
+
+    /**
+     * @return string Lowercase request method
+     */
+    public static function method()
+    {
+        return strtolower($_SERVER['REQUEST_METHOD']);
+    }
+
 	/**
 	 * Helpers
 	 */
@@ -198,7 +207,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 	{
 		return $this->getParam($key);
 	}
-	
+
 	public function getParam($key, $default = null, $type = self::TYPE_STRING, $post = false)
 	{
 		$data = $this->_data;
@@ -235,7 +244,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 					} else {
 						return $data[$key];
 					}
-			}			
+			}
 		} else {
 			if (isset($default)) {
 				return $default;
@@ -245,39 +254,39 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 			}
 		}
 	}
-	
+
 	public function getStr($key, $default)	{ return $this->getString	($key, $default); }
 	public function getInt($key, $default)	{ return $this->getInteger	($key, $default); }
-	
+
 	public function getString($key, $default = null)
 	{
 		return $this->getParam($key, $default, self::TYPE_STRING);
 	}
-	
+
 	public function getHtml($key, $default = null)
 	{
 		return $this->getParam($key, $default, self::TYPE_HTML);
 	}
-	
+
 	public function getInteger($key, $default = null)
 	{
 		return $this->getParam($key, $default, self::TYPE_INTEGER);
 	}
-	
+
 	public function getFloat($key, $default = null)
 	{
 		return $this->getParam($key, $default, self::TYPE_FLOAT);
 	}
-	
+
 	public function getRaw($key, $default = null)
 	{
 		return $this->getParam($key, $default, self::TYPE_RAW);
 	}
-	
+
 	/**
 	 * FORM
 	 */
-	
+
 	public function getCheckbox($key, $post = true)
 	{
 		if ($this->getParam($key, false, self::TYPE_RAW, $post) ===  'on') {
@@ -286,16 +295,16 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 			return false;
 		}
 	}
-	
+
 	/**
 	 * POST
 	 */
-	
+
 	public function getPostData()
 	{
 		return $this->_postData;
 	}
-	
+
 	public function getPostParam($key, $default = null, $type = self::TYPE_STRING)
 	{
 		return $this->getParam($key, $default, $type, true);
@@ -305,12 +314,12 @@ class Ajde_Http_Request extends Ajde_Object_Standard
     {
         return $this->getParam($key, $default, self::TYPE_RAW, true);
     }
-	
+
 	public function hasPostParam($key)
 	{
 		return array_key_exists($key, $this->_postData);
 	}
-	
+
 	/**
 	 * @return Ajde_Core_Route
 	 */
@@ -331,7 +340,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 		}
 		return $this->_route;
 	}
-	
+
 	public function initRoute()
 	{
 		$route = $this->getRoute();

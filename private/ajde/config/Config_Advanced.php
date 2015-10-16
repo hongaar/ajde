@@ -27,11 +27,8 @@ class Config_Advanced
 									'action' => 'view',
 									'format' => 'html'
 									);
-	public $aliases				= array(
-									'home' => 'main.html'
-									);
-	public $routes				= array(
-									);
+	public $aliases				= array();
+	public $routes				= array();
 
 	// Front-end
 	public $titleFormat			= '%2$s - %1$s'; // %1$s is project title, %2$s is document title
@@ -47,9 +44,7 @@ class Config_Advanced
 									'404' => 'main/code404.html',
 									'500' => 'main/code500.html'
 								);
-	public $browserSupport		= array(
-
-								);
+	public $browserSupport		= array();
 
 	// Security
 	public $autoEscapeString	= true;
@@ -75,6 +70,7 @@ class Config_Advanced
     public $logWriter           = array('db', 'file');
 	public $logLevel			= '5:Warning';
 	public $useCache			= true;
+    public $externalPageCache   = true;
 	public $documentProcessors	= array(
 									'css'	=> array(
 											'Less',
@@ -91,7 +87,7 @@ class Config_Advanced
 	public $dbUser 				= 'ajde_user';
 	public $dbPassword 			= 'ajde_pass';
 	public $textEditor			= 'ckeditor'; // Use this text editor for CRUD operations (aloha|jwysiwyg|ckeditor)
-	
+
 	// Mailer
 	public $mailer				= 'mail'; // One of: mail|smtp
     public $mailerConfig		= array();
@@ -157,18 +153,18 @@ class Config_Advanced
 	{
 		// Root project on local filesystem
 		$this->local_root = $_SERVER['DOCUMENT_ROOT'] . str_replace('/index.php', '', $_SERVER['PHP_SELF']);
-		
+
 		// URI fragments
 		$this->site_protocol = (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS'])) ? 'https://' : 'http://';
 		$this->site_domain = $_SERVER['SERVER_NAME'];
 		$this->site_path = str_replace('index.php', '', $_SERVER['PHP_SELF']);
-		
+
 		// Assembled URI
 		$this->site_root = $this->site_protocol . $this->site_domain . $this->site_path;
-		
+
 		// Assembled URI with language identifier
 		$this->lang_root = $this->site_root;
-		
+
 		// Set default timezone now
 		date_default_timezone_set($this->timezone);
 	}
