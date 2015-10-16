@@ -126,11 +126,6 @@ set_include_path(get_include_path() . PATH_SEPARATOR . LIB_DIR);
 require_once LIB_DIR . 'Ajde' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'Autoloader.php';
 Ajde_Core_Autoloader::register();
 
-//	--------------------
-//	Run composer autoloader
-//	--------------------
-require_once 'vendor/autoload.php';
-
 // --------------------
 // Global helper functions
 // --------------------
