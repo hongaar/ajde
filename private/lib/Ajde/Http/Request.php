@@ -24,11 +24,12 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 	public static function fromGlobal()
 	{
 		$instance = new self();
-		if (!empty($_POST) && self::requirePostToken() && !self::_isWhitelisted()) {
+        $post = self::globalPost();
+		if (!empty($post) && self::requirePostToken() && !self::_isWhitelisted()) {
 
 			// Measures against CSRF attacks
 			$session = new Ajde_Session('AC.Form');
-			if (!isset($_POST['_token']) || !$session->has('formTime')) {
+			if (!isset($post['_token']) || !$session->has('formTime')) {
 				// TODO:
 				$exception = new Ajde_Core_Exception_Security('No form token received or no form time set, bailing out to prevent CSRF attack');
 				if (Config::getInstance()->debug === true) {
@@ -37,12 +38,13 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 				} else {
 					// Prevent inf. loops
 					unset($_POST);
+                    unset($_REQUEST);
 					// Rewrite
 					Ajde_Exception_Log::logException($exception);
 					Ajde_Http_Response::dieOnCode(Ajde_Http_Response::RESPONSE_TYPE_FORBIDDEN);
 				}
 			}
-			$formToken = $_POST['_token'];
+			$formToken = $post['_token'];
 			if (!self::verifyFormToken($formToken) || !self::verifyFormTime()) {
 				// TODO:
 				if (!self::verifyFormToken($formToken)) {
@@ -56,6 +58,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 				} else {
 					// Prevent inf. loops
 					unset($_POST);
+                    unset($_REQUEST);
 					// Rewrite
 					Ajde_Exception_Log::logException($exception);
 					Ajde_Http_Response::dieOnCode(Ajde_Http_Response::RESPONSE_TYPE_FORBIDDEN);
@@ -64,12 +67,12 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 		}
 		// Security measure, protect $_POST
 		//$global = array_merge($_GET, $_POST);
-		$global = $_GET;
+		$global = self::globalGet();
 		foreach($global as $key => $value)
 		{
 			$instance->set($key, $value);
 		}
-		$instance->_postData = $_POST;
+		$instance->_postData = self::globalPost();
 		if (!empty($instance->_postData)) {
 			Ajde_Cache::getInstance()->disable();
 		}
@@ -80,6 +83,16 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 	{
 		return @$_SERVER['HTTP_REFERER'];
 	}
+
+    public static function globalGet()
+    {
+        return isset($_GET) ? $_GET : (isset($_REQUEST) ? $_REQUEST : array());
+    }
+
+    public static function globalPost()
+    {
+        return isset($_POST) ? $_POST : (isset($_REQUEST) ? $_REQUEST : array());
+    }
 
     // From http://stackoverflow.com/a/10372836/938297
     public static function getRealIp() {
