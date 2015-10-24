@@ -174,10 +174,10 @@ You need the following to run Ajde:
 
 Directories which have to be writable by the webserver:
 
- - private/var/cache
- - private/var/tmp
- - private/var/log
- - public/media/upload
+ - var/cache
+ - var/tmp
+ - var/log
+ - public/assets/media/upload
 
 #### Directories to delete in production
 
