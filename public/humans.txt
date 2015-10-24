@@ -1,0 +1,14 @@
+# The humans responsible & technology colophon
+
+# TEAM
+
+    <name> -- <role>
+
+# THANKS
+
+    <name>
+
+# TECHNOLOGY COLOPHON
+
+    CSS3, HTML5, JavaScript
+    Ajde CMS, jQuery, Bootstrap
