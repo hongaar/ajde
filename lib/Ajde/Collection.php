@@ -45,22 +45,6 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
     private $_sqlInitialized = false;
     private $_queryCount;
 
-    public static function register($controller)
-    {
-        // Extend Ajde_Controller
-        if (!Ajde_Event::has('Ajde_Controller', 'call', 'Ajde_Collection::extendController')) {
-            Ajde_Event::register('Ajde_Controller', 'call', 'Ajde_Collection::extendController');
-        }
-        // Extend autoloader
-        if ($controller instanceof Ajde_Controller) {
-            Ajde_Core_Autoloader::addDir(MODULE_DIR . $controller->getModule() . '/model/');
-        } elseif ($controller === '*') {
-            self::registerAll();
-        } else {
-            Ajde_Core_Autoloader::addDir(MODULE_DIR . $controller . '/model/');
-        }
-    }
-
     public static function extendController(Ajde_Controller $controller, $method, $arguments)
     {
         // Register getCollection($name) function on Ajde_Controller

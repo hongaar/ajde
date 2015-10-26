@@ -30,7 +30,7 @@ class _coreComponentController extends Ajde_Controller
 	{
 		// get resource from request
 		$fingerprint = Ajde::app()->getRequest()->getRaw('id');
-		if (!Ajde_Core_Autoloader::exists($className)) {
+		if (!class_exists($className)) {
 			throw new Ajde_Controller_Exception("Resource type could not be loaded");
 		}
 		//$resource = call_user_func_array(array($className,"fromHash"), array($hash));

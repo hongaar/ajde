@@ -63,7 +63,7 @@ class Ajde_Crud_Cms_Meta extends Ajde_Crud_Cms_Meta_Fieldlist
     public function getType($name)
     {
         $className = "Ajde_Crud_Cms_Meta_Type_" . ucfirst(str_replace(' ', '', strtolower($name)));
-        if (!Ajde_Core_Autoloader::exists($className)) {
+        if (!class_exists($className)) {
             // TODO:
             throw new Ajde_Exception('Meta field class ' . $className . ' could not be found');
         }

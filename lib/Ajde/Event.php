@@ -110,7 +110,7 @@ class Ajde_Event extends Ajde_Object_Static
     {
         if (is_object($object)) {
             return get_class($object);
-        } elseif (is_string($object) && Ajde_Core_Autoloader::exists($object)) {
+        } elseif (is_string($object) && class_exists($object)) {
             return $object;
         }
         throw new Ajde_Exception('No classname or object instance given, or classname is incorrect', 90012);

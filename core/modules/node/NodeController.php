@@ -31,8 +31,7 @@ class NodeController extends Ajde_Controller
         // get the current slug
         $slug = $this->getSlug();
 
-        /* @var $node NodeModel */
-        $node = $this->getModel();
+        $node = new NodeModel();
         $node->loadBySlug($slug);
         $this->node = $node;
 

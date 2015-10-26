@@ -10,54 +10,15 @@ class Ajde_Model extends Ajde_Object_Standard
     protected $_autoloadParents = false;
 
     protected $_tableName;
-    protected $_displayField = null;
+    protected $_displayField   = null;
     protected $_encrypedFields = [];
-    protected $_jsonFields = [];
+    protected $_jsonFields     = [];
 
-    protected $_hasMeta = false;
+    protected $_hasMeta    = false;
     protected $_metaLookup = [];
-    public $_metaValues = [];
+    public    $_metaValues = [];
 
     protected $_validators = [];
-
-    private static $_registeredAll = false;
-
-    public static function register($controller)
-    {
-        throw new Ajde_Core_Exception_Deprecated('Dont use');
-
-        if (self::$_registeredAll === true) {
-            return;
-        }
-
-        // Extend Ajde_Controller
-        if (!Ajde_Event::has('Ajde_Controller', 'call', 'Ajde_Model::extendController')) {
-            Ajde_Event::register('Ajde_Controller', 'call', 'Ajde_Model::extendController');
-        }
-        // Extend autoloader
-        if ($controller instanceof Ajde_Controller) {
-            Ajde_Core_Autoloader::addDir(APP_DIR . MODULE_DIR . $controller->getModule() . '/model/');
-            Ajde_Core_Autoloader::addDir(CORE_DIR . MODULE_DIR . $controller->getModule() . '/model/');
-        } elseif ($controller === '*') {
-            self::registerAll();
-        } else {
-            Ajde_Core_Autoloader::addDir(APP_DIR . MODULE_DIR . $controller . '/model/');
-            Ajde_Core_Autoloader::addDir(CORE_DIR . MODULE_DIR . $controller . '/model/');
-        }
-    }
-
-    public static function registerAll()
-    {
-        $dirs = Ajde_Fs_Find::findFiles(APP_DIR . MODULE_DIR, '*/model');
-        foreach ($dirs as $dir) {
-            Ajde_Core_Autoloader::addDir($dir . DIRECTORY_SEPARATOR);
-        }
-        $dirs = Ajde_Fs_Find::findFiles(CORE_DIR . MODULE_DIR, '*/model');
-        foreach ($dirs as $dir) {
-            Ajde_Core_Autoloader::addDir($dir . DIRECTORY_SEPARATOR);
-        }
-        self::$_registeredAll = true;
-    }
 
     public static function extendController(Ajde_Controller $controller, $method, $arguments)
     {
@@ -101,12 +62,12 @@ class Ajde_Model extends Ajde_Object_Standard
     public function __construct()
     {
         if (empty($this->_tableName)) {
-            $tableNameCC = str_replace('Model', '', get_class($this));
+            $tableNameCC      = str_replace('Model', '', get_class($this));
             $this->_tableName = $this->fromCamelCase($tableNameCC);
         }
 
         $this->_connection = Ajde_Db::getInstance()->getConnection();
-        $this->_table = Ajde_Db::getInstance()->getTable($this->_tableName);
+        $this->_table      = Ajde_Db::getInstance()->getTable($this->_tableName);
     }
 
     public function __set($name, $value)
@@ -271,7 +232,7 @@ class Ajde_Model extends Ajde_Object_Standard
     public function loadByFields($array)
     {
         $sqlWhere = [];
-        $values = [];
+        $values   = [];
         foreach ($array as $field => $value) {
             $sqlWhere[] = $field . ' = ?';
             if ($this->isFieldEncrypted($field)) {
@@ -335,7 +296,7 @@ class Ajde_Model extends Ajde_Object_Standard
         if (empty($this->_metaValues)) {
             $meta = [];
             if ($this->hasLoaded()) {
-                $sql = 'SELECT * FROM ' . $this->getMetaTable() . ' WHERE ' . $this->getTable() . ' = ?';
+                $sql       = 'SELECT * FROM ' . $this->getMetaTable() . ' WHERE ' . $this->getTable() . ' = ?';
                 $statement = $this->getConnection()->prepare($sql);
                 $statement->execute([$this->getPK()]);
                 $results = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -369,7 +330,6 @@ class Ajde_Model extends Ajde_Object_Standard
     {
         if (empty($this->_metaLookup)) {
             // We need to have the MetaModel here..
-            $this->registerAll();
             $metaCollection = new MetaCollection();
             // disable join, as we don't get any metas which don't have a row yet
 //			$metaCollection->addFilter(new Ajde_Filter_Join($this->getMetaTable(), 'meta.id', 'meta'));
@@ -401,7 +361,7 @@ class Ajde_Model extends Ajde_Object_Standard
     public function getMediaModelFromMetaValue($metaId)
     {
         $metaValue = (int)$this->getMetaValue($metaId);
-        $media = new MediaModel();
+        $media     = new MediaModel();
         $media->loadByPK($metaValue);
 
         return $media->hasLoaded() ? $media : false;
@@ -410,7 +370,7 @@ class Ajde_Model extends Ajde_Object_Standard
     public function getNodeModelFromMetaValue($metaId)
     {
         $metaValue = (int)$this->getMetaValue($metaId);
-        $node = new NodeModel();
+        $node      = new NodeModel();
         $node->loadByPK($metaValue);
 
         return $node->hasLoaded() ? $node : false;
@@ -445,7 +405,7 @@ class Ajde_Model extends Ajde_Object_Standard
         $value = $metaType->beforeSave($meta, $value, $this);
 
         // Insert new ones
-        $sql = 'INSERT INTO ' . $this->getMetaTable() . ' (' . $this->getTable() . ', meta, VALUE) VALUES (?, ?, ?)';
+        $sql       = 'INSERT INTO ' . $this->getMetaTable() . ' (' . $this->getTable() . ', meta, VALUE) VALUES (?, ?, ?)';
         $statement = $this->getConnection()->prepare($sql);
         $statement->execute([$this->getPK(), $metaId, $value]);
 
@@ -462,7 +422,7 @@ class Ajde_Model extends Ajde_Object_Standard
         }
 
         // Delete old records
-        $sql = 'DELETE FROM ' . $this->getMetaTable() . ' WHERE ' . $this->getTable() . ' = ? AND meta = ?';
+        $sql       = 'DELETE FROM ' . $this->getMetaTable() . ' WHERE ' . $this->getTable() . ' = ? AND meta = ?';
         $statement = $this->getConnection()->prepare($sql);
         $statement->execute([$this->getPK(), $metaId]);
     }
@@ -561,11 +521,11 @@ class Ajde_Model extends Ajde_Object_Standard
                         $sqlSet[] = $field . ' = ' . (string)$this->get($field);
                     } elseif ($this->getTable()->getFieldProperties($field, 'type') === Ajde_Db::FIELD_TYPE_SPATIAL) {
                         $pointValues = explode(' ', (string)parent::_get($field));
-                        $sqlSet[] = $field . ' = PointFromWKB(POINT(' . str_replace(',', '.',
+                        $sqlSet[]    = $field . ' = PointFromWKB(POINT(' . str_replace(',', '.',
                                 (double)$pointValues[0]) . ',' . str_replace(',', '.', (double)$pointValues[1]) . '))';
                     } else {
                         $sqlSet[] = $field . ' = ?';
-                        $value = parent::_get($field);
+                        $value    = parent::_get($field);
                         if (is_float($value)) {
                             $values[] = $value;
                         } else {
@@ -582,10 +542,10 @@ class Ajde_Model extends Ajde_Object_Standard
                 }
             }
         }
-        $values[] = $this->getPK();
-        $sql = 'UPDATE ' . $this->_table . ' SET ' . implode(', ', $sqlSet) . ' WHERE ' . $pk . ' = ?';
+        $values[]  = $this->getPK();
+        $sql       = 'UPDATE ' . $this->_table . ' SET ' . implode(', ', $sqlSet) . ' WHERE ' . $pk . ' = ?';
         $statement = $this->getConnection()->prepare($sql);
-        $return = $statement->execute($values);
+        $return    = $statement->execute($values);
         if ($this->_hasMeta === true) {
             $this->saveMeta();
         }
@@ -609,7 +569,7 @@ class Ajde_Model extends Ajde_Object_Standard
         }
         $sqlFields = [];
         $sqlValues = [];
-        $values = [];
+        $values    = [];
 
         // encryption
         foreach ($this->getEncryptedFields() as $field) {
@@ -625,7 +585,7 @@ class Ajde_Model extends Ajde_Object_Standard
             ) {
                 $sqlFields[] = $field;
                 $sqlValues[] = '?';
-                $values[] = parent::_get($field)->format('Y-m-d h:i:s');
+                $values[]    = parent::_get($field)->format('Y-m-d h:i:s');
             } else {
                 if ($this->has($field) && !$this->isEmpty($field)) {
                     if ($this->get($field) instanceof Ajde_Db_Function) {
@@ -639,7 +599,7 @@ class Ajde_Model extends Ajde_Object_Standard
                     } else {
                         $sqlFields[] = $field;
                         $sqlValues[] = '?';
-                        $value = parent::_get($field);
+                        $value       = parent::_get($field);
                         if (is_float($value)) {
                             $values[] = $value;
                         } else {
@@ -650,17 +610,17 @@ class Ajde_Model extends Ajde_Object_Standard
                     if ($this->has($field) && ($this->get($field) === 0 || $this->get($field) === '0')) {
                         $sqlFields[] = $field;
                         $sqlValues[] = '?';
-                        $values[] = (string)parent::_get($field);
+                        $values[]    = (string)parent::_get($field);
                     } else {
                         parent::_set($field, null);
                     }
                 }
             }
         }
-        $sql = 'INSERT INTO ' . $this->_table . ' (' . implode(', ', $sqlFields) . ') VALUES (' . implode(', ',
+        $sql       = 'INSERT INTO ' . $this->_table . ' (' . implode(', ', $sqlFields) . ') VALUES (' . implode(', ',
                 $sqlValues) . ')';
         $statement = $this->getConnection()->prepare($sql);
-        $return = $statement->execute($values);
+        $return    = $statement->execute($values);
         if (!isset($pkValue)) {
             $this->set($pk, $this->getConnection()->lastInsertId());
         }
@@ -679,9 +639,9 @@ class Ajde_Model extends Ajde_Object_Standard
         if (method_exists($this, 'beforeDelete')) {
             $this->beforeDelete();
         }
-        $id = $this->getPK();
-        $pk = $this->getTable()->getPK();
-        $sql = 'DELETE FROM ' . $this->_table . ' WHERE ' . $pk . ' = ? LIMIT 1';
+        $id        = $this->getPK();
+        $pk        = $this->getTable()->getPK();
+        $sql       = 'DELETE FROM ' . $this->_table . ' WHERE ' . $pk . ' = ? LIMIT 1';
         $statement = $this->getConnection()->prepare($sql);
         try {
             $return = $statement->execute([$id]);
@@ -767,7 +727,7 @@ class Ajde_Model extends Ajde_Object_Standard
     public function getParentModel($column)
     {
         $parentModelName = ucfirst($this->getParentTable($column)) . 'Model';
-        if (!Ajde_Core_Autoloader::exists($parentModelName)) {
+        if (!class_exists($parentModelName)) {
             return false;
         }
 
@@ -832,7 +792,7 @@ class Ajde_Model extends Ajde_Object_Standard
         if (!$this->hasLoaded()) {
             return false;
         }
-        $errors = [];
+        $errors    = [];
         $validator = $this->_getValidator();
 
         $valid = $validator->validate($fieldOptions);

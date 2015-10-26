@@ -157,7 +157,7 @@ class Ajde_Application extends Ajde_Object_Singleton
         if (Config::get("debug") === true) {
             throw $exception;
         } else {
-            if (Ajde_Core_Autoloader::exists('Ajde_Exception_Log')) {
+            if (class_exists('Ajde_Exception_Log')) {
                 Ajde_Exception_Log::logException($exception);
             }
             Ajde_Http_Response::redirectNotFound();

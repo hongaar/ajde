@@ -78,7 +78,7 @@ class Ajde_Controller extends Ajde_Object_Standard
         } else {
             $moduleController = ucfirst($route->getModule()) . 'Controller';
         }
-        if (!Ajde_Core_Autoloader::exists($moduleController)) {
+        if (!class_exists($moduleController)) {
 
             // Prevent resursive 404 routing
             if (isset(Config::getInstance()->responseCodeRoute[Ajde_Http_Response::RESPONSE_TYPE_NOTFOUND])) {
@@ -89,7 +89,7 @@ class Ajde_Controller extends Ajde_Object_Standard
                 }
             }
 
-            if (Ajde_Core_Autoloader::exists('Ajde_Exception')) {
+            if (class_exists('Ajde_Exception')) {
                 $exception = new Ajde_Core_Exception_Routing("Controller $moduleController for module {$route->getModule()} not found",
                     90008);
             } else {

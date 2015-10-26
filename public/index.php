@@ -63,7 +63,13 @@ define('CACHE_DIR',     VAR_DIR . 'cache' . DS);
 define('LOG_DIR',       VAR_DIR . 'log' . DS);
 define('TMP_DIR',       VAR_DIR . 'tmp' . DS);
 
-define('PUBLIC_DIR',    'public' . DS);
+define('PUBLIC_URI',    'public' . DS);
+define('ASSETS_URI',    'assets' . DS);
+define('MEDIA_URI',     ASSETS_URI . 'media' . DS);
+define('UPLOAD_URI',    MEDIA_URI . 'upload' . DS);
+define('AVATAR_URI',    UPLOAD_URI . 'avatar' . DS);
+
+define('PUBLIC_DIR',    UP . 'public' . DS);
 define('ASSETS_DIR',    PUBLIC_DIR . 'assets' . DS);
 define('MEDIA_DIR',     ASSETS_DIR . 'media' . DS);
 define('UPLOAD_DIR',    MEDIA_DIR . 'upload' . DS);

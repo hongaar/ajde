@@ -112,7 +112,6 @@ abstract class Ajde_Shop_Cart_Item extends Ajde_Model
      */
     protected function _getEntityModel($entityName)
     {
-        Ajde_Model::registerAll();
         $entityModelName = ucfirst((string)$entityName) . 'Model';
 
         return new $entityModelName();

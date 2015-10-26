@@ -18,8 +18,6 @@ class Ajde_Cms extends Ajde_Object_Singleton
 
     protected function __construct()
     {
-        Ajde_Model::registerAll();
-
         // Load applications bootstrap file
         require_once APP_DIR . 'Bootstrap.php';
     }

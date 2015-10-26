@@ -30,7 +30,7 @@ class Ajde_Embed extends Ajde_Object_Standard
                 foreach ($test as $testPart) {
                     if (substr_count($code, $testPart) > 0) {
                         $providerClass = 'Ajde_Embed_' . ucfirst($provider);
-                        if (Ajde_Core_Autoloader::exists($providerClass)) {
+                        if (class_exists($providerClass)) {
                             $embedClass = $providerClass;
                         }
                     }
@@ -38,7 +38,7 @@ class Ajde_Embed extends Ajde_Object_Standard
             } else {
                 if (substr_count($code, $test) > 0) {
                     $providerClass = 'Ajde_Embed_' . ucfirst($provider);
-                    if (Ajde_Core_Autoloader::exists($providerClass)) {
+                    if (class_exists($providerClass)) {
                         $embedClass = $providerClass;
                     }
                 }

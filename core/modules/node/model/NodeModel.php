@@ -8,21 +8,21 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 	protected $_autoloadParents = false;
 	protected $_displayField = 'title';
 	protected $_hasMeta = true;
-	
+
 	protected $_shadowModel;
 
     protected $_ignoreFieldInRevision = array('updated', 'added', 'level', 'sort', 'lang_root');
     protected $_ignoreFieldInRevisionIfEmpty = array('slug');
-	
+
 	public static $_parentAclCache = array();
-	
+
 	public function __construct() {
 		parent::__construct();
 		$this->registerEvents();
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param int $id
 	 * @return NodeModel|boolean
 	 */
@@ -48,13 +48,13 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
         }
         return false;
     }
-	
+
 	public function __wakeup()
 	{
 		parent::__wakeup();
 		$this->registerEvents();
 	}
-	
+
 	public function registerEvents()
 	{
 		if (!Ajde_Event::has($this, 'afterCrudSave', 'postCrudSave')) {
@@ -94,23 +94,23 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 
         return true;
     }
-	
+
 	public function getAclParam()
 	{
 		return ($this->has('nodetype') ? (string) $this->get('nodetype') : '');
 	}
-	
+
 	public function validateOwner($uid, $gid)
 	{
 		return ((string) $this->get('user')) == $uid;
 	}
-	
+
 	public function validateParent($uid, $gid)
 	{
 		$rootId = $this->getRoot(false);
 		if (isset(self::$_parentAclCache[$rootId])) {
 			$users = self::$_parentAclCache[$rootId];
-		} else {		
+		} else {
 			$root = new self();
 			$root->ignoreAccessControl = true;
 			$root->loadByPK($rootId);
@@ -119,15 +119,15 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 		}
 		return in_array($uid, $users);
 	}
-	
+
 	public function findChildUsers()
 	{
 		$collection = new UserCollection();
 		$collection->addFilter(new Ajde_Filter_Join('user_node', 'user_node.user', 'user.id'));
-		$collection->addFilter(new Ajde_Filter_Where('user_node.node', Ajde_Filter::FILTER_EQUALS, $this->getPK()));		
+		$collection->addFilter(new Ajde_Filter_Where('user_node.node', Ajde_Filter::FILTER_EQUALS, $this->getPK()));
 		return $collection;
 	}
-	
+
 	public function findChildUsersAsUidArray()
 	{
 		$users = $this->findChildUsers();
@@ -137,11 +137,11 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 		}
 		return $ids;
 	}
-	
+
 	/**
 	 * DISPLAY FUNCTIONS
 	 */
-	
+
 	public function getPublishData()
 	{
 		if ($return = $this->shadowCall('getPublishData')) {
@@ -154,7 +154,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 				'url'		=> $this->getUrl(false)
 		);
 	}
-	
+
 	public function getPublishRecipients()
 	{
 		if ($return = $this->shadowCall('getPublishRecipients')) {
@@ -168,7 +168,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 		}
 		return $addresses;
 	}
-	
+
 	public function displayPanel()
 	{
 		$nodetype = (string) $this->get('nodetype');
@@ -176,7 +176,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 		$controller->setItem($this);
 		return $controller->invoke();
 	}
-	
+
 	public function displayTreeName()
 	{
 		$nodetype = $this->has('nodetype_name') ? $this->get('nodetype_name') : $this->getNodetype()->displayField();
@@ -190,39 +190,39 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 		$ret .= ' <span class="title">' . _c($this->title) . '</span>';
 		return $ret;
 	}
-	
+
 	public function displayParentName()
 	{
 		$ret = '';
 		$parentId = $this->has('parent') ? $this->getParent() : false;
 		if ($parentId) {
-			$parent = new self();	
+			$parent = new self();
 			$parent->ignoreAccessControl = true;
-			$parent->loadByPK($parentId);			
+			$parent->loadByPK($parentId);
 			$ret .= '<span class="badge">'. strtolower($parent->getTitle()) . '</span>';
 		}
 		$ret .= ' <span class="title">' . _c($this->title) . '</span>';
 		return $ret;
 	}
-	
+
 	public function displayRootName()
 	{
 		$ret = '';
 		$root = $this->findRootNoAccessChecks();
-		if ($root) {		
+		if ($root) {
 			$ret .= '<span class="badge">'. strtolower($root->getTitle()) . '</span>';
 		}
 		$ret .= ' <span class="title">' . _c($this->title) . '</span>';
 		return $ret;
 	}
-	
+
 	public function displayAgo()
 	{
 		$timestamp = new DateTime($this->get('updated'));
 		$timestamp = $timestamp->format('U');
 		return Ajde_Component_String::time2str($timestamp);
 	}
-	
+
 	public function displayPublished()
 	{
 		if ($this->getNodetype()->get('published')) {
@@ -241,7 +241,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 			return "";
 		}
 	}
-	
+
 	public function displayLang()
 	{
         Ajde::app()->getDocument()->getLayout()->getParser()->getHelper()->requireCssPublic('core/flags.css');
@@ -254,7 +254,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 		}
 		return '';
 	}
-	
+
 	public function rowClass()
 	{
 		$class = strtolower($this->getNodetype()->getName());
@@ -263,7 +263,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 		}
 		return $class;
 	}
-	
+
 	public function editRouteChild() {
 		$childtype = '';
 		if ($this->hasLoaded()) {
@@ -271,7 +271,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 		}
 		return 'admin/node:view.crud?view[filter][nodetype]=' . $childtype;
 	}
-	
+
 	public function listRouteParent() {
 		$parenttype = '';
 		if ($this->hasLoaded()) {
@@ -279,7 +279,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 		}
 		return 'admin/node:view.crud?view[filter][nodetype]=' . $parenttype;
 	}
-	
+
 	public function addChildButton() {
 		if ($this->hasLoaded() && $childtype = $this->getNodetype()->get('child_type')) {
 			$this->getNodetype()->loadParent('child_type');
@@ -290,32 +290,32 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
         }
 		return false;
 	}
-	
+
 	/**
 	 * BEFORE / AFTER FUNCTIONS
 	 */
-	
+
 	public function afterSort()
 	{
 		$this->sortTree('NodeCollection');
 	}
-	
+
 	public function preCrudSave(Ajde_Controller $controller, Ajde_Crud $crud)
 	{
 		$this->updateRoot();
 	}
-	
+
 	public function postCrudSave(Ajde_Controller $controller, Ajde_Crud $crud)
 	{
 		// Update sort
 		$this->sortTree('NodeCollection');
 	}
-	
+
 	public function beforeDelete()
 	{
 		$this->shadowCall('beforeDelete');
 	}
-	
+
 	public function beforeSave()
 	{
         // filter slug
@@ -325,11 +325,11 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
             $this->slug = new Ajde_Db_Function('slug');
         }
 
-		$this->shadowCall('beforeSave');	
+		$this->shadowCall('beforeSave');
 	}
 
 	public function beforeInsert()
-	{		 
+	{
 		// Added
 		$this->added = new Ajde_Db_Function("NOW()");
 
@@ -340,42 +340,42 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 //			$min = ($item->sort < $min) ? $item->sort : $min;
 //		}
 //		$this->sort = $min - 1;
-		
+
 		// Slug
         $this->slug = $this->_makeSlug();
-		
+
 		$this->shadowCall('beforeInsert');
 	}
-	
+
 	public function afterInsert()
 	{
 		$this->shadowCall('afterInsert');
 	}
-	
+
 	public function afterSave()
 	{
 		$this->shadowCall('afterSave');
 	}
-	
+
 	/**
 	 * Shadow model
 	 */
-	
+
 	public function getShadowModel()
 	{
 		if (!isset($this->_shadowModel)) {
 			$modelName = ucfirst($this->getNodetype()->getName()) . 'NodeModel';
-			if (Ajde_Core_Autoloader::exists($modelName)) {
+			if (class_exists($modelName)) {
 				$this->_shadowModel = new $modelName();
 			} else {
 				$this->_shadowModel = false;
 			}
 		}
-		
+
 		$this->shadowCopy();
 		return $this->_shadowModel;
 	}
-	
+
 	public function shadowCopy()
 	{
 		if ($this->_shadowModel) {
@@ -383,14 +383,14 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 			$this->_shadowModel->populateMeta($this->_metaValues);
 		}
 	}
-	
+
 	public function shadowCall($method)
 	{
 		$shadowModel = $this->getShadowModel();
-		if ($shadowModel) {		
-			try {	
+		if ($shadowModel) {
+			try {
 				$rfmethod = new ReflectionMethod($shadowModel, $method);
-				if ($rfmethod->getDeclaringClass()->getName() == get_class($shadowModel)) {			
+				if ($rfmethod->getDeclaringClass()->getName() == get_class($shadowModel)) {
 					return $shadowModel->$method();
 				}
 			} catch (Exception $e) {
@@ -399,8 +399,8 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 		}
 		return false;
 	}
-	
-	
+
+
 	/**
 	 * SLUG FUNCTIONS
 	 */
@@ -452,7 +452,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 		$slug = preg_replace("/[\/_| -]+/", '-', $slug);
 		return $slug;
 	}
-	
+
 	public function loadBySlug($slug, $publishedCheck = false)
 	{
 		$this->loadByField('slug', $slug);
@@ -461,11 +461,11 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 		}
         return $this->hasLoaded();
 	}
-	
+
 	/**
 	 * PUBLISHED FUNCTIONS
 	 */
-	
+
 	public function checkPublished() {
 		if ($this->getNodetype()->get('published')) {
 			if (!$this->get('published')) {
@@ -478,33 +478,33 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 			if (($end = $this->get('published_end')) &&
 					strtotime($end) < time()) {
 				return false;
-			} 
+			}
 		}
 		return true;
 	}
-	
+
 	public function filterPublished()
     {
         if (false === $this->checkPublished()) {
 			$this->reset();
 		}
 	}
-	
+
 	protected function _load($sql, $values, $populate = true)
 	{
 		$return = parent::_load($sql, $values, $populate);
 		if ($return && Ajde::app()->getRequest()->getParam('filterPublished', false) ==  true) {
 			$this->filterPublished();
-		}		
-		return $return; 	
+		}
+		return $return;
 	}
-	
+
 	/**
 	 * TREE FUNCTIONS
 	 */
-	
+
 	/**
-	 * 
+	 *
 	 * @param boolean $returnModel
 	 * @return NodeModel|boolean
 	 */
@@ -516,7 +516,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 				return parent::getRoot();
 			} else {
 				return (string) parent::getRoot();
-			}			
+			}
 		} else {
 			if ($returnModel) {
 				return $this;
@@ -525,9 +525,9 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 			}
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return NodeModel|boolean
 	 */
 	public function findRootNoAccessChecks($load = true)
@@ -571,13 +571,13 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 		// TODO: we can never reach this?
 		return false;
 	}
-	
+
 	public function updateRoot()
 	{
 		// Update root
 		$root = $this->findRootNoAccessChecks(false);
 		$this->setRoot( ($this->getPK() != $root) ? $root : null );
-		
+
 		// go through all direct descendants
 		$collection = new NodeCollection();
 		$collection->ignoreAccessControl = true;
@@ -588,7 +588,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 			$child->save();
 		}
 	}
-	
+
 	/**
 	 *
 	 * @return NodeCollection
@@ -599,12 +599,12 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 		$collection->addFilter(new Ajde_Filter_Join('node_related', 'node.id', 'related'));
 		$collection->addFilter(new Ajde_Filter_Where('node_related.node', Ajde_Filter::FILTER_EQUALS, $this->getPK()));
 		$collection->orderBy('node_related.sort');
-	
+
 		return $collection;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return MediaCollection
 	 */
 	public function getAdditionalMedia()
@@ -614,10 +614,10 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 		$collection->addFilter(new Ajde_Filter_Join('node', 'node.id', 'node_media.node'));
 		$collection->addFilter(new Ajde_Filter_Where('node_media.node', Ajde_Filter::FILTER_EQUALS, $this->getPK()));
 		$collection->orderBy('node_media.sort');
-	
+
 		return $collection;
 	}
-	
+
 	/**
 	 *
 	 * @return NodeModel
@@ -630,7 +630,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 		}
 		return (string) $this->get('parent');
 	}
-	
+
 	/**
 	 *
 	 * @return NodeCollection
@@ -640,20 +640,20 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 		$collection = new NodeCollection();
 		$collection->filterByParent($this->getPK());
 		$collection->orderBy('sort');
-	
+
 		return $collection;
 	}
-	
+
 	public function getNext($loop = true)
 	{
 		return $this->getSibling('next', $loop);
 	}
-	
+
 	public function getPrev($loop = true)
 	{
 		return $this->getSibling('prev', $loop);
 	}
-	
+
 	public function getSibling($dir, $loop = true)
 	{
 		if ($dir == 'next') {
@@ -663,7 +663,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 			$filter = Ajde_Filter::FILTER_LESS;
 			$order = Ajde_Query::ORDER_DESC;
 		}
-	
+
 		if ($this->has('parent')) {
 			$siblings = new NodeCollection();
 			$siblings->addFilter(new Ajde_Filter_Where('sort', $filter, $this->sort));
@@ -700,7 +700,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 	{
         return $this->getUrl();
 	}
-		
+
 	public function getUrl($relative = true)
 	{
 		if ($this->getPK()) {
@@ -717,9 +717,9 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
         }
         return $this->getSlug();
     }
-	
+
 	/**
-	 * 
+	 *
 	 * @return NodetypeModel
 	 */
 	public function getNodetype()
@@ -727,9 +727,9 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 		$this->loadParent('nodetype');
 		return parent::getNodetype();
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return MediaModel
 	 */
 	public function getMedia()
@@ -737,7 +737,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 		$this->loadParent('media');
 		return parent::getMedia();
 	}
-	
+
 	public function getMediaTag($width = null, $height = null, $crop = null, $class = null, $attributes = array(), $lazy = false)
 	{
 		if ($this->hasNotEmpty('media')) {
@@ -758,7 +758,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
         }
         return '';
     }
-	
+
 	public function getMediaAbsoluteUrl()
 	{
 		if ($this->hasNotEmpty('media')) {
@@ -766,7 +766,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 		}
 		return false;
 	}
-	
+
 	public function getTags()
 	{
 		$id = $this->getPK();
@@ -775,12 +775,12 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 		$subQuery = new Ajde_Db_Function('(SELECT tag FROM ' . $crossReferenceTable . ' WHERE node = ' . $this->getPK() . ')');
 		$collection = new TagCollection();
 		$collection->addFilter(new Ajde_Filter_Where('id', Ajde_Filter::FILTER_IN, $subQuery));
-		
+
 		return $collection;
 	}
-	
+
 	/** META **/
-	
+
 	public function getMetaValues()
 	{
 		if (empty($this->_metaValues)) {
@@ -788,7 +788,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 			if ($this->hasLoaded()) {
 				$sql = "
 					SELECT node_meta.*, nodetype_meta.sort AS sort
-					FROM node_meta 
+					FROM node_meta
 					INNER JOIN nodetype_meta ON nodetype_meta.meta = node_meta.meta
 						AND nodetype_meta.nodetype = ?
 					WHERE node = ?

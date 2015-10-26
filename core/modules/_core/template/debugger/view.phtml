@@ -7,7 +7,7 @@ $expand = false;
 <div id="ajdeDebugger" <?php if (isset($this->warn)) { echo 'class="warning"'; } ?>>
 	<div id="ajdeDebuggerHeader"></div>
 	<div id="ajdeDebuggerContent">
-		<h4><img src="<?php echo MEDIA_DIR; ?>ajde-small.png" /> web console</h4>
+		<h4><img src="<?php echo MEDIA_URI; ?>ajde-small.png" /> web console</h4>
 		<?php if (isset($this->warn)) { ?>
 			<?php foreach($this->warn as $message) { ?>
 				<div class="warn">
@@ -38,15 +38,11 @@ $expand = false;
 				<dd class='summary'>(none)</dd>
 				<dd id='ajdeDebuggerDump' class='details' style='display: none'></dd>
 			<?php } ?>
-			
+
 			<dt>2. Request</dt>
 			<dd class='summary'>
 				<a href='javascript:void(0)' onclick='$("#ajdeDebuggerRequest").slideToggle("fast");'>
-					<?php if (!$this->request->get('_route')) {
-						echo './ [root]';
-					} else {
-						echo './' . $this->request->get('_route');
-					} ?>
+					<?php echo './' . $this->request->getRoute()->getOriginalRoute(); ?>
 				</a>
 			</dd>
 			<dd id='ajdeDebuggerRequest' class='details'>
@@ -73,24 +69,24 @@ $expand = false;
 								var_dump($vars);
                                 echo '</pre>';
 							?></td>
-					</tr>				
-				</table>			
+					</tr>
+				</table>
 			</dd>
-					
+
 			<dt>Stage</dt>
-			<dd class='summary'><?php echo $this->configstage; ?></dd>		
-			
+			<dd class='summary'><?php echo $this->configstage; ?></dd>
+
 			<dt>Language</dt>
 			<dd class='summary'><?php echo $this->lang; ?></dd>
 
             <dt>Timezone</dt>
             <dd class='summary'><?php echo date_default_timezone_get(); ?></dd>
-			
+
 			<dt>5. Timer</dt>
 			<dd class='summary'>
 				<?php
 		        $table = '<table border=1><tr><th>Description</th><th colspan=\'2\'>Time (ms)</th></tr>';
-				
+
 				$tmpTimer = array(0);
 				$childrenTime = array();
 				$i = count($this->timers);
@@ -98,13 +94,13 @@ $expand = false;
 					$i--;
 					if ($entry['level'] > 0) {
 						$orig = isset($tmpTimer[$entry['level'] - 1]) ? $tmpTimer[$entry['level'] - 1] : 0;
-						$tmpTimer[$entry['level'] - 1] = $orig + $entry['total']; 
+						$tmpTimer[$entry['level'] - 1] = $orig + $entry['total'];
 					}
 					if (array_key_exists($entry['level'], $tmpTimer)) {
 						$childrenTime[$i] = $tmpTimer[$entry['level']];
 						unset($tmpTimer[$entry['level']]);
 					}
-				}  
+				}
 		        foreach($this->timers as $key => $entry) {
 		        	if ($entry['level'] >= 0) {
 		        		$table .= '<tr><td>';
@@ -119,16 +115,16 @@ $expand = false;
 						}
 						$table .= '</td><td style=\'color: gray; text-align: right;\'>' . $entry['total'];
 		            	$table .= '</td></tr>';
-					}  
-		        }          
+					}
+		        }
 		        $table .= '</table>';
 				echo '<a href=\'javascript:void(0)\' onclick=\'$("#ajdeDebuggerTimers").slideToggle("fast");\'>'. $this->timers[0]['total'] . ' ms</a>';
 				?>
 			</dd>
 			<dd id='ajdeDebuggerTimers' class='details'>
-				<?php echo $table; ?>		
+				<?php echo $table; ?>
 			</dd>
-			
+
 			<dt>6. Session</dt>
 			<dd class='summary'>
 				<a href='javascript:void(0)' onclick='$("#ajdeDebuggerSession").slideToggle("fast");'>
@@ -143,7 +139,7 @@ $expand = false;
 						</td>
 					</tr>
 					<?php
-					$i = 0; 
+					$i = 0;
 					foreach($this->session as $key => $val) {
 						$i++;
 						?>
@@ -156,50 +152,50 @@ $expand = false;
 						</td>
 					</tr>
 					<?php } ?>
-				</table>			
+				</table>
 			</dd>
-			
+
 			<?php if (isset($this->acl)) { ?>
 			<dt>7. ACL</dt>
-			<dd class='summary'>		
+			<dd class='summary'>
 				<a href='javascript:void(0)' onclick='$("#ajdeDebuggerACL").slideToggle("fast");'>
 					Access <?php echo is_null(Ajde_Acl::$access) ? 'undetermined' : (Ajde_Acl::$access ? 'granted' : 'denied'); ?>
 				</a>
 			</dd>
 			<dd id='ajdeDebuggerACL' class='details'>
 				<?php
-				foreach($this->acl as $log) {  
+				foreach($this->acl as $log) {
 		            echo $log . '<br/>';
 		        }
-				?>	
+				?>
 			</dd>
 			<?php } ?>
-			
+
 			<?php if (isset($this->database)) { ?>
 			<dt>8. Database</dt>
-			<dd class='summary'>		
+			<dd class='summary'>
 				<?php
 				$totalTime = 0;
-		        $table = '<table border=1><tr><th>Query</th><!--<th>Cache</th>--><th>Time (ms)</th></tr>';  
-		        foreach($this->database as $entry) {  
-		            $totalTime += $entry['time'];  
+		        $table = '<table border=1><tr><th>Query</th><!--<th>Cache</th>--><th>Time (ms)</th></tr>';
+		        foreach($this->database as $entry) {
+		            $totalTime += $entry['time'];
 		            $table .= '<tr><td>' . $entry['query'] . '</td>';
 					//$table .= '<td>' . ($entry['cache'] ? 'yes' : 'no') . '</td></tr>';
-		            $table .= '<td style=\'text-align: right;\'>' . $entry['time'] . '</td></tr>';  
-		        }          
+		            $table .= '<td style=\'text-align: right;\'>' . $entry['time'] . '</td></tr>';
+		        }
 		        $table .= '</table>';
 				echo '<a href=\'javascript:void(0)\' onclick=\'$("#ajdeDebuggerQueries").slideToggle("fast");\'>' . count($this->database) . ' queries (' . $totalTime . ' ms)</a>';
 				?>
 			</dd>
 			<dd id='ajdeDebuggerQueries' class='details'>
-				<?php echo $table; ?>		
+				<?php echo $table; ?>
 			</dd>
 			<?php } ?>
-			
+
 		</dl>
 	</div>
 </div>
-<?php 
+<?php
 if ($expand === true) { ?>
 <script>
 	$(document).ready(function() {

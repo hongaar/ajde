@@ -32,7 +32,6 @@ class Config
         static $instance = array();
         if (!isset($instance[$stage])) {
             $className = "Config_".ucfirst($stage);
-            require_once Ajde_Core_Autoloader::getFile(CONFIG_DIR, $className . '.php');
             if (class_exists($className)) {
                 $instance[$stage] = new $className();
             } else {

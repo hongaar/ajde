@@ -18,7 +18,6 @@ class _coreCrudController extends Ajde_Acl_Controller
         // try to get the crud instance
 		$crud = $this->getCrudInstance();
 		if (!$crud && Ajde::app()->getRequest()->has('crudId')) {
-			Ajde_Model::registerAll();
 			$session = new Ajde_Session('AC.Crud');
 			$crud = $session->getModel(Ajde::app()->getRequest()->getParam('crudId'));
 		}
@@ -210,8 +209,6 @@ class _coreCrudController extends Ajde_Acl_Controller
         if (Ajde::app()->getRequest()->getPostParam('form_submission', false)) {
             $operation = 'submission';
         }
-
-		Ajde_Model::registerAll();
 
 		switch ($operation) {
 			case 'delete':

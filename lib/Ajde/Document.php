@@ -24,7 +24,7 @@ abstract class Ajde_Document extends Ajde_Object_Standard
     {
         $format = $route->getFormat();
         $documentClass = "Ajde_Document_Format_" . ucfirst($format);
-        if (!Ajde_Core_Autoloader::exists($documentClass)) {
+        if (!class_exists($documentClass)) {
             $exception = new Ajde_Core_Exception_Routing("Document format $format not found",
                 90009);
             Ajde::routingError($exception);
@@ -207,7 +207,7 @@ abstract class Ajde_Document extends Ajde_Object_Standard
         if (is_array($documentProcessors) && isset($documentProcessors[$format])) {
             foreach ($documentProcessors[$format] as $processor) {
                 $processorClass = 'Ajde_Document_Processor_' . ucfirst($format) . '_' . $processor;
-                if (!Ajde_Core_Autoloader::exists($processorClass)) {
+                if (!class_exists($processorClass)) {
                     // TODO:
                     throw new Ajde_Exception('Processor ' . $processorClass . ' not found', 90022);
                 }

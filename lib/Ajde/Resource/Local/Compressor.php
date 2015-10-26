@@ -17,7 +17,7 @@ abstract class Ajde_Resource_Local_Compressor extends Ajde_Object_Standard
     public static function fromType($type)
     {
         $className = __CLASS__ . '_' . ucfirst($type);
-        if (!Ajde_Core_Autoloader::exists($className)) {
+        if (!class_exists($className)) {
             throw new Ajde_Exception(sprintf("Compressor for type %s not found", $type), 90017);
         }
 

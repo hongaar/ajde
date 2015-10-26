@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 class AdminController extends Ajde_Acl_Controller
 {
@@ -7,7 +7,7 @@ class AdminController extends Ajde_Acl_Controller
 	/**
 	 * Optional function called before controller is invoked
 	 * When returning false, invocation is cancelled
-	 * @return boolean 
+	 * @return boolean
 	 */
 	public function beforeInvoke($allowed = array())
 	{
@@ -18,28 +18,25 @@ class AdminController extends Ajde_Acl_Controller
 		Ajde_Cache::getInstance()->disable();
         Ajde_Lang::getInstance()->disableAutoTranslationOfModels();
 
-        // load all models
-        Ajde_Model::registerAll();
-
 		return parent::beforeInvoke($allowed);
 	}
-	
+
 	/**
 	 * Optional function called after controller is invoked
 	 */
 	public function afterInvoke()
 	{
-		
+
 	}
 
     public function nav()
     {
         return $this->render();
     }
-	
+
 	/**
 	 * Default action for controller, returns the 'view.phtml' template body
-	 * @return string 
+	 * @return string
 	 */
 	public function view()
 	{
@@ -52,7 +49,7 @@ class AdminController extends Ajde_Acl_Controller
         $this->setAction('view');
         return $this->view();
     }
-	
+
 	public function menu()
 	{
 		return $this->render();

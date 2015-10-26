@@ -90,17 +90,17 @@ class Ajde_Resource_Local extends Ajde_Resource
 
     protected static function _getFilename($base, $type, $action, $format)
     {
-        $dirPrefixPatterns = [
+        $dirPrefixPatterns    = [
             CORE_DIR,
             APP_DIR
         ];
-        $layoutDir = 'layout.' . Ajde::app()->getDocument()->getLayout()->getName() . DIRECTORY_SEPARATOR;
+        $layoutDir            = 'layout.' . Ajde::app()->getDocument()->getLayout()->getName() . DIRECTORY_SEPARATOR;
         $layoutPrefixPatterns = ['', $layoutDir];
 
         $filename = false;
         foreach ($dirPrefixPatterns as $dirPrefixPattern) {
             foreach ($layoutPrefixPatterns as $layoutPrefixPattern) {
-                $prefixedBase = $dirPrefixPattern . $base;
+                $prefixedBase   = $dirPrefixPattern . $base;
                 $formatResource = $prefixedBase . 'res/' . $type . DIRECTORY_SEPARATOR . $layoutPrefixPattern . $action . '.' . $format . '.' . $type;
                 if (self::exist($formatResource)) {
                     $filename = $formatResource;

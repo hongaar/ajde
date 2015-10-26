@@ -1,6 +1,14 @@
 #### v1.0.0-alpha
 
  - **NEW** PHP namespaces
+ 
+#### v0.4.0
+
+ - Removed all deprecated functions
+ - Introduced composer autoloading & removed legacy class autoloading
+ - Changed directory layout
+ - Cleaned up lots of code
+ - Better asset management/caching
 
 #### v0.3.x-dev
 

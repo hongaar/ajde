@@ -2,11 +2,11 @@
 
 class Ajde_Http_Request extends Ajde_Object_Standard
 {
-    const TYPE_STRING = 1;
-    const TYPE_HTML = 2;
+    const TYPE_STRING  = 1;
+    const TYPE_HTML    = 2;
     const TYPE_INTEGER = 3;
-    const TYPE_FLOAT = 4;
-    const TYPE_RAW = 5;
+    const TYPE_FLOAT   = 4;
+    const TYPE_RAW     = 5;
 
     const FORM_MIN_TIME = 0;    // minimum time to have a post form returned (seconds)
     const FORM_MAX_TIME = 3600;    // timeout of post forms (seconds)
@@ -14,7 +14,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
     /**
      * @var Ajde_Core_Route
      */
-    protected $_route = null;
+    protected $_route    = null;
     protected $_postData = [];
 
     /**
@@ -24,13 +24,13 @@ class Ajde_Http_Request extends Ajde_Object_Standard
     public static function fromGlobal()
     {
         $instance = new self();
-        $post = self::globalPost();
+        $post     = self::globalPost();
         if (!empty($post) && self::requirePostToken() && !self::_isWhitelisted()) {
 
             // Measures against CSRF attacks
             $session = new Ajde_Session('AC.Form');
             if (!isset($post['_token']) || !$session->has('formTime')) {
-                // TODO:
+
                 $exception = new Ajde_Core_Exception_Security('No form token received or no form time set, bailing out to prevent CSRF attack');
                 if (Config::getInstance()->debug === true) {
                     Ajde_Http_Response::setResponseType(Ajde_Http_Response::RESPONSE_TYPE_FORBIDDEN);
@@ -44,6 +44,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
                     Ajde_Http_Response::dieOnCode(Ajde_Http_Response::RESPONSE_TYPE_FORBIDDEN);
                 }
             }
+
             $formToken = $post['_token'];
             if (!self::verifyFormToken($formToken) || !self::verifyFormTime()) {
                 // TODO:
@@ -65,12 +66,13 @@ class Ajde_Http_Request extends Ajde_Object_Standard
                 }
             }
         }
+
         // Security measure, protect $_POST
-        //$global = array_merge($_GET, $_POST);
         $global = self::globalGet();
         foreach ($global as $key => $value) {
             $instance->set($key, $value);
         }
+
         $instance->_postData = self::globalPost();
         if (!empty($instance->_postData)) {
             Ajde_Cache::getInstance()->disable();
@@ -134,9 +136,9 @@ class Ajde_Http_Request extends Ajde_Object_Standard
         static $token;
         if (!isset($token)) {
             Ajde_Cache::getInstance()->disable();
-            $token = md5(uniqid(rand(), true));
-            $session = new Ajde_Session('AC.Form');
-            $tokenDictionary = self::_getTokenDictionary($session);
+            $token                   = md5(uniqid(rand(), true));
+            $session                 = new Ajde_Session('AC.Form');
+            $tokenDictionary         = self::_getTokenDictionary($session);
             $tokenDictionary[$token] = self::_tokenHash($token);
             $session->set('formTokens', $tokenDictionary);
         }
@@ -189,7 +191,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 
     public static function markFormTime()
     {
-        $time = time();
+        $time    = time();
         $session = new Ajde_Session('AC.Form');
         $session->set('formTime', $time);
 
@@ -198,7 +200,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 
     public static function verifyFormTime()
     {
-        $session = new Ajde_Session('AC.Form');
+        $session     = new Ajde_Session('AC.Form');
         $sessionTime = $session->get('formTime');
         if ((time() - $sessionTime) < self::FORM_MIN_TIME ||
             (time() - $sessionTime) > self::FORM_MAX_TIME
@@ -356,11 +358,8 @@ class Ajde_Http_Request extends Ajde_Object_Standard
     public function getRoute()
     {
         if (!isset($this->_route)) {
-            $routeKey = '_route';
-            if (!$this->has($routeKey)) {
-                $this->set($routeKey, false);
-            }
-            $this->_route = new Ajde_Core_Route($this->getRaw($routeKey));
+            $route = $this->extractRoute();
+            $this->_route = new Ajde_Core_Route($route);
             foreach ($this->_route->values() as $part => $value) {
                 if (!$this->hasNotEmpty($part)) {
                     $this->set($part, $value);
@@ -371,14 +370,21 @@ class Ajde_Http_Request extends Ajde_Object_Standard
         return $this->_route;
     }
 
+    private function extractRoute()
+    {
+        // Strip query string
+        $URIComponents = explode('?', $_SERVER['REQUEST_URI']);
+        $requestURI = reset($URIComponents);
+
+        // Route is the part after our base path
+        $baseURI = str_replace(PUBLIC_URI . 'index.php', '', $_SERVER['PHP_SELF']);
+
+        return str_replace($baseURI, '', $requestURI);
+    }
+
     public function initRoute()
     {
         $route = $this->getRoute();
-        // TODO: lang now set in Ajde_Core_Route constructor, side effects?
-//		$langInstance = Ajde_Lang::getInstance();
-//		if ($route->hasLang()) {
-//			$langInstance->setGlobalLang($route->getLang());
-//		}
         return $route;
     }
 
