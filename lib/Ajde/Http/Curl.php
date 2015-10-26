@@ -1,7 +1,7 @@
 <?php
 
 class Ajde_Http_Curl {
-	
+
 	/**
 	 *
 	 * @param string $value
@@ -11,46 +11,74 @@ class Ajde_Http_Curl {
 	static private function rawURLEncodeCallback($value, $key) {
 		return "$key=" . rawurlencode($value);
 	}
-	
+
 	/**
 	 *
 	 * @param string $url
 	 * @param array $postData
 	 * @deprecated
-	 * @throws Ajde_Core_Exception_Deprecated 
+	 * @throws Ajde_Core_Exception_Deprecated
 	 */
 	static public function doPostRequest($url, $postData) {
 		// TODO:
 		throw new Ajde_Core_Exception_Deprecated();
 	}
-	
-	/**
-	 *
-	 * @param string $url
-	 * @param array $postData
-	 * @return string
-	 * @throws Exception 
-	 */
-	static public function post($url, $postData)
+
+    /**
+     *
+     * @param string $url
+     * @param array $postData
+     * @param string $postType
+     * @param array $headers
+     * @param string $method
+     * @return string
+     * @throws Exception
+     */
+	static public function post($url, $postData, $postType = 'form-urlencoded', $headers = array(), $method = 'post')
     {
-		$encodedVariables = array_map ( array("Ajde_Http_Curl", "rawURLEncodeCallback"), $postData, array_keys($postData) );
-		$postContent = join('&', $encodedVariables);
-		$postContentLen = strlen($postContent);
+        if ($postType == 'form-urlencoded') {
+            $encodedVariables = array_map(array("Ajde_Http_Curl", "rawURLEncodeCallback"), $postData, array_keys($postData));
+
+            $postContent = join('&', $encodedVariables);
+            $postContentLen = strlen($postContent);
+
+            $headers = array_merge(array(
+                "Content-Type" => "application/x-www-form-urlencoded",
+                "Content-Length" => $postContentLen
+            ), $headers);
+        } else if ($postType == 'json') {
+            $postContent = json_encode($postData);
+            $postContentLen = strlen($postContent);
+
+            $headers = array_merge(array(
+                "Content-Type" => "application/json",
+                "Content-Length" => $postContentLen
+            ), $headers);
+        }
+
+        $sendHeaders = array();
+        foreach($headers as $k => $v) {
+            $sendHeaders[] = $k . ': ' . $v;
+        }
 
 		$output = false;
 
 		try {
 			$ch = curl_init();
-			
-			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $postContent);			
+
+            if ($method == 'post') {
+                curl_setopt($ch, CURLOPT_POST, 1);
+            } else {
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
+            }
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postContent);
 			curl_setopt($ch, CURLOPT_URL, $url);			// The URL to fetch. This can also be set when initializing a session with curl_init().
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);	// TRUE to return the transfer as a string of the return value of curl_exec() instead of outputting it out directly.
 			curl_setopt($ch, CURLOPT_HEADER, false);		// TRUE to include the header in the output.
 
 			// Not possible in SAFE_MODE
 			//curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // TRUE to follow any "Location: " header that the server sends as part of the HTTP header (note this is recursive, PHP will follow as many "Location: " headers that it is sent, unless CURLOPT_MAXREDIRS is set).
-			
+
 			curl_setopt($ch, CURLOPT_MAXREDIRS, 10);		// The maximum amount of HTTP redirections to follow. Use this option alongside CURLOPT_FOLLOWLOCATION.
 			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);	// The number of seconds to wait while trying to connect. Use 0 to wait indefinitely.
 			curl_setopt($ch, CURLOPT_TIMEOUT, 5);			// The maximum number of seconds to allow cURL functions to execute.
@@ -59,10 +87,7 @@ class Ajde_Http_Curl {
 			curl_setopt($ch, CURLOPT_AUTOREFERER, true);	// TRUE to automatically set the Referer: field in requests where it follows a Location: redirect.
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);// FALSE to stop cURL from verifying the peer's certificate. Alternate certificates to verify against can be specified with the CURLOPT_CAINFO option or a certificate directory can be specified with the CURLOPT_CAPATH option. CURLOPT_SSL_VERIFYHOST may also need to be TRUE or FALSE if CURLOPT_SSL_VERIFYPEER is disabled (it defaults to 2).
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);// 1 to check the existence of a common name in the SSL peer certificate. 2 to check the existence of a common name and also verify that it matches the hostname provided. In production environments the value of this option should be kept at 2 (default value).
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-				"Content-Type: application/x-www-form-urlencoded",
-				"Content-Length: $postContentLen"
-			)); 
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $sendHeaders);
 			$output = curl_exec($ch);
 			curl_close($ch);
 		} catch (Exception $e) {
@@ -88,9 +113,9 @@ class Ajde_Http_Curl {
 
 		try {
 			$ch = curl_init();
-			
+
 			curl_setopt($ch, CURLOPT_URL, $url);			// The URL to fetch. This can also be set when initializing a session with curl_init().
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);	// TRUE to return the transfer as a string of the return value of curl_exec() instead of outputting it out directly.			
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);	// TRUE to return the transfer as a string of the return value of curl_exec() instead of outputting it out directly.
 			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);	// The number of seconds to wait while trying to connect. Use 0 to wait indefinitely.
 			curl_setopt($ch, CURLOPT_TIMEOUT, 5);			// The maximum number of seconds to allow cURL functions to execute.
 			curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36" ); // The contents of the "User-Agent: " header to be used in a HTTP request.
@@ -99,16 +124,16 @@ class Ajde_Http_Curl {
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);// FALSE to stop cURL from verifying the peer's certificate. Alternate certificates to verify against can be specified with the CURLOPT_CAINFO option or a certificate directory can be specified with the CURLOPT_CAPATH option. CURLOPT_SSL_VERIFYHOST may also need to be TRUE or FALSE if CURLOPT_SSL_VERIFYPEER is disabled (it defaults to 2).
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
             curl_setopt($ch, CURLOPT_COOKIEFILE, "");
-			
+
 			if ($toFile !== false) {
-				
+
 				// @TODO We need SAFE_MODE to be off
 				if (ini_get('safe_mode')) {
 					throw new Ajde_Exception('SAFE_MODE must be off when downloading files');
 				}
-				
+
 				$fp = fopen ($toFile, 'w+'); //This is the file where we save the information
-				
+
 				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
                 curl_setopt($ch, CURLOPT_MAXREDIRS, 20);		// The maximum amount of HTTP redirections to follow. Use this option alongside CURLOPT_FOLLOWLOCATION.
 				curl_setopt($ch, CURLOPT_TIMEOUT, 300);
@@ -118,7 +143,7 @@ class Ajde_Http_Curl {
                 if ($header) {
                     curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
                 }
-				
+
 				curl_exec($ch);
 
 				fclose($fp);
@@ -134,7 +159,7 @@ class Ajde_Http_Curl {
                 if (substr($http_status, 0, 1 == '4')) {
                     return false;
                 }
-				
+
 			} else {
 				// Not possible in SAFE_MODE
 				// curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // TRUE to follow any "Location: " header that the server sends as part of the HTTP header (note this is recursive, PHP will follow as many "Location: " headers that it is sent, unless CURLOPT_MAXREDIRS is set).
@@ -147,17 +172,17 @@ class Ajde_Http_Curl {
 
 				curl_close($ch);
 			}
-						
+
 		} catch (Exception $e) {
 			throw $e;
 		}
 		return $output;
 	}
-	
+
 	public static function download($url, $filename) {
 		return self::get($url, $filename);
 	}
-	
+
 	/**
 	 * @source http://stackoverflow.com/a/5498992/938297
 	 */
@@ -202,5 +227,5 @@ class Ajde_Http_Curl {
 				$data = substr($data, strpos($data, "\r\n\r\n")+4);
 			return $data;
 		}
-	}	
+	}
 }

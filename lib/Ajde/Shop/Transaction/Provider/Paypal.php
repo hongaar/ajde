@@ -67,7 +67,9 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
         // read the post from PayPal system and add 'cmd'
         $req = 'cmd=_notify-validate';
 
-        foreach ($_POST as $key => $value) {
+        $post = Ajde_Http_Request::globalPost();
+
+        foreach ($post as $key => $value) {
             $value = urlencode(stripslashes($value));
             $req .= "&$key=$value";
         }
@@ -80,17 +82,17 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
         $fp = fsockopen ($this->isSandbox() ? 'ssl://www.sandbox.paypal.com' : 'ssl://www.paypal.com', 443, $errno, $errstr, 30);
 
         // assign posted variables to local variables
-        $item_name = issetor($_POST['item_name']);
-        $item_number = issetor($_POST['item_number']);
-        $payment_status = issetor($_POST['payment_status']);
-        $payment_amount = issetor($_POST['mc_gross']);
-        $payment_currency = issetor($_POST['mc_currency']);
-        $txn_id = issetor($_POST['txn_id']);
-        $receiver_email = issetor($_POST['receiver_email']);
-        $payer_email = issetor($_POST['payer_email']);
+        $item_name = issetor($post['item_name']);
+        $item_number = issetor($post['item_number']);
+        $payment_status = issetor($post['payment_status']);
+        $payment_amount = issetor($post['mc_gross']);
+        $payment_currency = issetor($post['mc_currency']);
+        $txn_id = issetor($post['txn_id']);
+        $receiver_email = issetor($post['receiver_email']);
+        $payer_email = issetor($post['payer_email']);
 
         Ajde_Model::register('shop');
-        $secret = issetor($_POST['custom']);
+        $secret = issetor($post['custom']);
 
         $transaction = new TransactionModel();
         $changed = false;

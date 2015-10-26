@@ -3,43 +3,43 @@
 class Ajde_Session extends Ajde_Object_Standard
 {
 	protected $_namespace = null;
-	
+
 	public function __bootstrap()
 	{
 		// Session name
 		$sessionName = Config::get('ident') . '_session';
         session_name($sessionName);
-		
+
 		// Session lifetime
 		$lifetime	= Config::get("sessionLifetime");
-		
+
 		// Security garbage collector
 		ini_set('session.gc_maxlifetime', ($lifetime == 0 ? 180 * 60 : $lifetime * 60)); // PHP session garbage collection timeout in minutes
 		ini_set('session.gc_divisor', 100);		// Set divisor and probability for cronjob Ubuntu/Debian
 //		ini_set('session.gc_probability', 1);	// @see http://www.php.net/manual/en/function.session-save-path.php#98106
 
         // Set session save path
-		if ( Config::get('sessionSavepath') ) { 
+		if ( Config::get('sessionSavepath') ) {
 			ini_set('session.save_path', str_replace('~', Config::get('local_root'), Config::get('sessionSavepath')));
 		}
 
         // Set sessions to use cookies
 		ini_set('session.use_cookies', 1);
 		ini_set('session.use_only_cookies', 1); // @see http://www.php.net/manual/en/session.configuration.php#ini.session.use-only-cookies
-				
-		// Session cookie parameter		
+
+		// Session cookie parameter
 		$path		= Config::get('site_path');
 		$domain		= Config::get('cookieDomain');
 		$secure		= Config::get('cookieSecure');
-		$httponly	= Config::get('cookieHttponly');		
+		$httponly	= Config::get('cookieHttponly');
 
         // Set cookie lifetime
 		session_set_cookie_params($lifetime * 60, $path, $domain, $secure, $httponly);
 		session_cache_limiter('private_no_expire');
-				
+
 		// Start the session!
 		session_start();
-		
+
 		// Strengthen session security with REMOTE_ADDR and HTTP_USER_AGENT
 		// @see http://shiflett.org/articles/session-hijacking
 
@@ -48,10 +48,14 @@ class Ajde_Session extends Ajde_Object_Standard
 
 		// Ignore Google Chrome frame as it has a split personality
 		// @todo TODO: security issue!!
-		// @see http://www.chromium.org/developers/how-tos/chrome-frame-getting-started/understanding-chrome-frame-user-agent		
-		if (isset($_SERVER['HTTP_USER_AGENT']) && substr_count($_SERVER['HTTP_USER_AGENT'], 'chromeframe/') === 0 &&
-				isset($_SESSION['client']) &&
-				$_SESSION['client'] !== md5($remoteIp . $_SERVER['HTTP_USER_AGENT'] . Config::secret())) {
+		// @see http://www.chromium.org/developers/how-tos/chrome-frame-getting-started/understanding-chrome-frame-user-agent
+		if (
+            isset($_SERVER['HTTP_USER_AGENT']) &&
+            substr_count($_SERVER['HTTP_USER_AGENT'], 'chromeframe/') === 0 &&
+            isset($_SESSION['client']) &&
+            $_SESSION['client'] !== md5($remoteIp . $_SERVER['HTTP_USER_AGENT'] . Config::secret())
+        ) {
+
 			// TODO: overhead to call session_regenerate_id? is it not required??
 			//session_regenerate_id();
 
@@ -92,19 +96,19 @@ class Ajde_Session extends Ajde_Object_Standard
                 }
             }
 		}
-		
+
 		// remove cache headers invoked by session_start();
 		if (version_compare(PHP_VERSION, '5.3.0') >= 0) {
 			header_remove('X-Powered-By');
 		}
 		return true;
 	}
-	
+
 	public function __construct($namespace = 'default')
 	{
 		$this->_namespace = $namespace;
 	}
-	
+
 	public function destroy($key = null)
 	{
 		if (isset($key)) {
@@ -114,16 +118,16 @@ class Ajde_Session extends Ajde_Object_Standard
 			}
 		} else {
 			$_SESSION[$this->_namespace] = null;
-			$this->reset(); 
+			$this->reset();
 		}
         Ajde_Cache::getInstance()->updateHash($this->hash());
 	}
-	
+
 	public function setModel($name, $object)
 	{
-		$this->set($name, serialize($object));	
+		$this->set($name, serialize($object));
 	}
-	
+
 	public function getModel($name)
 	{
 		// If during the session class definitions has changed, this will throw an exception.
@@ -134,7 +138,7 @@ class Ajde_Session extends Ajde_Object_Standard
 			return false;
 		}
 	}
-	
+
 	public function has($key)
 	{
 		if (!isset($this->_data[$key]) && isset($_SESSION[$this->_namespace][$key])) {
@@ -142,7 +146,7 @@ class Ajde_Session extends Ajde_Object_Standard
 		}
 		return parent::has($key);
 	}
-	
+
 	public function set($key, $value)
 	{
 		parent::set($key, $value);
@@ -158,7 +162,7 @@ class Ajde_Session extends Ajde_Object_Standard
     {
         return serialize($_SESSION[$this->_namespace]);
     }
-	
+
 	public function getOnce($key)
 	{
 		$return = $this->get($key);

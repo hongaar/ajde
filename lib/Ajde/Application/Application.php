@@ -139,7 +139,7 @@ class Ajde_Application extends Ajde_Object_Singleton
         $cache->saveResponse();
         $this->endTimer($timer);
 
-        Ajde_Event::trigger($this, 'onAfterResponseCreated');
+        Ajde_Event::trigger($this, 'onAfterResponseSaved');
 
         // Output the buffer
         $response->send();

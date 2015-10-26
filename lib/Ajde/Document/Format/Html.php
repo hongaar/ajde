@@ -3,16 +3,16 @@
 class Ajde_Document_Format_Html extends Ajde_Document
 {
 	const RESOURCE_POSITION_TOP = 0;
-	
+
 	const RESOURCE_POSITION_FIRST = 1;
 	const RESOURCE_POSITION_DEFAULT = 2;
 	const RESOURCE_POSITION_LAST = 3;
-	
+
 	// TODO: implement a way to override
 	protected $_cacheControl = self::CACHE_CONTROL_NOCACHE;
 	protected $_contentType = 'text/html';
 	protected $_maxAge = 0; // access
-	
+
 	protected $_resources = array(
 		self::RESOURCE_POSITION_FIRST => array(),
 		self::RESOURCE_POSITION_DEFAULT => array(),
@@ -28,12 +28,21 @@ class Ajde_Document_Format_Html extends Ajde_Document
 		 * layout resources never make it into the <head> section.
 		 */
 		Ajde_Event::register('Ajde_Template', 'beforeGetContents', array($this, 'autoAddResources'));
+        Ajde_Event::register('Ajde_Application', 'onAfterDocumentRendered', array($this, 'setupExternalPageCache'));
 		parent::__construct();
 	}
 
+    public function setupExternalPageCache()
+    {
+        if (!UserModel::getLoggedIn() && Ajde::app()->getRequest()->method() === 'get' && Config::get('externalPageCache')) {
+            $this->setCacheControl(self::CACHE_CONTROL_PUBLIC);
+            $this->setMaxAge(1 / 24); // 1 hour
+        }
+    }
+
 	public function render()
 	{
-		$this->registerDocumentProcessor('html');		
+		$this->registerDocumentProcessor('html');
 		return parent::render();
 	}
 
@@ -49,7 +58,7 @@ class Ajde_Document_Format_Html extends Ajde_Document
 		}
 		return $this->renderHead($resourceTypes);
 	}
-	
+
 	public function getMeta()
 	{
 		$code = '';
@@ -58,7 +67,7 @@ class Ajde_Document_Format_Html extends Ajde_Document
 		}
 		return $code;
 	}
-	
+
 	public function getScripts()
 	{
 		return $this->getHead('js');
@@ -67,7 +76,7 @@ class Ajde_Document_Format_Html extends Ajde_Document
 	public function renderHead(array $resourceTypes = array('*'))
 	{
 		$code = '';
-		$code .= $this->renderResources($resourceTypes);		
+		$code .= $this->renderResources($resourceTypes);
 		return $code;
 	}
 
@@ -99,13 +108,13 @@ class Ajde_Document_Format_Html extends Ajde_Document
 		$linkCode = array(
 			self::RESOURCE_POSITION_FIRST	=> '',
 			self::RESOURCE_POSITION_DEFAULT => '',
-			self::RESOURCE_POSITION_LAST	=> ''			
+			self::RESOURCE_POSITION_LAST	=> ''
 		);
 		foreach ($this->getResources() as $resource)
 		{
 			/* @var $resource Ajde_Resource */
 			if (current($types) == '*' || in_array($resource->getType(), $types))
-			{				
+			{
 				if ($resource instanceof Ajde_Resource_Local && !$resource->hasNotEmpty('arguments'))
 				{
 					if (!isset($this->_compressors[$resource->getType()]))
@@ -150,12 +159,12 @@ class Ajde_Document_Format_Html extends Ajde_Document
 			$resource->setPosition(self::RESOURCE_POSITION_FIRST);
 		} else {
 			$resource->setPosition($position);
-		}		
+		}
 		// Check for duplicates
 		// TODO: another option, replace current resource
 		foreach($this->_resources as $positionArray) {
 			foreach($positionArray as $item) {
-				if ((string) $item == (string) $resource) {		
+				if ((string) $item == (string) $resource) {
 					return false;
 				}
 			}
@@ -169,9 +178,9 @@ class Ajde_Document_Format_Html extends Ajde_Document
 		if ($resource instanceof Ajde_Resource_Local) {
 			Ajde_Cache::getInstance()->addFile($resource->getFilename());
 		}
-		return true;	
+		return true;
 	}
-	
+
 	public function getResources()
 	{
 		$return = array();
@@ -201,7 +210,7 @@ class Ajde_Document_Format_Html extends Ajde_Document
 			}
 		}
 	}
-	
+
 	private function _getTemplateActionDefault(Ajde_Template $template)
 	{
 		$actionArray = explode('/', $template->getAction());
@@ -209,5 +218,5 @@ class Ajde_Document_Format_Html extends Ajde_Document
 		$actionArray[key($actionArray)] = 'default';
 		return implode('/', $actionArray);
 	}
-	
+
 }
