@@ -7,11 +7,6 @@
  */
 
 // --------------------
-// Define Ajde version, needed for database migration
-// --------------------
-define('AJDE_VERSION', 'v0.4');
-
-// --------------------
 // Check PHP version
 // --------------------
 if (version_compare(PHP_VERSION, '5.3.0') < 0) {
@@ -79,13 +74,6 @@ define('AVATAR_DIR',    UPLOAD_DIR . 'avatar' . DS);
 // Require composer autoloader
 // --------------------
 require_once VENDOR_DIR . 'autoload.php';
-
-// --------------------
-// Install the db?
-// --------------------
-if (isset($_GET['install']) && $_GET['install'] == '1' && is_file('install.php')) {
-    require('install.php');
-}
 
 // --------------------
 // Run the main application
