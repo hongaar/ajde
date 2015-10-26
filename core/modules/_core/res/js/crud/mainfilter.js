@@ -1,7 +1,12 @@
 ;
-if (typeof AC ==="undefined") {AC = function() {}};
-if (typeof AC.Crud ==="undefined") {AC.Crud = function() {}};
-
+if (typeof AC === "undefined") {
+    AC = function () {
+    }
+}
+if (typeof AC.Crud === "undefined") {
+    AC.Crud = function () {
+    }
+}
 AC.Crud.Mainfilter = function() {
 
 	var infoHandler		= AC.Core.Alert.show;
@@ -19,7 +24,7 @@ AC.Crud.Mainfilter = function() {
 			} else if ($('#mainFilter').data('autoopen') && $('#mainFilter a.filter').length) {
 				$('#mainFilter').modal('show');
 			}
-		
+
 			// Prevent submit
 			var form = $('form.ACCrudEdit');
 			form.data('onBeforeSubmit', function() {
@@ -31,7 +36,7 @@ AC.Crud.Mainfilter = function() {
 				}
 			});
 		},
-				
+
 		allHandler: function(e) {
 			var name = $(this).data('name');
 			var form = $('form.ACCrud');
@@ -49,30 +54,30 @@ AC.Crud.Mainfilter = function() {
 			var name = $(this).data('name');
 			var value = $(this).data('value');
 			var form = $('form.ACCrud');
-			
+
 			$('#mainFilter a').addClass('btn-info');
 			$(this).removeClass('btn-info');
-			
+
 			// for list
 			form.filter('.ACCrudList').find('select[name="view[filter][' + name + ']"]').val(value);
-			
+
 			// for edit
 			form.filter('.ACCrudEdit').find(':input[name="' + name + '"]').val(value).trigger('change');
-			
+
 			$('#mainFilter').modal('hide');
 			$('.mainFilterLabel').text($(this).text());
-			
+
 			if (AC.Crud.List) {
 				AC.Crud.List.updateView(form.children(':eq(0)'));
 			} else {
 				// Call dynamic fields update
 				AC.Crud.Edit.dynamicFields.call(form.filter('.ACCrudEdit').find(':input[name="' + name + '"]'));
-			
+
 				// Refresh?
 //				if ($('#mainFilter').data('refresh') == 1) {
 //					window.location.reload(true);
 //				}
-				
+
 				// Do update the session
 //				var data = {};
 //				data['view[filter][' + name + ']'] = value;

@@ -1,7 +1,12 @@
 ;
-if (typeof AC ==="undefined") {AC = function() {}};
-if (typeof AC.Crud ==="undefined") {AC.Crud = function() {}};
-
+if (typeof AC === "undefined") {
+    AC = function () {
+    }
+}
+if (typeof AC.Crud === "undefined") {
+    AC.Crud = function () {
+    }
+}
 AC.Crud.List = function() {
 
 	var infoHandler		= AC.Core.Alert.show;
@@ -10,10 +15,10 @@ AC.Crud.List = function() {
 
 	var searchTimer;
 	var afterUpdateViewCallback;
-	
+
 	var viewTypeClasses = 'list grid';
 	var disableMultiple = false;
-	
+
 	var isIframe = false;
 
 	return {
@@ -22,10 +27,10 @@ AC.Crud.List = function() {
 
 			$('form.ACCrudList tbody tr').live('click', AC.Crud.List.trHandler);
 			$('form.ACCrudList tbody tr').live('dblclick', AC.Crud.List.editHandler);
-			
+
 			$('form.ACCrudList tbody td.main').live('mouseover', AC.Crud.List.showPanel);
 			$('form.ACCrudList tbody td.main').live('mouseout', AC.Crud.List.hidePanel);
-            
+
             $('form.ACCrudList thead a.listView').live('click', AC.Crud.List.activateListView);
             $('form.ACCrudList thead a.gridView').live('click', AC.Crud.List.activateGridView);
             $('form.ACCrudList thead a.filterToggle').live('click', AC.Crud.List.toggleFilters);
@@ -55,11 +60,11 @@ AC.Crud.List = function() {
 			$('form.ACCrudList').bind('result', function(events, data) {
 				//console.log(data);
 			});
-		
+
 			// Popup functions
 			isIframe = (window.location != window.parent.location) || (window.location.href.indexOf('CKEditor=content') != -1);
 			disableMultiple = ( $('form.ACCrudList table').data('disable-multiple') == '1' );
-			
+
 			// Sub init
 			AC.Crud.List.initPicker();
 			AC.Crud.List.initMove();
@@ -97,7 +102,7 @@ AC.Crud.List = function() {
                 AC.Crud.List.initAdditionalControls();
             }, 0);
         },
-			
+
 		initPicker: function() {
 			if (isIframe) {
 				$('form.ACCrudList tbody tr').off('dblclick');
@@ -114,19 +119,19 @@ AC.Crud.List = function() {
 				$('form.ACCrudList div.form-actions a.cancel').click(AC.Crud.List.cancelHandler);
 			}
 		},
-		
+
 		showPanel: function(e) {
 			if ($(this).closest('tr').next('tr').hasClass('panel')) {
 				$(this).closest('tr').next('tr').addClass('expand');
 			}
 		},
-		
+
 		hidePanel: function(e) {
 			if ($(this).closest('tr').next('tr').hasClass('panel')) {
 				$(this).closest('tr').next('tr').removeClass('expand');
 			}
 		},
-			
+
 		cancelHandler: function() {
 			if (window.opener) {
 				window.close();
@@ -134,21 +139,21 @@ AC.Crud.List = function() {
 				parent.$.fancybox.close();
 			}
 		},
-			
+
 		chooseHandler: function(e) {
 			var form = $(this).parents('form.ACCrudList');
 			var data = form.serializeArray();
 			var rows = [], id;
-			
+
 			for (elm in data) {
 				if (data[elm].name == 'id[]') {
-					rows.push(data[elm].value);					
+					rows.push(data[elm].value);
 				}
 			}
-			
+
 			if (window.opener) {
 				// assume CKEditor for now
-				
+
 				// look for CKEditorFuncNum
 				var vars = [], hash;
 			    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -158,10 +163,10 @@ AC.Crud.List = function() {
 			        vars.push(hash[0]);
 			        vars[hash[0]] = hash[1];
 			    }
-			    
+
 			    var firstId = rows[0];
 			    var url = $("#row-" + firstId).data('path');
-			    
+
 			    if (vars['link'] == 1) {
 			    	var dialog = window.opener.CKEDITOR.dialog.getCurrent();
 			    	dialog.setValueOf('info', 'url', url);
@@ -171,11 +176,11 @@ AC.Crud.List = function() {
 			    	window.opener.CKEDITOR.tools.callFunction(CKEditorFuncNum, url);
 			    }
 				window.close();
-				
+
 			} else if (isIframe) {
 				parent.AC.Crud.Edit.Picker.chosen(rows);
 			}
-			
+
 			return false;
 		},
 
@@ -239,7 +244,7 @@ AC.Crud.List = function() {
 			}
 			AC.Crud.List.updateCheckRows(this);
 		},
-			
+
 		updateCheckRows: function(node) {
 			var form = $(node).parents('form');
 			form.find('input.id').each(function() {
@@ -269,7 +274,7 @@ AC.Crud.List = function() {
 			}
 			var id = row.find('input[type=checkbox]').attr('value');
 			var form = $(this).parents('form');
-			
+
 			if (row.parents('table').data('editaction')) {
 				window.location.href = row.parents('table').data('editaction') + '?edit=' + id;
 			} else {
@@ -374,7 +379,7 @@ AC.Crud.List = function() {
 
 			// Add sort fieldname
 			data = data + '&field=' + form.find('td.sort:eq(0)').attr('data-field');
-			
+
 			$('body').addClass('loading');
 			$.post(url, data, function(response) {
 				if (response.operation === 'sort' && response.success === true) {
@@ -419,7 +424,7 @@ AC.Crud.List = function() {
 			$page.val(parseInt($page.val()) + 1);
 			AC.Crud.List.updateView(this);
 		},
-                
+
         pageHandler: function(e) {
             if ($(this).hasClass('active')) {
 				return;
@@ -429,7 +434,7 @@ AC.Crud.List = function() {
 			$page.val(parseInt($(this).text()));
 			AC.Crud.List.updateView(this);
         },
-		
+
 		pageSizeHandler: function(e) {
 			AC.Crud.List.resetPage(this);
 			AC.Crud.List.updateView(this);
@@ -476,7 +481,7 @@ AC.Crud.List = function() {
 			AC.Crud.List.resetPage(this);
 			AC.Crud.List.updateView(this, c);
 		},
-			
+
 		resetPage: function(node) {
 			var form = $(node).parents('form');
 			var $page = form.find('input[name=\'view[page]\']');
@@ -530,26 +535,26 @@ AC.Crud.List = function() {
 		afterUpdateView: function(callback) {
 			afterUpdateViewCallback = callback;
 		},
-                
+
         activateListView: function(e) {
 			var form = $(this).parents('form');
 			AC.Crud.List.activateView(this, 'list', form);
         },
-                
+
         activateGridView: function(e) {
 			var form = $(this).parents('form');
 			AC.Crud.List.activateView(this, 'grid', form);
         },
-				
+
 		activateView: function(node, view, form) {
 //			form.find('table').removeClass(viewTypeClasses).addClass(view);
 			form.find('input[name=\'view[viewType]\']').val( view );
 			AC.Crud.List.updateView(node);
 		},
-                
+
         toggleFilters: function(e) {
 			var form = $(this).parents('form');
-			
+
 			form.find('tr.filters').toggleClass('visible');
 			form.find('input[name=\'view[filterVisible]\']').val( $('tr.filters').hasClass('visible') ? '1' : '0' );
         },

@@ -1,25 +1,33 @@
 ;
-if (typeof App === "undefined") {App = function(){}};
-if (typeof App.Admin === "undefined") {App.Admin = function(){}};
-if (typeof App.Admin.Acl === "undefined") {App.Admin.Acl = function(){}};
-
+if (typeof App === "undefined") {
+    App = function () {
+    }
+}
+if (typeof App.Admin === "undefined") {
+    App.Admin = function () {
+    }
+}
+if (typeof App.Admin.Acl === "undefined") {
+    App.Admin.Acl = function () {
+    }
+}
 App.Admin.Acl.Model = function() {
 
 	var infoHandler		= AC.Core.Alert.show;
 	var warningHandler	= AC.Core.Alert.warning;
 	var errorHandler	= AC.Core.Alert.error;
-	
+
 	return {
 
 		init: function() {
 			$('#AclModel')
 				.bind('result', this.resultHandler)
 				.bind('error', this.errorHandler);
-		
+
 			$('button.toggle').on('click', this.toggleHandler);
 			$('input.toggle').each(this.setButtonState);
 		},
-			
+
 		toggleHandler: function(e) {
 			var val = $(this).data('value');
 			var container = $(this).parents('.controls:first');
@@ -44,27 +52,27 @@ App.Admin.Acl.Model = function() {
 						} else if (values.length > 0 && values.indexOf('read') === -1) {
 							// all operations require read access
 							container.find('[data-value=read]').addClass('active');
-							values = 'read|' + values; 
+							values = 'read|' + values;
 						}
 						// require update access on insert access
 						if (values.indexOf('insert') > -1 && values.indexOf('update') === -1) {
 							container.find('[data-value=update]').addClass('active');
-							values = 'update|' + values; 
-						} 
+							values = 'update|' + values;
+						}
 						// require update access on delete access
 						if (values.indexOf('delete') > -1 && values.indexOf('update') === -1) {
 							container.find('[data-value=update]').addClass('active');
-							values = 'update|' + values; 
-						} 
+							values = 'update|' + values;
+						}
 						if (values === '') {
 							container.find('[data-value=deny]').addClass('active');
 						}
 						input.val(values);
 					}
 				}, 0);
-			}			
+			}
 		},
-			
+
 		setButtonState: function() {
 			var val = $(this).val().split('|');
 			var container = $(this).parent();
@@ -77,9 +85,9 @@ App.Admin.Acl.Model = function() {
 					container.find('button[data-value=' + val[i] + ']').addClass('active');
 				}
 			}
-			
+
 		},
-			
+
 		resultHandler: function(event, data) {
 			if (data.success === false) {
 				errorHandler(data.message);
@@ -88,7 +96,7 @@ App.Admin.Acl.Model = function() {
 				window.location.href = 'admin/acl:view';
 			}
 		},
-			
+
 		errorHandler: function(event, jqXHR, message, exception) {
 			errorHandler(i18n.requestError);
 		}

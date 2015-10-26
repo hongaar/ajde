@@ -1,8 +1,16 @@
 ;
-if (typeof App === "undefined") {App = function(){}};
-if (typeof App.Admin === "undefined") {App.Admin = function(){}};
-if (typeof App.Admin.Media === "undefined") {App.Admin.Media = function(){}};
-
+if (typeof App === "undefined") {
+    App = function () {
+    }
+}
+if (typeof App.Admin === "undefined") {
+    App.Admin = function () {
+    }
+}
+if (typeof App.Admin.Media === "undefined") {
+    App.Admin.Media = function () {
+    }
+}
 App.Admin.Media.DriveBtn = function() {
 
     var infoHandler		= AC.Core.Alert.show;

@@ -1,8 +1,16 @@
 ;
-if (typeof App === "undefined") {App = function(){}};
-if (typeof App.Admin === "undefined") {App.Admin = function(){}};
-if (typeof App.Admin.Setup === "undefined") {App.Admin.Setup = function(){}};
-
+if (typeof App === "undefined") {
+    App = function () {
+    }
+}
+if (typeof App.Admin === "undefined") {
+    App.Admin = function () {
+    }
+}
+if (typeof App.Admin.Setup === "undefined") {
+    App.Admin.Setup = function () {
+    }
+}
 App.Admin.Setup.Nodes = function() {
 
 //	var metaHandler = function(e) {

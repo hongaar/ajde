@@ -5,7 +5,6 @@ class ShopTransactionController extends ShopController
 {
     public function view()
     {
-        Ajde_Model::register($this);
         $transaction = new TransactionModel();
 
         Ajde::app()->getDocument()->setTitle(__('Your order'));
@@ -29,7 +28,6 @@ class ShopTransactionController extends ShopController
 
     public function export()
     {
-        Ajde_Model::register($this);
         $transaction = new TransactionModel();
 
         // Get from ID
@@ -58,9 +56,6 @@ class ShopTransactionController extends ShopController
 
     public function setup()
     {
-        Ajde_Model::register($this);
-        Ajde_Model::register('user');
-
         // Get existing transaction / user details
         $transaction = new TransactionModel();
         $session = new Ajde_Session('AC.Shop');
@@ -118,7 +113,6 @@ class ShopTransactionController extends ShopController
 
     public function shipment()
     {
-        Ajde_Model::register($this);
         $transaction = new TransactionModel();
 
         $session = new Ajde_Session('AC.Shop');
@@ -205,7 +199,6 @@ class ShopTransactionController extends ShopController
         }
 
         // Check for current transaction
-        Ajde_Model::register($this);
         $transaction = new TransactionModel();
         $session = new Ajde_Session('AC.Shop');
         if ($session->has('currentTransaction') && $transaction->loadByPK($session->get('currentTransaction'))) {
@@ -318,7 +311,6 @@ class ShopTransactionController extends ShopController
     public function update()
     {
         // Check for current transaction
-        Ajde_Model::register($this);
         $transaction = new TransactionModel();
         $session = new Ajde_Session('AC.Shop');
         if ($session->has('currentTransaction') && $transaction->loadByPK($session->get('currentTransaction'))) {
@@ -332,8 +324,6 @@ class ShopTransactionController extends ShopController
 
     public function cancel()
     {
-        Ajde_Model::register($this);
-
         // Edit existing transaction?
         $transaction = new TransactionModel();
         $session = new Ajde_Session('AC.Shop');
@@ -348,7 +338,6 @@ class ShopTransactionController extends ShopController
 
     public function payment()
     {
-        Ajde_Model::register($this);
         $transaction = new TransactionModel();
 
         $session = new Ajde_Session('AC.Shop');
@@ -364,7 +353,6 @@ class ShopTransactionController extends ShopController
 
     public function resetPayment()
     {
-        Ajde_Model::register($this);
         $transaction = new TransactionModel();
         $session = new Ajde_Session('AC.Shop');
 
@@ -399,7 +387,6 @@ class ShopTransactionController extends ShopController
         }
 
         // Check for current transaction
-        Ajde_Model::register($this);
         $transaction = new TransactionModel();
         $session = new Ajde_Session('AC.Shop');
         if ($session->has('currentTransaction') && $transaction->loadByPK($session->get('currentTransaction'))) {
@@ -453,8 +440,6 @@ class ShopTransactionController extends ShopController
         $cart = new CartModel();
         $cart->loadCurrent();
         $cart->emptyItems();
-
-        Ajde_Model::register($this);
 
         // Get existing transaction
         $transaction = new TransactionModel();

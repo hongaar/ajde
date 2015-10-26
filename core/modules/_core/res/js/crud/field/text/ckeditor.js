@@ -1,8 +1,16 @@
 ;
-if (typeof AC ==="undefined") {AC = function(){}};
-if (typeof AC.Crud ==="undefined") {AC.Crud = function(){}};
-if (typeof AC.Crud.Edit ==="undefined") {AC.Crud.Edit = function(){}};
-
+if (typeof AC === "undefined") {
+    AC = function () {
+    }
+}
+if (typeof AC.Crud === "undefined") {
+    AC.Crud = function () {
+    }
+}
+if (typeof AC.Crud.Edit === "undefined") {
+    AC.Crud.Edit = function () {
+    }
+}
 AC.Crud.Edit.Text = function() {
 
 	var addCKEditor = function(elm) {
@@ -84,7 +92,7 @@ AC.Crud.Edit.Text = function() {
 				{ name: 'insert',		items : [ 'Image','Table','SpecialChar' ] },
 				{ name: 'tools',		items : [ 'Maximize', 'ShowBlocks','Source' ] }
 			];
-			
+
 			CKEDITOR.stylesSet.add( 'styles_Ajde',
 			[
 			 	{ name: 'Paragraph', element: 'p' },
@@ -105,13 +113,13 @@ AC.Crud.Edit.Text = function() {
             CKEDITOR.config.pasteFromWordRemoveStyles = true;
 
             CKEDITOR.config.autoParagraph = false;
-			
-			CKEDITOR.config.baseHref = document.getElementsByTagName('base')[0].href;            
+
+			CKEDITOR.config.baseHref = document.getElementsByTagName('base')[0].href;
 			CKEDITOR.config.contentsCss = [CKEDITOR.basePath + 'contents.css', 'public/css/core/ckeditor/style.css'];
-			
+
 			CKEDITOR.config.removePlugins = 'elementspath';
 			CKEDITOR.config.removeButtons = '';
-			
+
 			CKEDITOR.config.extraPlugins = 'removeEmptyP,onchange,justify,autogrow';
 			CKEDITOR.config.extraAllowedContent = 'a[data-overlay](*); img(*); div(*)';
 
@@ -119,14 +127,14 @@ AC.Crud.Edit.Text = function() {
             CKEDITOR.config.autoGrow_onStartup = true;
             CKEDITOR.config.autoGrow_minHeight = 150;
             CKEDITOR.config.autoGrow_maxHeight = 600;
-			
+
 			// Optional configuration
 //			CKEDITOR.config.extraPlugins = 'autogrow';
 //			CKEDITOR.config.resize_enabled = false;
 //			CKEDITOR.config.autoGrow_maxHeight = '600';
 //			CKEDITOR.config.removePlugins = 'elementspath,contextmenu';
 //			CKEDITOR.config.toolbarCanCollapse = false;
-		
+
 			setTimeout(function() {
 				addCKEditor($('form.ACCrudEdit textarea:not(.noRichText)'));
 			}, 100);

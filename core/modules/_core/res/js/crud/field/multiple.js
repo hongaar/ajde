@@ -1,8 +1,16 @@
 ;
-if (typeof AC ==="undefined") {AC = function(){}};
-if (typeof AC.Crud ==="undefined") {AC.Crud = function(){}};
-if (typeof AC.Crud.Edit ==="undefined") {AC.Crud.Edit = function(){}};
-
+if (typeof AC === "undefined") {
+    AC = function () {
+    }
+}
+if (typeof AC.Crud === "undefined") {
+    AC.Crud = function () {
+    }
+}
+if (typeof AC.Crud.Edit === "undefined") {
+    AC.Crud.Edit = function () {
+    }
+}
 AC.Crud.Edit.Multiple = function() {
 
 	var infoHandler		= AC.Core.Alert.show;
@@ -128,7 +136,7 @@ AC.Crud.Edit.Multiple = function() {
 	};
 
 	var makePrefillQS = function(elm, key, value) {
-		var prefills = $(elm).parents('div.multiple:eq(0)').data('prefill')
+		var prefills = $(elm).parents('div.multiple:eq(0)').data('prefill');
 		if (prefills) {
 			var ret = '';
 			prefills = prefills.split(',');
@@ -162,9 +170,9 @@ AC.Crud.Edit.Multiple = function() {
 			$('form.ACCrudEdit div.multiple tbody tr').live('dblclick', AC.Crud.Edit.Multiple.editHandler);
 			$('form.ACCrudEdit div.multiple a.deleteMultiple').live('click', AC.Crud.Edit.Multiple.deleteHandler);
 			$('form.ACCrudEdit div.picker.multiple').bind('chosen', AC.Crud.Edit.Multiple.chosenHandler);
-			
+
 			$('form.ACCrudEdit div.multiple a.imagePreview').fancybox({closeBtn: false});
-			
+
 			AC.Crud.Edit.Multiple.initMove();
 			AC.Crud.Edit.Multiple.initEmptyTable();
 		},
@@ -179,7 +187,7 @@ AC.Crud.Edit.Multiple = function() {
 				});
 			}
 		},
-			
+
 		initEmptyTable: function() {
 			$('form.ACCrudEdit table.multipleList').each(function() {
 				if ($(this).find('tbody tr:visible').length) {
@@ -189,7 +197,7 @@ AC.Crud.Edit.Multiple = function() {
 				}
 			});
 		},
-			
+
 		chosenHandler: function(e, ids) {
 			var that = this;
 			for (elm in ids) {
@@ -210,7 +218,7 @@ AC.Crud.Edit.Multiple = function() {
 
 			var parent = $(this).parents('div.multiple:eq(0)').attr('data-parent');
 			var editRoute = $(this).parents('div.multiple:eq(0)').attr('data-edit-route');
-			
+
 			if (editRoute.indexOf('?') > -1) {
 				editRoute += '&';
 			} else {
@@ -259,7 +267,7 @@ AC.Crud.Edit.Multiple = function() {
 			var field = $(this).parents('div.multiple:eq(0)').attr('data-field');
 			var editRoute = $(this).parents('div.multiple:eq(0)').attr('data-edit-route');
 			var id = $(this).attr('data-id');
-			
+
 			if (editRoute.indexOf('?') > -1) {
 				editRoute += '&';
 			} else {
@@ -324,7 +332,7 @@ AC.Crud.Edit.Multiple = function() {
 				}
 			});
 		},
-	
+
 		onSortHandler: function(table, row) {
 			var form = $(table).parents('form');
 			table = $(table);

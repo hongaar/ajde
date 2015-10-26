@@ -1,13 +1,18 @@
 ;
-if (typeof AC ==="undefined") {AC = function(){}};
-if (typeof AC.Crud ==="undefined") {AC.Crud = function(){}};
-
+if (typeof AC === "undefined") {
+    AC = function () {
+    }
+}
+if (typeof AC.Crud === "undefined") {
+    AC.Crud = function () {
+    }
+}
 AC.Crud.Edit = function() {
-	
+
 	var infoHandler		= AC.Core.Alert.show;
 	var warningHandler	= AC.Core.Alert.warning;
 	var errorHandler	= AC.Core.Alert.error;
-	
+
 	var isIframe = false;
     var isDirty = false;
 
@@ -15,18 +20,18 @@ AC.Crud.Edit = function() {
     var autosaveTimer;
     var autosaveThrottleActive = false;
     var autosaveThrottleTimeout = 2000;
-	
+
 	return {
-		
+
 		init: function() {
 			var self = this;
-			
+
 			isIframe = (window.location != window.parent.location) || (window.location.href.indexOf('CKEditor=content') != -1);
-			
+
 			if (isIframe) {
 				$('form.ACCrudEdit button.apply').hide();
 			}
-			
+
 			$('form.ACCrudEdit a.cancel').click(AC.Crud.Edit.cancelHandler);
 			$('form.ACCrudEdit button.save').click(AC.Crud.Edit.saveHandler);
 			$('form.ACCrudEdit button.apply').click(function(e) {
@@ -44,7 +49,7 @@ AC.Crud.Edit = function() {
 			$('form.ACCrudEdit :input').on('change', AC.Crud.Edit.dynamicFields).each(function() {
 				AC.Crud.Edit.dynamicFields.call(this);
 			});
-			
+
 			// Hide fieldsets with no control-groups
 			$('form.ACCrudEdit fieldset.crud').each(function() {
 				if (!$(this).find('.control-group:visible').length) {
@@ -91,9 +96,9 @@ AC.Crud.Edit = function() {
                     $(this).find('.autosave-group').hide();
                 });
             }
-			
+
 		},
-            
+
         setDirty: function(e) {
             $(this).parents('form.ACCrudEdit').find('.btn.cancel')
                     .text('discard changes')
@@ -104,7 +109,7 @@ AC.Crud.Edit = function() {
                 if (isDirty) {
                     return 'You have unsaved changes, are you sure you want to navigate away from this page?';
                 }
-            });            
+            });
         },
 
         setClean: function(e) {
@@ -113,17 +118,17 @@ AC.Crud.Edit = function() {
                 .removeClass('btn-danger');
             isDirty = false;
         },
-			
+
 		dynamicFields: function(e) {
 			var $this = $(this);
 			var val = "";
 			var name = $this.attr('name');
-			
+
 			if (name && name.indexOf('[]') === -1 && $('.control-group[data-show-' + name + ']').length) {
-				
+
 				// control group
 				var ctlgroup = $('.control-group[data-show-' + name + ']');
-				
+
 				// get value
 				if ($this.attr('type') === 'radio') {
                     // Don't execute for unchecked radio boxes
@@ -141,15 +146,15 @@ AC.Crud.Edit = function() {
 				val = val.toLowerCase().replace(/ /g, '');
 
                 if (val == '') val = '%EMPTY%';
-				
+
 				if (val) {
-					
+
 					var $hidden = ctlgroup.filter(':not([data-show-' + name + '*="|' + val + '|"])');
 					var $shown = ctlgroup.filter('.control-group[data-show-' + name + '*="|' + val + '|"]');
-					
+
 					// dynamic sort the shown fields
 					AC.Crud.Edit.dynamicSort($shown, name, val);
-					
+
 					$hidden.stop(true, true).hide();
 					$hidden.each(function() {
 						var $self = $(this);
@@ -161,10 +166,10 @@ AC.Crud.Edit = function() {
 					});
 					$shown.parents('fieldset').show();
 					$shown.removeClass('dynamic').stop(true, true).fadeIn();
-				}				
-			}		
+				}
+			}
 		},
-		
+
 		dynamicSort: function($ctlgroups, field, search) {
 			var groups = $ctlgroups.filter('[data-sort-' + field + ']');
 			var container = groups.parent();
@@ -178,15 +183,15 @@ AC.Crud.Edit = function() {
 				$(this).data('sort', sort);
 			});
 			groups.detach().sort(function(a, b) {
-				return parseInt($(a).data('sort')) > parseInt($(b).data('sort')) ? 1 : -1;  
+				return parseInt($(a).data('sort')) > parseInt($(b).data('sort')) ? 1 : -1;
 			});
-			container.append(groups);			
+			container.append(groups);
 		},
-		
+
 		equalizeForm: function() {
 			// Deprecated
 		},
-		
+
 		cancelHandler: function() {
             if ($(this).attr('disabled')) return;
 			if (isIframe) {
@@ -217,35 +222,35 @@ AC.Crud.Edit = function() {
                 autosaveThrottleActive = false
             }, autosaveThrottleTimeout);
         },
-		
+
 		saveHandler: function(e, returnTo) {
 			returnTo = typeof(returnTo) === 'undefined' ? 'list' : returnTo;
 			var form = $(this).parents('form.ACCrudEdit');
             var self = this;
 			var disableOnSave = 'button.save, button.apply, a.cancel';
-			
+
 			if (!form.length) {
 				form = $('form.ACCrudEdit:eq(0)');
 			}
-			
+
 			// TODO: HTML5 validation, should be deprecated?
 			if (form[0].checkValidity) {
 				if (form[0].checkValidity() === false) {
 					errorHandler(i18n.formError);
 					return false;
-				};
-			}
-			
+                }
+            }
+
 			var options = {
 				operation	: 'save',
 				fromIframe	: (isIframe ? '1' : '0'),
                 fromAutoSave: (returnTo == 'autosave' ? '1' : '0'),
-				crudId		: form.attr('id')					
+				crudId		: form.attr('id')
 			};
-			
+
 			var url = $(form).attr('action') + "?" + $.param(options);
 			var data = $(form).serializeArray();
-			
+
 			// clean up errors
 			form.find(':input').parent().removeClass('validation_error');
 			form.find('span.validation-message').remove();
@@ -260,7 +265,7 @@ AC.Crud.Edit = function() {
 					}
 				}
 			}
-			
+
 			if (typeof $(form[0]).data('onBeforeSubmit') === 'function') {
 				var fn = $(form[0]).data('onBeforeSubmit');
 				if (fn() === false) {
@@ -291,14 +296,14 @@ AC.Crud.Edit = function() {
             }
 
 			$.post(url, data, function(data) {
-								
+
 				if (data.success === false) {
-					
+
 					$('body').removeClass('loading');
                     $('.autosave-status').removeClass('active').html('Changes not saved, <a class="autosave-retry" href="javascript:void(null);">try again</a>');
                     AC.Crud.Edit.setDirty.call(self, e);
 					form.find(disableOnSave).attr('disabled', null);
-				
+
 					if (data.errors) {
 						if (typeof $(form[0]).data('onError') === 'function') {
 							var fn = $(form[0]).data('onError');
@@ -334,7 +339,7 @@ AC.Crud.Edit = function() {
 					if (typeof $(form[0]).data('onSave') === 'function') {
 						var fn = $(form[0]).data('onSave');
 						if (fn(data) === false) {
-							
+
 							$('body').removeClass('loading');
                             setTimeout(function() {
                                 $('.autosave-status').removeClass('active').text("All changes saved").addClass('flash');
@@ -344,10 +349,10 @@ AC.Crud.Edit = function() {
                             }, 100);
                             AC.Crud.Edit.setClean.call(self, e);
 							form.find(disableOnSave).attr('disabled', null);
-							
+
 							return;
 						}
-					}					
+					}
 					if (isIframe && parent.AC && parent.AC.Crud && parent.AC.Crud.Edit) {
 						if (data.operation === 'save') {
 							parent.AC.Crud.Edit.Multiple.editSaved(data.id, data.displayField);
@@ -380,12 +385,12 @@ AC.Crud.Edit = function() {
 					}
 				}
 			}, 'json').error(function(jqXHR, message, exception) {
-				
+
 				$('body').removeClass('loading');
                 $('.autosave-status').removeClass('active').html('Changes not saved, <a class="autosave-retry" href="javascript:void(null);">try again</a>');
                 AC.Crud.Edit.setDirty.call(self, e);
 				form.find(disableOnSave).attr('disabled', null);
-				
+
 				if (typeof $(form[0]).data('onError') === 'function') {
 					var fn = $(form[0]).data('onError');
 					fn();
@@ -396,7 +401,7 @@ AC.Crud.Edit = function() {
 					errorHandler(i18n.requestError + ' (' + exception + ')');
 				}
 			});
-			
+
 			return false;
 		}
 	};

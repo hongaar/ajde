@@ -5,7 +5,7 @@ class _coreComponentController extends Ajde_Controller
 	/************************
 	 * Ajde_Component_Resource
 	 ************************/
-	
+
 	function resourceLocalDefault()
 	{
 		return $this->_getLocalResource();
@@ -37,7 +37,7 @@ class _coreComponentController extends Ajde_Controller
 		$resource = call_user_func_array(array($className, "fromFingerprint"), array($this->getFormat(), $fingerprint));
 		return $resource->getContents();
 	}
-	
+
 	/************************
 	 * Ajde_Component_Form
 	 ************************/
@@ -47,21 +47,21 @@ class _coreComponentController extends Ajde_Controller
 		if ($this->getAction() !== 'form/ajax') {
 			$this->setAction('form/form');
 		}
-		
+
 		// CSRF
 		if (Ajde::app()->getDocument()->getLayout()->getName() !== 'empty') {
 			Ajde::app()->getDocument()->getLayout()->requireTimeoutWarning();
-		}		
-		$formToken = Ajde::app()->getRequest()->getFormToken();		
+		}
+		$formToken = Ajde::app()->getRequest()->getFormToken();
 		$this->getView()->assign('formToken', $formToken);
-		
-		$this->getView()->assign('formAction', $this->getFormAction());		
+
+		$this->getView()->assign('formAction', $this->getFormAction());
 		$this->getView()->assign('formId', $this->getFormId());
 		$this->getView()->assign('extraClass', $this->getExtraClass());
 		$this->getView()->assign('innerXml', $this->getInnerXml());
 		return $this->render();
 	}
-	 
+
 	public function formAjaxDefault()
 	{
 		$this->setAction('form/ajax');
@@ -84,7 +84,7 @@ class _coreComponentController extends Ajde_Controller
 		$this->getView()->assign('extraClass', $this->getExtraClass());
 		return $this->render();
 	}
-	
+
 	public function formUploadJson()
 	{
         if (!Ajde::app()->getRequest()->hasPostParam('optionsId')) {
@@ -93,38 +93,38 @@ class _coreComponentController extends Ajde_Controller
 		$optionsId = Ajde::app()->getRequest()->getPostParam('optionsId');
 		$session = new Ajde_Session('AC.Form');
 		$options = $session->get($optionsId);
-		
+
 		// Load UploadHelper.php
 		$helper = new Ajde_Component_Form_UploadHelper();
-		
+
 		$saveDir = $options['saveDir'];
 		$allowedExtensions = $options['extensions'];
 		$overwrite = $options['overwrite'];
-		
+
 		// max file size in bytes
 		$max_upload = Ajde_Component_String::toBytes(ini_get('upload_max_filesize'));
 		$max_post = Ajde_Component_String::toBytes(ini_get('post_max_size'));
 		$memory_limit = Ajde_Component_String::toBytes(ini_get('memory_limit'));
 		$sizeLimit = min($max_upload, $max_post, $memory_limit);
-		
+
 		$uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
 		$result = $uploader->handleUpload($saveDir, $overwrite);
-		
+
 		// delete old thumbnails if overwritten
 		if (isset($result['success']) && $result['success'] === true && $overwrite === true) {
 			$filename = pathinfo($result['filename'], PATHINFO_FILENAME);
 			$extension = pathinfo($result['filename'], PATHINFO_EXTENSION);
-			$filelist = Ajde_FS_Find::findFiles($saveDir, $filename . "_*." . $extension);
+			$filelist = Ajde_Fs_Find::findFiles($saveDir, $filename . "_*." . $extension);
 			$thumbs = preg_grep("/_[0-9]+x[0-9]+c?/i", $filelist);
 			foreach($thumbs as $thumb) {
 				unlink($thumb);
 			}
 		}
-		
+
 		// Set content type to text/html for qqUploader bug 163
 		// @see https://github.com/valums/file-uploader/issues/163
 		Ajde::app()->getDocument()->setContentType('text/html');
-		
+
 		// to pass data through iframe you will need to encode all html tags
 		return $result;
 	}
@@ -132,7 +132,7 @@ class _coreComponentController extends Ajde_Controller
 	/************************
 	 * Ajde_Component_Image
 	 ************************/
-	
+
 	public function imageHtml() {
 		/* @var $image Ajde_Resource_Image */
 		$image = $this->getImage();
@@ -151,11 +151,11 @@ class _coreComponentController extends Ajde_Controller
         $this->getView()->assign('lazy', $this->hasLazy() ? $this->getLazy() : false);
 		return $this->render();
 	}
-	
+
 	public function imageBase64Html() {
 		/* @var $image Ajde_Resource_Image */
-		$image = $this->getImage();		
-		$image->resize($image->getHeight(), $image->getWidth(), $image->getCrop());		
+		$image = $this->getImage();
+		$image->resize($image->getHeight(), $image->getWidth(), $image->getCrop());
 		$this->setAction('image/base64');
 		$this->getView()->assign('image', $image->getBase64());
 		$this->getView()->assign('width', $this->getWidth());
@@ -163,23 +163,23 @@ class _coreComponentController extends Ajde_Controller
 		$this->getView()->assign('extraClass', $this->getExtraClass());
 		return $this->render();
 	}
-	
+
 	public function imageData() {
-		$fingerprint = Ajde::app()->getRequest()->getRaw('id');		
+		$fingerprint = Ajde::app()->getRequest()->getRaw('id');
 		/* @var $image Ajde_Resource_Image */
 		$image = Ajde_Resource_Image::fromFingerprint($fingerprint);
 		Ajde_Cache::getInstance()->addFile($image->getOriginalFilename());
-		
-		$image->resize($image->getHeight(), $image->getWidth(), $image->getCrop());		
+
+		$image->resize($image->getHeight(), $image->getWidth(), $image->getCrop());
 		Ajde::app()->getDocument()->setContentType($image->getMimeType());
 		$output = $image->getImage();
 		return $output;
 	}
-	
+
 	/************************
 	 * Ajde_Component_Qrcode
 	 ************************/
-	
+
 	public function qrcodeHtml() {
 		/* @var $qr Ajde_Resource_Qrcode */
 		$qr = $this->getQrcode();
@@ -187,38 +187,38 @@ class _coreComponentController extends Ajde_Controller
 		$this->getView()->assign('href', $qr->getLinkUrl());
 		return $this->render();
 	}
-	
+
 	public function qrcodeData() {
-		$fingerprint = Ajde::app()->getRequest()->getRaw('id');		
+		$fingerprint = Ajde::app()->getRequest()->getRaw('id');
 		/* @var $qr Ajde_Resource_Qrcode */
 		$qr = Ajde_Resource_Qrcode::fromFingerprint($fingerprint);
 		Ajde_Cache::getInstance()->updateHash($fingerprint);
-		
+
 		$qr->write();
 		return false;
 	}
-    
+
     /************************
 	 * Ajde_Component_Embed
 	 ************************/
-    
+
     public function embedInfoJson() {
         $raw = trim(Ajde::app()->getRequest()->getRaw('code'));
-		
+
 		$embed = Ajde_Embed::fromCode($raw);
-        
-        $embed->setWidth('100%');		
-        
+
+        $embed->setWidth('100%');
+
 		$thumbnail = $embed->getThumbnail();
 		$code = $embed->getCode();
-		
-		if ($embed->getProvider()) {		
+
+		if ($embed->getProvider()) {
 			return array(
 				'success' => true,
 				'code' => $code,
 				'thumbnail' => $thumbnail
-			);			
-		} else {			
+			);
+		} else {
 			return array('success' => false);
 		}
     }

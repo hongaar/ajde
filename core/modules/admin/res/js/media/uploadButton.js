@@ -1,17 +1,25 @@
 ;
-if (typeof App === "undefined") {App = function(){}};
-if (typeof App.Admin === "undefined") {App.Admin = function(){}};
-if (typeof App.Admin.Media === "undefined") {App.Admin.Media = function(){}};
-
+if (typeof App === "undefined") {
+    App = function () {
+    }
+}
+if (typeof App.Admin === "undefined") {
+    App.Admin = function () {
+    }
+}
+if (typeof App.Admin.Media === "undefined") {
+    App.Admin.Media = function () {
+    }
+}
 App.Admin.Media.UploadButton = function() {
-		
+
 	var infoHandler		= AC.Core.Alert.show;
 	var warningHandler	= AC.Core.Alert.warning;
 	var errorHandler	= AC.Core.Alert.error;
-	
+
 	var node;
 	var uploading = 0;
-	
+
 	var onStart = function(e, id, filename) {
 		node.addClass('loading');
 		uploading++;
@@ -26,7 +34,7 @@ App.Admin.Media.UploadButton = function() {
 		filename = response.filename;
 		mediatype = $('form.ACCrudList').find('select[name="view[filter][mediatype]"]').val();
 		uploading--;
-		
+
 		var form = node.parents('form');
 		var url = 'admin/media:upload.json';
 		var data = {
@@ -53,24 +61,24 @@ App.Admin.Media.UploadButton = function() {
 	};
 
 	return {
-		
+
 		init: function() {
-			
+
 			AC.Crud.List.afterUpdateView(function() {
 				AC.Form.Upload.init();
 				App.Admin.Media.UploadButton.bind();
 			});
 			this.bind();
-			
+
 		},
-			
+
 		bind: function() {
 			node = $('div.ACAjaxUpload');
 			node.bind('startUpload', onStart);
 			node.bind('errorUpload', onError);
 			node.bind('completeUpload', onComplete);
 		}
-		
+
 	};
 }();
 

@@ -22,9 +22,9 @@
  */
 abstract class Google_Verifier_Abstract
 {
-  /**
-   * Checks a signature, returns true if the signature is correct,
-   * false otherwise.
-   */
-  abstract public function verify($data, $signature);
+    /**
+     * Checks a signature, returns true if the signature is correct,
+     * false otherwise.
+     */
+    abstract public function verify($data, $signature);
 }

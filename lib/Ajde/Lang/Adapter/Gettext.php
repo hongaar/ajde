@@ -24,18 +24,15 @@ class Ajde_Lang_Adapter_Gettext extends Ajde_Lang_Adapter_Abstract
         $filename = LANG_DIR . $this->_lang . '/LC_MESSAGES/' . Config::get('ident') . '.mo';
         $this->_gettext->_loadTranslationData($filename, $this->_lang);
         $this->_dictionary = $this->_gettext->get($this->_lang);
-
     }
 
     public function get($ident, $module = null)
     {
-        if (isset($this->_dictionary[$ident]))
-        {
+        if (isset($this->_dictionary[$ident])) {
             return $this->_dictionary[$ident];
-        }
-        else
-        {
+        } else {
             $this->log($ident, $module);
+
             return $ident;
         }
     }
@@ -48,6 +45,7 @@ class Ajde_Lang_Adapter_Gettext extends Ajde_Lang_Adapter_Abstract
  * much better thank you...
  *
  * For background:
+ *
  * @see http://php.net/manual/en/function.setlocale.php
  * @see http://stackoverflow.com/questions/1646249/php-gettext-problems-like-non-thread-safe
  *
@@ -76,7 +74,7 @@ class Ajde_Lang_Adapter_Gettext extends Ajde_Lang_Adapter_Abstract
  */
 
 /** Zend_Locale */
-// AJDE : Not needed 
+// AJDE : Not needed
 // require_once 'Zend/Locale.php';
 
 /** Zend_Translate_Adapter */
@@ -91,19 +89,20 @@ class Ajde_Lang_Adapter_Gettext extends Ajde_Lang_Adapter_Abstract
  */
 // class Zend_Translate_Adapter_Gettext extends Zend_Translate_Adapter {
 // AJDE : Subclass off Ajde_Object_Standard
-class Zend_Translate_Adapter_Gettext extends Ajde_Object_Standard {
+class Zend_Translate_Adapter_Gettext extends Ajde_Object_Standard
+{
     // Internal variables
-    private $_bigEndian   = false;
-    private $_file        = false;
-    private $_adapterInfo = array();
+    private $_bigEndian = false;
+    private $_file = false;
+    private $_adapterInfo = [];
     // private $_data        = array();
     // AJDE : Needs to be protected for inheritance of A_O_S
-    protected $_data        = array();
+    protected $_data = [];
 
     /**
      * Read values from the MO file
      *
-     * @param  string  $bytes
+     * @param  string $bytes
      */
     private function _readMOData($bytes)
     {
@@ -117,20 +116,20 @@ class Zend_Translate_Adapter_Gettext extends Ajde_Object_Standard {
     /**
      * Load translation data (MO file reader)
      *
-     * @param  string  $filename  MO file to add, full path must be given for access
-     * @param  string  $locale    New Locale/Language to set, identical with locale identifier,
+     * @param  string $filename MO file to add, full path must be given for access
+     * @param  string $locale New Locale/Language to set, identical with locale identifier,
      *                            see Zend_Locale for more information
-     * @param  array   $option    OPTIONAL Options to use
+     * @param  array $option OPTIONAL Options to use
      * @throws Zend_Translation_Exception
      * @return array
      */
     // protected function _loadTranslationData($filename, $locale, array $options = array())
     // AJDE : We use this method directly, so it must be public
-    public function _loadTranslationData($filename, $locale, array $options = array())
+    public function _loadTranslationData($filename, $locale, array $options = [])
     {
-        $this->_data      = array();
+        $this->_data = [];
         $this->_bigEndian = false;
-        $this->_file      = @fopen($filename, 'rb');
+        $this->_file = @fopen($filename, 'rb');
         if (!$this->_file) {
             // AJDE : Changed to use Ajde_Exception
             // require_once 'Zend/Translate/Exception.php';
@@ -149,14 +148,16 @@ class Zend_Translate_Adapter_Gettext extends Ajde_Object_Standard {
         $input = $this->_readMOData(1);
         if (strtolower(substr(dechex($input[1]), -8)) == "950412de") {
             $this->_bigEndian = false;
-        } else if (strtolower(substr(dechex($input[1]), -8)) == "de120495") {
-            $this->_bigEndian = true;
         } else {
-            @fclose($this->_file);
-            // AJDE : Changed to use Ajde_Exception
-            // require_once 'Zend/Translate/Exception.php';
-            // throw new Zend_Translate_Exception('\'' . $filename . '\' is not a gettext file');
-            throw new Ajde_Exception('\'' . $filename . '\' is not a gettext file');
+            if (strtolower(substr(dechex($input[1]), -8)) == "de120495") {
+                $this->_bigEndian = true;
+            } else {
+                @fclose($this->_file);
+                // AJDE : Changed to use Ajde_Exception
+                // require_once 'Zend/Translate/Exception.php';
+                // throw new Zend_Translate_Exception('\'' . $filename . '\' is not a gettext file');
+                throw new Ajde_Exception('\'' . $filename . '\' is not a gettext file');
+            }
         }
         // read revision - not supported for now
         $input = $this->_readMOData(1);
@@ -179,7 +180,7 @@ class Zend_Translate_Adapter_Gettext extends Ajde_Object_Standard {
         fseek($this->_file, $TOffset);
         $transtemp = $this->_readMOData(2 * $total);
 
-        for($count = 0; $count < $total; ++$count) {
+        for ($count = 0; $count < $total; ++$count) {
             if ($origtemp[$count * 2 + 1] != 0) {
                 fseek($this->_file, $origtemp[$count * 2 + 2]);
                 $original = @fread($this->_file, $origtemp[$count * 2 + 1]);
@@ -214,6 +215,7 @@ class Zend_Translate_Adapter_Gettext extends Ajde_Object_Standard {
         }
 
         unset($this->_data[$locale]['']);
+
         return $this->_data;
     }
 

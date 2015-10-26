@@ -1,8 +1,16 @@
 ;
-if (typeof App === "undefined") {App = function(){}};
-if (typeof App.Admin === "undefined") {App.Admin = function(){}};
-if (typeof App.Admin.Shop === "undefined") {App.Admin.Shop = function(){}};
-
+if (typeof App === "undefined") {
+    App = function () {
+    }
+}
+if (typeof App.Admin === "undefined") {
+    App.Admin = function () {
+    }
+}
+if (typeof App.Admin.Shop === "undefined") {
+    App.Admin.Shop = function () {
+    }
+}
 App.Admin.Shop.Transactions = function() {
 
     var infoHandler		= AC.Core.Alert.show;

@@ -4,7 +4,6 @@ class FormController extends Ajde_Controller
 {
 	public function beforeInvoke()
 	{
-		Ajde_Model::register('form');
 		return true;
 	}
 
@@ -12,7 +11,7 @@ class FormController extends Ajde_Controller
 	{
 		// get the current form id
 		$id = $this->getId();
-		
+
 		/* @var $form FormModel */
 		$form = $this->getModel();
 		$form->loadByPK($id);

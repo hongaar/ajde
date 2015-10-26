@@ -1,12 +1,12 @@
 ;
 $(document).ready(function() {
-	
+
 	var complexityClass = {
 		81: 'Perfect',
 		61: 'Strong',
 		41: 'Average',
 		1: 'Too weak',
-		0: 'Unsafe password'		
+		0: 'Unsafe password'
 	};
 
     try {
@@ -34,10 +34,10 @@ $(document).ready(function() {
                 }
             }
         );
-    } catch (e) {};
-
+    } catch (e) {
+    }
     AC.Form.Ajax.registerCallback(function() {
-		
+
         $('#settingsform').bind('before', function() {
             if ($("input[name=password]").val() && !$(this).data('valid')) {
                 $('.give-status').addClass('error');

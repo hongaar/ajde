@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright (c) 2013, Mollie B.V.
  * All rights reserved.
@@ -24,7 +25,8 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
  * DAMAGE.
  *
- * @license     Berkeley Software Distribution License (BSD-License 2) http://www.opensource.org/licenses/bsd-license.php
+ * @license     Berkeley Software Distribution License (BSD-License 2)
+ *     http://www.opensource.org/licenses/bsd-license.php
  * @author      Mollie B.V. <info@mollie.nl>
  * @copyright   Mollie B.V.
  * @link        https://www.mollie.nl
@@ -34,11 +36,11 @@
  */
 class Mollie_API_Resource_Methods extends Mollie_API_Resource_Base
 {
-	/**
-	 * @return Mollie_API_Object_Method
-	 */
-	protected function getResourceObject ()
-	{
-		return new Mollie_API_Object_Method;
-	}
+    /**
+     * @return Mollie_API_Object_Method
+     */
+    protected function getResourceObject()
+    {
+        return new Mollie_API_Object_Method;
+    }
 }

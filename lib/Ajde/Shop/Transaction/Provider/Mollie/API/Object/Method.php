@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright (c) 2013, Mollie B.V.
  * All rights reserved.
@@ -24,62 +25,61 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
  * DAMAGE.
  *
- * @license     Berkeley Software Distribution License (BSD-License 2) http://www.opensource.org/licenses/bsd-license.php
+ * @license     Berkeley Software Distribution License (BSD-License 2)
+ *     http://www.opensource.org/licenses/bsd-license.php
  * @author      Mollie B.V. <info@mollie.nl>
  * @copyright   Mollie B.V.
  * @link        https://www.mollie.nl
  */
 class Mollie_API_Object_Method
 {
-	const IDEAL       = "ideal";
-	const PAYSAFECARD = "paysafecard";
-	const CREDITCARD  = "creditcard";
-	const MISTERCASH  = "mistercash";
+    const IDEAL = "ideal";
+    const PAYSAFECARD = "paysafecard";
+    const CREDITCARD = "creditcard";
+    const MISTERCASH = "mistercash";
 
-	/**
-	 * Id of the payment method.
-	 *
-	 * @var string
-	 */
-	public $id;
+    /**
+     * Id of the payment method.
+     *
+     * @var string
+     */
+    public $id;
 
-	/**
-	 * More legible description of the payment method.
-	 *
-	 * @var string
-	 */
-	public $description;
+    /**
+     * More legible description of the payment method.
+     *
+     * @var string
+     */
+    public $description;
 
-	/**
-	 * The $amount->minimum and $amount->maximum supported by this method and the used API key.
-	 *
-	 * @var object
-	 */
-	public $amount;
+    /**
+     * The $amount->minimum and $amount->maximum supported by this method and the used API key.
+     *
+     * @var object
+     */
+    public $amount;
 
-	/**
-	 * @return float|null
-	 */
-	public function getMinimumAmount ()
-	{
-		if (empty($this->amount))
-		{
-			return NULL;
-		}
+    /**
+     * @return float|null
+     */
+    public function getMinimumAmount()
+    {
+        if (empty($this->amount)) {
+            return null;
+        }
 
-		return (float) $this->amount->minimum;
-	}
+        return (float)$this->amount->minimum;
+    }
 
-	/**
-	 * @return float|null
-	 */
-	public function getMaximumAmount ()
-	{
-		if (empty($this->amount))
-		{
-			return NULL;
-		}
+    /**
+     * @return float|null
+     */
+    public function getMaximumAmount()
+    {
+        if (empty($this->amount)) {
+            return null;
+        }
 
-		return (float) $this->amount->maximum;
-	}
+        return (float)$this->amount->maximum;
+    }
 }

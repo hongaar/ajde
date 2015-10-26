@@ -1,21 +1,29 @@
 ;
-if (typeof App === "undefined") {App = function(){}};
-if (typeof App.Admin === "undefined") {App.Admin = function(){}};
-if (typeof App.Admin.Node === "undefined") {App.Admin.Node = function(){}};
-
+if (typeof App === "undefined") {
+    App = function () {
+    }
+}
+if (typeof App.Admin === "undefined") {
+    App.Admin = function () {
+    }
+}
+if (typeof App.Admin.Node === "undefined") {
+    App.Admin.Node = function () {
+    }
+}
 App.Admin.Node.Panel = function() {
 
 	var infoHandler		= AC.Core.Alert.show;
 	var warningHandler	= AC.Core.Alert.warning;
 	var errorHandler	= AC.Core.Alert.error;
-	
+
 	return {
 
-		init: function() {		
+		init: function() {
 			$('form.ACCrudList tbody tr.panel td').live('dblclick', function(e) {
 				e.stopPropagation();
 			});
-			
+
 			$('table.crud tr.panel :input').each(function() {
 				var origVal = $(this).val();
 				$(this).live('focus', function() {
@@ -35,11 +43,11 @@ App.Admin.Node.Panel = function() {
 							App.Admin.Node.Update.update(id, meta, key, value);
 							origVal = newVal;
 						}
-					}, 10);					
+					}, 10);
 				});
 			});
 		}
-		
+
 	};
 }();
 

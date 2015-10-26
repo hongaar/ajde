@@ -1,12 +1,12 @@
 ;
 $(document).ready(function() {
-	
+
 	var complexityClass = {
 		81: 'Perfect',
 		61: 'Strong',
 		41: 'Average',
 		1: 'Too weak',
-		0: 'Unsafe password'		
+		0: 'Unsafe password'
 	};
 
     try {
@@ -34,8 +34,8 @@ $(document).ready(function() {
                 }
             }
         );
-    } catch (e) {};
-
+    } catch (e) {
+    }
     AC.Form.Ajax.registerCallback(function() {
 
 	    $('#registerform').on('before', function() {
@@ -73,10 +73,10 @@ $(document).ready(function() {
         });
 
     });
-	
+
 	$('#registerform :input').on('keydown', function() {
 		$('.status-text').text('');
         $('.give-status').removeClass('error');
 	});
-	
+
 });

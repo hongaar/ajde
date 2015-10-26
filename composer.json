@@ -14,7 +14,17 @@
         "nabble/semalt-blocker": "~1"
     },
     "autoload": {
-        "Ajde_": "lib/"
+        "psr-0": {
+            "Ajde_": "lib/"
+        },
+        "classmap": [
+            "app/",
+            "core/",
+            "lib/Ajde/Ajde.php"
+        ],
+        "files": [
+            "lib/Ajde/helpers.php"
+        ]
     },
     "suggest": {
         "pelago/emogrifier": "Allows on-premise inlining of css styles",

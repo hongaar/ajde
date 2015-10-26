@@ -15,7 +15,7 @@ class Ajde_Crud_Export_Excel extends Ajde_Object_Standard implements Ajde_Crud_E
 
         foreach ($tableData as $row) {
             $this->writer->home();
-            foreach($row as $cell) {
+            foreach ($row as $cell) {
                 $this->writer->label($cell);
                 $this->writer->right();
             }

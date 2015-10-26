@@ -54,7 +54,8 @@ class Facebook extends BaseFacebook
      *
      * @see BaseFacebook::__construct
      */
-    public function __construct($config) {
+    public function __construct($config)
+    {
         if (!session_id()) {
             session_start();
         }
@@ -70,7 +71,6 @@ class Facebook extends BaseFacebook
             } else {
                 $this->state = null;
             }
-
         }
     }
 
@@ -80,19 +80,22 @@ class Facebook extends BaseFacebook
      * @var array
      */
     protected static $kSupportedKeys =
-        array('state', 'code', 'access_token', 'user_id');
+        ['state', 'code', 'access_token', 'user_id'];
 
     /**
      * Initiates Shared Session
      */
-    protected function initSharedSession() {
+    protected function initSharedSession()
+    {
         $cookie_name = $this->getSharedSessionCookieName();
         if (isset($_COOKIE[$cookie_name])) {
             $data = $this->parseSignedRequest($_COOKIE[$cookie_name]);
             if ($data && !empty($data['domain']) &&
-                self::isAllowedDomain($this->getHttpHost(), $data['domain'])) {
+                self::isAllowedDomain($this->getHttpHost(), $data['domain'])
+            ) {
                 // good case
                 $this->sharedSessionID = $data['id'];
+
                 return;
             }
             // ignoring potentially unreachable data
@@ -101,20 +104,20 @@ class Facebook extends BaseFacebook
         $base_domain = $this->getBaseDomain();
         $this->sharedSessionID = md5(uniqid(mt_rand(), true));
         $cookie_value = $this->makeSignedRequest(
-            array(
+            [
                 'domain' => $base_domain,
                 'id' => $this->sharedSessionID,
-            )
+            ]
         );
         $_COOKIE[$cookie_name] = $cookie_value;
         if (!headers_sent()) {
             $expire = time() + self::FBSS_COOKIE_EXPIRE;
-            setcookie($cookie_name, $cookie_value, $expire, '/', '.'.$base_domain);
+            setcookie($cookie_name, $cookie_value, $expire, '/', '.' . $base_domain);
         } else {
             // @codeCoverageIgnoreStart
             self::errorLog(
-                'Shared session ID cookie could not be set! You must ensure you '.
-                'create the Facebook instance before headers have been sent. This '.
+                'Shared session ID cookie could not be set! You must ensure you ' .
+                'create the Facebook instance before headers have been sent. This ' .
                 'will cause authentication issues after the first request.'
             );
             // @codeCoverageIgnoreEnd
@@ -133,9 +136,11 @@ class Facebook extends BaseFacebook
      *
      * @see BaseFacebook::setPersistentData()
      */
-    protected function setPersistentData($key, $value) {
+    protected function setPersistentData($key, $value)
+    {
         if (!in_array($key, self::$kSupportedKeys)) {
             self::errorLog('Unsupported key passed to setPersistentData.');
+
             return;
         }
 
@@ -148,13 +153,16 @@ class Facebook extends BaseFacebook
      *
      * @see BaseFacebook::getPersistentData()
      */
-    protected function getPersistentData($key, $default = false) {
+    protected function getPersistentData($key, $default = false)
+    {
         if (!in_array($key, self::$kSupportedKeys)) {
             self::errorLog('Unsupported key passed to getPersistentData.');
+
             return $default;
         }
 
         $session_var_name = $this->constructSessionVariableName($key);
+
         return isset($_SESSION[$session_var_name]) ?
             $_SESSION[$session_var_name] : $default;
     }
@@ -164,9 +172,11 @@ class Facebook extends BaseFacebook
      *
      * @see BaseFacebook::clearPersistentData()
      */
-    protected function clearPersistentData($key) {
+    protected function clearPersistentData($key)
+    {
         if (!in_array($key, self::$kSupportedKeys)) {
             self::errorLog('Unsupported key passed to clearPersistentData.');
+
             return;
         }
 
@@ -181,7 +191,8 @@ class Facebook extends BaseFacebook
      *
      * @see BaseFacebook::clearAllPersistentData()
      */
-    protected function clearAllPersistentData() {
+    protected function clearAllPersistentData()
+    {
         foreach (self::$kSupportedKeys as $key) {
             $this->clearPersistentData($key);
         }
@@ -193,11 +204,12 @@ class Facebook extends BaseFacebook
     /**
      * Deletes Shared session cookie
      */
-    protected function deleteSharedSessionCookie() {
+    protected function deleteSharedSessionCookie()
+    {
         $cookie_name = $this->getSharedSessionCookieName();
         unset($_COOKIE[$cookie_name]);
         $base_domain = $this->getBaseDomain();
-        setcookie($cookie_name, '', 1, '/', '.'.$base_domain);
+        setcookie($cookie_name, '', 1, '/', '.' . $base_domain);
     }
 
     /**
@@ -205,7 +217,8 @@ class Facebook extends BaseFacebook
      *
      * @return string The Shared session cookie name
      */
-    protected function getSharedSessionCookieName() {
+    protected function getSharedSessionCookieName()
+    {
         return self::FBSS_COOKIE_NAME . '_' . $this->getAppId();
     }
 
@@ -217,11 +230,13 @@ class Facebook extends BaseFacebook
      *
      * @return string The name of the session key.
      */
-    protected function constructSessionVariableName($key) {
-        $parts = array('fb', $this->getAppId(), $key);
+    protected function constructSessionVariableName($key)
+    {
+        $parts = ['fb', $this->getAppId(), $key];
         if ($this->sharedSessionID) {
             array_unshift($parts, $this->sharedSessionID);
         }
+
         return implode('_', $parts);
     }
 }

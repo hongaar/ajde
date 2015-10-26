@@ -33,7 +33,7 @@ class Ajde_Collection_Paginator extends Ajde_Object_Standard implements Iterator
 
     public function setPage($page)
     {
-        $this->_page = (int) $page;
+        $this->_page = (int)$page;
         $this->initPage();
     }
 

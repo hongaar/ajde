@@ -2,7 +2,14 @@
 
 abstract class Ajde_Log_Writer_Abstract
 {
-	abstract public static function _($message, $channel = self::CHANNEL_INFO, $level = self::LEVEL_INFORMATIONAL, $description = '', $code = '', $trace = '');
+    abstract public static function _(
+        $message,
+        $channel = self::CHANNEL_INFO,
+        $level = self::LEVEL_INFORMATIONAL,
+        $description = '',
+        $code = '',
+        $trace = ''
+    );
 
     public static function getIP()
     {

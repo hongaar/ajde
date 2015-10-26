@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 class ShopController extends Ajde_Acl_Controller
 {
@@ -11,9 +11,9 @@ class ShopController extends Ajde_Acl_Controller
 	protected $_allowedActions = array(
 		'view'
 	);
-	
+
 	protected $_allowGuestTransaction = true;
-	
+
 	public function beforeInvoke($allowed = array())
 	{
 		if ($this->_allowGuestTransaction === true) {
@@ -28,7 +28,7 @@ class ShopController extends Ajde_Acl_Controller
         if ($this->product && $this->product->hasLoaded()) return $this->product->getSlug();
         return '';
     }
-	
+
 	public function view()
     {
         if ($this->hasNotEmpty('slug'))
@@ -117,21 +117,19 @@ class ShopController extends Ajde_Acl_Controller
         // render the template
         return $this->render();
     }
-	
+
 	public function cart()
 	{
 		$this->redirect('shop/cart:edit');
 	}
-	
+
 	public function checkout()
 	{
-		Ajde_Model::register($this);
-		
 		// Get existing transaction
 		$transaction = new TransactionModel();
-		$session = new Ajde_Session('AC.Shop');				
+		$session = new Ajde_Session('AC.Shop');
 		$session->has('currentTransaction') && $transaction->loadByPK($session->get('currentTransaction'));
-				
+
 		$cart = new CartModel();
 		$cart->loadCurrent();
 
@@ -139,11 +137,11 @@ class ShopController extends Ajde_Acl_Controller
         if (!$transaction->hasLoaded() && !Config::get('shopOfferLogin') && $cart->hasItems()) {
             $this->redirect('shop/transaction:setup');
         }
-		
+
 		$this->getView()->assign('cart', $cart);
 		$this->getView()->assign('user', $this->getLoggedInUser());
 		$this->getView()->assign('transaction', $transaction);
-		
+
 		return $this->render();
 	}
 }

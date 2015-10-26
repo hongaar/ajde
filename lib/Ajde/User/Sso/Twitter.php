@@ -16,14 +16,17 @@ class Ajde_User_Sso_Twitter extends Ajde_User_Sso
         $this->_session = new Ajde_Session('user');
         if ($credentials) {
             $this->setCredentials($credentials);
-        } else if ($this->_session->has(self::SSO_SESSION_KEY)) {
-            $this->_credentials = $this->_session->get(self::SSO_SESSION_KEY);
+        } else {
+            if ($this->_session->has(self::SSO_SESSION_KEY)) {
+                $this->_credentials = $this->_session->get(self::SSO_SESSION_KEY);
+            }
         }
     }
 
     public static function fromModel(SsoModel $sso)
     {
         $instance = new self(unserialize($sso->getData()));
+
         return $instance;
     }
 
@@ -33,7 +36,8 @@ class Ajde_User_Sso_Twitter extends Ajde_User_Sso
     public function getProvider()
     {
         if ($this->_credentials) {
-            return new Ajde_Social_Provider_Twitter($this->_credentials['oauth_token'], $this->_credentials['oauth_token_secret']);
+            return new Ajde_Social_Provider_Twitter($this->_credentials['oauth_token'],
+                $this->_credentials['oauth_token_secret']);
         } else {
             return new Ajde_Social_Provider_Twitter();
         }
@@ -76,14 +80,14 @@ class Ajde_User_Sso_Twitter extends Ajde_User_Sso
             if (!isset($this->_me)) {
                 $provider = $this->getProvider();
                 $credentials = $this->getCredentials();
-                $this->_me = $provider->get('users/show', array(
+                $this->_me = $provider->get('users/show', [
                     'screen_name' => $credentials['screen_name']
-                ));
+                ]);
             }
+
             return $this->_me;
         }
         throw new Ajde_Exception('Provider Facebook has no authenticated user');
-
     }
 
     public function getAuthenticationURL($returnto = '')
@@ -114,7 +118,7 @@ class Ajde_User_Sso_Twitter extends Ajde_User_Sso
 
         $verifier = Ajde::app()->getRequest()->getParam('oauth_verifier');
         $connection = $this->getProvider();
-        $this->setCredentials( $connection->getAccessToken($verifier) );
+        $this->setCredentials($connection->getAccessToken($verifier));
 
         return true;
     }
@@ -123,6 +127,7 @@ class Ajde_User_Sso_Twitter extends Ajde_User_Sso
     {
         if ($this->hasCredentials()) {
             $credentials = $this->getCredentials();
+
             return $credentials['screen_name'];
         } else {
             return false;
@@ -150,6 +155,7 @@ class Ajde_User_Sso_Twitter extends Ajde_User_Sso
             $me = $this->getMe();
             $image = $me->profile_image_url;
             $image = str_replace('_normal.', '.', $image);
+
             return $image;
         } else {
             return false;
@@ -161,6 +167,7 @@ class Ajde_User_Sso_Twitter extends Ajde_User_Sso
     {
         if ($this->hasCredentials()) {
             $credentials = $this->getCredentials();
+
             return md5(md5($credentials['user_id']));
         } else {
             return false;

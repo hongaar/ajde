@@ -1,11 +1,13 @@
 ;
-if (typeof AC ==="undefined") {AC = function() {}};
-
+if (typeof AC === "undefined") {
+    AC = function () {
+    }
+}
 AC.Debugger = function() {
-	
+
 	var height = 400;
 	var max = $(window).height() - 10;
-	
+
 	return {
 
 		init: function() {
@@ -35,34 +37,34 @@ AC.Debugger = function() {
 					AC.Debugger.showDebugger(true);
 				}
 			});
-		
+
 		},
-			
+
 		toggleDebugger: function() {
 			if (parseInt($('#ajdeDebuggerContent').css('height')) < height) {
 				AC.Debugger.showDebugger();
-			} else if (parseInt($('#ajdeDebuggerContent').css('height')) > height) {			
+			} else if (parseInt($('#ajdeDebuggerContent').css('height')) > height) {
 				AC.Debugger.hideDebugger();
 			} else {
 				AC.Debugger.showDebugger(true);
 			}
 		},
-			
+
 		toggleSection: function(ident) {
 			AC.Debugger.showDebugger();
 			$(ident).slideToggle('fast');
 		},
-			
+
 		showDebugger: function(fullscreen) {
 			$('#ajdeDebuggerContent').animate({height: (fullscreen ? max : height) + 'px'}, 'fast', function() {
 				$('#ajdeDebuggerContent').css({overflowY: 'scroll'});
 			});
 		},
-	
+
 		hideDebugger: function() {
 			$('#ajdeDebuggerContent').animate({height: '0'}, 'fast');
 		}
-	
+
 	};
 }();
 

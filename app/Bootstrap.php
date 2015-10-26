@@ -11,8 +11,6 @@ class Bootstrap extends Ajde_Object_Singleton
     public function __bootstrap()
     {
         \Nabble\SemaltBlocker\Blocker::protect();
-        
-        Ajde_Model::register('user');
 
         Ajde_Event::register('TransactionModel', 'onPaid', array($this, 'onTransactionPaid'));
         Ajde_Event::register('TransactionModel', 'onCreate', array($this, 'onTransactionCreated'));

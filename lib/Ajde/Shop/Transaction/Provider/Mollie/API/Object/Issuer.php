@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright (c) 2013, Mollie B.V.
  * All rights reserved.
@@ -24,32 +25,33 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
  * DAMAGE.
  *
- * @license     Berkeley Software Distribution License (BSD-License 2) http://www.opensource.org/licenses/bsd-license.php
+ * @license     Berkeley Software Distribution License (BSD-License 2)
+ *     http://www.opensource.org/licenses/bsd-license.php
  * @author      Mollie B.V. <info@mollie.nl>
  * @copyright   Mollie B.V.
  * @link        https://www.mollie.nl
  */
 class Mollie_API_Object_Issuer
 {
-	/**
-	 * Id of the issuer.
-	 *
-	 * @var string
-	 */
-	public $id;
+    /**
+     * Id of the issuer.
+     *
+     * @var string
+     */
+    public $id;
 
-	/**
-	 * Name of the issuer.
-	 *
-	 * @var string
-	 */
-	public $name;
+    /**
+     * Name of the issuer.
+     *
+     * @var string
+     */
+    public $name;
 
-	/**
-	 * The payment method this issuer belongs to.
-	 *
-	 * @see Mollie_API_Object_Method
-	 * @var string
-	 */
-	public $method;
+    /**
+     * The payment method this issuer belongs to.
+     *
+     * @see Mollie_API_Object_Method
+     * @var string
+     */
+    public $method;
 }

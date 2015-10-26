@@ -5,15 +5,18 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
 {
     abstract protected function getMethod();
 
-    public function getName() {
+    public function getName()
+    {
         return 'Mollie';
     }
 
-    public function getLogo() {
+    public function getLogo()
+    {
         return MEDIA_DIR . '_core/shop/mollie.png';
     }
 
-    public function usePostProxy() {
+    public function usePostProxy()
+    {
         return false;
     }
 
@@ -25,15 +28,16 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
         $mollie->setApiKey($this->getApiKey());
 
         $order_id = $transaction->secret;
-        $data = array(
-            "amount"       => $transaction->payment_amount,
-            "description"  => isset($description) ? $description : Config::get('sitename') . ': ' . Ajde_Component_String::makePlural($transaction->shipment_itemsqty, 'item'),
-            "redirectUrl"  => Config::get('site_root') . $this->returnRoute . 'mollie_' . $this->getMethod() . '.html?order_id=' . $order_id,
-            "method"       => $this->getMethod(),
-            "metadata"     => array(
+        $data = [
+            "amount" => $transaction->payment_amount,
+            "description" => isset($description) ? $description : Config::get('sitename') . ': ' . Ajde_Component_String::makePlural($transaction->shipment_itemsqty,
+                    'item'),
+            "redirectUrl" => Config::get('site_root') . $this->returnRoute . 'mollie_' . $this->getMethod() . '.html?order_id=' . $order_id,
+            "method" => $this->getMethod(),
+            "metadata" => [
                 "order_id" => $order_id,
-            ),
-        );
+            ],
+        ];
 
         $payment = $mollie->payments->create($data);
 
@@ -46,8 +50,9 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
         return $this->ping($url) ? $url : false;
     }
 
-    public function getRedirectParams($description = null) {
-        return array();
+    public function getRedirectParams($description = null)
+    {
+        return [];
     }
 
     public function updatePayment()
@@ -70,29 +75,32 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
             $mollie_id = $transaction->payment_providerid;
             try {
                 $payment = $mollie->payments->get($mollie_id);
-            } catch(Mollie_API_Exception $e) {
-                Ajde_Exception_Log::logException($e);
-                $payment = false;
-            }
-        } else if ($mollie_id) {
-            // laod from mollie transaction id
-            try {
-                $payment = $mollie->payments->get($mollie_id);
-                $order_id = $payment->metadata->order_id;
-                $transaction->loadByField('secret', $order_id);
             } catch (Mollie_API_Exception $e) {
                 Ajde_Exception_Log::logException($e);
                 $payment = false;
+            }
+        } else {
+            if ($mollie_id) {
+                // laod from mollie transaction id
+                try {
+                    $payment = $mollie->payments->get($mollie_id);
+                    $order_id = $payment->metadata->order_id;
+                    $transaction->loadByField('secret', $order_id);
+                } catch (Mollie_API_Exception $e) {
+                    Ajde_Exception_Log::logException($e);
+                    $payment = false;
+                }
             }
         }
 
         if (!$payment || !$mollie_id || !$order_id || !$transaction->hasLoaded()) {
             Ajde_Log::log('Could not find transaction for Mollie payment for mollie id ' . $mollie_id . ' and transaction secret ' . $order_id);
-            return array(
+
+            return [
                 'success' => false,
                 'changed' => $changed,
                 'transaction' => $transaction
-            );
+            ];
         }
 
         // what to return?
@@ -105,15 +113,15 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
 
         // save details
         $details =
-            'PAYMENT STATUS: '		    . (string) $payment->status             . PHP_EOL .
-            'PAYMENT AMOUNT: '          . (string) $payment->amount             . PHP_EOL .
-            'PAYMENT AT: '              . (string) $payment->paidDatetime       . PHP_EOL .
-            'CANCELLED AT: '            . (string) $payment->cancelledDatetime  . PHP_EOL .
-            'EXPIRED AT: '              . (string) $payment->expiredDatetime    . PHP_EOL .
-            'PAYER DETAILS: '		    . (string) $payment_details;
+            'PAYMENT STATUS: ' . (string)$payment->status . PHP_EOL .
+            'PAYMENT AMOUNT: ' . (string)$payment->amount . PHP_EOL .
+            'PAYMENT AT: ' . (string)$payment->paidDatetime . PHP_EOL .
+            'CANCELLED AT: ' . (string)$payment->cancelledDatetime . PHP_EOL .
+            'EXPIRED AT: ' . (string)$payment->expiredDatetime . PHP_EOL .
+            'PAYER DETAILS: ' . (string)$payment_details;
         $transaction->payment_details = $details;
 
-        switch($payment->status) {
+        switch ($payment->status) {
             case "open":
                 if ($transaction->payment_status != 'requested') {
                     $transaction->payment_status = 'requested';
@@ -125,8 +133,7 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
             case "paid":
                 $paid = true;
                 // update transaction only once
-                if ($transaction->payment_status != 'completed')
-                {
+                if ($transaction->payment_status != 'completed') {
                     $transaction->paid();
                     $changed = true;
                 }
@@ -149,11 +156,11 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
                 break;
         }
 
-        return array(
+        return [
             'success' => $paid,
             'changed' => $changed,
             'transaction' => $transaction
-        );
+        ];
     }
 
     private function getApiKey()

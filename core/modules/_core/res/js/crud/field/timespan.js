@@ -1,19 +1,27 @@
 ;
-if (typeof AC ==="undefined") {AC = function(){}};
-if (typeof AC.Crud ==="undefined") {AC.Crud = function(){}};
-if (typeof AC.Crud.Edit ==="undefined") {AC.Crud.Edit = function(){}};
-
+if (typeof AC === "undefined") {
+    AC = function () {
+    }
+}
+if (typeof AC.Crud === "undefined") {
+    AC.Crud = function () {
+    }
+}
+if (typeof AC.Crud.Edit === "undefined") {
+    AC.Crud.Edit = function () {
+    }
+}
 AC.Crud.Edit.Timespan = function() {
-	
+
 	var span = {
 		week: 144000,
 		day: 28800,
 		hour: 3600,
 		minute: 60
 	};
-		
+
 	return {
-		
+
 		parseTimespan: function(string) {
 			if (!isNaN(parseFloat(string)) && isFinite(string)) {
 				return string * 60;
@@ -25,39 +33,39 @@ AC.Crud.Edit.Timespan = function() {
 				var indicator = fragment.substr(-1).toLowerCase();
 				var value = fragment.replace(indicator, '') * 1;
 				switch (indicator) {
-					case 'w': 
+					case 'w':
 						seconds += (value * span.week);
 						break;
-					case 'd': 
+					case 'd':
 						seconds += (value * span.day);
 						break;
-					case 'h': 
+					case 'h':
 						seconds += (value * span.hour);
 						break;
-					case 'm': 
+					case 'm':
 						seconds += (value * span.minute);
 						break;
-					case 's': 
-						seconds += (value)
-						break;					
+					case 's':
+						seconds += (value);
+						break;
 				}
 			}
 			return seconds;
 		},
-			
-		formatTimespan: function(seconds) {	
+
+		formatTimespan: function(seconds) {
 			var weeks = Math.floor(seconds / span.week);
 			seconds = seconds - (weeks * span.week);
-			
+
 			var days = Math.floor(seconds / span.day);
 			seconds = seconds - (days * span.day);
-			
+
 			var hours = Math.floor(seconds / span.hour);
 			seconds = seconds - (hours * span.hour);
-			
+
 			var minutes = Math.floor(seconds / span.minute);
 			seconds = seconds - (minutes * span.minute);
-			
+
 			var output = '';
 			if (weeks) {
 				output += weeks + 'w ';
@@ -76,7 +84,7 @@ AC.Crud.Edit.Timespan = function() {
 			}
 			return output.trim();
 		},
-		
+
 		init: function() {
 			$('input.timespan').each(function() {
 				$(this).val(AC.Crud.Edit.Timespan.formatTimespan( $(this).prev().val() ));
@@ -87,11 +95,11 @@ AC.Crud.Edit.Timespan = function() {
 				});
 			});
 		}
-		
+
 	};
 }();
 
-(function($) {	
+(function($) {
 	$(function() {
 		AC.Crud.Edit.Timespan.init();
 	});

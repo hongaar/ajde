@@ -22,8 +22,8 @@
  */
 abstract class Google_Signer_Abstract
 {
-  /**
-   * Signs data, returns the signature as binary data.
-   */
-  abstract public function sign($data);
+    /**
+     * Signs data, returns the signature as binary data.
+     */
+    abstract public function sign($data);
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright (c) 2013, Mollie B.V.
  * All rights reserved.
@@ -24,45 +25,44 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
  * DAMAGE.
  *
- * @license     Berkeley Software Distribution License (BSD-License 2) http://www.opensource.org/licenses/bsd-license.php
+ * @license     Berkeley Software Distribution License (BSD-License 2)
+ *     http://www.opensource.org/licenses/bsd-license.php
  * @author      Mollie B.V. <info@mollie.nl>
  * @copyright   Mollie B.V.
  * @link        https://www.mollie.nl
  */
 class Mollie_API_Autoloader
 {
-	/**
-	 * @param string $class_name
-	 */
-	public static function autoload ($class_name)
-	{
-		if (strpos($class_name, "Mollie_") === 0)
-		{
-			$file_name = str_replace("_", "/", $class_name);
-			$file_name = realpath(dirname(__FILE__) . "/../../{$file_name}.php");
+    /**
+     * @param string $class_name
+     */
+    public static function autoload($class_name)
+    {
+        if (strpos($class_name, "Mollie_") === 0) {
+            $file_name = str_replace("_", "/", $class_name);
+            $file_name = realpath(dirname(__FILE__) . "/../../{$file_name}.php");
 
-			if (file_exists($file_name))
-			{
-				require $file_name;
-			}
-		}
-	}
+            if (file_exists($file_name)) {
+                require $file_name;
+            }
+        }
+    }
 
-	/**
-	 * @return bool
-	 */
-	public static function register ()
-	{
-		return spl_autoload_register(array(__CLASS__, "autoload"));
-	}
+    /**
+     * @return bool
+     */
+    public static function register()
+    {
+        return spl_autoload_register([__CLASS__, "autoload"]);
+    }
 
-	/**
-	 * @return bool
-	 */
-	public static function unregister ()
-	{
-		return spl_autoload_unregister(array(__CLASS__, "autoload"));
-	}
+    /**
+     * @return bool
+     */
+    public static function unregister()
+    {
+        return spl_autoload_unregister([__CLASS__, "autoload"]);
+    }
 }
 
 Mollie_API_Autoloader::register();

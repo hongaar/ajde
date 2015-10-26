@@ -18,11 +18,6 @@ class NodeController extends Ajde_Controller
 
 	public function beforeInvoke()
 	{
-		Ajde_Model::register('acl');
-		Ajde_Model::register('admin');
-		Ajde_Model::register('node');
-		Ajde_Model::register('media');
-		Ajde_Model::register('tag');
 		return true;
 	}
 

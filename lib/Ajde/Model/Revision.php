@@ -2,8 +2,8 @@
 
 abstract class Ajde_Model_Revision extends Ajde_Model
 {
-    protected $_ignoreFieldInRevision = array();
-    protected $_ignoreFieldInRevisionIfEmpty = array();
+    protected $_ignoreFieldInRevision = [];
+    protected $_ignoreFieldInRevisionIfEmpty = [];
 
     const DEFAULT_LIMIT = 50;
 
@@ -23,12 +23,14 @@ abstract class Ajde_Model_Revision extends Ajde_Model
         $controller->setRevisions($revisions);
         $controller->setModel($this);
         $controller->setCrud($crud);
+
         return $controller->invoke();
     }
 
     private function getModelName()
     {
         $modelNameCC = str_replace('Model', '', get_class($this));
+
         return $this->_tableName = $this->fromCamelCase($modelNameCC);
     }
 
@@ -59,8 +61,8 @@ abstract class Ajde_Model_Revision extends Ajde_Model
 
         // old values
         $oldValues = $shadowModel->values();
-        foreach($oldValues as &$oldValue) {
-            @$oldValue = (string) $oldValue;
+        foreach ($oldValues as &$oldValue) {
+            @$oldValue = (string)$oldValue;
         }
 
         // populate meta of current model, but don't override
@@ -70,21 +72,21 @@ abstract class Ajde_Model_Revision extends Ajde_Model
 
         // new values
         $newValues = $this->values();
-        foreach($newValues as $k => &$newValue) {
+        foreach ($newValues as $k => &$newValue) {
             if ($k == 'meta_4') {
 //                die('hier');
             }
-            @$newValue = (string) $newValue;
+            @$newValue = (string)$newValue;
         }
 
         // ignore fields
-        foreach($this->_ignoreFieldInRevision as $ignoreField) {
+        foreach ($this->_ignoreFieldInRevision as $ignoreField) {
             unset($oldValues[$ignoreField]);
             unset($newValues[$ignoreField]);
         }
 
         // ignore fields
-        foreach($this->_ignoreFieldInRevisionIfEmpty as $ignoreField) {
+        foreach ($this->_ignoreFieldInRevisionIfEmpty as $ignoreField) {
             if (!isset($newValues[$ignoreField]) || empty($newValues[$ignoreField])) {
                 unset($oldValues[$ignoreField]);
                 unset($newValues[$ignoreField]);
@@ -92,7 +94,7 @@ abstract class Ajde_Model_Revision extends Ajde_Model
         }
 
         if ($diffs = array_diff_assoc($oldValues, $newValues)) {
-            foreach($diffs as $diffField => $diffValue) {
+            foreach ($diffs as $diffField => $diffValue) {
                 $revision = new RevisionModel();
                 $revision->model = $this->getModelName();
                 $revision->foreignkey = $this->getPK();

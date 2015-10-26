@@ -2,171 +2,211 @@
 
 abstract class Ajde_Crud_Field extends Ajde_Object_Standard
 {
-	/**
-	 *
-	 * @var Ajde_Crud
-	 */
-	protected $_crud;
+    /**
+     *
+     * @var Ajde_Crud
+     */
+    protected $_crud;
 
-	/**
-	 *
-	 * @var string
-	 */
-	protected $_type;
-	
-	protected $_useSpan = 12;
-	protected $_attributes = array();
-	
-	public function __construct(Ajde_Crud $crud, $fieldOptions) {
-		$explode = explode('_', get_class($this));
-		end($explode);
-		$this->_type = strtolower(current($explode));
-		$this->_crud = $crud;
-		
-		/* defaults */
-		$this->_data = array(
-			'name' => isset($fieldOptions['name']) ? $fieldOptions['name'] : false,
-			'type' => 'text',
-			'length' => 255,
-			'default' => '',
-			'label' => isset($fieldOptions['name']) ? ucfirst($fieldOptions['name']) : false,
-			'isRequired' => false,
-			'isPK' => false,				
-			'isAutoIncrement' => false,
-			'isAutoUpdate' => false
-		);
+    /**
+     *
+     * @var string
+     */
+    protected $_type;
 
-		/* options */
-		foreach($fieldOptions as $key => $value) {
-			$this->set($key, $value);
-		}
+    protected $_useSpan = 12;
+    protected $_attributes = [];
 
-		$this->prepare();
-	}
+    public function __construct(Ajde_Crud $crud, $fieldOptions)
+    {
+        $explode = explode('_', get_class($this));
+        end($explode);
+        $this->_type = strtolower(current($explode));
+        $this->_crud = $crud;
 
-	protected function prepare()
-	{
-	}
+        /* defaults */
+        $this->_data = [
+            'name' => isset($fieldOptions['name']) ? $fieldOptions['name'] : false,
+            'type' => 'text',
+            'length' => 255,
+            'default' => '',
+            'label' => isset($fieldOptions['name']) ? ucfirst($fieldOptions['name']) : false,
+            'isRequired' => false,
+            'isPK' => false,
+            'isAutoIncrement' => false,
+            'isAutoUpdate' => false
+        ];
 
-	/**
-	 * Getters and setters
-	 */
+        /* options */
+        foreach ($fieldOptions as $key => $value) {
+            $this->set($key, $value);
+        }
 
-	public function getName()			{ return parent::getName(); }
-	public function getDbType()			{ return parent::getDbType(); }
-	public function getLabel()			{ return parent::getLabel(); }
-	public function getLength()			{ return parent::getLength(); }
-	public function getIsRequired()		{ return parent::getIsRequired(); }
-	public function getDefault()		{ return parent::getDefault(); }
-	public function getIsAutoIncrement(){ return parent::getIsAutoIncrement(); }
-	public function getIsAutoUpdate()	{ return parent::getIsAutoUpdate(); }
-	public function getIsUnique()		{ return parent::getIsUnique(); }
+        $this->prepare();
+    }
 
-	public function getValue()			{
-		if (parent::hasValue()) {
-			return parent::getValue();
-		} else {
-			return false;
-		}
-	}
+    protected function prepare()
+    {
+    }
 
-	public function getType()
-	{
-		return $this->_type;
-	}
+    /**
+     * Getters and setters
+     */
 
-	/**
-	 * Template functions
-	 */
+    public function getName()
+    {
+        return parent::getName();
+    }
 
-	public function getHtml()
-	{
-		$template = $this->_getFieldTemplate();
-		$template->assign('field', $this);
-		return $template->render();
-	}
+    public function getDbType()
+    {
+        return parent::getDbType();
+    }
 
-	public function getInput($id = null)
-	{
-		$template = $this->_getInputTemplate();
-		$template->assign('field', $this);
-		$template->assign('id', $id);
-		return $template->render();
-	}
+    public function getLabel()
+    {
+        return parent::getLabel();
+    }
 
-	protected function _getFieldTemplate()
-	{
-		return $this->_getTemplate('field');
-	}
+    public function getLength()
+    {
+        return parent::getLength();
+    }
 
-	protected function _getInputTemplate()
-	{
-		return $this->_getTemplate('field/' . $this->_type);
-	}
+    public function getIsRequired()
+    {
+        return parent::getIsRequired();
+    }
 
-	protected function _getTemplate($action)
-	{
-		$template = null;
-		if (Ajde_Template::exist(MODULE_DIR . '_core/', 'crud/' . $action) !== false) {
-			$template = new Ajde_Template(MODULE_DIR . '_core/', 'crud/' . $action);
-			Ajde::app()->getDocument()->autoAddResources($template);
-		}
-		if ($this->_hasCustomTemplate($action)) {
-			$base = $this->_getCustomTemplateBase();
-			$action = $this->_getCustomTemplateAction($action);
-			$template = new Ajde_Template($base, $action);
-		}
-		if ($template instanceof Ajde_Template) {
-			return $template;
-		} else {
-			// TODO:
-			throw new Ajde_Exception('No crud template found for field ' . $action);
-		}
-	}
+    public function getDefault()
+    {
+        return parent::getDefault();
+    }
 
-	protected function _hasCustomTemplate($action)
-	{
-		$base = $this->_getCustomTemplateBase();
-		$action = $this->_getCustomTemplateAction($action);
-		return Ajde_Template::exist($base, $action) !== false;
-	}
+    public function getIsAutoIncrement()
+    {
+        return parent::getIsAutoIncrement();
+    }
 
-	protected function _getCustomTemplateBase()
-	{
-		return MODULE_DIR . $this->_crud->getCustomTemplateModule() . '/';
-	}
+    public function getIsAutoUpdate()
+    {
+        return parent::getIsAutoUpdate();
+    }
 
-	protected function _getCustomTemplateAction($action)
-	{
-		return 'crud/' . (string) $this->_crud->getModel()->getTable() . '/' . $action;
-	}
+    public function getIsUnique()
+    {
+        return parent::getIsUnique();
+    }
 
-	/**
-	 * HTML functions
-	 */
+    public function getValue()
+    {
+        if (parent::hasValue()) {
+            return parent::getValue();
+        } else {
+            return false;
+        }
+    }
 
-	public function getHtmlRequired()
-	{
-		//return '<span class="required">*</span>';
-		return '';
-	}
+    public function getType()
+    {
+        return $this->_type;
+    }
 
-	public function getHtmlPK()
-	{
-		return " <img src='" . MEDIA_DIR . "icons/16/key_login.png' style='vertical-align: middle;' title='Primary key' />";
-	}
-	
-	public function getHtmlAttributesAsArray()
-	{
-		if (empty($this->_attributes)) {
-			$attributes = array();
-			if (method_exists($this, '_getHtmlAttributes')) {
-				$attributes = $this->_getHtmlAttributes();
-			}
-			$attributes['name'] = $this->getName();
-			if (!key_exists('id', $attributes)) {
-				$attributes['id'] = 'in_' . $this->getName();
-			}
+    /**
+     * Template functions
+     */
+
+    public function getHtml()
+    {
+        $template = $this->_getFieldTemplate();
+        $template->assign('field', $this);
+
+        return $template->render();
+    }
+
+    public function getInput($id = null)
+    {
+        $template = $this->_getInputTemplate();
+        $template->assign('field', $this);
+        $template->assign('id', $id);
+
+        return $template->render();
+    }
+
+    protected function _getFieldTemplate()
+    {
+        return $this->_getTemplate('field');
+    }
+
+    protected function _getInputTemplate()
+    {
+        return $this->_getTemplate('field/' . $this->_type);
+    }
+
+    protected function _getTemplate($action)
+    {
+        $template = null;
+        if (Ajde_Template::exist(MODULE_DIR . '_core/', 'crud/' . $action) !== false) {
+            $template = new Ajde_Template(MODULE_DIR . '_core/', 'crud/' . $action);
+            Ajde::app()->getDocument()->autoAddResources($template);
+        }
+        if ($this->_hasCustomTemplate($action)) {
+            $base = $this->_getCustomTemplateBase();
+            $action = $this->_getCustomTemplateAction($action);
+            $template = new Ajde_Template($base, $action);
+        }
+        if ($template instanceof Ajde_Template) {
+            return $template;
+        } else {
+            // TODO:
+            throw new Ajde_Exception('No crud template found for field ' . $action);
+        }
+    }
+
+    protected function _hasCustomTemplate($action)
+    {
+        $base = $this->_getCustomTemplateBase();
+        $action = $this->_getCustomTemplateAction($action);
+
+        return Ajde_Template::exist($base, $action) !== false;
+    }
+
+    protected function _getCustomTemplateBase()
+    {
+        return MODULE_DIR . $this->_crud->getCustomTemplateModule() . '/';
+    }
+
+    protected function _getCustomTemplateAction($action)
+    {
+        return 'crud/' . (string)$this->_crud->getModel()->getTable() . '/' . $action;
+    }
+
+    /**
+     * HTML functions
+     */
+
+    public function getHtmlRequired()
+    {
+        //return '<span class="required">*</span>';
+        return '';
+    }
+
+    public function getHtmlPK()
+    {
+        return " <img src='" . MEDIA_DIR . "icons/16/key_login.png' style='vertical-align: middle;' title='Primary key' />";
+    }
+
+    public function getHtmlAttributesAsArray()
+    {
+        if (empty($this->_attributes)) {
+            $attributes = [];
+            if (method_exists($this, '_getHtmlAttributes')) {
+                $attributes = $this->_getHtmlAttributes();
+            }
+            $attributes['name'] = $this->getName();
+            if (!key_exists('id', $attributes)) {
+                $attributes['id'] = 'in_' . $this->getName();
+            }
             if ($this->hasNotEmpty('class')) {
                 if (key_exists('class', $attributes)) {
                     $attributes['class'] .= ' ' . $this->getClass();
@@ -174,47 +214,50 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
                     $attributes['class'] = $this->getClass();
                 }
             }
-			if ($this->_useSpan !== false) {
-				if (key_exists('class', $attributes)) {
-					$attributes['class'] .= ' span' . $this->_useSpan;
-				} else {
-					$attributes['class'] = 'span' . $this->_useSpan;
-				}
-			}
-			$this->_attributes = $attributes;
-		}
-		return $this->_attributes;
-	}
-	
-	public function getHtmlAttribute($name)
-	{
-		$attributes = $this->getHtmlAttributesAsArray();
-		if (isset($attributes[$name])) {
-			return $attributes[$name];
-		}
-		return false;
-	}
+            if ($this->_useSpan !== false) {
+                if (key_exists('class', $attributes)) {
+                    $attributes['class'] .= ' span' . $this->_useSpan;
+                } else {
+                    $attributes['class'] = 'span' . $this->_useSpan;
+                }
+            }
+            $this->_attributes = $attributes;
+        }
 
-	public function getHtmlAttributes()
-	{
-		$attributes = $this->getHtmlAttributesAsArray();
-        
+        return $this->_attributes;
+    }
+
+    public function getHtmlAttribute($name)
+    {
+        $attributes = $this->getHtmlAttributesAsArray();
+        if (isset($attributes[$name])) {
+            return $attributes[$name];
+        }
+
+        return false;
+    }
+
+    public function getHtmlAttributes()
+    {
+        $attributes = $this->getHtmlAttributesAsArray();
+
         $text = '';
         foreach ($attributes as $k => $v) {
-			if (strlen($v)) {
-				$text .= $k . '="' . $v . '" ';
-			}
+            if (strlen($v)) {
+                $text .= $k . '="' . $v . '" ';
+            }
         }
-		return $text;
-	}
 
-	/**
-	 *
-	 * @return Ajde_Crud
-	 */
-	public function getCrud()
-	{
-		return $this->_crud;
-	}
+        return $text;
+    }
+
+    /**
+     *
+     * @return Ajde_Crud
+     */
+    public function getCrud()
+    {
+        return $this->_crud;
+    }
 
 }

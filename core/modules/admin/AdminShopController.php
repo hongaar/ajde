@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 class AdminShopController extends AdminController
 {
@@ -27,8 +27,6 @@ class AdminShopController extends AdminController
 
     public function markPaidJson()
     {
-        Ajde_Model::register('shop');
-
         $id = Ajde::app()->getRequest()->getPostParam('id', false);
 
         $transaction = new TransactionModel();

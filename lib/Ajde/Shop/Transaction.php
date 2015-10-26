@@ -5,12 +5,23 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
     protected $_shippingModel;
     protected $_itemModel;
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
 
-        $this->setEncryptedFields(array(
-            'ip', 'name', 'email', 'shipment_address', 'shipment_zipcode', 'shipment_city', 'shipment_region', 'shipment_country', 'shipment_description', 'shipment_trackingcode', 'shipment_secret'
-        ));
+        $this->setEncryptedFields([
+            'ip',
+            'name',
+            'email',
+            'shipment_address',
+            'shipment_zipcode',
+            'shipment_city',
+            'shipment_region',
+            'shipment_country',
+            'shipment_description',
+            'shipment_trackingcode',
+            'shipment_secret'
+        ]);
     }
 
     // Payment
@@ -22,11 +33,12 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
 
     private static function _getProviders()
     {
-        $return = array();
+        $return = [];
         $providers = Config::get('transactionProviders');
-        foreach($providers as $provider) {
+        foreach ($providers as $provider) {
             $return[$provider] = Ajde_Shop_Transaction_Provider::getProvider($provider);
         }
+
         return $return;
     }
 
@@ -72,6 +84,7 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
     private function _getShippingModel()
     {
         $shippingModelName = $this->_shippingModel;
+
         return new $shippingModelName($this);
     }
 
@@ -85,6 +98,7 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
     public function displayOrderId()
     {
         $secret = '<span data-secret="' . $this->getSecret() . '"></span>';
+
         return $secret . $this->getOrderId();
     }
 
@@ -119,8 +133,9 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
             $view = new Ajde_View(MODULE_DIR . 'shop/', 'transaction/view');
             $view->assign('source', 'id');
             $view->assign('transaction', $this);
+
             return $view->render();
-        } else  {
+        } else {
             return 'Order not found';
         }
     }
@@ -136,7 +151,7 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
 
         $same = false;
 
-        $transformer = function($elm) {
+        $transformer = function ($elm) {
             return $elm['entity'] . ':' . $elm['entity_id'] . ':' . $elm['qty'];
         };
 
@@ -152,7 +167,9 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
     public function setItemsFromCart(Ajde_Shop_Cart $cart)
     {
         // We can only add items if transaction exists
-        if (!$this->exists()) throw new Ajde_Exception('Can only add items to transaction if it exists');
+        if (!$this->exists()) {
+            throw new Ajde_Exception('Can only add items to transaction if it exists');
+        }
 
         // Clear current items
         $items = new TransactionItemCollection();
@@ -161,7 +178,7 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
 
         // Add items
         /** @var Ajde_Shop_Cart_Item $item */
-        foreach($cart->getItems() as $cartItem) {
+        foreach ($cart->getItems() as $cartItem) {
             $item = new TransactionItemModel();
             $item->transaction = $this->getPK();
             $item->entity = $cartItem->entity;
@@ -181,6 +198,7 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
         $collectionClass = $this->_itemModel;
         $collection = new $collectionClass();
         $collection->addFilter(new Ajde_Filter_Where('transaction', Ajde_Filter::FILTER_EQUALS, $this->getPK()));
+
         return $collection;
     }
 

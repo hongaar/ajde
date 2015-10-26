@@ -37,7 +37,7 @@ class AdminSystemController extends AdminController
 				);
 			}
 		}
-		
+
 		$config = Config::getAll();
 		$hidden = 'HASH: ';
 		$hide = array(
@@ -112,14 +112,14 @@ class AdminSystemController extends AdminController
 		$json = json_encode($manifest);
 
 		// Clean temp dir
-		Ajde_FS_Directory::truncate($appdir);
+		Ajde_Fs_Directory::truncate($appdir);
 
 		// Put files
 		file_put_contents($appdir . 'manifest.json', $json);
 		copy(MEDIA_DIR . 'app.png', $appdir . 'app.png');
 
 		// All files to zip
-		$appfiles = Ajde_FS_Find::findFiles($appdir, '*');
+		$appfiles = Ajde_Fs_Find::findFiles($appdir, '*');
 
 		// Make the zip file
 		$zipfile = TMP_DIR . 'app.zip';
@@ -192,7 +192,7 @@ class AdminSystemController extends AdminController
 		// Clean up
 		unlink($zipfile);
 		unlink($crxfile);
-		Ajde_FS_Directory::delete($appdir);
+		Ajde_Fs_Directory::delete($appdir);
 
 		exit;
 
@@ -285,7 +285,7 @@ class AdminSystemController extends AdminController
     private function _tobecleaned()
     {
         $allMedia = new MediaCollection();
-        $toBeCleaned = Ajde_FS_Find::findFilenames(UPLOAD_DIR, '*.*');
+        $toBeCleaned = Ajde_Fs_Find::findFilenames(UPLOAD_DIR, '*.*');
 
         foreach($allMedia as $media)
         {
@@ -336,7 +336,7 @@ class AdminSystemController extends AdminController
 
     public function doCleanthumbs()
     {
-        $toBeCleaned = Ajde_FS_Find::findFilenames(UPLOAD_DIR . Ajde_Resource_Image::$_thumbDir . DIRECTORY_SEPARATOR, '*.*');
+        $toBeCleaned = Ajde_Fs_Find::findFilenames(UPLOAD_DIR . Ajde_Resource_Image::$_thumbDir . DIRECTORY_SEPARATOR, '*.*');
 
         foreach($toBeCleaned as $file)
         {

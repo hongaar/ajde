@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright (c) 2013, Mollie B.V.
  * All rights reserved.
@@ -24,144 +25,144 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
  * DAMAGE.
  *
- * @license     Berkeley Software Distribution License (BSD-License 2) http://www.opensource.org/licenses/bsd-license.php
+ * @license     Berkeley Software Distribution License (BSD-License 2)
+ *     http://www.opensource.org/licenses/bsd-license.php
  * @author      Mollie B.V. <info@mollie.nl>
  * @copyright   Mollie B.V.
  * @link        https://www.mollie.nl
  */
 class Mollie_API_Object_Payment
 {
-	const STATUS_OPEN      = "open";
-	const STATUS_CANCELLED = "cancelled";
-	const STATUS_EXPIRED   = "expired";
-	const STATUS_PAID      = "paid";
+    const STATUS_OPEN = "open";
+    const STATUS_CANCELLED = "cancelled";
+    const STATUS_EXPIRED = "expired";
+    const STATUS_PAID = "paid";
 
-	/**
-	 * Id of the payment (on the Mollie platform).
-	 *
-	 * @var string
-	 */
-	public $id;
+    /**
+     * Id of the payment (on the Mollie platform).
+     *
+     * @var string
+     */
+    public $id;
 
-	/**
-	 * Mode of the payment, either "live" or "test" depending on the API Key that was used.
-	 *
-	 * @var string
-	 */
-	public $mode;
+    /**
+     * Mode of the payment, either "live" or "test" depending on the API Key that was used.
+     *
+     * @var string
+     */
+    public $mode;
 
-	/**
-	 * The amount of the payment in EURO with 2 decimals.
-	 *
-	 * @var float
-	 */
-	public $amount;
+    /**
+     * The amount of the payment in EURO with 2 decimals.
+     *
+     * @var float
+     */
+    public $amount;
 
-	/**
-	 * Description of the payment that is shown to the customer during the payment, and
-	 * possibly on the bank or credit card statement.
-	 *
-	 * @var string
-	 */
-	public $description;
+    /**
+     * Description of the payment that is shown to the customer during the payment, and
+     * possibly on the bank or credit card statement.
+     *
+     * @var string
+     */
+    public $description;
 
-	/**
-	 * If method is empty/null, the customer can pick his/her preferred payment method.
-	 *
-	 * @see Mollie_API_Object_Method
-	 * @var string|null
-	 */
-	public $method;
+    /**
+     * If method is empty/null, the customer can pick his/her preferred payment method.
+     *
+     * @see Mollie_API_Object_Method
+     * @var string|null
+     */
+    public $method;
 
-	/**
-	 * The status of the payment.
-	 *
-	 * @var string
-	 */
-	public $status = self::STATUS_OPEN;
+    /**
+     * The status of the payment.
+     *
+     * @var string
+     */
+    public $status = self::STATUS_OPEN;
 
-	/**
-	 * Date and time the payment was created in ISO-8601 format.
-	 *
-	 * @example "2013-12-25T10:30:54.0Z"
-	 * @var string|null
-	 */
-	public $createdDatetime;
+    /**
+     * Date and time the payment was created in ISO-8601 format.
+     *
+     * @example "2013-12-25T10:30:54.0Z"
+     * @var string|null
+     */
+    public $createdDatetime;
 
-	/**
-	 * Date and time the payment was paid in ISO-8601 format.
-	 *
-	 * @var string|null
-	 */
-	public $paidDatetime;
+    /**
+     * Date and time the payment was paid in ISO-8601 format.
+     *
+     * @var string|null
+     */
+    public $paidDatetime;
 
-	/**
-	 * Date and time the payment was cancelled in ISO-8601 format.
-	 *
-	 * @var string|null
-	 */
-	public $cancelledDatetime;
+    /**
+     * Date and time the payment was cancelled in ISO-8601 format.
+     *
+     * @var string|null
+     */
+    public $cancelledDatetime;
 
-	/**
-	 * Date and time the payment was cancelled in ISO-8601 format.
-	 *
-	 * @var string|null
-	 */
-	public $expiredDatetime;
+    /**
+     * Date and time the payment was cancelled in ISO-8601 format.
+     *
+     * @var string|null
+     */
+    public $expiredDatetime;
 
-	/**
-	 * During creation of the payment you can set custom metadata that is stored with
-	 * the payment, and given back whenever you retrieve that payment.
-	 *
-	 * @var object|mixed|null
-	 */
-	public $metadata;
+    /**
+     * During creation of the payment you can set custom metadata that is stored with
+     * the payment, and given back whenever you retrieve that payment.
+     *
+     * @var object|mixed|null
+     */
+    public $metadata;
 
-	/**
-	 * Details of a successfully paid payment are set here. For example, the iDEAL
-	 * payment method will set $details->consumerName and $details->consumerAccount.
-	 *
-	 * @var object
-	 */
-	public $details;
+    /**
+     * Details of a successfully paid payment are set here. For example, the iDEAL
+     * payment method will set $details->consumerName and $details->consumerAccount.
+     *
+     * @var object
+     */
+    public $details;
 
-	/**
-	 * @var object
-	 */
-	public $links;
+    /**
+     * @var object
+     */
+    public $links;
 
-	/**
-	 * Is this payment still open / ongoing?
-	 *
-	 * @return bool
-	 */
-	public function isOpen ()
-	{
-		return $this->status == self::STATUS_OPEN;
-	}
+    /**
+     * Is this payment still open / ongoing?
+     *
+     * @return bool
+     */
+    public function isOpen()
+    {
+        return $this->status == self::STATUS_OPEN;
+    }
 
-	/**
-	 * Is this payment paid for?
-	 *
-	 * @return bool
-	 */
-	public function isPaid ()
-	{
-		return !empty($this->paidDatetime);
-	}
+    /**
+     * Is this payment paid for?
+     *
+     * @return bool
+     */
+    public function isPaid()
+    {
+        return !empty($this->paidDatetime);
+    }
 
-	/**
-	 * Get the payment URL where the customer can complete the payment.
-	 *
-	 * @return string|null
-	 */
-	public function getPaymentUrl ()
-	{
-		if (empty($this->links->paymentUrl))
-		{
-			return NULL;
-		}
+    /**
+     * Get the payment URL where the customer can complete the payment.
+     *
+     * @return string|null
+     */
+    public function getPaymentUrl()
+    {
+        if (empty($this->links->paymentUrl)) {
+            return null;
+        }
 
-		return $this->links->paymentUrl;
-	}
+        return $this->links->paymentUrl;
+    }
 }

@@ -1,7 +1,12 @@
 ;
-if (typeof AC ==="undefined") {AC = function(){}};
-if (typeof AC.Core ==="undefined") {AC.Core = function(){}};
-
+if (typeof AC === "undefined") {
+    AC = function () {
+    }
+}
+if (typeof AC.Core === "undefined") {
+    AC.Core = function () {
+    }
+}
 AC.Core.Alert = function() {
 
     var elements = $('#alert-wrapper');

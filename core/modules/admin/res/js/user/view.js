@@ -1,8 +1,16 @@
 ;
-if (typeof App === "undefined") {App = function(){}};
-if (typeof App.Admin === "undefined") {App.Admin = function(){}};
-if (typeof App.Admin.User === "undefined") {App.Admin.User = function(){}};
-
+if (typeof App === "undefined") {
+    App = function () {
+    }
+}
+if (typeof App.Admin === "undefined") {
+    App.Admin = function () {
+    }
+}
+if (typeof App.Admin.User === "undefined") {
+    App.Admin.User = function () {
+    }
+}
 App.Admin.User.View = function() {
 
 	var loginHandler = function(e) {
@@ -17,7 +25,7 @@ App.Admin.User.View = function() {
 
 		// Add CSRF token
 		data = data + '&_token=' + form.find('input[name=\'_token\']').val();
-		
+
 		$('body').addClass('loading');
 		$.post(url, data, function(response) {
 			if (response.success === true) {
@@ -31,11 +39,11 @@ App.Admin.User.View = function() {
 		}, 'json').error(function(jqXHR, message, exception) {
 			$('body').removeClass('loading');
 			AC.Core.Alert.error(i18n.requestError + ' (' + exception + ')');
-		});		
-		
+		});
+
 		return false;
 	};
-	
+
 	var resetHandler = function(e) {
 		e.stopPropagation();
 		e.preventDefault();
@@ -48,7 +56,7 @@ App.Admin.User.View = function() {
 
 		// Add CSRF token
 		data = data + '&_token=' + form.find('input[name=\'_token\']').val();
-		
+
 		$('body').addClass('loading');
 		$.post(url, data, function(response) {
 			$('body').removeClass('loading');
@@ -60,8 +68,8 @@ App.Admin.User.View = function() {
 		}, 'json').error(function(jqXHR, message, exception) {
 			$('body').removeClass('loading');
 			AC.Core.Alert.error(i18n.requestError + ' (' + exception + ')');
-		});		
-		
+		});
+
 		return false;
 	};
 

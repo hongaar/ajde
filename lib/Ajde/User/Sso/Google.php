@@ -18,8 +18,10 @@ class Ajde_User_Sso_Google extends Ajde_User_Sso
         $this->_session = new Ajde_Session('user');
         if ($credentials) {
             $this->setCredentials($credentials);
-        } else if ($this->_session->has(self::SSO_SESSION_KEY)) {
-            $this->_credentials = $this->_session->get(self::SSO_SESSION_KEY);
+        } else {
+            if ($this->_session->has(self::SSO_SESSION_KEY)) {
+                $this->_credentials = $this->_session->get(self::SSO_SESSION_KEY);
+            }
         }
         $google = new Ajde_Social_Provider_Google();
         $google->setRedirectUri(Config::get('site_root') . 'user/sso:callback?provider=google');
@@ -35,6 +37,7 @@ class Ajde_User_Sso_Google extends Ajde_User_Sso
     public static function fromModel(SsoModel $sso)
     {
         $instance = new self(unserialize($sso->getData()));
+
         return $instance;
     }
 
@@ -83,10 +86,10 @@ class Ajde_User_Sso_Google extends Ajde_User_Sso
             if (!isset($this->_me)) {
                 $this->_me = $this->_plus->people->get('me');
             }
+
             return $this->_me;
         }
         throw new Ajde_Exception('Provider Google has no authenticated user');
-
     }
 
     public function getAuthenticationURL($returnto = '')
@@ -110,9 +113,9 @@ class Ajde_User_Sso_Google extends Ajde_User_Sso
         $code = Ajde::app()->getRequest()->getRaw('code');
 
         $connection->authenticate($code);
-        $this->setCredentials(array(
+        $this->setCredentials([
             'oauth_token' => $connection->getAccessToken()
-        ));
+        ]);
 
         return true;
     }
@@ -122,6 +125,7 @@ class Ajde_User_Sso_Google extends Ajde_User_Sso
         if ($this->hasCredentials()) {
             $me = $this->getMe();
             $name = $me->__get('name');
+
             return $name['givenName'];
         } else {
             return false;
@@ -133,6 +137,7 @@ class Ajde_User_Sso_Google extends Ajde_User_Sso
         if ($this->hasCredentials()) {
             $me = $this->getMe();
             $emails = $me->__get('emails');
+
             return $emails[0]['value'];
         } else {
             return false;
@@ -155,6 +160,7 @@ class Ajde_User_Sso_Google extends Ajde_User_Sso
             $image = $this->getMe()->getImage();
             if ($image instanceof Google_Service_Plus_PersonImage) {
                 $url = $image->getUrl();
+
                 return str_replace('?sz=50', '?sz=' . $size, $url);
             }
         }

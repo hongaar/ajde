@@ -18,6 +18,7 @@ class Ajde_Lang_Adapter_Ini extends Ajde_Lang_Adapter_Abstract
         }
 
         $this->log($ident, $module, $lang);
+
         return $ident;
     }
 }

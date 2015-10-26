@@ -10,7 +10,7 @@ abstract class Ajde_Lang_Adapter_Abstract
     public function getModule($module = null)
     {
         if (!$module) {
-            foreach(debug_backtrace() as $item) {
+            foreach (debug_backtrace() as $item) {
                 if (!empty($item['class'])) {
                     if (is_subclass_of($item['class'], "Ajde_Controller")) {
                         $module = current(explode('_', Ajde_Component_String::toSnakeCase($item['class'])));
@@ -22,6 +22,7 @@ abstract class Ajde_Lang_Adapter_Abstract
         if (!$module) {
             $module = 'main';
         }
+
         return $module;
     }
 
@@ -33,7 +34,8 @@ abstract class Ajde_Lang_Adapter_Abstract
             Ajde_Log::LEVEL_DEBUG,
             '',
             '',
-            strip_tags(Ajde_Exception_Handler::trace(new Ajde_Exception(), Ajde_Exception_Handler::EXCEPTION_TRACE_ONLY)));
+            strip_tags(Ajde_Exception_Handler::trace(new Ajde_Exception(),
+                Ajde_Exception_Handler::EXCEPTION_TRACE_ONLY)));
     }
 
     abstract public function get($ident, $module = null);

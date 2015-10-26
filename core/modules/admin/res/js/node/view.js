@@ -1,8 +1,16 @@
 ;
-if (typeof App === "undefined") {App = function(){}};
-if (typeof App.Admin === "undefined") {App.Admin = function(){}};
-if (typeof App.Admin.Node === "undefined") {App.Admin.Node = function(){}};
-
+if (typeof App === "undefined") {
+    App = function () {
+    }
+}
+if (typeof App.Admin === "undefined") {
+    App.Admin = function () {
+    }
+}
+if (typeof App.Admin.Node === "undefined") {
+    App.Admin.Node = function () {
+    }
+}
 App.Admin.Node.View = function() {
 
 //	var viewHandler = function(e) {

@@ -1,14 +1,22 @@
 ;
-if (typeof App === "undefined") {App = function(){}};
-if (typeof App.Admin === "undefined") {App.Admin = function(){}};
-if (typeof App.Admin.Media === "undefined") {App.Admin.Media = function(){}};
-
+if (typeof App === "undefined") {
+    App = function () {
+    }
+}
+if (typeof App.Admin === "undefined") {
+    App.Admin = function () {
+    }
+}
+if (typeof App.Admin.Media === "undefined") {
+    App.Admin.Media = function () {
+    }
+}
 App.Admin.Media.Upload = function() {
-		
+
 	var infoHandler		= AC.Core.Alert.show;
 	var warningHandler	= AC.Core.Alert.warning;
 	var errorHandler	= AC.Core.Alert.error;
-	
+
 	var onComplete = function(e, id, filename, response) {
 		filename = response.filename;
 		$('input[name=filename]').val(filename);
@@ -22,14 +30,14 @@ App.Admin.Media.Upload = function() {
 	};
 
 	return {
-		
+
 		init: function() {
 
 			$('div.ACAjaxUpload').bind('completeUpload', onComplete);
 			$('#mediaUpload').bind('result', onCallback);
-			
+
 		}
-		
+
 	};
 }();
 

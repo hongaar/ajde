@@ -21,6 +21,7 @@ class Ajde_Social_Provider_Google extends Google_Client
     public function getPlus()
     {
         require_once "Google/Service/Plus.php";
+
         return new Google_Service_Plus($this);
     }
 }

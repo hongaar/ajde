@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright (c) 2013, Mollie B.V.
  * All rights reserved.
@@ -24,211 +25,203 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
  * DAMAGE.
  *
- * @license     Berkeley Software Distribution License (BSD-License 2) http://www.opensource.org/licenses/bsd-license.php
+ * @license     Berkeley Software Distribution License (BSD-License 2)
+ *     http://www.opensource.org/licenses/bsd-license.php
  * @author      Mollie B.V. <info@mollie.nl>
  * @copyright   Mollie B.V.
  * @link        https://www.mollie.nl
  */
 class Mollie_API_Client
 {
-	/**
-	 * Version of our client.
-	 */
-	const CLIENT_VERSION = "1.0.2";
+    /**
+     * Version of our client.
+     */
+    const CLIENT_VERSION = "1.0.2";
 
-	/**
-	 * Endpoint of the remote API.
-	 */
-	const API_ENDPOINT = "https://api.mollie.nl";
+    /**
+     * Endpoint of the remote API.
+     */
+    const API_ENDPOINT = "https://api.mollie.nl";
 
-	/**
-	 * Version of the remote API.
-	 */
-	const API_VERSION = "v1";
+    /**
+     * Version of the remote API.
+     */
+    const API_VERSION = "v1";
 
-	const HTTP_GET    = "GET";
-	const HTTP_POST   = "POST";
-	const HTTP_DELETE = "DELETE";
+    const HTTP_GET = "GET";
+    const HTTP_POST = "POST";
+    const HTTP_DELETE = "DELETE";
 
-	/**
-	 * @var string
-	 */
-	protected $api_endpoint = self::API_ENDPOINT;
+    /**
+     * @var string
+     */
+    protected $api_endpoint = self::API_ENDPOINT;
 
-	/**
-	 * RESTful Payments resource.
-	 *
-	 * @var Mollie_API_Resource_Payments
-	 */
-	public $payments;
+    /**
+     * RESTful Payments resource.
+     *
+     * @var Mollie_API_Resource_Payments
+     */
+    public $payments;
 
-	/**
-	 * RESTful Issuers resource.
-	 *
-	 * @var Mollie_API_Resource_Issuers
-	 */
-	public $issuers;
+    /**
+     * RESTful Issuers resource.
+     *
+     * @var Mollie_API_Resource_Issuers
+     */
+    public $issuers;
 
-	/**
-	 * RESTful Methods resource.
-	 *
-	 * @var Mollie_API_Resource_Methods
-	 */
-	public $methods;
+    /**
+     * RESTful Methods resource.
+     *
+     * @var Mollie_API_Resource_Methods
+     */
+    public $methods;
 
-	/**
-	 * @var string
-	 */
-	protected $api_key;
+    /**
+     * @var string
+     */
+    protected $api_key;
 
-	/**
-	 * @var array
-	 */
-	protected $versionStrings = array();
+    /**
+     * @var array
+     */
+    protected $versionStrings = [];
 
-	public function __construct ()
-	{
-		$this->payments = new Mollie_API_Resource_Payments($this);
-		$this->issuers  = new Mollie_API_Resource_Issuers($this);
-		$this->methods  = new Mollie_API_Resource_Methods($this);
+    public function __construct()
+    {
+        $this->payments = new Mollie_API_Resource_Payments($this);
+        $this->issuers = new Mollie_API_Resource_Issuers($this);
+        $this->methods = new Mollie_API_Resource_Methods($this);
 
-		$curl_version         = curl_version();
-		$this->versionStrings = array(
-			"Mollie/" . self::CLIENT_VERSION,
-			"PHP/" . phpversion(),
-			"cURL/" . $curl_version["version"],
-			$curl_version["ssl_version"],
-		);
-	}
+        $curl_version = curl_version();
+        $this->versionStrings = [
+            "Mollie/" . self::CLIENT_VERSION,
+            "PHP/" . phpversion(),
+            "cURL/" . $curl_version["version"],
+            $curl_version["ssl_version"],
+        ];
+    }
 
-	/**
-	 * @param string $url
-	 */
-	public function setApiEndpoint ($url)
-	{
-		$this->api_endpoint = rtrim($url, '/');
-	}
+    /**
+     * @param string $url
+     */
+    public function setApiEndpoint($url)
+    {
+        $this->api_endpoint = rtrim($url, '/');
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getApiEndpoint ()
-	{
-		return $this->api_endpoint;
-	}
+    /**
+     * @return string
+     */
+    public function getApiEndpoint()
+    {
+        return $this->api_endpoint;
+    }
 
-	/**
-	 * @param string $api_key The Mollie API key, starting with "test_" or "live_"
-	 * @throws Mollie_API_Exception
-	 */
-	public function setApiKey ($api_key)
-	{
-		if (!preg_match("!^(?:live|test)_\\w+\$!", $api_key))
-		{
-			throw new Mollie_API_Exception("Invalid api key: \"{$api_key}\". An API key must start with \"test_\" or \"live_\".");
-		}
+    /**
+     * @param string $api_key The Mollie API key, starting with "test_" or "live_"
+     * @throws Mollie_API_Exception
+     */
+    public function setApiKey($api_key)
+    {
+        if (!preg_match("!^(?:live|test)_\\w+\$!", $api_key)) {
+            throw new Mollie_API_Exception("Invalid api key: \"{$api_key}\". An API key must start with \"test_\" or \"live_\".");
+        }
 
-		$this->api_key = $api_key;
-	}
+        $this->api_key = $api_key;
+    }
 
-	/**
-	 * @param string $version_string
-	 */
-	public function addVersionString ($version_string)
-	{
-		$this->versionStrings[] = str_replace(array(" ", "\t", "\n", "\r"), '-', $version_string);
-	}
+    /**
+     * @param string $version_string
+     */
+    public function addVersionString($version_string)
+    {
+        $this->versionStrings[] = str_replace([" ", "\t", "\n", "\r"], '-', $version_string);
+    }
 
-	/**
-	 * Perform an http call. This method is used by the resource specific classes. Please use the $payments property to
-	 * perform operations on payments.
-	 *
-	 * @see $payments
-	 * @see $isuers
-	 *
-	 * @param $http_method
-	 * @param $api_method
-	 * @param $http_body
-	 *
-	 * @return string
-	 * @throws Mollie_API_Exception
-	 *
-	 * @codeCoverageIgnore
-	 */
-	public function performHttpCall ($http_method, $api_method, $http_body = NULL)
-	{
-		if (empty($this->api_key))
-		{
-			throw new Mollie_API_Exception("You have not set an api key. Please use setApiKey() to set the API key.");
-		}
+    /**
+     * Perform an http call. This method is used by the resource specific classes. Please use the $payments property to
+     * perform operations on payments.
+     *
+     * @see $payments
+     * @see $isuers
+     *
+     * @param $http_method
+     * @param $api_method
+     * @param $http_body
+     *
+     * @return string
+     * @throws Mollie_API_Exception
+     *
+     * @codeCoverageIgnore
+     */
+    public function performHttpCall($http_method, $api_method, $http_body = null)
+    {
+        if (empty($this->api_key)) {
+            throw new Mollie_API_Exception("You have not set an api key. Please use setApiKey() to set the API key.");
+        }
 
-		$url = $this->api_endpoint . "/" . self::API_VERSION . "/" . $api_method;
+        $url = $this->api_endpoint . "/" . self::API_VERSION . "/" . $api_method;
 
-		$ch = curl_init($url);
+        $ch = curl_init($url);
 
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-		curl_setopt($ch, CURLOPT_ENCODING, "");
-		curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_ENCODING, "");
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
 
-		$user_agent = join(' ', $this->versionStrings);
+        $user_agent = join(' ', $this->versionStrings);
 
-		$request_headers = array(
-			"Accept: application/json",
-			"Authorization: Bearer {$this->api_key}",
-			"User-Agent: {$user_agent}",
-			"X-Mollie-Client-Info: " . php_uname(),
-		);
+        $request_headers = [
+            "Accept: application/json",
+            "Authorization: Bearer {$this->api_key}",
+            "User-Agent: {$user_agent}",
+            "X-Mollie-Client-Info: " . php_uname(),
+        ];
 
-		if ($http_body !== NULL)
-		{
-			$request_headers[] = "Content-Type: application/json";
+        if ($http_body !== null) {
+            $request_headers[] = "Content-Type: application/json";
 
-			if ($http_method == self::HTTP_POST)
-			{
-				curl_setopt($ch, CURLOPT_POST, 1);
-			}
-			else
-			{
-				curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $http_method);
-			}
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $http_body);
-		}
+            if ($http_method == self::HTTP_POST) {
+                curl_setopt($ch, CURLOPT_POST, 1);
+            } else {
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $http_method);
+            }
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $http_body);
+        }
 
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $request_headers);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, TRUE);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $request_headers);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
 
-		$body = curl_exec($ch);
+        $body = curl_exec($ch);
 
-		if (curl_errno($ch) == CURLE_SSL_CACERT || curl_errno($ch) == CURLE_SSL_PEER_CERTIFICATE || curl_errno($ch) == 77 /* CURLE_SSL_CACERT_BADFILE (constant not defined in PHP though) */)
-		{
-			/*
-			 * On some servers, the list of installed certificates is outdated or not present at all (the ca-bundle.crt
-			 * is not installed). So we tell cURL which certificates we trust. Then we retry the requests.
-			 */
-			$request_headers[] = "X-Mollie-Debug: used shipped root certificates";
-			curl_setopt($ch, CURLOPT_HTTPHEADER, $request_headers);
-			curl_setopt($ch, CURLOPT_CAINFO, realpath(dirname(__FILE__) . "/cacert.pem"));
-			$body = curl_exec($ch);
-		}
+        if (curl_errno($ch) == CURLE_SSL_CACERT || curl_errno($ch) == CURLE_SSL_PEER_CERTIFICATE || curl_errno($ch) == 77 /* CURLE_SSL_CACERT_BADFILE (constant not defined in PHP though) */) {
+            /*
+             * On some servers, the list of installed certificates is outdated or not present at all (the ca-bundle.crt
+             * is not installed). So we tell cURL which certificates we trust. Then we retry the requests.
+             */
+            $request_headers[] = "X-Mollie-Debug: used shipped root certificates";
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $request_headers);
+            curl_setopt($ch, CURLOPT_CAINFO, realpath(dirname(__FILE__) . "/cacert.pem"));
+            $body = curl_exec($ch);
+        }
 
-		if (strpos(curl_error($ch), "certificate subject name 'mollie.nl' does not match target host") !== FALSE)
-		{
-			/*
-			 * On some servers, the wildcard SSL certificate is not processed correctly. This happens with OpenSSL 0.9.7
-			 * from 2003.
-			 */
-			$request_headers[] = "X-Mollie-Debug: old OpenSSL found";
-			curl_setopt($ch, CURLOPT_HTTPHEADER, $request_headers);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-			$body = curl_exec($ch);
-		}
+        if (strpos(curl_error($ch), "certificate subject name 'mollie.nl' does not match target host") !== false) {
+            /*
+             * On some servers, the wildcard SSL certificate is not processed correctly. This happens with OpenSSL 0.9.7
+             * from 2003.
+             */
+            $request_headers[] = "X-Mollie-Debug: old OpenSSL found";
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $request_headers);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            $body = curl_exec($ch);
+        }
 
-		if (curl_errno($ch))
-		{
-			throw new Mollie_API_Exception("Unable to communicate with Mollie (".curl_errno($ch)."): " . curl_error($ch));
-		}
+        if (curl_errno($ch)) {
+            throw new Mollie_API_Exception("Unable to communicate with Mollie (" . curl_errno($ch) . "): " . curl_error($ch));
+        }
 
-		return $body;
-	}
+        return $body;
+    }
 }

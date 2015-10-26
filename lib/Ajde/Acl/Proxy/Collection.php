@@ -31,7 +31,7 @@ class Ajde_Acl_Proxy_Collection extends Ajde_Collection
         if ($this->canSkipModelValidation($this->current())) {
             return true;
         }
-        $newItems = array();
+        $newItems = [];
         foreach ($this as $key => $item) {
             /* @var $item Ajde_Acl_Proxy_Model */
             if (!$item->validateAccess('read', false)) {
@@ -66,6 +66,7 @@ class Ajde_Acl_Proxy_Collection extends Ajde_Collection
             $this->validateModels();
             Ajde::app()->endTimer($aclTimer);
         }
+
         return $this->_items;
     }
 }

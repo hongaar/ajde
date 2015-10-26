@@ -1,23 +1,31 @@
 ;
-if (typeof App === "undefined") {App = function(){}};
-if (typeof App.Admin === "undefined") {App.Admin = function(){}};
-if (typeof App.Admin.System === "undefined") {App.Admin.System = function(){}};
-
+if (typeof App === "undefined") {
+    App = function () {
+    }
+}
+if (typeof App.Admin === "undefined") {
+    App.Admin = function () {
+    }
+}
+if (typeof App.Admin.System === "undefined") {
+    App.Admin.System = function () {
+    }
+}
 App.Admin.System.Update = function() {
-	
+
 	var step = 'download';
 	var progress = 0;
 	var timer;
-	
+
 	var form;
 	var button;
 	var statusLabel;
 	var progressBar;
-	
+
 	var update = function(curstep)
 	{
 		var statusText;
-		
+
 		switch (curstep) {
 			case 'download':
 				statusText = '1/5 Downloading...';
@@ -45,51 +53,51 @@ App.Admin.System.Update = function() {
 				nextStep = 'done';
 				break;
 		}
-		
+
 		$('body').removeClass('loading');
 		button.hide();
-		
+
 		$('#status').show();
 		statusLabel.text(statusText);
 		progressBar.css({width: progress + '%'});
-		
-		step = nextStep;				
+
+		step = nextStep;
 	};
-	
+
 	var onUpdateStepComplete = function(e, data) {
-		
+
 		clearInterval(timer);
-		
+
 		if (data.status !== true) {
 			statusLabel.text(data.status === false ? 'Unknown error' : data.status);
 			$('.progress').addClass('progress-danger');
 			progressBar.css({width: '100%'});
-		} else {		
+		} else {
 			if (step == 'done') {
 				onUpdateComplete(e);
 			} else {
 				$('input[name=step]').val(step);
 				form.trigger('submit');
 				timer = setInterval(function() {
-					var width = parseFloat(progressBar.css('width')) + 1; 
+					var width = parseFloat(progressBar.css('width')) + 1;
 					progressBar.css({'width': width + 'px'});
 				}, 1000);
-				update(step);		
+				update(step);
 			}
 		}
-		
+
 	};
-	
+
 	var onUpdateComplete = function(e) {
 
 		statusLabel.text('Done, refreshing...');
 		progressBar.css({width: '100%'});
-		
+
 		setTimeout(function() {
 			window.location.reload(true);
 		}, 2000);
 	};
-	
+
 	return {
 
 		init: function() {
@@ -97,7 +105,7 @@ App.Admin.System.Update = function() {
 			form = $('#systemUpdateForm');
 			statusLabel = $('#status p');
 			progressBar = $('#status .bar');
-			
+
 			form.on('result', onUpdateStepComplete);
 		}
 

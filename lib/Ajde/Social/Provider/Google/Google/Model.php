@@ -16,7 +16,7 @@
  */
 
 /**
- * This class defines attributes, valid values, and usage which is generated         
+ * This class defines attributes, valid values, and usage which is generated
  * from a given json schema.
  * http://tools.ietf.org/html/draft-zyp-json-schema-03#section-5
  *
@@ -25,152 +25,159 @@
  */
 class Google_Model implements ArrayAccess
 {
-  protected $data;
-  protected $processed = array();
+    protected $data;
+    protected $processed = [];
 
-  /**
-   * Polymorphic - accepts a variable number of arguments dependent
-   * on the type of the model subclass.
-   */
-  public function __construct()
-  {
-    if (func_num_args() ==  1 && is_array(func_get_arg(0))) {
-      // Initialize the model with the array's contents.
-      $array = func_get_arg(0);
-      $this->mapTypes($array);
+    /**
+     * Polymorphic - accepts a variable number of arguments dependent
+     * on the type of the model subclass.
+     */
+    public function __construct()
+    {
+        if (func_num_args() == 1 && is_array(func_get_arg(0))) {
+            // Initialize the model with the array's contents.
+            $array = func_get_arg(0);
+            $this->mapTypes($array);
+        }
     }
-  }
 
-  public function __get($key)
-  {
-    $keyTypeName = $this->keyType($key);
-    $keyDataType = $this->dataType($key);
-    if (isset($this->$keyTypeName) && !isset($this->processed[$key])) {
-      $val = $this->data[$key];
-      if ($this->isAssociativeArray($val)) {
-        if (isset($this->$keyDataType) && 'map' == $this->$keyDataType) {
-          foreach ($val as $arrayKey => $arrayItem) {
-              $this->data[$key][$arrayKey] =
-                $this->createObjectFromName($keyTypeName, $arrayItem);
-          }
+    public function __get($key)
+    {
+        $keyTypeName = $this->keyType($key);
+        $keyDataType = $this->dataType($key);
+        if (isset($this->$keyTypeName) && !isset($this->processed[$key])) {
+            $val = $this->data[$key];
+            if ($this->isAssociativeArray($val)) {
+                if (isset($this->$keyDataType) && 'map' == $this->$keyDataType) {
+                    foreach ($val as $arrayKey => $arrayItem) {
+                        $this->data[$key][$arrayKey] =
+                            $this->createObjectFromName($keyTypeName, $arrayItem);
+                    }
+                } else {
+                    $this->data[$key] = $this->createObjectFromName($keyTypeName, $val);
+                }
+            } else {
+                if (is_array($val)) {
+                    $arrayObject = [];
+                    foreach ($val as $arrayIndex => $arrayItem) {
+                        $arrayObject[$arrayIndex] =
+                            $this->createObjectFromName($keyTypeName, $arrayItem);
+                    }
+                    $this->data[$key] = $arrayObject;
+                }
+            }
+            $this->processed[$key] = true;
+        }
+
+        return $this->data[$key];
+    }
+
+    /**
+     * Initialize this object's properties from an array.
+     *
+     * @param array $array Used to seed this object's properties.
+     * @return void
+     */
+    protected function mapTypes($array)
+    {
+        // Hard initilise simple types, lazy load more complex ones.
+        foreach ($array as $key => $val) {
+            if (!property_exists($this, $this->keyType($key)) &&
+                property_exists($this, $key)
+            ) {
+                $this->$key = $val;
+                unset($array[$key]);
+            }
+        }
+        $this->data = $array;
+    }
+
+    /**
+     * Returns true only if the array is associative.
+     *
+     * @param array $array
+     * @return bool True if the array is associative.
+     */
+    protected function isAssociativeArray($array)
+    {
+        if (!is_array($array)) {
+            return false;
+        }
+        $keys = array_keys($array);
+        foreach ($keys as $key) {
+            if (is_string($key)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Given a variable name, discover its type.
+     *
+     * @param $name
+     * @param $item
+     * @return object The object from the item.
+     */
+    private function createObjectFromName($name, $item)
+    {
+        $type = $this->$name;
+
+        return new $type($item);
+    }
+
+    /**
+     * Verify if $obj is an array.
+     *
+     * @throws Google_Exception Thrown if $obj isn't an array.
+     * @param array $obj Items that should be validated.
+     * @param string $method Method expecting an array as an argument.
+     */
+    public function assertIsArray($obj, $method)
+    {
+        if ($obj && !is_array($obj)) {
+            throw new Google_Exception(
+                "Incorrect parameter type passed to $method(),"
+                . " expected an array."
+            );
+        }
+    }
+
+    public function offsetExists($offset)
+    {
+        return isset($this->$offset) || isset($this->data[$offset]);
+    }
+
+    public function offsetGet($offset)
+    {
+        return isset($this->$offset) ?
+            $this->$offset :
+            $this->__get($offset);
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        if (property_exists($this, $offset)) {
+            $this->$offset = $value;
         } else {
-          $this->data[$key] = $this->createObjectFromName($keyTypeName, $val);
+            $this->data[$offset] = $value;
+            $this->processed[$offset] = true;
         }
-      } else if (is_array($val)) {
-        $arrayObject = array();
-        foreach ($val as $arrayIndex => $arrayItem) {
-          $arrayObject[$arrayIndex] =
-            $this->createObjectFromName($keyTypeName, $arrayItem);
-        }
-        $this->data[$key] = $arrayObject;
-      }
-      $this->processed[$key] = true;
     }
 
-    return $this->data[$key];
-  }
-
-  /**
-   * Initialize this object's properties from an array.
-   *
-   * @param array $array Used to seed this object's properties.
-   * @return void
-   */
-  protected function mapTypes($array)
-  {
-    // Hard initilise simple types, lazy load more complex ones.
-    foreach ($array as $key => $val) {
-      if ( !property_exists($this, $this->keyType($key)) &&
-        property_exists($this, $key)) {
-          $this->$key = $val;
-          unset($array[$key]);
-      }
+    public function offsetUnset($offset)
+    {
+        unset($this->data[$offset]);
     }
-    $this->data = $array;
-  }
 
-  /**
-   * Returns true only if the array is associative.
-   * @param array $array
-   * @return bool True if the array is associative.
-   */
-  protected function isAssociativeArray($array)
-  {
-    if (!is_array($array)) {
-      return false;
+    protected function keyType($key)
+    {
+        return $key . "Type";
     }
-    $keys = array_keys($array);
-    foreach ($keys as $key) {
-      if (is_string($key)) {
-        return true;
-      }
+
+    protected function dataType($key)
+    {
+        return $key . "DataType";
     }
-    return false;
-  }
-
-  /**
-   * Given a variable name, discover its type.
-   *
-   * @param $name
-   * @param $item
-   * @return object The object from the item.
-   */
-  private function createObjectFromName($name, $item)
-  {
-    $type = $this->$name;
-    return new $type($item);
-  }
-
-  /**
-   * Verify if $obj is an array.
-   * @throws Google_Exception Thrown if $obj isn't an array.
-   * @param array $obj Items that should be validated.
-   * @param string $method Method expecting an array as an argument.
-   */
-  public function assertIsArray($obj, $method)
-  {
-    if ($obj && !is_array($obj)) {
-      throw new Google_Exception(
-          "Incorrect parameter type passed to $method(),"
-          . " expected an array."
-      );
-    }
-  }
-
-  public function offsetExists($offset)
-  {
-    return isset($this->$offset) || isset($this->data[$offset]);
-  }
-
-  public function offsetGet($offset)
-  {
-    return isset($this->$offset) ?
-        $this->$offset :
-        $this->__get($offset);
-  }
-
-  public function offsetSet($offset, $value)
-  {
-    if (property_exists($this, $offset)) {
-      $this->$offset = $value;
-    } else {
-      $this->data[$offset] = $value;
-      $this->processed[$offset] = true;
-    }
-  }
-
-  public function offsetUnset($offset)
-  {
-    unset($this->data[$offset]);
-  }
-
-  protected function keyType($key)
-  {
-    return $key . "Type";
-  }
-
-  protected function dataType($key)
-  {
-    return $key . "DataType";
-  }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright (c) 2013, Mollie B.V.
  * All rights reserved.
@@ -24,31 +25,32 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
  * DAMAGE.
  *
- * @license     Berkeley Software Distribution License (BSD-License 2) http://www.opensource.org/licenses/bsd-license.php
+ * @license     Berkeley Software Distribution License (BSD-License 2)
+ *     http://www.opensource.org/licenses/bsd-license.php
  * @author      Mollie B.V. <info@mollie.nl>
  * @copyright   Mollie B.V.
  * @link        https://www.mollie.nl
  */
 class Mollie_API_Object_List extends ArrayObject
 {
-	/**
-	 * Total number of available objects on the Mollie platform.
-	 *
-	 * @var int
-	 */
-	public $totalCount;
+    /**
+     * Total number of available objects on the Mollie platform.
+     *
+     * @var int
+     */
+    public $totalCount;
 
-	/**
-	 * Numeric offset from which this list of object was created.
-	 *
-	 * @var int
-	 */
-	public $offset;
+    /**
+     * Numeric offset from which this list of object was created.
+     *
+     * @var int
+     */
+    public $offset;
 
-	/**
-	 * Total number of retrieved objects.
-	 *
-	 * @var int
-	 */
-	public $count;
+    /**
+     * Total number of retrieved objects.
+     *
+     * @var int
+     */
+    public $count;
 }

@@ -2,18 +2,18 @@
 
 class Ajde_Crud_Cms_Meta_Type_Products extends Ajde_Crud_Cms_Meta_Type
 {
-	public function getFields()
-	{
-		$this->required();
-		$this->readonly();
-		$this->help();
-		return parent::getFields();
-	}
+    public function getFields()
+    {
+        $this->required();
+        $this->readonly();
+        $this->help();
 
+        return parent::getFields();
+    }
 
-	public function getMetaField(MetaModel $meta)
-	{
-		$field = $this->decorationFactory($meta);
+    public function getMetaField(MetaModel $meta)
+    {
+        $field = $this->decorationFactory($meta);
 
         $field->setType('multiple');
         $field->setModelName('product');
@@ -28,6 +28,6 @@ class Ajde_Crud_Cms_Meta_Type_Products extends Ajde_Crud_Cms_Meta_Type
         $field->setThumbDim(100, 100);
         $field->addSortField('sort');
 
-		return $field;
-	}
+        return $field;
+    }
 }
