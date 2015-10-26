@@ -1,12 +1,13 @@
 <?php
 require_once 'Config_Application.php';
 
-class Config_Dev extends Config_Application {
+class Config_Dev extends Config_Application
+{
 
     // Performance
     public $compressResources = false;
-    public $debug             = true;
-    public $useCache          = false;
+    public $debug = true;
+    public $useCache = false;
 
     public $logLevel = '8:Debug';
 
@@ -23,8 +24,8 @@ class Config_Dev extends Config_Application {
     //    );
     public $mailerDebug = true;
 
-
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
         $this->documentProcessors['html'][] = 'Debugger';
     }

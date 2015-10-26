@@ -5,6 +5,7 @@ class Bootstrap extends Ajde_Object_Singleton
     public static function getInstance()
     {
         static $instance;
+
         return $instance === null ? $instance = new self : $instance;
     }
 
@@ -12,8 +13,8 @@ class Bootstrap extends Ajde_Object_Singleton
     {
         \Nabble\SemaltBlocker\Blocker::protect();
 
-        Ajde_Event::register('TransactionModel', 'onPaid', array($this, 'onTransactionPaid'));
-        Ajde_Event::register('TransactionModel', 'onCreate', array($this, 'onTransactionCreated'));
+        Ajde_Event::register('TransactionModel', 'onPaid', [$this, 'onTransactionPaid']);
+        Ajde_Event::register('TransactionModel', 'onCreate', [$this, 'onTransactionCreated']);
 
         if (UserModel::isTester() || UserModel::isAdmin()) {
             $providers = Config::get('transactionProviders');
@@ -27,7 +28,7 @@ class Bootstrap extends Ajde_Object_Singleton
     public function onTransactionPaid(TransactionModel $transaction)
     {
         /** @var TransactionItemModel $item */
-        foreach($transaction->getItems() as $item) {
+        foreach ($transaction->getItems() as $item) {
             $entity = $item->getEntity();
             $qty = $item->qty;
 
