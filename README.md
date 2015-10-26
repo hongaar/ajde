@@ -1,18 +1,12 @@
-![Ajde logo](https://raw.github.com/hongaar/ajde/master/public/media/ajde-medium.png "Ajde logo")
+![Ajde logo](https://raw.github.com/nabble/ajde/master/public/assets/media/ajde-medium.png "Ajde logo")
 
-___another web framework___
-===========================
+# Ajde
 
-*Yet another PHP 5.0 MVC framework with out-of-the-box HTML / CSS / JS / caching and HTTP optimizations. Your project will be fast and cutting edges right from the start!*
-
-**PLEASE NOTE: Ajde is in an early alpha stage, and the API is still changing.**
-
+Yet another PHP 5.0 CMS framework.
 
 ----------------
 
-
-Introduction
--------------------------
+## Introduction
 
 #### A framework for Grade A performance
 
@@ -53,15 +47,22 @@ It has however no support for plug and play themes or plugins or whatsoever, so 
  - Database & query abstraction
  - CRUD
  - ACL layer
- - CMS features
- - Auto update module (for production installations)
- - Shopping cart with support for iDeal (WeDeal) & PayPal
- - Templating in straight PHP or XHTML
+ - Shopping cart (with PSP support for Mollie, bank transfer & PayPal)
+ - Templating in straight PHP
  - Dynamic routing
  - Web debugger & console
- - Mail class
  - I18n
- - much more...
+
+#### CMS
+
+ - Flexible node-based content management
+ - Flexible node attribute editor
+ - Media manager
+ - Menu manager
+ - Tag manager
+ - Form editor / submissions viewer
+ - Basic shop support
+ - User management
 
 #### Out of the box modules supporting
 
@@ -75,7 +76,6 @@ It has however no support for plug and play themes or plugins or whatsoever, so 
   - Image manipulation (supports PNG alpha layer resampling)
   - QR code generation
   - Gravatar
-  - much more...
 
 
 ----------------
@@ -169,7 +169,7 @@ You need the following to run Ajde:
 
  - Linux, Mac or Windows
  - Apache webserver
- - PHP, version 5.2.3 or newer
+ - PHP, version 5.3 or newer
  - MySQL
 
 Directories which have to be writable by the webserver:
@@ -179,21 +179,13 @@ Directories which have to be writable by the webserver:
  - var/log
  - public/assets/media/upload
 
-#### Directories to delete in production
-
-Remove these files and directories to cleanup your Ajde install for production:
-
- - loadtest.php
- - phpinfo.php
- - install.php
-
 #### Secret
 
-Create a new random string (preferably 32 characters or more) and put it in `private/config/Config_Application.php` (replace `randomstring`)
+Create a new random string (preferably 32 characters) and put it in `private/config/Config_Application.php` (replace `randomstring`)
 
 #### Prepare database
 
-Create a new database, and run `private/dev/data.sql` on this database. Edit the database credentials in `private/config/Config_Application.php` to match the newly created database.
+Create a new database, and run `dev/data.sql` on this database. Edit the database credentials in `app/config/Config_Application.php` to match the newly created database.
 
 #### Prepare admin user
 
