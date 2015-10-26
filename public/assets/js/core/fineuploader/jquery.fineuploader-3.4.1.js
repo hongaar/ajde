@@ -3413,7 +3413,7 @@ qq.UploadHandlerForm = function(o, uploadCompleteCallback, logCallback) {
 /*globals qq, File, XMLHttpRequest, FormData, Blob*/
 qq.UploadHandlerXhr = function(o, uploadCompleteCallback, logCallback) {
     "use strict";
-
+    
     var options = o,
         uploadComplete = uploadCompleteCallback,
         log = logCallback,
@@ -3712,7 +3712,7 @@ qq.UploadHandlerXhr = function(o, uploadCompleteCallback, logCallback) {
         var name = api.getName(id);
 
         if (options.onAutoRetry(id, name, response, xhr)) {
-
+            return;
         }
         else {
             handleCompletedItem(id, response, xhr);
