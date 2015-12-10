@@ -1,6 +1,6 @@
 .analytics {
     min-height: 200px;
-    background-image: url('../../public/media/loading-cms.gif');
+    background-image: url('../../assets/media/loading-cms.gif');
     background-position: 50% 50%;
     background-repeat: no-repeat;
 }

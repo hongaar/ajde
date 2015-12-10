@@ -16,7 +16,7 @@ class _coreCrudController extends Ajde_Acl_Controller
         Ajde_Lang::getInstance()->disableAutoTranslationOfModels();
 
         // try to get the crud instance
-		$crud = $this->getCrudInstance();
+		$crud = $this->hasCrudInstance() ? $this->getCrudInstance() : false;
 		if (!$crud && Ajde::app()->getRequest()->has('crudId')) {
 			$session = new Ajde_Session('AC.Crud');
 			$crud = $session->getModel(Ajde::app()->getRequest()->getParam('crudId'));
@@ -76,7 +76,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 
         $this->getView()->assign('revisions', $this->getRevisions());
         $this->getView()->assign('model', $this->getModel());
-        $this->getView()->assign('crud', $this->getCrud());
+        $this->getView()->assign('crud', $this->getCrudInstance());
 
         return $this->render();
     }
@@ -195,7 +195,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 
 	public function mainfilterHtml()
 	{
-		$crud = $this->getCrud();
+		$crud = $this->getCrudInstance();
 		$this->getView()->assign('crud', $crud);
 		$this->getView()->assign('refresh', $this->getRefresh());
 		return $this->render();

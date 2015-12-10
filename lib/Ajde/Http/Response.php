@@ -36,7 +36,7 @@ class Ajde_Http_Response extends Ajde_Object_Standard
     public static function redirectForbidden()
     {
         self::dieOnCode(self::RESPONSE_TYPE_FORBIDDEN);
-    }
+        }
 
     public static function dieOnCode($code)
     {
@@ -56,7 +56,7 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 
         // fallback
         ob_get_clean();
-        include(Config::get('local_root') . '/errordocument.php');
+        include(Config::get('local_root') . '/error.php');
         die();
     }
 

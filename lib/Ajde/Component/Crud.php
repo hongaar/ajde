@@ -39,7 +39,7 @@ class Ajde_Component_Crud extends Ajde_Component
                 break;
             case 'mainfilter':
                 $controller = Ajde_Controller::fromRoute(new Ajde_Core_Route('_core/crud:mainfilter'));
-                $controller->setCrud($this->attributes['crud']);
+                $controller->setCrudInstance($this->attributes['crud']);
                 $controller->setRefresh(issetor($this->attributes['refresh'], false));
 
                 return $controller->invoke();

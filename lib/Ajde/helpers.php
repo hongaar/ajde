@@ -29,19 +29,6 @@ function dump($var, $expand = true)
 }
 
 /**
- * @param $var
- */
-if (!function_exists('dd')) {
-    function dd($var)
-    {
-        while (ob_get_level()) {
-            ob_end_clean();
-        }
-        die(var_dump($var));
-    }
-}
-
-/**
  * Translates the string with Ajde_Lang::translate
  *
  * @param string $ident

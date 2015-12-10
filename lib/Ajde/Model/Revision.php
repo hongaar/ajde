@@ -22,7 +22,7 @@ abstract class Ajde_Model_Revision extends Ajde_Model
         $controller = Ajde_Controller::fromRoute(new Ajde_Core_Route('_core/crud:revisions'));
         $controller->setRevisions($revisions);
         $controller->setModel($this);
-        $controller->setCrud($crud);
+        $controller->setCrudInstance($crud);
 
         return $controller->invoke();
     }

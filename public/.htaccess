@@ -1017,9 +1017,6 @@ ServerSignature Off
 	# Turn the RewriteEngine on, optionally specify the base path too
 	RewriteEngine on
 
-	# Do not rewrite traffic to the public/ directory
-	#RewriteRule ^[a-zA-Z]{2}?\/assets\/(.*)$ assets/$1 [L]
-
 	# Rewrite all traffic to index.php, exclude physical files
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteRule ^ index.php [QSA,L]

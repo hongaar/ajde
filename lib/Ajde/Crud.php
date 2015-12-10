@@ -34,9 +34,13 @@ class Ajde_Crud extends Ajde_Object_Standard
             $output = Ajde_Exception_Handler::handler($e);
         }
 
-        return $output;
+        return (string) $output;
     }
 
+    /**
+     * @return mixed
+     * @throws Ajde_Exception
+     */
     public function output()
     {
         $controller = Ajde_Controller::fromRoute(new Ajde_Core_Route('_core/crud:' . $this->getOperation()));
@@ -47,9 +51,10 @@ class Ajde_Crud extends Ajde_Object_Standard
 
     public function export($format = 'excel')
     {
+        /* @var $exporter Ajde_Crud_Export_Interface */
+
         $exporterClass = 'Ajde_Crud_Export_' . ucfirst($format);
         $exporter = new $exporterClass;
-        /* @var $exporter Ajde_Crud_Export_Interface */
 
         $table = [];
 

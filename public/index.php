@@ -40,20 +40,22 @@ ini_set('display_startup_errors', 0);
 define('DS',            DIRECTORY_SEPARATOR);
 define('UP',            '..' . DS);
 
+define('APP_DIR',       UP . 'app' . DS);
+define('CORE_DIR',      UP . 'core' . DS);
+
+// These paths could exist in both app or core dir
 define('CONFIG_DIR',    'config' . DS);
 define('LAYOUT_DIR',    'layout' . DS);
 define('MODULE_DIR',    'modules' . DS);
 define('TEMPLATE_DIR',  'template' . DS);
 
-define('APP_DIR',       UP . 'app' . DS);
 define('LANG_DIR',      APP_DIR . 'lang' . DS);
 
-define('CORE_DIR',      UP . 'core' . DS);
 define('DEV_DIR',       UP . 'dev' . DS);
 define('LIB_DIR',       UP . 'lib' . DS);
 define('VENDOR_DIR',    UP . 'vendor' . DS);
+define('VAR_DIR',       UP . 'var' . DS);
 
-define('VAR_DIR',       'var' . DS);
 define('CACHE_DIR',     VAR_DIR . 'cache' . DS);
 define('LOG_DIR',       VAR_DIR . 'log' . DS);
 define('TMP_DIR',       VAR_DIR . 'tmp' . DS);

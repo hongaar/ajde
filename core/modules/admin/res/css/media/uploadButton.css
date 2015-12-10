@@ -15,6 +15,6 @@
 }
 
 .uploadButton.loading i.icon-upload {
-	background-image: url('../../public/media/loading-cms.gif');
+	background-image: url('../../assets/media/loading-cms.gif');
 	background-position: 0 0;
 }

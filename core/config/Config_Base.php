@@ -2,7 +2,6 @@
 
 class Config_Base
 {
-
     /**
      * Please do not edit this configuration file, this makes it easier
      * to upgrade when defaults are changed or new values are introduced.
@@ -17,18 +16,18 @@ class Config_Base
     public $email       = null;
     public $version     = [
         'number' => null,
-        'name' => null
+        'name'   => null
     ];
 
     // Routing
     public $homepageRoute     = 'home';
     public $defaultRouteParts = [
-        'module' => 'node',
+        'module'     => 'node',
         'controller' => null,
-        'action' => 'view',
-        'format' => 'html',
-        'slug' => null,
-        'id' => null
+        'action'     => 'view',
+        'format'     => 'html',
+        'slug'       => null,
+        'id'         => null
     ];
     public $aliases           = [];
     public $routes            = [];
@@ -48,7 +47,6 @@ class Config_Base
         '404' => 'main/code404.html',
         '500' => 'main/code500.html'
     ];
-    public $browserSupport    = [];
 
     // Security
     public $autoEscapeString    = true;
@@ -74,9 +72,10 @@ class Config_Base
     public $logWriter          = ['db', 'file'];
     public $logLevel           = '5:Warning';
     public $useCache           = true;
+    public $externalPageCache  = true;
     public $documentProcessors = [
         'html' => [],
-        'css' => [
+        'css'  => [
             'Less',
         ]
     ];
@@ -84,7 +83,7 @@ class Config_Base
     // Database
     public $dbAdapter  = 'mysql';
     public $dbDsn      = [
-        'host' => 'localhost',
+        'host'   => 'localhost',
         'dbname' => 'ajde'
     ];
     public $dbUser     = 'ajde_user';

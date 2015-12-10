@@ -118,15 +118,20 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
                 );
 
                 $exceptionDump = '';
-                if (class_exists("Ajde_Dump")) {
+                if (class_exists(Ajde_Dump::class)) {
                     if ($dumps = Ajde_Dump::getAll()) {
                         $exceptionDump .= '<h2>Dumps</h2>';
-                        foreach ($dumps as $dump) {
+                        foreach ($dumps as $source => $dump) {
                             ob_start();
-                            echo '<pre>';
-                            var_dump($dump[0]);
-                            echo '</pre>';
-                            $exceptionDump .= ob_get_clean();
+                            echo $source;
+                            if (class_exists(Kint::class)) {
+                                Kint::dump($dump[0]);
+                            } else {
+                                echo '<pre>';
+                                var_dump($dump[0]);
+                                echo '</pre>';
+                            }
+                            $exceptionDump .= ob_get_clean() . '<h2>Error message</h2>';
                         }
                     }
                 }

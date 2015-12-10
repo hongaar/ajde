@@ -175,9 +175,7 @@ $user = UserModel::getLoggedIn();
 	</body>
 </html>
 
+<?php if (Config::get('debug')) { ?>
 <!-- Some debugging info -->
-<pre>
-	<?php $version = Config::get('version'); echo Config::get('ident') . ', v' . $version['number'] . ' (' . $version['name'] . ')'; ?>
-	Cache <?php echo Ajde_Cache::getInstance()->isEnabled() ? 'enabled' : 'disabled' ?>
-	Last modified on <?php echo date("r", Ajde_Cache::getInstance()->getLastModified()); ?>
-</pre>
+<pre style="position: relative; z-index: 99;"><?php $version = Config::get('version'); echo Config::get('ident') . ', v' . $version['number'] . ' (' . $version['name'] . ')'; ?> | Cache <?php echo Ajde_Cache::getInstance()->isEnabled() ? 'enabled' : 'disabled' ?> | Last modified on <?php echo date("r", Ajde_Cache::getInstance()->getLastModified()); ?></pre>
+<?php } ?>

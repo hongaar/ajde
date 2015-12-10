@@ -142,7 +142,7 @@ select option.choose {
 }
 
 .hero-unit {
-	background-image: url('../../public/media/admin-cover.png');
+	background-image: url('../../assets/media/admin-cover.png');
 	background-position: 50% 50%;
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -242,7 +242,7 @@ footer {
 	margin-bottom: 0;
 }
 #node-search.loading {
-	background-image: url('../../public/media/loading-cms.gif');
+	background-image: url('../../assets/media/loading-cms.gif');
 	background-repeat: no-repeat;
 	background-position: 98% center;
 }

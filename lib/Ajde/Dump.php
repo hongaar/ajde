@@ -13,7 +13,7 @@ class Ajde_Dump extends Ajde_Object_Static
             try {
                 $source = sprintf("%s. dumped from <em>%s</em>%s<strong>%s</strong> (line %s)",
                     count(self::$dump) + 1,
-                    !empty($item['class']) ? $item['class'] : '&lt;unknown class&gt; (in <span style=\'font-size: 0.8em;\'>' . $item['args'][0] . '</span>)',
+                    isset($item['class']) ? (is_object($item['class']) ? get_class($item['class']) : $item['class']) : '&lt;unknown class&gt; (in <span style=\'font-size: 0.8em;\'>' . print_r($item['args'][0]) . '</span>)',
                     // Assume of no classname is available, dumped from template.. (naive)
                     !empty($item['type']) ? $item['type'] : '::',
                     !empty($item['function']) ? $item['function'] : '&lt;unknown function&gt;',

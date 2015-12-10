@@ -10,7 +10,7 @@
 	position: relative;
 	top: -10px;
 	padding-top: 28px;
-	
+
 	.caret {
 		border-top: 4px solid #fff;
 	}
@@ -18,7 +18,7 @@
 
 .mainFilterToggle {
 	text-decoration: none !important;
-	
+
 	.mainFilterLabel + .caret {
 		border-top: 10px solid #007fff;
 		border-right: 10px solid transparent;
@@ -52,11 +52,11 @@ fieldset.crud {
         font-size: 1.5em;
         height: auto;
     }
-    
+
     textarea {
     	height: 20em;
     }
-    
+
     textarea.noRichText {
     	height: 10em;
     }
@@ -68,9 +68,9 @@ fieldset.crud {
 	span.validation-message {
 		color: #fff !important;
 	}
-	
+
 	a.imagePreview img {
-		background-image: url('../../public/media/checkerboard.png');
+		background-image: url('../../assets/media/checkerboard.png');
         &.icon {
             background-image: none;
         }
@@ -80,7 +80,7 @@ fieldset.crud {
         margin-right: 10px;
         margin-left: 10px !important;
     }
-    
+
     &.well > div.controls {
         margin-right: 0;
         margin-left: 0 !important;
@@ -89,7 +89,7 @@ fieldset.crud {
     legend {
         color: #0F82F5;
     }
-	
+
 	div.control-group {
 
         margin: 10px;
@@ -104,7 +104,7 @@ fieldset.crud {
                 margin-left: 0;
             }
         }
-		
+
 		.help-inline {
 			background-color: #EEE;
 			padding: 3px 9px;
@@ -114,23 +114,23 @@ fieldset.crud {
 			display: inline-block;
 			vertical-align: baseline;
 		}
-		
+
 		&.error {
 			.picker-container + .help-inline {
 				margin-top: 20px;
 			}
 		}
-		
+
 		&.dynamic {
 			opacity: 0.01;
 			max-height: 1px;
 			overflow: hidden;
 		}
-		
+
 		&.hidden {
 			display: none !important;
 		}
-		
+
 		&:not(.error) {
 			.validation-message {
 				display: none !important;
@@ -143,16 +143,16 @@ fieldset.crud {
             margin: 10px 0 10px 0;
         }
     }
-	
+
 	&.primary {
 		background-color: #9954BB;
 		padding: 19px;
 		margin-bottom: 20px;
-		
+
 		label, legend {
 			color: #FFF !important;
 		}
-				
+
 		&:not(.sidebar) {
 			.control-label {
 				width: 140px;
@@ -162,17 +162,17 @@ fieldset.crud {
 			}
 		}
 	}
-    
+
     &:last-child {
 //        margin-bottom: 0;
     }
-	
+
 	&.narrow {
 		.control-group {
 			margin-bottom: 0;
 		}
 	}
-	
+
 	&.short {
 		.control-label {
 			width: 100px;
@@ -182,13 +182,13 @@ fieldset.crud {
 			min-height: 30px;
 		}
 	}
-	
+
 	.picker-container {
 		.picker-radio:last-child {
 			position: relative;
 			overflow: visible;
 		}
-		
+
 		.validation-message {
 			display: inline;
 			position: absolute;
@@ -196,7 +196,7 @@ fieldset.crud {
 			left: 0;
 		}
 	}
-	
+
 	.gray {
 		color: silver;
 	}
@@ -243,7 +243,7 @@ fieldset.crud {
         }
 
         &.active {
-            background-image: url('../../public/media/loading-cms.gif');
+            background-image: url('../../assets/media/loading-cms.gif');
             background-repeat: no-repeat;
             background-position: 0 50%;
             padding-left: 20px;
@@ -560,7 +560,7 @@ table.crud {
 					height: 30px;
 					overflow: hidden;
 
-                    background-image: url('../../public/media/checkerboard.png');
+                    background-image: url('../../assets/media/checkerboard.png');
 
 					img {
 						position: relative;

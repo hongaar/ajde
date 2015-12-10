@@ -107,6 +107,13 @@ class Ajde_Controller extends Ajde_Object_Standard
         return $controller;
     }
 
+    /**
+     * @param string|null $action
+     * @param string|null $format
+     * @return mixed
+     * @throws Ajde_Exception
+     * @throws Exception
+     */
     public function invoke($action = null, $format = null)
     {
         $timerKey = Ajde::app()->addTimer((string)$this->_route);

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c0d4d1da04c40250ebf1b1bceb7e3e2b",
-    "content-hash": "be7b0251def36599bd5215ef2fe69d8c",
+    "hash": "e4f467b03b2ec96c8be68d576cb2574f",
+    "content-hash": "cc0650fc859b11855c82224ae0b15e5d",
     "packages": [
         {
             "name": "nabble/semalt-blocker",
@@ -100,7 +100,59 @@
             "time": "2015-09-01 14:53:31"
         }
     ],
-    "packages-dev": [],
+    "packages-dev": [
+        {
+            "name": "raveren/kint",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/raveren/kint.git",
+                "reference": "9a072e1bda25cf62b809db46b505fb8d4a9dfe6c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/raveren/kint/zipball/9a072e1bda25cf62b809db46b505fb8d4a9dfe6c",
+                "reference": "9a072e1bda25cf62b809db46b505fb8d4a9dfe6c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "Kint.class.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rokas Šleinius",
+                    "homepage": "https://github.com/raveren"
+                },
+                {
+                    "name": "Contributors",
+                    "homepage": "https://github.com/raveren/kint/contributors"
+                }
+            ],
+            "description": "Kint - debugging helper for PHP developers",
+            "homepage": "https://github.com/raveren/kint",
+            "keywords": [
+                "debug",
+                "kint",
+                "php"
+            ],
+            "time": "2015-09-22 16:42:17"
+        }
+    ],
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": [],
