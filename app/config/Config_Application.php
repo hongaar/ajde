@@ -5,39 +5,39 @@ class Config_Application extends Config_Base
 {
 
     // Site parameters
-    public $ident = 'project';
-    public $sitename = 'Project name';
+    public $ident       = 'project';
+    public $sitename    = 'Project name';
     public $description = 'Project description';
-    public $author = 'Author name';
-    public $email = 'info@nabble.nl';
-    public $version = [
+    public $author      = 'Author name';
+    public $email       = 'info@nabble.nl';
+    public $version     = [
         'number' => '1',
-        'name' => 'version description'
+        'name'   => 'version description'
     ];
 
     public $lang = 'en_GB';
 
     public $secret = 'RANDOMSTRING';
 
-    public $dbDsn = [
-        'host' => 'localhost',
+    public $dbDsn      = [
+        'host'   => 'localhost',
         'dbname' => 'ajde'
     ];
-    public $dbUser = 'ajde_user';
+    public $dbUser     = 'ajde_user';
     public $dbPassword = 'ajde_pass';
 
-    public $ssoTwitterKey = 'Ryrp5QnYJkjBFDYLUuUt8Q';
+    public $ssoTwitterKey    = 'Ryrp5QnYJkjBFDYLUuUt8Q';
     public $ssoTwitterSecret = '3gf4kVcjRchAaIL5gOxVMwGvBZv6c8R3gu1dTwaIiYk';
 
-    public $ssoFacebookKey = '536948643066481';
+    public $ssoFacebookKey    = '536948643066481';
     public $ssoFacebookSecret = 'a9b01ccbf1da937363b0d84b7cdc5da8';
 
-    public $ssoGoogleKey = '514075591820.apps.googleusercontent.com';
+    public $ssoGoogleKey    = '514075591820.apps.googleusercontent.com';
     public $ssoGoogleSecret = 'MS4EgiWPHZAaDko9lG_8oX52';
-    public $driveGoogleKey = 'AIzaSyCJcdZdQ3tTineYykoy9mnj1NB4TW0hFfk';
+    public $driveGoogleKey  = 'AIzaSyCJcdZdQ3tTineYykoy9mnj1NB4TW0hFfk';
 
     public $apiKeys = [
-        'google' => '',
+        'google'     => '',
         'soundcloud' => ''
     ];
 

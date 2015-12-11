@@ -1,7 +1,7 @@
 <?php
-require_once "class.phpmailer.php";
-require_once "class.smtp.php";
-require_once "class.pop3.php";
+require_once "Mailer" . DS . "class.phpmailer.php";
+require_once "Mailer" . DS . "class.smtp.php";
+require_once "Mailer" . DS . "class.pop3.php";
 
 class Ajde_Mailer extends PHPMailer
 {

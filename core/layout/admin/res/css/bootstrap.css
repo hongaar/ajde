@@ -4,7 +4,7 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 	-moz-box-shadow: none;
 	-webkit-box-shadow: none;
 	box-shadow: none;
-	
+
 	border: 1px solid #eee;
 }
 
@@ -46,7 +46,7 @@ input, select, textarea, body .cke.active .cke_contents, body .chosen-container-
 	margin: 10px;
 }
 
-.nav .open .dropdown-toggle:hover { 
+.nav .open .dropdown-toggle:hover {
 	color: #fff;
 }
 
@@ -122,11 +122,11 @@ div[data-toggle] {
 	.btn, button {
 		opacity: 0.6;
 	}
-	
+
 	.btn.active, button.active {
 		opacity: 1;
 	}
-	
+
 	.btn:hover, button:hover {
 		opacity: 0.8;
 	}
@@ -134,4 +134,9 @@ div[data-toggle] {
 
 .label {
 	min-height: inherit;
+}
+
+.hidden {
+    display: none;
+    visibility: hidden;
 }

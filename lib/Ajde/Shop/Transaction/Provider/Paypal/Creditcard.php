@@ -9,7 +9,7 @@ class Ajde_Shop_Transaction_Provider_Paypal_Creditcard extends Ajde_Shop_Transac
 
     public function getLogo()
     {
-        return MEDIA_DIR . '_core/shop/creditcard.png';
+        return MEDIA_DIR . 'core/shop/creditcard.png';
     }
 
     protected function getMethod()

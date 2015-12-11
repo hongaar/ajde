@@ -5,8 +5,8 @@ class Config_Live extends Config_Application
 {
     // Performance
     public $compressResources = true;
-    public $debug = false;
-    public $useCache = true;
+    public $debug             = false;
+    public $useCache          = true;
 
     public $logLevel = '4:Error';
 

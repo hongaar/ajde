@@ -9,7 +9,7 @@ class Ajde_Shop_Transaction_Provider_Iban extends Ajde_Shop_Transaction_Provider
 
     public function getLogo()
     {
-        return MEDIA_DIR . '_core/shop/iban.png';
+        return MEDIA_DIR . 'core/shop/iban.png';
     }
 
     public function usePostProxy()

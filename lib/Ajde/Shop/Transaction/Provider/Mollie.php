@@ -12,7 +12,7 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
 
     public function getLogo()
     {
-        return MEDIA_DIR . '_core/shop/mollie.png';
+        return MEDIA_DIR . 'core/shop/mollie.png';
     }
 
     public function usePostProxy()

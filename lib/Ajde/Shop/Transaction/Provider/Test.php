@@ -9,7 +9,7 @@ class Ajde_Shop_Transaction_Provider_Test extends Ajde_Shop_Transaction_Provider
 
     public function getLogo()
     {
-        return MEDIA_DIR . '_core/shop/test.png';
+        return MEDIA_DIR . 'core/shop/test.png';
     }
 
     public function usePostProxy()

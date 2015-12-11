@@ -9,6 +9,6 @@ class Ajde_Shop_Transaction_Provider_Creditcard extends Ajde_Shop_Transaction_Pr
 
     public function getLogo()
     {
-        return MEDIA_DIR . '_core/shop/creditcard.png';
+        return MEDIA_DIR . 'core/shop/creditcard.png';
     }
 }

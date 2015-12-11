@@ -67,7 +67,8 @@ define('UPLOAD_URI',    MEDIA_URI . 'upload' . DS);
 define('AVATAR_URI',    UPLOAD_URI . 'avatar' . DS);
 
 define('PUBLIC_DIR',    UP . 'public' . DS);
-define('ASSETS_DIR',    PUBLIC_DIR . 'assets' . DS);
+
+define('ASSETS_DIR',    'assets' . DS);
 define('MEDIA_DIR',     ASSETS_DIR . 'media' . DS);
 define('UPLOAD_DIR',    MEDIA_DIR . 'upload' . DS);
 define('AVATAR_DIR',    UPLOAD_DIR . 'avatar' . DS);
