@@ -12,8 +12,7 @@ class FormController extends Ajde_Controller
 		// get the current form id
 		$id = $this->getId();
 
-		/* @var $form FormModel */
-		$form = $this->getModel();
+		$form = new FormModel();
 		$form->loadByPK($id);
 
         // pass form to view
