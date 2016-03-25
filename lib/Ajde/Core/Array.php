@@ -2,6 +2,13 @@
 
 class Ajde_Core_Array
 {
+    /**
+     * TODO
+     *
+     * @param array $array1
+     * @param array $array2
+     * @return array
+     */
     public static function mergeRecursive(array $array1, array $array2)
     {
         $merged = $array1;
