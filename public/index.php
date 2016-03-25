@@ -2,15 +2,15 @@
 /**
  * Ajde - friendly CMS
  *
- * @author Nabble, Joram van den Boezem
+ * @author Joram van den Boezem, Nabble
  * @see https://github.com/nabble/ajde
  */
 
 // --------------------
 // Check PHP version
 // --------------------
-if (version_compare(PHP_VERSION, '5.3.0') < 0) {
-    die('<p>Ajde requires PHP/5.3.0 or higher.</p>');
+if (version_compare(PHP_VERSION, '5.5.0') < 0) {
+    die('Ajde requires PHP/5.5.0 or higher.');
 }
 
 // --------------------
@@ -40,8 +40,10 @@ ini_set('display_startup_errors', 0);
 define('DS',            DIRECTORY_SEPARATOR);
 define('UP',            '..' . DS);
 
-define('APP_DIR',       UP . 'app' . DS);
-define('CORE_DIR',      UP . 'core' . DS);
+define('LOCAL_ROOT',    realpath(__DIR__ . DS . UP) . DS);
+
+define('APP_DIR',       'app' . DS);
+define('CORE_DIR',      'core' . DS);
 
 // These paths could exist in both app or core dir
 define('CONFIG_DIR',    'config' . DS);

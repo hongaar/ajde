@@ -21,7 +21,7 @@ class Ajde_Session extends Ajde_Object_Standard
 
         // Set session save path
         if (Config::get('sessionSavepath')) {
-            ini_set('session.save_path', str_replace('~', Config::get('local_root'), Config::get('sessionSavepath')));
+            ini_set('session.save_path', str_replace('~', LOCAL_ROOT, Config::get('sessionSavepath')));
         }
 
         // Set sessions to use cookies

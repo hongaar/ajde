@@ -66,12 +66,22 @@ abstract class Ajde_Object_Magic extends Ajde_Object
 
     protected function _get($key)
     {
+        if (substr_count($key, '.')) {
+            return Ajde_Core_Array::get($this->_data, $key);
+        }
+
         return $this->_data[$key];
     }
 
     public function has($key)
     {
-        return array_key_exists($key, $this->_data);
+        $exist = array_key_exists($key, $this->_data);
+
+        if ($exist === false) {
+            $exist = Ajde_Core_Array::get($this->_data, $key);
+        }
+
+        return !!$exist;
     }
 
     public function isEmpty($key)
@@ -105,6 +115,15 @@ abstract class Ajde_Object_Magic extends Ajde_Object
     public final function values()
     {
         return $this->_data;
+    }
+
+    public final function merge($key, array $value)
+    {
+        if (!$this->has($key)) {
+            $this->set($key, array());
+        }
+
+        $this->set($key, Ajde_Core_Array::mergeRecursive($this->get($key), $value));
     }
 
     public final function valuesAsSingleDimensionArray()

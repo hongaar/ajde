@@ -56,7 +56,7 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 
         // fallback
         ob_get_clean();
-        include(Config::get('local_root') . '/error.php');
+        include(LOCAL_ROOT . '/error.php');
         die();
     }
 
