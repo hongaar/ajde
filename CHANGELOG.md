@@ -1,6 +1,7 @@
 #### v1.0.0-alpha
 
  - **NEW** PHP namespaces
+ - **NEW** New directory layout
  
 #### v0.4.0
 

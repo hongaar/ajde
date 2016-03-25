@@ -393,15 +393,21 @@ table.crud {
                     border-bottom: 1px solid #eee;
 
                     td {
-                        padding-bottom: 40px;
+                        padding-bottom: 25px;
+                        padding-top: 0;
                     }
 
                     .container {
                         width: 75%;
                         float: right;
+                        position: relative;
 
                         label {
                             text-align: right;
+                            position: absolute;
+                            z-index: 2;
+                            right: 10px;
+                            top: 8px;
                         }
                     }
 

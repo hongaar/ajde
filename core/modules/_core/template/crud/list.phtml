@@ -77,7 +77,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 <!--                    </div>-->
                     <div class="container">
                         <label>
-                            <b>columns</b> <a href="javascript:void(null)" class="resetColumns">reset</a>
+                            <a href="javascript:void(null)" class="resetColumns">reset</a>
                         </label>
                         <select name="view[columns][]" class="columns selectize" multiple data-placeholder="Pick columns">
                             <?php
@@ -157,7 +157,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
                             </select>
                         <?php } else if ($field instanceof Ajde_Crud_Field_Text || $field instanceof Ajde_Crud_Field_File) {
                             if ($crud->getModel()->isFieldEncrypted($field->getName())) {
-                                echo '<small style="color: silver; font-weight: 300;">encrypted</small>';
+                                echo '<small style="color: silver; font-weight: 300;"><abbr title="Encrypted fields ca\'t be searched, filtered or sorted on">encrypted</abbr></small>';
                             } else {
                                 $fieldFilter = $crudView->getFilterForField($field->getName()); ?>
                                 <input class="filter span12 <?php if (strlen($fieldFilter)) echo 'active'; ?>" name="view[filter][<?php echo $field->getName(); ?>]" type="text" value="<?php echo _e($fieldFilter); ?>" />
