@@ -19,7 +19,7 @@ if (version_compare(PHP_VERSION, '5.5.0') < 0) {
 error_reporting(E_ALL);
 
 // --------------------
-// PHP settings (also defined in .htaccess)
+// PHP settings
 // --------------------
 // PHP compatibility settings
 ini_set('short_open_tag', 0);

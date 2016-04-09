@@ -1,0 +1,14 @@
+{
+    "twitter": {
+        "key": "",
+        "secret": ""
+    },
+    "facebook": {
+        "key": "",
+        "secret": ""
+    },
+    "google": {
+        "key": "",
+        "secret": ""
+    }
+}

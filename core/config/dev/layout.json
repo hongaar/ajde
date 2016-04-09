@@ -1,0 +1,14 @@
+{
+    "filters": {
+        "compressResources": false,
+        "documentProcessors": {
+            "html": [
+                "Debugger"
+            ]
+        }
+    },
+    "cache": {
+        "enabled": false,
+        "externalPageCache": false
+    }
+}

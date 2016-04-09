@@ -1,0 +1,10 @@
+{
+    "sso": {
+        "enabled": true,
+        "providers": [
+            "google",
+            "facebook",
+            "twitter"
+        ]
+    }
+}

@@ -34,18 +34,28 @@ abstract class Ajde_Object_Magic extends Ajde_Object
     }
 
     /**
+     * TODO
      *
-     * @param mixed $name
+     * @param string $key
      * @param mixed $value
-     * @return mixed
      */
     public function set($key, $value)
     {
         $this->_set($key, $value);
     }
 
+    /**
+     * TODO
+     *
+     * @param string $key
+     * @param mixed $value
+     */
     protected function _set($key, $value)
     {
+        if (substr_count($key, '.')) {
+            Ajde_Core_Array::set($this->_data, $key, $value);
+        }
+
         $this->_data[$key] = $value;
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-class Environment extends Ajde_Object_Singleton
+class Ajde_Environment extends Ajde_Object_Singleton
 {
     const ENV_DEFAULT = 'production';
 
@@ -36,7 +36,7 @@ class Environment extends Ajde_Object_Singleton
     /**
      * TODO
      *
-     * @return Environment
+     * @return Ajde_Environment
      */
     public static function getInstance()
     {

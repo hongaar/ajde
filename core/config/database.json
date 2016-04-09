@@ -1,0 +1,7 @@
+{
+    "adapter": "mysql",
+    "host": "localhost",
+    "db": "ajde",
+    "user": "ajde_user",
+    "password": "ajde_pass"
+}

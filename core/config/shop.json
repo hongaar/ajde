@@ -1,0 +1,32 @@
+{
+    "offerLogin": true,
+    "sandboxPayment": true,
+    "transaction": {
+        "providers": [
+            "paypal_creditcard",
+            "paypal",
+            "mollie_ideal",
+            "iban"
+        ],
+        "paypal": {
+            "account": "info@example.com"
+        },
+        "wedeal": {
+            "username": "user",
+            "password": "pass",
+            "callbackUsername": "user",
+            "callbackPassword": "pass"
+        },
+        "mollie": {
+            "liveKey": "live_key",
+            "testKey": "test_key"
+        }
+    },
+    "currency": {
+        "symbol": "€",
+        "code": "EUR"
+    },
+    "vat": {
+        "default": 0.21
+    }
+}

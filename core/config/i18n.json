@@ -1,0 +1,6 @@
+{
+    "enabled": true,
+    "lang": "en_GB",
+    "autodetect": true,
+    "adapter": "ini"
+}

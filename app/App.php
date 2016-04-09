@@ -1,6 +1,6 @@
 <?php
 
-class Bootstrap extends Ajde_Object_Singleton
+class App extends Ajde_Object_Singleton implements Ajde_BootstrapInterface
 {
     public static function getInstance()
     {

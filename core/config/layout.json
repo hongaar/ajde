@@ -1,0 +1,19 @@
+{
+    "layout": "base",
+    "adminLayout": "admin",
+    "titleFormat": "%2$s - %1$s",
+    "textEditor": "ckeditor",
+    "filters": {
+        "compressResources": true,
+        "documentProcessors": {
+            "html": [],
+            "css": [
+                "Less"
+            ]
+        }
+    },
+    "cache": {
+        "enabled": true,
+        "externalPageCache": true
+    }
+}

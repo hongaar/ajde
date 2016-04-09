@@ -1,6 +1,6 @@
 <?php
 
-class Config
+class Ajde_Config
 {
     /**
      * @var Ajde_Config_Repository
@@ -48,11 +48,35 @@ class Config
      * TODO
      *
      * @param string $param
+     * @param mixed $value
+     */
+    public static function set($param, $value)
+    {
+        $instance = self::getInstance();
+
+        $instance->$param  = $value;
+    }
+
+    /**
+     * TODO
+     *
+     * @param string $param
      * @return mixed
      */
     public function __get($param)
     {
         return $this->repository->$param;
+    }
+
+    /**
+     * TODO
+     *
+     * @param string $param
+     * @param mixed $value
+     */
+    public function __set($param, $value)
+    {
+        $this->repository->$param = $value;
     }
 
     /**

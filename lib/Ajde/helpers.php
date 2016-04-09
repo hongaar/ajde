@@ -1,11 +1,19 @@
 <?php
 
+class Ajde extends Ajde_Application
+{
+}
+
+class Config extends Ajde_Config
+{
+}
+
 /**
  * The only thing missing in PHP < 5.3
  * In PHP 5.3 you can use: return $test ?: false;
  * This translates in Ajde to return issetor($test);
  *
- * @param $what
+ * @param      $what
  * @param null $else
  * @return null
  */
@@ -20,7 +28,7 @@ function issetor(&$what, $else = null)
 }
 
 /**
- * @param $var
+ * @param           $var
  * @param bool|true $expand
  */
 function dump($var, $expand = true)

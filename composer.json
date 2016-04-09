@@ -23,8 +23,7 @@
         },
         "classmap": [
             "app/",
-            "core/",
-            "lib/Ajde/Ajde.php"
+            "core/"
         ],
         "files": [
             "lib/Ajde/helpers.php"

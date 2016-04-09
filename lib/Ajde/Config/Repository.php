@@ -17,10 +17,11 @@ class Ajde_Config_Repository extends Ajde_Object_Standard
      * TODO
      *
      * @param string $directory
+     * @throws Exception
      */
     public function readConfigDir($directory)
     {
-        $environment = Environment::current();
+        $environment = Ajde_Environment::current();
 
         $searchDirs = [
             CORE_DIR . $directory, '*.json',
@@ -32,7 +33,11 @@ class Ajde_Config_Repository extends Ajde_Object_Standard
         foreach($searchDirs as $searchDir) {
             foreach(Ajde_Fs_Find::findFiles($searchDir, '*.json') as $configFile)
             {
-                $this->merge(pathinfo($configFile, PATHINFO_FILENAME), json_decode(file_get_contents($configFile), true));
+                if (!$configData = json_decode(file_get_contents($configFile), true)) {
+                    throw new Exception('Config file ' . $configFile . ' contains invalid JSON');
+                }
+
+                $this->merge(pathinfo($configFile, PATHINFO_FILENAME), $configData);
             }
         }
     }
@@ -40,15 +45,11 @@ class Ajde_Config_Repository extends Ajde_Object_Standard
     public function defaults()
     {
         // URI fragments
-        $this->site_protocol = (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS'])) ? 'https://' : 'http://';
-        $this->site_domain = $_SERVER['SERVER_NAME'];
-        $this->site_path = str_replace('index.php', '', $_SERVER['PHP_SELF']);
-
-        // Assembled URI
-        $this->site_root = $this->site_protocol . $this->site_domain . $this->site_path;
-
-        // Assembled URI with language identifier
-        $this->lang_root = $this->site_root;
+        $this->set("app.protocol", (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS'])) ? 'https://' : 'http://');
+        $this->set("app.domain", $_SERVER['SERVER_NAME']);
+        $this->set("app.path", str_replace('index.php', '', $_SERVER['PHP_SELF']));
+        $this->set("app.root", $this->get("app.protocol") . $this->site_domain . $this->site_path);
+        $this->set("i18n.root", $this->get("app.root"));
 
         // Set default timezone now
         date_default_timezone_set($this->timezone);

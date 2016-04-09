@@ -1,0 +1,25 @@
+{
+    "secret": "RANDOMSTRING",
+    "autoEscapeString": true,
+    "autoCleanHtml": true,
+    "csrf": {
+        "requirePostToken": true,
+        "postWhitelistRoutes": [
+            "shop/transaction:callback",
+            "shop/transaction:complete",
+            "shop/transaction:refused"
+        ]
+    },
+    "cookie": {
+        "domain": false,
+        "secure": false,
+        "httponly": true
+    },
+    "log": {
+        "writer": [
+            "db",
+            "file"
+        ],
+        "level": "4:Error"
+    }
+}

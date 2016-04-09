@@ -1,0 +1,19 @@
+{
+    "homepage": "home",
+    "default": {
+        "module": "node",
+        "controller": null,
+        "action": "view",
+        "format": "html",
+        "slug": null,
+        "id": null
+    },
+    "aliases": [],
+    "routes": [],
+    "errors": {
+        "401": "user/logon.html",
+        "403": "main/code403.html",
+        "404": "main/code404.html",
+        "500": "main/code500.html"
+    }
+}

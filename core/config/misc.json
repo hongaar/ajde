@@ -1,0 +1,6 @@
+{
+    "pdf": {
+        "method": "snappy",
+        "web2PdfApi": false
+    }
+}
