@@ -2,7 +2,7 @@
 
 abstract class Ajde_Lang_Proxy_Model extends Ajde_Model
 {
-    protected $languageField = 'lang';
+    protected $languageField     = 'lang';
     protected $languageRootField = 'lang_root';
 
     public function getLanguageField()
@@ -44,7 +44,7 @@ abstract class Ajde_Lang_Proxy_Model extends Ajde_Model
         // if this is the root model, search for a translated leaf
         $exist = $translation->loadByFields([
             $this->languageRootField => $this->getPK(),
-            $this->languageField => $lang
+            $this->languageField     => $lang
         ]);
         $exist = $exist & $translation->hasLoaded();
 
@@ -52,7 +52,7 @@ abstract class Ajde_Lang_Proxy_Model extends Ajde_Model
         if (!$exist && $this->has($this->languageRootField)) {
             $exist = $translation->loadByFields([
                 $this->getTable()->getPK() => $this->get($this->languageRootField),
-                $this->languageField => $lang
+                $this->languageField       => $lang
             ]);
             $exist = $exist & $translation->hasLoaded();
         }
@@ -61,7 +61,7 @@ abstract class Ajde_Lang_Proxy_Model extends Ajde_Model
         if (!$exist && $this->has($this->languageRootField)) {
             $exist = $translation->loadByFields([
                 $this->languageRootField => $this->get($this->languageRootField),
-                $this->languageField => $lang
+                $this->languageField     => $lang
             ]);
             $exist = $exist & $translation->hasLoaded();
         }

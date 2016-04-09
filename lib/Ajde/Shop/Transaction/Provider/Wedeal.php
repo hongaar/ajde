@@ -2,8 +2,8 @@
 
 class Ajde_Shop_Transaction_Provider_Wedeal extends Ajde_Shop_Transaction_Provider
 {
-    private static $_debug = false;
-    private static $_api_url = "www.paydutch.nl";
+    private static $_debug    = false;
+    private static $_api_url  = "www.paydutch.nl";
     private static $_api_path = "/api/processreq.aspx";
 
     public function getName()
@@ -26,22 +26,22 @@ class Ajde_Shop_Transaction_Provider_Wedeal extends Ajde_Shop_Transaction_Provid
         $transaction = $this->getTransaction();
 
         $request = [
-            "type" => "transaction",
+            "type"           => "transaction",
             "transactionreq" => [
-                "username" => Config::get('shopWedealUsername'),
-                "password" => Config::get('shopWedealPassword'),
-                "reference" => $transaction->secret,
+                "username"    => Config::get('shopWedealUsername'),
+                "password"    => Config::get('shopWedealPassword'),
+                "reference"   => $transaction->secret,
                 "description" => Config::get('ident') . ': ' . Ajde_Component_String::makePlural($transaction->shipment_itemsqty,
                         'item'),
-                "amount" => str_replace(".", ",", (string)$transaction->payment_amount),
-                "methodcode" => "0101",
-                "maxcount" => "1",
-                "test" => $this->isSandbox() ? "true" : "false",
-                "successurl" => Config::get('site_root') . 'shop/transaction:callback/wedeal.html',
-                "failurl" => Config::get('site_root') . 'shop/transaction:callback/wedeal.html'
+                "amount"      => str_replace(".", ",", (string)$transaction->payment_amount),
+                "methodcode"  => "0101",
+                "maxcount"    => "1",
+                "test"        => $this->isSandbox() ? "true" : "false",
+                "successurl"  => Config::get('site_root') . 'shop/transaction:callback/wedeal.html',
+                "failurl"     => Config::get('site_root') . 'shop/transaction:callback/wedeal.html'
             ]
         ];
-        $res = $this->sendRequest($request, true);
+        $res     = $this->sendRequest($request, true);
 
         if ($res['success'] === true) {
             $url = $res['response'];
@@ -68,13 +68,13 @@ class Ajde_Shop_Transaction_Provider_Wedeal extends Ajde_Shop_Transaction_Provid
     {
         $request = Ajde::app()->getRequest();
 
-        $username = $request->getParam('Username');
-        $password = $request->getParam('Password');
-        $id = $request->getParam('ID');
-        $secret = $request->getParam('Reference');
+        $username      = $request->getParam('Username');
+        $password      = $request->getParam('Password');
+        $id            = $request->getParam('ID');
+        $secret        = $request->getParam('Reference');
         $paymentMethod = $request->getParam('PaymentMethod');
-        $state = $request->getParam('PaymentState');
-        $description = $request->getParam('Description');
+        $state         = $request->getParam('PaymentState');
+        $description   = $request->getParam('Description');
 
         if ($username != Config::get('shopWedealCallbackUsername')) {
             Ajde_Log::log('Invalid username for callback of transaction ' . $secret);
@@ -93,10 +93,10 @@ class Ajde_Shop_Transaction_Provider_Wedeal extends Ajde_Shop_Transaction_Provid
         }
 
         $request = [
-            "type" => 'query',
+            "type"     => 'query',
             "merchant" => [
-                "username" => Config::get('shopWedealUsername'),
-                "password" => Config::get('shopWedealPassword'),
+                "username"  => Config::get('shopWedealUsername'),
+                "password"  => Config::get('shopWedealPassword'),
                 "reference" => $secret,
             ]
         ];
@@ -109,7 +109,7 @@ class Ajde_Shop_Transaction_Provider_Wedeal extends Ajde_Shop_Transaction_Provid
 
         if ($res['success'] === true) {
             $response = $res['response']->paymentinfo;
-            $count = (int)$res['response']->count;
+            $count    = (int)$res['response']->count;
 
             // get transaction details
             if ($count == 0) {
@@ -120,18 +120,18 @@ class Ajde_Shop_Transaction_Provider_Wedeal extends Ajde_Shop_Transaction_Provid
                 if ((string)$response->id != $id) {
                     Ajde_Log::log('IDs don\'t match for iDeal callback of transaction ' . $secret);
                 } else {
-                    $details = 'AMOUNT: ' . (string)$response->amount . PHP_EOL .
+                    $details                      = 'AMOUNT: ' . (string)$response->amount . PHP_EOL .
                         'PAYER_NAME: ' . (string)$response->consumername . PHP_EOL .
                         'PAYER_ACCOUNT: ' . (string)$response->consumeraccount . PHP_EOL .
                         'PAYER_CITY: ' . (string)$response->consumercity . PHP_EOL .
                         'PAYER_COUNTRY: ' . (string)$response->consumercountry . PHP_EOL .
                         'WEDEAL_ID: ' . (string)$response->id;
                     $transaction->payment_details = $details;
-                    $transaction->payment_status = 'completed';
+                    $transaction->payment_status  = 'completed';
                     $transaction->save();
 
                     return [
-                        'success' => true,
+                        'success'     => true,
                         'transaction' => $transaction
                     ];
                 }
@@ -147,7 +147,7 @@ class Ajde_Shop_Transaction_Provider_Wedeal extends Ajde_Shop_Transaction_Provid
         }
 
         return [
-            'success' => false,
+            'success'     => false,
             'transaction' => $transaction
         ];
     }
@@ -166,12 +166,12 @@ class Ajde_Shop_Transaction_Provider_Wedeal extends Ajde_Shop_Transaction_Provid
 
         if ($url === false) {
             return [
-                'success' => false,
+                'success'  => false,
                 'response' => 'iDeal foutmelding: Kan niet verbinden'
             ];
         }
 
-        $data = $xml->saveXML();
+        $data   = $xml->saveXML();
         $length = strlen($data);
 
         if (self::$_debug) {
@@ -200,18 +200,18 @@ class Ajde_Shop_Transaction_Provider_Wedeal extends Ajde_Shop_Transaction_Provid
         if ($asRaw) {
 
             $contentLenght = strpos($response, PHP_EOL . 'Content-Length:') + 1;
-            $nextLine = strpos($response, PHP_EOL, $contentLenght);
-            $result = trim(substr($response, $nextLine));
+            $nextLine      = strpos($response, PHP_EOL, $contentLenght);
+            $result        = trim(substr($response, $nextLine));
         } else {
 
             if (strpos($response, "<?xml") === false) {
                 return [
-                    'success' => false,
+                    'success'  => false,
                     'response' => "iDeal foutmelding: Ongeldig antwoord"
                 ];
             }
 
-            $start = strpos($response, '<?xml');
+            $start    = strpos($response, '<?xml');
             $response = substr($response, $start);
 
             $xml = new DOMDocument();
@@ -225,14 +225,14 @@ class Ajde_Shop_Transaction_Provider_Wedeal extends Ajde_Shop_Transaction_Provid
 
             if ($result->error) {
                 return [
-                    'success' => false,
+                    'success'  => false,
                     'response' => "iDeal foutmelding ($result->error): " . self::getError($result->error)
                 ];
             }
         }
 
         return [
-            'success' => true,
+            'success'  => true,
             'response' => $result
         ];
     }
@@ -301,7 +301,7 @@ class Ajde_Shop_Transaction_Provider_Wedeal extends Ajde_Shop_Transaction_Provid
      */
     private static function buildXML($request)
     {
-        $xml = new DOMDocument();
+        $xml    = new DOMDocument();
         $reqelm = $xml->createElement("request");
         self::appendData($reqelm, $xml, $request);
         $xml->appendChild($reqelm);

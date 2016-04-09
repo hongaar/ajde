@@ -7,7 +7,7 @@ abstract class Ajde_User_Controller extends Ajde_Controller
     protected $_allowedActions = [
         'logon',
     ];
-    protected $_logonRoute = 'user/logon/html';
+    protected $_logonRoute     = 'user/logon/html';
 
     public function beforeInvoke()
     {

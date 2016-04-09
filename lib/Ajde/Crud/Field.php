@@ -14,7 +14,7 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
      */
     protected $_type;
 
-    protected $_useSpan = 12;
+    protected $_useSpan    = 12;
     protected $_attributes = [];
 
     public function __construct(Ajde_Crud $crud, $fieldOptions)
@@ -26,15 +26,15 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
 
         /* defaults */
         $this->_data = [
-            'name' => isset($fieldOptions['name']) ? $fieldOptions['name'] : false,
-            'type' => 'text',
-            'length' => 255,
-            'default' => '',
-            'label' => isset($fieldOptions['name']) ? ucfirst($fieldOptions['name']) : false,
-            'isRequired' => false,
-            'isPK' => false,
+            'name'            => isset($fieldOptions['name']) ? $fieldOptions['name'] : false,
+            'type'            => 'text',
+            'length'          => 255,
+            'default'         => '',
+            'label'           => isset($fieldOptions['name']) ? ucfirst($fieldOptions['name']) : false,
+            'isRequired'      => false,
+            'isPK'            => false,
             'isAutoIncrement' => false,
-            'isAutoUpdate' => false
+            'isAutoUpdate'    => false
         ];
 
         /* options */
@@ -151,8 +151,8 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
             Ajde::app()->getDocument()->autoAddResources($template);
         }
         if ($this->_hasCustomTemplate($action)) {
-            $base = $this->_getCustomTemplateBase();
-            $action = $this->_getCustomTemplateAction($action);
+            $base     = $this->_getCustomTemplateBase();
+            $action   = $this->_getCustomTemplateAction($action);
             $template = new Ajde_Template($base, $action);
         }
         if ($template instanceof Ajde_Template) {
@@ -165,7 +165,7 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
 
     protected function _hasCustomTemplate($action)
     {
-        $base = $this->_getCustomTemplateBase();
+        $base   = $this->_getCustomTemplateBase();
         $action = $this->_getCustomTemplateAction($action);
 
         return Ajde_Template::exist($base, $action) !== false;

@@ -12,7 +12,7 @@ class Ajde_Crud_Cms_Meta extends Ajde_Crud_Cms_Meta_Fieldlist
     public static function fromType($type)
     {
         $metaTypeClass = "Ajde_Crud_Cms_Meta_Type_" . ucfirst(str_replace(' ', '', $type));
-        $metaType = new $metaTypeClass();
+        $metaType      = new $metaTypeClass();
 
         return $metaType;
     }
@@ -27,12 +27,12 @@ class Ajde_Crud_Cms_Meta extends Ajde_Crud_Cms_Meta_Fieldlist
     public function getTypes()
     {
         if (!$this->_types) {
-            $ds = DIRECTORY_SEPARATOR;
+            $ds    = DIRECTORY_SEPARATOR;
             $files = Ajde_Fs_Find::findFiles(LIB_DIR . 'Ajde' . $ds . 'Crud' . $ds . 'Cms' . $ds . 'Meta' . $ds . 'Type' . $ds,
                 '*.php');
             foreach ($files as $file) {
-                $filename = pathinfo($file, PATHINFO_FILENAME);
-                $className = "Ajde_Crud_Cms_Meta_Type_" . ucfirst($filename);
+                $filename                            = pathinfo($file, PATHINFO_FILENAME);
+                $className                           = "Ajde_Crud_Cms_Meta_Type_" . ucfirst($filename);
                 $this->_types[strtolower($filename)] = new $className();
             }
             ksort($this->_types);
@@ -114,7 +114,7 @@ class Ajde_Crud_Cms_Meta extends Ajde_Crud_Cms_Meta_Fieldlist
             $metas->addFilter($group);
         }
         foreach ($metas as $meta) {
-            $metaField = $this->getType($meta->get('type'));
+            $metaField    = $this->getType($meta->get('type'));
             $fieldOptions = $metaField->getMetaField($meta);
             // add show only when
             foreach (explode(',', $meta->get($crossReferenceField)) as $parentValue) {

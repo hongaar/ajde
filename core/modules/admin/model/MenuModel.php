@@ -3,9 +3,10 @@
 class MenuModel extends Ajde_Model_With_I18n
 {
     protected $_autoloadParents = true;
-    protected $_displayField = 'name';
+    protected $_displayField    = 'name';
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->registerEvents();
     }
@@ -27,6 +28,7 @@ class MenuModel extends Ajde_Model_With_I18n
     {
         $ret = _c($this->name);
         $ret = str_repeat('<span class="tree-spacer"></span>', $this->get('level')) . $ret;
+
         return $ret;
     }
 
@@ -34,12 +36,15 @@ class MenuModel extends Ajde_Model_With_I18n
     {
         Ajde::app()->getDocument()->getLayout()->getParser()->getHelper()->requireCssPublic('core/flags.css');
 
-        $lang = Ajde_Lang::getInstance();
+        $lang        = Ajde_Lang::getInstance();
         $currentLang = $this->get('lang');
         if ($currentLang) {
-            $image = '<img src="" class="flag flag-' . strtolower(substr($currentLang, 3, 2)) . '" alt="' . $currentLang . '" />';
+            $image = '<img src="" class="flag flag-' . strtolower(substr($currentLang, 3,
+                    2)) . '" alt="' . $currentLang . '" />';
+
             return $image . $lang->getNiceName($currentLang);
         }
+
         return '';
     }
 
@@ -84,13 +89,13 @@ class MenuModel extends Ajde_Model_With_I18n
             $currentParentUrl = ($current->getParent() && $current->getParent()->hasLoaded()) ? $current->getParent()->getUrl() : false;
         }
 
-        $items = array();
-        foreach($collection as $item) {
+        $items = [];
+        foreach ($collection as $item) {
             /* @var $item MenuModel */
-            $name = $item->name;
-            $target = "";
-            $submenus = array();
-            $current = '';
+            $name     = $item->name;
+            $target   = "";
+            $submenus = [];
+            $current  = '';
 
             $node = new NodeModel();
 
@@ -99,16 +104,20 @@ class MenuModel extends Ajde_Model_With_I18n
                 if (substr($url, 0, 7) === 'http://' || substr($url, 0, 8) === 'https://') {
                     $target = "_blank";
                 }
-            } else if ($item->type == 'Node link') {
-                $node->loadByPK($item->node);
-                $url = $node->getUrl();
-            } else if ($item->type == 'Submenu') {
-                $node->loadByPK($item->node);
-                $url = $node->getUrl();
-                $submenus = $item->getItems();
-                foreach($submenus as $submenu) {
-                    if ($submenu['current']) {
-                        $current = 'active sub-active';
+            } else {
+                if ($item->type == 'Node link') {
+                    $node->loadByPK($item->node);
+                    $url = $node->getUrl();
+                } else {
+                    if ($item->type == 'Submenu') {
+                        $node->loadByPK($item->node);
+                        $url      = $node->getUrl();
+                        $submenus = $item->getItems();
+                        foreach ($submenus as $submenu) {
+                            if ($submenu['current']) {
+                                $current = 'active sub-active';
+                            }
+                        }
                     }
                 }
             }
@@ -121,21 +130,20 @@ class MenuModel extends Ajde_Model_With_I18n
                 $current = 'active sub-active';
             }
 
-            if ($item->type == 'Node link' && !$node->hasLoaded() ) {
+            if ($item->type == 'Node link' && !$node->hasLoaded()) {
             } else {
-                $items[] = array(
-                    'node' => $node,
-                    'name' => $name,
-                    'url' => $url,
-                    'target' => $target,
-                    'current' => $current,
+                $items[] = [
+                    'node'     => $node,
+                    'name'     => $name,
+                    'url'      => $url,
+                    'target'   => $target,
+                    'current'  => $current,
                     'submenus' => $submenus
-                );
+                ];
             }
         }
 
         return $items;
     }
-
 
 }

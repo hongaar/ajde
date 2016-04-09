@@ -147,14 +147,14 @@ class Ajde_Cache extends Ajde_Object_Singleton
     /**
      * Remember a cached value in the cache directory as a file
      *
-     * @param string $key
+     * @param string   $key
      * @param callable $callback
-     * @param int $ttl in seconds, defaults to 3600 (one hour)
+     * @param int      $ttl in seconds, defaults to 3600 (one hour)
      * @return mixed
      */
     public static function remember($key, Closure $callback, $ttl = 3600)
     {
-        $safeKey = substr(preg_replace('/[^a-zA-Z0-9_-]/', '-', $key), 0, 100);
+        $safeKey       = substr(preg_replace('/[^a-zA-Z0-9_-]/', '-', $key), 0, 100);
         $cacheFilename = CACHE_DIR . 'STATIC_CACHE_' . $safeKey;
 
         if (file_exists($cacheFilename) && filemtime($cacheFilename) > (time() - $ttl)) {

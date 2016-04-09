@@ -2,7 +2,8 @@
 
 class SettingCollection extends Ajde_Collection
 {
-    public static function byName($name) {
+    public static function byName($name)
+    {
 
         $niceName = str_replace('_', ' ', $name);
         $settings = new SettingCollection();
@@ -12,12 +13,13 @@ class SettingCollection extends Ajde_Collection
         $settings->getQuery()->addSelect('setting_meta.value');
         $settings->getQuery()->addSelect('meta.name AS meta_name');
 
-        $result = array();
+        $result = [];
         if ($settings->count()) {
-            foreach($settings as $setting) {
+            foreach ($settings as $setting) {
                 $result[$setting->meta_name] = $setting->value;
             }
         }
+
         return $result;
     }
 }

@@ -16,12 +16,12 @@ class Ajde_Crud_Cms_Meta_Type_Form extends Ajde_Crud_Cms_Meta_Type
 
     public function link()
     {
-//		$field = $this->fieldFactory('usenodetype');
-//		$field->setLabel('Node type');
-//		$field->setType('fk');
-//		$field->setIsRequired(false);
-//		$field->setModelName('nodetype');
-//		$this->addField($field);
+        //		$field = $this->fieldFactory('usenodetype');
+        //		$field->setLabel('Node type');
+        //		$field->setType('fk');
+        //		$field->setIsRequired(false);
+        //		$field->setModelName('nodetype');
+        //		$this->addField($field);
     }
 
     public function usePopup()

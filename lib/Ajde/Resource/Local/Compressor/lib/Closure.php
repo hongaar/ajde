@@ -67,14 +67,14 @@ class Ajde_Resource_Local_Compressor_Js_Closure extends PhpClosure
 class PhpClosure
 {
 
-    var $_srcs = [];
-    var $_mode = "WHITESPACE_ONLY";
-    var $_warning_level = "DEFAULT";
+    var $_srcs                = [];
+    var $_mode                = "WHITESPACE_ONLY";
+    var $_warning_level       = "DEFAULT";
     var $_use_closure_library = false;
-    var $_pretty_print = false;
-    var $_debug = true;
-    var $_cache_dir = "";
-    var $_code_url_prefix = "";
+    var $_pretty_print        = false;
+    var $_debug               = true;
+    var $_cache_dir           = "";
+    var $_code_url_prefix     = "";
 
     function PhpClosure()
     {
@@ -263,7 +263,7 @@ class PhpClosure
             } else {
                 // No recompile needed, but see if we can send a 304 to the browser.
                 $cache_mtime = filemtime($cache_file);
-                $etag = md5_file($cache_file);
+                $etag        = md5_file($cache_file);
                 header("Last-Modified: " . gmdate("D, d M Y H:i:s", $cache_mtime) . " GMT");
                 header("Etag: $etag");
                 if (@strtotime(@$_SERVER['HTTP_IF_MODIFIED_SINCE']) == $cache_mtime ||
@@ -378,11 +378,11 @@ class PhpClosure
     {
         $result = "";
         foreach ($warnings as $warning) {
-            $desc = addslashes($warning["value"]);
-            $type = $warning["attributes"]["type"];
+            $desc   = addslashes($warning["value"]);
+            $type   = $warning["attributes"]["type"];
             $lineno = $warning["attributes"]["lineno"];
             $charno = $warning["attributes"]["charno"];
-            $line = trim(addslashes($warning["attributes"]["line"]));
+            $line   = trim(addslashes($warning["attributes"]["line"]));
             $result .= "window.console.$level('$type: $desc\\nLine: $lineno\\nChar: $charno\\nLine: $line');\r\n";
         }
 
@@ -428,8 +428,8 @@ class PhpClosure
             $params["js_code"] = $this->_readSources();
         }
         $params["compilation_level"] = $this->_mode;
-        $params["output_format"] = "xml";
-        $params["warning_level"] = $this->_warning_level;
+        $params["output_format"]     = "xml";
+        $params["warning_level"]     = $this->_warning_level;
         if ($this->_pretty_print) {
             $params["formatting"] = "pretty_print";
         }
@@ -488,11 +488,11 @@ class PhpClosure
 
     function _unchunk($data)
     {
-        $fp = 0;
+        $fp      = 0;
         $outData = "";
         while ($fp < strlen($data)) {
             $rawnum = substr($data, $fp, strpos(substr($data, $fp), "\r\n") + 2);
-            $num = hexdec(trim($rawnum));
+            $num    = hexdec(trim($rawnum));
             $fp += strlen($rawnum);
             $chunk = substr($data, $fp, $num);
             $outData .= $chunk;
@@ -514,8 +514,8 @@ class PhpClosure
         $tree = null;
         foreach ($xml->children() as $name => $child) {
             $value = (string)$child;
-            $node = [
-                'tag' => $name,
+            $node  = [
+                'tag'   => $name,
                 'value' => count($child->children()) == 0 ? $value : $this->_parseXmlHelper($child)
             ];
 

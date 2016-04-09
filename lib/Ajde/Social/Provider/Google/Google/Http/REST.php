@@ -32,7 +32,7 @@ class Google_Http_REST
      * Executes a apiServiceRequest using a RESTful call by transforming it into
      * an apiHttpRequest, and executed via apiIO::authenticatedRequest().
      *
-     * @param Google_Client $client
+     * @param Google_Client       $client
      * @param Google_Http_Request $req
      * @return array decoded result
      * @throws Google_Service_Exception on server side error (ie: not authenticated,
@@ -56,13 +56,13 @@ class Google_Http_REST
      */
     public static function decodeHttpResponse($response)
     {
-        $code = $response->getResponseHttpCode();
-        $body = $response->getResponseBody();
+        $code    = $response->getResponseHttpCode();
+        $body    = $response->getResponseBody();
         $decoded = null;
 
         if ((intVal($code)) >= 300) {
             $decoded = json_decode($body, true);
-            $err = 'Error calling ' . $response->getRequestMethod() . ' ' . $response->getUrl();
+            $err     = 'Error calling ' . $response->getRequestMethod() . ' ' . $response->getUrl();
             if (isset($decoded['error']) &&
                 isset($decoded['error']['message']) &&
                 isset($decoded['error']['code'])
@@ -87,7 +87,7 @@ class Google_Http_REST
             $decoded = isset($decoded['data']) ? $decoded['data'] : $decoded;
 
             if ($response->getExpectedClass()) {
-                $class = $response->getExpectedClass();
+                $class   = $response->getExpectedClass();
                 $decoded = new $class($decoded);
             }
         }
@@ -102,14 +102,14 @@ class Google_Http_REST
      * @static
      * @param string $servicePath
      * @param string $restPath
-     * @param array $params
+     * @param array  $params
      * @return string $requestUrl
      */
     public static function createRequestUri($servicePath, $restPath, $params)
     {
-        $requestUrl = $servicePath . $restPath;
+        $requestUrl      = $servicePath . $restPath;
         $uriTemplateVars = [];
-        $queryVars = [];
+        $queryVars       = [];
         foreach ($params as $paramName => $paramSpec) {
             if ($paramSpec['type'] == 'boolean') {
                 $paramSpec['value'] = ($paramSpec['value']) ? 'true' : 'false';
@@ -131,7 +131,7 @@ class Google_Http_REST
 
         if (count($uriTemplateVars)) {
             $uriTemplateParser = new Google_Utils_URITemplate();
-            $requestUrl = $uriTemplateParser->parse($requestUrl, $uriTemplateVars);
+            $requestUrl        = $uriTemplateParser->parse($requestUrl, $uriTemplateVars);
         }
 
         if (count($queryVars)) {

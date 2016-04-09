@@ -10,9 +10,9 @@ class Ajde_Filter_Link extends Ajde_Filter
     public function __construct($collection, $link, $meta, $value)
     {
         $this->_collection = $collection;
-        $this->_link = $link;
-        $this->_meta = $meta;
-        $this->_value = $value;
+        $this->_link       = $link;
+        $this->_meta       = $meta;
+        $this->_value      = $value;
     }
 
     public function prepare(Ajde_Db_Table $table = null)
@@ -29,7 +29,7 @@ class Ajde_Filter_Link extends Ajde_Filter
         return [
             'join' => [
                 'arguments' => [$sql],
-                'values' => [spl_object_hash($this) => $this->_value]
+                'values'    => [spl_object_hash($this) => $this->_value]
             ]
         ];
     }

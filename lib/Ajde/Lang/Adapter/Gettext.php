@@ -18,7 +18,7 @@ class Ajde_Lang_Adapter_Gettext extends Ajde_Lang_Adapter_Abstract
 
         // Dammit you gettext, try the Zend_Translate approach here...
 
-        $this->_lang = Ajde_Lang::getInstance()->getLang();
+        $this->_lang    = Ajde_Lang::getInstance()->getLang();
         $this->_gettext = new Zend_Translate_Adapter_Gettext();
 
         $filename = LANG_DIR . $this->_lang . '/LC_MESSAGES/' . Config::get('ident') . '.mo';
@@ -92,8 +92,8 @@ class Ajde_Lang_Adapter_Gettext extends Ajde_Lang_Adapter_Abstract
 class Zend_Translate_Adapter_Gettext extends Ajde_Object_Standard
 {
     // Internal variables
-    private $_bigEndian = false;
-    private $_file = false;
+    private $_bigEndian   = false;
+    private $_file        = false;
     private $_adapterInfo = [];
     // private $_data        = array();
     // AJDE : Needs to be protected for inheritance of A_O_S
@@ -116,10 +116,10 @@ class Zend_Translate_Adapter_Gettext extends Ajde_Object_Standard
     /**
      * Load translation data (MO file reader)
      *
-     * @param  string $filename MO file to add, full path must be given for access
-     * @param  string $locale New Locale/Language to set, identical with locale identifier,
+     * @param  string $filename   MO file to add, full path must be given for access
+     * @param  string $locale     New Locale/Language to set, identical with locale identifier,
      *                            see Zend_Locale for more information
-     * @param  array $option OPTIONAL Options to use
+     * @param  array  $option     OPTIONAL Options to use
      * @throws Zend_Translation_Exception
      * @return array
      */
@@ -127,9 +127,9 @@ class Zend_Translate_Adapter_Gettext extends Ajde_Object_Standard
     // AJDE : We use this method directly, so it must be public
     public function _loadTranslationData($filename, $locale, array $options = [])
     {
-        $this->_data = [];
+        $this->_data      = [];
         $this->_bigEndian = false;
-        $this->_file = @fopen($filename, 'rb');
+        $this->_file      = @fopen($filename, 'rb');
         if (!$this->_file) {
             // AJDE : Changed to use Ajde_Exception
             // require_once 'Zend/Translate/Exception.php';
@@ -167,11 +167,11 @@ class Zend_Translate_Adapter_Gettext extends Ajde_Object_Standard
         $total = $input[1];
 
         // number of original strings
-        $input = $this->_readMOData(1);
+        $input   = $this->_readMOData(1);
         $OOffset = $input[1];
 
         // number of translation strings
-        $input = $this->_readMOData(1);
+        $input   = $this->_readMOData(1);
         $TOffset = $input[1];
 
         // fill the original table

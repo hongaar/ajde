@@ -7,12 +7,14 @@ class MediaCollection extends Ajde_Collection
         if (is_numeric($type)) {
             $this->addFilter(new Ajde_Filter_Where('mediatype', Ajde_Filter::FILTER_EQUALS, $type, $operator));
         } else {
-            $niceName = str_replace('_', ' ', $type);
+            $niceName  = str_replace('_', ' ', $type);
             $mediatype = new MediatypeModel();
             if ($mediatype->loadByField('name', $niceName)) {
-                $this->addFilter(new Ajde_Filter_Where('mediatype', Ajde_Filter::FILTER_EQUALS, $mediatype->getPK(), $operator));
+                $this->addFilter(new Ajde_Filter_Where('mediatype', Ajde_Filter::FILTER_EQUALS, $mediatype->getPK(),
+                    $operator));
             }
         }
+
         return $this;
     }
 }

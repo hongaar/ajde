@@ -33,7 +33,7 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
 
     private static function _getProviders()
     {
-        $return = [];
+        $return    = [];
         $providers = Config::get('transactionProviders');
         foreach ($providers as $provider) {
             $return[$provider] = Ajde_Shop_Transaction_Provider::getProvider($provider);
@@ -56,7 +56,7 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
     public function beforeInsert()
     {
         $this->secret = $this->generateSecret();
-        $this->ip = $_SERVER["REMOTE_ADDR"];
+        $this->ip     = $_SERVER["REMOTE_ADDR"];
 
         // Added
         $this->added = new Ajde_Db_Function("NOW()");
@@ -147,7 +147,7 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
     public function isSameAsCart(Ajde_Shop_Cart $cart)
     {
         $transactionItems = $this->getItems()->toArray();
-        $cartItems = $cart->getItems()->toArray();
+        $cartItems        = $cart->getItems()->toArray();
 
         $same = false;
 
@@ -156,7 +156,7 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
         };
 
         $transactionItems = array_map($transformer, $transactionItems);
-        $cartItems = array_map($transformer, $cartItems);
+        $cartItems        = array_map($transformer, $cartItems);
 
         sort($transactionItems);
         sort($cartItems);
@@ -179,12 +179,12 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
         // Add items
         /** @var Ajde_Shop_Cart_Item $item */
         foreach ($cart->getItems() as $cartItem) {
-            $item = new TransactionItemModel();
+            $item              = new TransactionItemModel();
             $item->transaction = $this->getPK();
-            $item->entity = $cartItem->entity;
-            $item->entity_id = $cartItem->entity_id;
-            $item->unitprice = $cartItem->unitprice;
-            $item->qty = $cartItem->qty;
+            $item->entity      = $cartItem->entity;
+            $item->entity_id   = $cartItem->entity_id;
+            $item->unitprice   = $cartItem->unitprice;
+            $item->qty         = $cartItem->qty;
             $item->insert();
         }
     }
@@ -196,7 +196,7 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
     public function getItems()
     {
         $collectionClass = $this->_itemModel;
-        $collection = new $collectionClass();
+        $collection      = new $collectionClass();
         $collection->addFilter(new Ajde_Filter_Where('transaction', Ajde_Filter::FILTER_EQUALS, $this->getPK()));
 
         return $collection;

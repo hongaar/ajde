@@ -4,13 +4,13 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 {
     const REDIRECT_HOMEPAGE = 1;
     const REDIRECT_REFFERER = 2;
-    const REDIRECT_SELF = 3;
+    const REDIRECT_SELF     = 3;
 
     const RESPONSE_TYPE_NOT_MODIFIED = 304;
     const RESPONSE_TYPE_UNAUTHORIZED = 401;
-    const RESPONSE_TYPE_FORBIDDEN = 403;
-    const RESPONSE_TYPE_NOTFOUND = 404;
-    const RESPONSE_TYPE_SERVERERROR = 500;
+    const RESPONSE_TYPE_FORBIDDEN    = 403;
+    const RESPONSE_TYPE_NOTFOUND     = 404;
+    const RESPONSE_TYPE_SERVERERROR  = 500;
 
     public static function redirectNotFound()
     {
@@ -36,7 +36,7 @@ class Ajde_Http_Response extends Ajde_Object_Standard
     public static function redirectForbidden()
     {
         self::dieOnCode(self::RESPONSE_TYPE_FORBIDDEN);
-        }
+    }
 
     public static function dieOnCode($code)
     {
@@ -65,7 +65,7 @@ class Ajde_Http_Response extends Ajde_Object_Standard
         ob_get_clean();
         // We start a mini app here to display the route
         // Copied from Ajde_Application
-        $route = new Ajde_Core_Route($route);
+        $route    = new Ajde_Core_Route($route);
         $document = Ajde_Document::fromRoute($route);
 
         // replace document in Ajde_Application
@@ -74,7 +74,7 @@ class Ajde_Http_Response extends Ajde_Object_Standard
         // replace route in Ajde_Application
         Ajde::app()->setRoute($route);
 
-        $controller = Ajde_Controller::fromRoute($route);
+        $controller   = Ajde_Controller::fromRoute($route);
         $actionResult = $controller->invoke();
         $document->setBody($actionResult);
         if (!$document->hasLayout()) {

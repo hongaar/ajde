@@ -27,7 +27,7 @@ require_once 'Google/Utils.php';
  */
 class Google_Http_MediaFileUpload
 {
-    const UPLOAD_MEDIA_TYPE = 'media';
+    const UPLOAD_MEDIA_TYPE     = 'media';
     const UPLOAD_MULTIPART_TYPE = 'multipart';
     const UPLOAD_RESUMABLE_TYPE = 'resumable';
 
@@ -62,11 +62,11 @@ class Google_Http_MediaFileUpload
     private $boundary;
 
     /**
-     * @param $mimeType string
-     * @param $data string The bytes you want to upload.
-     * @param $resumable bool
+     * @param      $mimeType  string
+     * @param      $data      string The bytes you want to upload.
+     * @param      $resumable bool
      * @param bool $chunkSize File will be uploaded in chunks of this many bytes.
-     * only used if resumable=True
+     *                        only used if resumable=True
      */
     public function __construct(
         Google_Client $client,
@@ -77,18 +77,18 @@ class Google_Http_MediaFileUpload
         $chunkSize = false,
         $boundary = false
     ) {
-        $this->client = $client;
-        $this->request = $request;
-        $this->mimeType = $mimeType;
-        $this->data = $data;
-        $this->size = strlen($this->data);
+        $this->client    = $client;
+        $this->request   = $request;
+        $this->mimeType  = $mimeType;
+        $this->data      = $data;
+        $this->size      = strlen($this->data);
         $this->resumable = $resumable;
         if (!$chunkSize) {
             $chunkSize = 256 * 1024;
         }
         $this->chunkSize = $chunkSize;
-        $this->progress = 0;
-        $this->boundary = $boundary;
+        $this->progress  = 0;
+        $this->boundary  = $boundary;
 
         // Process Media Request
         $this->process();
@@ -131,11 +131,11 @@ class Google_Http_MediaFileUpload
         }
 
         $lastBytePos = $this->progress + strlen($chunk) - 1;
-        $headers = [
-            'content-range' => "bytes $this->progress-$lastBytePos/$this->size",
-            'content-type' => $this->request->getRequestHeader('content-type'),
+        $headers     = [
+            'content-range'  => "bytes $this->progress-$lastBytePos/$this->size",
+            'content-type'   => $this->request->getRequestHeader('content-type'),
             'content-length' => $this->chunkSize,
-            'expect' => '',
+            'expect'         => '',
         ];
 
         $httpRequest = new Google_Http_Request(
@@ -145,13 +145,13 @@ class Google_Http_MediaFileUpload
             $headers,
             $chunk
         );
-        $response = $this->client->getIo()->makeRequest($httpRequest);
+        $response    = $this->client->getIo()->makeRequest($httpRequest);
         $response->setExpectedClass($this->request->getExpectedClass());
         $code = $response->getResponseHttpCode();
 
         if (308 == $code) {
             // Track the amount uploaded.
-            $range = explode('-', $response->getResponseHeader('range'));
+            $range          = explode('-', $response->getResponseHeader('range'));
             $this->progress = $range[1] + 1;
 
             // Allow for changing upload URLs.
@@ -175,7 +175,7 @@ class Google_Http_MediaFileUpload
      */
     private function process()
     {
-        $postBody = false;
+        $postBody    = false;
         $contentType = false;
 
         $meta = $this->request->getPostBody();
@@ -190,18 +190,18 @@ class Google_Http_MediaFileUpload
 
         if (self::UPLOAD_RESUMABLE_TYPE == $uploadType) {
             $contentType = $mimeType;
-            $postBody = is_string($meta) ? $meta : json_encode($meta);
+            $postBody    = is_string($meta) ? $meta : json_encode($meta);
         } else {
             if (self::UPLOAD_MEDIA_TYPE == $uploadType) {
                 $contentType = $mimeType;
-                $postBody = $this->data;
+                $postBody    = $this->data;
             } else {
                 if (self::UPLOAD_MULTIPART_TYPE == $uploadType) {
                     // This is a multipart/related upload.
-                    $boundary = $this->boundary ? $this->boundary : mt_rand();
-                    $boundary = str_replace('"', '', $boundary);
+                    $boundary    = $this->boundary ? $this->boundary : mt_rand();
+                    $boundary    = str_replace('"', '', $boundary);
                     $contentType = 'multipart/related; boundary=' . $boundary;
-                    $related = "--$boundary\r\n";
+                    $related     = "--$boundary\r\n";
                     $related .= "Content-Type: application/json; charset=UTF-8\r\n";
                     $related .= "\r\n" . json_encode($meta) . "\r\n";
                     $related .= "--$boundary\r\n";
@@ -225,7 +225,7 @@ class Google_Http_MediaFileUpload
     private function transformToUploadUrl()
     {
         $base = $this->request->getBasePath();
-        $url = str_replace($base, $base . "/upload", $this->request->getBaseUrl());
+        $url  = str_replace($base, $base . "/upload", $this->request->getBaseUrl());
         $this->request->setBaseUrl($url);
     }
 
@@ -255,21 +255,21 @@ class Google_Http_MediaFileUpload
     private function getResumeUri()
     {
         $result = null;
-        $body = $this->request->getPostBody();
+        $body   = $this->request->getPostBody();
         if ($body) {
             $headers = [
-                'content-type' => 'application/json; charset=UTF-8',
-                'content-length' => Google_Utils::getStrLen($body),
-                'x-upload-content-type' => $this->mimeType,
+                'content-type'            => 'application/json; charset=UTF-8',
+                'content-length'          => Google_Utils::getStrLen($body),
+                'x-upload-content-type'   => $this->mimeType,
                 'x-upload-content-length' => $this->size,
-                'expect' => '',
+                'expect'                  => '',
             ];
             $this->request->setRequestHeaders($headers);
         }
 
         $response = $this->client->getIo()->makeRequest($this->request);
         $location = $response->getResponseHeader('location');
-        $code = $response->getResponseHttpCode();
+        $code     = $response->getResponseHttpCode();
 
         if (200 == $code && true == $location) {
             return $location;

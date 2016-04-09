@@ -293,7 +293,7 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
      */
     public function addCrossReferenceTableConstraint($field, $value)
     {
-        $constraints = ($this->has('crossRefConstraints') ? $this->get('crossRefConstraints') : []);
+        $constraints         = ($this->has('crossRefConstraints') ? $this->get('crossRefConstraints') : []);
         $constraints[$field] = $value;
 
         return $this->_set('crossRefConstraints', $constraints);
@@ -435,7 +435,7 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
      * Shows this field only when another field has a certain value
      *
      * @param string $field
-     * @param mixed $value
+     * @param mixed  $value
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function addShowOnlyWhen($field, $value)
@@ -457,7 +457,7 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
      * Sorts this field accoding to a dynamic sorting rule
      *
      * @param string $field
-     * @param mixed $value
+     * @param mixed  $value
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function addDynamicSort($field, $value)
@@ -505,7 +505,7 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
      */
     public function addTableField($field)
     {
-        $fields = ($this->has('tableFields') ? $this->get('tableFields') : []);
+        $fields   = ($this->has('tableFields') ? $this->get('tableFields') : []);
         $fields[] = ['name' => $field, 'type' => 'text'];
 
         return $this->_set('tableFields', $fields);
@@ -519,7 +519,7 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
      */
     public function addTableFileField($field, $saveDir)
     {
-        $fields = ($this->has('tableFields') ? $this->get('tableFields') : []);
+        $fields   = ($this->has('tableFields') ? $this->get('tableFields') : []);
         $fields[] = ['name' => $field, 'type' => 'file', 'saveDir' => $saveDir];
 
         return $this->_set('tableFields', $fields);
@@ -533,7 +533,7 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
      */
     public function addSortField($field)
     {
-        $fields = ($this->has('tableFields') ? $this->get('tableFields') : []);
+        $fields   = ($this->has('tableFields') ? $this->get('tableFields') : []);
         $fields[] = ['name' => $field, 'type' => 'sort'];
         $this->setSortBy($field);
 
@@ -548,7 +548,7 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
      */
     public function addMetaField($metaId, $function = false)
     {
-        $fields = ($this->has('tableFields') ? $this->get('tableFields') : []);
+        $fields   = ($this->has('tableFields') ? $this->get('tableFields') : []);
         $fields[] = ['name' => $metaId, 'type' => 'meta', 'function' => $function];
 
         return $this->_set('tableFields', $fields);
@@ -574,7 +574,7 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
      */
     public function addPrefillField($field, $value)
     {
-        $fields = ($this->has('prefillField') ? $this->get('prefillField') : []);
+        $fields         = ($this->has('prefillField') ? $this->get('prefillField') : []);
         $fields[$field] = $value;
 
         return $this->_set('prefillField', $fields);

@@ -3,9 +3,9 @@
 class Ajde_Template extends Ajde_Object_Standard
 {
     protected $_contents = null;
-    protected $_table = [];
+    protected $_table    = [];
 
-    public function  __construct($base, $action, $format = 'html')
+    public function __construct($base, $action, $format = 'html')
     {
         $this->set('base', $base);
         $this->set('action', $action);
@@ -22,7 +22,7 @@ class Ajde_Template extends Ajde_Object_Standard
             Ajde::routingError($exception);
         }
         $className = 'Ajde_Template_Parser_' . $fileInfo['parser'];
-        $parser = new $className($this);
+        $parser    = new $className($this);
 
         $this->setFilename($fileInfo['filename']);
         $this->setParser($parser);
@@ -68,11 +68,11 @@ class Ajde_Template extends Ajde_Object_Standard
             APP_DIR,
             CORE_DIR
         ];
-        $fileNamePatterns = [
+        $fileNamePatterns  = [
             $action . '.' . $format,
             $action
         ];
-        $fileTypes = [
+        $fileTypes         = [
             'phtml' => 'Phtml',
             'xhtml' => 'Xhtml'
         ];

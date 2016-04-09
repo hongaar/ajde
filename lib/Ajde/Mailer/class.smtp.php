@@ -7,9 +7,9 @@
  * @category  PHP
  * @package   PHPMailer
  * @link      https://github.com/PHPMailer/PHPMailer/
- * @author Marcus Bointon (coolbru) <phpmailer@synchromedia.co.uk>
- * @author Jim Jagielski (jimjag) <jimjag@gmail.com>
- * @author Andy Prevost (codeworxtech) <codeworxtech@users.sourceforge.net>
+ * @author    Marcus Bointon (coolbru) <phpmailer@synchromedia.co.uk>
+ * @author    Jim Jagielski (jimjag) <jimjag@gmail.com>
+ * @author    Andy Prevost (codeworxtech) <codeworxtech@users.sourceforge.net>
  * @copyright 2013 Marcus Bointon
  * @copyright 2004 - 2008 Andy Prevost
  * @copyright 2010 - 2012 Jim Jagielski
@@ -53,7 +53,7 @@ class SMTP
      *
      * @type string
      * @deprecated This should be a constant
-     * @see SMTP::VERSION
+     * @see        SMTP::VERSION
      */
     public $Version = '5.2.7';
 
@@ -62,7 +62,7 @@ class SMTP
      *
      * @type int
      * @deprecated This is only ever ued as default value, so should be a constant
-     * @see SMTP::DEFAULT_SMTP_PORT
+     * @see        SMTP::DEFAULT_SMTP_PORT
      */
     public $SMTP_PORT = 25;
 
@@ -71,7 +71,7 @@ class SMTP
      *
      * @type string
      * @deprecated Use the class constant instead
-     * @see SMTP::CRLF
+     * @see        SMTP::CRLF
      */
     public $CRLF = "\r\n";
 
@@ -154,7 +154,7 @@ class SMTP
     public function __construct()
     {
         $this->smtp_conn = 0;
-        $this->error = null;
+        $this->error     = null;
         $this->helo_rply = null;
 
         $this->do_debug = 0;
@@ -191,10 +191,10 @@ class SMTP
     /**
      * Connect to an SMTP server.
      *
-     * @param string $host SMTP server IP or host name
-     * @param int $port The port number to connect to
-     * @param int $timeout How long to wait for the connection to open
-     * @param array $options An array of options for stream_context_create()
+     * @param string $host    SMTP server IP or host name
+     * @param int    $port    The port number to connect to
+     * @param int    $timeout How long to wait for the connection to open
+     * @param array  $options An array of options for stream_context_create()
      * @access public
      * @return bool
      */
@@ -220,8 +220,8 @@ class SMTP
             $this->edebug('Connection: opening');
         }
 
-        $errno = 0;
-        $errstr = '';
+        $errno          = 0;
+        $errstr         = '';
         $socket_context = stream_context_create($options);
         //Suppress errors; connection failures are handled at a higher level
         $this->smtp_conn = @stream_socket_client(
@@ -236,8 +236,8 @@ class SMTP
         // Verify we connected properly
         if (empty($this->smtp_conn)) {
             $this->error = [
-                'error' => 'Failed to connect to server',
-                'errno' => $errno,
+                'error'  => 'Failed to connect to server',
+                'errno'  => $errno,
                 'errstr' => $errstr
             ];
             if ($this->do_debug >= 1) {
@@ -301,11 +301,11 @@ class SMTP
      * Perform SMTP authentication.
      * Must be run after hello().
      *
-     * @see hello()
-     * @param string $username The user name
-     * @param string $password The password
-     * @param string $authtype The auth type (PLAIN, LOGIN, NTLM, CRAM-MD5)
-     * @param string $realm The auth realm for NTLM
+     * @see    hello()
+     * @param string $username    The user name
+     * @param string $password    The password
+     * @param string $authtype    The auth type (PLAIN, LOGIN, NTLM, CRAM-MD5)
+     * @param string $realm       The auth realm for NTLM
      * @param string $workstation The auth workstation for NTLM
      * @access public
      * @return bool True if successfully authenticated.
@@ -359,7 +359,7 @@ class SMTP
                  * PROTOCOL Docs http://curl.haxx.se/rfc/ntlm.html#ntlmSmtpAuthentication
                  */
                 require_once 'extras/ntlm_sasl_client.php';
-                $temp = new stdClass();
+                $temp        = new stdClass();
                 $ntlm_client = new ntlm_sasl_client_class;
                 //Check that functions are available
                 if (!$ntlm_client->Initialize($temp)) {
@@ -389,7 +389,7 @@ class SMTP
                 //msg2
                 $challenge = substr($this->last_reply, 3);
                 $challenge = base64_decode($challenge);
-                $ntlm_res = $ntlm_client->NTLMResponse(
+                $ntlm_res  = $ntlm_client->NTLMResponse(
                     substr($challenge, 24, 8),
                     $password
                 );
@@ -429,7 +429,7 @@ class SMTP
      * in case that function is not available
      *
      * @param string $data The data to hash
-     * @param string $key The key to hash with
+     * @param string $key  The key to hash with
      * @access protected
      * @return string
      */
@@ -451,9 +451,9 @@ class SMTP
         if (strlen($key) > $b) {
             $key = pack('H*', md5($key));
         }
-        $key = str_pad($key, $b, chr(0x00));
-        $ipad = str_pad('', $b, chr(0x36));
-        $opad = str_pad('', $b, chr(0x5c));
+        $key    = str_pad($key, $b, chr(0x00));
+        $ipad   = str_pad('', $b, chr(0x36));
+        $opad   = str_pad('', $b, chr(0x5c));
         $k_ipad = $key ^ $ipad;
         $k_opad = $key ^ $opad;
 
@@ -492,13 +492,13 @@ class SMTP
      * Close the socket and clean up the state of the class.
      * Don't use this function without first trying to use QUIT.
      *
-     * @see quit()
+     * @see    quit()
      * @access public
      * @return void
      */
     public function close()
     {
-        $this->error = null; // so there is no confusion
+        $this->error     = null; // so there is no confusion
         $this->helo_rply = null;
         if (!empty($this->smtp_conn)) {
             // close the connection and cleanup
@@ -543,7 +543,7 @@ class SMTP
         // Normalize the line breaks before exploding
         $msg_data = str_replace("\r\n", "\n", $msg_data);
         $msg_data = str_replace("\r", "\n", $msg_data);
-        $lines = explode("\n", $msg_data);
+        $lines    = explode("\n", $msg_data);
 
         /* We need to find a good way to determine if headers are
          * in the msg_data or if it is a straight msg body
@@ -554,7 +554,7 @@ class SMTP
          * headers.
          */
 
-        $field = substr($lines[0], 0, strpos($lines[0], ':'));
+        $field      = substr($lines[0], 0, strpos($lines[0], ':'));
         $in_headers = false;
         if (!empty($field) && !strstr($field, ' ')) {
             $in_headers = true;
@@ -574,12 +574,12 @@ class SMTP
 
                 // Patch to fix DOS attack
                 if (!$pos) {
-                    $pos = $max_line_length - 1;
+                    $pos         = $max_line_length - 1;
                     $lines_out[] = substr($line, 0, $pos);
-                    $line = substr($line, $pos);
+                    $line        = substr($line, $pos);
                 } else {
                     $lines_out[] = substr($line, 0, $pos);
-                    $line = substr($line, $pos + 1);
+                    $line        = substr($line, $pos + 1);
                 }
 
                 /* If processing headers add a LWSP-char to the front of new line
@@ -633,15 +633,15 @@ class SMTP
      * Send an SMTP HELO or EHLO command.
      * Low-level implementation used by hello()
      *
-     * @see hello()
+     * @see    hello()
      * @param string $hello The HELO string
-     * @param string $host The hostname to say we are
+     * @param string $host  The hostname to say we are
      * @access protected
      * @return bool
      */
     protected function sendHello($hello, $host)
     {
-        $noerror = $this->sendCommand($hello, $hello . ' ' . $host, 250);
+        $noerror         = $this->sendCommand($hello, $hello . ' ' . $host, 250);
         $this->helo_rply = $this->last_reply;
 
         return $noerror;
@@ -682,7 +682,7 @@ class SMTP
     public function quit($close_on_error = true)
     {
         $noerror = $this->sendCommand('QUIT', 'QUIT', 221);
-        $e = $this->error; //Save any error
+        $e       = $this->error; //Save any error
         if ($noerror or $close_on_error) {
             $this->close();
             $this->error = $e; //Restore any error from the quit command
@@ -726,9 +726,9 @@ class SMTP
     /**
      * Send a command to an SMTP server and check its return code.
      *
-     * @param string $command The command name - not sent to the server
-     * @param string $commandstring The actual command to send
-     * @param int|array $expect One or more expected integer success codes
+     * @param string    $command       The command name - not sent to the server
+     * @param string    $commandstring The actual command to send
+     * @param int|array $expect        One or more expected integer success codes
      * @access protected
      * @return bool True on success.
      */
@@ -744,7 +744,7 @@ class SMTP
         $this->client_send($commandstring . self::CRLF);
 
         $reply = $this->get_lines();
-        $code = substr($reply, 0, 3);
+        $code  = substr($reply, 0, 3);
 
         if ($this->do_debug >= 2) {
             $this->edebug('SERVER -> CLIENT: ' . $reply);
@@ -752,10 +752,10 @@ class SMTP
 
         if (!in_array($code, (array)$expect)) {
             $this->last_reply = null;
-            $this->error = [
-                "error" => "$command command failed",
+            $this->error      = [
+                "error"     => "$command command failed",
                 "smtp_code" => $code,
-                "detail" => substr($reply, 4)
+                "detail"    => substr($reply, 4)
             ];
             if ($this->do_debug >= 1) {
                 $this->edebug(
@@ -767,7 +767,7 @@ class SMTP
         }
 
         $this->last_reply = $reply;
-        $this->error = null;
+        $this->error      = null;
 
         return true;
     }
@@ -887,7 +887,7 @@ class SMTP
      */
     protected function get_lines()
     {
-        $data = '';
+        $data    = '';
         $endtime = 0;
         // If the connection is bad, give up now
         if (!is_resource($this->smtp_conn)) {

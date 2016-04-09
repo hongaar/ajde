@@ -64,7 +64,7 @@ class Google_Utils
     public static function getStrLen($str)
     {
         $strlenVar = strlen($str);
-        $d = $ret = 0;
+        $d         = $ret = 0;
         for ($count = 0; $count < $strlenVar; ++$count) {
             $ordinalValue = ord($str{$ret});
             switch (true) {

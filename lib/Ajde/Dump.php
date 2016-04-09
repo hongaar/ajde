@@ -7,7 +7,7 @@ class Ajde_Dump extends Ajde_Object_Static
 
     public static function dump($var, $expand = true)
     {
-        $i = 0;
+        $i    = 0;
         $line = null;
         foreach (debug_backtrace() as $item) {
             try {
@@ -18,7 +18,7 @@ class Ajde_Dump extends Ajde_Object_Static
                     !empty($item['type']) ? $item['type'] : '::',
                     !empty($item['function']) ? $item['function'] : '&lt;unknown function&gt;',
                     $line);
-                $line = issetor($item['line'], null);
+                $line   = issetor($item['line'], null);
             } catch (Exception $e) {
             }
 

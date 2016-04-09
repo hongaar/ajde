@@ -9,12 +9,12 @@ class TransactionItemModel extends Ajde_Model
     public function getEntity()
     {
         $entity = $this->get('entity_id');
-        if (!$entity instanceof Ajde_Model)
-        {
-            $id = $entity;
+        if (!$entity instanceof Ajde_Model) {
+            $id     = $entity;
             $entity = $this->_getEntityModel($this->get('entity'));
             $entity->loadByPK($id);
         }
+
         return $entity;
     }
 
@@ -25,7 +25,8 @@ class TransactionItemModel extends Ajde_Model
      */
     protected function _getEntityModel($entityName)
     {
-        $entityModelName = ucfirst((string) $entityName) . 'Model';
+        $entityModelName = ucfirst((string)$entityName) . 'Model';
+
         return new $entityModelName();
     }
 }

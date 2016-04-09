@@ -18,9 +18,9 @@ class Ajde_Filter_MatchGroup extends Ajde_Filter
     public function prepare(Ajde_Db_Table $table = null)
     {
         $sqlWhere = '';
-        $select = [];
-        $first = true;
-        $values = [];
+        $select   = [];
+        $first    = true;
+        $values   = [];
         foreach ($this->_filters as $filter) {
             $prepared = $filter->prepare($table);
             foreach ($prepared as $queryPart => $v) {
@@ -43,9 +43,9 @@ class Ajde_Filter_MatchGroup extends Ajde_Filter
         }
 
         return [
-            'where' => [
+            'where'  => [
                 'arguments' => ['(' . $sqlWhere . ')', $this->_operator],
-                'values' => $values
+                'values'    => $values
             ],
             'select' => [
                 'arguments' => [implode(', ', $select)]

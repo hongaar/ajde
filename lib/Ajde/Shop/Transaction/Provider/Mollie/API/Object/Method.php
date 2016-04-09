@@ -33,10 +33,10 @@
  */
 class Mollie_API_Object_Method
 {
-    const IDEAL = "ideal";
+    const IDEAL       = "ideal";
     const PAYSAFECARD = "paysafecard";
-    const CREDITCARD = "creditcard";
-    const MISTERCASH = "mistercash";
+    const CREDITCARD  = "creditcard";
+    const MISTERCASH  = "mistercash";
 
     /**
      * Id of the payment method.

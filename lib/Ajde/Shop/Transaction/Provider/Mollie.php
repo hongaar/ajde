@@ -28,13 +28,13 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
         $mollie->setApiKey($this->getApiKey());
 
         $order_id = $transaction->secret;
-        $data = [
-            "amount" => $transaction->payment_amount,
+        $data     = [
+            "amount"      => $transaction->payment_amount,
             "description" => isset($description) ? $description : Config::get('sitename') . ': ' . Ajde_Component_String::makePlural($transaction->shipment_itemsqty,
                     'item'),
             "redirectUrl" => Config::get('site_root') . $this->returnRoute . 'mollie_' . $this->getMethod() . '.html?order_id=' . $order_id,
-            "method" => $this->getMethod(),
-            "metadata" => [
+            "method"      => $this->getMethod(),
+            "metadata"    => [
                 "order_id" => $order_id,
             ],
         ];
@@ -63,11 +63,11 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
         $mollie->setApiKey($this->getApiKey());
 
         $transaction = new TransactionModel();
-        $changed = false;
+        $changed     = false;
 
         // see if we are here for the webhook or user return url
         $mollie_id = Ajde::app()->getRequest()->getPostParam('id', false); // from webhook
-        $order_id = Ajde::app()->getRequest()->getParam('order_id', false); // from user request
+        $order_id  = Ajde::app()->getRequest()->getParam('order_id', false); // from user request
 
         if (!$mollie_id && $order_id) {
             // load from order_id
@@ -83,7 +83,7 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
             if ($mollie_id) {
                 // laod from mollie transaction id
                 try {
-                    $payment = $mollie->payments->get($mollie_id);
+                    $payment  = $mollie->payments->get($mollie_id);
                     $order_id = $payment->metadata->order_id;
                     $transaction->loadByField('secret', $order_id);
                 } catch (Mollie_API_Exception $e) {
@@ -97,8 +97,8 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
             Ajde_Log::log('Could not find transaction for Mollie payment for mollie id ' . $mollie_id . ' and transaction secret ' . $order_id);
 
             return [
-                'success' => false,
-                'changed' => $changed,
+                'success'     => false,
+                'changed'     => $changed,
                 'transaction' => $transaction
             ];
         }
@@ -112,7 +112,7 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
         }
 
         // save details
-        $details =
+        $details                      =
             'PAYMENT STATUS: ' . (string)$payment->status . PHP_EOL .
             'PAYMENT AMOUNT: ' . (string)$payment->amount . PHP_EOL .
             'PAYMENT AT: ' . (string)$payment->paidDatetime . PHP_EOL .
@@ -157,8 +157,8 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
         }
 
         return [
-            'success' => $paid,
-            'changed' => $changed,
+            'success'     => $paid,
+            'changed'     => $changed,
             'transaction' => $transaction
         ];
     }

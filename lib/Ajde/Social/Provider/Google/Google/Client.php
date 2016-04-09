@@ -153,7 +153,7 @@ class Google_Client
     public function setAuthConfig($json)
     {
         $data = json_decode($json);
-        $key = isset($data->installed) ? 'installed' : 'web';
+        $key  = isset($data->installed) ? 'installed' : 'web';
         if (!isset($data->$key)) {
             throw new Google_Exception("Invalid client secret JSON file.");
         }
@@ -198,8 +198,8 @@ class Google_Client
      * or Google_Client#getAccessToken().
      *
      * @param string $accessToken JSON encoded string containing in the following format:
-     * {"access_token":"TOKEN", "refresh_token":"TOKEN", "token_type":"Bearer",
-     *  "expires_in":3600, "id_token":"TOKEN", "created":1320790426}
+     *                            {"access_token":"TOKEN", "refresh_token":"TOKEN", "token_type":"Bearer",
+     *                            "expires_in":3600, "id_token":"TOKEN", "created":1320790426}
      */
     public function setAccessToken($accessToken)
     {
@@ -293,8 +293,8 @@ class Google_Client
 
     /**
      * @param string $accessType Possible values for access_type include:
-     *  {@code "offline"} to request offline access from the user. (This is the default value)
-     *  {@code "online"} to request online access from the user.
+     *                           {@code "offline"} to request offline access from the user. (This is the default value)
+     *                           {@code "online"} to request online access from the user.
      */
     public function setAccessType($accessType)
     {
@@ -303,8 +303,8 @@ class Google_Client
 
     /**
      * @param string $approvalPrompt Possible values for approval_prompt include:
-     *  {@code "force"} to force the approval UI to appear. (This is the default value)
-     *  {@code "auto"} to request auto-approval when possible.
+     *                               {@code "force"} to force the approval UI to appear. (This is the default value)
+     *                               {@code "auto"} to request auto-approval when possible.
      */
     public function setApprovalPrompt($approvalPrompt)
     {
@@ -410,7 +410,7 @@ class Google_Client
      * @throws Google_Auth_Exception
      * @param string|null $token The token (id_token) that should be verified.
      * @return Google_Auth_LoginTicket Returns an apiLoginTicket if the verification was
-     * successful.
+     *                           successful.
      */
     public function verifyIdToken($token = null)
     {
@@ -420,8 +420,8 @@ class Google_Client
     /**
      * Verify a JWT that was signed with your own certificates.
      *
-     * @param $jwt the token
-     * @param $certs array of certificates
+     * @param $jwt               the token
+     * @param $certs             array of certificates
      * @param $required_audience the expected consumer of the token
      * @param [$issuer] the expected issues, defaults to Google
      * @param [$max_expiry] the max lifetime of a token, defaults to MAX_TOKEN_LIFETIME_SECS
@@ -429,7 +429,7 @@ class Google_Client
      */
     public function verifySignedJwt($id_token, $cert_location, $audience, $issuer, $max_expiry = null)
     {
-        $auth = new Google_Auth_OAuth2($this);
+        $auth  = new Google_Auth_OAuth2($this);
         $certs = $auth->retrieveCertsFromLocation($cert_location);
 
         return $auth->verifySignedJwtWithCerts($id_token, $certs, $audience, $issuer, $max_expiry);
@@ -450,7 +450,7 @@ class Google_Client
      * Set this before you call authenticate() though!
      *
      * @param array $scopes , ie: array('https://www.googleapis.com/auth/plus.me',
-     * 'https://www.googleapis.com/auth/moderator')
+     *                      'https://www.googleapis.com/auth/moderator')
      */
     public function setScopes($scopes)
     {
@@ -473,7 +473,7 @@ class Google_Client
      * by making multiple requests in one connection.
      *
      * @param boolean $useBatch True if the batch support should
-     * be enabled. Defaults to False.
+     *                          be enabled. Defaults to False.
      */
     public function setUseBatch($useBatch)
     {
@@ -508,7 +508,7 @@ class Google_Client
     public function getAuth()
     {
         if (!isset($this->auth)) {
-            $class = $this->config->getAuthClass();
+            $class      = $this->config->getAuthClass();
             $this->auth = new $class($this);
         }
 
@@ -521,7 +521,7 @@ class Google_Client
     public function getIo()
     {
         if (!isset($this->io)) {
-            $class = $this->config->getIoClass();
+            $class    = $this->config->getIoClass();
             $this->io = new $class($this);
         }
 
@@ -534,7 +534,7 @@ class Google_Client
     public function getCache()
     {
         if (!isset($this->cache)) {
-            $class = $this->config->getCacheClass();
+            $class       = $this->config->getCacheClass();
             $this->cache = new $class($this);
         }
 
@@ -545,7 +545,7 @@ class Google_Client
      * Retrieve custom configuration for a specific class.
      *
      * @param $class string|object - class or instance of class to retrieve
-     * @param $key string optional - key to retrieve
+     * @param $key   string optional - key to retrieve
      */
     public function getClassConfig($class, $key = null)
     {
@@ -561,9 +561,9 @@ class Google_Client
      * $config->setClassConfig('Google_Cache_File',
      *   array('directory' => '/tmp/cache'));
      *
-     * @param $class The class name for the configuration
+     * @param $class  The class name for the configuration
      * @param $config string key or an array of configuration values
-     * @param $value optional - if $config is a key, the value
+     * @param $value  optional - if $config is a key, the value
      *
      */
     public function setClassConfig($class, $config, $value = null)

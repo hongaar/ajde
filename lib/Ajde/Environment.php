@@ -41,6 +41,7 @@ class Ajde_Environment extends Ajde_Object_Singleton
     public static function getInstance()
     {
         static $instance;
+
         return $instance === null ? $instance = new self : $instance;
     }
 
@@ -52,6 +53,7 @@ class Ajde_Environment extends Ajde_Object_Singleton
     public static function current()
     {
         $instance = self::getInstance();
+
         return $instance->environment();
     }
 

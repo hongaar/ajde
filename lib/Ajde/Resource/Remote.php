@@ -3,7 +3,7 @@
 class Ajde_Resource_Remote extends Ajde_Resource
 {
 
-    public function  __construct($type, $url, $arguments = '')
+    public function __construct($type, $url, $arguments = '')
     {
         $this->setUrl($url);
         $this->setArguments($arguments);

@@ -12,9 +12,9 @@ class Ajde_Component_Css extends Ajde_Component_Resource
     protected function _init()
     {
         return [
-            'action' => 'local',
-            'filename' => 'public',
-            'url' => 'remote',
+            'action'     => 'local',
+            'filename'   => 'public',
+            'url'        => 'remote',
             'fontFamily' => 'font'
         ];
     }
@@ -49,7 +49,7 @@ class Ajde_Component_Css extends Ajde_Component_Resource
                 );
                 break;
             case 'font':
-                $url = Ajde_Resource_GWebFont::getUrl(
+                $url      = Ajde_Resource_GWebFont::getUrl(
                     $this->attributes['fontFamily'],
                     issetor($this->attributes['fontWeight'], [400]),
                     issetor($this->attributes['fontSubset'], ['latin'])

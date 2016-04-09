@@ -6,7 +6,7 @@ class Ajde_Model_Validator extends Ajde_Object_Standard
      *
      * @var Ajde_Model
      */
-    protected $_model = null;
+    protected $_model  = null;
     protected $_errors = null;
 
     public function __construct(Ajde_Model $model)
@@ -70,7 +70,7 @@ class Ajde_Model_Validator extends Ajde_Object_Standard
 
     public function validate($options = [])
     {
-        $fieldsArray = $this->_model->getTable()->getFieldProperties();
+        $fieldsArray  = $this->_model->getTable()->getFieldProperties();
         $fieldOptions = [];
 
         // Add all model fields
@@ -87,7 +87,7 @@ class Ajde_Model_Validator extends Ajde_Object_Standard
             $fieldOptions[$fieldName] = $fieldProperties;
         }
 
-        $valid = true;
+        $valid  = true;
         $errors = [];
         $this->_initValidators($fieldOptions);
 
@@ -111,7 +111,7 @@ class Ajde_Model_Validator extends Ajde_Object_Standard
                             $errors[$fieldName] = [];
                         }
                         $errors[$fieldName][] = $result['error'];
-                        $valid = false;
+                        $valid                = false;
                     }
                 }
             }

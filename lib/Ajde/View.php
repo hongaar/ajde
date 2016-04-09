@@ -9,7 +9,7 @@ class Ajde_View extends Ajde_Template
      */
     public static function fromController(Ajde_Controller $controller)
     {
-        $base = MODULE_DIR . $controller->getModule() . '/';
+        $base   = MODULE_DIR . $controller->getModule() . '/';
         $action = $controller->getRoute()->getController() ?
             $controller->getRoute()->getController() . '/' . $controller->getAction() :
             $controller->getAction();
@@ -28,7 +28,7 @@ class Ajde_View extends Ajde_Template
         if (!$route instanceof Ajde_Core_Route) {
             $route = new Ajde_Core_Route($route);
         }
-        $base = MODULE_DIR . $route->getModule() . '/';
+        $base   = MODULE_DIR . $route->getModule() . '/';
         $action = $route->getController() ?
             $route->getController() . '/' . $route->getAction() :
             $route->getAction();

@@ -41,7 +41,7 @@ class Google_Cache_File extends Google_Cache_Abstract
     public function get($key, $expiration = false)
     {
         $storageFile = $this->getCacheFile($key);
-        $data = false;
+        $data        = false;
 
         if (!file_exists($storageFile)) {
             return false;
@@ -71,7 +71,7 @@ class Google_Cache_File extends Google_Cache_Abstract
         if ($this->acquireWriteLock($storageFile)) {
             // We serialize the whole request object, since we don't only want the
             // responseContent but also the postBody used, headers, size, etc.
-            $data = serialize($value);
+            $data   = serialize($value);
             $result = file_put_contents($storageFile, $data);
             $this->unlock($storageFile);
         }
@@ -127,9 +127,9 @@ class Google_Cache_File extends Google_Cache_Abstract
 
     private function acquireLock($type, $storageFile)
     {
-        $mode = $type == LOCK_EX ? "w" : "r";
+        $mode     = $type == LOCK_EX ? "w" : "r";
         $this->fh = fopen($storageFile, $mode);
-        $count = 0;
+        $count    = 0;
         while (!flock($this->fh, $type | LOCK_NB)) {
             // Sleep for 10ms.
             usleep(10000);

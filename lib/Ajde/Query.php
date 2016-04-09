@@ -2,35 +2,35 @@
 
 class Ajde_Query extends Ajde_Object_Standard
 {
-    const ORDER_ASC = 'ASC';
+    const ORDER_ASC  = 'ASC';
     const ORDER_DESC = 'DESC';
 
     const OP_AND = 'AND';
-    const OP_OR = 'OR';
+    const OP_OR  = 'OR';
 
     const JOIN_INNER = 'INNER';
-    const JOIN_LEFT = 'LEFT';
+    const JOIN_LEFT  = 'LEFT';
 
-    public $select = [];
+    public $select   = [];
     public $distinct = false;
-    public $from = [];
-    public $where = [];
-    public $having = [];
-    public $join = [];
-    public $groupBy = [];
-    public $orderBy = [];
-    public $limit = ['start' => null, 'count' => null];
+    public $from     = [];
+    public $where    = [];
+    public $having   = [];
+    public $join     = [];
+    public $groupBy  = [];
+    public $orderBy  = [];
+    public $limit    = ['start' => null, 'count' => null];
 
     public function reset()
     {
-        $this->select = [];
-        $this->from = [];
-        $this->where = [];
-        $this->having = [];
-        $this->join = [];
+        $this->select  = [];
+        $this->from    = [];
+        $this->where   = [];
+        $this->having  = [];
+        $this->join    = [];
         $this->groupBy = [];
         $this->orderBy = [];
-        $this->limit = ['start' => null, 'count' => null];
+        $this->limit   = ['start' => null, 'count' => null];
     }
 
     public function addSelect($select)
@@ -85,7 +85,7 @@ class Ajde_Query extends Ajde_Object_Standard
 
     public function getSql()
     {
-        $sql = '';
+        $sql      = '';
         $distinct = $this->distinct ? 'DISTINCT ' : '';
 
         // SELECT

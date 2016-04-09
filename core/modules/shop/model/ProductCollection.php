@@ -9,9 +9,10 @@ class ProductCollection extends Ajde_Collection
 
     public function load()
     {
-        if (Ajde::app()->getRequest()->getParam('filterPublished', false) ==  true) {
+        if (Ajde::app()->getRequest()->getParam('filterPublished', false) == true) {
             $this->filterPublished();
         }
+
         return parent::load();
     }
 }

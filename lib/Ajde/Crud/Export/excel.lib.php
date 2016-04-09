@@ -3,7 +3,7 @@
 /**
  * Simple excel writer class with no external dependencies, drop it in and have fun
  *
- * @author Matt Nowack
+ * @author  Matt Nowack
  * @license Unlicensed
  * @version 1.0
  */
@@ -38,9 +38,9 @@ class Excel
     function __construct($title)
     {
         $this->title = $title;
-        $this->col = 0;
-        $this->row = 0;
-        $this->data = '';
+        $this->col   = 0;
+        $this->row   = 0;
+        $this->data  = '';
         $this->bofMarker();
     }
 

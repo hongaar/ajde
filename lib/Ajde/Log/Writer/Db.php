@@ -17,16 +17,16 @@ class Ajde_Log_Writer_Db extends Ajde_Log_Writer_Abstract
 
         $log = new LogModel();
         $log->populate([
-            'message' => $message,
-            'channel' => $channel,
-            'level' => $level,
+            'message'     => $message,
+            'channel'     => $channel,
+            'level'       => $level,
             'description' => $description,
-            'code' => $code,
-            'trace' => $trace,
-            'request' => self::getRequest(),
-            'user_agent' => self::getUserAgent(),
-            'referer' => self::getReferer(),
-            'ip' => self::getIP()
+            'code'        => $code,
+            'trace'       => $trace,
+            'request'     => self::getRequest(),
+            'user_agent'  => self::getUserAgent(),
+            'referer'     => self::getReferer(),
+            'ip'          => self::getIP()
         ]);
 
         return $log->insert();

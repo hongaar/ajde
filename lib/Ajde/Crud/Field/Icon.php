@@ -27,8 +27,8 @@ class Ajde_Crud_Field_Icon extends Ajde_Crud_Field
 
     protected function _getHtmlAttributes()
     {
-        $attributes = [];
-        $attributes['type'] = "hidden";
+        $attributes          = [];
+        $attributes['type']  = "hidden";
         $attributes['value'] = $this->getValue();
 
         return $attributes;

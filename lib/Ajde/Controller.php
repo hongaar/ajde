@@ -14,7 +14,7 @@ class Ajde_Controller extends Ajde_Object_Standard
      */
     protected $_route = null;
 
-    public function  __construct($action = null, $format = null)
+    public function __construct($action = null, $format = null)
     {
         $this->setModule(strtolower(str_replace('Controller', '', get_class($this))));
         if (!isset($action) || !isset($format)) {
@@ -98,7 +98,7 @@ class Ajde_Controller extends Ajde_Object_Standard
             }
             Ajde::routingError($exception);
         }
-        $controller = new $moduleController($route->getAction(), $route->getFormat());
+        $controller         = new $moduleController($route->getAction(), $route->getFormat());
         $controller->_route = $route;
         foreach ($route->values() as $part => $value) {
             $controller->set($part, $value);
@@ -117,15 +117,15 @@ class Ajde_Controller extends Ajde_Object_Standard
     public function invoke($action = null, $format = null)
     {
         $timerKey = Ajde::app()->addTimer((string)$this->_route);
-        $action = issetor($action, $this->getAction());
-        $format = issetor($format, $this->getFormat());
-        $method = strtolower($_SERVER['REQUEST_METHOD']);
+        $action   = issetor($action, $this->getAction());
+        $format   = issetor($format, $this->getFormat());
+        $method   = strtolower($_SERVER['REQUEST_METHOD']);
 
         $tryTheseFunctions = [];
 
-        $formatFunction = $action . ucfirst($format);
+        $formatFunction  = $action . ucfirst($format);
         $defaultFunction = $action . "Default";
-        $emptyFunction = $action;
+        $emptyFunction   = $action;
 
         $tryTheseFunctions[] = $formatFunction . ucfirst($method);
         $tryTheseFunctions[] = $defaultFunction . ucfirst($method);
@@ -142,7 +142,7 @@ class Ajde_Controller extends Ajde_Object_Standard
                 break;
             }
         }
-//        dump(get_class($this) . '::' .  $invokeFunction);
+        //        dump(get_class($this) . '::' .  $invokeFunction);
 
         if (!$invokeFunction) {
             $exception = new Ajde_Core_Exception_Routing(sprintf("Action %s for module %s not found",

@@ -23,6 +23,7 @@ class Ajde_Config
     public static function getInstance()
     {
         static $instance;
+
         return $instance === null ? $instance = new self : $instance;
     }
 
@@ -48,13 +49,13 @@ class Ajde_Config
      * TODO
      *
      * @param string $param
-     * @param mixed $value
+     * @param mixed  $value
      */
     public static function set($param, $value)
     {
         $instance = self::getInstance();
 
-        $instance->$param  = $value;
+        $instance->$param = $value;
     }
 
     /**
@@ -72,7 +73,7 @@ class Ajde_Config
      * TODO
      *
      * @param string $param
-     * @param mixed $value
+     * @param mixed  $value
      */
     public function __set($param, $value)
     {

@@ -2,50 +2,53 @@
 
 class AdminUserController extends AdminController
 {
-	public function view()
-	{
-		Ajde::app()->getDocument()->setTitle("Users");
-		return $this->render();
-	}
+    public function view()
+    {
+        Ajde::app()->getDocument()->setTitle("Users");
 
-	public function loginJson()
-	{
-		$user = new UserModel();
+        return $this->render();
+    }
 
-		$id = Ajde::app()->getRequest()->getPostParam('id');
+    public function loginJson()
+    {
+        $user = new UserModel();
 
-		$return = array(false);
+        $id = Ajde::app()->getRequest()->getPostParam('id');
 
-		if (false !== $user->loadByPK($id)) {
-			$user->login();
+        $return = [false];
+
+        if (false !== $user->loadByPK($id)) {
+            $user->login();
             Ajde_Session_Flash::alert(sprintf(__('Welcome back %s'), $user->getFullname()));
-			$return = array('success' => true);
-		} else {
-			$return = array(
-				'success' => false
-			);
-		}
-		return $return;
-	}
+            $return = ['success' => true];
+        } else {
+            $return = [
+                'success' => false
+            ];
+        }
 
-	public function resetJson()
-	{
-		$user = new UserModel();
+        return $return;
+    }
 
-		$id = Ajde::app()->getRequest()->getPostParam('id');
+    public function resetJson()
+    {
+        $user = new UserModel();
 
-		$return = array(false);
+        $id = Ajde::app()->getRequest()->getPostParam('id');
 
-		if (false !== $user->loadByPK($id)) {
-			$hash = $user->resetUser();
-			$return = array(
-				'success' => ( $hash !== false )
-			);
-		} else {
-			$return = array(
-				'success' => false
-			);
-		}
-		return $return;
-	}
+        $return = [false];
+
+        if (false !== $user->loadByPK($id)) {
+            $hash   = $user->resetUser();
+            $return = [
+                'success' => ($hash !== false)
+            ];
+        } else {
+            $return = [
+                'success' => false
+            ];
+        }
+
+        return $return;
+    }
 }

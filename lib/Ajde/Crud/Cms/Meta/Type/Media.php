@@ -49,9 +49,9 @@ class Ajde_Crud_Cms_Meta_Type_Media extends Ajde_Crud_Cms_Meta_Type
             $field->addTableFileField('thumbnail', UPLOAD_DIR);
             $field->setThumbDim(600, 200);
         }
-//		$field->setUseImage(true);
-//		$field->addTableFileField('thumbnail', UPLOAD_DIR);
-//		$field->setThumbDim(300, 20);
+        //		$field->setUseImage(true);
+        //		$field->addTableFileField('thumbnail', UPLOAD_DIR);
+        //		$field->setThumbDim(300, 20);
         return $field;
     }
 }

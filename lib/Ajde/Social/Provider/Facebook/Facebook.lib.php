@@ -48,9 +48,9 @@ class Facebook extends BaseFacebook
      * we discover them.
      *
      * @param array $config the application configuration. Additionally
-     * accepts "sharedSession" as a boolean to turn on a secondary
-     * cookie for environments with a shared session (that is, your app
-     * shares the domain with other apps).
+     *                      accepts "sharedSession" as a boolean to turn on a secondary
+     *                      cookie for environments with a shared session (that is, your app
+     *                      shares the domain with other apps).
      *
      * @see BaseFacebook::__construct
      */
@@ -101,12 +101,12 @@ class Facebook extends BaseFacebook
             // ignoring potentially unreachable data
         }
         // evil/corrupt/missing case
-        $base_domain = $this->getBaseDomain();
+        $base_domain           = $this->getBaseDomain();
         $this->sharedSessionID = md5(uniqid(mt_rand(), true));
-        $cookie_value = $this->makeSignedRequest(
+        $cookie_value          = $this->makeSignedRequest(
             [
                 'domain' => $base_domain,
-                'id' => $this->sharedSessionID,
+                'id'     => $this->sharedSessionID,
             ]
         );
         $_COOKIE[$cookie_name] = $cookie_value;
@@ -144,7 +144,7 @@ class Facebook extends BaseFacebook
             return;
         }
 
-        $session_var_name = $this->constructSessionVariableName($key);
+        $session_var_name            = $this->constructSessionVariableName($key);
         $_SESSION[$session_var_name] = $value;
     }
 

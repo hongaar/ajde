@@ -41,12 +41,12 @@ class Ajde_Db_PDOStatement extends PDOStatement
                 $log = ['query' => '[PS] ' . $this->queryString];
             }
             // add backtrace
-            $i = 0;
+            $i      = 0;
             $source = [];
             foreach (array_reverse(debug_backtrace()) as $item) {
                 try {
-                    $line = issetor($item['line']);
-                    $file = issetor($item['file']);
+                    $line     = issetor($item['line']);
+                    $file     = issetor($item['file']);
                     $source[] = sprintf("%s. <em>%s</em>%s<strong>%s</strong> (%s on line %s)",
                         $i,
                         !empty($item['class']) ? $item['class'] : '&lt;unknown class&gt;',
@@ -92,8 +92,8 @@ class Ajde_Db_PDOStatement extends PDOStatement
                 }
             }
         }
-        $time = microtime(true) - $start;
-        $log['time'] = round($time * 1000, 0);
+        $time               = microtime(true) - $start;
+        $log['time']        = round($time * 1000, 0);
         Ajde_Db_PDO::$log[] = $log;
 
         return $result;
@@ -102,7 +102,7 @@ class Ajde_Db_PDOStatement extends PDOStatement
     public static function getEmulatedSql($sql, $PDOValues)
     {
         // @see http://stackoverflow.com/questions/210564/pdo-prepared-statements/1376838#1376838
-        $keys = [];
+        $keys   = [];
         $values = [];
         foreach ($PDOValues as $key => $value) {
             if (is_string($key)) {

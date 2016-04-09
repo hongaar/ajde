@@ -22,7 +22,7 @@ abstract class Ajde_Shop_Transaction_Provider extends Ajde_Object_Standard
 
     /**
      *
-     * @param string $name
+     * @param string                $name
      * @param Ajde_Shop_Transaction $transaction
      * @return Ajde_Shop_Transaction_Provider
      * @throws Ajde_Exception
@@ -63,7 +63,7 @@ abstract class Ajde_Shop_Transaction_Provider extends Ajde_Object_Standard
 
     protected function ping($url, $port = 80, $timeout = 6)
     {
-        $host = parse_url($url, PHP_URL_HOST);
+        $host  = parse_url($url, PHP_URL_HOST);
         $fsock = fsockopen($host, $port, $errno, $errstr, $timeout);
         if (!$fsock) {
             Ajde_Log::log('Ping for ' . $host . ':' . $port . ' (timeout=' . $timeout . ') failed');

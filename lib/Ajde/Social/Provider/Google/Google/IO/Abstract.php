@@ -26,7 +26,7 @@ require_once 'Google/Http/Request.php';
 
 abstract class Google_IO_Abstract
 {
-    const FORM_URLENCODED = 'application/x-www-form-urlencoded';
+    const FORM_URLENCODED        = 'application/x-www-form-urlencoded';
     const CONNECTION_ESTABLISHED = "HTTP/1.0 200 Connection established\r\n\r\n";
 
     /** @var Google_Client */
@@ -94,7 +94,7 @@ abstract class Google_IO_Abstract
      */
     public function processEntityRequest(Google_Http_Request $request)
     {
-        $postBody = $request->getPostBody();
+        $postBody    = $request->getPostBody();
         $contentType = $request->getRequestHeader("content-type");
 
         // Set the default content-type as application/x-www-form-urlencoded.
@@ -122,10 +122,10 @@ abstract class Google_IO_Abstract
      * Check if an already cached request must be revalidated, and if so update
      * the request with the correct ETag headers.
      *
-     * @param Google_Http_Request $cached A previously cached response.
+     * @param Google_Http_Request $cached  A previously cached response.
      * @param Google_Http_Request $request The outbound request.
-     * return bool If the cached object needs to be revalidated, false if it is
-     * still current and can be re-used.
+     *                                     return bool If the cached object needs to be revalidated, false if it is
+     *                                     still current and can be re-used.
      */
     protected function checkMustRevalidateCachedRequest($cached, $request)
     {
@@ -151,7 +151,7 @@ abstract class Google_IO_Abstract
      * Update a cached request, using the headers from the last response.
      *
      * @param Google_HttpRequest $cached A previously cached response.
-     * @param mixed Associative array of response headers from the last request.
+     * @param                    mixed   Associative array of response headers from the last request.
      */
     protected function updateCachedRequest($cached, $responseHeaders)
     {
@@ -188,7 +188,7 @@ abstract class Google_IO_Abstract
         }
 
         if ($headerSize) {
-            $responseBody = substr($respData, $headerSize);
+            $responseBody    = substr($respData, $headerSize);
             $responseHeaders = substr($respData, 0, $headerSize);
         } else {
             list($responseHeaders, $responseBody) = explode("\r\n\r\n", $respData, 2);
@@ -237,7 +237,7 @@ abstract class Google_IO_Abstract
     private function parseArrayHeaders($rawHeaders)
     {
         $header_count = count($rawHeaders);
-        $headers = [];
+        $headers      = [];
 
         for ($i = 0; $i < $header_count; $i++) {
             $header = $rawHeaders[$i];

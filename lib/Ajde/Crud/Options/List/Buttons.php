@@ -88,21 +88,21 @@ class Ajde_Crud_Options_List_Buttons extends Ajde_Crud_Options
     /**
      * Adds a custom button for every item in the list
      *
-     * @param name $name Identifier of the button
-     * @param text $text Text to display
-     * @param string $class Optional classname to add
+     * @param name    $name       Identifier of the button
+     * @param text    $text       Text to display
+     * @param string  $class      Optional classname to add
      * @param boolean $persistent Don't fold button
-     * @param boolean $function Call model function defined in $text (return false to omit button)
+     * @param boolean $function   Call model function defined in $text (return false to omit button)
      * @return Ajde_Crud_Options_List_Buttons
      */
     public function addItemButton($name, $text, $class = null, $persistent = false, $function = false)
     {
-        $buttons = ($this->has('itemButtons') ? $this->get('itemButtons') : []);
+        $buttons        = ($this->has('itemButtons') ? $this->get('itemButtons') : []);
         $buttons[$name] = [
-            'text' => $text,
-            'class' => isset($class) ? $class : $name,
+            'text'       => $text,
+            'class'      => isset($class) ? $class : $name,
             'persistent' => $persistent,
-            'function' => $function
+            'function'   => $function
         ];
 
         return $this->_set('itemButtons', $buttons);
@@ -116,14 +116,14 @@ class Ajde_Crud_Options_List_Buttons extends Ajde_Crud_Options
     /**
      * Adds a custom button for every item in the list
      *
-     * @param name $name Identifier of the button
-     * @param text $text Text to display
+     * @param name $name  Identifier of the button
+     * @param text $text  Text to display
      * @param type $class Optional classname to add
      * @return Ajde_Crud_Options_List_Buttons
      */
     public function addToolbarHtml($name, $html)
     {
-        $toolbarHtml = ($this->has('toolbarHtml') ? $this->get('toolbarHtml') : []);
+        $toolbarHtml        = ($this->has('toolbarHtml') ? $this->get('toolbarHtml') : []);
         $toolbarHtml[$name] = $html;
 
         return $this->_set('toolbarHtml', $toolbarHtml);
@@ -143,14 +143,14 @@ class Ajde_Crud_Options_List_Buttons extends Ajde_Crud_Options
     /**
      * Adds a custom button to the list toolbar
      *
-     * @param string $name Identifier of the button
-     * @param string $text Text to display
+     * @param string $name  Identifier of the button
+     * @param string $text  Text to display
      * @param string $class Optional classname to add
      * @return Ajde_Crud_Options_List_Buttons
      */
     public function addToolbarButton($name, $text, $class = null)
     {
-        $buttons = ($this->has('toolbarButtons') ? $this->get('toolbarButtons') : []);
+        $buttons        = ($this->has('toolbarButtons') ? $this->get('toolbarButtons') : []);
         $buttons[$name] = ['text' => $text, 'class' => isset($class) ? $class : $name];
 
         return $this->_set('toolbarButtons', $buttons);

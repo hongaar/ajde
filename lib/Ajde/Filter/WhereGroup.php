@@ -23,8 +23,8 @@ class Ajde_Filter_WhereGroup extends Ajde_Filter
     public function prepare(Ajde_Db_Table $table = null)
     {
         $sqlWhere = '';
-        $first = true;
-        $values = [];
+        $first    = true;
+        $values   = [];
         foreach ($this->_filters as $filter) {
             $prepared = $filter->prepare($table);
             foreach ($prepared as $queryPart => $v) {
@@ -50,7 +50,7 @@ class Ajde_Filter_WhereGroup extends Ajde_Filter
         return [
             'where' => [
                 'arguments' => ['(' . $sqlWhere . ')', $this->_operator],
-                'values' => $values
+                'values'    => $values
             ]
         ];
     }

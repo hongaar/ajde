@@ -3,7 +3,7 @@
 class Ajde_Acl_Proxy_Collection extends Ajde_Collection
 {
     public $ignoreAccessControl = false;
-    public $autoRedirect = true;
+    public $autoRedirect        = true;
 
     public function getAclParam()
     {

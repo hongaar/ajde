@@ -9,7 +9,7 @@ class Ajde_User_Sso_Twitter extends Ajde_User_Sso
     const SSO_SESSION_KEY = 'sso.twitter.credentials';
 
     public static $iconName = 'twitter';
-    public static $color = '00acee';
+    public static $color    = '00acee';
 
     public function __construct($credentials = false)
     {
@@ -78,9 +78,9 @@ class Ajde_User_Sso_Twitter extends Ajde_User_Sso
     {
         if ($this->hasCredentials()) {
             if (!isset($this->_me)) {
-                $provider = $this->getProvider();
+                $provider    = $this->getProvider();
                 $credentials = $this->getCredentials();
-                $this->_me = $provider->get('users/show', [
+                $this->_me   = $provider->get('users/show', [
                     'screen_name' => $credentials['screen_name']
                 ]);
             }
@@ -95,7 +95,7 @@ class Ajde_User_Sso_Twitter extends Ajde_User_Sso
         $connection = $this->getProvider();
 
         /* Get temporary credentials. */
-        $callbackUrl = Config::get('site_root') . 'user/sso:callback?provider=twitter&returnto=' . $returnto;
+        $callbackUrl   = Config::get('site_root') . 'user/sso:callback?provider=twitter&returnto=' . $returnto;
         $request_token = $connection->getRequestToken($callbackUrl);
         $this->setCredentials($request_token);
 
@@ -116,7 +116,7 @@ class Ajde_User_Sso_Twitter extends Ajde_User_Sso
             return false;
         }
 
-        $verifier = Ajde::app()->getRequest()->getParam('oauth_verifier');
+        $verifier   = Ajde::app()->getRequest()->getParam('oauth_verifier');
         $connection = $this->getProvider();
         $this->setCredentials($connection->getAccessToken($verifier));
 
@@ -152,7 +152,7 @@ class Ajde_User_Sso_Twitter extends Ajde_User_Sso
     public function getAvatarSuggestion()
     {
         if ($this->hasCredentials()) {
-            $me = $this->getMe();
+            $me    = $this->getMe();
             $image = $me->profile_image_url;
             $image = str_replace('_normal.', '.', $image);
 
@@ -160,7 +160,7 @@ class Ajde_User_Sso_Twitter extends Ajde_User_Sso
         } else {
             return false;
         }
-//        return false;
+        //        return false;
     }
 
     public function getUidHash()

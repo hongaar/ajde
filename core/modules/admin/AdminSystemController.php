@@ -2,241 +2,250 @@
 
 class AdminSystemController extends AdminController
 {
-	protected $_allowedActions = array(
-			'chromeApp',
-			'chromeAppDownload'
-		);
+    protected $_allowedActions = [
+        'chromeApp',
+        'chromeAppDownload'
+    ];
 
-	public function check()
-	{
-		Ajde::app()->getDocument()->setTitle("System check");
+    public function check()
+    {
+        Ajde::app()->getDocument()->setTitle("System check");
 
-		$checks = array();
+        $checks = [];
 
-		$checks[] = array(
-			'msg'	=> 'Directories writable?',
-			'fn'	=> 'writable'
-		);
-		$checks[] = array(
-			'msg'	=> 'Production ready?',
-			'fn'	=> 'production'
-		);
+        $checks[] = [
+            'msg' => 'Directories writable?',
+            'fn'  => 'writable'
+        ];
+        $checks[] = [
+            'msg' => 'Production ready?',
+            'fn'  => 'production'
+        ];
 
-		$ret = array();
+        $ret = [];
 
-		foreach($checks as $check) {
-			$ret = call_user_func(array($this, 'check' . ucfirst($check['fn'])));
-			if (empty($ret)) {
-				$ret = array(array('msg' => 'OK', 'status' => 'success'));
-			}
-			foreach($ret as $re) {
-				$results[] = array(
-					'check'		=> $check['msg'],
-					'msg'		=> $re['msg'],
-					'status'	=> $re['status']
-				);
-			}
-		}
+        foreach ($checks as $check) {
+            $ret = call_user_func([$this, 'check' . ucfirst($check['fn'])]);
+            if (empty($ret)) {
+                $ret = [['msg' => 'OK', 'status' => 'success']];
+            }
+            foreach ($ret as $re) {
+                $results[] = [
+                    'check'  => $check['msg'],
+                    'msg'    => $re['msg'],
+                    'status' => $re['status']
+                ];
+            }
+        }
 
-		$config = Config::getAll();
-		$hidden = 'HASH: ';
-		$hide = array(
-				'dbPassword',
-				'secret',
-				'shopWedealPassword',
-				'shopWedealCallbackPassword'
-			);
-		foreach($hide as $field) {
-			$config[$field] = $hidden . md5($config[$field]);
-		}
+        $config = Config::getAll();
+        $hidden = 'HASH: ';
+        $hide   = [
+            'dbPassword',
+            'secret',
+            'shopWedealPassword',
+            'shopWedealCallbackPassword'
+        ];
+        foreach ($hide as $field) {
+            $config[$field] = $hidden . md5($config[$field]);
+        }
 
-		$this->getView()->assign('results', $results);
-		$this->getView()->assign('config', $config);
-		return $this->render();
-	}
+        $this->getView()->assign('results', $results);
+        $this->getView()->assign('config', $config);
 
-	public function updateHtml()
-	{
-		Ajde::app()->getDocument()->setTitle("Ajde updater");
+        return $this->render();
+    }
 
-		$updater = Ajde_Core_Updater::getInstance();
+    public function updateHtml()
+    {
+        Ajde::app()->getDocument()->setTitle("Ajde updater");
 
-		$this->getView()->assign('updater', $updater);
-		return $this->render();
-	}
+        $updater = Ajde_Core_Updater::getInstance();
 
-	public function updateJson()
-	{
-		$step = Ajde::app()->getRequest()->getPostParam('step', 'start');
-		$status = true;
-		if ($step !== 'start') {
-			$status = false;
-			$updater = Ajde_Core_Updater::getInstance();
-			try {
-				$status = $updater->update($step);
-			} catch(Exception $e) {
-				Ajde_Exception_Log::logException($e);
-				$status = $e->getMessage();
-			}
-		}
-		return array('status' => $status);
-	}
+        $this->getView()->assign('updater', $updater);
 
-	public function chromeApp()
-	{
-		Ajde::app()->getDocument()->setTitle("Chrome app");
-		return $this->render();
-	}
+        return $this->render();
+    }
 
-	// @see http://stackoverflow.com/a/5586372/938297
-	public function chromeAppDownload()
-	{
-		// Temp dir
-		$appdir = TMP_DIR . 'app' . DIRECTORY_SEPARATOR;
-		mkdir($appdir);
+    public function updateJson()
+    {
+        $step   = Ajde::app()->getRequest()->getPostParam('step', 'start');
+        $status = true;
+        if ($step !== 'start') {
+            $status  = false;
+            $updater = Ajde_Core_Updater::getInstance();
+            try {
+                $status = $updater->update($step);
+            } catch (Exception $e) {
+                Ajde_Exception_Log::logException($e);
+                $status = $e->getMessage();
+            }
+        }
 
-		// manifest.json
-		$url = Config::get('lang_root') . 'admin/?chromeapp=1';
-		$manifest = (object) array(
-			"manifest_version" 		=> 2,
-			"name" 					=> Config::get('sitename'),
-			"description"			=> Config::get('description'),
-			"version"				=> "1.0",
-			"icons"					=> (object) array("128" => "app.png"),
-			"app"					=> (object) array(
-					"urls" => array($url),
-					"launch" => (object) array("web_url" => $url)
-				),
-			"permissions" 			=> array("unlimitedStorage", "notifications")
-				);
-		$json = json_encode($manifest);
+        return ['status' => $status];
+    }
 
-		// Clean temp dir
-		Ajde_Fs_Directory::truncate($appdir);
+    public function chromeApp()
+    {
+        Ajde::app()->getDocument()->setTitle("Chrome app");
 
-		// Put files
-		file_put_contents($appdir . 'manifest.json', $json);
-		copy(MEDIA_DIR . 'app.png', $appdir . 'app.png');
+        return $this->render();
+    }
 
-		// All files to zip
-		$appfiles = Ajde_Fs_Find::findFiles($appdir, '*');
+    // @see http://stackoverflow.com/a/5586372/938297
+    public function chromeAppDownload()
+    {
+        // Temp dir
+        $appdir = TMP_DIR . 'app' . DIRECTORY_SEPARATOR;
+        mkdir($appdir);
 
-		// Make the zip file
-		$zipfile = TMP_DIR . 'app.zip';
-		$zip = new ZipArchive();
-		$zip->open($zipfile, ZIPARCHIVE::OVERWRITE);
-		foreach($appfiles as $file) {
-			$zip->addFile($file, basename($file));
-		}
-		$zip->close();
+        // manifest.json
+        $url      = Config::get('lang_root') . 'admin/?chromeapp=1';
+        $manifest = (object)[
+            "manifest_version" => 2,
+            "name"             => Config::get('sitename'),
+            "description"      => Config::get('description'),
+            "version"          => "1.0",
+            "icons"            => (object)["128" => "app.png"],
+            "app"              => (object)[
+                "urls"   => [$url],
+                "launch" => (object)["web_url" => $url]
+            ],
+            "permissions"      => ["unlimitedStorage", "notifications"]
+        ];
+        $json     = json_encode($manifest);
 
-		// Get contents
-		$zipcontents = file_get_contents($zipfile);
+        // Clean temp dir
+        Ajde_Fs_Directory::truncate($appdir);
 
-		// Path to crx file
-		$crxfile = TMP_DIR . 'app.crx';
+        // Put files
+        file_put_contents($appdir . 'manifest.json', $json);
+        copy(MEDIA_DIR . 'app.png', $appdir . 'app.png');
 
-		// Path to pem file
-		$pemfile = DEV_DIR . 'app.pem';
-		$pemcontents = file_get_contents($pemfile);
+        // All files to zip
+        $appfiles = Ajde_Fs_Find::findFiles($appdir, '*');
 
-		// Fetch private key from file and ready it
-		$privkey = openssl_get_privatekey($pemcontents);
+        // Make the zip file
+        $zipfile = TMP_DIR . 'app.zip';
+        $zip     = new ZipArchive();
+        $zip->open($zipfile, ZIPARCHIVE::OVERWRITE);
+        foreach ($appfiles as $file) {
+            $zip->addFile($file, basename($file));
+        }
+        $zip->close();
 
-		// Get public key
-		$pubkey = openssl_pkey_get_details($privkey);
-		$pubkey = $pubkey["key"];
+        // Get contents
+        $zipcontents = file_get_contents($zipfile);
 
-		// geting rid of -----BEGIN/END PUBLIC KEY-----
-		$pubkey = explode('-----', $pubkey);
-		$pubkey = trim($pubkey[2]);
+        // Path to crx file
+        $crxfile = TMP_DIR . 'app.crx';
 
-		// decode the public key
-		$pubkey = base64_decode($pubkey);
+        // Path to pem file
+        $pemfile     = DEV_DIR . 'app.pem';
+        $pemcontents = file_get_contents($pemfile);
 
-		// make a SHA1 signature using our private key
-		openssl_sign($zipcontents, $signature, $privkey, OPENSSL_ALGO_SHA1);
-		openssl_free_key($privkey);
+        // Fetch private key from file and ready it
+        $privkey = openssl_get_privatekey($pemcontents);
 
-		# .crx package format:
-		#
-		#   magic number               char(4)
-		#   crx format ver             byte(4)
-		#   pub key lenth              byte(4)
-		#   signature length           byte(4)
-		#   public key                 string
-		#   signature                  string
-		#   package contents, zipped   string
-		#
-		# see http://code.google.com/chrome/extensions/crx.html
-		#
-		$fh = fopen($crxfile, 'wb');
-		fwrite($fh, 'Cr24');                             // extension file magic number
-		fwrite($fh, pack('V', 2));                       // crx format version
-		fwrite($fh, pack('V', strlen($pubkey)));         // public key length
-		fwrite($fh, pack('V', strlen($signature)));      // signature length
-		fwrite($fh, $pubkey);                            // public key
-		fwrite($fh, $signature);                         // signature
-		fwrite($fh, $zipcontents); 		 				 // package contents, zipped
-		fclose($fh);
+        // Get public key
+        $pubkey = openssl_pkey_get_details($privkey);
+        $pubkey = $pubkey["key"];
 
-		// We'll be outputting a chrome extension
-		header('Content-type: application/x-chrome-extension');
+        // geting rid of -----BEGIN/END PUBLIC KEY-----
+        $pubkey = explode('-----', $pubkey);
+        $pubkey = trim($pubkey[2]);
 
-		// It will be called app.crx
-		header('Content-Disposition: attachment; filename="app.crx"');
+        // decode the public key
+        $pubkey = base64_decode($pubkey);
 
-		// Output the crx file
-		readfile($crxfile);
+        // make a SHA1 signature using our private key
+        openssl_sign($zipcontents, $signature, $privkey, OPENSSL_ALGO_SHA1);
+        openssl_free_key($privkey);
 
-		// Clean up
-		unlink($zipfile);
-		unlink($crxfile);
-		Ajde_Fs_Directory::delete($appdir);
+        # .crx package format:
+        #
+        #   magic number               char(4)
+        #   crx format ver             byte(4)
+        #   pub key lenth              byte(4)
+        #   signature length           byte(4)
+        #   public key                 string
+        #   signature                  string
+        #   package contents, zipped   string
+        #
+        # see http://code.google.com/chrome/extensions/crx.html
+        #
+        $fh = fopen($crxfile, 'wb');
+        fwrite($fh, 'Cr24');                             // extension file magic number
+        fwrite($fh, pack('V', 2));                       // crx format version
+        fwrite($fh, pack('V', strlen($pubkey)));         // public key length
+        fwrite($fh, pack('V', strlen($signature)));      // signature length
+        fwrite($fh, $pubkey);                            // public key
+        fwrite($fh, $signature);                         // signature
+        fwrite($fh, $zipcontents);                         // package contents, zipped
+        fclose($fh);
 
-		exit;
+        // We'll be outputting a chrome extension
+        header('Content-type: application/x-chrome-extension');
 
-	}
+        // It will be called app.crx
+        header('Content-Disposition: attachment; filename="app.crx"');
 
-	private function checkProduction()
-	{
-		$files = array(
-				'phpinfo.php',
-				'loadtest.php',
-				'install.php'
-		);
-		$ret = array();
-		foreach($files as $file) {
-			if (file_exists($file)) {
-				$ret[] = array(
-						'msg'		=> 'File ' . $file . ' should be deleted in production environment',
-						'status'	=> 'warning'
-				);
-			}
-		}
-		return $ret;
-	}
+        // Output the crx file
+        readfile($crxfile);
 
-	private function checkWritable()
-	{
-		$dirs = array(
-			TMP_DIR, LOG_DIR, CACHE_DIR, UPLOAD_DIR
-		);
-		$ret = array();
-		foreach($dirs as $dir) {
-			if (!is_writable($dir)) {
-				$ret[] = array(
-					'msg'		=> 'Directory ' . $dir . ' is not writable',
-					'status'	=> 'important'
-				);
-			}
-		}
-		return $ret;
-	}
+        // Clean up
+        unlink($zipfile);
+        unlink($crxfile);
+        Ajde_Fs_Directory::delete($appdir);
+
+        exit;
+    }
+
+    private function checkProduction()
+    {
+        $files = [
+            'phpinfo.php',
+            'loadtest.php',
+            'install.php'
+        ];
+        $ret   = [];
+        foreach ($files as $file) {
+            if (file_exists($file)) {
+                $ret[] = [
+                    'msg'    => 'File ' . $file . ' should be deleted in production environment',
+                    'status' => 'warning'
+                ];
+            }
+        }
+
+        return $ret;
+    }
+
+    private function checkWritable()
+    {
+        $dirs = [
+            TMP_DIR,
+            LOG_DIR,
+            CACHE_DIR,
+            UPLOAD_DIR
+        ];
+        $ret  = [];
+        foreach ($dirs as $dir) {
+            if (!is_writable($dir)) {
+                $ret[] = [
+                    'msg'    => 'Directory ' . $dir . ' is not writable',
+                    'status' => 'important'
+                ];
+            }
+        }
+
+        return $ret;
+    }
 
     public function log()
     {
         Ajde::app()->getDocument()->setTitle("System log");
+
         return $this->render();
     }
 
@@ -244,20 +253,20 @@ class AdminSystemController extends AdminController
     {
         $item = $this->getItem();
         $this->getView()->assign('item', $item);
+
         return $this->render();
     }
 
     private function _unused()
     {
-        $used = new MediaCollection();
+        $used   = new MediaCollection();
         $unused = new MediaCollection();
         $unused->addFilter(new Ajde_Filter_Where('id', Ajde_Filter::FILTER_EQUALS, '-9999'));
 
         $db = Ajde_Db::getInstance()->getConnection();
 
         /** @var MediaModel $media */
-        foreach($used as $media)
-        {
+        foreach ($used as $media) {
             $stmt = $db->query('SELECT id FROM node WHERE media = ' . $media->getPK());
             $stmt->execute();
             $node = $stmt->rowCount();
@@ -284,11 +293,10 @@ class AdminSystemController extends AdminController
 
     private function _tobecleaned()
     {
-        $allMedia = new MediaCollection();
+        $allMedia    = new MediaCollection();
         $toBeCleaned = Ajde_Fs_Find::findFilenames(UPLOAD_DIR, '*.*');
 
-        foreach($allMedia as $media)
-        {
+        foreach ($allMedia as $media) {
             if (($index = array_search($media->pointer, $toBeCleaned)) !== false) {
                 unset($toBeCleaned[$index]);
             }
@@ -297,6 +305,7 @@ class AdminSystemController extends AdminController
                 unset($toBeCleaned[$index]);
             }
         }
+
         return $toBeCleaned;
     }
 
@@ -309,6 +318,7 @@ class AdminSystemController extends AdminController
         Ajde::app()->getDocument()->setTitle("Clean uploads");
         $this->getView()->assign('cleaning', $toBeCleaned);
         $this->getView()->assign('unused', $unused);
+
         return $this->render();
     }
 
@@ -316,12 +326,12 @@ class AdminSystemController extends AdminController
     {
         $toBeCleaned = $this->_tobecleaned();
 
-        foreach($toBeCleaned as $file)
-        {
+        foreach ($toBeCleaned as $file) {
             unlink(UPLOAD_DIR . $file);
         }
 
         Ajde_Session_Flash::alert('Orphan files cleaned');
+
         return $this->redirect(Ajde_Http_Response::REDIRECT_REFFERER);
     }
 
@@ -331,19 +341,21 @@ class AdminSystemController extends AdminController
         $unused->deleteAll();
 
         Ajde_Session_Flash::alert('Unused media deleted');
+
         return $this->redirect(Ajde_Http_Response::REDIRECT_REFFERER);
     }
 
     public function doCleanthumbs()
     {
-        $toBeCleaned = Ajde_Fs_Find::findFilenames(UPLOAD_DIR . Ajde_Resource_Image::$_thumbDir . DIRECTORY_SEPARATOR, '*.*');
+        $toBeCleaned = Ajde_Fs_Find::findFilenames(UPLOAD_DIR . Ajde_Resource_Image::$_thumbDir . DIRECTORY_SEPARATOR,
+            '*.*');
 
-        foreach($toBeCleaned as $file)
-        {
+        foreach ($toBeCleaned as $file) {
             unlink(UPLOAD_DIR . Ajde_Resource_Image::$_thumbDir . DIRECTORY_SEPARATOR . $file);
         }
 
         Ajde_Session_Flash::alert('Thumbnails will be refreshed next time they are loaded');
+
         return $this->redirect(Ajde_Http_Response::REDIRECT_REFFERER);
     }
 }

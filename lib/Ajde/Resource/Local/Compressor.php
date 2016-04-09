@@ -3,13 +3,13 @@
 abstract class Ajde_Resource_Local_Compressor extends Ajde_Object_Standard
 {
     const CACHE_STATUS_NOT_EXIST = 0;
-    const CACHE_STATUS_EXIST = 1;
-    const CACHE_STATUS_UPDATE = 2;
+    const CACHE_STATUS_EXIST     = 1;
+    const CACHE_STATUS_UPDATE    = 2;
 
     protected $_resources = [];
     protected $_contents;
 
-    public function  __construct()
+    public function __construct()
     {
         $this->setBase(CACHE_DIR);
     }
@@ -104,7 +104,7 @@ abstract class Ajde_Resource_Local_Compressor extends Ajde_Object_Standard
 
     public function getCacheStatus()
     {
-        $hash = $this->getHash();
+        $hash            = $this->getHash();
         $fileTimePattern = $hash['fileName'] . '.' . $hash['fileTime'] . '.' . $this->getType();
         if ($fileName = Ajde_Fs_Find::findFile($this->getBase(), $fileTimePattern)) {
             return ['status' => self::CACHE_STATUS_EXIST, 'fileName' => $fileName];

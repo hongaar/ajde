@@ -38,27 +38,27 @@
  */
 class lessc
 {
-    static public $VERSION = "v0.3.9";
-    static protected $TRUE = ["keyword", "true"];
-    static protected $FALSE = ["keyword", "false"];
+    static public    $VERSION = "v0.3.9";
+    static protected $TRUE    = ["keyword", "true"];
+    static protected $FALSE   = ["keyword", "false"];
 
-    protected $libFunctions = [];
-    protected $registeredVars = [];
+    protected $libFunctions     = [];
+    protected $registeredVars   = [];
     protected $preserveComments = false;
 
-    public $vPrefix = '@'; // prefix of abstract properties
-    public $mPrefix = '$'; // prefix of abstract blocks
+    public $vPrefix        = '@'; // prefix of abstract properties
+    public $mPrefix        = '$'; // prefix of abstract blocks
     public $parentSelector = '&';
 
     public $importDisabled = false;
-    public $importDir = '';
+    public $importDir      = '';
 
     protected $numberPrecision = null;
 
     // set to the parser that generated the current line when compiling
     // so we know how to create error messages
     protected $sourceParser = null;
-    protected $sourceLoc = null;
+    protected $sourceLoc    = null;
 
     static public $defaultValue = ["keyword", ""];
 
@@ -125,7 +125,7 @@ class lessc
 
         $this->addParsedFile($realPath);
         $parser = $this->makeParser($realPath);
-        $root = $parser->parse(file_get_contents($realPath));
+        $root   = $parser->parse(file_get_contents($realPath));
 
         // set the parents of all the block props
         foreach ($root->props as $prop) {
@@ -147,7 +147,7 @@ class lessc
             }
         }
 
-        $pi = pathinfo($realPath);
+        $pi  = pathinfo($realPath);
         $dir = $pi["dirname"];
 
         list($top, $bottom) = $this->sortProps($root->props, true);
@@ -170,7 +170,7 @@ class lessc
             $this->compileProp($prop, $block, $out);
         }
 
-        $this->importDir = $oldImport;
+        $this->importDir    = $oldImport;
         $this->sourceParser = $oldSourceParser;
     }
 
@@ -224,9 +224,9 @@ class lessc
     {
         $env = $this->pushEnv();
 
-        $selectors = $this->compileSelectors($block->tags);
+        $selectors      = $this->compileSelectors($block->tags);
         $env->selectors = $this->multiplySelectors($selectors);
-        $out = $this->makeOutputBlock(null, $env->selectors);
+        $out            = $this->makeOutputBlock(null, $env->selectors);
 
         $this->scope->children[] = $out;
         $this->compileProps($block, $out);
@@ -237,12 +237,12 @@ class lessc
 
     protected function compileMedia($media)
     {
-        $env = $this->pushEnv($media);
+        $env         = $this->pushEnv($media);
         $parentScope = $this->mediaParent($this->scope);
 
         $query = $this->compileMediaQuery($this->multiplyMedia($env));
 
-        $this->scope = $this->makeOutputBlock($media->type, [$query]);
+        $this->scope             = $this->makeOutputBlock($media->type, [$query]);
         $parentScope->children[] = $this->scope;
 
         $this->compileProps($media, $this->scope);
@@ -250,7 +250,7 @@ class lessc
         if (count($this->scope->lines) > 0) {
             $orphanSelelectors = $this->findClosestSelectors();
             if (!is_null($orphanSelelectors)) {
-                $orphan = $this->makeOutputBlock(null, $orphanSelelectors);
+                $orphan        = $this->makeOutputBlock(null, $orphanSelelectors);
                 $orphan->lines = $this->scope->lines;
                 array_unshift($this->scope->children, $orphan);
                 $this->scope->lines = [];
@@ -276,7 +276,7 @@ class lessc
     protected function compileNestedBlock($block, $selectors)
     {
         $this->pushEnv($block);
-        $this->scope = $this->makeOutputBlock($block->type, $selectors);
+        $this->scope                     = $this->makeOutputBlock($block->type, $selectors);
         $this->scope->parent->children[] = $this->scope;
 
         $this->compileProps($block, $this->scope);
@@ -302,9 +302,9 @@ class lessc
 
     protected function sortProps($props, $split = false)
     {
-        $vars = [];
+        $vars    = [];
         $imports = [];
-        $other = [];
+        $other   = [];
 
         foreach ($props as $prop) {
             switch ($prop[0]) {
@@ -316,10 +316,10 @@ class lessc
                     }
                     break;
                 case "import":
-                    $id = self::$nextImportId++;
-                    $prop[] = $id;
+                    $id        = self::$nextImportId++;
+                    $prop[]    = $id;
                     $imports[] = $prop;
-                    $other[] = ["import_mixin", $id];
+                    $other[]   = ["import_mixin", $id];
                     break;
                 default:
                     $other[] = $prop;
@@ -384,7 +384,7 @@ class lessc
             return $this->multiplyMedia($env->parent, $childQueries);
         }
 
-        $out = [];
+        $out     = [];
         $queries = $env->block->queries;
         if (is_null($childQueries)) {
             $out = $queries;
@@ -414,7 +414,7 @@ class lessc
 
     protected function findClosestSelectors()
     {
-        $env = $this->env;
+        $env       = $this->env;
         $selectors = null;
         while ($env !== null) {
             if (isset($env->selectors)) {
@@ -494,7 +494,7 @@ class lessc
 
                     $negate = false;
                     if ($guard[0] == "negate") {
-                        $guard = $guard[1];
+                        $guard  = $guard[1];
                         $negate = true;
                     }
 
@@ -622,7 +622,7 @@ class lessc
     // or the one passed in through $values
     protected function zipSetArgs($args, $values)
     {
-        $i = 0;
+        $i              = 0;
         $assignedValues = [];
         foreach ($args as $a) {
             if ($a[0] == "arg") {
@@ -674,7 +674,7 @@ class lessc
             case 'mixin':
                 list(, $path, $args, $suffix) = $prop;
 
-                $args = array_map([$this, "reduce"], (array)$args);
+                $args   = array_map([$this, "reduce"], (array)$args);
                 $mixins = $this->findBlocks($block, $path, $args);
 
                 if ($mixins === null) {
@@ -685,8 +685,8 @@ class lessc
                 foreach ($mixins as $mixin) {
                     $haveScope = false;
                     if (isset($mixin->parent->scope)) {
-                        $haveScope = true;
-                        $mixinParentEnv = $this->pushEnv();
+                        $haveScope                   = true;
+                        $mixinParentEnv              = $this->pushEnv();
                         $mixinParentEnv->storeParent = $mixin->parent->scope;
                     }
 
@@ -934,8 +934,8 @@ class lessc
         if ($args[0] != "list") {
             return $args;
         }
-        $values = $args[2];
-        $string = array_shift($values);
+        $values   = $args[2];
+        $string   = array_shift($values);
         $template = $this->compileValue($this->lib_e($string));
 
         $i = 0;
@@ -950,7 +950,7 @@ class lessc
                 }
 
                 $i++;
-                $rep = $this->compileValue($this->lib_e($val));
+                $rep      = $this->compileValue($this->lib_e($val));
                 $template = preg_replace('/' . self::preg_quote($match) . '/',
                     $rep, $template, 1);
             }
@@ -1017,7 +1017,7 @@ class lessc
     {
         list($color, $delta) = $this->colorArgs($args);
 
-        $hsl = $this->toHSL($color);
+        $hsl    = $this->toHSL($color);
         $hsl[3] = $this->clamp($hsl[3] - $delta, 100);
 
         return $this->toRGB($hsl);
@@ -1027,7 +1027,7 @@ class lessc
     {
         list($color, $delta) = $this->colorArgs($args);
 
-        $hsl = $this->toHSL($color);
+        $hsl    = $this->toHSL($color);
         $hsl[3] = $this->clamp($hsl[3] + $delta, 100);
 
         return $this->toRGB($hsl);
@@ -1037,7 +1037,7 @@ class lessc
     {
         list($color, $delta) = $this->colorArgs($args);
 
-        $hsl = $this->toHSL($color);
+        $hsl    = $this->toHSL($color);
         $hsl[2] = $this->clamp($hsl[2] + $delta, 100);
 
         return $this->toRGB($hsl);
@@ -1047,7 +1047,7 @@ class lessc
     {
         list($color, $delta) = $this->colorArgs($args);
 
-        $hsl = $this->toHSL($color);
+        $hsl    = $this->toHSL($color);
         $hsl[2] = $this->clamp($hsl[2] - $delta, 100);
 
         return $this->toRGB($hsl);
@@ -1139,12 +1139,12 @@ class lessc
         }
 
         list($first, $second, $weight) = $args[2];
-        $first = $this->assertColor($first);
+        $first  = $this->assertColor($first);
         $second = $this->assertColor($second);
 
-        $first_a = $this->lib_alpha($first);
+        $first_a  = $this->lib_alpha($first);
         $second_a = $this->lib_alpha($second);
-        $weight = $weight[1] / 100.0;
+        $weight   = $weight[1] / 100.0;
 
         $w = $weight * 2 - 1;
         $a = $first_a - $second_a;
@@ -1175,9 +1175,9 @@ class lessc
         list($inputColor, $darkColor, $lightColor) = $args[2];
 
         $inputColor = $this->assertColor($inputColor);
-        $darkColor = $this->assertColor($darkColor);
+        $darkColor  = $this->assertColor($darkColor);
         $lightColor = $this->assertColor($lightColor);
-        $hsl = $this->toHSL($inputColor);
+        $hsl        = $this->toHSL($inputColor);
 
         if ($hsl[3] > 50) {
             return $darkColor;
@@ -1325,7 +1325,7 @@ class lessc
 
         if ($fname == 'hsl' || $fname == 'hsla') {
             $hsl = ['hsl'];
-            $i = 0;
+            $i   = 0;
             foreach ($rawComponents as $c) {
                 $val = $this->reduce($c);
                 $val = isset($val[1]) ? floatval($val[1]) : 0;
@@ -1349,7 +1349,7 @@ class lessc
             return $this->toRGB($hsl);
         } elseif ($fname == 'rgb' || $fname == 'rgba') {
             $components = [];
-            $i = 1;
+            $i          = 1;
             foreach ($rawComponents as $c) {
                 $c = $this->reduce($c);
                 if ($i < 4) {
@@ -1386,8 +1386,8 @@ class lessc
         switch ($value[0]) {
             case "interpolate":
                 $reduced = $this->reduce($value[1]);
-                $var = $this->compileValue($reduced);
-                $res = $this->reduce(["variable", $this->vPrefix . $var]);
+                $var     = $this->compileValue($reduced);
+                $res     = $this->reduce(["variable", $this->vPrefix . $var]);
 
                 if (empty($value[2])) {
                     $res = $this->lib_e($res);
@@ -1408,7 +1408,7 @@ class lessc
                 }
 
                 $seen[$key] = true;
-                $out = $this->reduce($this->get($key, self::$defaultValue));
+                $out        = $this->reduce($this->get($key, self::$defaultValue));
                 $seen[$key] = false;
 
                 return $out;
@@ -1424,7 +1424,7 @@ class lessc
                 foreach ($value[2] as &$part) {
                     if (is_array($part)) {
                         $strip = $part[0] == "variable";
-                        $part = $this->reduce($part);
+                        $part  = $this->reduce($part);
                         if ($strip) {
                             $part = $this->lib_e($part);
                         }
@@ -1523,10 +1523,10 @@ class lessc
             case 'color':
                 return $value;
             case 'raw_color':
-                $c = ["color", 0, 0, 0];
+                $c        = ["color", 0, 0, 0];
                 $colorStr = substr($value[1], 1);
-                $num = hexdec($colorStr);
-                $width = strlen($colorStr) == 3 ? 16 : 256;
+                $num      = hexdec($colorStr);
+                $width    = strlen($colorStr) == 3 ? 16 : 256;
 
                 for ($i = 3; $i > 0; $i--) { // 3 2 1
                     $t = $num % $width;
@@ -1589,7 +1589,7 @@ class lessc
     {
         list(, $op, $left, $right, $whiteBefore, $whiteAfter) = $exp;
 
-        $left = $this->reduce($left, true);
+        $left  = $this->reduce($left, true);
         $right = $this->reduce($right, true);
 
         if ($leftColor = $this->coerceColor($left)) {
@@ -1795,12 +1795,12 @@ class lessc
 
     protected function makeOutputBlock($type, $selectors = null)
     {
-        $b = new stdclass;
-        $b->lines = [];
-        $b->children = [];
+        $b            = new stdclass;
+        $b->lines     = [];
+        $b->children  = [];
         $b->selectors = $selectors;
-        $b->type = $type;
-        $b->parent = $this->scope;
+        $b->type      = $type;
+        $b->parent    = $this->scope;
 
         return $b;
     }
@@ -1808,10 +1808,10 @@ class lessc
     // the state of execution
     protected function pushEnv($block = null)
     {
-        $e = new stdclass;
+        $e         = new stdclass;
         $e->parent = $this->env;
-        $e->store = [];
-        $e->block = $block;
+        $e->store  = [];
+        $e->block  = $block;
 
         $this->env = $e;
 
@@ -1821,7 +1821,7 @@ class lessc
     // pop something off the stack
     protected function popEnv()
     {
-        $old = $this->env;
+        $old       = $this->env;
         $this->env = $this->env->parent;
 
         return $old;
@@ -1864,7 +1864,7 @@ class lessc
             if ($name{0} != '@') {
                 $name = '@' . $name;
             }
-            $parser->count = 0;
+            $parser->count  = 0;
             $parser->buffer = (string)$strValue;
             if (!$parser->propertyValue($value)) {
                 throw new Exception("failed to parse passed in variable $name: $strValue");
@@ -1892,9 +1892,9 @@ class lessc
         setlocale(LC_NUMERIC, "C");
 
         $this->parser = $this->makeParser($name);
-        $root = $this->parser->parse($string);
+        $root         = $this->parser->parse($string);
 
-        $this->env = null;
+        $this->env   = null;
         $this->scope = null;
 
         $this->formatter = $this->newFormatter();
@@ -1924,7 +1924,7 @@ class lessc
 
         $oldImport = $this->importDir;
 
-        $this->importDir = (array)$this->importDir;
+        $this->importDir   = (array)$this->importDir;
         $this->importDir[] = $pi['dirname'] . '/';
 
         $this->allParsedFiles = [];
@@ -1969,8 +1969,8 @@ class lessc
      * The cache structure is a plain-ol' PHP associative array and can
      * be serialized and unserialized without a hitch.
      *
-     * @param mixed $in Input
-     * @param bool $force Force rebuild?
+     * @param mixed $in    Input
+     * @param bool  $force Force rebuild?
      * @return array lessphp cache structure
      */
     public function cachedCompile($in, $force = false)
@@ -2004,11 +2004,11 @@ class lessc
 
         if ($root !== null) {
             // If we have a root value which means we should rebuild.
-            $out = [];
-            $out['root'] = $root;
+            $out             = [];
+            $out['root']     = $root;
             $out['compiled'] = $this->compileFile($root);
-            $out['files'] = $this->allParsedFiles();
-            $out['updated'] = time();
+            $out['files']    = $this->allParsedFiles();
+            $out['updated']  = time();
 
             return $out;
         } else {
@@ -2024,7 +2024,7 @@ class lessc
     {
         if (is_array($str)) {
             $initialVariables = $str;
-            $str = null;
+            $str              = null;
         }
 
         $oldVars = $this->registeredVars;
@@ -2049,7 +2049,7 @@ class lessc
 
     protected function makeParser($name)
     {
-        $parser = new lessc_parser($this, $name);
+        $parser                = new lessc_parser($this, $name);
         $parser->writeComments = $this->preserveComments;
 
         return $parser;
@@ -2105,7 +2105,7 @@ class lessc
 
     public function addImportDir($dir)
     {
-        $this->importDir = (array)$this->importDir;
+        $this->importDir   = (array)$this->importDir;
         $this->importDir[] = $dir;
     }
 
@@ -2151,154 +2151,154 @@ class lessc
     }
 
     static protected $cssColors = [
-        'aliceblue' => '240,248,255',
-        'antiquewhite' => '250,235,215',
-        'aqua' => '0,255,255',
-        'aquamarine' => '127,255,212',
-        'azure' => '240,255,255',
-        'beige' => '245,245,220',
-        'bisque' => '255,228,196',
-        'black' => '0,0,0',
-        'blanchedalmond' => '255,235,205',
-        'blue' => '0,0,255',
-        'blueviolet' => '138,43,226',
-        'brown' => '165,42,42',
-        'burlywood' => '222,184,135',
-        'cadetblue' => '95,158,160',
-        'chartreuse' => '127,255,0',
-        'chocolate' => '210,105,30',
-        'coral' => '255,127,80',
-        'cornflowerblue' => '100,149,237',
-        'cornsilk' => '255,248,220',
-        'crimson' => '220,20,60',
-        'cyan' => '0,255,255',
-        'darkblue' => '0,0,139',
-        'darkcyan' => '0,139,139',
-        'darkgoldenrod' => '184,134,11',
-        'darkgray' => '169,169,169',
-        'darkgreen' => '0,100,0',
-        'darkgrey' => '169,169,169',
-        'darkkhaki' => '189,183,107',
-        'darkmagenta' => '139,0,139',
-        'darkolivegreen' => '85,107,47',
-        'darkorange' => '255,140,0',
-        'darkorchid' => '153,50,204',
-        'darkred' => '139,0,0',
-        'darksalmon' => '233,150,122',
-        'darkseagreen' => '143,188,143',
-        'darkslateblue' => '72,61,139',
-        'darkslategray' => '47,79,79',
-        'darkslategrey' => '47,79,79',
-        'darkturquoise' => '0,206,209',
-        'darkviolet' => '148,0,211',
-        'deeppink' => '255,20,147',
-        'deepskyblue' => '0,191,255',
-        'dimgray' => '105,105,105',
-        'dimgrey' => '105,105,105',
-        'dodgerblue' => '30,144,255',
-        'firebrick' => '178,34,34',
-        'floralwhite' => '255,250,240',
-        'forestgreen' => '34,139,34',
-        'fuchsia' => '255,0,255',
-        'gainsboro' => '220,220,220',
-        'ghostwhite' => '248,248,255',
-        'gold' => '255,215,0',
-        'goldenrod' => '218,165,32',
-        'gray' => '128,128,128',
-        'green' => '0,128,0',
-        'greenyellow' => '173,255,47',
-        'grey' => '128,128,128',
-        'honeydew' => '240,255,240',
-        'hotpink' => '255,105,180',
-        'indianred' => '205,92,92',
-        'indigo' => '75,0,130',
-        'ivory' => '255,255,240',
-        'khaki' => '240,230,140',
-        'lavender' => '230,230,250',
-        'lavenderblush' => '255,240,245',
-        'lawngreen' => '124,252,0',
-        'lemonchiffon' => '255,250,205',
-        'lightblue' => '173,216,230',
-        'lightcoral' => '240,128,128',
-        'lightcyan' => '224,255,255',
+        'aliceblue'            => '240,248,255',
+        'antiquewhite'         => '250,235,215',
+        'aqua'                 => '0,255,255',
+        'aquamarine'           => '127,255,212',
+        'azure'                => '240,255,255',
+        'beige'                => '245,245,220',
+        'bisque'               => '255,228,196',
+        'black'                => '0,0,0',
+        'blanchedalmond'       => '255,235,205',
+        'blue'                 => '0,0,255',
+        'blueviolet'           => '138,43,226',
+        'brown'                => '165,42,42',
+        'burlywood'            => '222,184,135',
+        'cadetblue'            => '95,158,160',
+        'chartreuse'           => '127,255,0',
+        'chocolate'            => '210,105,30',
+        'coral'                => '255,127,80',
+        'cornflowerblue'       => '100,149,237',
+        'cornsilk'             => '255,248,220',
+        'crimson'              => '220,20,60',
+        'cyan'                 => '0,255,255',
+        'darkblue'             => '0,0,139',
+        'darkcyan'             => '0,139,139',
+        'darkgoldenrod'        => '184,134,11',
+        'darkgray'             => '169,169,169',
+        'darkgreen'            => '0,100,0',
+        'darkgrey'             => '169,169,169',
+        'darkkhaki'            => '189,183,107',
+        'darkmagenta'          => '139,0,139',
+        'darkolivegreen'       => '85,107,47',
+        'darkorange'           => '255,140,0',
+        'darkorchid'           => '153,50,204',
+        'darkred'              => '139,0,0',
+        'darksalmon'           => '233,150,122',
+        'darkseagreen'         => '143,188,143',
+        'darkslateblue'        => '72,61,139',
+        'darkslategray'        => '47,79,79',
+        'darkslategrey'        => '47,79,79',
+        'darkturquoise'        => '0,206,209',
+        'darkviolet'           => '148,0,211',
+        'deeppink'             => '255,20,147',
+        'deepskyblue'          => '0,191,255',
+        'dimgray'              => '105,105,105',
+        'dimgrey'              => '105,105,105',
+        'dodgerblue'           => '30,144,255',
+        'firebrick'            => '178,34,34',
+        'floralwhite'          => '255,250,240',
+        'forestgreen'          => '34,139,34',
+        'fuchsia'              => '255,0,255',
+        'gainsboro'            => '220,220,220',
+        'ghostwhite'           => '248,248,255',
+        'gold'                 => '255,215,0',
+        'goldenrod'            => '218,165,32',
+        'gray'                 => '128,128,128',
+        'green'                => '0,128,0',
+        'greenyellow'          => '173,255,47',
+        'grey'                 => '128,128,128',
+        'honeydew'             => '240,255,240',
+        'hotpink'              => '255,105,180',
+        'indianred'            => '205,92,92',
+        'indigo'               => '75,0,130',
+        'ivory'                => '255,255,240',
+        'khaki'                => '240,230,140',
+        'lavender'             => '230,230,250',
+        'lavenderblush'        => '255,240,245',
+        'lawngreen'            => '124,252,0',
+        'lemonchiffon'         => '255,250,205',
+        'lightblue'            => '173,216,230',
+        'lightcoral'           => '240,128,128',
+        'lightcyan'            => '224,255,255',
         'lightgoldenrodyellow' => '250,250,210',
-        'lightgray' => '211,211,211',
-        'lightgreen' => '144,238,144',
-        'lightgrey' => '211,211,211',
-        'lightpink' => '255,182,193',
-        'lightsalmon' => '255,160,122',
-        'lightseagreen' => '32,178,170',
-        'lightskyblue' => '135,206,250',
-        'lightslategray' => '119,136,153',
-        'lightslategrey' => '119,136,153',
-        'lightsteelblue' => '176,196,222',
-        'lightyellow' => '255,255,224',
-        'lime' => '0,255,0',
-        'limegreen' => '50,205,50',
-        'linen' => '250,240,230',
-        'magenta' => '255,0,255',
-        'maroon' => '128,0,0',
-        'mediumaquamarine' => '102,205,170',
-        'mediumblue' => '0,0,205',
-        'mediumorchid' => '186,85,211',
-        'mediumpurple' => '147,112,219',
-        'mediumseagreen' => '60,179,113',
-        'mediumslateblue' => '123,104,238',
-        'mediumspringgreen' => '0,250,154',
-        'mediumturquoise' => '72,209,204',
-        'mediumvioletred' => '199,21,133',
-        'midnightblue' => '25,25,112',
-        'mintcream' => '245,255,250',
-        'mistyrose' => '255,228,225',
-        'moccasin' => '255,228,181',
-        'navajowhite' => '255,222,173',
-        'navy' => '0,0,128',
-        'oldlace' => '253,245,230',
-        'olive' => '128,128,0',
-        'olivedrab' => '107,142,35',
-        'orange' => '255,165,0',
-        'orangered' => '255,69,0',
-        'orchid' => '218,112,214',
-        'palegoldenrod' => '238,232,170',
-        'palegreen' => '152,251,152',
-        'paleturquoise' => '175,238,238',
-        'palevioletred' => '219,112,147',
-        'papayawhip' => '255,239,213',
-        'peachpuff' => '255,218,185',
-        'peru' => '205,133,63',
-        'pink' => '255,192,203',
-        'plum' => '221,160,221',
-        'powderblue' => '176,224,230',
-        'purple' => '128,0,128',
-        'red' => '255,0,0',
-        'rosybrown' => '188,143,143',
-        'royalblue' => '65,105,225',
-        'saddlebrown' => '139,69,19',
-        'salmon' => '250,128,114',
-        'sandybrown' => '244,164,96',
-        'seagreen' => '46,139,87',
-        'seashell' => '255,245,238',
-        'sienna' => '160,82,45',
-        'silver' => '192,192,192',
-        'skyblue' => '135,206,235',
-        'slateblue' => '106,90,205',
-        'slategray' => '112,128,144',
-        'slategrey' => '112,128,144',
-        'snow' => '255,250,250',
-        'springgreen' => '0,255,127',
-        'steelblue' => '70,130,180',
-        'tan' => '210,180,140',
-        'teal' => '0,128,128',
-        'thistle' => '216,191,216',
-        'tomato' => '255,99,71',
-        'transparent' => '0,0,0,0',
-        'turquoise' => '64,224,208',
-        'violet' => '238,130,238',
-        'wheat' => '245,222,179',
-        'white' => '255,255,255',
-        'whitesmoke' => '245,245,245',
-        'yellow' => '255,255,0',
-        'yellowgreen' => '154,205,50'
+        'lightgray'            => '211,211,211',
+        'lightgreen'           => '144,238,144',
+        'lightgrey'            => '211,211,211',
+        'lightpink'            => '255,182,193',
+        'lightsalmon'          => '255,160,122',
+        'lightseagreen'        => '32,178,170',
+        'lightskyblue'         => '135,206,250',
+        'lightslategray'       => '119,136,153',
+        'lightslategrey'       => '119,136,153',
+        'lightsteelblue'       => '176,196,222',
+        'lightyellow'          => '255,255,224',
+        'lime'                 => '0,255,0',
+        'limegreen'            => '50,205,50',
+        'linen'                => '250,240,230',
+        'magenta'              => '255,0,255',
+        'maroon'               => '128,0,0',
+        'mediumaquamarine'     => '102,205,170',
+        'mediumblue'           => '0,0,205',
+        'mediumorchid'         => '186,85,211',
+        'mediumpurple'         => '147,112,219',
+        'mediumseagreen'       => '60,179,113',
+        'mediumslateblue'      => '123,104,238',
+        'mediumspringgreen'    => '0,250,154',
+        'mediumturquoise'      => '72,209,204',
+        'mediumvioletred'      => '199,21,133',
+        'midnightblue'         => '25,25,112',
+        'mintcream'            => '245,255,250',
+        'mistyrose'            => '255,228,225',
+        'moccasin'             => '255,228,181',
+        'navajowhite'          => '255,222,173',
+        'navy'                 => '0,0,128',
+        'oldlace'              => '253,245,230',
+        'olive'                => '128,128,0',
+        'olivedrab'            => '107,142,35',
+        'orange'               => '255,165,0',
+        'orangered'            => '255,69,0',
+        'orchid'               => '218,112,214',
+        'palegoldenrod'        => '238,232,170',
+        'palegreen'            => '152,251,152',
+        'paleturquoise'        => '175,238,238',
+        'palevioletred'        => '219,112,147',
+        'papayawhip'           => '255,239,213',
+        'peachpuff'            => '255,218,185',
+        'peru'                 => '205,133,63',
+        'pink'                 => '255,192,203',
+        'plum'                 => '221,160,221',
+        'powderblue'           => '176,224,230',
+        'purple'               => '128,0,128',
+        'red'                  => '255,0,0',
+        'rosybrown'            => '188,143,143',
+        'royalblue'            => '65,105,225',
+        'saddlebrown'          => '139,69,19',
+        'salmon'               => '250,128,114',
+        'sandybrown'           => '244,164,96',
+        'seagreen'             => '46,139,87',
+        'seashell'             => '255,245,238',
+        'sienna'               => '160,82,45',
+        'silver'               => '192,192,192',
+        'skyblue'              => '135,206,235',
+        'slateblue'            => '106,90,205',
+        'slategray'            => '112,128,144',
+        'slategrey'            => '112,128,144',
+        'snow'                 => '255,250,250',
+        'springgreen'          => '0,255,127',
+        'steelblue'            => '70,130,180',
+        'tan'                  => '210,180,140',
+        'teal'                 => '0,128,128',
+        'thistle'              => '216,191,216',
+        'tomato'               => '255,99,71',
+        'transparent'          => '0,0,0,0',
+        'turquoise'            => '64,224,208',
+        'violet'               => '238,130,238',
+        'wheat'                => '245,222,179',
+        'white'                => '255,255,255',
+        'whitesmoke'           => '245,245,245',
+        'yellow'               => '255,255,0',
+        'yellowgreen'          => '154,205,50'
     ];
 }
 
@@ -2311,21 +2311,21 @@ class lessc_parser
     static protected $precedence = [
         '=<' => 0,
         '>=' => 0,
-        '=' => 0,
-        '<' => 0,
-        '>' => 0,
-        '+' => 1,
-        '-' => 1,
-        '*' => 2,
-        '/' => 2,
-        '%' => 2,
+        '='  => 0,
+        '<'  => 0,
+        '>'  => 0,
+        '+'  => 1,
+        '-'  => 1,
+        '*'  => 2,
+        '/'  => 2,
+        '%'  => 2,
     ];
 
     static protected $whitePattern;
     static protected $commentMulti;
 
-    static protected $commentSingle = "//";
-    static protected $commentMultiLeft = "/*";
+    static protected $commentSingle     = "//";
+    static protected $commentMultiLeft  = "/*";
     static protected $commentMultiRight = "*/";
 
     // regex string to match any of the operators
@@ -2336,7 +2336,7 @@ class lessc_parser
         ['/border-radius$/i', '/^font$/i'];
 
     protected $blockDirectives = ["font-face", "keyframes", "page", "-moz-document"];
-    protected $lineDirectives = ["charset"];
+    protected $lineDirectives  = ["charset"];
 
     /**
      * if we are in parens we can be more liberal with whitespace around
@@ -2367,8 +2367,8 @@ class lessc_parser
                 '(' . implode('|', array_map(['lessc', 'preg_quote'],
                     array_keys(self::$precedence))) . ')';
 
-            $commentSingle = lessc::preg_quote(self::$commentSingle);
-            $commentMultiLeft = lessc::preg_quote(self::$commentMultiLeft);
+            $commentSingle     = lessc::preg_quote(self::$commentSingle);
+            $commentMultiLeft  = lessc::preg_quote(self::$commentMultiLeft);
             $commentMultiRight = lessc::preg_quote(self::$commentMultiRight);
 
             self::$commentMulti = $commentMultiLeft . '.*?' . $commentMultiRight;
@@ -2379,13 +2379,13 @@ class lessc_parser
     public function parse($buffer)
     {
         $this->count = 0;
-        $this->line = 1;
+        $this->line  = 1;
 
-        $this->env = null; // block stack
+        $this->env    = null; // block stack
         $this->buffer = $this->writeComments ? $buffer : $this->removeComments($buffer);
         $this->pushSpecialBlock("root");
         $this->eatWhiteDefault = true;
-        $this->seenComments = [];
+        $this->seenComments    = [];
 
         // trim whitespace on head
         // if (preg_match('/^\s+/', $this->buffer, $m)) {
@@ -2475,7 +2475,7 @@ class lessc_parser
                 if (($this->mediaQueryList($mediaQueries) || true)
                     && $this->literal('{')
                 ) {
-                    $media = $this->pushSpecialBlock("media");
+                    $media          = $this->pushSpecialBlock("media");
                     $media->queries = is_null($mediaQueries) ? [] : $mediaQueries;
 
                     return true;
@@ -2491,7 +2491,7 @@ class lessc_parser
                     if (($this->openString("{", $dirValue, null, [";"]) || true) &&
                         $this->literal("{")
                     ) {
-                        $dir = $this->pushSpecialBlock("directive");
+                        $dir       = $this->pushSpecialBlock("directive");
                         $dir->name = $dirName;
                         if (isset($dirValue)) {
                             $dir->value = $dirValue;
@@ -2533,8 +2533,8 @@ class lessc_parser
             ($this->guards($guards) || true) &&
             $this->literal('{')
         ) {
-            $block = $this->pushBlock($this->fixTags([$tag]));
-            $block->args = $args;
+            $block           = $this->pushBlock($this->fixTags([$tag]));
+            $block->args     = $args;
             $block->isVararg = $isVararg;
             if (!empty($guards)) {
                 $block->guards = $guards;
@@ -2692,7 +2692,7 @@ class lessc_parser
     protected function expHelper($lhs, $minP)
     {
         $this->inExp = true;
-        $ss = $this->seek();
+        $ss          = $this->seek();
 
         while (true) {
             $whiteBefore = isset($this->buffer[$this->count - 1]) &&
@@ -2729,7 +2729,7 @@ class lessc_parser
                 }
 
                 $lhs = ['expression', $m[1], $lhs, $rhs, $whiteBefore, $whiteAfter];
-                $ss = $this->seek();
+                $ss  = $this->seek();
 
                 continue;
             }
@@ -2754,7 +2754,7 @@ class lessc_parser
         $s = null;
         while ($this->expressionList($v)) {
             $values[] = $v;
-            $s = $this->seek();
+            $s        = $this->seek();
             if (!$this->literal(',')) {
                 break;
             }
@@ -2791,7 +2791,7 @@ class lessc_parser
             ($this->inParens = true) && $this->expression($exp) &&
             $this->literal(")")
         ) {
-            $out = $exp;
+            $out            = $exp;
             $this->inParens = $inParens;
 
             return true;
@@ -2909,7 +2909,7 @@ class lessc_parser
         $s = $this->seek();
 
         $expressions = null;
-        $parts = [];
+        $parts       = [];
 
         if (($this->literal("only") && ($only = true) || $this->literal("not") && ($not = true) || true) && $this->keyword($mediaType)) {
             $prop = ["mediaType"];
@@ -2919,7 +2919,7 @@ class lessc_parser
             if (isset($not)) {
                 $prop[] = "not";
             }
-            $prop[] = $mediaType;
+            $prop[]  = $mediaType;
             $parts[] = $prop;
         } else {
             $this->seek($s);
@@ -2947,7 +2947,7 @@ class lessc_parser
 
     protected function mediaExpression(&$out)
     {
-        $s = $this->seek();
+        $s     = $this->seek();
         $value = null;
         if ($this->literal("(") &&
             $this->keyword($feature) &&
@@ -2974,7 +2974,7 @@ class lessc_parser
     // an unbounded string stopped by $end
     protected function openString($end, &$out, $nestingOpen = null, $rejectStrs = null)
     {
-        $oldWhite = $this->eatWhiteDefault;
+        $oldWhite              = $this->eatWhiteDefault;
         $this->eatWhiteDefault = false;
 
         $stop = ["'", '"', "@{", $end];
@@ -3061,7 +3061,7 @@ class lessc_parser
         $patt = '([^\n]*?)(@\{|\\\\|' .
             lessc::preg_quote($delim) . ')';
 
-        $oldWhite = $this->eatWhiteDefault;
+        $oldWhite              = $this->eatWhiteDefault;
         $this->eatWhiteDefault = false;
 
         while ($this->match($patt, $m, false)) {
@@ -3100,7 +3100,7 @@ class lessc_parser
 
     protected function interpolation(&$out)
     {
-        $oldWhite = $this->eatWhiteDefault;
+        $oldWhite              = $this->eatWhiteDefault;
         $this->eatWhiteDefault = true;
 
         $s = $this->seek();
@@ -3108,7 +3108,7 @@ class lessc_parser
             $this->openString("}", $interp, null, ["'", '"', ";"]) &&
             $this->literal("}", false)
         ) {
-            $out = ["interpolate", $interp];
+            $out                   = ["interpolate", $interp];
             $this->eatWhiteDefault = $oldWhite;
             if ($this->eatWhiteDefault) {
                 $this->whitespace();
@@ -3213,13 +3213,13 @@ class lessc_parser
 
             if ($this->variable($vname)) {
                 $arg = ["arg", $vname];
-                $ss = $this->seek();
+                $ss  = $this->seek();
                 if ($this->assign() && $this->expressionList($value)) {
                     $arg[] = $value;
                 } else {
                     $this->seek($ss);
                     if ($this->literal("...")) {
-                        $arg[0] = "rest";
+                        $arg[0]   = "rest";
                         $isVararg = true;
                     }
                 }
@@ -3272,7 +3272,7 @@ class lessc_parser
     // optionally separated by > (lazy, accepts extra >)
     protected function mixinTags(&$tags)
     {
-        $s = $this->seek();
+        $s    = $this->seek();
         $tags = [];
         while ($this->tag($tt, true)) {
             $tags[] = $tt;
@@ -3343,12 +3343,12 @@ class lessc_parser
         }
 
         $hasExpression = false;
-        $parts = [];
+        $parts         = [];
         while ($this->tagBracket($first)) {
             $parts[] = $first;
         }
 
-        $oldWhite = $this->eatWhiteDefault;
+        $oldWhite              = $this->eatWhiteDefault;
         $this->eatWhiteDefault = false;
 
         while (true) {
@@ -3367,8 +3367,8 @@ class lessc_parser
             if (isset($this->buffer[$this->count]) && $this->buffer[$this->count] == "@") {
                 if ($this->interpolation($interp)) {
                     $hasExpression = true;
-                    $interp[2] = true; // don't unescape
-                    $parts[] = $interp;
+                    $interp[2]     = true; // don't unescape
+                    $parts[]       = $interp;
                     continue;
                 }
 
@@ -3547,7 +3547,7 @@ class lessc_parser
     // TODO rename to guardGroup
     protected function guardGroup(&$guardGroup)
     {
-        $s = $this->seek();
+        $s          = $this->seek();
         $guardGroup = [];
         while ($this->guard($guard)) {
             $guardGroup[] = $guard;
@@ -3568,7 +3568,7 @@ class lessc_parser
 
     protected function guard(&$guard)
     {
-        $s = $this->seek();
+        $s      = $this->seek();
         $negate = $this->literal("not");
 
         if ($this->literal("(") && $this->expression($exp) && $this->literal(")")) {
@@ -3616,7 +3616,7 @@ class lessc_parser
 
     protected function genericList(&$out, $parseItem, $delim = "", $flatten = true)
     {
-        $s = $this->seek();
+        $s     = $this->seek();
         $items = [];
         while ($this->$parseItem($value)) {
             $items[] = $value;
@@ -3712,7 +3712,7 @@ class lessc_parser
         if (is_null($from)) {
             $from = $this->count;
         }
-        $r = '/' . $regex . '/Ais';
+        $r      = '/' . $regex . '/Ais';
         $result = preg_match($r, $this->buffer, $out, null, $from);
 
         return $result;
@@ -3755,16 +3755,16 @@ class lessc_parser
 
     protected function pushBlock($selectors = null, $type = null)
     {
-        $b = new stdclass;
+        $b         = new stdclass;
         $b->parent = $this->env;
 
         $b->type = $type;
-        $b->id = self::$nextBlockId++;
+        $b->id   = self::$nextBlockId++;
 
         $b->isVararg = false; // TODO: kill me from here
-        $b->tags = $selectors;
+        $b->tags     = $selectors;
 
-        $b->props = [];
+        $b->props    = [];
         $b->children = [];
 
         $this->env = $b;
@@ -3790,7 +3790,7 @@ class lessc_parser
     // pop something off the stack
     protected function pop()
     {
-        $old = $this->env;
+        $old       = $this->env;
         $this->env = $this->env->parent;
 
         return $old;
@@ -3825,8 +3825,8 @@ class lessc_parser
                 break;
             }
 
-            $count = $min[1];
-            $skip = 0;
+            $count    = $min[1];
+            $skip     = 0;
             $newlines = 0;
             switch ($min[0]) {
                 case 'url(':
@@ -3850,7 +3850,7 @@ class lessc_parser
                     break;
                 case '/*':
                     if (preg_match('/\/\*.*?\*\//s', $text, $m, 0, $count)) {
-                        $skip = strlen($m[0]);
+                        $skip     = strlen($m[0]);
                         $newlines = substr_count($m[0], "\n");
                     }
                     break;
@@ -3875,16 +3875,16 @@ class lessc_formatter_classic
 {
     public $indentChar = "  ";
 
-    public $break = "\n";
-    public $open = " {";
-    public $close = "}";
+    public $break             = "\n";
+    public $open              = " {";
+    public $close             = "}";
     public $selectorSeparator = ", ";
-    public $assignSeparator = ":";
+    public $assignSeparator   = ":";
 
-    public $openSingle = " { ";
+    public $openSingle  = " { ";
     public $closeSingle = " }";
 
-    public $disableSingle = false;
+    public $disableSingle  = false;
     public $breakSelectors = false;
 
     public $compressColors = false;
@@ -3980,12 +3980,12 @@ class lessc_formatter_classic
 
 class lessc_formatter_compressed extends lessc_formatter_classic
 {
-    public $disableSingle = true;
-    public $open = "{";
+    public $disableSingle     = true;
+    public $open              = "{";
     public $selectorSeparator = ",";
-    public $assignSeparator = ":";
-    public $break = "";
-    public $compressColors = true;
+    public $assignSeparator   = ":";
+    public $break             = "";
+    public $compressColors    = true;
 
     public function indentStr($n = 0)
     {
@@ -3995,9 +3995,9 @@ class lessc_formatter_compressed extends lessc_formatter_classic
 
 class lessc_formatter_lessjs extends lessc_formatter_classic
 {
-    public $disableSingle = true;
-    public $breakSelectors = true;
-    public $assignSeparator = ": ";
+    public $disableSingle     = true;
+    public $breakSelectors    = true;
+    public $assignSeparator   = ": ";
     public $selectorSeparator = ",";
 }
 

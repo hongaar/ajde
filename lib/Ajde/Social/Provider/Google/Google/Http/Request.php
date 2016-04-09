@@ -29,9 +29,9 @@ class Google_Http_Request
 {
     const USER_AGENT_SUFFIX = "google-api-php-client/";
     private $batchHeaders = [
-        'Content-Type' => 'application/http',
+        'Content-Type'              => 'application/http',
         'Content-Transfer-Encoding' => 'binary',
-        'MIME-Version' => '1.0',
+        'MIME-Version'              => '1.0',
     ];
 
     protected $baseUrl;
@@ -60,7 +60,7 @@ class Google_Http_Request
         $headers = [],
         $postBody = null
     ) {
-        $this->client = $client;
+        $this->client   = $client;
         $this->basePath = $client->getBasePath();
         $this->setUrl($url);
         $this->setRequestMethod($method);
@@ -131,7 +131,7 @@ class Google_Http_Request
     /**
      * Set a new query parameter.
      *
-     * @param $key - string to set, does not need to be URL encoded
+     * @param $key   - string to set, does not need to be URL encoded
      * @param $value - string to set, does not need to be URL encoded
      */
     public function setQueryParam($key, $value)
@@ -193,7 +193,7 @@ class Google_Http_Request
 
     /**
      * @param array $headers The HTTP response headers
-     * to be normalized.
+     *                       to be normalized.
      */
     public function setResponseHeaders($headers)
     {
@@ -284,8 +284,8 @@ class Google_Http_Request
             }
             $url = $this->basePath . $url;
         }
-        $parts = parse_url($url);
-        $this->baseUrl = sprintf(
+        $parts             = parse_url($url);
+        $this->baseUrl     = sprintf(
             "%s://%s%s%s",
             isset($parts['scheme']) ? $parts['scheme'] : 'http',
             $parts['host'],
@@ -300,7 +300,7 @@ class Google_Http_Request
 
     /**
      * @param string $method Set he HTTP Method and normalize
-     * it to upper-case, as required by HTTP.
+     *                       it to upper-case, as required by HTTP.
      *
      */
     public function setRequestMethod($method)
@@ -310,7 +310,7 @@ class Google_Http_Request
 
     /**
      * @param array $headers The HTTP request headers
-     * to be set and normalized.
+     *                       to be set and normalized.
      */
     public function setRequestHeaders($headers)
     {
@@ -371,7 +371,7 @@ class Google_Http_Request
 
     public function getParsedCacheControl()
     {
-        $parsed = [];
+        $parsed          = [];
         $rawCacheControl = $this->getResponseHeader('cache-control');
         if ($rawCacheControl) {
             $rawCacheControl = str_replace(', ', '&', $rawCacheControl);
@@ -387,7 +387,7 @@ class Google_Http_Request
      */
     public function toBatchString($id)
     {
-        $str = '';
+        $str  = '';
         $path = parse_url($this->baseUrl, PHP_URL_PATH) . "?" .
             http_build_query($this->queryParams);
         $str .= $this->getRequestMethod() . ' ' . $path . " HTTP/1.1\n";
@@ -421,12 +421,12 @@ class Google_Http_Request
     private function parseQuery($string)
     {
         $return = [];
-        $parts = explode("&", $string);
+        $parts  = explode("&", $string);
         foreach ($parts as $part) {
             list($key, $value) = explode('=', $part, 2);
             $value = urldecode($value);
             if (isset($return[$key])) {
-                $return[$key] = [$return[$key]];
+                $return[$key]   = [$return[$key]];
                 $return[$key][] = $value;
             } else {
                 $return[$key] = $value;

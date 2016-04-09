@@ -3,13 +3,13 @@
 class Ajde_Cookie extends Ajde_Object_Standard
 {
     protected $_namespace = null;
-    protected $_lifetime = 90;
-    protected $_secure = false;
+    protected $_lifetime  = 90;
+    protected $_secure    = false;
 
     public function __construct($namespace = 'default', $secure = false)
     {
         $this->_namespace = $namespace;
-        $this->_secure = $secure;
+        $this->_secure    = $secure;
         if (isset($_COOKIE[$this->_namespace])) {
             $this->_data = $this->reader();
         }
@@ -73,9 +73,9 @@ class Ajde_Cookie extends Ajde_Object_Standard
 
     protected function _setcookie($value, $lifetime)
     {
-        $path = Config::get('site_path');
-        $domain = Config::get('cookieDomain');
-        $secure = Config::get('cookieSecure');
+        $path     = Config::get('site_path');
+        $domain   = Config::get('cookieDomain');
+        $secure   = Config::get('cookieSecure');
         $httponly = Config::get('cookieHttponly');
         setcookie($this->_namespace, $value, $lifetime, $path, $domain, $secure, $httponly);
     }

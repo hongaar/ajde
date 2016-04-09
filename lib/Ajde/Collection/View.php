@@ -11,20 +11,20 @@ class Ajde_Collection_View extends Ajde_Object_Standard
         $this->_tableName = $tableName;
 
         $defaultOptions = [
-            'page' => 1,
-            'pageSize' => 100,
-            'filter' => [],
-            'search' => null,
-            'orderBy' => null,
-            'orderDir' => Ajde_Query::ORDER_ASC,
-            'viewType' => 'list',
-            'filterVisible' => false,
-            'disableFilter' => false,
-            'mainFilter' => '',
+            'page'              => 1,
+            'pageSize'          => 100,
+            'filter'            => [],
+            'search'            => null,
+            'orderBy'           => null,
+            'orderDir'          => Ajde_Query::ORDER_ASC,
+            'viewType'          => 'list',
+            'filterVisible'     => false,
+            'disableFilter'     => false,
+            'mainFilter'        => '',
             'mainFilterGrouper' => '',
-            'columns' => []
+            'columns'           => []
         ];
-        $options = array_merge($defaultOptions, $listOptions);
+        $options        = array_merge($defaultOptions, $listOptions);
         $this->setOptions($options);
     }
 
@@ -106,11 +106,11 @@ class Ajde_Collection_View extends Ajde_Object_Standard
             return $collection->count(true);
         }
         if (!isset($this->_rowCount)) {
-            $sql = 'SELECT COUNT(*) AS count FROM ' . $this->_tableName;
+            $sql        = 'SELECT COUNT(*) AS count FROM ' . $this->_tableName;
             $connection = Ajde_Db::getInstance()->getConnection();
-            $statement = $connection->prepare($sql);
+            $statement  = $connection->prepare($sql);
             $statement->execute();
-            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            $result          = $statement->fetch(PDO::FETCH_ASSOC);
             $this->_rowCount = $result['count'];
         }
 

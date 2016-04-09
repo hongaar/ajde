@@ -3,9 +3,9 @@
 abstract class Ajde_Object
 {
     const OBJECT_PATTERN_UNDEFINED = 0;
-    const OBJECT_PATTERN_STANDARD = 1;
+    const OBJECT_PATTERN_STANDARD  = 1;
     const OBJECT_PATTERN_SINGLETON = 2;
-    const OBJECT_PATTERN_STATIC = 3;
+    const OBJECT_PATTERN_STATIC    = 3;
 
     protected static $__pattern;
 

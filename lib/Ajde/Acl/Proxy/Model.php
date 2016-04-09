@@ -3,7 +3,7 @@
 abstract class Ajde_Acl_Proxy_Model extends Ajde_Model
 {
     public $ignoreAccessControl = false;
-    public $autoRedirect = true;
+    public $autoRedirect        = true;
 
     public function getAclParam()
     {
@@ -12,8 +12,8 @@ abstract class Ajde_Acl_Proxy_Model extends Ajde_Model
 
     /**
      * @param string $action
-     * @param bool $autoRedirect
-     * @param bool $determineWildcard
+     * @param bool   $autoRedirect
+     * @param bool   $determineWildcard
      * @return bool
      */
     public function validateAccess($action, $autoRedirect = true, $determineWildcard = false)
@@ -23,11 +23,11 @@ abstract class Ajde_Acl_Proxy_Model extends Ajde_Model
         }
 
         $module = (string)$this->getTable();
-        $extra = $this->getAclParam();
+        $extra  = $this->getAclParam();
 
         $aclTimer = Ajde::app()->addTimer("<i>ACL validation for " . $this->displayField() . ": " . implode('/',
                 ['model', $module, $action, $extra]) . "</i>");
-        $access = Ajde_Acl::doValidation('model', $module, $action, $extra, [$this, 'validateOwner'],
+        $access   = Ajde_Acl::doValidation('model', $module, $action, $extra, [$this, 'validateOwner'],
             [$this, 'validateParent'], $determineWildcard);
         Ajde::app()->endTimer($aclTimer);
 

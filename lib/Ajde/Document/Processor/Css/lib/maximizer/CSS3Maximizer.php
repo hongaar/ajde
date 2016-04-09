@@ -104,31 +104,31 @@ class CSS3Maximizer
     /* Direct conversions of properties between vendors */
 
     private $defAlias = [
-        "background-clip" => [
+        "background-clip"     => [
             "background-clip",
             "-moz-background-clip",
             "-webkit-background-clip"
         ],
-        "background-size" => [
+        "background-size"     => [
             "background-size",
             "-moz-background-size",
             "-webkit-background-size"
         ],
-        "border-radius" => [
+        "border-radius"       => [
             "border-radius",
             "-moz-border-radius",
             "-webkit-border-radius"
         ],
-        "box-shadow" => [
+        "box-shadow"          => [
             "box-shadow",
             "-moz-box-shadow",
             "-webkit-box-shadow"
         ],
-        "text-shadow" => [
+        "text-shadow"         => [
             "text-shadow",
             "-moz-text-shadow"
         ],
-        "transition" => [
+        "transition"          => [
             "transition",
             "-moz-transition",
             "-ms-transition",
@@ -149,14 +149,14 @@ class CSS3Maximizer
             "-o-transition-duration",
             "-webkit-transition-duration",
         ],
-        "transform" => [
+        "transform"           => [
             "transform",
             "-moz-transform",
             "-ms-transform",
             "-o-transform",
             "-webkit-transform"
         ],
-        "user-select" => [
+        "user-select"         => [
             "user-select",
             "-khtml-user-select",
             "-moz-user-select",
@@ -213,7 +213,7 @@ class CSS3Maximizer
     {
         $values = [];
         while (strlen($value)) {
-            $ishex = strpos($value, "#");
+            $ishex   = strpos($value, "#");
             $isother = strpos($value, ")");
             if ($ishex === false) {
                 $ishex = 99999999999;
@@ -249,11 +249,11 @@ class CSS3Maximizer
             }
             $pos = strpos($tmp, "(");
             if ($pos === false) { // split color from properties [hex]
-                $pos = strpos($tmp, "#");
+                $pos   = strpos($tmp, "#");
                 $first = substr($tmp, 0, $pos);
                 $color = substr($tmp, $pos);
             } else { // split color from properties [rgb, rgba, hsl or hsla]
-                $pos = substr($tmp, 0, $pos);
+                $pos     = substr($tmp, 0, $pos);
                 $backpos = strrpos($pos, " ");
                 if ($backpos === false) {
                     $backpos = -1;
@@ -265,10 +265,10 @@ class CSS3Maximizer
             if ($doFallback) { // include hex fallback when alpha is present
                 if ($color["rgba"]) {
                     $fallback[$key] = $first . $color["hex"];
-                    $colors[$key] = $first . $color["rgba"];
+                    $colors[$key]   = $first . $color["rgba"];
                 } else {
                     $fallback[$key] = $first . $color["hex"];
-                    $colors[$key] = $first . $color["hex"];
+                    $colors[$key]   = $first . $color["hex"];
                 }
             } else {
                 if ($color["rgba"]) {
@@ -278,11 +278,11 @@ class CSS3Maximizer
                 }
             }
         }
-        $colors = implode($colors, ", ");
+        $colors   = implode($colors, ", ");
         $fallback = implode($fallback, ", ");
         if ($doFallback && $colors !== $fallback) { // include fallback
             return [
-                "hex" => $fallback,
+                "hex"  => $fallback,
                 "rgba" => $colors
             ];
         } else { // no fallback necessary
@@ -295,7 +295,7 @@ class CSS3Maximizer
         $color = trim($color);
         if (strpos($color, "(")) { // rgb, rgba, hsl or hsla
             $first = strpos($color, "(");
-            $type = substr($color, 0, $first);
+            $type  = substr($color, 0, $first);
             $color = substr($color, $first + 1, -1);
             $color = explode(",", $color);
             $alpha = isset($color[3]) ? floatval($color[3]) : 1;
@@ -334,7 +334,7 @@ class CSS3Maximizer
 
                 return [
                     "rgba" => "rgba(" . $r . ", " . $g . ", " . $b . ", " . $alpha . ")",
-                    "hex" => $hex
+                    "hex"  => $hex
                 ];
             }
         } else {
@@ -350,7 +350,7 @@ class CSS3Maximizer
     {
         $values = [];
         while (strlen($value)) {
-            $ishex = strpos($value, ",");
+            $ishex   = strpos($value, ",");
             $isother = strpos($value, "(");
             if ($ishex === false) {
                 $ishex = 99999999999;
@@ -404,8 +404,8 @@ class CSS3Maximizer
         ///--- webkit supports out-of-order color-stops (others fail)...
 
         array_shift($value); // type of gradient [assume linear]
-        $start = explode(" ", array_shift($value));
-        $end = explode(" ", array_shift($value));
+        $start   = explode(" ", array_shift($value));
+        $end     = explode(" ", array_shift($value));
         $aIsSame = $start[0] == $end[0];
         $bIsSame = $start[1] == $end[1];
         if ($aIsSame && !$bIsSame) {
@@ -415,18 +415,18 @@ class CSS3Maximizer
                 $start = "left";
             } else {
                 if (!$aIsSame && !$bIsSame) { // convert to angle
-                    $p1 = array_merge(
+                    $p1    = array_merge(
                         ["x" => 0, "y" => 0],
                         $this->Webkit_Gradient_Position($start[0]),
                         $this->Webkit_Gradient_Position($start[1])
                     );
-                    $p2 = array_merge(
+                    $p2    = array_merge(
                         ["x" => 0, "y" => 0],
                         $this->Webkit_Gradient_Position($end[0]),
                         $this->Webkit_Gradient_Position($end[1])
                     );
-                    $dy = $p2[y] - $p1[y];
-                    $dx = $p2[x] - $p1[x];
+                    $dy    = $p2[y] - $p1[y];
+                    $dx    = $p2[x] - $p1[x];
                     $start = round(rad2deg(atan2($dy, $dx))) . "deg";
                 } else { // is "left"
                     $start = "left";
@@ -434,20 +434,20 @@ class CSS3Maximizer
             }
         }
         $values = [];
-        $moz = [];
+        $moz    = [];
         //
         foreach ($value as $key) {
             $type = substr($key, 0, strpos($key, "("));
-            $key = substr($key, strpos($key, "(") + 1);
+            $key  = substr($key, strpos($key, "(") + 1);
             if ($type == "from") {
                 $position = "0%";
-                $color = substr($key, 0, -1);
+                $color    = substr($key, 0, -1);
             } else {
                 if ($type == "to") {
                     $position = "100%";
-                    $color = substr($key, 0, -1);
+                    $color    = substr($key, 0, -1);
                 } else {
-                    $key = explode(",", $key, 2);
+                    $key      = explode(",", $key, 2);
                     $position = $key[0];
                     if (!strpos($position, "%")) {
                         $position = round($position * 100) . "%";
@@ -466,8 +466,8 @@ class CSS3Maximizer
 
         return [
             "microsoft" => [substr(reset($moz), 0, 7), substr(end($moz), 0, 7)],
-            "moz" => $start . ", " . implode($moz, ", "),
-            "w3c" => $start . ", " . implode($values, ", ")
+            "moz"       => $start . ", " . implode($moz, ", "),
+            "w3c"       => $start . ", " . implode($values, ", ")
         ];
     }
 
@@ -483,15 +483,15 @@ class CSS3Maximizer
                 break;
             default: // angle
                 $start = deg2rad(intval($start));
-                $x = round(cos($start) * 100);
-                $y = round(sin($start) * 100);
+                $x     = round(cos($start) * 100);
+                $y     = round(sin($start) * 100);
                 $start = $x . "% 0%, 0% " . $y . "%, ";
                 break;
         }
-        $count = count($value) - 1;
+        $count  = count($value) - 1;
         $values = [];
         foreach ($value as $n => $key) {
-            $key = explode(" ", $key);
+            $key   = explode(" ", $key);
             $color = $this->parseColor($key[0]);
             if ($color["rgba"]) {
                 $color = $color["rgba"];
@@ -517,20 +517,20 @@ class CSS3Maximizer
 
         return [
             "microsoft" => [$first, $last],
-            "webkit" => "linear, " . $start . implode($values, ", ")
+            "webkit"    => "linear, " . $start . implode($values, ", ")
         ];
     }
 
     private function parseGradient($property, $value)
     {
-        $type = substr($value, 0, strpos($value, "("));
-        $tmp = substr($value, strpos($value, "(") + 1, -1);
+        $type   = substr($value, 0, strpos($value, "("));
+        $tmp    = substr($value, strpos($value, "(") + 1, -1);
         $values = [];
         if ($type == "-webkit-gradient") { // convert from webkit to other
-            $value = $this->Webkit_to_W3C_Gradient($this->splitGradient($tmp));
+            $value           = $this->Webkit_to_W3C_Gradient($this->splitGradient($tmp));
             $value["webkit"] = $tmp;
         } else { // convert from other to webkit
-            $value = $this->W3C_to_Webkit_Gradient($this->splitGradient($tmp));
+            $value        = $this->W3C_to_Webkit_Gradient($this->splitGradient($tmp));
             $value["w3c"] = $tmp;
         }
         foreach ($this->defGradientLinear as $key) {
@@ -538,7 +538,7 @@ class CSS3Maximizer
                 $values[$key] = $key . "(" . $value["webkit"] . ")";
             } else {
                 if ($key == "filter") {
-                    $color = $value["microsoft"];
+                    $color        = $value["microsoft"];
                     $values[$key] = "filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='{$color[0]}', EndColorStr='{$color[1]}')";
                 } else {
                     $values[$key] = $key . "(" . $value["w3c"] . ")";
@@ -553,9 +553,9 @@ class CSS3Maximizer
 
     private function ParseCSS($str)
     {
-        $css = [];
-        $str = preg_replace("/\/\*(.*)?\*\//Usi", "", $str);
-        $parts = explode("}", $str);
+        $css      = [];
+        $str      = preg_replace("/\/\*(.*)?\*\//Usi", "", $str);
+        $parts    = explode("}", $str);
         $skipping = false;
         if (count($parts) > 0) {
             foreach ($parts as $part) {
@@ -571,9 +571,9 @@ class CSS3Maximizer
                     }
                 }
                 if (substr(trim($part), 0, 1) === "@") {
-                    $id = explode(",", trim($keystr));
+                    $id          = explode(",", trim($keystr));
                     $css[$id[0]] = trim($part) . "\r\t}";
-                    $skipping = true;
+                    $skipping    = true;
                     continue;
                 }
                 // everything else
@@ -585,8 +585,8 @@ class CSS3Maximizer
                     if (strlen($key) === 0) {
                         continue;
                     }
-                    $key = str_replace("\n", "", $key);
-                    $key = str_replace("\\", "", $key);
+                    $key     = str_replace("\n", "", $key);
+                    $key     = str_replace("\\", "", $key);
                     $codestr = trim($codestr);
                     if (!isset($css[$key])) {
                         $css[$key] = [];
@@ -594,7 +594,7 @@ class CSS3Maximizer
                     // only match ; without surrounding quotes
                     $codestr = preg_replace('/(?:["\'].*(;).*["\'])/e',
                         'str_replace(";","{{{RETAIN_SEPERATOR}}}","$0")', $codestr);
-                    $codes = explode(";", $codestr);
+                    $codes   = explode(";", $codestr);
                     if (count($codes) === 0) {
                         continue;
                     }
@@ -607,7 +607,7 @@ class CSS3Maximizer
                             continue;
                         }
                         array_push($css[$key], [
-                                "type" => trim($codekey),
+                                "type"  => trim($codekey),
                                 "value" => trim($codevalue)
                             ]
                         );
@@ -623,8 +623,8 @@ class CSS3Maximizer
 
     public function clean($config)
     {
-        $css = isset($config['css']) ? $config['css'] : '';
-        $url = isset($config['url']) ? $config['url'] : '';
+        $css      = isset($config['css']) ? $config['css'] : '';
+        $url      = isset($config['url']) ? $config['url'] : '';
         $compress = isset($config['compress']) ? $config['compress'] : '';
         // load from file and write file
         if (strpos($css, ".css") && is_file($css)) {
@@ -634,8 +634,8 @@ class CSS3Maximizer
         }
 
         $cssObject = [];
-        $cssText = "";
-        $css = $this->ParseCSS($this->code);
+        $cssText   = "";
+        $css       = $this->ParseCSS($this->code);
         // run through properties and add appropriate compatibility
         foreach ($css as $cssID => $cssProperties) {
             $properties = [];
@@ -644,7 +644,7 @@ class CSS3Maximizer
                 continue;
             }
             foreach ($cssProperties as $value) {
-                $type = $value["type"];
+                $type  = $value["type"];
                 $value = $value["value"];
                 if (in_array($type, $this->defGradientProperties)) {
                     if (substr(trim($value), 0, 4) === "url(") {
@@ -656,13 +656,13 @@ class CSS3Maximizer
                             $value = $this->parseGradient($type, $value);
                         } else { // background-color as "background"
                             $doFallback = in_array($type, $this->defColorFallback);
-                            $value = $this->parseColors($this->splitByColor($value), $doFallback);
+                            $value      = $this->parseColors($this->splitByColor($value), $doFallback);
                         }
                     }
                 } else {
                     if (in_array($type, $this->defColorProperties)) {
                         $doFallback = in_array($type, $this->defColorFallback);
-                        $value = $this->parseColors($this->splitByColor($value), $doFallback);
+                        $value      = $this->parseColors($this->splitByColor($value), $doFallback);
                     }
                 }
                 $alias = [];
@@ -674,7 +674,7 @@ class CSS3Maximizer
                                 if ($tmp[0] == "transform") {
                                     $tmp[0] = "-moz-transform";
                                 }
-                                $tmp = implode($tmp, " ");
+                                $tmp         = implode($tmp, " ");
                                 $alias[$key] = $tmp;
                             } else {
                                 if ($key == "-moz-transition-property") {
@@ -706,7 +706,7 @@ class CSS3Maximizer
                             $property["value"],
                             $value
                         );
-                        $merged = true;
+                        $merged                    = true;
                     } else {
                         if ($typeof == "array" && $property["value"][$type]) {
                             if ($type === "filter") {
@@ -718,14 +718,14 @@ class CSS3Maximizer
                                 $property["value"],
                                 $value
                             );
-                            $merged = true;
+                            $merged                    = true;
                         } else {
                         }
                     }
                 }
                 if ($merged === false) {
                     array_push($properties, [
-                        "type" => $type,
+                        "type"  => $type,
                         "value" => $value
                     ]);
                 }
@@ -733,8 +733,8 @@ class CSS3Maximizer
             $cssObject[$cssID] = $properties;
         }
         $newline = $compress ? "" : "\n";
-        $space = $compress ? "" : " ";
-        $tab = $compress ? "" : "\t";
+        $space   = $compress ? "" : " ";
+        $tab     = $compress ? "" : "\t";
         // composite $cssObject into $cssText
         $cssArray = [];
         foreach ($cssObject as $cssID => $cssProperties) {
@@ -743,13 +743,13 @@ class CSS3Maximizer
                 $cssText = "\t" . trim(substr($cssText, 0, strrpos($cssText, "}"))) . "\n";
                 array_push($cssArray, [
                     "text" => $cssText,
-                    "key" => $cssID
+                    "key"  => $cssID
                 ]);
                 continue;
             }
             $cssText = "";
             foreach ($cssProperties as $value) {
-                $type = $value["type"];
+                $type  = $value["type"];
                 $value = $value["value"];
                 if (gettype($value) == "string") { // general properties
                     if ($compress) {
@@ -779,12 +779,12 @@ class CSS3Maximizer
             }
             array_push($cssArray, [
                 "text" => $cssText,
-                "key" => $cssID
+                "key"  => $cssID
             ]);
         }
         $cssText = "";
         foreach ($cssArray as $n => $value) {
-            $cssID = $value["key"];
+            $cssID    = $value["key"];
             $content1 = $cssArray[$n]["text"];
             $content2 = $cssArray[$n + 1]["text"];
             if ($content1 === $content2) {

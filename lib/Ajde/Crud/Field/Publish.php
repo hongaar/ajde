@@ -2,9 +2,9 @@
 
 class Ajde_Crud_Field_Publish extends Ajde_Crud_Field
 {
-    const MODE_NEW = 'new';
+    const MODE_NEW         = 'new';
     const MODE_UNPUBLISHED = 'unpublished';
-    const MODE_PUBLISHED = 'published';
+    const MODE_PUBLISHED   = 'published';
 
     private $_mode;
 
@@ -30,7 +30,7 @@ class Ajde_Crud_Field_Publish extends Ajde_Crud_Field
 
     protected function _getHtmlAttributes()
     {
-        $attributes = [];
+        $attributes         = [];
         $attributes['type'] = "hidden";
         if ($this->getMode() === self::MODE_NEW) {
             $attributes['value'] = $this->getDefault();

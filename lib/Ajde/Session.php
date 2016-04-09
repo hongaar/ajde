@@ -17,7 +17,7 @@ class Ajde_Session extends Ajde_Object_Standard
         ini_set('session.gc_maxlifetime',
             ($lifetime == 0 ? 180 * 60 : $lifetime * 60)); // PHP session garbage collection timeout in minutes
         ini_set('session.gc_divisor', 100);        // Set divisor and probability for cronjob Ubuntu/Debian
-//		ini_set('session.gc_probability', 1);	// @see http://www.php.net/manual/en/function.session-save-path.php#98106
+        //		ini_set('session.gc_probability', 1);	// @see http://www.php.net/manual/en/function.session-save-path.php#98106
 
         // Set session save path
         if (Config::get('sessionSavepath')) {
@@ -30,9 +30,9 @@ class Ajde_Session extends Ajde_Object_Standard
             1); // @see http://www.php.net/manual/en/session.configuration.php#ini.session.use-only-cookies
 
         // Session cookie parameter
-        $path = Config::get('site_path');
-        $domain = Config::get('cookieDomain');
-        $secure = Config::get('cookieSecure');
+        $path     = Config::get('site_path');
+        $domain   = Config::get('cookieDomain');
+        $secure   = Config::get('cookieSecure');
         $httponly = Config::get('cookieHttponly');
 
         // Set cookie lifetime
@@ -74,13 +74,13 @@ class Ajde_Session extends Ajde_Object_Standard
                 // don't redirect/log for resource items, as they should have no side effect
                 // this makes it possible for i.e. web crawlers/error pages to view resources
                 $request = Ajde_Http_Request::fromGlobal();
-                $route = $request->initRoute();
+                $route   = $request->initRoute();
                 Ajde::app()->setRequest($request);
                 if (!in_array($route->getFormat(), ['css', 'js'])) {
                     Ajde_Exception_Log::logException($exception);
                     Ajde_Cache::getInstance()->disable();
                     // Just destroying the session should be enough
-//					Ajde_Http_Response::dieOnCode(Ajde_Http_Response::RESPONSE_TYPE_FORBIDDEN);
+                    //					Ajde_Http_Response::dieOnCode(Ajde_Http_Response::RESPONSE_TYPE_FORBIDDEN);
                 }
             }
         } else {

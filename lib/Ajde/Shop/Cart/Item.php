@@ -48,8 +48,8 @@ abstract class Ajde_Shop_Cart_Item extends Ajde_Model
     public function load($entity, $id)
     {
         return $this->loadByFields([
-            'cart' => $this->getCart()->getPK(),
-            'entity' => $entity,
+            'cart'      => $this->getCart()->getPK(),
+            'entity'    => $entity,
             'entity_id' => $id
         ]);
     }
@@ -97,7 +97,7 @@ abstract class Ajde_Shop_Cart_Item extends Ajde_Model
     {
         $entity = $this->get('entity_id');
         if (!$entity instanceof Ajde_Model) {
-            $id = $entity;
+            $id     = $entity;
             $entity = $this->_getEntityModel($this->get('entity'));
             $entity->loadByPK($id);
         }

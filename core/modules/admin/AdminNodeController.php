@@ -2,126 +2,129 @@
 
 class AdminNodeController extends AdminController
 {
-	public function beforeInvoke($allowed = array())
-	{
-		return parent::beforeInvoke($allowed);
-	}
+    public function beforeInvoke($allowed = [])
+    {
+        return parent::beforeInvoke($allowed);
+    }
 
-	public function view()
-	{
-		Ajde::app()->getDocument()->setTitle("Nodes");
-		return $this->render();
-	}
+    public function view()
+    {
+        Ajde::app()->getDocument()->setTitle("Nodes");
 
-	public function panel()
-	{
-		$item = $this->getItem();
-		$this->getView()->assign('item', $item);
-		return $this->render();
-	}
+        return $this->render();
+    }
 
-	public function quickJson()
-	{
-		$parent = Ajde::app()->getRequest()->getPostParam('parent');
-		$title = Ajde::app()->getRequest()->getPostParam('title');
-		$due = Ajde::app()->getRequest()->getPostParam('due');
-		$allocated = Ajde::app()->getRequest()->getPostParam('allocated');
+    public function panel()
+    {
+        $item = $this->getItem();
+        $this->getView()->assign('item', $item);
 
-		$model = new NodeModel();
+        return $this->render();
+    }
 
-		$model->populate(array(
-			'parent' => $parent,
-			'title' => $title,
-			'user' => UserModel::getLoggedIn()->getPK(),
-			'nodetype' => NodeModel::NODETYPE_ISSUE
-		));
+    public function quickJson()
+    {
+        $parent    = Ajde::app()->getRequest()->getPostParam('parent');
+        $title     = Ajde::app()->getRequest()->getPostParam('title');
+        $due       = Ajde::app()->getRequest()->getPostParam('due');
+        $allocated = Ajde::app()->getRequest()->getPostParam('allocated');
 
-		Ajde_Event::trigger($model, 'beforeCrudSave', array());
-		$success = $model->insert();
-		Ajde_Event::trigger($model, 'afterCrudSave', array());
+        $model = new NodeModel();
 
-		$model->saveMetaValue(NodeModel::META_ISSUESTATUS, NodeModel::ISSUESTATUS_NEW);
-		$model->saveMetaValue(NodeModel::META_ISSUEDUE, $due);
-		$model->saveMetaValue(NodeModel::META_ALLOCATED, $allocated);
+        $model->populate([
+            'parent'   => $parent,
+            'title'    => $title,
+            'user'     => UserModel::getLoggedIn()->getPK(),
+            'nodetype' => NodeModel::NODETYPE_ISSUE
+        ]);
 
-		return array(
-			'success' => $success,
-			'message' => $success ? 'Node added' : 'Something went wrong'
-		);
-	}
+        Ajde_Event::trigger($model, 'beforeCrudSave', []);
+        $success = $model->insert();
+        Ajde_Event::trigger($model, 'afterCrudSave', []);
 
-	public function updateJson()
-	{
-		$id = Ajde::app()->getRequest()->getParam('id');
+        $model->saveMetaValue(NodeModel::META_ISSUESTATUS, NodeModel::ISSUESTATUS_NEW);
+        $model->saveMetaValue(NodeModel::META_ISSUEDUE, $due);
+        $model->saveMetaValue(NodeModel::META_ALLOCATED, $allocated);
 
-		$meta = Ajde::app()->getRequest()->getPostParam('meta');
-		$key = Ajde::app()->getRequest()->getPostParam('key');
-		$value = Ajde::app()->getRequest()->getPostParam('value');
+        return [
+            'success' => $success,
+            'message' => $success ? 'Node added' : 'Something went wrong'
+        ];
+    }
 
-		$model = new NodeModel();
+    public function updateJson()
+    {
+        $id = Ajde::app()->getRequest()->getParam('id');
 
-		$model->loadByPK($id);
-		$success = false;
-		if ($meta) {
-			$model->saveMetaValue($key, $value);
-			$success = true;
-		} else {
-			$model->set($key, $value);
-			$success = $model->save();
-		}
+        $meta  = Ajde::app()->getRequest()->getPostParam('meta');
+        $key   = Ajde::app()->getRequest()->getPostParam('key');
+        $value = Ajde::app()->getRequest()->getPostParam('value');
 
-		return array(
-			'success' => true,
-			'message' => $success ? 'Node updated' : 'Something went wrong'
-		);
-	}
+        $model = new NodeModel();
 
-	public function searchJson()
-	{
-		$q = Ajde::app()->getRequest()->getParam('query');
+        $model->loadByPK($id);
+        $success = false;
+        if ($meta) {
+            $model->saveMetaValue($key, $value);
+            $success = true;
+        } else {
+            $model->set($key, $value);
+            $success = $model->save();
+        }
 
-		$collection = new NodeCollection();
+        return [
+            'success' => true,
+            'message' => $success ? 'Node updated' : 'Something went wrong'
+        ];
+    }
 
-		// split search terms
-		$terms = explode(" ", $q);
+    public function searchJson()
+    {
+        $q = Ajde::app()->getRequest()->getParam('query');
 
-		// search on node fields
-		$searchGroup = new Ajde_Filter_WhereGroup(Ajde_Query::OP_OR);
-		foreach ($terms as $term) {
-			$termGroup = $collection->getTextFilterGroup($term, Ajde_Query::OP_OR);
-			if ($termGroup !== false) {
-				$searchGroup->addFilter($termGroup);
-			}
-		}
-		$collection->addFilter($searchGroup);
+        $collection = new NodeCollection();
 
-		// search on meta search
-		$collection->addFilter(new Ajde_Filter_LeftJoin('node_meta', 'node_meta.node', 'node.id'));
-		$searchGroup = new Ajde_Filter_WhereGroup(Ajde_Query::OP_OR);
-		foreach ($terms as $term) {
-			$searchGroup->addFilter(new Ajde_Filter_Where('node_meta.value', Ajde_Filter::FILTER_LIKE, '%' . $term . '%', Ajde_Query::OP_OR));
-		}
-		$collection->addFilter($searchGroup);
-		$collection->getQuery()->addGroupBy('node.id');
+        // split search terms
+        $terms = explode(" ", $q);
 
-		// join in nodetype info
-		$collection->joinNodetype();
-		$collection->getQuery()->addSelect('nodetype.name AS nodetype_name');
-		$collection->getQuery()->addSelect('nodetype.icon AS nodetype_icon');
+        // search on node fields
+        $searchGroup = new Ajde_Filter_WhereGroup(Ajde_Query::OP_OR);
+        foreach ($terms as $term) {
+            $termGroup = $collection->getTextFilterGroup($term, Ajde_Query::OP_OR);
+            if ($termGroup !== false) {
+                $searchGroup->addFilter($termGroup);
+            }
+        }
+        $collection->addFilter($searchGroup);
 
-		$suggestions = array();
-		foreach ($collection as $node) {
-			/* @var $node NodeModel */
-			$suggestions[] = array(
-					'value' => "<i class='" . $node->get('nodetype_icon') . "'></i> " . $node->displayField(),
-					'data' => $node->getPK()
-				);
-		}
+        // search on meta search
+        $collection->addFilter(new Ajde_Filter_LeftJoin('node_meta', 'node_meta.node', 'node.id'));
+        $searchGroup = new Ajde_Filter_WhereGroup(Ajde_Query::OP_OR);
+        foreach ($terms as $term) {
+            $searchGroup->addFilter(new Ajde_Filter_Where('node_meta.value', Ajde_Filter::FILTER_LIKE,
+                '%' . $term . '%', Ajde_Query::OP_OR));
+        }
+        $collection->addFilter($searchGroup);
+        $collection->getQuery()->addGroupBy('node.id');
 
-		return array(
-				'query' => $q,
-				'suggestions' => $suggestions
-			);
-	}
+        // join in nodetype info
+        $collection->joinNodetype();
+        $collection->getQuery()->addSelect('nodetype.name AS nodetype_name');
+        $collection->getQuery()->addSelect('nodetype.icon AS nodetype_icon');
+
+        $suggestions = [];
+        foreach ($collection as $node) {
+            /* @var $node NodeModel */
+            $suggestions[] = [
+                'value' => "<i class='" . $node->get('nodetype_icon') . "'></i> " . $node->displayField(),
+                'data'  => $node->getPK()
+            ];
+        }
+
+        return [
+            'query'       => $q,
+            'suggestions' => $suggestions
+        ];
+    }
 
 }

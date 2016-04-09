@@ -163,10 +163,10 @@ class Ajde_Model extends Ajde_Object_Standard
     public function getPublishData()
     {
         return [
-            'title' => $this->displayField(),
+            'title'   => $this->displayField(),
             'message' => null,
-            'image' => null,
-            'url' => null
+            'image'   => null,
+            'url'     => null
         ];
     }
 
@@ -332,7 +332,7 @@ class Ajde_Model extends Ajde_Object_Standard
             // We need to have the MetaModel here..
             $metaCollection = new MetaCollection();
             // disable join, as we don't get any metas which don't have a row yet
-//			$metaCollection->addFilter(new Ajde_Filter_Join($this->getMetaTable(), 'meta.id', 'meta'));
+            //			$metaCollection->addFilter(new Ajde_Filter_Join($this->getMetaTable(), 'meta.id', 'meta'));
             foreach ($metaCollection as $meta) {
                 /* @var $meta MetaModel */
                 $this->_metaLookup[$this->fuzzyMetaName($meta->get('name'))] = $meta->getPK();
@@ -380,7 +380,7 @@ class Ajde_Model extends Ajde_Object_Standard
     {
         foreach ($this->getValues() as $key => $value) {
             // don't ignore empty values
-//			if (substr($key, 0, 5) === 'meta_' && $value) {
+            //			if (substr($key, 0, 5) === 'meta_' && $value) {
             if (substr($key, 0, 5) === 'meta_') {
                 $metaId = str_replace('meta_', '', $key);
                 $this->saveMetaValue($metaId, $value);

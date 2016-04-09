@@ -3,106 +3,110 @@ require_once 'ShopController.php';
 
 class ShopCartController extends ShopController
 {
-	protected $_allowedActions = array(
-		'view',
-		'edit',
-		'add',
-		'widget',
-		'switchUser'
-	);
+    protected $_allowedActions = [
+        'view',
+        'edit',
+        'add',
+        'widget',
+        'switchUser'
+    ];
 
-	public function view()
-	{
-		$this->redirect('shop/cart:edit');
-	}
+    public function view()
+    {
+        $this->redirect('shop/cart:edit');
+    }
 
-	public function edit()
-	{
-		$cart = new CartModel();
-		$cart->loadCurrent();
+    public function edit()
+    {
+        $cart = new CartModel();
+        $cart->loadCurrent();
 
-		if (Ajde::app()->getRequest()->hasPostParam('update')) {
-			$qtyArray = Ajde::app()->getRequest()->getPostParam('qty');
-			$item = new CartItemModel();
-			foreach($qtyArray as $itemId => $qty) {
-				$item->loadByPK($itemId);
-				if ($item->cart == (string) $cart) {
-					if ((int) $qty == 0) {
-						$item->delete();
-					} else {
-						$item->qty = $qty;
-						$item->save();
-					}
-				}
-				$item->reset();
-			}
-		}
+        if (Ajde::app()->getRequest()->hasPostParam('update')) {
+            $qtyArray = Ajde::app()->getRequest()->getPostParam('qty');
+            $item     = new CartItemModel();
+            foreach ($qtyArray as $itemId => $qty) {
+                $item->loadByPK($itemId);
+                if ($item->cart == (string)$cart) {
+                    if ((int)$qty == 0) {
+                        $item->delete();
+                    } else {
+                        $item->qty = $qty;
+                        $item->save();
+                    }
+                }
+                $item->reset();
+            }
+        }
 
-		$items = $cart->getItems();
+        $items = $cart->getItems();
 
-		$this->getView()->assign('items', $items);
-		return $this->render();
-	}
+        $this->getView()->assign('items', $items);
 
-	public function widget()
-	{
-		$cart = new CartModel();
-		$cart->loadCurrent();
-		$items = $cart->getItems();
+        return $this->render();
+    }
 
-		// Prevent caching when called in body format
-		$this->touchCache($items);
+    public function widget()
+    {
+        $cart = new CartModel();
+        $cart->loadCurrent();
+        $items = $cart->getItems();
 
-		$this->getView()->assign('quickcheckout', $this->hasId() && ($this->getId() == 'quickcheckout'));
-		$this->getView()->assign('items', $items);
-		return $this->render();
-	}
+        // Prevent caching when called in body format
+        $this->touchCache($items);
 
-	public function switchUser()
-	{
-		Ajde_Shop_Cart_Merge::mergeUserToClient();
-		$user = $this->getLoggedInUser();
-		$user->logout();
-		$this->redirect('user/logon?returnto=' . Ajde::app()->getRequest()->getParam('returnto', ''));
-	}
+        $this->getView()->assign('quickcheckout', $this->hasId() && ($this->getId() == 'quickcheckout'));
+        $this->getView()->assign('items', $items);
 
-	public function addHtml()
-	{
-		$cart = new CartModel();
-		$cart->loadCurrent();
+        return $this->render();
+    }
 
-		$item = $this->_getFingerprint($this->getId());
+    public function switchUser()
+    {
+        Ajde_Shop_Cart_Merge::mergeUserToClient();
+        $user = $this->getLoggedInUser();
+        $user->logout();
+        $this->redirect('user/logon?returnto=' . Ajde::app()->getRequest()->getParam('returnto', ''));
+    }
 
-		$view = $this->getView();
-		$view->assign('entity', $item['entity']);
-		$view->assign('entity_id', $item['id']);
-		return $this->render();
-	}
+    public function addHtml()
+    {
+        $cart = new CartModel();
+        $cart->loadCurrent();
 
-	public function addJson()
-	{
-		$cart = new CartModel();
-		$cart->loadCurrent();
+        $item = $this->_getFingerprint($this->getId());
 
-		$entity = Ajde::app()->getRequest()->getPostParam('entity');
-		$entity_id = Ajde::app()->getRequest()->getPostParam('entity_id');
-		$qty = Ajde::app()->getRequest()->getPostParam('qty');
+        $view = $this->getView();
+        $view->assign('entity', $item['entity']);
+        $view->assign('entity_id', $item['id']);
 
-		$cart->addItem($entity, $entity_id, $qty);
+        return $this->render();
+    }
 
-		return array('success' => true);
-	}
+    public function addJson()
+    {
+        $cart = new CartModel();
+        $cart->loadCurrent();
 
-	private function _getFingerprint($id)
-	{
-		if (substr_count($id, ':') === 0) {
-			throw new Ajde_Controller_Exception('ID must contain a \':\' when calling _getFingerprint()');
-		}
-		$array = explode(':', $id);
-		return array(
-			'entity'	=> $array[0],
-			'id'		=> $array[1]
-		);
-	}
+        $entity    = Ajde::app()->getRequest()->getPostParam('entity');
+        $entity_id = Ajde::app()->getRequest()->getPostParam('entity_id');
+        $qty       = Ajde::app()->getRequest()->getPostParam('qty');
+
+        $cart->addItem($entity, $entity_id, $qty);
+
+        return ['success' => true];
+    }
+
+    private function _getFingerprint($id)
+    {
+        if (substr_count($id, ':') === 0) {
+            throw new Ajde_Controller_Exception('ID must contain a \':\' when calling _getFingerprint()');
+        }
+        $array = explode(':', $id);
+
+        return [
+            'entity' => $array[0],
+            'id'     => $array[1]
+        ];
+    }
 
 }

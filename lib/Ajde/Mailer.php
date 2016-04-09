@@ -26,12 +26,12 @@ class Ajde_Mailer extends PHPMailer
 
             $template = $email->getTemplate();
 
-            $fromName = $email->getFromName();
+            $fromName  = $email->getFromName();
             $fromEmail = $email->getFromEmail();
-            $subject = $this->replaceData($template->getSubject(), $data);
+            $subject   = $this->replaceData($template->getSubject(), $data);
 
             $markup = $this->rel2abs($this->replaceData($template->getMarkup(), $data));
-            $body = PHP_EOL . $this->rel2abs($this->replaceData($template->getContent($markup), $data));
+            $body   = PHP_EOL . $this->rel2abs($this->replaceData($template->getContent($markup), $data));
 
             // reset recipients
             $this->clearAllRecipients();
@@ -70,16 +70,16 @@ class Ajde_Mailer extends PHPMailer
 
     private function rel2abs($text)
     {
-        $base = Config::get('site_root');
+        $base    = Config::get('site_root');
         $replace = '$1' . $base . '$2$3';
 
         // Look for images
         $pattern = "#(<\s*?img\s*?[^>]*src\s*?=[\"'])(?!http)([^\"'>]+)([\"'>]+)#";
-        $text = preg_replace($pattern, $replace, $text);
+        $text    = preg_replace($pattern, $replace, $text);
 
         // Look for links
         $pattern = "#(<\s*?a\s*?[^>]*href\s*?=[\"'])(?!http)([^\"'>]+)([\"'>]+)#";
-        $text = preg_replace($pattern, $replace, $text);
+        $text    = preg_replace($pattern, $replace, $text);
 
         return $text;
     }

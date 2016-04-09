@@ -18,8 +18,8 @@ class qqUploadedFileXhr
      */
     function save($path)
     {
-        $input = fopen("php://input", "r");
-        $temp = tmpfile();
+        $input    = fopen("php://input", "r");
+        $temp     = tmpfile();
         $realSize = stream_copy_to_stream($input, $temp);
         fclose($input);
 
@@ -83,7 +83,7 @@ class qqUploadedFileForm
 class qqFileUploader
 {
     private $allowedExtensions = [];
-    private $sizeLimit = 10485760;
+    private $sizeLimit         = 10485760;
     private $file;
 
     function __construct(array $allowedExtensions = [], $sizeLimit = 10485760)
@@ -91,7 +91,7 @@ class qqFileUploader
         $allowedExtensions = array_map("strtolower", $allowedExtensions);
 
         $this->allowedExtensions = $allowedExtensions;
-        $this->sizeLimit = $sizeLimit;
+        $this->sizeLimit         = $sizeLimit;
 
         $this->checkServerSettings();
 
@@ -106,7 +106,7 @@ class qqFileUploader
 
     private function checkServerSettings()
     {
-        $postSize = $this->toBytes(ini_get('post_max_size'));
+        $postSize   = $this->toBytes(ini_get('post_max_size'));
         $uploadSize = $this->toBytes(ini_get('upload_max_filesize'));
 
         if ($postSize < $this->sizeLimit || $uploadSize < $this->sizeLimit) {
@@ -117,7 +117,7 @@ class qqFileUploader
 
     private function toBytes($str)
     {
-        $val = trim($str);
+        $val  = trim($str);
         $last = strtolower($str[strlen($str) - 1]);
         switch ($last) {
             case 'g':

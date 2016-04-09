@@ -8,31 +8,34 @@ class ShopController extends Ajde_Acl_Controller
      */
     protected $product;
 
-	protected $_allowedActions = array(
-		'view'
-	);
+    protected $_allowedActions = [
+        'view'
+    ];
 
-	protected $_allowGuestTransaction = true;
+    protected $_allowGuestTransaction = true;
 
-	public function beforeInvoke($allowed = array())
-	{
-		if ($this->_allowGuestTransaction === true) {
-			$this->_allowedActions[] = $this->getAction();
-		}
-		Ajde_Cache::getInstance()->disable();
-		return parent::beforeInvoke();
-	}
+    public function beforeInvoke($allowed = [])
+    {
+        if ($this->_allowGuestTransaction === true) {
+            $this->_allowedActions[] = $this->getAction();
+        }
+        Ajde_Cache::getInstance()->disable();
+
+        return parent::beforeInvoke();
+    }
 
     public function getCanonicalUrl()
     {
-        if ($this->product && $this->product->hasLoaded()) return $this->product->getSlug();
+        if ($this->product && $this->product->hasLoaded()) {
+            return $this->product->getSlug();
+        }
+
         return '';
     }
 
-	public function view()
+    public function view()
     {
-        if ($this->hasNotEmpty('slug'))
-        {
+        if ($this->hasNotEmpty('slug')) {
             return $this->item();
         }
 
@@ -43,8 +46,8 @@ class ShopController extends Ajde_Acl_Controller
 
         $this->getView()->assign('products', $products);
 
-		return $this->render();
-	}
+        return $this->render();
+    }
 
     public function legal()
     {
@@ -84,7 +87,7 @@ class ShopController extends Ajde_Acl_Controller
             Ajde::app()->getResponse()->redirectNotFound();
         }
 
-        Ajde_Event::trigger($this, 'onAfterProductLoaded', array($product));
+        Ajde_Event::trigger($this, 'onAfterProductLoaded', [$product]);
 
         // update cache
         Ajde_Cache::getInstance()->updateHash($product->hash());
@@ -96,7 +99,8 @@ class ShopController extends Ajde_Acl_Controller
         }
         // set summary
         if ($product->content) {
-            Ajde::app()->getDocument()->setDescription(Ajde_Component_String::trim(strip_tags($product->content), '100'));
+            Ajde::app()->getDocument()->setDescription(Ajde_Component_String::trim(strip_tags($product->content),
+                '100'));
         }
 
         // set author
@@ -118,30 +122,30 @@ class ShopController extends Ajde_Acl_Controller
         return $this->render();
     }
 
-	public function cart()
-	{
-		$this->redirect('shop/cart:edit');
-	}
+    public function cart()
+    {
+        $this->redirect('shop/cart:edit');
+    }
 
-	public function checkout()
-	{
-		// Get existing transaction
-		$transaction = new TransactionModel();
-		$session = new Ajde_Session('AC.Shop');
-		$session->has('currentTransaction') && $transaction->loadByPK($session->get('currentTransaction'));
+    public function checkout()
+    {
+        // Get existing transaction
+        $transaction = new TransactionModel();
+        $session     = new Ajde_Session('AC.Shop');
+        $session->has('currentTransaction') && $transaction->loadByPK($session->get('currentTransaction'));
 
-		$cart = new CartModel();
-		$cart->loadCurrent();
+        $cart = new CartModel();
+        $cart->loadCurrent();
 
         // Can we skip this step?
         if (!$transaction->hasLoaded() && !Config::get('shopOfferLogin') && $cart->hasItems()) {
             $this->redirect('shop/transaction:setup');
         }
 
-		$this->getView()->assign('cart', $cart);
-		$this->getView()->assign('user', $this->getLoggedInUser());
-		$this->getView()->assign('transaction', $transaction);
+        $this->getView()->assign('cart', $cart);
+        $this->getView()->assign('user', $this->getLoggedInUser());
+        $this->getView()->assign('transaction', $transaction);
 
-		return $this->render();
-	}
+        return $this->render();
+    }
 }

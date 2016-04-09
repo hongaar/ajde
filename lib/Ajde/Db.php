@@ -3,12 +3,12 @@
 class Ajde_Db extends Ajde_Object_Singleton
 {
     protected $_adapter = null;
-    protected $_tables = null;
+    protected $_tables  = null;
 
     const FIELD_TYPE_NUMERIC = 'numeric';
-    const FIELD_TYPE_TEXT = 'text';
-    const FIELD_TYPE_ENUM = 'enum';
-    const FIELD_TYPE_DATE = 'date';
+    const FIELD_TYPE_TEXT    = 'text';
+    const FIELD_TYPE_ENUM    = 'enum';
+    const FIELD_TYPE_DATE    = 'date';
     const FIELD_TYPE_SPATIAL = 'spatial';
 
     /**
@@ -23,10 +23,10 @@ class Ajde_Db extends Ajde_Object_Singleton
 
     protected function __construct()
     {
-        $adapterName = 'Ajde_Db_Adapter_' . ucfirst(Config::get('dbAdapter'));
-        $dsn = Config::get('dbDsn');
-        $user = Config::get('dbUser');
-        $password = Config::get('dbPassword');
+        $adapterName    = 'Ajde_Db_Adapter_' . ucfirst(Config::get('dbAdapter'));
+        $dsn            = Config::get('dbDsn');
+        $user           = Config::get('dbUser');
+        $password       = Config::get('dbPassword');
         $this->_adapter = new $adapterName($dsn, $user, $password);
     }
 
@@ -66,7 +66,7 @@ class Ajde_Db extends Ajde_Object_Singleton
         $commands = file_get_contents($filename);
 
         // delete comments
-        $lines = explode("\n", $commands);
+        $lines    = explode("\n", $commands);
         $commands = '';
         foreach ($lines as $line) {
             $line = trim($line);
@@ -94,7 +94,7 @@ class Ajde_Db extends Ajde_Object_Singleton
         // return number of successful queries and total number of queries found
         return [
             "success" => $success,
-            "total" => $total
+            "total"   => $total
         ];
     }
 

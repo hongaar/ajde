@@ -24,15 +24,18 @@ class Ajde_Config_Repository extends Ajde_Object_Standard
         $environment = Ajde_Environment::current();
 
         $searchDirs = [
-            CORE_DIR . $directory, '*.json',
-            CORE_DIR . $directory . $environment . DS, '*.json',
-            APP_DIR . $directory, '*.json',
-            APP_DIR . $directory . $environment . DS, '*.json'
+            CORE_DIR . $directory,
+            '*.json',
+            CORE_DIR . $directory . $environment . DS,
+            '*.json',
+            APP_DIR . $directory,
+            '*.json',
+            APP_DIR . $directory . $environment . DS,
+            '*.json'
         ];
 
-        foreach($searchDirs as $searchDir) {
-            foreach(Ajde_Fs_Find::findFiles($searchDir, '*.json') as $configFile)
-            {
+        foreach ($searchDirs as $searchDir) {
+            foreach (Ajde_Fs_Find::findFiles($searchDir, '*.json') as $configFile) {
                 if (!$configData = json_decode(file_get_contents($configFile), true)) {
                     throw new Exception('Config file ' . $configFile . ' contains invalid JSON');
                 }

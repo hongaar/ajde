@@ -43,7 +43,7 @@ class Google_Utils_URITemplate
      * These are the characters which should not be URL encoded in reserved
      * strings.
      */
-    private $reserved = [
+    private $reserved        = [
         "=",
         ",",
         "!",
@@ -119,7 +119,7 @@ class Google_Utils_URITemplate
         // If the first character is one of the reserved operators, it effects
         // the processing of the stream.
         if (isset($this->operators[$data[0]])) {
-            $op = $this->operators[$data[0]];
+            $op   = $this->operators[$data[0]];
             $data = substr($data, 1);
             switch ($op) {
                 case "reserved":
@@ -176,7 +176,7 @@ class Google_Utils_URITemplate
             // Each is treated individually, then glued together with the
             // separator character.
             $vars = explode(",", $section);
-            $ret = [];
+            $ret  = [];
             foreach ($vars as $var) {
                 $ret[] = $this->combine($var, $parameters, $combine, $reserved, $tag_empty);
             }

@@ -56,9 +56,9 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 
     /**
      *
-     * @param string $action
-     * @param string $format
-     * @param string $base
+     * @param string  $action
+     * @param string  $format
+     * @param string  $base
      * @param integer $position
      * @return void
      */
@@ -70,10 +70,10 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
         $arguments = ''
     ) {
         return Ajde_Component_Js::processStatic($this->getParser(), [
-            'action' => $action,
-            'format' => $format,
-            'base' => $base,
-            'position' => $position,
+            'action'    => $action,
+            'format'    => $format,
+            'base'      => $base,
+            'position'  => $position,
             'arguments' => $arguments
         ]);
     }
@@ -105,7 +105,7 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 
     /**
      *
-     * @param string $filename
+     * @param string  $filename
      * @param integer $position
      * @return void
      */
@@ -120,7 +120,7 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 
     /**
      *
-     * @param string $url
+     * @param string  $url
      * @param integer $position
      * @return void
      */
@@ -151,9 +151,9 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 
     /**
      *
-     * @param string $action
-     * @param string $format
-     * @param string $base
+     * @param string  $action
+     * @param string  $format
+     * @param string  $base
      * @param integer $position
      * @return void
      */
@@ -165,10 +165,10 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
         $arguments = ''
     ) {
         return Ajde_Component_Css::processStatic($this->getParser(), [
-            'action' => $action,
-            'format' => $format,
-            'base' => $base,
-            'position' => $position,
+            'action'    => $action,
+            'format'    => $format,
+            'base'      => $base,
+            'position'  => $position,
             'arguments' => $arguments
         ]);
     }
@@ -200,7 +200,7 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 
     /**
      *
-     * @param string $filename
+     * @param string  $filename
      * @param integer $position
      * @return void
      */
@@ -215,7 +215,7 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 
     /**
      *
-     * @param string $url
+     * @param string  $url
      * @param integer $position
      * @return void
      */
@@ -249,7 +249,7 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
     /**
      *
      * @param string $route
-     * @param mixed $id
+     * @param mixed  $id
      * @return string
      */
     public function ACForm($route, $id = null, $class = null)
@@ -261,7 +261,7 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
     /**
      *
      * @param string $route
-     * @param mixed $id
+     * @param mixed  $id
      * @return string
      */
     public function ACAjaxForm($route, $id = null, $class = null, $format = 'json')
@@ -284,7 +284,7 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
     /**
      *
      * @param string $route
-     * @param mixed $id
+     * @param mixed  $id
      * @return string
      */
     public function ACEmbedForm($formId)
@@ -364,7 +364,7 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 
     /**
      *
-     * @param mixed $model
+     * @param mixed                   $model
      * @param array|Ajde_Crud_Options $options
      * @return Ajde_Crud
      */
@@ -372,8 +372,8 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
     {
         return Ajde_Component_Crud::processStatic($this->getParser(),
             [
-                'list' => true,
-                'model' => $model,
+                'list'    => true,
+                'model'   => $model,
                 'options' => $options
             ]
         );
@@ -388,9 +388,9 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
     {
         return Ajde_Component_Crud::processStatic($this->getParser(),
             [
-                'edit' => true,
-                'model' => $model,
-                'id' => $id,
+                'edit'    => true,
+                'model'   => $model,
+                'id'      => $id,
                 'options' => $options
             ]
         );
@@ -406,8 +406,8 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
         return Ajde_Component_Crud::processStatic($this->getParser(),
             [
                 'mainfilter' => true,
-                'crud' => $crud,
-                'refresh' => $refresh
+                'crud'       => $crud,
+                'refresh'    => $refresh
             ]
         );
     }
@@ -426,7 +426,7 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
         return Ajde_Component_String::processStatic($this->getParser(),
             [
                 'escape' => true,
-                'var' => $var
+                'var'    => $var
             ]
         );
     }
@@ -441,7 +441,7 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
         return Ajde_Component_String::processStatic($this->getParser(),
             [
                 'clean' => true,
-                'var' => $var
+                'var'   => $var
             ]
         );
     }

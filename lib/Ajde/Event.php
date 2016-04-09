@@ -10,9 +10,9 @@ class Ajde_Event extends Ajde_Object_Static
      * to trigger different callbacks for the same event on different object instances
      * of the same class.
      *
-     * @param mixed $object Object instance or classname triggering the event
-     * @param string $event Event name
-     * @param mixed $callback Callback
+     * @param mixed  $object   Object instance or classname triggering the event
+     * @param string $event    Event name
+     * @param mixed  $callback Callback
      * @return boolean true
      */
     public static function register($object, $event, $callback)
@@ -52,7 +52,7 @@ class Ajde_Event extends Ajde_Object_Static
             ) {
                 if (isset($eventStack[$event])) {
                     foreach ($eventStack[$event] as $eventCallback) {
-                        $retval = null;
+                        $retval   = null;
                         $callback = null;
                         if (is_callable($eventCallback)) {
                             $callback = $eventCallback;
@@ -62,15 +62,15 @@ class Ajde_Event extends Ajde_Object_Static
                             }
                         }
                         if (isset($callback)) {
-                            $trace = debug_backtrace();
+                            $trace   = debug_backtrace();
                             $current = array_shift($trace);
-                            $caller = array_shift($trace);
+                            $caller  = array_shift($trace);
 
                             if (isset($caller['object'])) {
                                 // http://www.php.net/manual/en/function.call-user-func.php
                                 // Note: Note that the parameters for call_user_func() are not passed by reference.
                                 $parameterArray = array_merge([&$caller['object']], $parameters);
-                                $retval = call_user_func_array($callback, $parameterArray);
+                                $retval         = call_user_func_array($callback, $parameterArray);
                                 if (isset($retval)) {
                                     // TODO: Aborts execution of cueue!
                                     return $retval;

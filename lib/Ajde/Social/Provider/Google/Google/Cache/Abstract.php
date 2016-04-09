@@ -29,7 +29,7 @@ abstract class Google_Cache_Abstract
      * Retrieves the data for the given key, or false if they
      * key is unknown or expired
      *
-     * @param String $key The key who's data to retrieve
+     * @param String      $key        The key who's data to retrieve
      * @param boolean|int $expiration Expiration time in seconds
      *
      */
@@ -39,7 +39,7 @@ abstract class Google_Cache_Abstract
      * Store the key => $value set. The $value is serialized
      * by this function so can be of any type
      *
-     * @param string $key Key of the data
+     * @param string $key   Key of the data
      * @param string $value data
      */
     abstract public function set($key, $value);

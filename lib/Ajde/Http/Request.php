@@ -358,7 +358,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
     public function getRoute()
     {
         if (!isset($this->_route)) {
-            $route = $this->extractRoute();
+            $route        = $this->extractRoute();
             $this->_route = new Ajde_Core_Route($route);
             foreach ($this->_route->values() as $part => $value) {
                 if (!$this->hasNotEmpty($part)) {
@@ -374,7 +374,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
     {
         // Strip query string
         $URIComponents = explode('?', $_SERVER['REQUEST_URI']);
-        $requestURI = reset($URIComponents);
+        $requestURI    = reset($URIComponents);
 
         // Route is the part after our base path
         $baseURI = str_replace(PUBLIC_URI . 'index.php', '', $_SERVER['PHP_SELF']);
@@ -385,6 +385,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
     public function initRoute()
     {
         $route = $this->getRoute();
+
         return $route;
     }
 

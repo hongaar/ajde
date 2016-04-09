@@ -3,17 +3,17 @@
 class Ajde_Template_Parser_Xhtml extends Ajde_Template_Parser
 {
     protected $_defaultNS = null;
-    protected $_acNS = null;
-    protected $_avNS = null;
+    protected $_acNS      = null;
+    protected $_avNS      = null;
 
     public function parse()
     {
         // Get the XHTML
         $xhtml = $this->_getContents();
-        $doc = new DOMDocument();
+        $doc   = new DOMDocument();
         $doc->registerNodeClass('DOMElement', 'Ajde_Template_Parser_Xhtml_Element');
         $doc->preserveWhiteSpace = false;
-        $doc->formatOutput = true;
+        $doc->formatOutput       = true;
         try {
             $doc->loadXML($xhtml);
         } catch (ErrorException $e) {
@@ -24,10 +24,10 @@ class Ajde_Template_Parser_Xhtml extends Ajde_Template_Parser
 
         // Get the root element
         /* @var $root DOMNode */
-        $root = $doc->documentElement;
+        $root             = $doc->documentElement;
         $this->_defaultNS = $root->lookupNamespaceURI(null);
-        $this->_acNS = $root->lookupNamespaceURI(Ajde_Component::AC_XMLNS);
-        $this->_avNS = $root->lookupNamespaceURI(Ajde_Component::AV_XMLNS);
+        $this->_acNS      = $root->lookupNamespaceURI(Ajde_Component::AC_XMLNS);
+        $this->_avNS      = $root->lookupNamespaceURI(Ajde_Component::AV_XMLNS);
 
         // Ajde_Component processing
         $processed = $this->_process($root);
@@ -61,7 +61,7 @@ class Ajde_Template_Parser_Xhtml extends Ajde_Template_Parser
             '%<a[cv]:.+?<!\[CDATA\[%',
             '%\]\]>.*</a[cv]:.+?>%'
         ];
-        $return = preg_replace($patterns, '', $xml);
+        $return   = preg_replace($patterns, '', $xml);
 
         return $return;
     }

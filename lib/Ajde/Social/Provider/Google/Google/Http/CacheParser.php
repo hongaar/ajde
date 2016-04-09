@@ -118,7 +118,7 @@ class Google_Http_CacheParser
     {
         // HTTP/1.1 clients and caches MUST treat other invalid date formats,
         // especially including the value “0”, as in the past.
-        $parsedExpires = false;
+        $parsedExpires   = false;
         $responseHeaders = $resp->getResponseHeaders();
 
         if (isset($responseHeaders['expires'])) {
@@ -137,12 +137,12 @@ class Google_Http_CacheParser
 
         // Calculate the freshness of an http response.
         $freshnessLifetime = false;
-        $cacheControl = $resp->getParsedCacheControl();
+        $cacheControl      = $resp->getParsedCacheControl();
         if (isset($cacheControl['max-age'])) {
             $freshnessLifetime = $cacheControl['max-age'];
         }
 
-        $rawDate = $resp->getResponseHeader('date');
+        $rawDate    = $resp->getResponseHeader('date');
         $parsedDate = strtotime($rawDate);
 
         if (empty($rawDate) || false == $parsedDate) {

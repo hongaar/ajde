@@ -12,8 +12,8 @@ class Google_Service_Exception extends Google_Exception
     /**
      * Override default constructor to add ability to set $errors.
      *
-     * @param string $message
-     * @param int $code
+     * @param string         $message
+     * @param int            $code
      * @param Exception|null $previous
      * @param [{string, string}] errors List of errors returned in an HTTP
      * response.  Defaults to [].

@@ -23,10 +23,10 @@
  * and uncommenting/adding this line:
  *        extension=php_curl.dll
  *
- * @license It's free dude
- * @author Joram van den Boezem
+ * @license   It's free dude
+ * @author    Joram van den Boezem
  * @copyright May 2010, Joram van den Boezem
- * @version 0.1
+ * @version   0.1
  */
 
 /**
@@ -39,12 +39,12 @@ define('URL_USE_GLOBAL_FUNCTIONS', true);
 class Ajde_Http_Url
 {
 
-    private static $_mode = null;
+    private static $_mode       = null;
     private static $_errMessage = "Function %s not available with this PHP configuration.";
 
     const MODE_FOPEN = 1;
-    const MODE_CURL = 2;
-    const MODE_NONE = 3;
+    const MODE_CURL  = 2;
+    const MODE_NONE  = 3;
 
     /**
      * Get supported mode for getting url, prefers fopen
@@ -115,7 +115,7 @@ class Ajde_Http_Url
      *
      * @param string $url Name of the url to read.
      * @return mixed Returns the number of bytes read from the file. If an error occurs, FALSE is returned and unless
-     *     the function was called as @readurl(), an error message is printed.
+     *                    the function was called as @readurl(), an error message is printed.
      */
     public static function read($url)
     {

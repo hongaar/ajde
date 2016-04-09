@@ -2,5 +2,5 @@
 
 class UsergroupModel extends Ajde_Model
 {
-	protected $_displayField = 'name';
+    protected $_displayField = 'name';
 }

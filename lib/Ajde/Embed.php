@@ -5,16 +5,16 @@ class Ajde_Embed extends Ajde_Object_Standard
     protected $_code;
     protected $_parser;
 
-    protected $_width = 650;
+    protected $_width  = 650;
     protected $_height = 471;
 
     protected $_allowedTags = '<iframe><embed><object>';
 
     private static $_detect = [
         'soundcloud' => 'soundcloud.com',
-        'vimeo' => 'vimeo.com',
-        'youtube' => ['youtube.com', 'youtu.be'],
-        'mixcloud' => 'mixcloud.com'
+        'vimeo'      => 'vimeo.com',
+        'youtube'    => ['youtube.com', 'youtu.be'],
+        'mixcloud'   => 'mixcloud.com'
     ];
 
     /**
@@ -75,15 +75,15 @@ class Ajde_Embed extends Ajde_Object_Standard
 
     protected function _setWidth()
     {
-        $ptn = "/width=(\'|\")([0-9]+)(\'|\")/";
-        $rpltxt = "width='" . $this->_width . "'";
+        $ptn         = "/width=(\'|\")([0-9]+)(\'|\")/";
+        $rpltxt      = "width='" . $this->_width . "'";
         $this->_code = preg_replace($ptn, $rpltxt, $this->_code);
     }
 
     protected function _setHeight()
     {
-        $ptn = "/height=(\'|\")([0-9]+)(\'|\")/";
-        $rpltxt = "height='" . $this->_height . "'";
+        $ptn         = "/height=(\'|\")([0-9]+)(\'|\")/";
+        $rpltxt      = "height='" . $this->_height . "'";
         $this->_code = preg_replace($ptn, $rpltxt, $this->_code);
     }
 

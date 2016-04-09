@@ -8,17 +8,17 @@ class Ajde_Resource_JsLibrary extends Ajde_Object_Static
      * @see http://code.google.com/apis/libraries/devguide.html#Libraries
      */
     public static $libraries = [
-        'jquery' => 'jquery.min.js',
-        'jqueryui' => 'jquery-ui.min.js',
-        'prototype' => 'prototype.js',
+        'jquery'        => 'jquery.min.js',
+        'jqueryui'      => 'jquery-ui.min.js',
+        'prototype'     => 'prototype.js',
         'scriptaculous' => 'scriptaculous.js',
-        'mootools' => 'mootools-yui-compressed.js',
-        'dojo' => 'dojo/dojo.xd.js',
-        'swfobject' => 'swfobject.js',
-        'yui' => 'build/yuiloader/yuiloader-min.js',
-        'ext-core' => 'ext-core.js',
-        'chrome-frame' => 'CFInstall.min.js',
-        'webfont' => 'webfont.js'
+        'mootools'      => 'mootools-yui-compressed.js',
+        'dojo'          => 'dojo/dojo.xd.js',
+        'swfobject'     => 'swfobject.js',
+        'yui'           => 'build/yuiloader/yuiloader-min.js',
+        'ext-core'      => 'ext-core.js',
+        'chrome-frame'  => 'CFInstall.min.js',
+        'webfont'       => 'webfont.js'
     ];
 
     public static $cdnJsBase = 'https://cdnjs.cloudflare.com/ajax/libs/';

@@ -41,31 +41,31 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
         }
 
         return [
-            'cmd' => '_xclick',
-            'business' => Config::get('shopPaypalAccount'),
-            'notify_url' => Config::get('site_root') . $this->returnRoute . 'paypal' . $this->getMethod() . '.html',
-            'bn' => Config::get('ident') . '_BuyNow_WPS_' . strtoupper(Ajde_Lang::getInstance()->getShortLang()),
-            'amount' => $transaction->payment_amount,
-            'item_name' => issetor($description,
+            'cmd'               => '_xclick',
+            'business'          => Config::get('shopPaypalAccount'),
+            'notify_url'        => Config::get('site_root') . $this->returnRoute . 'paypal' . $this->getMethod() . '.html',
+            'bn'                => Config::get('ident') . '_BuyNow_WPS_' . strtoupper(Ajde_Lang::getInstance()->getShortLang()),
+            'amount'            => $transaction->payment_amount,
+            'item_name'         => issetor($description,
                 Config::get('sitename') . ': ' . Ajde_Component_String::makePlural($transaction->shipment_itemsqty,
                     'item')),
-            'quantity' => 1,
+            'quantity'          => 1,
             'address_ override' => 1,
-            'address1' => $transaction->shipment_address,
-            'zip' => $transaction->shipment_zipcode,
-            'city' => $transaction->shipment_city,
-            'state' => $transaction->shipment_region,
-            'country' => $transaction->shipment_country,
-            'email' => $transaction->email,
-            'first_name' => $transaction->name,
-            'currency_code' => Config::get('currencyCode'),
-            'custom' => $transaction->secret,
-            'no_shipping' => 1,
+            'address1'          => $transaction->shipment_address,
+            'zip'               => $transaction->shipment_zipcode,
+            'city'              => $transaction->shipment_city,
+            'state'             => $transaction->shipment_region,
+            'country'           => $transaction->shipment_country,
+            'email'             => $transaction->email,
+            'first_name'        => $transaction->name,
+            'currency_code'     => Config::get('currencyCode'),
+            'custom'            => $transaction->secret,
+            'no_shipping'       => 1,
             // do not prompt for an address
-            'no_note' => 1,
+            'no_note'           => 1,
             // hide the text box and the prompt
-            'return' => $return,
-            'rm' => 1
+            'return'            => $return,
+            'rm'                => 1
             // the buyer’s browser is redirected to the return URL by using the GET method, but no payment variables are included
         ];
     }
@@ -93,19 +93,19 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
             $errstr, 30);
 
         // assign posted variables to local variables
-        $item_name = issetor($post['item_name']);
-        $item_number = issetor($post['item_number']);
-        $payment_status = issetor($post['payment_status']);
-        $payment_amount = issetor($post['mc_gross']);
+        $item_name        = issetor($post['item_name']);
+        $item_number      = issetor($post['item_number']);
+        $payment_status   = issetor($post['payment_status']);
+        $payment_amount   = issetor($post['mc_gross']);
         $payment_currency = issetor($post['mc_currency']);
-        $txn_id = issetor($post['txn_id']);
-        $receiver_email = issetor($post['receiver_email']);
-        $payer_email = issetor($post['payer_email']);
+        $txn_id           = issetor($post['txn_id']);
+        $receiver_email   = issetor($post['receiver_email']);
+        $payer_email      = issetor($post['payer_email']);
 
         $secret = issetor($post['custom']);
 
         $transaction = new TransactionModel();
-        $changed = false;
+        $changed     = false;
 
         if (!$fp) {
             // HTTP ERROR
@@ -119,7 +119,7 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
                         Ajde_Log::log('Could not find transaction for PayPal payment with txn id ' . $txn_id . ' and transaction secret ' . $secret);
 
                         return [
-                            'success' => false,
+                            'success'     => false,
                             'transaction' => null
                         ];
                     }
@@ -137,7 +137,7 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
                         // update transaction only once
                         if ($transaction->payment_status != 'completed') {
                             $transaction->payment_details = $details;
-                            $transaction->payment_status = 'completed';
+                            $transaction->payment_status  = 'completed';
                             $transaction->save();
                             $changed = true;
                         }
@@ -148,8 +148,8 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
                         }
 
                         return [
-                            'success' => true,
-                            'changed' => $changed,
+                            'success'     => true,
+                            'changed'     => $changed,
                             'transaction' => $transaction
                         ];
                     } else {
@@ -187,8 +187,8 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
         }
 
         return [
-            'success' => false,
-            'changed' => $changed,
+            'success'     => false,
+            'changed'     => $changed,
             'transaction' => $transaction
         ];
     }

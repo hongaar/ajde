@@ -4,7 +4,7 @@ class Ajde_Resource_Local_Compressor_Js extends Ajde_Resource_Local_Compressor
 {
     private $_lib = 'closure'; // packer|closure
 
-    public function  __construct()
+    public function __construct()
     {
         $this->setType(Ajde_Resource::TYPE_JAVASCRIPT);
         parent::__construct();
@@ -15,7 +15,7 @@ class Ajde_Resource_Local_Compressor_Js extends Ajde_Resource_Local_Compressor
         $compressor = $this->getCompressor($this->_contents);
         $compressed = $compressor->compress();
 
-        $compressed = 'try{' . $compressed . '}catch(e){throw \'JavaScript parse error (\' + e.message + \').\';}';
+        $compressed      = 'try{' . $compressed . '}catch(e){throw \'JavaScript parse error (\' + e.message + \').\';}';
         $this->_contents = $compressed;
 
         return true;

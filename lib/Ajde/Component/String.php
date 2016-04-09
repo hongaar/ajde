@@ -15,7 +15,7 @@ class Ajde_Component_String extends Ajde_Component
     {
         return [
             'escape' => 'escape',
-            'clean' => 'clean'
+            'clean'  => 'clean'
         ];
     }
 
@@ -112,7 +112,7 @@ class Ajde_Component_String extends Ajde_Component
     public static function makePlural($count, $singular)
     {
         $count = (int)$count;
-        $ret = $count . ' ' . $singular;
+        $ret   = $count . ' ' . $singular;
         if ($count > 1 || $count == 0) {
             $ret .= 's';
         }
@@ -136,9 +136,9 @@ class Ajde_Component_String extends Ajde_Component
         if (is_bool($atIndex) && !$atIndex) {
             $isValid = false;
         } else {
-            $domain = substr($email, $atIndex + 1);
-            $local = substr($email, 0, $atIndex);
-            $localLen = strlen($local);
+            $domain    = substr($email, $atIndex + 1);
+            $local     = substr($email, 0, $atIndex);
+            $localLen  = strlen($local);
             $domainLen = strlen($domain);
             if ($localLen < 1 || $localLen > 64) {
                 // local part length exceeded
@@ -202,12 +202,12 @@ class Ajde_Component_String extends Ajde_Component
      * Output: 'this sentence is...'
      *
      * @access public
-     * @param string string we are operating with
-     * @param integer character count to cut to
+     * @param             string    string we are operating with
+     * @param             integer   character count to cut to
      * @param string|NULL delimiter . Default: '...'
      * @return string processed string
      *
-     * @see http://www.justin-cook.com/wp/2006/06/27/php-trim-a-string-without-cutting-any-words/
+     * @see    http://www.justin-cook.com/wp/2006/06/27/php-trim-a-string-without-cutting-any-words/
      **/
     public static function trim($str, $n, $delim = '...')
     {
@@ -215,7 +215,7 @@ class Ajde_Component_String extends Ajde_Component
         if ($len > $n) {
             $str = str_replace("\n", "", $str);
             $str = str_replace("\r", "", $str);
-            $n = $n - strlen($delim);
+            $n   = $n - strlen($delim);
             preg_match('/(.{' . $n . '}.*?)\b/', $str, $matches);
 
             return rtrim($matches[1]) . $delim;
@@ -265,18 +265,18 @@ class Ajde_Component_String extends Ajde_Component
          */
         $rexScheme = 'https?://';
         // $rexScheme    = "$rexScheme|ftp://"; // Uncomment this line to allow FTP addresses.
-        $rexDomain = '(?:[-a-zA-Z0-9]{1,63}\.)+[a-zA-Z][-a-zA-Z0-9]{1,62}';
-        $rexIp = '(?:[1-9][0-9]{0,2}\.|0\.){3}(?:[1-9][0-9]{0,2}|0)';
-        $rexPort = '(:[0-9]{1,5})?';
-        $rexPath = '(/[!$-/0-9:;=@_\':;!a-zA-Z\x7f-\xff]*?)?';
-        $rexQuery = '(\?[!$-/0-9:;=@_\':;!a-zA-Z\x7f-\xff]+?)?';
-        $rexFragment = '(#[!$-/0-9:;=@_\':;!a-zA-Z\x7f-\xff]+?)?';
-        $rexUsername = '[^]\\\\\x00-\x20\"(),:-<>[\x7f-\xff]{1,64}';
-        $rexPassword = $rexUsername; // allow the same characters as in the username
-        $rexUrl = "($rexScheme)?(?:($rexUsername)(:$rexPassword)?@)?($rexDomain|$rexIp)($rexPort$rexPath$rexQuery$rexFragment)";
+        $rexDomain     = '(?:[-a-zA-Z0-9]{1,63}\.)+[a-zA-Z][-a-zA-Z0-9]{1,62}';
+        $rexIp         = '(?:[1-9][0-9]{0,2}\.|0\.){3}(?:[1-9][0-9]{0,2}|0)';
+        $rexPort       = '(:[0-9]{1,5})?';
+        $rexPath       = '(/[!$-/0-9:;=@_\':;!a-zA-Z\x7f-\xff]*?)?';
+        $rexQuery      = '(\?[!$-/0-9:;=@_\':;!a-zA-Z\x7f-\xff]+?)?';
+        $rexFragment   = '(#[!$-/0-9:;=@_\':;!a-zA-Z\x7f-\xff]+?)?';
+        $rexUsername   = '[^]\\\\\x00-\x20\"(),:-<>[\x7f-\xff]{1,64}';
+        $rexPassword   = $rexUsername; // allow the same characters as in the username
+        $rexUrl        = "($rexScheme)?(?:($rexUsername)(:$rexPassword)?@)?($rexDomain|$rexIp)($rexPort$rexPath$rexQuery$rexFragment)";
         $rexTrailPunct = "[)'?.!,;:]"; // valid URL characters which are not part of the URL if they appear at the very end
-        $rexNonUrl = "[^-_$+.!*'(),;/?:@=&a-zA-Z0-9]"; // characters that should never appear in a URL
-        $rexUrlLinker = "{\\b$rexUrl(?=$rexTrailPunct*($rexNonUrl|$))}";
+        $rexNonUrl     = "[^-_$+.!*'(),;/?:@=&a-zA-Z0-9]"; // characters that should never appear in a URL
+        $rexUrlLinker  = "{\\b$rexUrl(?=$rexTrailPunct*($rexNonUrl|$))}";
 
         /**
          *  $validTlds is an associative array mapping valid TLDs to the value true.
@@ -299,13 +299,13 @@ class Ajde_Component_String extends Ajde_Component
             // Add the text leading up to the URL.
             $html .= substr($text, $position, $urlPosition - $position);
 
-            $scheme = $match[1][0];
-            $username = $match[2][0];
-            $password = $match[3][0];
-            $domain = $match[4][0];
+            $scheme      = $match[1][0];
+            $username    = $match[2][0];
+            $password    = $match[3][0];
+            $domain      = $match[4][0];
             $afterDomain = $match[5][0]; // everything following the domain
-            $port = $match[6][0];
-            $path = $match[7][0];
+            $port        = $match[6][0];
+            $path        = $match[7][0];
 
             // Check that the TLD is valid or that $domain is an IP address.
             $tld = strtolower(strrchr($domain, '.'));
@@ -323,11 +323,11 @@ class Ajde_Component_String extends Ajde_Component
                 if (!$scheme && $username && !$password && !$afterDomain) {
                     // Looks like an email address.
                     $completeUrl = "mailto:$url";
-                    $linkText = $url;
+                    $linkText    = $url;
                 } else {
                     // Prepend http:// if no scheme is specified
                     $completeUrl = $scheme ? $url : "http://$url";
-                    $linkText = "$domain$port$path";
+                    $linkText    = "$domain$port$path";
                 }
 
                 $linkHtml = '<a href="' . htmlspecialchars($completeUrl) . '" target="_blank">'
@@ -496,7 +496,7 @@ class Ajde_Component_String extends Ajde_Component
 
             return date('F Y', $date);
         } else {
-            $diff = abs($diff);
+            $diff     = abs($diff);
             $day_diff = floor($diff / 86400);
             if ($day_diff == 0) {
                 if ($diff < 120) {
@@ -534,7 +534,7 @@ class Ajde_Component_String extends Ajde_Component
 
     public static function toBytes($str)
     {
-        $val = trim($str);
+        $val  = trim($str);
         $last = strtolower($str[strlen($str) - 1]);
         switch ($last) {
             case 'g':

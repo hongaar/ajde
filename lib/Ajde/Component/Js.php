@@ -11,10 +11,10 @@ class Ajde_Component_Js extends Ajde_Component_Resource
 
     public function process()
     {
-//		TODO: check for required attributes
-//		if (!array_key_exists('library', $this->attributes) || !array_key_exists('version', $this->attributes)) {
-//			throw new Ajde_Component_Exception();
-//		}
+        //		TODO: check for required attributes
+        //		if (!array_key_exists('library', $this->attributes) || !array_key_exists('version', $this->attributes)) {
+        //			throw new Ajde_Component_Exception();
+        //		}
         if (array_key_exists('library', $this->attributes)) {
             $this->requireJsLibrary($this->attributes['library'], $this->attributes['version']);
         } elseif (array_key_exists('action', $this->attributes)) {

@@ -23,7 +23,7 @@ class Ajde_Db_PDO extends PDO
     public function query($query)
     {
         //$cache = Ajde_Db_Cache::getInstance();
-        $log = ['query' => $query];
+        $log   = ['query' => $query];
         $start = microtime(true);
         //if (!$cache->has($query)) {
 
@@ -48,7 +48,7 @@ class Ajde_Db_PDO extends PDO
         //	$result = $cache->get($query);
         //	$log['cache'] = true;
         //}
-        $time = microtime(true) - $start;
+        $time        = microtime(true) - $start;
         $log['time'] = round($time * 1000, 0);
         self::$log[] = $log;
 

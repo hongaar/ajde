@@ -2,15 +2,15 @@
 
 abstract class Ajde_Document extends Ajde_Object_Standard
 {
-    const CACHE_CONTROL_PUBLIC = 'public';
+    const CACHE_CONTROL_PUBLIC  = 'public';
     const CACHE_CONTROL_PRIVATE = 'private';
     const CACHE_CONTROL_NOCACHE = 'no-cache';
 
     protected $_cacheControl = self::CACHE_CONTROL_PUBLIC;
-    protected $_contentType = 'text/html';
-    protected $_maxAge = 604800; // 1 week
+    protected $_contentType  = 'text/html';
+    protected $_maxAge       = 604800; // 1 week
 
-    public function  __construct()
+    public function __construct()
     {
         $this->setFormat(strtolower(str_replace("Ajde_Document_Format_", '', get_class($this))));
     }
@@ -22,7 +22,7 @@ abstract class Ajde_Document extends Ajde_Object_Standard
      */
     public static function fromRoute(Ajde_Core_Route $route)
     {
-        $format = $route->getFormat();
+        $format        = $route->getFormat();
         $documentClass = "Ajde_Document_Format_" . ucfirst($format);
         if (!class_exists($documentClass)) {
             $exception = new Ajde_Core_Exception_Routing("Document format $format not found",

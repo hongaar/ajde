@@ -13,11 +13,11 @@ class Ajde_Publisher_Mail extends Ajde_Publisher
     {
         $mailer = new Ajde_Mailer();
 
-        $mailer->From = Config::get('email');
+        $mailer->From     = Config::get('email');
         $mailer->FromName = Config::get('sitename');
-        $mailer->Subject = $this->getTitle();
-        $mailer->Body = $this->getMessage() . PHP_EOL . PHP_EOL . $this->getUrl();
-        $mailer->AltBody = strip_tags($mailer->Body);
+        $mailer->Subject  = $this->getTitle();
+        $mailer->Body     = $this->getMessage() . PHP_EOL . PHP_EOL . $this->getUrl();
+        $mailer->AltBody  = strip_tags($mailer->Body);
         $mailer->isHTML(true);
 
         $count = 0;

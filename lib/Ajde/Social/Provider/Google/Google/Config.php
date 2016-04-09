@@ -35,40 +35,40 @@ class Google_Config
             // The application_name is included in the User-Agent HTTP header.
             'application_name' => '',
             // Which Authentication, Storage and HTTP IO classes to use.
-            'auth_class' => 'Google_Auth_OAuth2',
-            'io_class' => 'Google_IO_Stream',
-            'cache_class' => 'Google_Cache_File',
+            'auth_class'       => 'Google_Auth_OAuth2',
+            'io_class'         => 'Google_IO_Stream',
+            'cache_class'      => 'Google_Cache_File',
             // Don't change these unless you're working against a special development
             // or testing environment.
-            'base_path' => 'https://www.googleapis.com',
+            'base_path'        => 'https://www.googleapis.com',
             // Definition of class specific values, like file paths and so on.
-            'classes' => [
+            'classes'          => [
                 // If you want to pass in OAuth 2.0 settings, they will need to be
                 // structured like this.
                 'Google_Auth_OAuth2' => [
                     // Keys for OAuth 2.0 access, see the API console at
                     // https://developers.google.com/console
-                    'client_id' => '',
-                    'client_secret' => '',
-                    'redirect_uri' => '',
+                    'client_id'                  => '',
+                    'client_secret'              => '',
+                    'redirect_uri'               => '',
                     // Simple API access key, also from the API console. Ensure you get
                     // a Server key, and not a Browser key.
-                    'developer_key' => '',
+                    'developer_key'              => '',
                     // Other parameters.
-                    'access_type' => 'online',
-                    'approval_prompt' => 'auto',
-                    'request_visible_actions' => '',
+                    'access_type'                => 'online',
+                    'approval_prompt'            => 'auto',
+                    'request_visible_actions'    => '',
                     'federated_signon_certs_url' =>
                         'https://www.googleapis.com/oauth2/v1/certs',
                 ],
                 // Set a default directory for the file cache.
-                'Google_Cache_File' => [
+                'Google_Cache_File'  => [
                     'directory' => sys_get_temp_dir() . '/Google_Client'
                 ]
             ],
             // Definition of service specific values like scopes, oauth token URLs,
             // etc. Example:
-            'services' => [
+            'services'         => [
             ],
         ];
         if ($ini_file_location) {
@@ -84,9 +84,9 @@ class Google_Config
      * $config->setClassConfig('Google_Cache_File',
      *   array('directory' => '/tmp/cache'));
      *
-     * @param $class The class name for the configuration
+     * @param $class  The class name for the configuration
      * @param $config string key or an array of configuration values
-     * @param $value optional - if $config is a key, the value
+     * @param $value  optional - if $config is a key, the value
      */
     public function setClassConfig($class, $config, $value = null)
     {
@@ -294,7 +294,7 @@ class Google_Config
     /**
      * Set the auth configuration for the current auth class.
      *
-     * @param $key - the key to set
+     * @param $key   - the key to set
      * @param $value - the parameter value
      */
     private function setAuthConfig($key, $value)

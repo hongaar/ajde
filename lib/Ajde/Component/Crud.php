@@ -12,8 +12,8 @@ class Ajde_Component_Crud extends Ajde_Component
     protected function _init()
     {
         return [
-            'list' => 'list',
-            'edit' => 'edit',
+            'list'       => 'list',
+            'edit'       => 'edit',
             'mainfilter' => 'mainfilter'
         ];
     }
@@ -23,15 +23,15 @@ class Ajde_Component_Crud extends Ajde_Component
         switch ($this->_attributeParse()) {
             case 'list':
                 $options = issetor($this->attributes['options'], []);
-                $crud = new Ajde_Crud($this->attributes['model'], $options);
+                $crud    = new Ajde_Crud($this->attributes['model'], $options);
                 $crud->setAction('list');
 
                 return $crud;
                 break;
             case 'edit':
                 $options = issetor($this->attributes['options'], []);
-                $id = issetor($this->attributes['id'], null);
-                $crud = new Ajde_Crud($this->attributes['model'], $options);
+                $id      = issetor($this->attributes['id'], null);
+                $crud    = new Ajde_Crud($this->attributes['model'], $options);
                 $crud->setId($id);
                 $crud->setAction('edit/layout');
 

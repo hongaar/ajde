@@ -41,11 +41,11 @@ class Ajde_Core_Autoloader_Combinator
      * Check the syntax of some PHP code.
      * @param string $code PHP code to check.
      * @return boolean|array If false, then check was successful, otherwise an array(message,line) of errors is
-     *     returned.
+     *                     returned.
      */
     public static function php_syntax_error($code)
     {
-        $braces = 0;
+        $braces   = 0;
         $inString = 0;
         foreach (token_get_all('<?php ' . $code) as $token) {
             if (is_array($token)) {
@@ -93,7 +93,7 @@ class Ajde_Core_Autoloader_Combinator
             }
         }
         $inString = @ini_set('log_errors', false);
-        $token = @ini_set('display_errors', true);
+        $token    = @ini_set('display_errors', true);
         ob_start();
         $braces || $code = "if(0){{$code}\n}";
         if (eval($code) === false) {
@@ -107,7 +107,7 @@ class Ajde_Core_Autoloader_Combinator
             $code = strip_tags($code);
             if (preg_match("'syntax error, (.+) in .+ on line \d+)$'s", $code, $code)) {
                 $code[2] = (int)$code[2];
-                $code = $code[2] <= $braces
+                $code    = $code[2] <= $braces
                     ? [$code[1], $code[2]]
                     : ['unexpected $end' . substr($code[1], 14), $braces];
             } else {

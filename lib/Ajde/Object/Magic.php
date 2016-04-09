@@ -7,8 +7,8 @@ abstract class Ajde_Object_Magic extends Ajde_Object
     public final function __call($method, $arguments)
     {
         $prefix = strtolower(substr($method, 0, 3));
-        $key = substr($method, 3);
-        $key = strtolower(substr($key, 0, 1)) . substr($key, 1);
+        $key    = substr($method, 3);
+        $key    = strtolower(substr($key, 0, 1)) . substr($key, 1);
         switch ($prefix) {
             case "get":
                 if ($this->has($key)) {
@@ -37,7 +37,7 @@ abstract class Ajde_Object_Magic extends Ajde_Object
      * TODO
      *
      * @param string $key
-     * @param mixed $value
+     * @param mixed  $value
      */
     public function set($key, $value)
     {
@@ -48,7 +48,7 @@ abstract class Ajde_Object_Magic extends Ajde_Object
      * TODO
      *
      * @param string $key
-     * @param mixed $value
+     * @param mixed  $value
      */
     protected function _set($key, $value)
     {
@@ -130,7 +130,7 @@ abstract class Ajde_Object_Magic extends Ajde_Object
     public final function merge($key, array $value)
     {
         if (!$this->has($key)) {
-            $this->set($key, array());
+            $this->set($key, []);
         }
 
         $this->set($key, Ajde_Core_Array::mergeRecursive($this->get($key), $value));
@@ -170,7 +170,7 @@ abstract class Ajde_Object_Magic extends Ajde_Object
     public static function fromCamelCase($str)
     {
         $str[0] = strtolower($str[0]);
-        $func = create_function('$c', 'return "_" . strtolower($c[1]);');
+        $func   = create_function('$c', 'return "_" . strtolower($c[1]);');
 
         return preg_replace_callback('/([A-Z])/', $func, $str);
     }
@@ -179,8 +179,8 @@ abstract class Ajde_Object_Magic extends Ajde_Object
      * Translates a string with underscores into camel case (e.g. first_name -&gt; firstName)
      *
      * @see http://www.paulferrett.com/2009/php-camel-case-functions/
-     * @param string $str String in underscore format
-     * @param bool $capitalise_first_char If true, capitalise the first char in $str
+     * @param string $str                   String in underscore format
+     * @param bool   $capitalise_first_char If true, capitalise the first char in $str
      * @return string $str translated into camel caps
      */
     public static function toCamelCase($str, $capitalise_first_char = false)

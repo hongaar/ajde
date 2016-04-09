@@ -48,8 +48,8 @@ class Mollie_API_Client
      */
     const API_VERSION = "v1";
 
-    const HTTP_GET = "GET";
-    const HTTP_POST = "POST";
+    const HTTP_GET    = "GET";
+    const HTTP_POST   = "POST";
     const HTTP_DELETE = "DELETE";
 
     /**
@@ -91,10 +91,10 @@ class Mollie_API_Client
     public function __construct()
     {
         $this->payments = new Mollie_API_Resource_Payments($this);
-        $this->issuers = new Mollie_API_Resource_Issuers($this);
-        $this->methods = new Mollie_API_Resource_Methods($this);
+        $this->issuers  = new Mollie_API_Resource_Issuers($this);
+        $this->methods  = new Mollie_API_Resource_Methods($this);
 
-        $curl_version = curl_version();
+        $curl_version         = curl_version();
         $this->versionStrings = [
             "Mollie/" . self::CLIENT_VERSION,
             "PHP/" . phpversion(),

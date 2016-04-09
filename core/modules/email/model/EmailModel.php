@@ -2,8 +2,8 @@
 
 class EmailModel extends Ajde_Model
 {
-	protected $_autoloadParents = true;
-	protected $_displayField = 'name';
+    protected $_autoloadParents = true;
+    protected $_displayField    = 'name';
 
     public function beforeInsert()
     {
@@ -27,8 +27,9 @@ class EmailModel extends Ajde_Model
     public function getTemplate($useLang = false)
     {
         /* @var $template TemplateModel */
-        $template = parent::getTemplate();
+        $template    = parent::getTemplate();
         $translation = $template->getTranslatedLazy($useLang);
+
         return $translation;
     }
 

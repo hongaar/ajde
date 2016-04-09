@@ -9,13 +9,13 @@ class Ajde_Model_Validator_HasChildren extends Ajde_Model_ValidatorAbstract
     public function setReferenceOptions($table, $fk, $niceName = 'reference')
     {
         $this->_refTable = $table;
-        $this->_fk = $fk;
+        $this->_fk       = $fk;
         $this->_niceName = $niceName;
     }
 
     protected function _validate()
     {
-        $pk = $this->getModel()->getPK();
+        $pk    = $this->getModel()->getPK();
         $model = $this->getModel();
 
         // model not saved yet, we cannot validate now, return true
@@ -28,7 +28,7 @@ class Ajde_Model_Validator_HasChildren extends Ajde_Model_ValidatorAbstract
             return ['valid' => true];
         }
 
-        $sql = "SELECT COUNT(*) FROM " . $this->_refTable . " WHERE " . $this->_fk . " = " . $pk;
+        $sql       = "SELECT COUNT(*) FROM " . $this->_refTable . " WHERE " . $this->_fk . " = " . $pk;
         $statement = $model->getConnection()->prepare($sql);
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_COLUMN);

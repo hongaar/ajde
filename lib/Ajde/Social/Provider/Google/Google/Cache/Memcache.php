@@ -31,7 +31,7 @@ require_once "Google/Cache/Exception.php";
 class Google_Cache_Memcache extends Google_Cache_Abstract
 {
     private $connection = false;
-    private $mc = false;
+    private $mc         = false;
     private $host;
     private $port;
 
@@ -42,7 +42,7 @@ class Google_Cache_Memcache extends Google_Cache_Abstract
         }
         if ($client->isAppEngine()) {
             // No credentials needed for GAE.
-            $this->mc = new Memcached();
+            $this->mc         = new Memcached();
             $this->connection = true;
         } else {
             $this->host = $client->getClassConfig($this, 'host');
@@ -89,7 +89,7 @@ class Google_Cache_Memcache extends Google_Cache_Abstract
         // we store it with the cache_time default expiration so objects will at
         // least get cleaned eventually.
         $data = ['time' => time(), 'data' => $value];
-        $rc = false;
+        $rc   = false;
         if ($this->mc) {
             $rc = $this->mc->set($key, $data);
         } else {

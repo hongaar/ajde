@@ -6,7 +6,7 @@ class Ajde_Crud_Cms_Meta_Type_Publish extends Ajde_Crud_Cms_Meta_Type
     {
         if ($value == 1) {
             // we need to publish this thing
-            $stream = $meta->getOption('stream');
+            $stream         = $meta->getOption('stream');
             $publisherClass = "Ajde_Publisher_" . ucfirst($stream);
 
             /* @var $publisher Ajde_Publisher */
@@ -14,10 +14,10 @@ class Ajde_Crud_Cms_Meta_Type_Publish extends Ajde_Crud_Cms_Meta_Type
 
             if (strtolower($stream) == 'twitter') {
                 $publisher->setOptions([
-                    'consumerKey' => $meta->getOption('twitter_consumerkey'),
+                    'consumerKey'    => $meta->getOption('twitter_consumerkey'),
                     'consumerSecret' => $meta->getOption('twitter_consumersecret'),
-                    'token' => $meta->getOption('twitter_token'),
-                    'tokenSecret' => $meta->getOption('twitter_tokensecret')
+                    'token'          => $meta->getOption('twitter_token'),
+                    'tokenSecret'    => $meta->getOption('twitter_tokensecret')
                 ]);
             }
 

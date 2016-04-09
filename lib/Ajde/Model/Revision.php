@@ -2,7 +2,7 @@
 
 abstract class Ajde_Model_Revision extends Ajde_Model
 {
-    protected $_ignoreFieldInRevision = [];
+    protected $_ignoreFieldInRevision        = [];
     protected $_ignoreFieldInRevisionIfEmpty = [];
 
     const DEFAULT_LIMIT = 50;
@@ -51,7 +51,7 @@ abstract class Ajde_Model_Revision extends Ajde_Model
     public function save()
     {
         // check all changed fields
-        $modelName = get_class($this);
+        $modelName   = get_class($this);
         $shadowModel = new $modelName;
         /* @var $shadowModel Ajde_Model */
         $shadowModel->loadByPK($this->getPK());
@@ -74,7 +74,7 @@ abstract class Ajde_Model_Revision extends Ajde_Model
         $newValues = $this->values();
         foreach ($newValues as $k => &$newValue) {
             if ($k == 'meta_4') {
-//                die('hier');
+                //                die('hier');
             }
             @$newValue = (string)$newValue;
         }
@@ -95,13 +95,13 @@ abstract class Ajde_Model_Revision extends Ajde_Model
 
         if ($diffs = array_diff_assoc($oldValues, $newValues)) {
             foreach ($diffs as $diffField => $diffValue) {
-                $revision = new RevisionModel();
-                $revision->model = $this->getModelName();
+                $revision             = new RevisionModel();
+                $revision->model      = $this->getModelName();
                 $revision->foreignkey = $this->getPK();
-                $revision->user = UserModel::getLoggedIn();
-                $revision->field = $diffField;
-                $revision->old = issetor($oldValues[$diffField]);
-                $revision->new = issetor($newValues[$diffField]);
+                $revision->user       = UserModel::getLoggedIn();
+                $revision->field      = $diffField;
+                $revision->old        = issetor($oldValues[$diffField]);
+                $revision->new        = issetor($newValues[$diffField]);
                 $revision->insert();
             }
         }

@@ -131,7 +131,7 @@ class Google_Model implements ArrayAccess
      * Verify if $obj is an array.
      *
      * @throws Google_Exception Thrown if $obj isn't an array.
-     * @param array $obj Items that should be validated.
+     * @param array  $obj    Items that should be validated.
      * @param string $method Method expecting an array as an argument.
      */
     public function assertIsArray($obj, $method)
@@ -161,7 +161,7 @@ class Google_Model implements ArrayAccess
         if (property_exists($this, $offset)) {
             $this->$offset = $value;
         } else {
-            $this->data[$offset] = $value;
+            $this->data[$offset]      = $value;
             $this->processed[$offset] = true;
         }
     }

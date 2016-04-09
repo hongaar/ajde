@@ -2,17 +2,17 @@
 
 class Ajde_Collection_Paginator extends Ajde_Object_Standard implements Iterator, Countable
 {
-    protected $_items = null;
+    protected $_items     = null;
     protected $_pageItems = null;
 
     protected $_pagesize = 10;
-    protected $_page = 1;
+    protected $_page     = 1;
 
     protected $_position = 0;
 
     public function __construct($data, $pagesize = 10)
     {
-        $this->_items = $data;
+        $this->_items    = $data;
         $this->_pagesize = $pagesize;
         $this->initPage();
     }
@@ -20,7 +20,7 @@ class Ajde_Collection_Paginator extends Ajde_Object_Standard implements Iterator
     public function reset()
     {
         parent::reset();
-        $this->_items = null;
+        $this->_items    = null;
         $this->_position = 0;
     }
 

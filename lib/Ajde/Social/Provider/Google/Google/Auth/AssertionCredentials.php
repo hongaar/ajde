@@ -38,19 +38,19 @@ class Google_Auth_AssertionCredentials
      * @deprecated
      * @link http://tools.ietf.org/html/draft-ietf-oauth-json-web-token-06
      */
-    public $prn;
+    public  $prn;
     private $useCache;
 
     /**
-     * @param $serviceAccountName
-     * @param $scopes array List of scopes
-     * @param $privateKey
-     * @param string $privateKeyPassword
-     * @param string $assertionType
-     * @param bool|string $sub The email address of the user for which the
-     *              application is requesting delegated access.
-     * @param bool useCache Whether to generate a cache key and allow
-     *              automatic caching of the generated token.
+     * @param             $serviceAccountName
+     * @param             $scopes array List of scopes
+     * @param             $privateKey
+     * @param string      $privateKeyPassword
+     * @param string      $assertionType
+     * @param bool|string $sub    The email address of the user for which the
+     *                            application is requesting delegated access.
+     * @param             bool    useCache Whether to generate a cache key and allow
+     *                            automatic caching of the generated token.
      */
     public function __construct(
         $serviceAccountName,
@@ -62,13 +62,13 @@ class Google_Auth_AssertionCredentials
         $useCache = true
     ) {
         $this->serviceAccountName = $serviceAccountName;
-        $this->scopes = is_string($scopes) ? $scopes : implode(' ', $scopes);
-        $this->privateKey = $privateKey;
+        $this->scopes             = is_string($scopes) ? $scopes : implode(' ', $scopes);
+        $this->privateKey         = $privateKey;
         $this->privateKeyPassword = $privateKeyPassword;
-        $this->assertionType = $assertionType;
-        $this->sub = $sub;
-        $this->prn = $sub;
-        $this->useCache = $useCache;
+        $this->assertionType      = $assertionType;
+        $this->sub                = $sub;
+        $this->prn                = $sub;
+        $this->useCache           = $useCache;
     }
 
     /**
@@ -95,11 +95,11 @@ class Google_Auth_AssertionCredentials
         $now = time();
 
         $jwtParams = [
-            'aud' => Google_Auth_OAuth2::OAUTH2_TOKEN_URI,
+            'aud'   => Google_Auth_OAuth2::OAUTH2_TOKEN_URI,
             'scope' => $this->scopes,
-            'iat' => $now,
-            'exp' => $now + self::MAX_TOKEN_LIFETIME_SECS,
-            'iss' => $this->serviceAccountName,
+            'iat'   => $now,
+            'exp'   => $now + self::MAX_TOKEN_LIFETIME_SECS,
+            'iss'   => $this->serviceAccountName,
         ];
 
         if ($this->sub !== false) {
@@ -129,9 +129,9 @@ class Google_Auth_AssertionCredentials
         ];
 
         $signingInput = implode('.', $segments);
-        $signer = new Google_Signer_P12($this->privateKey, $this->privateKeyPassword);
-        $signature = $signer->sign($signingInput);
-        $segments[] = Google_Utils::urlSafeB64Encode($signature);
+        $signer       = new Google_Signer_P12($this->privateKey, $this->privateKeyPassword);
+        $signature    = $signer->sign($signingInput);
+        $segments[]   = Google_Utils::urlSafeB64Encode($signature);
 
         return implode(".", $segments);
     }

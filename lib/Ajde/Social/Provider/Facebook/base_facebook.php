@@ -151,8 +151,8 @@ abstract class BaseFacebook
     public static $CURL_OPTS = [
         CURLOPT_CONNECTTIMEOUT => 10,
         CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_TIMEOUT => 60,
-        CURLOPT_USERAGENT => 'facebook-php-3.2',
+        CURLOPT_TIMEOUT        => 60,
+        CURLOPT_USERAGENT      => 'facebook-php-3.2',
     ];
 
     /**
@@ -173,12 +173,12 @@ abstract class BaseFacebook
      * @var array
      */
     public static $DOMAIN_MAP = [
-        'api' => 'https://api.facebook.com/',
-        'api_video' => 'https://api-video.facebook.com/',
-        'api_read' => 'https://api-read.facebook.com/',
-        'graph' => 'https://graph.facebook.com/',
+        'api'         => 'https://api.facebook.com/',
+        'api_video'   => 'https://api-video.facebook.com/',
+        'api_read'    => 'https://api-read.facebook.com/',
+        'graph'       => 'https://graph.facebook.com/',
         'graph_video' => 'https://graph-video.facebook.com/',
-        'www' => 'https://www.facebook.com/',
+        'www'         => 'https://www.facebook.com/',
     ];
 
     /**
@@ -310,7 +310,7 @@ abstract class BaseFacebook
      *
      * @return BaseFacebook
      * @deprecated Use setAppSecret instead.
-     * @see setAppSecret()
+     * @see        setAppSecret()
      */
     public function setApiSecret($apiSecret)
     {
@@ -339,7 +339,7 @@ abstract class BaseFacebook
      * @return string the App Secret
      *
      * @deprecated Use getAppSecret instead.
-     * @see getAppSecret()
+     * @see        getAppSecret()
      */
     public function getApiSecret()
     {
@@ -386,7 +386,7 @@ abstract class BaseFacebook
      * @return boolean true if and only if the server supports file upload.
      *
      * @deprecated Use getFileUploadSupport instead.
-     * @see getFileUploadSupport()
+     * @see        getFileUploadSupport()
      */
     public function useFileUploadSupport()
     {
@@ -422,9 +422,9 @@ abstract class BaseFacebook
             $access_token_response = $this->_oauthRequest(
                 $this->getUrl('graph', '/oauth/access_token'),
                 $params = [
-                    'client_id' => $this->getAppId(),
-                    'client_secret' => $this->getAppSecret(),
-                    'grant_type' => 'fb_exchange_token',
+                    'client_id'         => $this->getAppId(),
+                    'client_secret'     => $this->getAppSecret(),
+                    'grant_type'        => 'fb_exchange_token',
                     'fb_exchange_token' => $this->getAccessToken(),
                 ]
             );
@@ -626,7 +626,7 @@ abstract class BaseFacebook
             return 0;
         }
 
-        $user = $this->getPersistentData('user_id', $default = 0);
+        $user                   = $this->getPersistentData('user_id', $default = 0);
         $persisted_access_token = $this->getPersistentData('access_token');
 
         // use access_token to fetch user id if we have a user access_token, or if
@@ -675,10 +675,10 @@ abstract class BaseFacebook
             'dialog/oauth',
             array_merge(
                 [
-                    'client_id' => $this->getAppId(),
+                    'client_id'    => $this->getAppId(),
                     'redirect_uri' => $currentUrl, // possibly overwritten
-                    'state' => $this->state,
-                    'sdk' => 'php-sdk-' . self::VERSION
+                    'state'        => $this->state,
+                    'sdk'          => 'php-sdk-' . self::VERSION
                 ],
                 $params
             ));
@@ -699,7 +699,7 @@ abstract class BaseFacebook
             'www',
             'logout.php',
             array_merge([
-                'next' => $this->getCurrentUrl(),
+                'next'         => $this->getCurrentUrl(),
                 'access_token' => $this->getUserAccessToken(),
             ], $params)
         );
@@ -716,7 +716,7 @@ abstract class BaseFacebook
         return $this->getLoginUrl(
             array_merge([
                 'response_type' => 'code',
-                'display' => 'none',
+                'display'       => 'none',
             ], $params)
         );
     }
@@ -841,7 +841,7 @@ abstract class BaseFacebook
      * and the user for which it was generated all match, and the user is
      * either logged in to Facebook or has granted an offline access permission.
      *
-     * @param string $code An authorization code.
+     * @param string $code         An authorization code.
      * @param string $redirect_uri Optional redirect URI. Default null
      *
      * @return mixed An access token exchanged for the authorization code, or
@@ -864,10 +864,10 @@ abstract class BaseFacebook
                 $this->_oauthRequest(
                     $this->getUrl('graph', '/oauth/access_token'),
                     $params = [
-                        'client_id' => $this->getAppId(),
+                        'client_id'     => $this->getAppId(),
                         'client_secret' => $this->getAppSecret(),
-                        'redirect_uri' => $redirect_uri,
-                        'code' => $code
+                        'redirect_uri'  => $redirect_uri,
+                        'code'          => $code
                     ]);
         } catch (FacebookApiException $e) {
             // most likely that user very recently revoked authorization.
@@ -900,7 +900,7 @@ abstract class BaseFacebook
     {
         // generic application level parameters
         $params['api_key'] = $this->getAppId();
-        $params['format'] = 'json-strings';
+        $params['format']  = 'json-strings';
 
         $result = json_decode($this->_oauthRequest(
             $this->getApiUrl($params['method']),
@@ -927,7 +927,7 @@ abstract class BaseFacebook
     /**
      * Return true if this is video post.
      *
-     * @param string $path The path
+     * @param string $path   The path
      * @param string $method The http method (default 'GET')
      *
      * @return boolean true if this is video post
@@ -944,9 +944,9 @@ abstract class BaseFacebook
     /**
      * Invoke the Graph API.
      *
-     * @param string $path The path (required)
+     * @param string $path   The path (required)
      * @param string $method The http method (default 'GET')
-     * @param array $params The query/post data
+     * @param array  $params The query/post data
      *
      * @return mixed The decoded response object
      * @throws FacebookApiException
@@ -984,8 +984,8 @@ abstract class BaseFacebook
     /**
      * Make a OAuth Request.
      *
-     * @param string $url The path (required)
-     * @param array $params The query/post data
+     * @param string $url    The path (required)
+     * @param array  $params The query/post data
      *
      * @return string The decoded response object
      * @throws FacebookApiException
@@ -1029,9 +1029,9 @@ abstract class BaseFacebook
      * developers want to do fancier things or use something other than curl to
      * make the request.
      *
-     * @param string $url The URL to make the request to
-     * @param array $params The parameters to use for the POST body
-     * @param CurlHandler $ch Initialized curl handle
+     * @param string      $url    The URL to make the request to
+     * @param array       $params The parameters to use for the POST body
+     * @param CurlHandler $ch     Initialized curl handle
      *
      * @return string The response text
      */
@@ -1052,8 +1052,8 @@ abstract class BaseFacebook
         // disable the 'Expect: 100-continue' behaviour. This causes CURL to wait
         // for 2 seconds if the server does not support this header.
         if (isset($opts[CURLOPT_HTTPHEADER])) {
-            $existing_headers = $opts[CURLOPT_HTTPHEADER];
-            $existing_headers[] = 'Expect:';
+            $existing_headers         = $opts[CURLOPT_HTTPHEADER];
+            $existing_headers[]       = 'Expect:';
             $opts[CURLOPT_HTTPHEADER] = $existing_headers;
         } else {
             $opts[CURLOPT_HTTPHEADER] = ['Expect:'];
@@ -1079,7 +1079,7 @@ abstract class BaseFacebook
         // operating system.
         if ($result === false && empty($opts[CURLOPT_IPRESOLVE])) {
             $matches = [];
-            $regex = '/Failed to connect to ([^:].*): Network is unreachable/';
+            $regex   = '/Failed to connect to ([^:].*): Network is unreachable/';
             if (preg_match($regex, curl_error($ch), $matches)) {
                 if (strlen(@inet_pton($matches[1])) === 16) {
                     self::errorLog('Invalid IPv6 configuration on server, ' .
@@ -1094,9 +1094,9 @@ abstract class BaseFacebook
         if ($result === false) {
             $e = new FacebookApiException([
                 'error_code' => curl_errno($ch),
-                'error' => [
+                'error'      => [
                     'message' => curl_error($ch),
-                    'type' => 'CurlException',
+                    'type'    => 'CurlException',
                 ],
             ]);
             curl_close($ch);
@@ -1119,7 +1119,7 @@ abstract class BaseFacebook
         list($encoded_sig, $payload) = explode('.', $signed_request, 2);
 
         // decode the data
-        $sig = self::base64UrlDecode($encoded_sig);
+        $sig  = self::base64UrlDecode($encoded_sig);
         $data = json_decode(self::base64UrlDecode($payload), true);
 
         if (strtoupper($data['algorithm']) !== self::SIGNED_REQUEST_ALGORITHM) {
@@ -1168,10 +1168,10 @@ abstract class BaseFacebook
         }
         $data['algorithm'] = self::SIGNED_REQUEST_ALGORITHM;
         $data['issued_at'] = time();
-        $json = json_encode($data);
-        $b64 = self::base64UrlEncode($json);
-        $raw_sig = hash_hmac('sha256', $b64, $this->getAppSecret(), $raw = true);
-        $sig = self::base64UrlEncode($raw_sig);
+        $json              = json_encode($data);
+        $b64               = self::base64UrlEncode($json);
+        $raw_sig           = hash_hmac('sha256', $b64, $this->getAppSecret(), $raw = true);
+        $sig               = self::base64UrlEncode($raw_sig);
 
         return $sig . '.' . $b64;
     }
@@ -1186,68 +1186,68 @@ abstract class BaseFacebook
     protected function getApiUrl($method)
     {
         static $READ_ONLY_CALLS =
-        [
-            'admin.getallocation' => 1,
-            'admin.getappproperties' => 1,
-            'admin.getbannedusers' => 1,
-            'admin.getlivestreamvialink' => 1,
-            'admin.getmetrics' => 1,
-            'admin.getrestrictioninfo' => 1,
-            'application.getpublicinfo' => 1,
-            'auth.getapppublickey' => 1,
-            'auth.getsession' => 1,
-            'auth.getsignedpublicsessiondata' => 1,
-            'comments.get' => 1,
-            'connect.getunconnectedfriendscount' => 1,
-            'dashboard.getactivity' => 1,
-            'dashboard.getcount' => 1,
-            'dashboard.getglobalnews' => 1,
-            'dashboard.getnews' => 1,
-            'dashboard.multigetcount' => 1,
-            'dashboard.multigetnews' => 1,
-            'data.getcookies' => 1,
-            'events.get' => 1,
-            'events.getmembers' => 1,
-            'fbml.getcustomtags' => 1,
-            'feed.getappfriendstories' => 1,
-            'feed.getregisteredtemplatebundlebyid' => 1,
-            'feed.getregisteredtemplatebundles' => 1,
-            'fql.multiquery' => 1,
-            'fql.query' => 1,
-            'friends.arefriends' => 1,
-            'friends.get' => 1,
-            'friends.getappusers' => 1,
-            'friends.getlists' => 1,
-            'friends.getmutualfriends' => 1,
-            'gifts.get' => 1,
-            'groups.get' => 1,
-            'groups.getmembers' => 1,
-            'intl.gettranslations' => 1,
-            'links.get' => 1,
-            'notes.get' => 1,
-            'notifications.get' => 1,
-            'pages.getinfo' => 1,
-            'pages.isadmin' => 1,
-            'pages.isappadded' => 1,
-            'pages.isfan' => 1,
-            'permissions.checkavailableapiaccess' => 1,
-            'permissions.checkgrantedapiaccess' => 1,
-            'photos.get' => 1,
-            'photos.getalbums' => 1,
-            'photos.gettags' => 1,
-            'profile.getinfo' => 1,
-            'profile.getinfooptions' => 1,
-            'stream.get' => 1,
-            'stream.getcomments' => 1,
-            'stream.getfilters' => 1,
-            'users.getinfo' => 1,
-            'users.getloggedinuser' => 1,
-            'users.getstandardinfo' => 1,
-            'users.hasapppermission' => 1,
-            'users.isappuser' => 1,
-            'users.isverified' => 1,
-            'video.getuploadlimits' => 1
-        ];
+            [
+                'admin.getallocation'                  => 1,
+                'admin.getappproperties'               => 1,
+                'admin.getbannedusers'                 => 1,
+                'admin.getlivestreamvialink'           => 1,
+                'admin.getmetrics'                     => 1,
+                'admin.getrestrictioninfo'             => 1,
+                'application.getpublicinfo'            => 1,
+                'auth.getapppublickey'                 => 1,
+                'auth.getsession'                      => 1,
+                'auth.getsignedpublicsessiondata'      => 1,
+                'comments.get'                         => 1,
+                'connect.getunconnectedfriendscount'   => 1,
+                'dashboard.getactivity'                => 1,
+                'dashboard.getcount'                   => 1,
+                'dashboard.getglobalnews'              => 1,
+                'dashboard.getnews'                    => 1,
+                'dashboard.multigetcount'              => 1,
+                'dashboard.multigetnews'               => 1,
+                'data.getcookies'                      => 1,
+                'events.get'                           => 1,
+                'events.getmembers'                    => 1,
+                'fbml.getcustomtags'                   => 1,
+                'feed.getappfriendstories'             => 1,
+                'feed.getregisteredtemplatebundlebyid' => 1,
+                'feed.getregisteredtemplatebundles'    => 1,
+                'fql.multiquery'                       => 1,
+                'fql.query'                            => 1,
+                'friends.arefriends'                   => 1,
+                'friends.get'                          => 1,
+                'friends.getappusers'                  => 1,
+                'friends.getlists'                     => 1,
+                'friends.getmutualfriends'             => 1,
+                'gifts.get'                            => 1,
+                'groups.get'                           => 1,
+                'groups.getmembers'                    => 1,
+                'intl.gettranslations'                 => 1,
+                'links.get'                            => 1,
+                'notes.get'                            => 1,
+                'notifications.get'                    => 1,
+                'pages.getinfo'                        => 1,
+                'pages.isadmin'                        => 1,
+                'pages.isappadded'                     => 1,
+                'pages.isfan'                          => 1,
+                'permissions.checkavailableapiaccess'  => 1,
+                'permissions.checkgrantedapiaccess'    => 1,
+                'photos.get'                           => 1,
+                'photos.getalbums'                     => 1,
+                'photos.gettags'                       => 1,
+                'profile.getinfo'                      => 1,
+                'profile.getinfooptions'               => 1,
+                'stream.get'                           => 1,
+                'stream.getcomments'                   => 1,
+                'stream.getfilters'                    => 1,
+                'users.getinfo'                        => 1,
+                'users.getloggedinuser'                => 1,
+                'users.getstandardinfo'                => 1,
+                'users.hasapppermission'               => 1,
+                'users.isappuser'                      => 1,
+                'users.isverified'                     => 1,
+                'video.getuploadlimits'                => 1
+            ];
         $name = 'api';
         if (isset($READ_ONLY_CALLS[strtolower($method)])) {
             $name = 'api_read';
@@ -1263,9 +1263,9 @@ abstract class BaseFacebook
     /**
      * Build the URL for given domain alias, path and parameters.
      *
-     * @param string $name The name of the domain
-     * @param string $path Optional path (without a leading slash)
-     * @param array $params Optional query parameters
+     * @param string $name   The name of the domain
+     * @param string $path   Optional path (without a leading slash)
+     * @param array  $params Optional query parameters
      *
      * @return string The URL for the given parameters
      */
@@ -1359,15 +1359,15 @@ abstract class BaseFacebook
      */
     protected function getCurrentUrl()
     {
-        $protocol = $this->getHttpProtocol() . '://';
-        $host = $this->getHttpHost();
+        $protocol   = $this->getHttpProtocol() . '://';
+        $host       = $this->getHttpHost();
         $currentUrl = $protocol . $host . $_SERVER['REQUEST_URI'];
-        $parts = parse_url($currentUrl);
+        $parts      = parse_url($currentUrl);
 
         $query = '';
         if (!empty($parts['query'])) {
             // drop known fb params
-            $params = explode('&', $parts['query']);
+            $params          = explode('&', $parts['query']);
             $retained_params = [];
             foreach ($params as $param) {
                 if ($this->shouldRetainParam($param)) {
@@ -1501,9 +1501,9 @@ abstract class BaseFacebook
      */
     public function destroySession()
     {
-        $this->accessToken = null;
+        $this->accessToken   = null;
         $this->signedRequest = null;
-        $this->user = null;
+        $this->user          = null;
         $this->clearAllPersistentData();
 
         // Javascript sets a cookie that will be used in getSignedRequest that we
@@ -1545,7 +1545,7 @@ abstract class BaseFacebook
             return [];
         }
 
-        $parts = explode('&', $cookie_value);
+        $parts    = explode('&', $cookie_value);
         $metadata = [];
         foreach ($parts as $part) {
             $pair = explode('=', $part, 2);
@@ -1561,7 +1561,7 @@ abstract class BaseFacebook
     /**
      * Finds whether the given domain is allowed or not
      *
-     * @param string $big The value to be checked against $small
+     * @param string $big   The value to be checked against $small
      * @param string $small The input string
      *
      * @return boolean Returns TRUE if $big matches $small
@@ -1578,7 +1578,7 @@ abstract class BaseFacebook
     /**
      * Checks if $big string ends with $small string
      *
-     * @param string $big The value to be checked against $small
+     * @param string $big   The value to be checked against $small
      * @param string $small The input string
      *
      * @return boolean TRUE if $big ends with $small
@@ -1608,7 +1608,7 @@ abstract class BaseFacebook
      * getPersistentData($key) return $value. This call may be in another request.
      *
      * @param string $key
-     * @param array $value
+     * @param array  $value
      *
      * @return void
      */
@@ -1617,7 +1617,7 @@ abstract class BaseFacebook
     /**
      * Get the data for $key, persisted by BaseFacebook::setPersistentData()
      *
-     * @param string $key The key of the data to retrieve
+     * @param string  $key     The key of the data to retrieve
      * @param boolean $default The default value to return if $key is not found
      *
      * @return mixed

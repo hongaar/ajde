@@ -5,7 +5,7 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
     const TYPE_JAVASCRIPT = 'js';
     const TYPE_STYLESHEET = 'css';
 
-    public function  __construct($type)
+    public function __construct($type)
     {
         $this->setType($type);
     }
@@ -85,13 +85,13 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
 
     public static function _urlDecode($string)
     {
-//		return self::_rotUrl($string);
+        //		return self::_rotUrl($string);
         return base64_decode($string);
     }
 
     public static function _urlEncode($string)
     {
-//		return self::_rotUrl($string);
+        //		return self::_rotUrl($string);
         return base64_encode($string);
     }
 
@@ -107,7 +107,7 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
         ob_start();
 
         // variables for use in included link template
-        $url = $this->getLinkUrl();
+        $url       = $this->getLinkUrl();
         $arguments = $this->hasArguments() ? $this->getArguments() : '';
 
         // create temporary resource for link filename

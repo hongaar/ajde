@@ -3,7 +3,7 @@
 class Ajde_Core_Route extends Ajde_Object_Standard
 {
     protected $_originalRoute = null;
-    protected $_route = null;
+    protected $_route         = null;
 
     public function __construct($route)
     {
@@ -11,7 +11,7 @@ class Ajde_Core_Route extends Ajde_Object_Standard
         // See if first part is language code (i.e. first part is exactly
         // two characters in length)
         if (strlen($route) === 2 || substr($route, 2, 1) === '/') {
-            $shortLang = substr($route, 0, 2);
+            $shortLang    = substr($route, 0, 2);
             $langInstance = Ajde_Lang::getInstance();
             if ($lang = $langInstance->getAvailableLang($shortLang)) {
                 $this->set("lang", $lang);
@@ -40,7 +40,7 @@ class Ajde_Core_Route extends Ajde_Object_Standard
             Ajde::routingError($exception);
         }
         $defaultParts = Config::get('defaultRouteParts');
-        $parts = array_merge($defaultParts, $routeParts);
+        $parts        = array_merge($defaultParts, $routeParts);
         foreach ($parts as $part => $value) {
             $this->set($part, $value);
         }
@@ -131,7 +131,7 @@ class Ajde_Core_Route extends Ajde_Object_Standard
 
     protected function _extractRouteParts()
     {
-        $matches = [];
+        $matches      = [];
         $defaultRules = [
             // module/controller:view
             ['%^([^/\.]+)/([^/\.]+):([^/\.]+)/?$%' => ['module', 'controller', 'action']],
@@ -180,11 +180,11 @@ class Ajde_Core_Route extends Ajde_Object_Standard
         ];
 
         $configRules = Config::get('routes');
-        $rules = array_merge($configRules, $defaultRules);
+        $rules       = array_merge($configRules, $defaultRules);
 
         foreach ($rules as $rule) {
             $pattern = key($rule);
-            $parts = current($rule);
+            $parts   = current($rule);
             if (preg_match($pattern, $this->_route, $matches)) {
                 // removes first element of matches
                 array_shift($matches);

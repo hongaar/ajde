@@ -55,7 +55,7 @@ class Ajde_Document_Processor_Html_Compressor extends Ajde_Object_Static impleme
  * A test suite is available.
  *
  * @package Minify
- * @author Stephen Clay <steve@mrclay.org>
+ * @author  Stephen Clay <steve@mrclay.org>
  */
 class Minify_HTML
 {
@@ -65,7 +65,7 @@ class Minify_HTML
      *
      * @param string $html
      *
-     * @param array $options
+     * @param array  $options
      *
      * 'cssMinifier' : (optional) callback function to process content of STYLE
      * elements.
@@ -90,7 +90,7 @@ class Minify_HTML
      *
      * @param string $html
      *
-     * @param array $options
+     * @param array  $options
      *
      * 'cssMinifier' : (optional) callback function to process content of STYLE
      * elements.
@@ -129,7 +129,7 @@ class Minify_HTML
         }
 
         $this->_replacementHash = 'MINIFYHTML' . md5($_SERVER['REQUEST_TIME']);
-        $this->_placeholders = [];
+        $this->_placeholders    = [];
 
         // replace SCRIPTs (and minify) with placeholders
         $this->_html = preg_replace_callback(
@@ -199,17 +199,17 @@ class Minify_HTML
 
     protected function _reservePlace($content)
     {
-        $placeholder = '%' . $this->_replacementHash . count($this->_placeholders) . '%';
+        $placeholder                       = '%' . $this->_replacementHash . count($this->_placeholders) . '%';
         $this->_placeholders[$placeholder] = $content;
 
         return $placeholder;
     }
 
-    protected $_isXhtml = null;
+    protected $_isXhtml         = null;
     protected $_replacementHash = null;
-    protected $_placeholders = [];
-    protected $_cssMinifier = null;
-    protected $_jsMinifier = null;
+    protected $_placeholders    = [];
+    protected $_cssMinifier     = null;
+    protected $_jsMinifier      = null;
 
     protected function _removePreCB($m)
     {
@@ -224,7 +224,7 @@ class Minify_HTML
     protected function _removeStyleCB($m)
     {
         $openStyle = "<style{$m[1]}";
-        $css = $m[2];
+        $css       = $m[2];
         // remove HTML comments
         $css = preg_replace('/(?:^\\s*<!--|-->\\s*$)/', '', $css);
 
@@ -235,7 +235,7 @@ class Minify_HTML
         $minifier = $this->_cssMinifier
             ? $this->_cssMinifier
             : 'trim';
-        $css = call_user_func($minifier, $css);
+        $css      = call_user_func($minifier, $css);
 
         return $this->_reservePlace($this->_needsCdata($css)
             ? "{$openStyle}/*<![CDATA[*/{$css}/*]]>*/</style>"
@@ -246,7 +246,7 @@ class Minify_HTML
     protected function _removeScriptCB($m)
     {
         $openScript = "<script{$m[2]}";
-        $js = $m[3];
+        $js         = $m[3];
 
         // whitespace surrounding? preserve at least one space
         $ws1 = ($m[1] === '') ? '' : ' ';
@@ -262,7 +262,7 @@ class Minify_HTML
         $minifier = $this->_jsMinifier
             ? $this->_jsMinifier
             : 'trim';
-        $js = call_user_func($minifier, $js);
+        $js       = call_user_func($minifier, $js);
 
         return $this->_reservePlace($this->_needsCdata($js)
             ? "{$ws1}{$openScript}/*<![CDATA[*/{$js}/*]]>*/</script>{$ws2}"

@@ -6,6 +6,7 @@ class LogModel extends Ajde_Model
     {
         $controller = Ajde_Controller::fromRoute(new Ajde_Core_Route('admin/system:logpanel'));
         $controller->setItem($this);
+
         return $controller->invoke();
     }
 
@@ -19,8 +20,8 @@ class LogModel extends Ajde_Model
     public function displayChannel()
     {
         $channel = $this->getChannel();
-        return '<i class="' . $this->getChannelIcon($channel) . '"></i>' . $channel;
 
+        return '<i class="' . $this->getChannelIcon($channel) . '"></i>' . $channel;
     }
 
     public function getLevelColor($level)

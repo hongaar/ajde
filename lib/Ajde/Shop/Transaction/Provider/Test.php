@@ -29,7 +29,7 @@ class Ajde_Shop_Transaction_Provider_Test extends Ajde_Shop_Transaction_Provider
 
     public function updatePayment()
     {
-        $txn_id = $_GET['txn'];
+        $txn_id      = $_GET['txn'];
         $transaction = new TransactionModel();
         $transaction->loadByPK($txn_id);
 
@@ -40,8 +40,8 @@ class Ajde_Shop_Transaction_Provider_Test extends Ajde_Shop_Transaction_Provider
             $transaction->paid();
 
             return [
-                'success' => true,
-                'changed' => true,
+                'success'     => true,
+                'changed'     => true,
                 'transaction' => $transaction
             ];
         } else {
@@ -49,8 +49,8 @@ class Ajde_Shop_Transaction_Provider_Test extends Ajde_Shop_Transaction_Provider
             $transaction->save();
 
             return [
-                'success' => false,
-                'changed' => true,
+                'success'     => false,
+                'changed'     => true,
                 'transaction' => $transaction
             ];
         }

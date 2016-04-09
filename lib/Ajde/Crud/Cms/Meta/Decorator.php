@@ -10,9 +10,9 @@ class Ajde_Crud_Cms_Meta_Decorator extends Ajde_Object_Standard
 
     protected $fields = [];
 
-    protected $activeRow = 0;
+    protected $activeRow    = 0;
     protected $activeColumn = 0;
-    protected $activeBlock = 0;
+    protected $activeBlock  = 0;
 
     /**
      *
@@ -72,7 +72,7 @@ class Ajde_Crud_Cms_Meta_Decorator extends Ajde_Object_Standard
 
     protected function addField($key, $options)
     {
-        $this->options->_stack['fields'][$key] = $options;
+        $this->options->_stack['fields'][$key]                                                                                                     = $options;
         $this->options->_stack['edit']['layout']['rows'][$this->activeRow]['columns'][$this->activeColumn]['blocks'][$this->activeBlock]['show'][] = $key;
     }
 }

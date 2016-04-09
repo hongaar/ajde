@@ -7,6 +7,7 @@ class TransactionCollection extends Ajde_Collection
         if ($user instanceof Ajde_User) {
             $user = $user->getPK();
         }
+
         return $this->addFilter(new Ajde_Filter_Where('user', Ajde_Filter::FILTER_EQUALS, $user));
     }
 

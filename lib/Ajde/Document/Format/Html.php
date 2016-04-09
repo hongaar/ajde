@@ -4,24 +4,24 @@ class Ajde_Document_Format_Html extends Ajde_Document
 {
     const RESOURCE_POSITION_TOP = 0;
 
-    const RESOURCE_POSITION_FIRST = 1;
+    const RESOURCE_POSITION_FIRST   = 1;
     const RESOURCE_POSITION_DEFAULT = 2;
-    const RESOURCE_POSITION_LAST = 3;
+    const RESOURCE_POSITION_LAST    = 3;
 
     // TODO: implement a way to override
     protected $_cacheControl = self::CACHE_CONTROL_NOCACHE;
-    protected $_contentType = 'text/html';
-    protected $_maxAge = 0; // access
+    protected $_contentType  = 'text/html';
+    protected $_maxAge       = 0; // access
 
-    protected $_resources = [
-        self::RESOURCE_POSITION_FIRST => [],
+    protected $_resources   = [
+        self::RESOURCE_POSITION_FIRST   => [],
         self::RESOURCE_POSITION_DEFAULT => [],
-        self::RESOURCE_POSITION_LAST => []
+        self::RESOURCE_POSITION_LAST    => []
     ];
     protected $_compressors = [];
-    protected $_meta = [];
+    protected $_meta        = [];
 
-    public function  __construct()
+    public function __construct()
     {
         /*
          * We add the resources before the template is included, otherwise the
@@ -108,10 +108,10 @@ class Ajde_Document_Format_Html extends Ajde_Document
     {
         // Reset compressors
         $this->_compressors = [];
-        $linkCode = [
-            self::RESOURCE_POSITION_FIRST => '',
+        $linkCode           = [
+            self::RESOURCE_POSITION_FIRST   => '',
             self::RESOURCE_POSITION_DEFAULT => '',
-            self::RESOURCE_POSITION_LAST => ''
+            self::RESOURCE_POSITION_LAST    => ''
         ];
         foreach ($this->getResources() as $resource) {
             /* @var $resource Ajde_Resource */

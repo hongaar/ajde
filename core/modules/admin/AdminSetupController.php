@@ -2,41 +2,44 @@
 
 class AdminSetupController extends AdminController
 {
-	public function nodes()
-	{
-		Ajde::app()->getDocument()->setTitle("Setup nodes");
-		return $this->render();
-	}
+    public function nodes()
+    {
+        Ajde::app()->getDocument()->setTitle("Setup nodes");
 
-	public function media()
-	{
-		Ajde::app()->getDocument()->setTitle("Setup media");
-		return $this->render();
-	}
+        return $this->render();
+    }
 
-	public function meta()
-	{
-		Ajde::app()->getDocument()->setTitle("Setup fields");
+    public function media()
+    {
+        Ajde::app()->getDocument()->setTitle("Setup media");
 
-		$decorator = new Ajde_Crud_Cms_Meta_Decorator();
-		$this->getView()->assign('decorator', $decorator);
+        return $this->render();
+    }
 
-		return $this->render();
-	}
+    public function meta()
+    {
+        Ajde::app()->getDocument()->setTitle("Setup fields");
 
-	public function menus()
-	{
-		Ajde::app()->getDocument()->setTitle("Setup menus");
-		return $this->render();
-	}
+        $decorator = new Ajde_Crud_Cms_Meta_Decorator();
+        $this->getView()->assign('decorator', $decorator);
 
-	public function settings()
-	{
-		Ajde::app()->getDocument()->setTitle("Setup settings");
+        return $this->render();
+    }
 
-		$decorator = new Ajde_Crud_Cms_Meta_Decorator();
-		$this->getView()->assign('decorator', $decorator);
+    public function menus()
+    {
+        Ajde::app()->getDocument()->setTitle("Setup menus");
 
-		return $this->render();
-	}
+        return $this->render();
+    }
+
+    public function settings()
+    {
+        Ajde::app()->getDocument()->setTitle("Setup settings");
+
+        $decorator = new Ajde_Crud_Cms_Meta_Decorator();
+        $this->getView()->assign('decorator', $decorator);
+
+        return $this->render();
+    }
 }

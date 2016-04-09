@@ -30,7 +30,7 @@ class Google_IO_Stream extends Google_IO_Abstract
 
     private static $DEFAULT_HTTP_CONTEXT = [
         "follow_location" => 0,
-        "ignore_errors" => 1,
+        "ignore_errors"   => 1,
     ];
 
     private static $DEFAULT_SSL_CONTEXT = [
@@ -42,7 +42,7 @@ class Google_IO_Stream extends Google_IO_Abstract
      *
      * @param Google_HttpRequest $request the http request to be executed
      * @return Google_HttpRequest http request with the response http code,
-     * response headers and response body filled in
+     *                                    response headers and response body filled in
      * @throws Google_IOException on curl or IO error
      */
     public function makeRequest(Google_Http_Request $request)
@@ -79,7 +79,7 @@ class Google_IO_Stream extends Google_IO_Abstract
             $requestHttpContext["header"] = $headers;
         }
 
-        $requestHttpContext["method"] = $request->getRequestMethod();
+        $requestHttpContext["method"]     = $request->getRequestMethod();
         $requestHttpContext["user_agent"] = $request->getUserAgent();
 
         $requestSslContext = array_key_exists('ssl', $default_options) ?
@@ -94,7 +94,7 @@ class Google_IO_Stream extends Google_IO_Abstract
                 self::$DEFAULT_HTTP_CONTEXT,
                 $requestHttpContext
             ),
-            "ssl" => array_merge(
+            "ssl"  => array_merge(
                 self::$DEFAULT_SSL_CONTEXT,
                 $requestSslContext
             )
@@ -112,7 +112,7 @@ class Google_IO_Stream extends Google_IO_Abstract
             throw new Google_IOException("HTTP Error: Unable to connect");
         }
 
-        $respHttpCode = $this->getHttpResponseCode($http_response_header);
+        $respHttpCode    = $this->getHttpResponseCode($http_response_header);
         $responseHeaders = $this->getHttpResponseHeaders($http_response_header);
 
         if ($respHttpCode == 304 && $cached) {

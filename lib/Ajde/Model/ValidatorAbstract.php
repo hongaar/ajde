@@ -6,19 +6,19 @@ abstract class Ajde_Model_ValidatorAbstract extends Ajde_Object_Standard
     protected $_model = null;
 
     protected $_defaultOptions = [
-        'length' => null,
-        'default' => null,
-        'isRequired' => false,
-        'isPK' => false,
+        'length'          => null,
+        'default'         => null,
+        'isRequired'      => false,
+        'isPK'            => false,
         'isAutoIncrement' => false,
-        'isAutoUpdate' => false,
-        'isUnique' => false
+        'isAutoUpdate'    => false,
+        'isUnique'        => false
     ];
 
     public function __construct(Ajde_Model $model = null)
     {
         $this->_model = $model;
-        $this->_data = $this->_defaultOptions;
+        $this->_data  = $this->_defaultOptions;
     }
 
     /**

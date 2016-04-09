@@ -89,7 +89,7 @@ class Google_Collection extends Google_Model implements Iterator, Countable
     {
         $typeKey = $this->keyType($this->collection_key);
         if (isset($this->$typeKey) && !is_object($this->data[$this->collection_key][$offset])) {
-            $type = $this->$typeKey;
+            $type                                       = $this->$typeKey;
             $this->data[$this->collection_key][$offset] =
                 new $type($this->data[$this->collection_key][$offset]);
         }

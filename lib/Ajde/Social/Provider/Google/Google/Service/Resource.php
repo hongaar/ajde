@@ -35,15 +35,15 @@ class Google_Service_Resource
 {
     // Valid query parameters that work, but don't appear in discovery.
     private $stackParameters = [
-        'alt' => ['type' => 'string', 'location' => 'query'],
-        'fields' => ['type' => 'string', 'location' => 'query'],
-        'trace' => ['type' => 'string', 'location' => 'query'],
-        'userIp' => ['type' => 'string', 'location' => 'query'],
-        'userip' => ['type' => 'string', 'location' => 'query'],
-        'quotaUser' => ['type' => 'string', 'location' => 'query'],
-        'data' => ['type' => 'string', 'location' => 'body'],
-        'mimeType' => ['type' => 'string', 'location' => 'header'],
-        'uploadType' => ['type' => 'string', 'location' => 'query'],
+        'alt'         => ['type' => 'string', 'location' => 'query'],
+        'fields'      => ['type' => 'string', 'location' => 'query'],
+        'trace'       => ['type' => 'string', 'location' => 'query'],
+        'userIp'      => ['type' => 'string', 'location' => 'query'],
+        'userip'      => ['type' => 'string', 'location' => 'query'],
+        'quotaUser'   => ['type' => 'string', 'location' => 'query'],
+        'data'        => ['type' => 'string', 'location' => 'body'],
+        'mimeType'    => ['type' => 'string', 'location' => 'header'],
+        'uploadType'  => ['type' => 'string', 'location' => 'query'],
         'mediaUpload' => ['type' => 'complex', 'location' => 'query'],
     ];
 
@@ -64,11 +64,11 @@ class Google_Service_Resource
 
     public function __construct($service, $serviceName, $resourceName, $resource)
     {
-        $this->service = $service;
-        $this->client = $service->getClient();
-        $this->serviceName = $serviceName;
+        $this->service      = $service;
+        $this->client       = $service->getClient();
+        $this->serviceName  = $serviceName;
         $this->resourceName = $resourceName;
-        $this->methods = isset($resource['methods']) ?
+        $this->methods      = isset($resource['methods']) ?
             $resource['methods'] :
             [$resourceName => $resource];
     }
@@ -90,7 +90,7 @@ class Google_Service_Resource
                 "{$this->serviceName}->{$this->resourceName}->{$name}()"
             );
         }
-        $method = $this->methods[$name];
+        $method     = $this->methods[$name];
         $parameters = $arguments[0];
 
         // postBody is a special case since it's not defined in the discovery
@@ -136,8 +136,8 @@ class Google_Service_Resource
                 throw new Google_Exception("($name) missing required param: '$paramName'");
             }
             if (isset($parameters[$paramName])) {
-                $value = $parameters[$paramName];
-                $parameters[$paramName] = $paramSpec;
+                $value                           = $parameters[$paramName];
+                $parameters[$paramName]          = $paramSpec;
                 $parameters[$paramName]['value'] = $value;
                 unset($parameters[$paramName]['required']);
             } else {
@@ -163,7 +163,7 @@ class Google_Service_Resource
         );
 
         if ($postBody) {
-            $contentTypeHeader = [];
+            $contentTypeHeader                 = [];
             $contentTypeHeader['content-type'] = 'application/json; charset=UTF-8';
             $httpRequest->setRequestHeaders($contentTypeHeader);
             $httpRequest->setPostBody($postBody);

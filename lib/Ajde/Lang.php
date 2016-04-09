@@ -221,7 +221,7 @@ class Ajde_Lang extends Ajde_Object_Singleton
 
     public function getAlternateUrl($lang = null)
     {
-        $routeLang = $this->getShortLang();
+        $routeLang  = $this->getShortLang();
         $currentUrl = preg_replace('/^' . $routeLang . '\/?/', '', Ajde::app()->getRoute()->getOriginalRoute());
 
         return Config::get('site_root') . $this->getShortLang($lang) . '/' . $currentUrl;
@@ -235,7 +235,7 @@ class Ajde_Lang extends Ajde_Object_Singleton
 
     public function getAvailableLang($langCode)
     {
-        $availableLangs = $this->getAvailable();
+        $availableLangs      = $this->getAvailable();
         $availableShortLangs = [];
         foreach ($availableLangs as $availableLang) {
             $availableShortLangs[substr($availableLang, 0, 2)] = $availableLang;
@@ -318,7 +318,7 @@ class Ajde_Lang extends Ajde_Object_Singleton
 
     public function getAvailable()
     {
-        $langs = Ajde_Fs_Find::findFiles(LANG_DIR, '*');
+        $langs  = Ajde_Fs_Find::findFiles(LANG_DIR, '*');
         $return = [];
         foreach ($langs as $lang) {
             $return[] = basename($lang);
@@ -329,10 +329,10 @@ class Ajde_Lang extends Ajde_Object_Singleton
 
     public function getAvailableNiceNames()
     {
-        $langs = Ajde_Fs_Find::findFiles(LANG_DIR, '*');
+        $langs  = Ajde_Fs_Find::findFiles(LANG_DIR, '*');
         $return = [];
         foreach ($langs as $lang) {
-            $lang = basename($lang);
+            $lang          = basename($lang);
             $return[$lang] = $this->getNiceName($lang);
         }
 
@@ -345,7 +345,7 @@ class Ajde_Lang extends Ajde_Object_Singleton
     public function getAdapter()
     {
         if ($this->_adapter === null) {
-            $adapterName = 'Ajde_Lang_Adapter_' . ucfirst(Config::get('langAdapter'));
+            $adapterName    = 'Ajde_Lang_Adapter_' . ucfirst(Config::get('langAdapter'));
             $this->_adapter = new $adapterName();
         }
 

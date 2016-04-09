@@ -2,12 +2,12 @@
 
 class Ajde_Document_Format_Pdf extends Ajde_Document_Format_Generated
 {
-    const METHOD_SNAPPY = 'snappy';
+    const METHOD_SNAPPY  = 'snappy';
     const METHOD_WEB2PDF = 'web2pdf';
 
     public function generate($data)
     {
-        $url = $data['url'];
+        $url      = $data['url'];
         $filename = $data['filename'];
 
         $method = Config::get('pdfMethod');
@@ -45,7 +45,7 @@ class Ajde_Document_Format_Pdf extends Ajde_Document_Format_Generated
     private function web2pdf($url, $filename = null)
     {
         $web2pdfRoot = Config::get('pdfWeb2PdfApi');
-        $api = $web2pdfRoot . '?url=' . urlencode($url) . '&filename=' . urlencode($filename);
+        $api         = $web2pdfRoot . '?url=' . urlencode($url) . '&filename=' . urlencode($filename);
 
         return Ajde_Http_Curl::get($api);
     }

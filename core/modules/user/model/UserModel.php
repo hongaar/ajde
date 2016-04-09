@@ -2,32 +2,39 @@
 
 class UserModel extends Ajde_User
 {
-	public $usernameField = 'username';
-	public $passwordField = 'password';
+    public $usernameField = 'username';
+    public $passwordField = 'password';
 
-	public $defaultUserGroup = self::USERGROUP_USERS;
+    public $defaultUserGroup = self::USERGROUP_USERS;
 
-	public function __construct() {
-		parent::__construct();
-		$this->registerEvents();
-		$this->setEncryptedFields(array(
-			'email', 'fullname', 'address', 'zipcode', 'city', 'region', 'country'
-		));
-	}
+    public function __construct()
+    {
+        parent::__construct();
+        $this->registerEvents();
+        $this->setEncryptedFields([
+            'email',
+            'fullname',
+            'address',
+            'zipcode',
+            'city',
+            'region',
+            'country'
+        ]);
+    }
 
-	public function __wakeup()
-	{
-		parent::__wakeup();
-		$this->registerEvents();
-	}
+    public function __wakeup()
+    {
+        parent::__wakeup();
+        $this->registerEvents();
+    }
 
-	public function registerEvents()
-	{
-		if (!Ajde_Event::has($this, 'afterCrudLoaded', 'parseForCrud')) {
-			Ajde_Event::register($this, 'afterCrudLoaded', 'parseForCrud');
-			Ajde_Event::register($this, 'beforeCrudSave', 'prepareCrudSave');
-		}
-	}
+    public function registerEvents()
+    {
+        if (!Ajde_Event::has($this, 'afterCrudLoaded', 'parseForCrud')) {
+            Ajde_Event::register($this, 'afterCrudLoaded', 'parseForCrud');
+            Ajde_Event::register($this, 'beforeCrudSave', 'prepareCrudSave');
+        }
+    }
 
     public function beforeInsert()
     {
@@ -39,29 +46,31 @@ class UserModel extends Ajde_User
         $this->saveFileFromWeb('avatar');
     }
 
-	public function afterSave()
-	{
-		if ($this->getLoggedIn() && $this->getPK() == $this->getLoggedIn()->getPK()) {
-			$this->login();
-		}
-	}
+    public function afterSave()
+    {
+        if ($this->getLoggedIn() && $this->getPK() == $this->getLoggedIn()->getPK()) {
+            $this->login();
+        }
+    }
 
     private function saveFileFromWeb($fieldName)
     {
         if ($this->has($fieldName) &&
             (substr(strtolower($this->get($fieldName)), 0, 7) === 'http://' ||
-                substr(strtolower($this->get($fieldName)), 0, 8) === 'https://')) {
+                substr(strtolower($this->get($fieldName)), 0, 8) === 'https://')
+        ) {
 
             // load file from web
             $image = Ajde_Http_Curl::get($this->get($fieldName));
 
             // extract filename (without extension)
             $basename = basename(parse_url($this->get($fieldName), PHP_URL_PATH));
-            $filename = preg_replace('/[^A-Za-z0-9_\-]/', '_', $this->get($this->usernameField)) . '_' . pathinfo($basename, PATHINFO_FILENAME);
+            $filename = preg_replace('/[^A-Za-z0-9_\-]/', '_',
+                    $this->get($this->usernameField)) . '_' . pathinfo($basename, PATHINFO_FILENAME);
 
             // save to tmp directory
             $tmp_path = TMP_DIR . $filename;
-            $fh = fopen($tmp_path, 'wb');
+            $fh       = fopen($tmp_path, 'wb');
             fwrite($fh, $image);
             fclose($fh);
 
@@ -81,7 +90,7 @@ class UserModel extends Ajde_User
 
             // save to avatar directory
             $path = AVATAR_DIR . $filename . '.' . $extension;
-            $fh = fopen($path, 'wb');
+            $fh   = fopen($path, 'wb');
             fwrite($fh, $image);
             fclose($fh);
 
@@ -97,53 +106,54 @@ class UserModel extends Ajde_User
         }
     }
 
-	public function emailLink()
-	{
-		return '<a href="mailto:' . _e($this->getEmail()) . '">' . _e($this->getEmail()) . '</a>';
-	}
+    public function emailLink()
+    {
+        return '<a href="mailto:' . _e($this->getEmail()) . '">' . _e($this->getEmail()) . '</a>';
+    }
 
-	public function parseForCrud(Ajde_Crud $crud)
-	{
-		$this->set($this->passwordField, '');
-	}
+    public function parseForCrud(Ajde_Crud $crud)
+    {
+        $this->set($this->passwordField, '');
+    }
 
-	public function getEmail()
-	{
-		return $this->decrypt('email');
-	}
+    public function getEmail()
+    {
+        return $this->decrypt('email');
+    }
 
-	public function getFullname()
-	{
-		return $this->decrypt('fullname');
-	}
+    public function getFullname()
+    {
+        return $this->decrypt('fullname');
+    }
 
-	public function prepareCrudSave(Ajde_Controller $controller, Ajde_Crud $crud)
-	{
-		if ($this->hasNotEmpty($this->passwordField)) {
-			$password = $this->get($this->passwordField);
-			$hash = $this->createHash($password);
-			$this->set($this->passwordField, $hash);
-		}
+    public function prepareCrudSave(Ajde_Controller $controller, Ajde_Crud $crud)
+    {
+        if ($this->hasNotEmpty($this->passwordField)) {
+            $password = $this->get($this->passwordField);
+            $hash     = $this->createHash($password);
+            $this->set($this->passwordField, $hash);
+        }
 
-		if ($this->hasEmpty('secret')) {
-			$this->set('secret', $this->generateSecret());
-		}
-	}
+        if ($this->hasEmpty('secret')) {
+            $this->set('secret', $this->generateSecret());
+        }
+    }
 
-	public function sendResetMail($hash)
-	{
-		$resetLink = Config::get('site_root') . 'user/reset?h=' . $hash;
+    public function sendResetMail($hash)
+    {
+        $resetLink = Config::get('site_root') . 'user/reset?h=' . $hash;
 
-		$mailer = new Ajde_Mailer();
-        $mailer->sendUsingModel('user_reset_link', $this->getEmail(), $this->getFullname(), array(
+        $mailer = new Ajde_Mailer();
+        $mailer->sendUsingModel('user_reset_link', $this->getEmail(), $this->getFullname(), [
             'resetlink' => $resetLink
-        ));
-	}
+        ]);
+    }
 
-	public function displayGravatar($width = 90, $class = '')
-	{
-		return Ajde_Resource_Image_Gravatar::get($this->getEmail(), $width, 'identicon', 'g', true, array('class' => $class));
-	}
+    public function displayGravatar($width = 90, $class = '')
+    {
+        return Ajde_Resource_Image_Gravatar::get($this->getEmail(), $width, 'identicon', 'g', true,
+            ['class' => $class]);
+    }
 
     public function displayAvatar($width = 90, $class = '')
     {

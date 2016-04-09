@@ -4,7 +4,7 @@ abstract class Ajde_Shop_Cart extends Ajde_Model
 {
     protected $_autoloadParents = false;
 
-    protected $_cartItemModel = null;
+    protected $_cartItemModel      = null;
     protected $_cartItemCollection = null;
 
     private $_items;
@@ -63,7 +63,7 @@ abstract class Ajde_Shop_Cart extends Ajde_Model
                 throw new Ajde_Exception('Entity is instance of Ajde_Model but not loaded when calling Ajde_Shop_Cart::addItem()');
             }
             /* @var $entity Ajde_Model */
-            $id = $entity->getPK();
+            $id     = $entity->getPK();
             $entity = (string)$entity->getTable();
         } else {
             if (!isset($id)) {
@@ -92,7 +92,7 @@ abstract class Ajde_Shop_Cart extends Ajde_Model
 
     /**
      *
-     * @param string $entity
+     * @param string  $entity
      * @param integer $id
      * @return Ajde_Shop_Cart_Item
      */

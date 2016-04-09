@@ -36,7 +36,7 @@ class Ajde_Embed_Mixcloud extends Ajde_Embed
     {
         $url = $this->_getMixcloudUrl();
         if ($url) {
-            $html = Ajde_Http_Curl::get($url);
+            $html    = Ajde_Http_Curl::get($url);
             $matches = [];
             preg_match('%og:image\" content=\"(.+?)\"%', $html, $matches);
             // we get .png, we want .jpg

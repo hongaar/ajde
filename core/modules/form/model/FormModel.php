@@ -2,8 +2,8 @@
 
 class FormModel extends Ajde_Model
 {
-	protected $_autoloadParents = true;
-	protected $_displayField = 'name';
+    protected $_autoloadParents = true;
+    protected $_displayField    = 'name';
 
     /**
      * @return EmailModel
@@ -11,6 +11,7 @@ class FormModel extends Ajde_Model
     public function getEmail()
     {
         $this->loadParent('email');
+
         return parent::get('email');
     }
 
@@ -20,6 +21,7 @@ class FormModel extends Ajde_Model
     public function getEmailTo()
     {
         $this->loadParent('email_to');
+
         return parent::get('email_to');
     }
 }

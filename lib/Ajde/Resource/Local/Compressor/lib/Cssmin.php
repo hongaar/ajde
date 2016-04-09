@@ -47,9 +47,9 @@ class Ajde_Resource_Local_Compressor_Css_Cssmin extends CssMin
  * --
  *
  * @package        CssMin
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -60,9 +60,9 @@ class Ajde_Resource_Local_Compressor_Css_Cssmin extends CssMin
  * Every token has to extend this class.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -80,9 +80,9 @@ abstract class aCssToken
  * Abstract definition of a for a ruleset start token.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -95,9 +95,9 @@ abstract class aCssRulesetStartToken extends aCssToken
  * Abstract definition of a for ruleset end token.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -121,9 +121,9 @@ abstract class aCssRulesetEndToken extends aCssToken
  * stylesheet.
  *
  * @package        CssMin/Parser/Plugins
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -151,14 +151,14 @@ abstract class aCssParserPlugin
     /**
      * Constructor.
      *
-     * @param CssParser $parser The CssParser object of this plugin.
-     * @param array $configuration Plugin configuration [optional]
+     * @param CssParser $parser        The CssParser object of this plugin.
+     * @param array     $configuration Plugin configuration [optional]
      * @return void
      */
     public function __construct(CssParser $parser, array $configuration = null)
     {
         $this->configuration = $configuration;
-        $this->parser = $parser;
+        $this->parser        = $parser;
     }
 
     /**
@@ -178,11 +178,11 @@ abstract class aCssParserPlugin
     /**
      * Parser routine of the plugin.
      *
-     * @param integer $index Current index
-     * @param string $char Current char
-     * @param string $previousChar Previous char
+     * @param integer $index        Current index
+     * @param string  $char         Current char
+     * @param string  $previousChar Previous char
      * @return mixed TRUE will break the processing; FALSE continue with the next plugin; integer set a new index and
-     *     break the processing
+     *                              break the processing
      */
     abstract public function parse($index, $char, $previousChar, $state);
 }
@@ -194,9 +194,9 @@ abstract class aCssParserPlugin
  * extend this class.
  *
  * @package        CssMin/Minifier/Plugins
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -218,14 +218,14 @@ abstract class aCssMinifierPlugin
     /**
      * Constructor.
      *
-     * @param CssMinifier $minifier The CssMinifier object of this plugin.
-     * @param array $configuration Plugin configuration [optional]
+     * @param CssMinifier $minifier      The CssMinifier object of this plugin.
+     * @param array       $configuration Plugin configuration [optional]
      * @return void
      */
     public function __construct(CssMinifier $minifier, array $configuration = [])
     {
         $this->configuration = $configuration;
-        $this->minifier = $minifier;
+        $this->minifier      = $minifier;
     }
 
     /**
@@ -251,9 +251,9 @@ abstract class aCssMinifierPlugin
  * has to extend this class.
  *
  * @package        CssMin/Minifier/Filters
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -275,14 +275,14 @@ abstract class aCssMinifierFilter
     /**
      * Constructor.
      *
-     * @param CssMinifier $minifier The CssMinifier object of this plugin.
-     * @param array $configuration Filter configuration [optional]
+     * @param CssMinifier $minifier      The CssMinifier object of this plugin.
+     * @param array       $configuration Filter configuration [optional]
      * @return void
      */
     public function __construct(CssMinifier $minifier, array $configuration = [])
     {
         $this->configuration = $configuration;
-        $this->minifier = $minifier;
+        $this->minifier      = $minifier;
     }
 
     /**
@@ -300,9 +300,9 @@ abstract class aCssMinifierFilter
  * Every formatter have to extend this class.
  *
  * @package        CssMin/Formatter
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -330,14 +330,14 @@ abstract class aCssFormatter
     /**
      * Constructor.
      *
-     * @param array $tokens Array of CssToken
-     * @param string $indent Indent string [optional]
+     * @param array   $tokens  Array of CssToken
+     * @param string  $indent  Indent string [optional]
      * @param integer $padding Declaration value padding [optional]
      */
     public function __construct(array $tokens, $indent = null, $padding = null)
     {
-        $this->tokens = $tokens;
-        $this->indent = !is_null($indent) ? $indent : $this->indent;
+        $this->tokens  = $tokens;
+        $this->indent  = !is_null($indent) ? $indent : $this->indent;
         $this->padding = !is_null($padding) ? $padding : $this->padding;
     }
 
@@ -353,9 +353,9 @@ abstract class aCssFormatter
  * Abstract definition of a ruleset declaration token.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -389,18 +389,18 @@ abstract class aCssDeclarationToken extends aCssToken
     /**
      * Set the properties of the @font-face declaration.
      *
-     * @param string $property Property of the declaration
-     * @param string $value Value of the declaration
+     * @param string  $property    Property of the declaration
+     * @param string  $value       Value of the declaration
      * @param boolean $isImportant Is the !important flag is set?
-     * @param boolean $IsLast Is the declaration the last one of the block?
+     * @param boolean $IsLast      Is the declaration the last one of the block?
      * @return void
      */
     public function __construct($property, $value, $isImportant = false, $isLast = false)
     {
-        $this->Property = $property;
-        $this->Value = $value;
+        $this->Property    = $property;
+        $this->Value       = $value;
         $this->IsImportant = $isImportant;
-        $this->IsLast = $isLast;
+        $this->IsLast      = $isLast;
     }
 
     /**
@@ -418,9 +418,9 @@ abstract class aCssDeclarationToken extends aCssToken
  * Abstract definition of a for at-rule block start token.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -433,9 +433,9 @@ abstract class aCssAtBlockStartToken extends aCssToken
  * Abstract definition of a for at-rule block end token.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -456,9 +456,9 @@ abstract class aCssAtBlockEndToken extends aCssToken
  * {@link aCssFromatter Formatter} returning the CSS source in {@link http://goo.gl/etzLs Whitesmiths indent style}.
  *
  * @package        CssMin/Formatter
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -471,11 +471,11 @@ class CssWhitesmithsFormatter extends aCssFormatter
      */
     public function __toString()
     {
-        $r = [];
+        $r     = [];
         $level = 0;
         for ($i = 0, $l = count($this->tokens); $i < $l; $i++) {
-            $token = $this->tokens[$i];
-            $class = get_class($token);
+            $token  = $this->tokens[$i];
+            $class  = get_class($token);
             $indent = str_repeat($this->indent, $level);
             if ($class === "CssCommentToken") {
                 $lines = array_map("trim", explode("\n", $token->Comment));
@@ -560,9 +560,9 @@ class CssWhitesmithsFormatter extends aCssFormatter
  * </code>
  *
  * @package        CssMin/Minifier/Plugins
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -658,9 +658,9 @@ class CssVariablesMinifierPlugin extends aCssMinifierPlugin
  * declaration.
  *
  * @package        CssMin/Minifier/Filters
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -674,14 +674,14 @@ class CssVariablesMinifierFilter extends aCssMinifierFilter
      */
     public function apply(array &$tokens)
     {
-        $variables = [];
+        $variables         = [];
         $defaultMediaTypes = ["all"];
-        $mediaTypes = [];
-        $remove = [];
+        $mediaTypes        = [];
+        $remove            = [];
         for ($i = 0, $l = count($tokens); $i < $l; $i++) {
             // @variables at-rule block found
             if (get_class($tokens[$i]) === "CssAtVariablesStartToken") {
-                $remove[] = $i;
+                $remove[]   = $i;
                 $mediaTypes = (count($tokens[$i]->MediaTypes) == 0 ? $defaultMediaTypes : $tokens[$i]->MediaTypes);
                 foreach ($mediaTypes as $mediaType) {
                     if (!isset($variables[$mediaType])) {
@@ -739,9 +739,9 @@ class CssVariablesMinifierFilter extends aCssMinifierFilter
  * This plugin return no {@link aCssToken CssToken} but ensures that url() values will get parsed properly.
  *
  * @package        CssMin/Parser/Plugins
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -770,11 +770,11 @@ class CssUrlParserPlugin extends aCssParserPlugin
     /**
      * Implements {@link aCssParserPlugin::parse()}.
      *
-     * @param integer $index Current index
-     * @param string $char Current char
-     * @param string $previousChar Previous char
+     * @param integer $index        Current index
+     * @param string  $char         Current char
+     * @param string  $previousChar Previous char
      * @return mixed TRUE will break the processing; FALSE continue with the next plugin; integer set a new index and
-     *     break the processing
+     *                              break the processing
      */
     public function parse($index, $char, $previousChar, $state)
     {
@@ -814,9 +814,9 @@ class CssUrlParserPlugin extends aCssParserPlugin
  * This plugin return no {@link aCssToken CssToken} but ensures that string values will get parsed properly.
  *
  * @package        CssMin/Parser/Plugins
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -852,11 +852,11 @@ class CssStringParserPlugin extends aCssParserPlugin
     /**
      * Implements {@link aCssParserPlugin::parse()}.
      *
-     * @param integer $index Current index
-     * @param string $char Current char
-     * @param string $previousChar Previous char
+     * @param integer $index        Current index
+     * @param string  $char         Current char
+     * @param string  $previousChar Previous char
      * @return mixed TRUE will break the processing; FALSE continue with the next plugin; integer set a new index and
-     *     break the processing
+     *                              break the processing
      */
     public function parse($index, $char, $previousChar, $state)
     {
@@ -884,8 +884,8 @@ class CssStringParserPlugin extends aCssParserPlugin
             // escape chars is uneven do not end the string
             if ($previousChar == "\\") {
                 $source = $this->parser->getSource();
-                $c = 1;
-                $i = $index - 2;
+                $c      = 1;
+                $i      = $index - 2;
                 while (substr($source, $i, 1) === "\\") {
                     $c++;
                     $i--;
@@ -909,9 +909,9 @@ class CssStringParserPlugin extends aCssParserPlugin
  * This {@link aCssMinifierFilter minifier filter} sorts the ruleset declarations of a ruleset by name.
  *
  * @package        CssMin/Minifier/Filters
- * @link        http://code.google.com/p/cssmin/
- * @author        Rowan Beentje <http://assanka.net>
- * @copyright    Rowan Beentje <http://assanka.net>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Rowan Beentje <http://assanka.net>
+ * @copyright      Rowan Beentje <http://assanka.net>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -944,7 +944,7 @@ class CssSortRulesetPropertiesMinifierFilter extends aCssMinifierFilter
                 break;
             }
             $startIndex = $i;
-            $i = $endIndex;
+            $i          = $endIndex;
             // Skip if there's only one token in this ruleset
             if ($endIndex - $startIndex <= 2) {
                 continue;
@@ -1003,9 +1003,9 @@ class CssSortRulesetPropertiesMinifierFilter extends aCssMinifierFilter
  * This {@link aCssToken CSS token} represents the start of a ruleset.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -1047,9 +1047,9 @@ class CssRulesetStartToken extends aCssRulesetStartToken
  * parser; including declarations as {@link CssRulesetDeclarationToken}.
  *
  * @package        CssMin/Parser/Plugins
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -1085,11 +1085,11 @@ class CssRulesetParserPlugin extends aCssParserPlugin
     /**
      * Implements {@link aCssParserPlugin::parse()}.
      *
-     * @param integer $index Current index
-     * @param string $char Current char
-     * @param string $previousChar Previous char
+     * @param integer $index        Current index
+     * @param string  $char         Current char
+     * @param string  $previousChar Previous char
      * @return mixed TRUE will break the processing; FALSE continue with the next plugin; integer set a new index and
-     *     break the processing
+     *                              break the processing
      */
     public function parse($index, $char, $previousChar, $state)
     {
@@ -1126,7 +1126,7 @@ class CssRulesetParserPlugin extends aCssParserPlugin
         elseif (($char === ";" || $char === "}") && $state === "T_RULESET_DECLARATION") {
             $value = $this->parser->getAndClearBuffer(";}");
             if (strtolower(substr($value, -10, 10)) === "!important") {
-                $value = trim(substr($value, 0, -10));
+                $value       = trim(substr($value, 0, -10));
                 $isImportant = true;
             } else {
                 $isImportant = false;
@@ -1145,7 +1145,7 @@ class CssRulesetParserPlugin extends aCssParserPlugin
             $this->parser->popState();
             $this->parser->clearBuffer();
             $this->parser->appendToken(new CssRulesetEndToken());
-            $this->buffer = "";
+            $this->buffer    = "";
             $this->selectors = [];
         } else {
             return false;
@@ -1159,9 +1159,9 @@ class CssRulesetParserPlugin extends aCssParserPlugin
  *  This {@link aCssToken CSS token} represents the end of a ruleset.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -1174,9 +1174,9 @@ class CssRulesetEndToken extends aCssRulesetEndToken
  * This {@link aCssToken CSS token} represents a ruleset declaration.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -1192,11 +1192,11 @@ class CssRulesetDeclarationToken extends aCssDeclarationToken
     /**
      * Set the properties of a ddocument- or at-rule @media level declaration.
      *
-     * @param string $property Property of the declaration
-     * @param string $value Value of the declaration
-     * @param mixed $mediaTypes Media types of the declaration
+     * @param string  $property    Property of the declaration
+     * @param string  $value       Value of the declaration
+     * @param mixed   $mediaTypes  Media types of the declaration
      * @param boolean $isImportant Is the !important flag is set
-     * @param boolean $isLast Is the declaration the last one of the ruleset
+     * @param boolean $isLast      Is the declaration the last one of the ruleset
      * @return void
      */
     public function __construct($property, $value, $mediaTypes = null, $isImportant = false, $isLast = false)
@@ -1209,13 +1209,13 @@ class CssRulesetDeclarationToken extends aCssDeclarationToken
 /**
  * This {@link aCssMinifierFilter minifier filter} sets the IsLast property of any last declaration in a ruleset,
  *
- * @font-face at-rule or @page at-rule block. If the property IsLast is TRUE the decrations will get stringified
+ * @font-face      at-rule or @page at-rule block. If the property IsLast is TRUE the decrations will get stringified
  * without tailing semicolon.
  *
  * @package        CssMin/Minifier/Filters
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -1231,7 +1231,7 @@ class CssRemoveLastDelarationSemiColonMinifierFilter extends aCssMinifierFilter
     {
         for ($i = 0, $l = count($tokens); $i < $l; $i++) {
             $current = get_class($tokens[$i]);
-            $next = isset($tokens[$i + 1]) ? get_class($tokens[$i + 1]) : false;
+            $next    = isset($tokens[$i + 1]) ? get_class($tokens[$i + 1]) : false;
             if (($current === "CssRulesetDeclarationToken" && $next === "CssRulesetEndToken") ||
                 ($current === "CssAtFontFaceDeclarationToken" && $next === "CssAtFontFaceEndToken") ||
                 ($current === "CssAtPageDeclarationToken" && $next === "CssAtPageEndToken")
@@ -1249,9 +1249,9 @@ class CssRemoveLastDelarationSemiColonMinifierFilter extends aCssMinifierFilter
  * rulesets).
  *
  * @package        CssMin/Minifier/Filters
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -1268,7 +1268,7 @@ class CssRemoveEmptyRulesetsMinifierFilter extends aCssMinifierFilter
         $r = 0;
         for ($i = 0, $l = count($tokens); $i < $l; $i++) {
             $current = get_class($tokens[$i]);
-            $next = isset($tokens[$i + 1]) ? get_class($tokens[$i + 1]) : false;
+            $next    = isset($tokens[$i + 1]) ? get_class($tokens[$i + 1]) : false;
             if (($current === "CssRulesetStartToken" && $next === "CssRulesetEndToken") ||
                 ($current === "CssAtKeyframesRulesetStartToken" && $next === "CssAtKeyframesRulesetEndToken" && !array_intersect([
                         "from",
@@ -1277,7 +1277,7 @@ class CssRemoveEmptyRulesetsMinifierFilter extends aCssMinifierFilter
                         "100%"
                     ], array_map("strtolower", $tokens[$i]->Selectors)))
             ) {
-                $tokens[$i] = null;
+                $tokens[$i]     = null;
                 $tokens[$i + 1] = null;
                 $i++;
                 $r = $r + 2;
@@ -1293,9 +1293,9 @@ class CssRemoveEmptyRulesetsMinifierFilter extends aCssMinifierFilter
  * at-rule blocks.
  *
  * @package        CssMin/Minifier/Filters
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -1312,13 +1312,13 @@ class CssRemoveEmptyAtBlocksMinifierFilter extends aCssMinifierFilter
         $r = 0;
         for ($i = 0, $l = count($tokens); $i < $l; $i++) {
             $current = get_class($tokens[$i]);
-            $next = isset($tokens[$i + 1]) ? get_class($tokens[$i + 1]) : false;
+            $next    = isset($tokens[$i + 1]) ? get_class($tokens[$i + 1]) : false;
             if (($current === "CssAtFontFaceStartToken" && $next === "CssAtFontFaceEndToken") ||
                 ($current === "CssAtKeyframesStartToken" && $next === "CssAtKeyframesEndToken") ||
                 ($current === "CssAtPageStartToken" && $next === "CssAtPageEndToken") ||
                 ($current === "CssAtMediaStartToken" && $next === "CssAtMediaEndToken")
             ) {
-                $tokens[$i] = null;
+                $tokens[$i]     = null;
                 $tokens[$i + 1] = null;
                 $i++;
                 $r = $r + 2;
@@ -1333,9 +1333,9 @@ class CssRemoveEmptyAtBlocksMinifierFilter extends aCssMinifierFilter
  * This {@link aCssMinifierFilter minifier filter} will remove any comments from the array of parsed tokens.
  *
  * @package        CssMin/Minifier/Filters
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -1365,9 +1365,9 @@ class CssRemoveCommentsMinifierFilter extends aCssMinifierFilter
  * CSS Parser.
  *
  * @package        CssMin/Parser
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -1427,30 +1427,30 @@ class CssParser
      *
      *  Create instances of the used {@link aCssParserPlugin plugins}.
      *
-     * @param string $source CSS source [optional]
-     * @param array $plugins Plugin configuration [optional]
+     * @param string $source  CSS source [optional]
+     * @param array  $plugins Plugin configuration [optional]
      * @return void
      */
     public function __construct($source = null, array $plugins = null)
     {
         $plugins = array_merge([
-            "Comment" => true,
-            "String" => true,
-            "Url" => true,
-            "Expression" => true,
-            "Ruleset" => true,
-            "AtCharset" => true,
-            "AtFontFace" => true,
-            "AtImport" => true,
+            "Comment"     => true,
+            "String"      => true,
+            "Url"         => true,
+            "Expression"  => true,
+            "Ruleset"     => true,
+            "AtCharset"   => true,
+            "AtFontFace"  => true,
+            "AtImport"    => true,
             "AtKeyframes" => true,
-            "AtMedia" => true,
-            "AtPage" => true,
+            "AtMedia"     => true,
+            "AtPage"      => true,
             "AtVariables" => true
         ], is_array($plugins) ? $plugins : []);
         // Create plugin instances
         foreach ($plugins as $name => $config) {
             if ($config !== false) {
-                $class = "Css" . $name . "ParserPlugin";
+                $class  = "Css" . $name . "ParserPlugin";
                 $config = is_array($config) ? $config : [];
                 if (class_exists($class)) {
                     $this->plugins[] = new $class($this, $config);
@@ -1489,13 +1489,13 @@ class CssParser
     /**
      * Returns and clear the current buffer.
      *
-     * @param string $trim Chars to use to trim the returned buffer
+     * @param string  $trim    Chars to use to trim the returned buffer
      * @param boolean $tolower if TRUE the returned buffer will get converted to lower case
      * @return string
      */
     public function getAndClearBuffer($trim = "", $tolower = false)
     {
-        $r = $this->getBuffer($trim, $tolower);
+        $r            = $this->getBuffer($trim, $tolower);
         $this->buffer = "";
 
         return $r;
@@ -1504,7 +1504,7 @@ class CssParser
     /**
      * Returns the current buffer.
      *
-     * @param string $trim Chars to use to trim the returned buffer
+     * @param string  $trim    Chars to use to trim the returned buffer
      * @param boolean $tolower if TRUE the returned buffer will get converted to lower case
      * @return string
      */
@@ -1604,17 +1604,17 @@ class CssParser
         $this->tokens = [];
         // Create a global and plugin lookup table for trigger chars; set array of plugins as local variable and create
         // several helper variables for plugin handling
-        $globalTriggerChars = "";
-        $plugins = $this->plugins;
-        $pluginCount = count($plugins);
-        $pluginIndex = [];
+        $globalTriggerChars  = "";
+        $plugins             = $this->plugins;
+        $pluginCount         = count($plugins);
+        $pluginIndex         = [];
         $pluginTriggerStates = [];
-        $pluginTriggerChars = [];
+        $pluginTriggerChars  = [];
         for ($i = 0, $l = count($plugins); $i < $l; $i++) {
-            $tPluginClassName = get_class($plugins[$i]);
-            $pluginTriggerChars[$i] = implode("", $plugins[$i]->getTriggerChars());
-            $tPluginTriggerStates = $plugins[$i]->getTriggerStates();
-            $pluginTriggerStates[$i] = $tPluginTriggerStates === false ? false : "|" . implode("|",
+            $tPluginClassName               = get_class($plugins[$i]);
+            $pluginTriggerChars[$i]         = implode("", $plugins[$i]->getTriggerChars());
+            $tPluginTriggerStates           = $plugins[$i]->getTriggerStates();
+            $pluginTriggerStates[$i]        = $tPluginTriggerStates === false ? false : "|" . implode("|",
                     $tPluginTriggerStates) . "|";
             $pluginIndex[$tPluginClassName] = $i;
             for ($ii = 0, $ll = strlen($pluginTriggerChars[$i]); $ii < $ll; $ii++) {
@@ -1625,14 +1625,14 @@ class CssParser
             }
         }
         // Normalise line endings
-        $source = str_replace("\r\n", "\n", $source);    // Windows to Unix line endings
-        $source = str_replace("\r", "\n", $source);        // Mac to Unix line endings
+        $source       = str_replace("\r\n", "\n", $source);    // Windows to Unix line endings
+        $source       = str_replace("\r", "\n", $source);        // Mac to Unix line endings
         $this->source = $source;
         // Variables
-        $buffer = &$this->buffer;
+        $buffer    = &$this->buffer;
         $exclusive = &$this->stateExclusive;
-        $state = &$this->state;
-        $c = $p = null;
+        $state     = &$this->state;
+        $c         = $p = null;
         // --
         for ($i = 0, $l = strlen($source); $i < $l; $i++) {
             // Set the current Char
@@ -1702,7 +1702,7 @@ class CssParser
      */
     public function popState()
     {
-        $r = array_pop($this->states);
+        $r           = array_pop($this->states);
         $this->state = $this->states[count($this->states) - 1];
 
         return $r;
@@ -1716,7 +1716,7 @@ class CssParser
      */
     public function pushState($state)
     {
-        $r = array_push($this->states, $state);
+        $r           = array_push($this->states, $state);
         $this->state = $this->states[count($this->states) - 1];
 
         return $r;
@@ -1797,9 +1797,9 @@ class CssParser
  * True Brace Style).
  *
  * @package        CssMin/Formatter
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -1812,11 +1812,11 @@ class CssOtbsFormatter extends aCssFormatter
      */
     public function __toString()
     {
-        $r = [];
+        $r     = [];
         $level = 0;
         for ($i = 0, $l = count($this->tokens); $i < $l; $i++) {
-            $token = $this->tokens[$i];
-            $class = get_class($token);
+            $token  = $this->tokens[$i];
+            $class  = get_class($token);
             $indent = str_repeat($this->indent, $level);
             if ($class === "CssCommentToken") {
                 $lines = array_map("trim", explode("\n", $token->Comment));
@@ -1877,9 +1877,9 @@ class CssOtbsFormatter extends aCssFormatter
  * This {@link aCssToken CSS token} is a utility token that extends {@link aNullToken} and returns only a empty string.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -1900,9 +1900,9 @@ class CssNullToken extends aCssToken
  * CSS Minifier.
  *
  * @package        CssMin/Minifier
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -1932,37 +1932,37 @@ class CssMinifier
      *
      * Creates instances of {@link aCssMinifierFilter filters} and {@link aCssMinifierPlugin plugins}.
      *
-     * @param string $source CSS source [optional]
-     * @param array $filters Filter configuration [optional]
-     * @param array $plugins Plugin configuration [optional]
+     * @param string $source  CSS source [optional]
+     * @param array  $filters Filter configuration [optional]
+     * @param array  $plugins Plugin configuration [optional]
      * @return void
      */
     public function __construct($source = null, array $filters = null, array $plugins = null)
     {
         $filters = array_merge([
-            "ImportImports" => false,
-            "RemoveComments" => true,
-            "RemoveEmptyRulesets" => true,
-            "RemoveEmptyAtBlocks" => true,
-            "ConvertLevel3Properties" => false,
-            "ConvertLevel3AtKeyframes" => false,
-            "Variables" => true,
+            "ImportImports"                 => false,
+            "RemoveComments"                => true,
+            "RemoveEmptyRulesets"           => true,
+            "RemoveEmptyAtBlocks"           => true,
+            "ConvertLevel3Properties"       => false,
+            "ConvertLevel3AtKeyframes"      => false,
+            "Variables"                     => true,
             "RemoveLastDelarationSemiColon" => true
         ], is_array($filters) ? $filters : []);
         $plugins = array_merge([
-            "Variables" => true,
-            "ConvertFontWeight" => false,
-            "ConvertHslColors" => false,
-            "ConvertRgbColors" => false,
-            "ConvertNamedColors" => false,
-            "CompressColorValues" => false,
-            "CompressUnitValues" => false,
+            "Variables"                => true,
+            "ConvertFontWeight"        => false,
+            "ConvertHslColors"         => false,
+            "ConvertRgbColors"         => false,
+            "ConvertNamedColors"       => false,
+            "CompressColorValues"      => false,
+            "CompressUnitValues"       => false,
             "CompressExpressionValues" => false
         ], is_array($plugins) ? $plugins : []);
         // Filters
         foreach ($filters as $name => $config) {
             if ($config !== false) {
-                $class = "Css" . $name . "MinifierFilter";
+                $class  = "Css" . $name . "MinifierFilter";
                 $config = is_array($config) ? $config : [];
                 if (class_exists($class)) {
                     $this->filters[] = new $class($this, $config);
@@ -1975,7 +1975,7 @@ class CssMinifier
         // Plugins
         foreach ($plugins as $name => $config) {
             if ($config !== false) {
-                $class = "Css" . $name . "MinifierPlugin";
+                $class  = "Css" . $name . "MinifierPlugin";
                 $config = is_array($config) ? $config : [];
                 if (class_exists($class)) {
                     $this->plugins[] = new $class($this, $config);
@@ -2029,25 +2029,25 @@ class CssMinifier
     public function minify($source)
     {
         // Variables
-        $r = "";
-        $parser = new CssParser($source);
-        $tokens = $parser->getTokens();
-        $filters = $this->filters;
-        $filterCount = count($this->filters);
-        $plugins = $this->plugins;
-        $pluginCount = count($plugins);
-        $pluginIndex = [];
+        $r                   = "";
+        $parser              = new CssParser($source);
+        $tokens              = $parser->getTokens();
+        $filters             = $this->filters;
+        $filterCount         = count($this->filters);
+        $plugins             = $this->plugins;
+        $pluginCount         = count($plugins);
+        $pluginIndex         = [];
         $pluginTriggerTokens = [];
         $globalTriggerTokens = [];
         for ($i = 0, $l = count($plugins); $i < $l; $i++) {
-            $tPluginClassName = get_class($plugins[$i]);
+            $tPluginClassName        = get_class($plugins[$i]);
             $pluginTriggerTokens[$i] = $plugins[$i]->getTriggerTokens();
             foreach ($pluginTriggerTokens[$i] as $v) {
                 if (!in_array($v, $globalTriggerTokens)) {
                     $globalTriggerTokens[] = $v;
                 }
             }
-            $pluginTriggerTokens[$i] = "|" . implode("|", $pluginTriggerTokens[$i]) . "|";
+            $pluginTriggerTokens[$i]        = "|" . implode("|", $pluginTriggerTokens[$i]) . "|";
             $pluginIndex[$tPluginClassName] = $i;
         }
         $globalTriggerTokens = "|" . implode("|", $globalTriggerTokens) . "|";
@@ -2116,9 +2116,9 @@ class CssMinifier
  * --
  *
  * @package        CssMin
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -2195,7 +2195,7 @@ class CssMin
             $files = glob($path . "*.php", 0);
             if (is_array($files)) {
                 foreach ($files as $file) {
-                    $class = substr(basename($file), 0, -4);
+                    $class                    = substr(basename($file), 0, -4);
                     self::$classIndex[$class] = $file;
                 }
             }
@@ -2218,15 +2218,15 @@ class CssMin
     /**
      * Minifies CSS source.
      *
-     * @param string $source CSS source
-     * @param array $filters Filter configuration [optional]
-     * @param array $plugins Plugin configuration [optional]
+     * @param string $source  CSS source
+     * @param array  $filters Filter configuration [optional]
+     * @param array  $plugins Plugin configuration [optional]
      * @return string Minified CSS
      */
     public static function minify($source, array $filters = null, array $plugins = null)
     {
         self::$errors = [];
-        $minifier = new CssMinifier($source, $filters, $plugins);
+        $minifier     = new CssMinifier($source, $filters, $plugins);
 
         return $minifier->getMinified();
     }
@@ -2234,14 +2234,14 @@ class CssMin
     /**
      * Parse the CSS source.
      *
-     * @param string $source CSS source
-     * @param array $plugins Plugin configuration [optional]
+     * @param string $source  CSS source
+     * @param array  $plugins Plugin configuration [optional]
      * @return array Array of aCssToken
      */
     public static function parse($source, array $plugins = null)
     {
         self::$errors = [];
-        $parser = new CssParser($source, $plugins);
+        $parser       = new CssParser($source, $plugins);
 
         return $parser->getTokens();
     }
@@ -2282,9 +2282,9 @@ CssMin::initialise();
  * current stylesheet.
  *
  * @package        CssMin/Minifier/Filters
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -2326,8 +2326,8 @@ class CssImportImportsMinifierFilter extends aCssMinifierFilter
                     $tokens[$i] = null;
                 } else {
                     $this->imported[] = $import;
-                    $parser = new CssParser(file_get_contents($import));
-                    $import = $parser->getTokens();
+                    $parser           = new CssParser(file_get_contents($import));
+                    $import           = $parser->getTokens();
                     // The @import at-rule has media types defined requiring special handling
                     if (count($tokens[$i]->MediaTypes) > 0 && !(count($tokens[$i]->MediaTypes) == 1 && $tokens[$i]->MediaTypes[0] == "all")) {
                         $blocks = [];
@@ -2402,7 +2402,7 @@ class CssImportImportsMinifierFilter extends aCssMinifierFilter
                                     unset($import[$ii]);
                                     unset($import[$iii]);
                                     $import = array_values($import);
-                                    $ll = count($import);
+                                    $ll     = count($import);
                                 }
                             }
                         }
@@ -2413,7 +2413,7 @@ class CssImportImportsMinifierFilter extends aCssMinifierFilter
                             $class = get_class($import[$ii]);
                             if ($class === "CssAtImportToken" || $class === "CssAtCharsetToken") {
                                 $blocks = array_merge($blocks, array_splice($import, $ii, 1, []));
-                                $ll = count($import);
+                                $ll     = count($import);
                             }
                         }
                         /*
@@ -2431,7 +2431,7 @@ class CssImportImportsMinifierFilter extends aCssMinifierFilter
                                 $class = get_class($import[$iii]);
                                 if (isset($import[$iii]) && ($class === "CssAtFontFaceEndToken" || $class === "CssAtMediaEndToken" || $class === "CssAtPageEndToken" || $class === "CssAtVariablesEndToken")) {
                                     $blocks = array_merge($blocks, array_splice($import, $ii, $iii - $ii + 1, []));
-                                    $ll = count($import);
+                                    $ll     = count($import);
                                 }
                             }
                         }
@@ -2457,9 +2457,9 @@ class CssImportImportsMinifierFilter extends aCssMinifierFilter
  * properly.
  *
  * @package        CssMin/Parser/Plugins
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -2501,11 +2501,11 @@ class CssExpressionParserPlugin extends aCssParserPlugin
     /**
      * Implements {@link aCssParserPlugin::parse()}.
      *
-     * @param integer $index Current index
-     * @param string $char Current char
-     * @param string $previousChar Previous char
+     * @param integer $index        Current index
+     * @param string  $char         Current char
+     * @param string  $previousChar Previous char
      * @return mixed TRUE will break the processing; FALSE continue with the next plugin; integer set a new index and
-     *     break the processing
+     *                              break the processing
      */
     public function parse($index, $char, $previousChar, $state)
     {
@@ -2539,9 +2539,9 @@ class CssExpressionParserPlugin extends aCssParserPlugin
  * CSS Error.
  *
  * @package        CssMin
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -2576,15 +2576,15 @@ class CssError
      * Constructor triggering the error.
      *
      * @param string $message Error message
-     * @param string $source Corresponding line [optional]
+     * @param string $source  Corresponding line [optional]
      * @return void
      */
     public function __construct($file, $line, $message, $source = "")
     {
-        $this->File = $file;
-        $this->Line = $line;
+        $this->File    = $file;
+        $this->Line    = $line;
         $this->Message = $message;
-        $this->Source = $source;
+        $this->Source  = $source;
     }
 
     /**
@@ -2612,9 +2612,9 @@ class CssError
  * </code>
  *
  * @package        CssMin/Minifier/Plugins
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -2680,9 +2680,9 @@ class CssConvertRgbColorsMinifierPlugin extends aCssMinifierPlugin
  * </code>
  *
  * @package        CssMin/Minifier/Plugins
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -2708,142 +2708,142 @@ class CssConvertNamedColorsMinifierPlugin extends aCssMinifierPlugin
      * @var array
      */
     private $transformation = [
-        "aliceblue" => "#f0f8ff",
-        "antiquewhite" => "#faebd7",
-        "aqua" => "#0ff",
-        "aquamarine" => "#7fffd4",
-        "azure" => "#f0ffff",
-        "beige" => "#f5f5dc",
-        "black" => "#000",
-        "blue" => "#00f",
-        "blueviolet" => "#8a2be2",
-        "brown" => "#a52a2a",
-        "burlywood" => "#deb887",
-        "cadetblue" => "#5f9ea0",
-        "chartreuse" => "#7fff00",
-        "chocolate" => "#d2691e",
-        "coral" => "#ff7f50",
-        "cornflowerblue" => "#6495ed",
-        "cornsilk" => "#fff8dc",
-        "crimson" => "#dc143c",
-        "darkblue" => "#00008b",
-        "darkcyan" => "#008b8b",
-        "darkgoldenrod" => "#b8860b",
-        "darkgray" => "#a9a9a9",
-        "darkgreen" => "#006400",
-        "darkkhaki" => "#bdb76b",
-        "darkmagenta" => "#8b008b",
-        "darkolivegreen" => "#556b2f",
-        "darkorange" => "#ff8c00",
-        "darkorchid" => "#9932cc",
-        "darkred" => "#8b0000",
-        "darksalmon" => "#e9967a",
-        "darkseagreen" => "#8fbc8f",
-        "darkslateblue" => "#483d8b",
-        "darkslategray" => "#2f4f4f",
-        "darkturquoise" => "#00ced1",
-        "darkviolet" => "#9400d3",
-        "deeppink" => "#ff1493",
-        "deepskyblue" => "#00bfff",
-        "dimgray" => "#696969",
-        "dodgerblue" => "#1e90ff",
-        "firebrick" => "#b22222",
-        "floralwhite" => "#fffaf0",
-        "forestgreen" => "#228b22",
-        "fuchsia" => "#f0f",
-        "gainsboro" => "#dcdcdc",
-        "ghostwhite" => "#f8f8ff",
-        "gold" => "#ffd700",
-        "goldenrod" => "#daa520",
-        "gray" => "#808080",
-        "green" => "#008000",
-        "greenyellow" => "#adff2f",
-        "honeydew" => "#f0fff0",
-        "hotpink" => "#ff69b4",
-        "indianred" => "#cd5c5c",
-        "indigo" => "#4b0082",
-        "ivory" => "#fffff0",
-        "khaki" => "#f0e68c",
-        "lavender" => "#e6e6fa",
-        "lavenderblush" => "#fff0f5",
-        "lawngreen" => "#7cfc00",
-        "lemonchiffon" => "#fffacd",
-        "lightblue" => "#add8e6",
-        "lightcoral" => "#f08080",
-        "lightcyan" => "#e0ffff",
+        "aliceblue"            => "#f0f8ff",
+        "antiquewhite"         => "#faebd7",
+        "aqua"                 => "#0ff",
+        "aquamarine"           => "#7fffd4",
+        "azure"                => "#f0ffff",
+        "beige"                => "#f5f5dc",
+        "black"                => "#000",
+        "blue"                 => "#00f",
+        "blueviolet"           => "#8a2be2",
+        "brown"                => "#a52a2a",
+        "burlywood"            => "#deb887",
+        "cadetblue"            => "#5f9ea0",
+        "chartreuse"           => "#7fff00",
+        "chocolate"            => "#d2691e",
+        "coral"                => "#ff7f50",
+        "cornflowerblue"       => "#6495ed",
+        "cornsilk"             => "#fff8dc",
+        "crimson"              => "#dc143c",
+        "darkblue"             => "#00008b",
+        "darkcyan"             => "#008b8b",
+        "darkgoldenrod"        => "#b8860b",
+        "darkgray"             => "#a9a9a9",
+        "darkgreen"            => "#006400",
+        "darkkhaki"            => "#bdb76b",
+        "darkmagenta"          => "#8b008b",
+        "darkolivegreen"       => "#556b2f",
+        "darkorange"           => "#ff8c00",
+        "darkorchid"           => "#9932cc",
+        "darkred"              => "#8b0000",
+        "darksalmon"           => "#e9967a",
+        "darkseagreen"         => "#8fbc8f",
+        "darkslateblue"        => "#483d8b",
+        "darkslategray"        => "#2f4f4f",
+        "darkturquoise"        => "#00ced1",
+        "darkviolet"           => "#9400d3",
+        "deeppink"             => "#ff1493",
+        "deepskyblue"          => "#00bfff",
+        "dimgray"              => "#696969",
+        "dodgerblue"           => "#1e90ff",
+        "firebrick"            => "#b22222",
+        "floralwhite"          => "#fffaf0",
+        "forestgreen"          => "#228b22",
+        "fuchsia"              => "#f0f",
+        "gainsboro"            => "#dcdcdc",
+        "ghostwhite"           => "#f8f8ff",
+        "gold"                 => "#ffd700",
+        "goldenrod"            => "#daa520",
+        "gray"                 => "#808080",
+        "green"                => "#008000",
+        "greenyellow"          => "#adff2f",
+        "honeydew"             => "#f0fff0",
+        "hotpink"              => "#ff69b4",
+        "indianred"            => "#cd5c5c",
+        "indigo"               => "#4b0082",
+        "ivory"                => "#fffff0",
+        "khaki"                => "#f0e68c",
+        "lavender"             => "#e6e6fa",
+        "lavenderblush"        => "#fff0f5",
+        "lawngreen"            => "#7cfc00",
+        "lemonchiffon"         => "#fffacd",
+        "lightblue"            => "#add8e6",
+        "lightcoral"           => "#f08080",
+        "lightcyan"            => "#e0ffff",
         "lightgoldenrodyellow" => "#fafad2",
-        "lightgreen" => "#90ee90",
-        "lightgrey" => "#d3d3d3",
-        "lightpink" => "#ffb6c1",
-        "lightsalmon" => "#ffa07a",
-        "lightseagreen" => "#20b2aa",
-        "lightskyblue" => "#87cefa",
-        "lightslategray" => "#789",
-        "lightsteelblue" => "#b0c4de",
-        "lightyellow" => "#ffffe0",
-        "lime" => "#0f0",
-        "limegreen" => "#32cd32",
-        "linen" => "#faf0e6",
-        "maroon" => "#800000",
-        "mediumaquamarine" => "#66cdaa",
-        "mediumblue" => "#0000cd",
-        "mediumorchid" => "#ba55d3",
-        "mediumpurple" => "#9370db",
-        "mediumseagreen" => "#3cb371",
-        "mediumslateblue" => "#7b68ee",
-        "mediumspringgreen" => "#00fa9a",
-        "mediumturquoise" => "#48d1cc",
-        "mediumvioletred" => "#c71585",
-        "midnightblue" => "#191970",
-        "mintcream" => "#f5fffa",
-        "mistyrose" => "#ffe4e1",
-        "moccasin" => "#ffe4b5",
-        "navajowhite" => "#ffdead",
-        "navy" => "#000080",
-        "oldlace" => "#fdf5e6",
-        "olive" => "#808000",
-        "olivedrab" => "#6b8e23",
-        "orange" => "#ffa500",
-        "orangered" => "#ff4500",
-        "orchid" => "#da70d6",
-        "palegoldenrod" => "#eee8aa",
-        "palegreen" => "#98fb98",
-        "paleturquoise" => "#afeeee",
-        "palevioletred" => "#db7093",
-        "papayawhip" => "#ffefd5",
-        "peachpuff" => "#ffdab9",
-        "peru" => "#cd853f",
-        "pink" => "#ffc0cb",
-        "plum" => "#dda0dd",
-        "powderblue" => "#b0e0e6",
-        "purple" => "#800080",
-        "red" => "#f00",
-        "rosybrown" => "#bc8f8f",
-        "royalblue" => "#4169e1",
-        "saddlebrown" => "#8b4513",
-        "salmon" => "#fa8072",
-        "sandybrown" => "#f4a460",
-        "seagreen" => "#2e8b57",
-        "seashell" => "#fff5ee",
-        "sienna" => "#a0522d",
-        "silver" => "#c0c0c0",
-        "skyblue" => "#87ceeb",
-        "slateblue" => "#6a5acd",
-        "slategray" => "#708090",
-        "snow" => "#fffafa",
-        "springgreen" => "#00ff7f",
-        "steelblue" => "#4682b4",
-        "tan" => "#d2b48c",
-        "teal" => "#008080",
-        "thistle" => "#d8bfd8",
-        "tomato" => "#ff6347",
-        "turquoise" => "#40e0d0",
-        "violet" => "#ee82ee",
-        "wheat" => "#f5deb3",
-        "white" => "#fff",
-        "whitesmoke" => "#f5f5f5",
-        "yellow" => "#ff0",
-        "yellowgreen" => "#9acd32"
+        "lightgreen"           => "#90ee90",
+        "lightgrey"            => "#d3d3d3",
+        "lightpink"            => "#ffb6c1",
+        "lightsalmon"          => "#ffa07a",
+        "lightseagreen"        => "#20b2aa",
+        "lightskyblue"         => "#87cefa",
+        "lightslategray"       => "#789",
+        "lightsteelblue"       => "#b0c4de",
+        "lightyellow"          => "#ffffe0",
+        "lime"                 => "#0f0",
+        "limegreen"            => "#32cd32",
+        "linen"                => "#faf0e6",
+        "maroon"               => "#800000",
+        "mediumaquamarine"     => "#66cdaa",
+        "mediumblue"           => "#0000cd",
+        "mediumorchid"         => "#ba55d3",
+        "mediumpurple"         => "#9370db",
+        "mediumseagreen"       => "#3cb371",
+        "mediumslateblue"      => "#7b68ee",
+        "mediumspringgreen"    => "#00fa9a",
+        "mediumturquoise"      => "#48d1cc",
+        "mediumvioletred"      => "#c71585",
+        "midnightblue"         => "#191970",
+        "mintcream"            => "#f5fffa",
+        "mistyrose"            => "#ffe4e1",
+        "moccasin"             => "#ffe4b5",
+        "navajowhite"          => "#ffdead",
+        "navy"                 => "#000080",
+        "oldlace"              => "#fdf5e6",
+        "olive"                => "#808000",
+        "olivedrab"            => "#6b8e23",
+        "orange"               => "#ffa500",
+        "orangered"            => "#ff4500",
+        "orchid"               => "#da70d6",
+        "palegoldenrod"        => "#eee8aa",
+        "palegreen"            => "#98fb98",
+        "paleturquoise"        => "#afeeee",
+        "palevioletred"        => "#db7093",
+        "papayawhip"           => "#ffefd5",
+        "peachpuff"            => "#ffdab9",
+        "peru"                 => "#cd853f",
+        "pink"                 => "#ffc0cb",
+        "plum"                 => "#dda0dd",
+        "powderblue"           => "#b0e0e6",
+        "purple"               => "#800080",
+        "red"                  => "#f00",
+        "rosybrown"            => "#bc8f8f",
+        "royalblue"            => "#4169e1",
+        "saddlebrown"          => "#8b4513",
+        "salmon"               => "#fa8072",
+        "sandybrown"           => "#f4a460",
+        "seagreen"             => "#2e8b57",
+        "seashell"             => "#fff5ee",
+        "sienna"               => "#a0522d",
+        "silver"               => "#c0c0c0",
+        "skyblue"              => "#87ceeb",
+        "slateblue"            => "#6a5acd",
+        "slategray"            => "#708090",
+        "snow"                 => "#fffafa",
+        "springgreen"          => "#00ff7f",
+        "steelblue"            => "#4682b4",
+        "tan"                  => "#d2b48c",
+        "teal"                 => "#008080",
+        "thistle"              => "#d8bfd8",
+        "tomato"               => "#ff6347",
+        "turquoise"            => "#40e0d0",
+        "violet"               => "#ee82ee",
+        "wheat"                => "#f5deb3",
+        "white"                => "#fff",
+        "whitesmoke"           => "#f5f5f5",
+        "yellow"               => "#ff0",
+        "yellowgreen"          => "#9acd32"
     ];
 
     /**
@@ -2852,8 +2852,8 @@ class CssConvertNamedColorsMinifierPlugin extends aCssMinifierPlugin
      * The constructor will create the {@link CssConvertNamedColorsMinifierPlugin::$reReplace replace regular
      * expression} based on the {@link CssConvertNamedColorsMinifierPlugin::$transformation transformation table}.
      *
-     * @param CssMinifier $minifier The CssMinifier object of this plugin.
-     * @param array $configuration Plugin configuration [optional]
+     * @param CssMinifier $minifier      The CssMinifier object of this plugin.
+     * @param array       $configuration Plugin configuration [optional]
      * @return void
      */
     public function __construct(CssMinifier $minifier, array $configuration = [])
@@ -2902,9 +2902,9 @@ class CssConvertNamedColorsMinifierPlugin extends aCssMinifierPlugin
  * with browser-specific properties.
  *
  * @package        CssMin/Minifier/Filters
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -2918,232 +2918,252 @@ class CssConvertLevel3PropertiesMinifierFilter extends aCssMinifierFilter
      */
     private $transformations = [
         // Property						Array(Mozilla, Webkit, Opera, Internet Explorer); NULL values are placeholders and will get ignored
-        "animation" => [null, "-webkit-animation", null, null],
-        "animation-delay" => [null, "-webkit-animation-delay", null, null],
-        "animation-direction" => [null, "-webkit-animation-direction", null, null],
-        "animation-duration" => [null, "-webkit-animation-duration", null, null],
-        "animation-fill-mode" => [null, "-webkit-animation-fill-mode", null, null],
-        "animation-iteration-count" => [null, "-webkit-animation-iteration-count", null, null],
-        "animation-name" => [null, "-webkit-animation-name", null, null],
-        "animation-play-state" => [null, "-webkit-animation-play-state", null, null],
-        "animation-timing-function" => [null, "-webkit-animation-timing-function", null, null],
-        "appearance" => ["-moz-appearance", "-webkit-appearance", null, null],
-        "backface-visibility" => [null, "-webkit-backface-visibility", null, null],
-        "background-clip" => [null, "-webkit-background-clip", null, null],
-        "background-composite" => [null, "-webkit-background-composite", null, null],
-        "background-inline-policy" => ["-moz-background-inline-policy", null, null, null],
-        "background-origin" => [null, "-webkit-background-origin", null, null],
-        "background-position-x" => [null, null, null, "-ms-background-position-x"],
-        "background-position-y" => [null, null, null, "-ms-background-position-y"],
-        "background-size" => [null, "-webkit-background-size", null, null],
-        "behavior" => [null, null, null, "-ms-behavior"],
-        "binding" => ["-moz-binding", null, null, null],
-        "border-after" => [null, "-webkit-border-after", null, null],
-        "border-after-color" => [null, "-webkit-border-after-color", null, null],
-        "border-after-style" => [null, "-webkit-border-after-style", null, null],
-        "border-after-width" => [null, "-webkit-border-after-width", null, null],
-        "border-before" => [null, "-webkit-border-before", null, null],
-        "border-before-color" => [null, "-webkit-border-before-color", null, null],
-        "border-before-style" => [null, "-webkit-border-before-style", null, null],
-        "border-before-width" => [null, "-webkit-border-before-width", null, null],
-        "border-border-bottom-colors" => ["-moz-border-bottom-colors", null, null, null],
-        "border-bottom-left-radius" => [
+        "animation"                           => [null, "-webkit-animation", null, null],
+        "animation-delay"                     => [null, "-webkit-animation-delay", null, null],
+        "animation-direction"                 => [null, "-webkit-animation-direction", null, null],
+        "animation-duration"                  => [null, "-webkit-animation-duration", null, null],
+        "animation-fill-mode"                 => [null, "-webkit-animation-fill-mode", null, null],
+        "animation-iteration-count"           => [null, "-webkit-animation-iteration-count", null, null],
+        "animation-name"                      => [null, "-webkit-animation-name", null, null],
+        "animation-play-state"                => [null, "-webkit-animation-play-state", null, null],
+        "animation-timing-function"           => [null, "-webkit-animation-timing-function", null, null],
+        "appearance"                          => ["-moz-appearance", "-webkit-appearance", null, null],
+        "backface-visibility"                 => [null, "-webkit-backface-visibility", null, null],
+        "background-clip"                     => [null, "-webkit-background-clip", null, null],
+        "background-composite"                => [null, "-webkit-background-composite", null, null],
+        "background-inline-policy"            => ["-moz-background-inline-policy", null, null, null],
+        "background-origin"                   => [null, "-webkit-background-origin", null, null],
+        "background-position-x"               => [null, null, null, "-ms-background-position-x"],
+        "background-position-y"               => [null, null, null, "-ms-background-position-y"],
+        "background-size"                     => [null, "-webkit-background-size", null, null],
+        "behavior"                            => [null, null, null, "-ms-behavior"],
+        "binding"                             => ["-moz-binding", null, null, null],
+        "border-after"                        => [null, "-webkit-border-after", null, null],
+        "border-after-color"                  => [null, "-webkit-border-after-color", null, null],
+        "border-after-style"                  => [null, "-webkit-border-after-style", null, null],
+        "border-after-width"                  => [null, "-webkit-border-after-width", null, null],
+        "border-before"                       => [null, "-webkit-border-before", null, null],
+        "border-before-color"                 => [null, "-webkit-border-before-color", null, null],
+        "border-before-style"                 => [null, "-webkit-border-before-style", null, null],
+        "border-before-width"                 => [null, "-webkit-border-before-width", null, null],
+        "border-border-bottom-colors"         => ["-moz-border-bottom-colors", null, null, null],
+        "border-bottom-left-radius"           => [
             "-moz-border-radius-bottomleft",
             "-webkit-border-bottom-left-radius",
             null,
             null
         ],
-        "border-bottom-right-radius" => [
+        "border-bottom-right-radius"          => [
             "-moz-border-radius-bottomright",
             "-webkit-border-bottom-right-radius",
             null,
             null
         ],
-        "border-end" => ["-moz-border-end", "-webkit-border-end", null, null],
-        "border-end-color" => ["-moz-border-end-color", "-webkit-border-end-color", null, null],
-        "border-end-style" => ["-moz-border-end-style", "-webkit-border-end-style", null, null],
-        "border-end-width" => ["-moz-border-end-width", "-webkit-border-end-width", null, null],
-        "border-fit" => [null, "-webkit-border-fit", null, null],
-        "border-horizontal-spacing" => [null, "-webkit-border-horizontal-spacing", null, null],
-        "border-image" => ["-moz-border-image", "-webkit-border-image", null, null],
-        "border-left-colors" => ["-moz-border-left-colors", null, null, null],
-        "border-radius" => ["-moz-border-radius", "-webkit-border-radius", null, null],
-        "border-border-right-colors" => ["-moz-border-right-colors", null, null, null],
-        "border-start" => ["-moz-border-start", "-webkit-border-start", null, null],
-        "border-start-color" => ["-moz-border-start-color", "-webkit-border-start-color", null, null],
-        "border-start-style" => ["-moz-border-start-style", "-webkit-border-start-style", null, null],
-        "border-start-width" => ["-moz-border-start-width", "-webkit-border-start-width", null, null],
-        "border-top-colors" => ["-moz-border-top-colors", null, null, null],
-        "border-top-left-radius" => ["-moz-border-radius-topleft", "-webkit-border-top-left-radius", null, null],
-        "border-top-right-radius" => ["-moz-border-radius-topright", "-webkit-border-top-right-radius", null, null],
-        "border-vertical-spacing" => [null, "-webkit-border-vertical-spacing", null, null],
-        "box-align" => ["-moz-box-align", "-webkit-box-align", null, null],
-        "box-direction" => ["-moz-box-direction", "-webkit-box-direction", null, null],
-        "box-flex" => ["-moz-box-flex", "-webkit-box-flex", null, null],
-        "box-flex-group" => [null, "-webkit-box-flex-group", null, null],
-        "box-flex-lines" => [null, "-webkit-box-flex-lines", null, null],
-        "box-ordinal-group" => ["-moz-box-ordinal-group", "-webkit-box-ordinal-group", null, null],
-        "box-orient" => ["-moz-box-orient", "-webkit-box-orient", null, null],
-        "box-pack" => ["-moz-box-pack", "-webkit-box-pack", null, null],
-        "box-reflect" => [null, "-webkit-box-reflect", null, null],
-        "box-shadow" => ["-moz-box-shadow", "-webkit-box-shadow", null, null],
-        "box-sizing" => ["-moz-box-sizing", null, null, null],
-        "color-correction" => [null, "-webkit-color-correction", null, null],
-        "column-break-after" => [null, "-webkit-column-break-after", null, null],
-        "column-break-before" => [null, "-webkit-column-break-before", null, null],
-        "column-break-inside" => [null, "-webkit-column-break-inside", null, null],
-        "column-count" => ["-moz-column-count", "-webkit-column-count", null, null],
-        "column-gap" => ["-moz-column-gap", "-webkit-column-gap", null, null],
-        "column-rule" => ["-moz-column-rule", "-webkit-column-rule", null, null],
-        "column-rule-color" => ["-moz-column-rule-color", "-webkit-column-rule-color", null, null],
-        "column-rule-style" => ["-moz-column-rule-style", "-webkit-column-rule-style", null, null],
-        "column-rule-width" => ["-moz-column-rule-width", "-webkit-column-rule-width", null, null],
-        "column-span" => [null, "-webkit-column-span", null, null],
-        "column-width" => ["-moz-column-width", "-webkit-column-width", null, null],
-        "columns" => [null, "-webkit-columns", null, null],
-        "filter" => [__CLASS__, "filter"],
-        "float-edge" => ["-moz-float-edge", null, null, null],
-        "font-feature-settings" => ["-moz-font-feature-settings", null, null, null],
-        "font-language-override" => ["-moz-font-language-override", null, null, null],
-        "font-size-delta" => [null, "-webkit-font-size-delta", null, null],
-        "font-smoothing" => [null, "-webkit-font-smoothing", null, null],
-        "force-broken-image-icon" => ["-moz-force-broken-image-icon", null, null, null],
-        "highlight" => [null, "-webkit-highlight", null, null],
-        "hyphenate-character" => [null, "-webkit-hyphenate-character", null, null],
-        "hyphenate-locale" => [null, "-webkit-hyphenate-locale", null, null],
-        "hyphens" => [null, "-webkit-hyphens", null, null],
-        "force-broken-image-icon" => ["-moz-image-region", null, null, null],
-        "ime-mode" => [null, null, null, "-ms-ime-mode"],
-        "interpolation-mode" => [null, null, null, "-ms-interpolation-mode"],
-        "layout-flow" => [null, null, null, "-ms-layout-flow"],
-        "layout-grid" => [null, null, null, "-ms-layout-grid"],
-        "layout-grid-char" => [null, null, null, "-ms-layout-grid-char"],
-        "layout-grid-line" => [null, null, null, "-ms-layout-grid-line"],
-        "layout-grid-mode" => [null, null, null, "-ms-layout-grid-mode"],
-        "layout-grid-type" => [null, null, null, "-ms-layout-grid-type"],
-        "line-break" => [null, "-webkit-line-break", null, "-ms-line-break"],
-        "line-clamp" => [null, "-webkit-line-clamp", null, null],
-        "line-grid-mode" => [null, null, null, "-ms-line-grid-mode"],
-        "logical-height" => [null, "-webkit-logical-height", null, null],
-        "logical-width" => [null, "-webkit-logical-width", null, null],
-        "margin-after" => [null, "-webkit-margin-after", null, null],
-        "margin-after-collapse" => [null, "-webkit-margin-after-collapse", null, null],
-        "margin-before" => [null, "-webkit-margin-before", null, null],
-        "margin-before-collapse" => [null, "-webkit-margin-before-collapse", null, null],
-        "margin-bottom-collapse" => [null, "-webkit-margin-bottom-collapse", null, null],
-        "margin-collapse" => [null, "-webkit-margin-collapse", null, null],
-        "margin-end" => ["-moz-margin-end", "-webkit-margin-end", null, null],
-        "margin-start" => ["-moz-margin-start", "-webkit-margin-start", null, null],
-        "margin-top-collapse" => [null, "-webkit-margin-top-collapse", null, null],
-        "marquee " => [null, "-webkit-marquee", null, null],
-        "marquee-direction" => [null, "-webkit-marquee-direction", null, null],
-        "marquee-increment" => [null, "-webkit-marquee-increment", null, null],
-        "marquee-repetition" => [null, "-webkit-marquee-repetition", null, null],
-        "marquee-speed" => [null, "-webkit-marquee-speed", null, null],
-        "marquee-style" => [null, "-webkit-marquee-style", null, null],
-        "mask" => [null, "-webkit-mask", null, null],
-        "mask-attachment" => [null, "-webkit-mask-attachment", null, null],
-        "mask-box-image" => [null, "-webkit-mask-box-image", null, null],
-        "mask-clip" => [null, "-webkit-mask-clip", null, null],
-        "mask-composite" => [null, "-webkit-mask-composite", null, null],
-        "mask-image" => [null, "-webkit-mask-image", null, null],
-        "mask-origin" => [null, "-webkit-mask-origin", null, null],
-        "mask-position" => [null, "-webkit-mask-position", null, null],
-        "mask-position-x" => [null, "-webkit-mask-position-x", null, null],
-        "mask-position-y" => [null, "-webkit-mask-position-y", null, null],
-        "mask-repeat" => [null, "-webkit-mask-repeat", null, null],
-        "mask-repeat-x" => [null, "-webkit-mask-repeat-x", null, null],
-        "mask-repeat-y" => [null, "-webkit-mask-repeat-y", null, null],
-        "mask-size" => [null, "-webkit-mask-size", null, null],
+        "border-end"                          => ["-moz-border-end", "-webkit-border-end", null, null],
+        "border-end-color"                    => ["-moz-border-end-color", "-webkit-border-end-color", null, null],
+        "border-end-style"                    => ["-moz-border-end-style", "-webkit-border-end-style", null, null],
+        "border-end-width"                    => ["-moz-border-end-width", "-webkit-border-end-width", null, null],
+        "border-fit"                          => [null, "-webkit-border-fit", null, null],
+        "border-horizontal-spacing"           => [null, "-webkit-border-horizontal-spacing", null, null],
+        "border-image"                        => ["-moz-border-image", "-webkit-border-image", null, null],
+        "border-left-colors"                  => ["-moz-border-left-colors", null, null, null],
+        "border-radius"                       => ["-moz-border-radius", "-webkit-border-radius", null, null],
+        "border-border-right-colors"          => ["-moz-border-right-colors", null, null, null],
+        "border-start"                        => ["-moz-border-start", "-webkit-border-start", null, null],
+        "border-start-color"                  => ["-moz-border-start-color", "-webkit-border-start-color", null, null],
+        "border-start-style"                  => ["-moz-border-start-style", "-webkit-border-start-style", null, null],
+        "border-start-width"                  => ["-moz-border-start-width", "-webkit-border-start-width", null, null],
+        "border-top-colors"                   => ["-moz-border-top-colors", null, null, null],
+        "border-top-left-radius"              => [
+            "-moz-border-radius-topleft",
+            "-webkit-border-top-left-radius",
+            null,
+            null
+        ],
+        "border-top-right-radius"             => [
+            "-moz-border-radius-topright",
+            "-webkit-border-top-right-radius",
+            null,
+            null
+        ],
+        "border-vertical-spacing"             => [null, "-webkit-border-vertical-spacing", null, null],
+        "box-align"                           => ["-moz-box-align", "-webkit-box-align", null, null],
+        "box-direction"                       => ["-moz-box-direction", "-webkit-box-direction", null, null],
+        "box-flex"                            => ["-moz-box-flex", "-webkit-box-flex", null, null],
+        "box-flex-group"                      => [null, "-webkit-box-flex-group", null, null],
+        "box-flex-lines"                      => [null, "-webkit-box-flex-lines", null, null],
+        "box-ordinal-group"                   => ["-moz-box-ordinal-group", "-webkit-box-ordinal-group", null, null],
+        "box-orient"                          => ["-moz-box-orient", "-webkit-box-orient", null, null],
+        "box-pack"                            => ["-moz-box-pack", "-webkit-box-pack", null, null],
+        "box-reflect"                         => [null, "-webkit-box-reflect", null, null],
+        "box-shadow"                          => ["-moz-box-shadow", "-webkit-box-shadow", null, null],
+        "box-sizing"                          => ["-moz-box-sizing", null, null, null],
+        "color-correction"                    => [null, "-webkit-color-correction", null, null],
+        "column-break-after"                  => [null, "-webkit-column-break-after", null, null],
+        "column-break-before"                 => [null, "-webkit-column-break-before", null, null],
+        "column-break-inside"                 => [null, "-webkit-column-break-inside", null, null],
+        "column-count"                        => ["-moz-column-count", "-webkit-column-count", null, null],
+        "column-gap"                          => ["-moz-column-gap", "-webkit-column-gap", null, null],
+        "column-rule"                         => ["-moz-column-rule", "-webkit-column-rule", null, null],
+        "column-rule-color"                   => ["-moz-column-rule-color", "-webkit-column-rule-color", null, null],
+        "column-rule-style"                   => ["-moz-column-rule-style", "-webkit-column-rule-style", null, null],
+        "column-rule-width"                   => ["-moz-column-rule-width", "-webkit-column-rule-width", null, null],
+        "column-span"                         => [null, "-webkit-column-span", null, null],
+        "column-width"                        => ["-moz-column-width", "-webkit-column-width", null, null],
+        "columns"                             => [null, "-webkit-columns", null, null],
+        "filter"                              => [__CLASS__, "filter"],
+        "float-edge"                          => ["-moz-float-edge", null, null, null],
+        "font-feature-settings"               => ["-moz-font-feature-settings", null, null, null],
+        "font-language-override"              => ["-moz-font-language-override", null, null, null],
+        "font-size-delta"                     => [null, "-webkit-font-size-delta", null, null],
+        "font-smoothing"                      => [null, "-webkit-font-smoothing", null, null],
+        "force-broken-image-icon"             => ["-moz-force-broken-image-icon", null, null, null],
+        "highlight"                           => [null, "-webkit-highlight", null, null],
+        "hyphenate-character"                 => [null, "-webkit-hyphenate-character", null, null],
+        "hyphenate-locale"                    => [null, "-webkit-hyphenate-locale", null, null],
+        "hyphens"                             => [null, "-webkit-hyphens", null, null],
+        "force-broken-image-icon"             => ["-moz-image-region", null, null, null],
+        "ime-mode"                            => [null, null, null, "-ms-ime-mode"],
+        "interpolation-mode"                  => [null, null, null, "-ms-interpolation-mode"],
+        "layout-flow"                         => [null, null, null, "-ms-layout-flow"],
+        "layout-grid"                         => [null, null, null, "-ms-layout-grid"],
+        "layout-grid-char"                    => [null, null, null, "-ms-layout-grid-char"],
+        "layout-grid-line"                    => [null, null, null, "-ms-layout-grid-line"],
+        "layout-grid-mode"                    => [null, null, null, "-ms-layout-grid-mode"],
+        "layout-grid-type"                    => [null, null, null, "-ms-layout-grid-type"],
+        "line-break"                          => [null, "-webkit-line-break", null, "-ms-line-break"],
+        "line-clamp"                          => [null, "-webkit-line-clamp", null, null],
+        "line-grid-mode"                      => [null, null, null, "-ms-line-grid-mode"],
+        "logical-height"                      => [null, "-webkit-logical-height", null, null],
+        "logical-width"                       => [null, "-webkit-logical-width", null, null],
+        "margin-after"                        => [null, "-webkit-margin-after", null, null],
+        "margin-after-collapse"               => [null, "-webkit-margin-after-collapse", null, null],
+        "margin-before"                       => [null, "-webkit-margin-before", null, null],
+        "margin-before-collapse"              => [null, "-webkit-margin-before-collapse", null, null],
+        "margin-bottom-collapse"              => [null, "-webkit-margin-bottom-collapse", null, null],
+        "margin-collapse"                     => [null, "-webkit-margin-collapse", null, null],
+        "margin-end"                          => ["-moz-margin-end", "-webkit-margin-end", null, null],
+        "margin-start"                        => ["-moz-margin-start", "-webkit-margin-start", null, null],
+        "margin-top-collapse"                 => [null, "-webkit-margin-top-collapse", null, null],
+        "marquee "                            => [null, "-webkit-marquee", null, null],
+        "marquee-direction"                   => [null, "-webkit-marquee-direction", null, null],
+        "marquee-increment"                   => [null, "-webkit-marquee-increment", null, null],
+        "marquee-repetition"                  => [null, "-webkit-marquee-repetition", null, null],
+        "marquee-speed"                       => [null, "-webkit-marquee-speed", null, null],
+        "marquee-style"                       => [null, "-webkit-marquee-style", null, null],
+        "mask"                                => [null, "-webkit-mask", null, null],
+        "mask-attachment"                     => [null, "-webkit-mask-attachment", null, null],
+        "mask-box-image"                      => [null, "-webkit-mask-box-image", null, null],
+        "mask-clip"                           => [null, "-webkit-mask-clip", null, null],
+        "mask-composite"                      => [null, "-webkit-mask-composite", null, null],
+        "mask-image"                          => [null, "-webkit-mask-image", null, null],
+        "mask-origin"                         => [null, "-webkit-mask-origin", null, null],
+        "mask-position"                       => [null, "-webkit-mask-position", null, null],
+        "mask-position-x"                     => [null, "-webkit-mask-position-x", null, null],
+        "mask-position-y"                     => [null, "-webkit-mask-position-y", null, null],
+        "mask-repeat"                         => [null, "-webkit-mask-repeat", null, null],
+        "mask-repeat-x"                       => [null, "-webkit-mask-repeat-x", null, null],
+        "mask-repeat-y"                       => [null, "-webkit-mask-repeat-y", null, null],
+        "mask-size"                           => [null, "-webkit-mask-size", null, null],
         "match-nearest-mail-blockquote-color" => [null, "-webkit-match-nearest-mail-blockquote-color", null, null],
-        "max-logical-height" => [null, "-webkit-max-logical-height", null, null],
-        "max-logical-width" => [null, "-webkit-max-logical-width", null, null],
-        "min-logical-height" => [null, "-webkit-min-logical-height", null, null],
-        "min-logical-width" => [null, "-webkit-min-logical-width", null, null],
-        "object-fit" => [null, null, "-o-object-fit", null],
-        "object-position" => [null, null, "-o-object-position", null],
-        "opacity" => [__CLASS__, "opacity"],
-        "outline-radius" => ["-moz-outline-radius", null, null, null],
-        "outline-bottom-left-radius" => ["-moz-outline-radius-bottomleft", null, null, null],
-        "outline-bottom-right-radius" => ["-moz-outline-radius-bottomright", null, null, null],
-        "outline-top-left-radius" => ["-moz-outline-radius-topleft", null, null, null],
-        "outline-top-right-radius" => ["-moz-outline-radius-topright", null, null, null],
-        "padding-after" => [null, "-webkit-padding-after", null, null],
-        "padding-before" => [null, "-webkit-padding-before", null, null],
-        "padding-end" => ["-moz-padding-end", "-webkit-padding-end", null, null],
-        "padding-start" => ["-moz-padding-start", "-webkit-padding-start", null, null],
-        "perspective" => [null, "-webkit-perspective", null, null],
-        "perspective-origin" => [null, "-webkit-perspective-origin", null, null],
-        "perspective-origin-x" => [null, "-webkit-perspective-origin-x", null, null],
-        "perspective-origin-y" => [null, "-webkit-perspective-origin-y", null, null],
-        "rtl-ordering" => [null, "-webkit-rtl-ordering", null, null],
-        "scrollbar-3dlight-color" => [null, null, null, "-ms-scrollbar-3dlight-color"],
-        "scrollbar-arrow-color" => [null, null, null, "-ms-scrollbar-arrow-color"],
-        "scrollbar-base-color" => [null, null, null, "-ms-scrollbar-base-color"],
-        "scrollbar-darkshadow-color" => [null, null, null, "-ms-scrollbar-darkshadow-color"],
-        "scrollbar-face-color" => [null, null, null, "-ms-scrollbar-face-color"],
-        "scrollbar-highlight-color" => [null, null, null, "-ms-scrollbar-highlight-color"],
-        "scrollbar-shadow-color" => [null, null, null, "-ms-scrollbar-shadow-color"],
-        "scrollbar-track-color" => [null, null, null, "-ms-scrollbar-track-color"],
-        "stack-sizing" => ["-moz-stack-sizing", null, null, null],
-        "svg-shadow" => [null, "-webkit-svg-shadow", null, null],
-        "tab-size" => ["-moz-tab-size", null, "-o-tab-size", null],
-        "table-baseline" => [null, null, "-o-table-baseline", null],
-        "text-align-last" => [null, null, null, "-ms-text-align-last"],
-        "text-autospace" => [null, null, null, "-ms-text-autospace"],
-        "text-combine" => [null, "-webkit-text-combine", null, null],
-        "text-decorations-in-effect" => [null, "-webkit-text-decorations-in-effect", null, null],
-        "text-emphasis" => [null, "-webkit-text-emphasis", null, null],
-        "text-emphasis-color" => [null, "-webkit-text-emphasis-color", null, null],
-        "text-emphasis-position" => [null, "-webkit-text-emphasis-position", null, null],
-        "text-emphasis-style" => [null, "-webkit-text-emphasis-style", null, null],
-        "text-fill-color" => [null, "-webkit-text-fill-color", null, null],
-        "text-justify" => [null, null, null, "-ms-text-justify"],
-        "text-kashida-space" => [null, null, null, "-ms-text-kashida-space"],
-        "text-overflow" => [null, null, "-o-text-overflow", "-ms-text-overflow"],
-        "text-security" => [null, "-webkit-text-security", null, null],
-        "text-size-adjust" => [null, "-webkit-text-size-adjust", null, "-ms-text-size-adjust"],
-        "text-stroke" => [null, "-webkit-text-stroke", null, null],
-        "text-stroke-color" => [null, "-webkit-text-stroke-color", null, null],
-        "text-stroke-width" => [null, "-webkit-text-stroke-width", null, null],
-        "text-underline-position" => [null, null, null, "-ms-text-underline-position"],
-        "transform" => ["-moz-transform", "-webkit-transform", "-o-transform", null],
-        "transform-origin" => ["-moz-transform-origin", "-webkit-transform-origin", "-o-transform-origin", null],
-        "transform-origin-x" => [null, "-webkit-transform-origin-x", null, null],
-        "transform-origin-y" => [null, "-webkit-transform-origin-y", null, null],
-        "transform-origin-z" => [null, "-webkit-transform-origin-z", null, null],
-        "transform-style" => [null, "-webkit-transform-style", null, null],
-        "transition" => ["-moz-transition", "-webkit-transition", "-o-transition", null],
-        "transition-delay" => ["-moz-transition-delay", "-webkit-transition-delay", "-o-transition-delay", null],
-        "transition-duration" => [
+        "max-logical-height"                  => [null, "-webkit-max-logical-height", null, null],
+        "max-logical-width"                   => [null, "-webkit-max-logical-width", null, null],
+        "min-logical-height"                  => [null, "-webkit-min-logical-height", null, null],
+        "min-logical-width"                   => [null, "-webkit-min-logical-width", null, null],
+        "object-fit"                          => [null, null, "-o-object-fit", null],
+        "object-position"                     => [null, null, "-o-object-position", null],
+        "opacity"                             => [__CLASS__, "opacity"],
+        "outline-radius"                      => ["-moz-outline-radius", null, null, null],
+        "outline-bottom-left-radius"          => ["-moz-outline-radius-bottomleft", null, null, null],
+        "outline-bottom-right-radius"         => ["-moz-outline-radius-bottomright", null, null, null],
+        "outline-top-left-radius"             => ["-moz-outline-radius-topleft", null, null, null],
+        "outline-top-right-radius"            => ["-moz-outline-radius-topright", null, null, null],
+        "padding-after"                       => [null, "-webkit-padding-after", null, null],
+        "padding-before"                      => [null, "-webkit-padding-before", null, null],
+        "padding-end"                         => ["-moz-padding-end", "-webkit-padding-end", null, null],
+        "padding-start"                       => ["-moz-padding-start", "-webkit-padding-start", null, null],
+        "perspective"                         => [null, "-webkit-perspective", null, null],
+        "perspective-origin"                  => [null, "-webkit-perspective-origin", null, null],
+        "perspective-origin-x"                => [null, "-webkit-perspective-origin-x", null, null],
+        "perspective-origin-y"                => [null, "-webkit-perspective-origin-y", null, null],
+        "rtl-ordering"                        => [null, "-webkit-rtl-ordering", null, null],
+        "scrollbar-3dlight-color"             => [null, null, null, "-ms-scrollbar-3dlight-color"],
+        "scrollbar-arrow-color"               => [null, null, null, "-ms-scrollbar-arrow-color"],
+        "scrollbar-base-color"                => [null, null, null, "-ms-scrollbar-base-color"],
+        "scrollbar-darkshadow-color"          => [null, null, null, "-ms-scrollbar-darkshadow-color"],
+        "scrollbar-face-color"                => [null, null, null, "-ms-scrollbar-face-color"],
+        "scrollbar-highlight-color"           => [null, null, null, "-ms-scrollbar-highlight-color"],
+        "scrollbar-shadow-color"              => [null, null, null, "-ms-scrollbar-shadow-color"],
+        "scrollbar-track-color"               => [null, null, null, "-ms-scrollbar-track-color"],
+        "stack-sizing"                        => ["-moz-stack-sizing", null, null, null],
+        "svg-shadow"                          => [null, "-webkit-svg-shadow", null, null],
+        "tab-size"                            => ["-moz-tab-size", null, "-o-tab-size", null],
+        "table-baseline"                      => [null, null, "-o-table-baseline", null],
+        "text-align-last"                     => [null, null, null, "-ms-text-align-last"],
+        "text-autospace"                      => [null, null, null, "-ms-text-autospace"],
+        "text-combine"                        => [null, "-webkit-text-combine", null, null],
+        "text-decorations-in-effect"          => [null, "-webkit-text-decorations-in-effect", null, null],
+        "text-emphasis"                       => [null, "-webkit-text-emphasis", null, null],
+        "text-emphasis-color"                 => [null, "-webkit-text-emphasis-color", null, null],
+        "text-emphasis-position"              => [null, "-webkit-text-emphasis-position", null, null],
+        "text-emphasis-style"                 => [null, "-webkit-text-emphasis-style", null, null],
+        "text-fill-color"                     => [null, "-webkit-text-fill-color", null, null],
+        "text-justify"                        => [null, null, null, "-ms-text-justify"],
+        "text-kashida-space"                  => [null, null, null, "-ms-text-kashida-space"],
+        "text-overflow"                       => [null, null, "-o-text-overflow", "-ms-text-overflow"],
+        "text-security"                       => [null, "-webkit-text-security", null, null],
+        "text-size-adjust"                    => [null, "-webkit-text-size-adjust", null, "-ms-text-size-adjust"],
+        "text-stroke"                         => [null, "-webkit-text-stroke", null, null],
+        "text-stroke-color"                   => [null, "-webkit-text-stroke-color", null, null],
+        "text-stroke-width"                   => [null, "-webkit-text-stroke-width", null, null],
+        "text-underline-position"             => [null, null, null, "-ms-text-underline-position"],
+        "transform"                           => ["-moz-transform", "-webkit-transform", "-o-transform", null],
+        "transform-origin"                    => [
+            "-moz-transform-origin",
+            "-webkit-transform-origin",
+            "-o-transform-origin",
+            null
+        ],
+        "transform-origin-x"                  => [null, "-webkit-transform-origin-x", null, null],
+        "transform-origin-y"                  => [null, "-webkit-transform-origin-y", null, null],
+        "transform-origin-z"                  => [null, "-webkit-transform-origin-z", null, null],
+        "transform-style"                     => [null, "-webkit-transform-style", null, null],
+        "transition"                          => ["-moz-transition", "-webkit-transition", "-o-transition", null],
+        "transition-delay"                    => [
+            "-moz-transition-delay",
+            "-webkit-transition-delay",
+            "-o-transition-delay",
+            null
+        ],
+        "transition-duration"                 => [
             "-moz-transition-duration",
             "-webkit-transition-duration",
             "-o-transition-duration",
             null
         ],
-        "transition-property" => [
+        "transition-property"                 => [
             "-moz-transition-property",
             "-webkit-transition-property",
             "-o-transition-property",
             null
         ],
-        "transition-timing-function" => [
+        "transition-timing-function"          => [
             "-moz-transition-timing-function",
             "-webkit-transition-timing-function",
             "-o-transition-timing-function",
             null
         ],
-        "user-drag" => [null, "-webkit-user-drag", null, null],
-        "user-focus" => ["-moz-user-focus", null, null, null],
-        "user-input" => ["-moz-user-input", null, null, null],
-        "user-modify" => ["-moz-user-modify", "-webkit-user-modify", null, null],
-        "user-select" => ["-moz-user-select", "-webkit-user-select", null, null],
-        "white-space" => [__CLASS__, "whiteSpace"],
-        "window-shadow" => ["-moz-window-shadow", null, null, null],
-        "word-break" => [null, null, null, "-ms-word-break"],
-        "word-wrap" => [null, null, null, "-ms-word-wrap"],
-        "writing-mode" => [null, "-webkit-writing-mode", null, "-ms-writing-mode"],
-        "zoom" => [null, null, null, "-ms-zoom"]
+        "user-drag"                           => [null, "-webkit-user-drag", null, null],
+        "user-focus"                          => ["-moz-user-focus", null, null, null],
+        "user-input"                          => ["-moz-user-input", null, null, null],
+        "user-modify"                         => ["-moz-user-modify", "-webkit-user-modify", null, null],
+        "user-select"                         => ["-moz-user-select", "-webkit-user-select", null, null],
+        "white-space"                         => [__CLASS__, "whiteSpace"],
+        "window-shadow"                       => ["-moz-window-shadow", null, null, null],
+        "word-break"                          => [null, null, null, "-ms-word-break"],
+        "word-wrap"                           => [null, null, null, "-ms-word-wrap"],
+        "writing-mode"                        => [null, "-webkit-writing-mode", null, "-ms-writing-mode"],
+        "zoom"                                => [null, null, null, "-ms-zoom"]
     ];
 
     /**
@@ -3154,7 +3174,7 @@ class CssConvertLevel3PropertiesMinifierFilter extends aCssMinifierFilter
      */
     public function apply(array &$tokens)
     {
-        $r = 0;
+        $r               = 0;
         $transformations = &$this->transformations;
         for ($i = 0, $l = count($tokens); $i < $l; $i++) {
             if (get_class($tokens[$i]) === "CssRulesetDeclarationToken") {
@@ -3167,7 +3187,7 @@ class CssConvertLevel3PropertiesMinifierFilter extends aCssMinifierFilter
                             $result = [$result];
                         }
                     } else {
-                        $tValue = $tokens[$i]->Value;
+                        $tValue      = $tokens[$i]->Value;
                         $tMediaTypes = $tokens[$i]->MediaTypes;
                         foreach ($transformations[$tProperty] as $property) {
                             if ($property !== null) {
@@ -3213,7 +3233,7 @@ class CssConvertLevel3PropertiesMinifierFilter extends aCssMinifierFilter
     {
         // Calculate the value for Internet Explorer filter statement
         $ieValue = (int)((float)$token->Value * 100);
-        $r = [
+        $r       = [
             // Internet Explorer >= 8
             new CssRulesetDeclarationToken("-ms-filter", "\"alpha(opacity=" . $ieValue . ")\"", $token->MediaTypes),
             // Internet Explorer >= 4 <= 7
@@ -3258,9 +3278,9 @@ class CssConvertLevel3PropertiesMinifierFilter extends aCssMinifierFilter
  * counterparts.
  *
  * @package        CssMin/Minifier/Filters
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -3274,7 +3294,7 @@ class CssConvertLevel3AtKeyframesMinifierFilter extends aCssMinifierFilter
      */
     public function apply(array &$tokens)
     {
-        $r = 0;
+        $r               = 0;
         $transformations = ["-moz-keyframes", "-webkit-keyframes"];
         for ($i = 0, $l = count($tokens); $i < $l; $i++) {
             if (get_class($tokens[$i]) === "CssAtKeyframesStartToken") {
@@ -3284,7 +3304,7 @@ class CssConvertLevel3AtKeyframesMinifierFilter extends aCssMinifierFilter
                     }
                 }
                 if (get_class($tokens[$ii]) === "CssAtKeyframesEndToken") {
-                    $add = [];
+                    $add    = [];
                     $source = [];
                     for ($iii = $i; $iii <= $ii; $iii++) {
                         $source[] = clone($tokens[$iii]);
@@ -3295,7 +3315,7 @@ class CssConvertLevel3AtKeyframesMinifierFilter extends aCssMinifierFilter
                             $t[] = clone($token);
                         }
                         $t[0]->AtRuleName = $transformation;
-                        $add = array_merge($add, $t);
+                        $add              = array_merge($add, $t);
                     }
                     if (isset($this->configuration["RemoveSource"]) && $this->configuration["RemoveSource"] === true) {
                         array_splice($tokens, $i, $ii - $i + 1, $add);
@@ -3327,9 +3347,9 @@ class CssConvertLevel3AtKeyframesMinifierFilter extends aCssMinifierFilter
  * </code>
  *
  * @package        CssMin/Minifier/Plugins
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -3376,30 +3396,30 @@ class CssConvertHslColorsMinifierPlugin extends aCssMinifierPlugin
      *
      * Based on: {@link http://www.easyrgb.com/index.php?X=MATH&H=19#text19}.
      *
-     * @param integer $hue Hue
+     * @param integer $hue        Hue
      * @param integer $saturation Saturation
-     * @param integer $lightness Lightnesss
+     * @param integer $lightness  Lightnesss
      * @return string
      */
     private function hsl2hex($hue, $saturation, $lightness)
     {
-        $hue = $hue / 360;
+        $hue        = $hue / 360;
         $saturation = $saturation / 100;
-        $lightness = $lightness / 100;
+        $lightness  = $lightness / 100;
         if ($saturation == 0) {
-            $red = $lightness * 255;
+            $red   = $lightness * 255;
             $green = $lightness * 255;
-            $blue = $lightness * 255;
+            $blue  = $lightness * 255;
         } else {
             if ($lightness < 0.5) {
                 $v2 = $lightness * (1 + $saturation);
             } else {
                 $v2 = ($lightness + $saturation) - ($saturation * $lightness);
             }
-            $v1 = 2 * $lightness - $v2;
-            $red = 255 * self::hue2rgb($v1, $v2, $hue + (1 / 3));
+            $v1    = 2 * $lightness - $v2;
+            $red   = 255 * self::hue2rgb($v1, $v2, $hue + (1 / 3));
             $green = 255 * self::hue2rgb($v1, $v2, $hue);
-            $blue = 255 * self::hue2rgb($v1, $v2, $hue - (1 / 3));
+            $blue  = 255 * self::hue2rgb($v1, $v2, $hue - (1 / 3));
         }
 
         return "#" . str_pad(dechex(round($red)), 2, "0", STR_PAD_LEFT) . str_pad(dechex(round($green)), 2, "0",
@@ -3409,8 +3429,8 @@ class CssConvertHslColorsMinifierPlugin extends aCssMinifierPlugin
     /**
      * Apply hue to a rgb color value.
      *
-     * @param integer $v1 Value 1
-     * @param integer $v2 Value 2
+     * @param integer $v1  Value 1
+     * @param integer $v2  Value 2
      * @param integer $hue Hue
      * @return integer
      */
@@ -3452,9 +3472,9 @@ class CssConvertHslColorsMinifierPlugin extends aCssMinifierPlugin
  * </code>
  *
  * @package        CssMin/Minifier/Pluginsn
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -3490,7 +3510,7 @@ class CssConvertFontWeightMinifierPlugin extends aCssMinifierPlugin
      */
     private $transformation = [
         "normal" => "400",
-        "bold" => "700"
+        "bold"   => "700"
     ];
 
     /**
@@ -3558,9 +3578,9 @@ class CssConvertFontWeightMinifierPlugin extends aCssMinifierPlugin
  * --
  *
  * @package        CssMin/Minifier/Plugins
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -3573,8 +3593,8 @@ class CssCompressUnitValuesMinifierPlugin extends aCssMinifierPlugin
      */
     private $re = [
         "/(^| |-)0\.([0-9]+?)(0+)?(%|em|ex|px|in|cm|mm|pt|pc)/iS" => "\${1}.\${2}\${4}",
-        "/(^| )-?(\.?)0(%|em|ex|px|in|cm|mm|pt|pc)/iS" => "\${1}0",
-        "/(^0\s0\s0\s0)|(^0\s0\s0$)|(^0\s0$)/iS" => "0"
+        "/(^| )-?(\.?)0(%|em|ex|px|in|cm|mm|pt|pc)/iS"            => "\${1}0",
+        "/(^0\s0\s0\s0)|(^0\s0\s0$)|(^0\s0$)/iS"                  => "0"
     ];
     /**
      * Regular expression matching the value.
@@ -3622,9 +3642,9 @@ class CssCompressUnitValuesMinifierPlugin extends aCssMinifierPlugin
  * already included or loadable via {@link http://goo.gl/JrW54 PHP autoloading}.
  *
  * @package        CssMin/Minifier/Plugins
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -3639,9 +3659,9 @@ class CssCompressExpressionValuesMinifierPlugin extends aCssMinifierPlugin
     public function apply(aCssToken &$token)
     {
         if (class_exists("JSMin") && stripos($token->Value, "expression(") !== false) {
-            $value = $token->Value;
-            $value = substr($token->Value, stripos($token->Value, "expression(") + 10);
-            $value = trim(JSMin::minify($value));
+            $value        = $token->Value;
+            $value        = substr($token->Value, stripos($token->Value, "expression(") + 10);
+            $value        = trim(JSMin::minify($value));
             $token->Value = "expression(" . $value . ")";
         }
 
@@ -3678,9 +3698,9 @@ class CssCompressExpressionValuesMinifierPlugin extends aCssMinifierPlugin
  * </code>
  *
  * @package        CssMin/Minifier/Plugins
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -3730,9 +3750,9 @@ class CssCompressColorValuesMinifierPlugin extends aCssMinifierPlugin
  * This {@link aCssToken CSS token} represents a CSS comment.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -3773,9 +3793,9 @@ class CssCommentToken extends aCssToken
  * Adds a {@link CssCommentToken} to the parser if a comment was found.
  *
  * @package        CssMin/Parser/Plugins
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -3811,11 +3831,11 @@ class CssCommentParserPlugin extends aCssParserPlugin
     /**
      * Implements {@link aCssParserPlugin::parse()}.
      *
-     * @param integer $index Current index
-     * @param string $char Current char
-     * @param string $previousChar Previous char
+     * @param integer $index        Current index
+     * @param string  $char         Current char
+     * @param string  $previousChar Previous char
      * @return mixed TRUE will break the processing; FALSE continue with the next plugin; integer set a new index and
-     *     break the processing
+     *                              break the processing
      */
     public function parse($index, $char, $previousChar, $state)
     {
@@ -3840,9 +3860,9 @@ class CssCommentParserPlugin extends aCssParserPlugin
  * This {@link aCssToken CSS token} represents the start of a @variables at-rule block.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -3884,9 +3904,9 @@ class CssAtVariablesStartToken extends aCssAtBlockStartToken
  * parser; including declarations as {@link CssAtVariablesDeclarationToken}.
  *
  * @package        CssMin/Parser/Plugins
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -3915,11 +3935,11 @@ class CssAtVariablesParserPlugin extends aCssParserPlugin
     /**
      * Implements {@link aCssParserPlugin::parse()}.
      *
-     * @param integer $index Current index
-     * @param string $char Current char
-     * @param string $previousChar Previous char
+     * @param integer $index        Current index
+     * @param string  $char         Current char
+     * @param string  $previousChar Previous char
      * @return mixed TRUE will break the processing; FALSE continue with the next plugin; integer set a new index and
-     *     break the processing
+     *                              break the processing
      */
     public function parse($index, $char, $previousChar, $state)
     {
@@ -3953,7 +3973,7 @@ class CssAtVariablesParserPlugin extends aCssParserPlugin
         elseif (($char === ";" || $char === "}") && $state === "T_AT_VARIABLES_DECLARATION") {
             $value = $this->parser->getAndClearBuffer(";}");
             if (strtolower(substr($value, -10, 10)) === "!important") {
-                $value = trim(substr($value, 0, -10));
+                $value       = trim(substr($value, 0, -10));
                 $isImportant = true;
             } else {
                 $isImportant = false;
@@ -3978,9 +3998,9 @@ class CssAtVariablesParserPlugin extends aCssParserPlugin
  * This {@link aCssToken CSS token} represents the end of a @variables at-rule block.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -4001,9 +4021,9 @@ class CssAtVariablesEndToken extends aCssAtBlockEndToken
  * This {@link aCssToken CSS token} represents a declaration of a @variables at-rule block.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -4024,9 +4044,9 @@ class CssAtVariablesDeclarationToken extends aCssDeclarationToken
  * This {@link aCssToken CSS token} represents the start of a @page at-rule block.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -4068,9 +4088,9 @@ class CssAtPageStartToken extends aCssAtBlockStartToken
  * parser; including declarations as {@link CssAtPageDeclarationToken}.
  *
  * @package        CssMin/Parser/Plugins
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -4099,11 +4119,11 @@ class CssAtPageParserPlugin extends aCssParserPlugin
     /**
      * Implements {@link aCssParserPlugin::parse()}.
      *
-     * @param integer $index Current index
-     * @param string $char Current char
-     * @param string $previousChar Previous char
+     * @param integer $index        Current index
+     * @param string  $char         Current char
+     * @param string  $previousChar Previous char
      * @return mixed TRUE will break the processing; FALSE continue with the next plugin; integer set a new index and
-     *     break the processing
+     *                              break the processing
      */
     public function parse($index, $char, $previousChar, $state)
     {
@@ -4137,7 +4157,7 @@ class CssAtPageParserPlugin extends aCssParserPlugin
         elseif (($char === ";" || $char === "}") && $state == "T_AT_PAGE_DECLARATION") {
             $value = $this->parser->getAndClearBuffer(";}");
             if (strtolower(substr($value, -10, 10)) == "!important") {
-                $value = trim(substr($value, 0, -10));
+                $value       = trim(substr($value, 0, -10));
                 $isImportant = true;
             } else {
                 $isImportant = false;
@@ -4167,9 +4187,9 @@ class CssAtPageParserPlugin extends aCssParserPlugin
  * This {@link aCssToken CSS token} represents the end of a @page at-rule block.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -4182,9 +4202,9 @@ class CssAtPageEndToken extends aCssAtBlockEndToken
  * This {@link aCssToken CSS token} represents a declaration of a @page at-rule block.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -4197,9 +4217,9 @@ class CssAtPageDeclarationToken extends aCssDeclarationToken
  * This {@link aCssToken CSS token} represents the start of a @media at-rule block.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -4235,9 +4255,9 @@ class CssAtMediaStartToken extends aCssAtBlockStartToken
  * {@link CssParser::unsetMediaTypes()}.
  *
  * @package        CssMin/Parser/Plugins
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -4266,11 +4286,11 @@ class CssAtMediaParserPlugin extends aCssParserPlugin
     /**
      * Implements {@link aCssParserPlugin::parse()}.
      *
-     * @param integer $index Current index
-     * @param string $char Current char
-     * @param string $previousChar Previous char
+     * @param integer $index        Current index
+     * @param string  $char         Current char
+     * @param string  $previousChar Previous char
      * @return mixed TRUE will break the processing; FALSE continue with the next plugin; integer set a new index and
-     *     break the processing
+     *                              break the processing
      */
     public function parse($index, $char, $previousChar, $state)
     {
@@ -4303,9 +4323,9 @@ class CssAtMediaParserPlugin extends aCssParserPlugin
  * This {@link aCssToken CSS token} represents the end of a @media at-rule block.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -4318,9 +4338,9 @@ class CssAtMediaEndToken extends aCssAtBlockEndToken
  * This {@link aCssToken CSS token} represents the start of a @keyframes at-rule block.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -4368,9 +4388,9 @@ class CssAtKeyframesStartToken extends aCssAtBlockStartToken
  * This {@link aCssToken CSS token} represents the start of a ruleset of a @keyframes at-rule block.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -4409,9 +4429,9 @@ class CssAtKeyframesRulesetStartToken extends aCssRulesetStartToken
  * This {@link aCssToken CSS token} represents the end of a ruleset of a @keyframes at-rule block.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -4424,9 +4444,9 @@ class CssAtKeyframesRulesetEndToken extends aCssRulesetEndToken
  * This {@link aCssToken CSS token} represents a ruleset declaration of a @keyframes at-rule block.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -4439,9 +4459,9 @@ class CssAtKeyframesRulesetDeclarationToken extends aCssDeclarationToken
  * {@link aCssParserPlugin Parser plugin} for parsing @keyframes at-rule blocks, rulesets and declarations.
  *
  * @package        CssMin/Parser/Plugins
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -4488,11 +4508,11 @@ class CssAtKeyframesParserPlugin extends aCssParserPlugin
     /**
      * Implements {@link aCssParserPlugin::parse()}.
      *
-     * @param integer $index Current index
-     * @param string $char Current char
-     * @param string $previousChar Previous char
+     * @param integer $index        Current index
+     * @param string  $char         Current char
+     * @param string  $previousChar Previous char
      * @return mixed TRUE will break the processing; FALSE continue with the next plugin; integer set a new index and
-     *     break the processing
+     *                              break the processing
      */
     public function parse($index, $char, $previousChar, $state)
     {
@@ -4558,7 +4578,7 @@ class CssAtKeyframesParserPlugin extends aCssParserPlugin
         elseif (($char === ";" || $char === "}") && $state === "T_AT_KEYFRAMES_RULESET_DECLARATION") {
             $value = $this->parser->getAndClearBuffer(";}");
             if (strtolower(substr($value, -10, 10)) === "!important") {
-                $value = trim(substr($value, 0, -10));
+                $value       = trim(substr($value, 0, -10));
                 $isImportant = true;
             } else {
                 $isImportant = false;
@@ -4594,9 +4614,9 @@ class CssAtKeyframesParserPlugin extends aCssParserPlugin
  * This {@link aCssToken CSS token} represents the end of a @keyframes at-rule block.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -4609,9 +4629,9 @@ class CssAtKeyframesEndToken extends aCssAtBlockEndToken
  * This {@link aCssToken CSS token} represents a @import at-rule.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1.b1 (2001-02-22)
  */
@@ -4633,13 +4653,13 @@ class CssAtImportToken extends aCssToken
     /**
      * Set the properties of a @import at-rule token.
      *
-     * @param string $import Import path
-     * @param array $mediaTypes Media types
+     * @param string $import     Import path
+     * @param array  $mediaTypes Media types
      * @return void
      */
     public function __construct($import, $mediaTypes)
     {
-        $this->Import = $import;
+        $this->Import     = $import;
         $this->MediaTypes = $mediaTypes ? $mediaTypes : [];
     }
 
@@ -4661,9 +4681,9 @@ class CssAtImportToken extends aCssToken
  * If a @import at-rule was found this plugin will add a {@link CssAtImportToken} to the parser.
  *
  * @package        CssMin/Parser/Plugins
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -4692,11 +4712,11 @@ class CssAtImportParserPlugin extends aCssParserPlugin
     /**
      * Implements {@link aCssParserPlugin::parse()}.
      *
-     * @param integer $index Current index
-     * @param string $char Current char
-     * @param string $previousChar Previous char
+     * @param integer $index        Current index
+     * @param string  $char         Current char
+     * @param string  $previousChar Previous char
      * @return mixed TRUE will break the processing; FALSE continue with the next plugin; integer set a new index and
-     *     break the processing
+     *                              break the processing
      */
     public function parse($index, $char, $previousChar, $state)
     {
@@ -4709,7 +4729,7 @@ class CssAtImportParserPlugin extends aCssParserPlugin
             return $index + 7;
         } elseif (($char === ";" || $char === "\n") && $state === "T_AT_IMPORT") {
             $this->buffer = $this->parser->getAndClearBuffer(";");
-            $pos = false;
+            $pos          = false;
             foreach ([")", "\"", "'"] as $needle) {
                 if (($pos = strrpos($this->buffer, $needle)) !== false) {
                     break;
@@ -4719,7 +4739,7 @@ class CssAtImportParserPlugin extends aCssParserPlugin
             if (stripos($import, "url(") === 0) {
                 $import = substr($import, 4, -1);
             }
-            $import = trim($import, " \t\n\r\0\x0B'\"");
+            $import     = trim($import, " \t\n\r\0\x0B'\"");
             $mediaTypes = array_filter(array_map("trim",
                 explode(",", trim(substr($this->buffer, $pos + 1), " \t\n\r\0\x0B{"))));
             if ($pos) {
@@ -4741,9 +4761,9 @@ class CssAtImportParserPlugin extends aCssParserPlugin
  * This {@link aCssToken CSS token} represents the start of a @font-face at-rule block.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -4767,9 +4787,9 @@ class CssAtFontFaceStartToken extends aCssAtBlockStartToken
  * parser; including declarations as {@link CssAtFontFaceDeclarationToken}.
  *
  * @package        CssMin/Parser/Plugins
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -4798,11 +4818,11 @@ class CssAtFontFaceParserPlugin extends aCssParserPlugin
     /**
      * Implements {@link aCssParserPlugin::parse()}.
      *
-     * @param integer $index Current index
-     * @param string $char Current char
-     * @param string $previousChar Previous char
+     * @param integer $index        Current index
+     * @param string  $char         Current char
+     * @param string  $previousChar Previous char
      * @return mixed TRUE will break the processing; FALSE continue with the next plugin; integer set a new index and
-     *     break the processing
+     *                              break the processing
      */
     public function parse($index, $char, $previousChar, $state)
     {
@@ -4835,7 +4855,7 @@ class CssAtFontFaceParserPlugin extends aCssParserPlugin
         elseif (($char === ";" || $char === "}") && $state === "T_AT_FONT_FACE_DECLARATION") {
             $value = $this->parser->getAndClearBuffer(";}");
             if (strtolower(substr($value, -10, 10)) === "!important") {
-                $value = trim(substr($value, 0, -10));
+                $value       = trim(substr($value, 0, -10));
                 $isImportant = true;
             } else {
                 $isImportant = false;
@@ -4865,9 +4885,9 @@ class CssAtFontFaceParserPlugin extends aCssParserPlugin
  * This {@link aCssToken CSS token} represents the end of a @font-face at-rule block.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -4880,9 +4900,9 @@ class CssAtFontFaceEndToken extends aCssAtBlockEndToken
  * This {@link aCssToken CSS token} represents a declaration of a @font-face at-rule block.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -4895,9 +4915,9 @@ class CssAtFontFaceDeclarationToken extends aCssDeclarationToken
  * This {@link aCssToken CSS token} represents a @charset at-rule.
  *
  * @package        CssMin/Tokens
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -4938,9 +4958,9 @@ class CssAtCharsetToken extends aCssToken
  * If a @charset at-rule was found this plugin will add a {@link CssAtCharsetToken} to the parser.
  *
  * @package        CssMin/Parser/Plugins
- * @link        http://code.google.com/p/cssmin/
- * @author        Joe Scylla <joe.scylla@gmail.com>
- * @copyright    2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
+ * @link           http://code.google.com/p/cssmin/
+ * @author         Joe Scylla <joe.scylla@gmail.com>
+ * @copyright      2008 - 2011 Joe Scylla <joe.scylla@gmail.com>
  * @license        http://opensource.org/licenses/mit-license.php MIT License
  * @version        3.0.1
  */
@@ -4969,11 +4989,11 @@ class CssAtCharsetParserPlugin extends aCssParserPlugin
     /**
      * Implements {@link aCssParserPlugin::parse()}.
      *
-     * @param integer $index Current index
-     * @param string $char Current char
-     * @param string $previousChar Previous char
+     * @param integer $index        Current index
+     * @param string  $char         Current char
+     * @param string  $previousChar Previous char
      * @return mixed TRUE will break the processing; FALSE continue with the next plugin; integer set a new index and
-     *     break the processing
+     *                              break the processing
      */
     public function parse($index, $char, $previousChar, $state)
     {

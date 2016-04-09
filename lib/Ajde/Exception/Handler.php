@@ -23,11 +23,11 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
             dump($message);
 
             // TODO: only possible in PHP >= 5.3 ?
-//			try
-//			{
+            //			try
+            //			{
             throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
-//			} catch(Exception $exception) {
-//			}
+            //			} catch(Exception $exception) {
+            //			}
         }
     }
 
@@ -56,7 +56,7 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 
     const EXCEPTION_TRACE_HTML = 1;
     const EXCEPTION_TRACE_ONLY = 3;
-    const EXCEPTION_TRACE_LOG = 2;
+    const EXCEPTION_TRACE_LOG  = 2;
 
     public static function trace(Exception $exception, $output = self::EXCEPTION_TRACE_HTML)
     {
@@ -73,14 +73,14 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
                     ob_clean();
                 }
 
-                $traceMessage = '<ol reversed="reversed">';
+                $traceMessage                       = '<ol reversed="reversed">';
                 self::$firstApplicationFileExpanded = false;
                 foreach ($exception->getTrace() as $item) {
                     $arguments = null;
                     if (!empty($item['args'])) {
                         ob_start();
                         var_dump($item['args']);
-                        $dump = ob_get_clean();
+                        $dump      = ob_get_clean();
                         $arguments = sprintf(' with arguments: %s', $dump);
                     }
                     $traceMessage .= sprintf("<li><code><em>%s</em>%s<strong>%s</strong></code><br/>in %s<br/>&nbsp;\n",
@@ -144,15 +144,15 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
                     // For shutdown() call
                     $style = 'body {font: 13px sans-serif;} a {color: #005D9A;} a:hover {color: #9A0092;} h2 {color: #005D9A;} span > a {color: #9A0092;}';
                 }
-                $style = '<style>' . $style . '</style>';
+                $style  = '<style>' . $style . '</style>';
                 $script = '<script>document.getElementsByTagName("base")[0].href="";</script>';
 
                 if (Ajde::app()->getRequest()->isAjax()) {
                     $collapsed = $exceptionDump . $exceptionMessage . $traceMessage;
-                    $header = '';
+                    $header    = '';
                 } else {
                     $collapsed = '<div id="details">' . $exceptionDump . $exceptionMessage . $traceMessage . '</div>';
-                    $header = '<header><h1><img src="' . Config::get('site_root') . MEDIA_URI . 'ajde-small.png">Something went wrong</h1><a href="javascript:history.go(-1);">Go back</a> <a href="#details">Show details</a></header>';
+                    $header    = '<header><h1><img src="' . Config::get('site_root') . MEDIA_URI . 'ajde-small.png">Something went wrong</h1><a href="javascript:history.go(-1);">Go back</a> <a href="#details">Show details</a></header>';
                 }
 
                 $message = $style . $script . $header . $collapsed;
@@ -269,7 +269,7 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
     protected static function embedScript($filename = null, $line = null, $arguments = null, $expand = false)
     {
         $lineOffset = 5;
-        $file = '';
+        $file       = '';
 
         // in case of eval, filename looks like File.php(30) : eval()'d code
         if (substr_count($filename, '(')) {

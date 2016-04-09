@@ -2,17 +2,18 @@
 
 class ProductModel extends Ajde_Model
 {
-	protected $_autoloadParents = true;
-	protected $_displayField = 'title';
+    protected $_autoloadParents = true;
+    protected $_displayField    = 'title';
 
     protected $_slugPrefix = 'shop';
 
     public static $imageDir = 'upload/shop/';
-	
-	public function __construct() {
-		Ajde_Event::register($this, 'afterCrudLoaded', array($this, 'parseForCrud'));
-		parent::__construct();
-	}
+
+    public function __construct()
+    {
+        Ajde_Event::register($this, 'afterCrudLoaded', [$this, 'parseForCrud']);
+        parent::__construct();
+    }
 
     /**
      *
@@ -25,6 +26,7 @@ class ProductModel extends Ajde_Model
         if ($product->loadByPK($id)) {
             return $product;
         }
+
         return false;
     }
 
@@ -39,6 +41,7 @@ class ProductModel extends Ajde_Model
         if ($product->loadBySlug($slug)) {
             return $product;
         }
+
         return false;
     }
 
@@ -67,13 +70,14 @@ class ProductModel extends Ajde_Model
      * PRICE
      */
 
-	public function getVATPercentage()
-	{
-		if ($this->hasVat() && !$this->getVat() instanceof Ajde_Model) {
-			$this->loadParents();
-		}
-		return $this->hasVat() ? ((float) $this->getVat()->getPercentage() / 100) : 0;
-	}
+    public function getVATPercentage()
+    {
+        if ($this->hasVat() && !$this->getVat() instanceof Ajde_Model) {
+            $this->loadParents();
+        }
+
+        return $this->hasVat() ? ((float)$this->getVat()->getPercentage() / 100) : 0;
+    }
 
     public function getFormattedPriceInclVat()
     {
@@ -101,8 +105,7 @@ class ProductModel extends Ajde_Model
      */
     public function getImage()
     {
-        if ($this->hasNotEmpty('image'))
-        {
+        if ($this->hasNotEmpty('image')) {
             return new Ajde_Resource_Image(MEDIA_DIR . self::$imageDir . $this->get('image'));
         }
 
@@ -111,8 +114,7 @@ class ProductModel extends Ajde_Model
 
     public function featuredImage($width = 800)
     {
-        if ($image = $this->getImage())
-        {
+        if ($image = $this->getImage()) {
             return $image->getUrl($width);
         }
 
@@ -128,6 +130,7 @@ class ProductModel extends Ajde_Model
         if (!$this->hasSlug()) {
             $this->slug = $this->_makeSlug();
         }
+
         return $this->_slugPrefix . '/' . $this->slug;
     }
 
@@ -135,7 +138,7 @@ class ProductModel extends Ajde_Model
     {
         $name = $this->has('title') ? $this->title : '';
 
-        $ghost = new self();
+        $ghost     = new self();
         $uniqifier = 0;
 
         do {
@@ -147,7 +150,7 @@ class ProductModel extends Ajde_Model
             if ($uniqifier >= 100) {
                 throw new Ajde_Controller_Exception('Max recursion depth reached for setting slug');
             }
-        } while($ghost->hasLoaded());
+        } while ($ghost->hasLoaded());
 
         return $slug;
     }
@@ -159,6 +162,7 @@ class ProductModel extends Ajde_Model
         $slug = preg_replace("/[^a-zA-Z0-9\/_| -]/", '', $name);
         $slug = strtolower(trim($slug, '-'));
         $slug = preg_replace("/[\/_| -]+/", '-', $slug);
+
         return $slug;
     }
 
@@ -172,6 +176,7 @@ class ProductModel extends Ajde_Model
         if ($publishedCheck) {
             $this->filterPublished();
         }
+
         return $this->hasLoaded();
     }
 
@@ -185,9 +190,12 @@ class ProductModel extends Ajde_Model
     protected function _load($sql, $values, $populate = true)
     {
         $return = parent::_load($sql, $values, $populate);
-        if ($return && Ajde::app()->hasRequest() && Ajde::app()->getRequest()->getParam('filterPublished', false) ==  true) {
+        if ($return && Ajde::app()->hasRequest() && Ajde::app()->getRequest()->getParam('filterPublished',
+                false) == true
+        ) {
             $this->filterPublished();
         }
+
         return $return;
     }
 }

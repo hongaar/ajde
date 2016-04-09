@@ -2,7 +2,7 @@
 
 class Ajde_Resource_Local_Compressed extends Ajde_Resource
 {
-    public function  __construct($type, $filename)
+    public function __construct($type, $filename)
     {
         $this->setFilename($filename);
         parent::__construct($type);

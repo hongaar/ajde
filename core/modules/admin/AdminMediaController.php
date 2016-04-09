@@ -3,7 +3,7 @@
 class AdminMediaController extends AdminController
 {
 
-    private $_extensions = [
+    private $_extensions      = [
         'mp4',
         'avi',
         'swf',
@@ -21,7 +21,7 @@ class AdminMediaController extends AdminController
         'zip'
     ];
     private $_imageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-    private $_uploaddir = UPLOAD_DIR;
+    private $_uploaddir       = UPLOAD_DIR;
 
     public function view()
     {
@@ -69,14 +69,14 @@ class AdminMediaController extends AdminController
             return ['success' => false];
         }
 
-        $mediatype = Ajde::app()->getRequest()->getPostParam('mediatype', false);
-        $name = Ajde::app()->getRequest()->getPostParam('name', false);
+        $mediatype  = Ajde::app()->getRequest()->getPostParam('mediatype', false);
+        $name       = Ajde::app()->getRequest()->getPostParam('name', false);
         $oauthToken = Ajde::app()->getRequest()->getPostParam('oauthToken', false);
 
         $media = new MediaModel();
 
         $media->mediatype = $mediatype;
-        $media->pointer = $filename;
+        $media->pointer   = $filename;
 
         // see if we can save a file from Google Drive
         $driveResult = $media->saveFileFromDrive($name, $oauthToken);
@@ -87,9 +87,9 @@ class AdminMediaController extends AdminController
                 return ['success' => false];
             } else {
                 $extension = pathinfo($filename, PATHINFO_EXTENSION);
-                $title = pathinfo($filename, PATHINFO_FILENAME);
+                $title     = pathinfo($filename, PATHINFO_FILENAME);
 
-                $media->name = $title;
+                $media->name      = $title;
                 $media->thumbnail = $filename;
             }
         }
@@ -112,7 +112,7 @@ class AdminMediaController extends AdminController
     public function typeBtnJson()
     {
         $value = Ajde::app()->getRequest()->getPostParam('type');
-        $id = Ajde::app()->getRequest()->getPostParam('id', false);
+        $id    = Ajde::app()->getRequest()->getPostParam('id', false);
 
         $model = new MediaModel();
 

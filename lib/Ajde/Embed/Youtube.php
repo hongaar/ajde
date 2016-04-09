@@ -5,7 +5,7 @@ class Ajde_Embed_Youtube extends Ajde_Embed
     public function convertUrlToEmbed()
     {
         if (substr($this->_code, 0, 7) == 'http://' || substr($this->_code, 0, 8) == 'https://') {
-            $ytid = $this->_getYoutubeId();
+            $ytid        = $this->_getYoutubeId();
             $this->_code = '<iframe width="425" height="700" src="http://www.youtube.com/embed/' . $ytid . '" frameborder="0" allowfullscreen></iframe>';
         }
     }
@@ -44,7 +44,7 @@ class Ajde_Embed_Youtube extends Ajde_Embed
         $ytid = $this->_getYoutubeId();
         if ($ytid) {
             $fullres = "http://img.youtube.com/vi/" . $ytid . "/maxresdefault.jpg";
-            $ch = curl_init($fullres);
+            $ch      = curl_init($fullres);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_exec($ch);
             $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);

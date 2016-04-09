@@ -2,26 +2,26 @@
 
 class Ajde_Log extends Ajde_Object_Static
 {
-    const CHANNEL_EXCEPTION = 'Exception';
-    const CHANNEL_ERROR = 'Error';
-    const CHANNEL_ROUTING = 'Routing';
-    const CHANNEL_SECURITY = 'Security';
-    const CHANNEL_INFO = 'Info';
+    const CHANNEL_EXCEPTION   = 'Exception';
+    const CHANNEL_ERROR       = 'Error';
+    const CHANNEL_ROUTING     = 'Routing';
+    const CHANNEL_SECURITY    = 'Security';
+    const CHANNEL_INFO        = 'Info';
     const CHANNEL_APPLICATION = 'Application';
 
-    const LEVEL_EMERGENCY = '1:Emergency';
-    const LEVEL_ALERT = '2:Alert';
-    const LEVEL_CRITICAL = '3:Critical';
-    const LEVEL_ERROR = '4:Error';
-    const LEVEL_WARNING = '5:Warning';
-    const LEVEL_NOTICE = '6:Notice';
+    const LEVEL_EMERGENCY     = '1:Emergency';
+    const LEVEL_ALERT         = '2:Alert';
+    const LEVEL_CRITICAL      = '3:Critical';
+    const LEVEL_ERROR         = '4:Error';
+    const LEVEL_WARNING       = '5:Warning';
+    const LEVEL_NOTICE        = '6:Notice';
     const LEVEL_INFORMATIONAL = '7:Informational';
-    const LEVEL_DEBUG = '8:Debug';
+    const LEVEL_DEBUG         = '8:Debug';
 
     private static function getWriters()
     {
         $writerArray = Config::get('logWriter');
-        $getWriters = [];
+        $getWriters  = [];
         foreach ($writerArray as $writer) {
             $getWriters[] = 'Ajde_Log_Writer_' . ucfirst($writer);
         }
@@ -32,7 +32,7 @@ class Ajde_Log extends Ajde_Object_Static
     private static function shouldLog($level)
     {
         $configLevel = current(explode(':', Config::get('logLevel')));
-        $logLevel = current(explode(':', $level));
+        $logLevel    = current(explode(':', $level));
 
         return $configLevel >= $logLevel;
     }

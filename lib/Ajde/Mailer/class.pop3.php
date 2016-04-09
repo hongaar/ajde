@@ -4,17 +4,17 @@
  * PHP Version 5.0.0
  * Version 5.2.7
  *
- * @package PHPMailer
- * @link https://github.com/PHPMailer/PHPMailer/
- * @author Marcus Bointon (coolbru) <phpmailer@synchromedia.co.uk>
- * @author Jim Jagielski (jimjag) <jimjag@gmail.com>
- * @author Andy Prevost (codeworxtech) <codeworxtech@users.sourceforge.net>
- * @author Brent R. Matzelle (original founder)
+ * @package   PHPMailer
+ * @link      https://github.com/PHPMailer/PHPMailer/
+ * @author    Marcus Bointon (coolbru) <phpmailer@synchromedia.co.uk>
+ * @author    Jim Jagielski (jimjag) <jimjag@gmail.com>
+ * @author    Andy Prevost (codeworxtech) <codeworxtech@users.sourceforge.net>
+ * @author    Brent R. Matzelle (original founder)
  * @copyright 2013 Marcus Bointon
  * @copyright 2010 - 2012 Jim Jagielski
  * @copyright 2004 - 2009 Andy Prevost
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @note This program is distributed in the hope that it will be useful - WITHOUT
+ * @license   http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @note      This program is distributed in the hope that it will be useful - WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE.
  */
@@ -25,10 +25,10 @@
  * Does not support APOP.
  *
  * @package PHPMailer
- * @author Richard Davey (original author) <rich@corephp.co.uk>
- * @author Marcus Bointon (coolbru) <phpmailer@synchromedia.co.uk>
- * @author Jim Jagielski (jimjag) <jimjag@gmail.com>
- * @author Andy Prevost (codeworxtech) <codeworxtech@users.sourceforge.net>
+ * @author  Richard Davey (original author) <rich@corephp.co.uk>
+ * @author  Marcus Bointon (coolbru) <phpmailer@synchromedia.co.uk>
+ * @author  Jim Jagielski (jimjag) <jimjag@gmail.com>
+ * @author  Andy Prevost (codeworxtech) <codeworxtech@users.sourceforge.net>
  */
 class POP3
 {
@@ -60,7 +60,7 @@ class POP3
      * POP3 Carriage Return + Line Feed.
      *
      * @type string
-     * @access public
+     * @access     public
      * @deprecated Use the constant instead
      */
     public $CRLF = "\r\n";
@@ -150,20 +150,20 @@ class POP3
      */
     public function __construct()
     {
-        $this->pop_conn = 0;
+        $this->pop_conn  = 0;
         $this->connected = false;
-        $this->error = null;
+        $this->error     = null;
     }
 
     /**
      * Simple static wrapper for all-in-one POP before SMTP
      *
-     * @param $host
-     * @param bool $port
-     * @param bool $tval
+     * @param        $host
+     * @param bool   $port
+     * @param bool   $tval
      * @param string $username
      * @param string $password
-     * @param int $debug_level
+     * @param int    $debug_level
      * @return bool
      */
     public static function popBeforeSmtp(
@@ -185,12 +185,12 @@ class POP3
      * appropriate for POP-before SMTP authorisation.
      *
      * @access public
-     * @param string $host
+     * @param string   $host
      * @param bool|int $port
      * @param bool|int $tval
-     * @param string $username
-     * @param string $password
-     * @param int $debug_level
+     * @param string   $username
+     * @param string   $password
+     * @param int      $debug_level
      * @return bool
      */
     public function authorise($host, $port = false, $tval = false, $username = '', $password = '', $debug_level = 0)
@@ -233,9 +233,9 @@ class POP3
      * Connect to a POP3 server.
      *
      * @access public
-     * @param string $host
+     * @param string   $host
      * @param bool|int $port
-     * @param integer $tval
+     * @param integer  $tval
      * @return boolean
      */
     public function connect($host, $port = false, $tval = 30)
@@ -267,8 +267,8 @@ class POP3
         if ($this->pop_conn == false) {
             //  It would appear not...
             $this->error = [
-                'error' => "Failed to connect to server $host on port $port",
-                'errno' => $errno,
+                'error'  => "Failed to connect to server $host on port $port",
+                'errno'  => $errno,
                 'errstr' => $errstr
             ];
             if ($this->do_debug >= 1) {
@@ -405,8 +405,8 @@ class POP3
     {
         if (substr($string, 0, 3) !== '+OK') {
             $this->error = [
-                'error' => "Server reported an error: $string",
-                'errno' => 0,
+                'error'  => "Server reported an error: $string",
+                'errno'  => 0,
                 'errstr' => ''
             ];
             if ($this->do_debug >= 1) {
@@ -437,17 +437,17 @@ class POP3
      * POP3 connection error handler.
      *
      * @param integer $errno
-     * @param string $errstr
-     * @param string $errfile
+     * @param string  $errstr
+     * @param string  $errfile
      * @param integer $errline
      * @access private
      */
     private function catchWarning($errno, $errstr, $errfile, $errline)
     {
         $this->error[] = [
-            'error' => "Connecting to the POP3 server raised a PHP warning: ",
-            'errno' => $errno,
-            'errstr' => $errstr,
+            'error'   => "Connecting to the POP3 server raised a PHP warning: ",
+            'errno'   => $errno,
+            'errstr'  => $errstr,
             'errfile' => $errfile,
             'errline' => $errline
         ];

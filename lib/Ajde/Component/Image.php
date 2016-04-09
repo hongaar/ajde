@@ -12,9 +12,9 @@ class Ajde_Component_Image extends Ajde_Component
     protected function _init()
     {
         return [
-            'base64' => 'base64',
+            'base64'   => 'base64',
             'filename' => 'html',
-            'output' => 'image'
+            'output'   => 'image'
         ];
     }
 

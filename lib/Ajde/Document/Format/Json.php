@@ -3,8 +3,8 @@
 class Ajde_Document_Format_Json extends Ajde_Document
 {
     protected $_cacheControl = self::CACHE_CONTROL_NOCACHE;
-    protected $_contentType = 'application/json';
-    protected $_maxAge = 0; // access
+    protected $_contentType  = 'application/json';
+    protected $_maxAge       = 0; // access
 
     public function render()
     {

@@ -9,11 +9,11 @@ class Ajde_Social_Provider_Facebook extends Facebook
 
     public function __construct($config = [])
     {
-        $this->_key = Config::get('ssoFacebookKey');
+        $this->_key    = Config::get('ssoFacebookKey');
         $this->_secret = Config::get('ssoFacebookSecret');
 
         $config = array_merge($config, [
-            'appId' => $this->_key,
+            'appId'  => $this->_key,
             'secret' => $this->_secret,
         ]);
 

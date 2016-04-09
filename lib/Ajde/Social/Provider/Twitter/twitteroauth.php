@@ -79,7 +79,7 @@ class TwitterOAuth
     function __construct($consumer_key, $consumer_secret, $oauth_token = null, $oauth_token_secret = null)
     {
         $this->sha1_method = new OAuthSignatureMethod_HMAC_SHA1();
-        $this->consumer = new OAuthConsumer($consumer_key, $consumer_secret);
+        $this->consumer    = new OAuthConsumer($consumer_key, $consumer_secret);
         if (!empty($oauth_token) && !empty($oauth_token_secret)) {
             $this->token = new OAuthConsumer($oauth_token, $oauth_token_secret);
         } else {
@@ -94,11 +94,11 @@ class TwitterOAuth
      */
     function getRequestToken($oauth_callback)
     {
-        $parameters = [];
+        $parameters                   = [];
         $parameters['oauth_callback'] = $oauth_callback;
-        $request = $this->oAuthRequest($this->requestTokenURL(), 'GET', $parameters);
-        $token = OAuthUtil::parse_parameters($request);
-        $this->token = new OAuthConsumer($token['oauth_token'], $token['oauth_token_secret']);
+        $request                      = $this->oAuthRequest($this->requestTokenURL(), 'GET', $parameters);
+        $token                        = OAuthUtil::parse_parameters($request);
+        $this->token                  = new OAuthConsumer($token['oauth_token'], $token['oauth_token_secret']);
 
         return $token;
     }
@@ -131,11 +131,11 @@ class TwitterOAuth
      */
     function getAccessToken($oauth_verifier)
     {
-        $parameters = [];
+        $parameters                   = [];
         $parameters['oauth_verifier'] = $oauth_verifier;
-        $request = $this->oAuthRequest($this->accessTokenURL(), 'GET', $parameters);
-        $token = OAuthUtil::parse_parameters($request);
-        $this->token = new OAuthConsumer($token['oauth_token'], $token['oauth_token_secret']);
+        $request                      = $this->oAuthRequest($this->accessTokenURL(), 'GET', $parameters);
+        $token                        = OAuthUtil::parse_parameters($request);
+        $this->token                  = new OAuthConsumer($token['oauth_token'], $token['oauth_token_secret']);
 
         return $token;
     }
@@ -151,13 +151,13 @@ class TwitterOAuth
      */
     function getXAuthToken($username, $password)
     {
-        $parameters = [];
+        $parameters                    = [];
         $parameters['x_auth_username'] = $username;
         $parameters['x_auth_password'] = $password;
-        $parameters['x_auth_mode'] = 'client_auth';
-        $request = $this->oAuthRequest($this->accessTokenURL(), 'POST', $parameters);
-        $token = OAuthUtil::parse_parameters($request);
-        $this->token = new OAuthConsumer($token['oauth_token'], $token['oauth_token_secret']);
+        $parameters['x_auth_mode']     = 'client_auth';
+        $request                       = $this->oAuthRequest($this->accessTokenURL(), 'POST', $parameters);
+        $token                         = OAuthUtil::parse_parameters($request);
+        $this->token                   = new OAuthConsumer($token['oauth_token'], $token['oauth_token_secret']);
 
         return $token;
     }
@@ -227,7 +227,7 @@ class TwitterOAuth
     function http($url, $method, $postfields = null)
     {
         $this->http_info = [];
-        $ci = curl_init();
+        $ci              = curl_init();
         /* Curl settings */
         curl_setopt($ci, CURLOPT_USERAGENT, $this->useragent);
         curl_setopt($ci, CURLOPT_CONNECTTIMEOUT, $this->connecttimeout);
@@ -253,10 +253,10 @@ class TwitterOAuth
         }
 
         curl_setopt($ci, CURLOPT_URL, $url);
-        $response = curl_exec($ci);
+        $response        = curl_exec($ci);
         $this->http_code = curl_getinfo($ci, CURLINFO_HTTP_CODE);
         $this->http_info = array_merge($this->http_info, curl_getinfo($ci));
-        $this->url = $url;
+        $this->url       = $url;
         curl_close($ci);
 
         return $response;
@@ -269,8 +269,8 @@ class TwitterOAuth
     {
         $i = strpos($header, ':');
         if (!empty($i)) {
-            $key = str_replace('-', '_', strtolower(substr($header, 0, $i)));
-            $value = trim(substr($header, $i + 2));
+            $key                     = str_replace('-', '_', strtolower(substr($header, 0, $i)));
+            $value                   = trim(substr($header, $i + 2));
             $this->http_header[$key] = $value;
         }
 

@@ -4,7 +4,7 @@ class Ajde_Resource_Local_Compressor_Css extends Ajde_Resource_Local_Compressor
 {
     private $_lib = 'cssmin'; // cssmin
 
-    public function  __construct()
+    public function __construct()
     {
         $this->setType(Ajde_Resource::TYPE_STYLESHEET);
         parent::__construct();

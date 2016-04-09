@@ -11,10 +11,10 @@ class Ajde_Publisher_Twitter extends Ajde_Publisher
 
     public function setOptions($options)
     {
-        $this->_consumerKey = $options['consumerKey'];
+        $this->_consumerKey    = $options['consumerKey'];
         $this->_consumerSecret = $options['consumerSecret'];
-        $this->_token = $options['token'];
-        $this->_tokenSecret = $options['tokenSecret'];
+        $this->_token          = $options['token'];
+        $this->_tokenSecret    = $options['tokenSecret'];
 
         $this->_twitter = new Ajde_Social_Provider_Twitter($this->_consumerKey, $this->_consumerSecret, $this->_token,
             $this->_tokenSecret);

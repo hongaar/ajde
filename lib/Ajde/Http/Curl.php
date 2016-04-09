@@ -17,7 +17,7 @@ class Ajde_Http_Curl
     /**
      *
      * @param string $url
-     * @param array $postData
+     * @param array  $postData
      * @deprecated
      * @throws Ajde_Core_Exception_Deprecated
      */
@@ -30,9 +30,9 @@ class Ajde_Http_Curl
     /**
      *
      * @param string $url
-     * @param array $postData
+     * @param array  $postData
      * @param string $postType
-     * @param array $headers
+     * @param array  $headers
      * @param string $method
      * @return string
      * @throws Exception
@@ -42,20 +42,20 @@ class Ajde_Http_Curl
         if ($postType == 'form-urlencoded') {
             $encodedVariables = array_map(["Ajde_Http_Curl", "rawURLEncodeCallback"], $postData, array_keys($postData));
 
-            $postContent = join('&', $encodedVariables);
+            $postContent    = join('&', $encodedVariables);
             $postContentLen = strlen($postContent);
 
             $headers = array_merge([
-                "Content-Type" => "application/x-www-form-urlencoded",
+                "Content-Type"   => "application/x-www-form-urlencoded",
                 "Content-Length" => $postContentLen
             ], $headers);
         } else {
             if ($postType == 'json') {
-                $postContent = json_encode($postData);
+                $postContent    = json_encode($postData);
                 $postContentLen = strlen($postContent);
 
                 $headers = array_merge([
-                    "Content-Type" => "application/json",
+                    "Content-Type"   => "application/json",
                     "Content-Length" => $postContentLen
                 ], $headers);
             }
@@ -114,16 +114,16 @@ class Ajde_Http_Curl
 
     /**
      *
-     * @param string $url
+     * @param string      $url
      * @param bool|string $toFile
-     * @param bool|array $header
+     * @param bool|array  $header
      * @return string
      * @throws Exception
      */
     static public function get($url, $toFile = false, $header = false)
     {
         $output = false;
-        $debug = false;
+        $debug  = false;
 
         if ($debug) {
             Ajde_Log::_('cURL URL', Ajde_Log::CHANNEL_INFO, Ajde_Log::LEVEL_INFORMATIONAL, $url);
@@ -247,9 +247,10 @@ class Ajde_Http_Curl
                     break;
                 }
                 $header_start = strpos($data, "\r\n") + 2;
-                $headers = substr($data, $header_start, strpos($data, "\r\n\r\n", $header_start) + 2 - $header_start);
+                $headers      = substr($data, $header_start,
+                    strpos($data, "\r\n\r\n", $header_start) + 2 - $header_start);
 
-                $headers = explode(PHP_EOL, $headers);
+                $headers       = explode(PHP_EOL, $headers);
                 $redirectFound = false;
                 foreach ($headers as $header) {
                     if (preg_match("/(?:Location|URI): (.*)/", $header, $matches)) {

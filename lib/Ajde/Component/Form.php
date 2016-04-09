@@ -5,17 +5,17 @@ class Ajde_Component_Form extends Ajde_Component
     public static function processStatic(Ajde_Template_Parser $parser, $attributes)
     {
         $instance = new Ajde_Component_Form($parser, $attributes);
-        $t = new stdClass(); // Force unique object hash, see http://www.php.net/manual/es/function.spl-object-hash.php#76220
+        $t        = new stdClass(); // Force unique object hash, see http://www.php.net/manual/es/function.spl-object-hash.php#76220
         return $instance->process();
     }
 
     protected function _init()
     {
         return [
-            'ajax' => 'ajax',
-            'route' => 'form',
+            'ajax'   => 'ajax',
+            'route'  => 'form',
             'upload' => 'upload',
-            'embed' => 'embed'
+            'embed'  => 'embed'
         ];
     }
 

@@ -7,7 +7,7 @@ class Ajde_User_Sso_Facebook extends Ajde_User_Sso
     private $_me;
 
     public static $iconName = 'facebook';
-    public static $color = '3b5998';
+    public static $color    = '3b5998';
 
     public function __construct($credentials = false)
     {
@@ -89,7 +89,7 @@ class Ajde_User_Sso_Facebook extends Ajde_User_Sso
 
         return $connection->getLoginUrl([
             'redirect_uri' => $callbackUrl,
-            'scope' => 'email'
+            'scope'        => 'email'
         ]);
     }
 
@@ -156,8 +156,8 @@ class Ajde_User_Sso_Facebook extends Ajde_User_Sso
     public function getAvatarSuggestion()
     {
         if ($this->hasCredentials()) {
-            $me = $this->getMe();
-            $id = $me['id'];
+            $me    = $this->getMe();
+            $id    = $me['id'];
             $image = 'http://graph.facebook.com/' . $id . '/picture?type=large';
 
             return $image;

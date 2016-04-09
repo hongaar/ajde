@@ -7,25 +7,25 @@
 
 class Ajde_Resource_FileIcon extends Ajde_Resource
 {
-    private $_iconCdn = 'http://p.yusukekamiyamane.com/icons/search/fugue/icons/%s.png';
+    private $_iconCdn        = 'http://p.yusukekamiyamane.com/icons/search/fugue/icons/%s.png';
     private $_iconDictionary = [
-        '*' => 'document',
-        'jpg' => 'document-image',
-        'gif' => 'document-image',
-        'png' => 'document-image',
-        'bmp' => 'document-image',
-        'xls' => 'document-excel',
+        '*'    => 'document',
+        'jpg'  => 'document-image',
+        'gif'  => 'document-image',
+        'png'  => 'document-image',
+        'bmp'  => 'document-image',
+        'xls'  => 'document-excel',
         'xlsx' => 'document-excel',
-        'ppt' => 'document-powerpoint',
+        'ppt'  => 'document-powerpoint',
         'pptx' => 'document-powerpoint',
-        'doc' => 'document-word',
+        'doc'  => 'document-word',
         'docx' => 'document-word',
-        'pdf' => 'document-pdf',
-        'mp3' => 'document-music',
-        'wav' => 'document-music',
-        'zip' => 'folder-zipper',
-        'mpg' => 'film',
-        'avi' => 'film'
+        'pdf'  => 'document-pdf',
+        'mp3'  => 'document-music',
+        'wav'  => 'document-music',
+        'zip'  => 'folder-zipper',
+        'mpg'  => 'film',
+        'avi'  => 'film'
     ];
 
     public function __construct($fileExtension)

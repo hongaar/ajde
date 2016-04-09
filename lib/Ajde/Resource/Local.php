@@ -4,7 +4,7 @@ class Ajde_Resource_Local extends Ajde_Resource
 {
     private $_filename;
 
-    public function  __construct($type, $base, $action, $format = 'html', $arguments = '')
+    public function __construct($type, $base, $action, $format = 'html', $arguments = '')
     {
         $this->setBase($base);
         $this->setAction($action);

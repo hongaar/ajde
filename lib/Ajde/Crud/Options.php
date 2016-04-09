@@ -29,9 +29,9 @@ class Ajde_Crud_Options extends Ajde_Object_Standard
         // Get new active object
         $className = get_class($this) . '_' . ucfirst($name);
         /* @var $new Ajde_Crud_Options */
-        $new = new $className();
+        $new          = new $className();
         $new->_parent = $this;
-        $new->_key = $key;
+        $new->_key    = $key;
         if (isset($this->_stack[$key])) {
             $new->_stack = $this->_stack[$key];
         }

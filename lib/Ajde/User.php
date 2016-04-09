@@ -3,14 +3,14 @@
 abstract class Ajde_User extends Ajde_Model
 {
     protected $_autoloadParents = false;
-    protected $_displayField = 'fullname';
+    protected $_displayField    = 'fullname';
 
     public $usernameField = 'username';
     public $passwordField = 'password';
 
-    const USERGROUP_USERS = 1;
-    const USERGROUP_ADMINS = 2;
-    const USERGROUP_CLIENTS = 3;
+    const USERGROUP_USERS     = 1;
+    const USERGROUP_ADMINS    = 2;
+    const USERGROUP_CLIENTS   = 3;
     const USERGROUP_EMPLOYEES = 4;
 
     public $defaultUserGroup = self::USERGROUP_USERS;
@@ -28,7 +28,7 @@ abstract class Ajde_User extends Ajde_Model
         if (!isset(self::$_user)) {
             $session = new Ajde_Session('user');
             if ($session->has('model')) {
-                $user = $session->getModel('model');
+                $user        = $session->getModel('model');
                 self::$_user = $user;
             } else {
                 self::$_user = false;
@@ -64,9 +64,9 @@ abstract class Ajde_User extends Ajde_Model
             return false;
         }
 
-        $sql = 'SELECT * FROM ' . $this->_table . ' WHERE ' . $this->usernameField . ' = ? LIMIT 1';
+        $sql    = 'SELECT * FROM ' . $this->_table . ' WHERE ' . $this->usernameField . ' = ? LIMIT 1';
         $values = [$username];
-        $user = $this->_load($sql, $values);
+        $user   = $this->_load($sql, $values);
         if ($user === false) {
             return false;
         }
@@ -91,13 +91,13 @@ abstract class Ajde_User extends Ajde_Model
         if (CRYPT_BLOWFISH !== 1) {
             Ajde_Dump::warn('BLOWFISH algorithm not available for hashing, using MD5 instead');
             // Use MD5
-            $algo = '$1';
-            $cost = '';
+            $algo        = '$1';
+            $cost        = '';
             $unique_salt = $this->generateSecret(12);
         } else {
             // Use BLOWFISH
-            $algo = '$2a';
-            $cost = '$10';
+            $algo        = '$2a';
+            $cost        = '$10';
             $unique_salt = $this->generateSecret(22);
         }
         $hash = crypt($password, $algo . $cost . '$' . $unique_salt);
@@ -166,8 +166,8 @@ abstract class Ajde_User extends Ajde_Model
         $this->populate([
             $this->usernameField => $username,
             $this->passwordField => $hash,
-            'usergroup' => $this->defaultUserGroup,
-            'secret' => $this->generateSecret()
+            'usergroup'          => $this->defaultUserGroup,
+            'secret'             => $this->generateSecret()
         ]);
 
         return $this->insert();
@@ -175,9 +175,9 @@ abstract class Ajde_User extends Ajde_Model
 
     public function storeCookie($includeDomain = true)
     {
-        $hash = $this->getCookieHash($includeDomain);
+        $hash        = $this->getCookieHash($includeDomain);
         $cookieValue = $this->getPK() . ':' . $hash;
-        $cookie = new Ajde_Cookie(Config::get('ident') . '_user', true);
+        $cookie      = new Ajde_Cookie(Config::get('ident') . '_user', true);
         $cookie->setLifetime($this->cookieLifetime);
         $cookie->set('auth', $cookieValue);
 
@@ -195,7 +195,7 @@ abstract class Ajde_User extends Ajde_Model
             throw new Ajde_Exception('SHA-256 algorithm not available for hashing');
         }
         $userSecret = $this->get('secret');
-        $appSecret = Config::secret();
+        $appSecret  = Config::secret();
         if ($includeDomain) {
             $hash = hash("sha256", $userSecret . $appSecret . $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
         } else {
@@ -236,7 +236,7 @@ abstract class Ajde_User extends Ajde_Model
             $newEmail = $this->doEncrypt($newEmail);
         }
         $values = [$newEmail, $this->getPK()];
-        $sql = 'SELECT * FROM ' . $this->_table . ' WHERE email = ? AND id != ? LIMIT 1';
+        $sql    = 'SELECT * FROM ' . $this->_table . ' WHERE email = ? AND id != ? LIMIT 1';
 
         return !$this->_load($sql, $values, false);
     }
@@ -247,7 +247,7 @@ abstract class Ajde_User extends Ajde_Model
             $newUsername = $this->doEncrypt($newUsername);
         }
         $values = [$newUsername, $this->getPK()];
-        $sql = 'SELECT * FROM ' . $this->_table . ' WHERE ' . $this->usernameField . ' = ? AND id != ? LIMIT 1';
+        $sql    = 'SELECT * FROM ' . $this->_table . ' WHERE ' . $this->usernameField . ' = ? AND id != ? LIMIT 1';
 
         return !$this->_load($sql, $values, false);
     }
@@ -282,8 +282,8 @@ abstract class Ajde_User extends Ajde_Model
             throw new Ajde_Exception('SHA-256 algorithm not available for hashing');
         }
         $userSecret = $this->get('secret');
-        $appSecret = Config::secret();
-        $hash = strtotime("+1 month") . ':' . hash("sha256", $userSecret . $appSecret . microtime() . rand());
+        $appSecret  = Config::secret();
+        $hash       = strtotime("+1 month") . ':' . hash("sha256", $userSecret . $appSecret . microtime() . rand());
 
         if (empty($hash)) {
             // TODO:

@@ -14,7 +14,7 @@ class Ajde_Resource_Image extends Ajde_Resource
 
     public static $_thumbDir = '.thumbnails';
 
-    const ORIENTATION_PORTRAIT = 'portrait';
+    const ORIENTATION_PORTRAIT  = 'portrait';
     const ORIENTATION_LANDSCAPE = 'landscape';
 
     public function __construct($file)
@@ -63,8 +63,8 @@ class Ajde_Resource_Image extends Ajde_Resource
 
     public function getFingerprint()
     {
-        $w = $this->hasWidth() ? $this->getWidth(false) : null;
-        $h = $this->hasHeight() ? $this->getHeight(false) : null;
+        $w     = $this->hasWidth() ? $this->getWidth(false) : null;
+        $h     = $this->hasHeight() ? $this->getHeight(false) : null;
         $array = ['s' => $this->_source, 'w' => $w, 'h' => $h, 'c' => $this->getCrop()];
 
         return $this->encodeFingerprint($array);
@@ -138,7 +138,7 @@ class Ajde_Resource_Image extends Ajde_Resource
     public function getCalculatedDim()
     {
         return [
-            'width' => imageSX($this->getImageResource()),
+            'width'  => imageSX($this->getImageResource()),
             'height' => imageSY($this->getImageResource())
         ];
     }
@@ -259,7 +259,7 @@ class Ajde_Resource_Image extends Ajde_Resource
             return;
         }
 
-        $oldWidth = imageSX($this->getImageResource());
+        $oldWidth  = imageSX($this->getImageResource());
         $oldHeight = imageSY($this->getImageResource());
 
         if (empty($height)) {
@@ -275,18 +275,18 @@ class Ajde_Resource_Image extends Ajde_Resource
 
         $newImage = ImageCreateTrueColor($width, $height);
 
-        $newWidth = $width;
+        $newWidth  = $width;
         $newHeight = intval($oldHeight * ($width / $oldWidth));
 
         $x_offset = 0;
         $y_offset = 0;
 
         $adjustWidth = (($crop === true) ? ($newHeight < $height) : ($newHeight > $height));
-        $offsetSign = -1;
+        $offsetSign  = -1;
 
         if ($adjustWidth) {
             $newHeight = $height;
-            $newWidth = intval($oldWidth * ($height / $oldHeight));
+            $newWidth  = intval($oldWidth * ($height / $oldHeight));
 
             // Correct for cropping left / right
             $x_offset = $offsetSign * intval(($newWidth - $width) / 2);
@@ -412,7 +412,7 @@ class Ajde_Resource_Image extends Ajde_Resource
             $transparency = imagecolortransparent($src_image);
             if ($transparency >= 0) {
                 $transparent_color = imagecolorsforindex($src_image, $trnprt_indx);
-                $transparency = imagecolorallocate($dst_image, $trnprt_color['red'], $trnprt_color['green'],
+                $transparency      = imagecolorallocate($dst_image, $trnprt_color['red'], $trnprt_color['green'],
                     $trnprt_color['blue']);
                 imagefill($dst_image, 0, 0, $transparency);
                 imagecolortransparent($dst_image, $transparency);

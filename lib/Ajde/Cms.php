@@ -52,7 +52,7 @@ class Ajde_Cms extends Ajde_Object_Singleton
     {
         $slug = $route->getRoute();
 
-        $slug = trim($slug, '/');
+        $slug      = trim($slug, '/');
         $lastSlash = strrpos($slug, '/');
         if ($lastSlash !== false) {
             $slug = substr($slug, $lastSlash + 1);
@@ -72,7 +72,7 @@ class Ajde_Cms extends Ajde_Object_Singleton
     {
         $slug = $route->getRoute();
 
-        $slug = trim($slug, '/');
+        $slug      = trim($slug, '/');
         $lastSlash = strrpos($slug, '/');
         if ($lastSlash !== false) {
             $lastSlugPart = substr($slug, $lastSlash + 1);

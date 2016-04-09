@@ -33,10 +33,10 @@
  */
 class Mollie_API_Object_Payment
 {
-    const STATUS_OPEN = "open";
+    const STATUS_OPEN      = "open";
     const STATUS_CANCELLED = "cancelled";
-    const STATUS_EXPIRED = "expired";
-    const STATUS_PAID = "paid";
+    const STATUS_EXPIRED   = "expired";
+    const STATUS_PAID      = "paid";
 
     /**
      * Id of the payment (on the Mollie platform).

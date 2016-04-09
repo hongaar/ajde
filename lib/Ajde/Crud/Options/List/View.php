@@ -226,7 +226,7 @@ class Ajde_Crud_Options_List_View extends Ajde_Crud_Options
         if (!$this->hasFilter()) {
             $this->setFilter([]);
         }
-        $filter = $this->get('filter');
+        $filter         = $this->get('filter');
         $filter[$field] = $value;
         $this->set('filter', $filter);
 
