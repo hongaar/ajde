@@ -85,7 +85,7 @@ abstract class Ajde_Resource_Local_Compressor extends Ajde_Object_Standard
             $fileNameContext = hash_init('md5');
             foreach ($this->_resources as $resource) {
                 /* @var $resource Ajde_Resource_Local */
-                hash_update($fileTimeContext, filemtime($resource->getFilename()));
+                hash_update($fileTimeContext, filemtime(LOCAL_ROOT . $resource->getFilename()));
                 hash_update($fileNameContext, $resource->getFilename());
             }
             $this->setHash([

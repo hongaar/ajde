@@ -140,7 +140,9 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
 
         Ajde_Cache::getInstance()->addFile($filename);
         if ($this->exist($filename)) {
-            include $this->realpath($filename);
+            include realpath($this->realpath($filename));
+        } else {
+            throw new Exception("Couldn't find resource " . $filename);
         }
 
         $contents = ob_get_contents();
