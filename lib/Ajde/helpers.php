@@ -9,9 +9,7 @@ class Config extends Ajde_Config
 }
 
 /**
- * The only thing missing in PHP < 5.3
- * In PHP 5.3 you can use: return $test ?: false;
- * This translates in Ajde to return issetor($test);
+ * Return value when it is set, or something else otherwise.
  *
  * @param      $what
  * @param null $else
