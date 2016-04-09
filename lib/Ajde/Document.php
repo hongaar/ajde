@@ -53,7 +53,7 @@ abstract class Ajde_Document extends Ajde_Object_Standard
     {
         if (!$this->hasLayout()) {
             // Load default layout into document
-            $this->setLayout(new Ajde_Layout(config("layout")));
+            $this->setLayout(new Ajde_Layout(config("layout.frontend")));
         }
 
         return $this->get("layout");

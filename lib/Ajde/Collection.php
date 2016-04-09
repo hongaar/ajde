@@ -521,7 +521,7 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
         $this->_items[] = $item;
     }
 
-    public function merge(Ajde_Collection $collection)
+    public function combine(Ajde_Collection $collection)
     {
         foreach ($collection as $item) {
             $this->add($item);

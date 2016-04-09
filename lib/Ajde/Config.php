@@ -13,6 +13,10 @@ class Ajde_Config
     public function __construct()
     {
         $this->repository = new Ajde_Config_Repository(CONFIG_DIR);
+
+        if ($this->repository->get("security.secret") === 'RANDOMSTRING') {
+            Ajde_Dump::warn('Using unsafe secret: your app is insecure. See class Config_Application');
+        }
     }
 
     /**
@@ -38,11 +42,7 @@ class Ajde_Config
     {
         $instance = self::getInstance();
 
-        if (isset($instance->$param)) {
-            return $instance->$param;
-        } else {
-            throw new Ajde_Exception("Config parameter $param not set", 90004);
-        }
+        return $instance->repository->get($param);
     }
 
     /**
@@ -55,39 +55,6 @@ class Ajde_Config
     {
         $instance = self::getInstance();
 
-        $instance->$param = $value;
-    }
-
-    /**
-     * TODO
-     *
-     * @param string $param
-     * @return mixed
-     */
-    public function __get($param)
-    {
-        return $this->repository->$param;
-    }
-
-    /**
-     * TODO
-     *
-     * @param string $param
-     * @param mixed  $value
-     */
-    public function __set($param, $value)
-    {
-        $this->repository->$param = $value;
-    }
-
-    /**
-     * TODO
-     *
-     * @param string $param
-     * @return bool
-     */
-    public function __isset($param)
-    {
-        return isset($this->repository->$param);
+        $instance->repository->set($param, $value);
     }
 }

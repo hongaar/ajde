@@ -54,9 +54,9 @@ abstract class Ajde_Object_Magic extends Ajde_Object
     {
         if (substr_count($key, '.')) {
             Ajde_Core_Array::set($this->_data, $key, $value);
+        } else {
+            $this->_data[$key] = $value;
         }
-
-        $this->_data[$key] = $value;
     }
 
     public function remove($key)
@@ -88,7 +88,7 @@ abstract class Ajde_Object_Magic extends Ajde_Object
         $exist = array_key_exists($key, $this->_data);
 
         if ($exist === false) {
-            $exist = Ajde_Core_Array::get($this->_data, $key);
+            $exist = !is_null(Ajde_Core_Array::get($this->_data, $key));
         }
 
         return !!$exist;

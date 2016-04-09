@@ -79,7 +79,7 @@ class Ajde_Http_Response extends Ajde_Object_Standard
         $actionResult = $controller->invoke();
         $document->setBody($actionResult);
         if (!$document->hasLayout()) {
-            $layout = new Ajde_Layout(config("layout"));
+            $layout = new Ajde_Layout(config("layout.frontend"));
             $document->setLayout($layout);
         }
         echo $document->render();

@@ -34,6 +34,8 @@ class Ajde_Resource_Local extends Ajde_Resource
      *
      * @param string $hash
      * @return Ajde_Resource
+     * @throws Ajde_Core_Exception_Deprecated
+     * @throws Ajde_Exception
      */
     public static function fromHash($hash)
     {
@@ -79,15 +81,6 @@ class Ajde_Resource_Local extends Ajde_Resource
         return $this->get('arguments');
     }
 
-    protected static function exist($filename)
-    {
-        if (is_file($filename)) {
-            return true;
-        }
-
-        return false;
-    }
-
     protected static function _getFilename($base, $type, $action, $format)
     {
         $dirPrefixPatterns    = [
@@ -98,17 +91,25 @@ class Ajde_Resource_Local extends Ajde_Resource
         $layoutPrefixPatterns = ['', $layoutDir];
 
         $filename = false;
+
         foreach ($dirPrefixPatterns as $dirPrefixPattern) {
+
             foreach ($layoutPrefixPatterns as $layoutPrefixPattern) {
+
                 $prefixedBase   = $dirPrefixPattern . $base;
                 $formatResource = $prefixedBase . 'res/' . $type . DIRECTORY_SEPARATOR . $layoutPrefixPattern . $action . '.' . $format . '.' . $type;
+
                 if (self::exist($formatResource)) {
+
                     $filename = $formatResource;
+
                 } else {
+
                     $noFormatResource = $prefixedBase . 'res/' . $type . DIRECTORY_SEPARATOR . $layoutPrefixPattern . $action . '.' . $type;
                     if (self::exist($noFormatResource)) {
                         $filename = $noFormatResource;
                     }
+
                 }
             }
         }
@@ -122,10 +123,11 @@ class Ajde_Resource_Local extends Ajde_Resource
             $this->_filename = $this->_getFilename($this->getBase(), $this->getType(), $this->getAction(),
                 $this->getFormat());
         }
+
         if (!$this->_filename) {
             // TODO:
             throw new Ajde_Exception(sprintf('Resource %s could not be found',
-                $this->getBase() . 'res/' . $this->getType() . DIRECTORY_SEPARATOR . $this->getAction() . '[.' . $this->getFormat() . '].' . $this->getType()));
+                $this->getBase() . 'res/' . $this->getType() . DS . $this->getAction() . '[.' . $this->getFormat() . '].' . $this->getType()));
         }
 
         return $this->_filename;

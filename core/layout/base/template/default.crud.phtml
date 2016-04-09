@@ -21,7 +21,7 @@ $this->requireGWebFont('Dosis', array(400, 700));
 ?>
 <!-- Inspired by HTML5 Boilerplate -->
 <!doctype html>
-<html lang='<?php echo Ajde_Lang::getInstance()->getShortLang(); ?>' id='<?php echo config("app.id"); ?>' data-lifetime='<?php echo (config('sessionLifetime') == 0 ? 180 : config('sessionLifetime')); ?>' data-alert='<?php echo _e(Ajde_Session_Flash::get('alert')); ?>'>
+<html lang='<?php echo Ajde_Lang::getInstance()->getShortLang(); ?>' id='<?php echo config("app.id"); ?>' data-lifetime='<?php echo (config("session.lifetime") == 0 ? 180 : config("session.lifetime")); ?>' data-alert='<?php echo _e(Ajde_Session_Flash::get('alert')); ?>'>
 	<head>
 
 		<!-- UTF-8 please (also in the headers, just to be sure) -->

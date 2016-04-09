@@ -77,5 +77,5 @@ function _c($var)
  */
 function config($param)
 {
-    return config($param);
+    return Config::get($param);
 }

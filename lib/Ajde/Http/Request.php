@@ -154,7 +154,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 
     private static function _tokenHash($token)
     {
-        return md5($token . $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] . Config::secret());
+        return md5($token . $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] . config("security.secret"));
     }
 
     private static function _isWhitelisted()

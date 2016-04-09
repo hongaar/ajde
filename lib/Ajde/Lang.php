@@ -258,7 +258,7 @@ class Ajde_Lang extends Ajde_Object_Singleton
 
     protected function detect()
     {
-        if (config("langAutodetect")) {
+        if (config("i18n.autodetect")) {
             $acceptedLangs = $this->getLanguagesFromHeader();
             foreach ($acceptedLangs as $acceptedLang => $priority) {
                 if ($langMatch = $this->getAvailableLang($acceptedLang)) {

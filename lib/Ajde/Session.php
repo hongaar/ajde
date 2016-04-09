@@ -11,7 +11,7 @@ class Ajde_Session extends Ajde_Object_Standard
         session_name($sessionName);
 
         // Session lifetime
-        $lifetime = config("sessionLifetime");
+        $lifetime = config("session.lifetime");
 
         // Security garbage collector
         ini_set('session.gc_maxlifetime',
@@ -55,7 +55,7 @@ class Ajde_Session extends Ajde_Object_Standard
             isset($_SERVER['HTTP_USER_AGENT']) &&
             substr_count($_SERVER['HTTP_USER_AGENT'], 'chromeframe/') === 0 &&
             isset($_SESSION['client']) &&
-            $_SESSION['client'] !== md5($remoteIp . $_SERVER['HTTP_USER_AGENT'] . Config::secret())
+            $_SESSION['client'] !== md5($remoteIp . $_SERVER['HTTP_USER_AGENT'] . config("security.secret"))
         ) {
 
             // TODO: overhead to call session_regenerate_id? is it not required??
@@ -84,7 +84,7 @@ class Ajde_Session extends Ajde_Object_Standard
                 }
             }
         } else {
-            $_SESSION['client'] = md5($remoteIp . issetor($_SERVER['HTTP_USER_AGENT']) . Config::secret());
+            $_SESSION['client'] = md5($remoteIp . issetor($_SERVER['HTTP_USER_AGENT']) . config("security.secret"));
 
             if ($lifetime > 0) {
                 // Force send new cookie with updated lifetime (forcing keep-alive)

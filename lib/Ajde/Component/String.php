@@ -362,7 +362,7 @@ class Ajde_Component_String extends Ajde_Component
                     gzdeflate(
                         mcrypt_encrypt(
                             MCRYPT_RIJNDAEL_256,
-                            Config::secret(),
+                            config("security.secret"),
                             $text,
                             MCRYPT_MODE_ECB,
                             mcrypt_create_iv(
@@ -392,7 +392,7 @@ class Ajde_Component_String extends Ajde_Component
             $decrypted = trim(
                 mcrypt_decrypt(
                     MCRYPT_RIJNDAEL_256,
-                    Config::secret(),
+                    config("security.secret"),
                     gzinflate(base64_decode($text)),
                     MCRYPT_MODE_ECB,
                     mcrypt_create_iv(

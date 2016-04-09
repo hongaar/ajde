@@ -46,7 +46,7 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
         if (Ajde::app()->getDocument()->hasLayout()) {
             $layout = Ajde::app()->getDocument()->getLayout();
         } else {
-            $layout = new Ajde_Layout(config("layout"));
+            $layout = new Ajde_Layout(config("layout.frontend"));
         }
         $format = issetor($format, 'html');
 
@@ -66,7 +66,7 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
 
     protected static function exist($filename)
     {
-        if (is_file($filename)) {
+        if (is_file(LOCAL_ROOT . $filename)) {
             return true;
         }
 
@@ -85,13 +85,13 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
 
     public static function _urlDecode($string)
     {
-        //		return self::_rotUrl($string);
+        // return self::_rotUrl($string);
         return base64_decode($string);
     }
 
     public static function _urlEncode($string)
     {
-        //		return self::_rotUrl($string);
+        // return self::_rotUrl($string);
         return base64_encode($string);
     }
 
@@ -116,7 +116,7 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
         // TODO: performance gain?
         // Ajde_Cache::getInstance()->addFile($linkFilename);
         if ($linkFilename) {
-            include $linkFilename;
+            include LOCAL_ROOT . $linkFilename;
         } else {
             throw new Ajde_Exception('Link filename for ' . $url . ' not found');
         }
