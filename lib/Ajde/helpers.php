@@ -69,3 +69,15 @@ function _c($var)
 {
     return Ajde_Component_String::clean($var);
 }
+
+/**
+ * Shortcut to retrieve config param
+ *
+ * @param $param
+ * @return mixed
+ * @throws Ajde_Exception
+ */
+function config($param)
+{
+    return Config::get($param);
+}
