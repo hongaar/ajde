@@ -22,10 +22,10 @@ class Ajde_Core_Route extends Ajde_Object_Standard
         }
         Ajde_Event::trigger($this, 'onAfterLangSet');
         if (!$route) {
-            $route = Config::get('homepageRoute');
+            $route = config("routes.homepage");
         }
         // Check for route aliases
-        $aliases = Config::get("aliases");
+        $aliases = config("routes.aliases");
         if (array_key_exists($route, $aliases)) {
             $this->_route = $aliases[$route];
         } else {
@@ -39,7 +39,7 @@ class Ajde_Core_Route extends Ajde_Object_Standard
                 $route), 90021);
             Ajde::routingError($exception);
         }
-        $defaultParts = Config::get('defaultRouteParts');
+        $defaultParts = config("routes.default");
         $parts        = array_merge($defaultParts, $routeParts);
         foreach ($parts as $part => $value) {
             $this->set($part, $value);
@@ -179,7 +179,7 @@ class Ajde_Core_Route extends Ajde_Object_Standard
             ['%^([^/\.]+)/([^/\.]+)/([^/\.]+)\.([^/\.]+)$%' => ['module', 'action', 'id', 'format']],
         ];
 
-        $configRules = Config::get('routes');
+        $configRules = config("routes.list");
         $rules       = array_merge($configRules, $defaultRules);
 
         foreach ($rules as $rule) {

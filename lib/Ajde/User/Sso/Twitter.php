@@ -95,7 +95,7 @@ class Ajde_User_Sso_Twitter extends Ajde_User_Sso
         $connection = $this->getProvider();
 
         /* Get temporary credentials. */
-        $callbackUrl   = Config::get('site_root') . 'user/sso:callback?provider=twitter&returnto=' . $returnto;
+        $callbackUrl   = config("app.rootUrl") . 'user/sso:callback?provider=twitter&returnto=' . $returnto;
         $request_token = $connection->getRequestToken($callbackUrl);
         $this->setCredentials($request_token);
 

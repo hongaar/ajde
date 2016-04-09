@@ -5,7 +5,7 @@ class MainController extends Ajde_Controller
     public function beforeInvoke()
     {
         if (isset($_GET['_route']) && substr($_GET['_route'], 0, 5) == 'admin') {
-            Ajde::app()->getDocument()->setLayout(new Ajde_Layout(Config::get('adminLayout')));
+            Ajde::app()->getDocument()->setLayout(new Ajde_Layout(config("layout.admin")));
         }
 
         return true;

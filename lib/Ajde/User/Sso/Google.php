@@ -24,7 +24,7 @@ class Ajde_User_Sso_Google extends Ajde_User_Sso
             }
         }
         $google = new Ajde_Social_Provider_Google();
-        $google->setRedirectUri(Config::get('site_root') . 'user/sso:callback?provider=google');
+        $google->setRedirectUri(config("app.rootUrl") . 'user/sso:callback?provider=google');
         $google->setScopes("https://www.googleapis.com/auth/plus.login");
         $google->setScopes('https://www.googleapis.com/auth/plus.profile.emails.read');
         $this->_plus     = $google->getPlus();

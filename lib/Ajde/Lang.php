@@ -224,7 +224,7 @@ class Ajde_Lang extends Ajde_Object_Singleton
         $routeLang  = $this->getShortLang();
         $currentUrl = preg_replace('/^' . $routeLang . '\/?/', '', Ajde::app()->getRoute()->getOriginalRoute());
 
-        return Config::get('site_root') . $this->getShortLang($lang) . '/' . $currentUrl;
+        return config("app.rootUrl") . $this->getShortLang($lang) . '/' . $currentUrl;
     }
 
     public function setLang($lang)
@@ -253,12 +253,12 @@ class Ajde_Lang extends Ajde_Object_Singleton
     public function setGlobalLang($lang)
     {
         $this->setLang($lang);
-        Config::getInstance()->lang_root = Config::getInstance()->site_root . $this->getShortLang() . '/';
+        Config::set("i18n.rootUrl", config("app.rootUrl") . $this->getShortLang() . '/');
     }
 
     protected function detect()
     {
-        if (Config::get("langAutodetect")) {
+        if (config("langAutodetect")) {
             $acceptedLangs = $this->getLanguagesFromHeader();
             foreach ($acceptedLangs as $acceptedLang => $priority) {
                 if ($langMatch = $this->getAvailableLang($acceptedLang)) {
@@ -267,7 +267,7 @@ class Ajde_Lang extends Ajde_Object_Singleton
             }
         }
 
-        return $defaultLang = Config::get("lang");
+        return $defaultLang = config("lang");
     }
 
     public function disableAutoTranslationOfModels()
@@ -345,7 +345,7 @@ class Ajde_Lang extends Ajde_Object_Singleton
     public function getAdapter()
     {
         if ($this->_adapter === null) {
-            $adapterName    = 'Ajde_Lang_Adapter_' . ucfirst(Config::get('langAdapter'));
+            $adapterName    = 'Ajde_Lang_Adapter_' . ucfirst(config("i18n.adapter"));
             $this->_adapter = new $adapterName();
         }
 

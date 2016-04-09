@@ -139,7 +139,7 @@ abstract class Ajde_Shop_Cart_Item extends Ajde_Model
 
     public function getFormattedUnitprice()
     {
-        return Config::get('currency') . '&nbsp;' . $this->_format(($this->getVATPercentage() + 1) * $this->getUnitprice());
+        return config("shop.currency.symbol") . '&nbsp;' . $this->_format(($this->getVATPercentage() + 1) * $this->getUnitprice());
     }
 
     public function getVATPercentage()
@@ -149,7 +149,7 @@ abstract class Ajde_Shop_Cart_Item extends Ajde_Model
             return $entity->getVATPercentage();
         }
 
-        return Config::get('defaultVAT');
+        return config("shop.vat.default");
     }
 
     public function getVATAmount()
@@ -159,7 +159,7 @@ abstract class Ajde_Shop_Cart_Item extends Ajde_Model
 
     public function getFormattedVATAmount()
     {
-        return Config::get('currency') . '&nbsp;' . $this->_format($this->getVATAmount());
+        return config("shop.currency.symbol") . '&nbsp;' . $this->_format($this->getVATAmount());
     }
 
     public function getSubTotal()
@@ -174,7 +174,7 @@ abstract class Ajde_Shop_Cart_Item extends Ajde_Model
 
     public function getFormattedTotal()
     {
-        return Config::get('currency') . '&nbsp;' . $this->_format($this->getTotal());
+        return config("shop.currency.symbol") . '&nbsp;' . $this->_format($this->getTotal());
     }
 
 }

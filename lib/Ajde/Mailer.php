@@ -8,9 +8,9 @@ class Ajde_Mailer extends PHPMailer
     public function __construct($exceptions = false)
     {
         parent::__construct($exceptions);
-        if (Config::get('mailer') == 'smtp') {
+        if (config("mail.mailer") == 'smtp') {
             $this->isSMTP();
-            $configs = Config::get('mailerConfig');
+            $configs = config("mail.config");
             foreach ($configs as $k => $v) {
                 $this->$k = $v;
             }
@@ -70,7 +70,7 @@ class Ajde_Mailer extends PHPMailer
 
     private function rel2abs($text)
     {
-        $base    = Config::get('site_root');
+        $base    = config("app.rootUrl");
         $replace = '$1' . $base . '$2$3';
 
         // Look for images
@@ -87,7 +87,7 @@ class Ajde_Mailer extends PHPMailer
     private function mergeData($data)
     {
         $defaultData = [
-            'sitename' => Config::get('sitename')
+            'sitename' => config("app.title")
         ];
 
         return array_merge($defaultData, $data);
@@ -146,8 +146,8 @@ class Ajde_Mailer extends PHPMailer
 
     public function addAddress($address, $name = '')
     {
-        if (Config::get('mailerDebug') === true) {
-            $address = Config::get('email');
+        if (config("mail.debug") === true) {
+            $address = config("app.email");
         }
 
         return parent::addAnAddress('to', $address, $name);

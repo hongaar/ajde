@@ -57,9 +57,7 @@ class Ajde_Embed_Soundcloud extends Ajde_Embed
 
     private function _key()
     {
-        $keys = Config::get('apiKeys');
-
-        return $keys['soundcloud'];
+        return config("services.soundcloud.key");
     }
 
 }

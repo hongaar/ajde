@@ -104,7 +104,7 @@ class MediaModel extends Ajde_Model
 
     public function getAbsoluteUrl()
     {
-        return Config::get('site_root') . $this->uploadDirectory . $this->thumbnail;
+        return config("app.rootUrl") . $this->uploadDirectory . $this->thumbnail;
     }
 
     private function saveFileFromWeb()

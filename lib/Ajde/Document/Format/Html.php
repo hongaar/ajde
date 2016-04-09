@@ -34,7 +34,7 @@ class Ajde_Document_Format_Html extends Ajde_Document
 
     public function setupExternalPageCache()
     {
-        if (!UserModel::getLoggedIn() && Ajde::app()->getRequest()->method() === 'get' && Config::get('externalPageCache')) {
+        if (!UserModel::getLoggedIn() && Ajde::app()->getRequest()->method() === 'get' && config("layout.cache.externalPageCache")) {
             $this->setCacheControl(self::CACHE_CONTROL_PUBLIC);
             $this->setMaxAge(1 / 24); // 1 hour
         }
@@ -86,7 +86,7 @@ class Ajde_Document_Format_Html extends Ajde_Document
 
     public function renderResources(array $types = ['*'])
     {
-        return Config::get('compressResources') ?
+        return config("layout.filters.compressResources") ?
             $this->renderCompressedResources($types) :
             $this->renderAllResources($types);
     }

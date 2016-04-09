@@ -10,7 +10,7 @@ class Ajde_Document_Format_Pdf extends Ajde_Document_Format_Generated
         $url      = $data['url'];
         $filename = $data['filename'];
 
-        $method = Config::get('pdfMethod');
+        $method = config("misc.pdf.method");
 
         switch ($method) {
             case self::METHOD_SNAPPY:
@@ -44,7 +44,7 @@ class Ajde_Document_Format_Pdf extends Ajde_Document_Format_Generated
 
     private function web2pdf($url, $filename = null)
     {
-        $web2pdfRoot = Config::get('pdfWeb2PdfApi');
+        $web2pdfRoot = config("misc.pdf.web2PdfApi");
         $api         = $web2pdfRoot . '?url=' . urlencode($url) . '&filename=' . urlencode($filename);
 
         return Ajde_Http_Curl::get($api);

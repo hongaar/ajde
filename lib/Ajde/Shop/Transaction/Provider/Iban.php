@@ -19,7 +19,7 @@ class Ajde_Shop_Transaction_Provider_Iban extends Ajde_Shop_Transaction_Provider
 
     public function getRedirectUrl($description = null)
     {
-        return Config::get('site_root') . 'shop/transaction:iban?txn=' . $this->getTransaction()->getPK();
+        return config("app.rootUrl") . 'shop/transaction:iban?txn=' . $this->getTransaction()->getPK();
     }
 
     public function getRedirectParams($description = null)

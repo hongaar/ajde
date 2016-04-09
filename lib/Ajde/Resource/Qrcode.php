@@ -16,7 +16,7 @@ class Ajde_Resource_Qrcode extends Ajde_Resource
         // @see http://www.php.net/manual/en/reserved.variables.php#84025
         $url = '_core/component:qrcode/' . urlencode(urlencode($this->getFingerprint())) . '.data';
 
-        if (Config::get('debug') === true) {
+        if (config("app.debug") === true) {
             $url .= '&text=' . urlencode($this->_text);
         }
 

@@ -13,10 +13,10 @@ $this->requireJsRemote("//apis.google.com/js/api.js?onload=onGoogleApiLoad");
     function onGoogleApiLoad() {
 
         // The API developer key obtained from the Google Developers Console.
-        var developerKey = '<?php echo Config::get('driveGoogleKey'); ?>';
+        var developerKey = '<?php echo config("services.google.key"); ?>';
 
         // The Client ID obtained from the Google Developers Console.
-        var clientId = '<?php echo Config::get('ssoGoogleKey'); ?>';
+        var clientId = '<?php echo config("services.google.key"); ?>';
 
         // Scope to use to access user's photos.
         var scope = ['https://www.googleapis.com/auth/photos', 'https://www.googleapis.com/auth/drive.readonly'];

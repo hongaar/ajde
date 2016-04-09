@@ -13,15 +13,15 @@ class Ajde_Lang_Adapter_Gettext extends Ajde_Lang_Adapter_Abstract
         // if ($lang !== $newSystemLocale) {
         // // TODO: now this adapter is not working properly...
         // }
-        //bindtextdomain(Config::get('ident'), rtrim(LANG_DIR, DIRECTORY_SEPARATOR));
-        //textdomain(Config::get('ident'));
+        //bindtextdomain(config("app.id"), rtrim(LANG_DIR, DIRECTORY_SEPARATOR));
+        //textdomain(config("app.id"));
 
         // Dammit you gettext, try the Zend_Translate approach here...
 
         $this->_lang    = Ajde_Lang::getInstance()->getLang();
         $this->_gettext = new Zend_Translate_Adapter_Gettext();
 
-        $filename = LANG_DIR . $this->_lang . '/LC_MESSAGES/' . Config::get('ident') . '.mo';
+        $filename = LANG_DIR . $this->_lang . '/LC_MESSAGES/' . config("app.id") . '.mo';
         $this->_gettext->_loadTranslationData($filename, $this->_lang);
         $this->_dictionary = $this->_gettext->get($this->_lang);
     }

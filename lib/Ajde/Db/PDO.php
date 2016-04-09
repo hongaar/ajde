@@ -30,11 +30,11 @@ class Ajde_Db_PDO extends PDO
         try {
             $result = parent::query($query);
         } catch (Exception $e) {
-            if (Config::get('debug') === true) {
+            if (config("app.debug") === true) {
                 if (isset($this->queryString)) {
                     dump($this->queryString);
                 }
-                dump('Go to ' . Config::get('site_root') . '?install=1 to install DB');
+                dump('Go to ' . config("app.rootUrl") . '?install=1 to install DB');
                 throw new Ajde_Db_Exception($e->getMessage());
             } else {
                 Ajde_Exception_Log::logException($e);

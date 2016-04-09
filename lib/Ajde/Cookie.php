@@ -73,10 +73,10 @@ class Ajde_Cookie extends Ajde_Object_Standard
 
     protected function _setcookie($value, $lifetime)
     {
-        $path     = Config::get('site_path');
-        $domain   = Config::get('cookieDomain');
-        $secure   = Config::get('cookieSecure');
-        $httponly = Config::get('cookieHttponly');
+        $path     = config("app.path");
+        $domain   = config("security.cookie.domain");
+        $secure   = config("security.cookie.secure");
+        $httponly = config("security.cookie.httponly");
         setcookie($this->_namespace, $value, $lifetime, $path, $domain, $secure, $httponly);
     }
 }

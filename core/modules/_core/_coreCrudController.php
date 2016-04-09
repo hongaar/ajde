@@ -183,8 +183,8 @@ class _coreCrudController extends Ajde_Acl_Controller
         $view->assign('crud', $crud);
 
         // Editor
-        if (Config::get('textEditor')) {
-            $editorClassName = "Ajde_Crud_Editor_" . ucfirst(Config::get('textEditor'));
+        if (config("layout.textEditor")) {
+            $editorClassName = "Ajde_Crud_Editor_" . ucfirst(config("layout.textEditor"));
             $textEditor      = new $editorClassName();
             /* @var $textEditor Ajde_Crud_Editor */
             $textEditor->getResources($view);
@@ -526,7 +526,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 
             // send email to administrator
             $body = 'Form: ' . $model->displayField() . '<br/><br/>' . nl2br($entryText);
-            $mailer->SendQuickMail(Config::get('email'), Config::get('email'), Config::get('sitename'),
+            $mailer->SendQuickMail(config("app.email"), config("app.email"), config("app.title"),
                 'New form submission', $body);
 
             // send email to user

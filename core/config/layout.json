@@ -1,6 +1,6 @@
 {
-    "layout": "base",
-    "adminLayout": "admin",
+    "frontend": "base",
+    "admin": "admin",
     "titleFormat": "%2$s - %1$s",
     "textEditor": "ckeditor",
     "filters": {

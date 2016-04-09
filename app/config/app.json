@@ -1,13 +1,10 @@
 {
     "id": "project",
-    "sitename": "Project name",
+    "title": "Project name",
     "description": "Project description",
     "author": "Author name",
     "email": "info@example.com",
-    "version": {
-        "number": "1",
-        "name": "version description"
-    },
+    "version": "v1.0.0",
     "timezone": "Europe/Amsterdam",
     "bootstrap": [
         "App"

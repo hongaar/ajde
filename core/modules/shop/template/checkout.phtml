@@ -87,7 +87,7 @@ $cart = $this->cart;
             <a class='btn btn-default btn-sm' href="shop/cart:edit"><?php echo __('Edit shopping cart', 'shop'); ?></a>
         </p>
 
-        <?php if (Config::get('shopOfferLogin') && !$transaction->hasLoaded()) { ?>
+        <?php if (config("shop.offerLogin") && !$transaction->hasLoaded()) { ?>
 
             <hr/>
 

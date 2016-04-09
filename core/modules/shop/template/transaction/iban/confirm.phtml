@@ -12,7 +12,7 @@
         ?>
     </p>
     <p>
-        <a class='btn btn-success' href='<?php echo Config::get('site_root') . 'shop/transaction:callback/iban.html?r=1&txn=' . $txn_id; ?>'>Proceed</a>
-        <a class='btn btn-danger' href='<?php echo Config::get('site_root') . 'shop/transaction:callback/iban.html?r=0&txn=' . $txn_id; ?>'>Back</a>
+        <a class='btn btn-success' href='<?php echo config("app.rootUrl") . 'shop/transaction:callback/iban.html?r=1&txn=' . $txn_id; ?>'>Proceed</a>
+        <a class='btn btn-danger' href='<?php echo config("app.rootUrl") . 'shop/transaction:callback/iban.html?r=0&txn=' . $txn_id; ?>'>Back</a>
     </p>
 </div>

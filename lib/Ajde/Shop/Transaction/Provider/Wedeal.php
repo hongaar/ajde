@@ -28,17 +28,17 @@ class Ajde_Shop_Transaction_Provider_Wedeal extends Ajde_Shop_Transaction_Provid
         $request = [
             "type"           => "transaction",
             "transactionreq" => [
-                "username"    => Config::get('shopWedealUsername'),
-                "password"    => Config::get('shopWedealPassword'),
+                "username"    => config("shop.transaction.wedeal.username"),
+                "password"    => config("shop.transaction.wedeal.password"),
                 "reference"   => $transaction->secret,
-                "description" => Config::get('ident') . ': ' . Ajde_Component_String::makePlural($transaction->shipment_itemsqty,
+                "description" => config("app.id") . ': ' . Ajde_Component_String::makePlural($transaction->shipment_itemsqty,
                         'item'),
                 "amount"      => str_replace(".", ",", (string)$transaction->payment_amount),
                 "methodcode"  => "0101",
                 "maxcount"    => "1",
                 "test"        => $this->isSandbox() ? "true" : "false",
-                "successurl"  => Config::get('site_root') . 'shop/transaction:callback/wedeal.html',
-                "failurl"     => Config::get('site_root') . 'shop/transaction:callback/wedeal.html'
+                "successurl"  => config("app.rootUrl") . 'shop/transaction:callback/wedeal.html',
+                "failurl"     => config("app.rootUrl") . 'shop/transaction:callback/wedeal.html'
             ]
         ];
         $res     = $this->sendRequest($request, true);
@@ -76,12 +76,12 @@ class Ajde_Shop_Transaction_Provider_Wedeal extends Ajde_Shop_Transaction_Provid
         $state         = $request->getParam('PaymentState');
         $description   = $request->getParam('Description');
 
-        if ($username != Config::get('shopWedealCallbackUsername')) {
+        if ($username != config("shop.transaction.wedeal.callbackUsername")) {
             Ajde_Log::log('Invalid username for callback of transaction ' . $secret);
 
             return false;
         }
-        if ($password != Config::get('shopWedealCallbackPassword')) {
+        if ($password != config("shop.transaction.wedeal.callbackPassword")) {
             Ajde_Log::log('Invalid password for callback of transaction ' . $secret);
 
             return false;
@@ -95,8 +95,8 @@ class Ajde_Shop_Transaction_Provider_Wedeal extends Ajde_Shop_Transaction_Provid
         $request = [
             "type"     => 'query',
             "merchant" => [
-                "username"  => Config::get('shopWedealUsername'),
-                "password"  => Config::get('shopWedealPassword'),
+                "username"  => config("shop.transaction.wedeal.username"),
+                "password"  => config("shop.transaction.wedeal.password"),
                 "reference" => $secret,
             ]
         ];

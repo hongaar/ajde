@@ -18,7 +18,7 @@ class UserSsoController extends Ajde_User_Controller
         Ajde_Cache::getInstance()->disable();
 
         $this->_providername = Ajde::app()->getRequest()->getParam('provider', false);
-        $sso                 = Config::get('ssoProviders');
+        $sso                 = config('ssoProviders');
         if (!$this->_providername || !in_array($this->_providername, $sso)) {
             Ajde_Http_Response::redirectNotFound();
         }

@@ -25,13 +25,9 @@ class Ajde_Config_Repository extends Ajde_Object_Standard
 
         $searchDirs = [
             CORE_DIR . $directory,
-            '*.json',
             CORE_DIR . $directory . $environment . DS,
-            '*.json',
             APP_DIR . $directory,
-            '*.json',
-            APP_DIR . $directory . $environment . DS,
-            '*.json'
+            APP_DIR . $directory . $environment . DS
         ];
 
         foreach ($searchDirs as $searchDir) {
@@ -51,10 +47,10 @@ class Ajde_Config_Repository extends Ajde_Object_Standard
         $this->set("app.protocol", (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS'])) ? 'https://' : 'http://');
         $this->set("app.domain", $_SERVER['SERVER_NAME']);
         $this->set("app.path", str_replace('index.php', '', $_SERVER['PHP_SELF']));
-        $this->set("app.root", $this->get("app.protocol") . $this->site_domain . $this->site_path);
-        $this->set("i18n.root", $this->get("app.root"));
+        $this->set("app.rootUrl", $this->get("app.protocol") . $this->get("app.domain") . $this->get("app.path"));
+        $this->set("i18n.rootUrl", $this->get("app.root"));
 
         // Set default timezone now
-        date_default_timezone_set($this->timezone);
+        date_default_timezone_set($this->get("app.timezone"));
     }
 }

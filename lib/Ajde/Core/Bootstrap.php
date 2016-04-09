@@ -4,7 +4,7 @@ class Ajde_Core_Bootstrap
 {
     public function run()
     {
-        $cue = Config::getInstance()->bootstrap;
+        $cue = config("app.bootstrap");
         $this->runCue($cue);
     }
 
@@ -12,7 +12,7 @@ class Ajde_Core_Bootstrap
     {
         /*
          * Our bootstrapper calls the __bootstrap() methods on all modules defined
-         * in Config::get("bootstrap").
+         * in config("bootstrap").
          */
         $bootstrapFunction = '__bootstrap';
 

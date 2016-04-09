@@ -12,14 +12,14 @@ $field = $this->field;
 <?php
 
 if ($field->hasUseImage() && $field->getUseImage()) {
-   
+
     if (!$field->hasLayerImage()) {
         throw new Ajde_Exception('Please set layerImage for this model in afterCrudLoaded hook');
     }
-    
+
     ?>
     <div class="spatial image">
-    <?php    
+    <?php
         echo $this->ACImage(array(
             'filename' => $field->getLayerImage(),
             'width' => 800,
@@ -29,16 +29,15 @@ if ($field->hasUseImage() && $field->getUseImage()) {
         <div class="spatialMarker"></div>
     </div>
     <?php
-    
+
 } else {
-    
-    $apiKey = Config::get('apiKeys');
-    $apiKey = $apiKey['google'];
+
+    $apiKey = config("services.google.key");
 
     $this->requireJsRemote('https://maps.googleapis.com/maps/api/js?key=' . $apiKey . '&sensor=false');
 
     ?>
 
     <div class="spatial gmaps"></div>
-    
+
 <?php } ?>

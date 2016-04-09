@@ -85,7 +85,7 @@ class Ajde_User_Sso_Facebook extends Ajde_User_Sso
         $connection = $this->getProvider();
 
         /* Set callback URL */
-        $callbackUrl = Config::get('site_root') . 'user/sso:callback?provider=facebook&returnto=' . $returnto;
+        $callbackUrl = config("app.rootUrl") . 'user/sso:callback?provider=facebook&returnto=' . $returnto;
 
         return $connection->getLoginUrl([
             'redirect_uri' => $callbackUrl,

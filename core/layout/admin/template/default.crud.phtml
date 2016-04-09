@@ -55,33 +55,28 @@ $this->requireCss('default.crud');
 ?>
 <!-- Inspired by HTML5 Boilerplate -->
 <!doctype html>
-<html lang='<?php echo Ajde_Lang::getInstance()->getShortLang(); ?>' id='<?php echo Config::get('ident'); ?>' data-lifetime='<?php echo (Config::get('sessionLifetime') == 0 ? 180 : Config::get('sessionLifetime')); ?>' data-alert='<?php echo _e(Ajde_Session_Flash::get('alert')); ?>'>
+<html lang='<?php echo Ajde_Lang::getInstance()->getShortLang(); ?>' id='<?php echo config("app.id"); ?>' data-lifetime='<?php echo (config("session.lifetime") == 0 ? 180 : config("session.lifetime")); ?>' data-alert='<?php echo _e(Ajde_Session_Flash::get('alert')); ?>'>
 	<head>
-		
+
 		<!-- UTF-8 please (also in the headers, just to be sure) -->
 		<meta charset='utf-8'>
-		
+
 		<!-- Some content meta tags -->
-		<title><?php echo _e(strip_tags(Ajde::app()->getDocument()->getFullTitle())); ?></title>		
-		
+		<title><?php echo _e(strip_tags(Ajde::app()->getDocument()->getFullTitle())); ?></title>
+
 		<!-- Define the root of the site -->
-		<base href='<?php echo Config::get('lang_root'); ?>' />
-		
+		<base href='<?php echo config("i18n.rootUrl"); ?>' />
+
 		<!-- Favicon and CSS -->
 		<?php echo $this->getDocument()->getHead('css'); ?>
-		
+
 	</head>
-	
-	<!-- Target older versions of IE with CSS classes -->
-	<!--[if lt IE 7 ]> <body class='ie6 oldie'> <![endif]-->
-	<!--[if IE 7 ]>    <body class='ie7 oldie'> <![endif]-->
-	<!--[if IE 8 ]>    <body class='ie8 oldie'> <![endif]-->
-	<!--[if IE 9 ]>    <body class='ie9'> <![endif]-->
-	<!--[if (gt IE 9)|!(IE)]><!--> <body> <!--<![endif]-->
-		
-		<!-- The content -->		
+
+    <body>
+
+		<!-- The content -->
 		<div class='container'>
-			<div class='row'>							
+			<div class='row'>
 				<div class='twelvecol'>
 					<?php echo $this->getDocument()->getBody(); ?>
 				</div>
@@ -111,13 +106,13 @@ $this->requireCss('default.crud');
                 var b = document.getElementsByTagName('script')[0]; b.parentNode.insertBefore(s, b);
             })();
         </script>
-				
+
 	</body>
 </html>
 
 <!-- Some debugging info -->
 <!--[<pre>
-	<?php $version = Config::get('version'); echo Config::get('ident') . ', v' . $version['number'] . ' (' . $version['name'] . ')'; ?> 
-	Cache <?php echo Ajde_Cache::getInstance()->isEnabled() ? 'enabled' : 'disabled' ?> 
-	Last modified on <?php echo date("r", Ajde_Cache::getInstance()->getLastModified()); ?> 
+	<?php echo config("app.id") . ', ' . config("app.version"); ?>
+	Cache <?php echo Ajde_Cache::getInstance()->isEnabled() ? 'enabled' : 'disabled' ?>
+	Last modified on <?php echo date("r", Ajde_Cache::getInstance()->getLastModified()); ?>
 </pre><![-->

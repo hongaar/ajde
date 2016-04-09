@@ -23,7 +23,7 @@ class Ajde_Cache extends Ajde_Object_Singleton
 
     protected function __construct()
     {
-        $this->_enabled = Config::get('useCache');
+        $this->_enabled = config("layout.cache.enabled");
     }
 
     public function isEnabled()

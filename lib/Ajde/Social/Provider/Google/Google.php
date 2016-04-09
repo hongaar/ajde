@@ -11,8 +11,8 @@ class Ajde_Social_Provider_Google extends Google_Client
     {
         parent::__construct($config);
 
-        $this->_key    = Config::get('ssoGoogleKey');
-        $this->_secret = Config::get('ssoGoogleSecret');
+        $this->_key    = config("services.google.key");
+        $this->_secret = config("services.google.secret");
 
         $this->setClientId($this->_key);
         $this->setClientSecret($this->_secret);

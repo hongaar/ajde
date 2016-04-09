@@ -9,8 +9,8 @@ class Ajde_Social_Provider_Twitter extends TwitterOAuth
 
     function __construct($oauth_token = null, $oauth_token_secret = null)
     {
-        $this->_key    = Config::get('ssoTwitterKey');
-        $this->_secret = Config::get('ssoTwitterSecret');
+        $this->_key    = config("services.twitter.key");
+        $this->_secret = config("services.twitter.secret");
 
         parent::__construct($this->_key, $this->_secret, $oauth_token, $oauth_token_secret);
     }

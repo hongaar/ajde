@@ -43,7 +43,7 @@ class Ajde_Cms extends Ajde_Object_Singleton
         if ($homepageNodeId) {
             $node = NodeModel::fromPk($homepageNodeId);
             if ($node) {
-                Config::getInstance()->homepageRoute = $node->getUrl();
+                Config::set("routes.homepage", $node->getUrl());
             }
         }
     }
@@ -62,9 +62,9 @@ class Ajde_Cms extends Ajde_Object_Singleton
         if ($node) {
             $this->_detectedNode = $node;
             $route->setRoute($slug);
-            $routes = Config::get('routes');
+            $routes = config("routes.list");
             array_unshift($routes, ['%^(' . preg_quote($slug) . ')$%' => ['slug']]);
-            Config::getInstance()->routes = $routes;
+            Config::set("routes.list", $routes);
         }
     }
 
@@ -80,9 +80,9 @@ class Ajde_Cms extends Ajde_Object_Singleton
             $product = ProductModel::fromSlug($lastSlugPart);
             if ($product) {
                 $route->setRoute($slug);
-                $routes = Config::get('routes');
+                $routes = config("routes.list");
                 array_unshift($routes, ['%^(shop)/(' . preg_quote($lastSlugPart) . ')$%' => ['module', 'slug']]);
-                Config::getInstance()->routes = $routes;
+                Config::set("routes.list", $routes);
             }
         }
     }

@@ -30,9 +30,9 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
         $order_id = $transaction->secret;
         $data     = [
             "amount"      => $transaction->payment_amount,
-            "description" => isset($description) ? $description : Config::get('sitename') . ': ' . Ajde_Component_String::makePlural($transaction->shipment_itemsqty,
+            "description" => isset($description) ? $description : config("app.title") . ': ' . Ajde_Component_String::makePlural($transaction->shipment_itemsqty,
                     'item'),
-            "redirectUrl" => Config::get('site_root') . $this->returnRoute . 'mollie_' . $this->getMethod() . '.html?order_id=' . $order_id,
+            "redirectUrl" => config("app.rootUrl") . $this->returnRoute . 'mollie_' . $this->getMethod() . '.html?order_id=' . $order_id,
             "method"      => $this->getMethod(),
             "metadata"    => [
                 "order_id" => $order_id,
@@ -165,6 +165,6 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
 
     private function getApiKey()
     {
-        return $this->isSandbox() ? Config::get('shopMollieTestKey') : Config::get('shopMollieLiveKey');
+        return $this->isSandbox() ? config("shop.transaction.mollie.testKey") : config("shop.transaction.mollie.liveKey");
     }
 }

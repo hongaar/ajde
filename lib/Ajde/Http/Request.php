@@ -32,7 +32,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
             if (!isset($post['_token']) || !$session->has('formTime')) {
 
                 $exception = new Ajde_Core_Exception_Security('No form token received or no form time set, bailing out to prevent CSRF attack');
-                if (Config::getInstance()->debug === true) {
+                if (config("app.debug") === true) {
                     Ajde_Http_Response::setResponseType(Ajde_Http_Response::RESPONSE_TYPE_FORBIDDEN);
                     throw $exception;
                 } else {
@@ -53,7 +53,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
                 } else {
                     $exception = new Ajde_Core_Exception_Security('Form token timed out, bailing out to prevent CSRF attack');
                 }
-                if (Config::getInstance()->debug === true) {
+                if (config("app.debug") === true) {
                     Ajde_Http_Response::setResponseType(Ajde_Http_Response::RESPONSE_TYPE_FORBIDDEN);
                     throw $exception;
                 } else {
@@ -115,17 +115,17 @@ class Ajde_Http_Request extends Ajde_Object_Standard
      */
     private static function autoEscapeString()
     {
-        return Config::getInstance()->autoEscapeString == true;
+        return config("security.autoEscapeString") == true;
     }
 
     private static function autoCleanHtml()
     {
-        return Config::getInstance()->autoCleanHtml == true;
+        return config("security.autoCleanHtml") == true;
     }
 
     private static function requirePostToken()
     {
-        return Config::getInstance()->requirePostToken == true;
+        return config("security.csrf.requirePostToken") == true;
     }
 
     /**
@@ -160,7 +160,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
     private static function _isWhitelisted()
     {
         $route = issetor($_GET['_route'], false);
-        foreach (Config::get('postWhitelistRoutes') as $whitelist) {
+        foreach (config("security.csrf.postWhitelistRoutes") as $whitelist) {
             if (stripos($route, $whitelist) === 0) {
                 return true;
             }

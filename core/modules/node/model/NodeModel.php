@@ -767,7 +767,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
         if ($this->getPK()) {
             $url = $this->getFullUrl();
 
-            return $relative ? $url : Config::get('site_root') . $url;
+            return $relative ? $url : config("app.rootUrl") . $url;
         }
 
         return false;

@@ -17,9 +17,9 @@ class App extends Ajde_Object_Singleton implements Ajde_BootstrapInterface
         Ajde_Event::register('TransactionModel', 'onCreate', [$this, 'onTransactionCreated']);
 
         if (UserModel::isTester() || UserModel::isAdmin()) {
-            $providers   = Config::get('transactionProviders');
+            $providers   = config("shop.transaction.providers");
             $providers[] = 'test';
-            Config::set('transactionProviders', $providers);
+            Config::set("shop.transaction.providers", $providers);
         }
 
         return true;

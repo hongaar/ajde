@@ -17,7 +17,7 @@ class Ajde_Document_Format_Json extends Ajde_Document
     public function getBody()
     {
         $body = json_encode($this->get('body'));
-        if (Config::get('debug')) {
+        if (config("app.debug")) {
             if (Ajde_Dump::getAll()) {
                 foreach (Ajde_Dump::getAll() as $source => $var) {
                     //if ($var[1] === true) { $expand = true; }

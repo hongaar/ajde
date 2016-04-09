@@ -18,7 +18,7 @@ class Ajde_Controller extends Ajde_Object_Standard
     {
         $this->setModule(strtolower(str_replace('Controller', '', get_class($this))));
         if (!isset($action) || !isset($format)) {
-            $defaultParts = Config::get('defaultRouteParts');
+            $defaultParts = config("routes.default");
         }
         $this->setAction(isset($action) ? $action : $defaultParts['action']);
         $this->setFormat(isset($format) ? $format : $defaultParts['format']);
@@ -81,11 +81,12 @@ class Ajde_Controller extends Ajde_Object_Standard
         if (!class_exists($moduleController)) {
 
             // Prevent resursive 404 routing
-            if (isset(Config::getInstance()->responseCodeRoute[Ajde_Http_Response::RESPONSE_TYPE_NOTFOUND])) {
-                $notFoundRoute = new Ajde_Core_Route(Config::getInstance()->responseCodeRoute[Ajde_Http_Response::RESPONSE_TYPE_NOTFOUND]);
+            $errorRoutes = config("routes.errors");
+            if (isset($errorRoutes[Ajde_Http_Response::RESPONSE_TYPE_NOTFOUND])) {
+                $notFoundRoute = new Ajde_Core_Route($errorRoutes[Ajde_Http_Response::RESPONSE_TYPE_NOTFOUND]);
                 if ($route->buildRoute() == $notFoundRoute->buildRoute()) {
                     Ajde_Http_Response::setResponseType(404);
-                    die('<h2>Ouch, something broke.</h2><p>This is serious. We tried to give you a nice error page, but even that failed.</p><button onclick="location.href=\'' . Config::get('site_root') . '\';">Go back to homepage</button>');
+                    die('<h2>Ouch, something broke.</h2><p>This is serious. We tried to give you a nice error page, but even that failed.</p><button onclick="location.href=\'' . config("app.rootUrl") . '\';">Go back to homepage</button>');
                 }
             }
 

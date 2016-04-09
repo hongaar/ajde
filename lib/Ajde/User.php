@@ -145,7 +145,7 @@ abstract class Ajde_User extends Ajde_Model
         //session_regenerate_id();
         $session = new Ajde_Session('user');
         $session->destroy();
-        $cookie = new Ajde_Cookie(Config::get('ident') . '_user');
+        $cookie = new Ajde_Cookie(config("app.id") . '_user');
         $cookie->destroy();
         self::$_user = null;
     }
@@ -177,7 +177,7 @@ abstract class Ajde_User extends Ajde_Model
     {
         $hash        = $this->getCookieHash($includeDomain);
         $cookieValue = $this->getPK() . ':' . $hash;
-        $cookie      = new Ajde_Cookie(Config::get('ident') . '_user', true);
+        $cookie      = new Ajde_Cookie(config("app.id") . '_user', true);
         $cookie->setLifetime($this->cookieLifetime);
         $cookie->set('auth', $cookieValue);
 
@@ -211,7 +211,7 @@ abstract class Ajde_User extends Ajde_Model
 
     public function verifyCookie($includeDomain = true)
     {
-        $cookie = new Ajde_Cookie(Config::get('ident') . '_user', true);
+        $cookie = new Ajde_Cookie(config("app.id") . '_user', true);
         if (!$cookie->has('auth')) {
             return false;
         }

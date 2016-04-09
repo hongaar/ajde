@@ -34,7 +34,7 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
     private static function _getProviders()
     {
         $return    = [];
-        $providers = Config::get('transactionProviders');
+        $providers = config("shop.transaction.providers");
         foreach ($providers as $provider) {
             $return[$provider] = Ajde_Shop_Transaction_Provider::getProvider($provider);
         }
@@ -114,17 +114,17 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
 
     public function getFormattedTotal()
     {
-        return Config::get('currency') . '&nbsp;' . $this->_format($this->getTotal());
+        return config("shop.currency.symbol") . '&nbsp;' . $this->_format($this->getTotal());
     }
 
     public function getFormattedItemsTotal()
     {
-        return Config::get('currency') . '&nbsp;' . $this->_format($this->shipment_itemstotal);
+        return config("shop.currency.symbol") . '&nbsp;' . $this->_format($this->shipment_itemstotal);
     }
 
     public function getFormattedShippingTotal()
     {
-        return Config::get('currency') . '&nbsp;' . $this->_format($this->shipment_cost);
+        return config("shop.currency.symbol") . '&nbsp;' . $this->_format($this->shipment_cost);
     }
 
     public function getOverviewHtml()

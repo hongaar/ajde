@@ -1,16 +1,16 @@
 <div class="row-fluid">
 	<div class="span12">
-	
+
 		<fieldset>
 			<legend><?php echo $this->message ? $this->clean($this->message) : 'No need to logon again'; ?></legend>
-			
+
 			<p>
 				You are already logged on.
 			</p>
-			
-			<?php if (Config::get('debug') === true) {
+
+			<?php if (config("app.debug") === true) {
 				echo '<div class="well"><span class="badge badge-important">ACL debug</span><p>';
-				foreach(Ajde_Acl::$log as $log) {  
+				foreach(Ajde_Acl::$log as $log) {
 		            echo $log . '<br/>';
 		        }
 				echo '</p></div>';
@@ -22,6 +22,6 @@
 				<a class='btn' href="user/profile"><?php echo __('view profile'); ?></a>
 			</p>
 		</fieldset>
-	
+
 	</div><!--/span-->
 </div>

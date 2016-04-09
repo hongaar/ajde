@@ -66,7 +66,7 @@ $user = UserModel::getLoggedIn();
 ?>
 <!-- Inspired by HTML5 Boilerplate -->
 <!doctype html>
-<html lang='<?php echo Ajde_Lang::getInstance()->getShortLang(); ?>' id='<?php echo Config::get('ident'); ?>' data-lifetime='<?php echo (Config::get('sessionLifetime') == 0 ? 180 : Config::get('sessionLifetime')); ?>' data-alert='<?php echo _e(Ajde_Session_Flash::get('alert')); ?>'>
+<html lang='<?php echo Ajde_Lang::getInstance()->getShortLang(); ?>' id='<?php echo config("app.id"); ?>' data-lifetime='<?php echo (config("session.lifetime") == 0 ? 180 : config("session.lifetime")); ?>' data-alert='<?php echo _e(Ajde_Session_Flash::get('alert')); ?>'>
 	<head>
 
 		<!-- UTF-8 please (also in the headers, just to be sure) -->
@@ -75,7 +75,7 @@ $user = UserModel::getLoggedIn();
 		<!-- Some content meta tags -->
 		<title><?php echo _e(strip_tags(Ajde::app()->getDocument()->getFullTitle())); ?></title>
 		<meta name='description' content='<?php echo _e(Ajde::app()->getDocument()->getDescription()); ?>' />
-		<meta name='author' content='<?php echo _e(Config::get('author')); ?>' />
+		<meta name='author' content='<?php echo _e(config("app.author")); ?>' />
 		<?php echo Ajde::app()->getDocument()->getMeta(); ?>
 
 		<!-- Mobile presentation meta tags -->
@@ -85,7 +85,7 @@ $user = UserModel::getLoggedIn();
 		<meta http-equiv="cleartype" content="on">
 
 		<!-- Define the root of the site -->
-		<base href='<?php echo Config::get('lang_root'); ?>' />
+		<base href='<?php echo config("i18n.rootUrl"); ?>' />
 
 		<!-- Make IE6-8 HTML5 compliant, somewhat... -->
 		<!--[if lt IE 9]>
@@ -121,7 +121,7 @@ $user = UserModel::getLoggedIn();
 						  <span class="icon-bar"></span>
 						  <span class="icon-bar"></span>
 					</button>
-					<a class="brand" href="admin"><?php echo Config::get('sitename'); ?></a>
+					<a class="brand" href="admin"><?php echo config("app.title"); ?></a>
 					<?php echo $this->includeModule('admin/nav'); ?>
 				</div>
 			</div>
@@ -175,7 +175,7 @@ $user = UserModel::getLoggedIn();
 	</body>
 </html>
 
-<?php if (Config::get('debug')) { ?>
+<?php if (config("app.debug")) { ?>
 <!-- Some debugging info -->
-<pre style="position: relative; z-index: 99;"><?php $version = Config::get('version'); echo Config::get('ident') . ', v' . $version['number'] . ' (' . $version['name'] . ')'; ?> | Cache <?php echo Ajde_Cache::getInstance()->isEnabled() ? 'enabled' : 'disabled' ?> | Last modified on <?php echo date("r", Ajde_Cache::getInstance()->getLastModified()); ?></pre>
+<pre style="position: relative; z-index: 99;"><?php echo config("app.id") . ', ' . config("app.version"); ?> | Cache <?php echo Ajde_Cache::getInstance()->isEnabled() ? 'enabled' : 'disabled' ?> | Last modified on <?php echo date("r", Ajde_Cache::getInstance()->getLastModified()); ?></pre>
 <?php } ?>

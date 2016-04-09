@@ -7,7 +7,7 @@ class Ajde_Crud_Field_I18n extends Ajde_Crud_Field_Enum
     public function __construct(Ajde_Crud $crud, $fieldOptions)
     {
         parent::__construct($crud, $fieldOptions);
-        $this->set('default', Config::get('lang'));
+        $this->set('default', config("i18n.default"));
     }
 
     public function getFieldsToClone()

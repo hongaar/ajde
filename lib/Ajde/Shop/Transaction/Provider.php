@@ -58,7 +58,7 @@ abstract class Ajde_Shop_Transaction_Provider extends Ajde_Object_Standard
 
     public function isSandbox()
     {
-        return Config::get('shopSandboxPayment');
+        return config("shop.sandboxPayment");
     }
 
     protected function ping($url, $port = 80, $timeout = 6)

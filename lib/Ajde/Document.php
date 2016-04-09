@@ -53,7 +53,7 @@ abstract class Ajde_Document extends Ajde_Object_Standard
     {
         if (!$this->hasLayout()) {
             // Load default layout into document
-            $this->setLayout(new Ajde_Layout(Config::get("layout")));
+            $this->setLayout(new Ajde_Layout(config("layout")));
         }
 
         return $this->get("layout");
@@ -93,9 +93,9 @@ abstract class Ajde_Document extends Ajde_Object_Standard
 
     public function getFullTitle()
     {
-        $projectTitle = Config::get('sitename');
+        $projectTitle = config("app.title");
         if ($this->has('title')) {
-            return sprintf(Config::get('titleFormat'),
+            return sprintf(config("layout.titleFormat"),
                 $projectTitle,
                 $this->get('title')
             );
@@ -114,7 +114,7 @@ abstract class Ajde_Document extends Ajde_Object_Standard
         if ($this->has('description')) {
             return $this->get('description');
         } else {
-            return Config::get('description');
+            return config("app.description");
         }
     }
 
@@ -128,7 +128,7 @@ abstract class Ajde_Document extends Ajde_Object_Standard
         if ($this->has('author')) {
             return $this->get('author');
         } else {
-            return Config::get('author');
+            return config("app.author");
         }
     }
 
@@ -203,7 +203,7 @@ abstract class Ajde_Document extends Ajde_Object_Standard
 
     public static function registerDocumentProcessor($format, $registerOn = 'layout')
     {
-        $documentProcessors = Config::get('documentProcessors');
+        $documentProcessors = config("layout.filters.documentProcessors");
         if (is_array($documentProcessors) && isset($documentProcessors[$format])) {
             foreach ($documentProcessors[$format] as $processor) {
                 $processorClass = 'Ajde_Document_Processor_' . ucfirst($format) . '_' . $processor;

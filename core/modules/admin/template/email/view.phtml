@@ -1,10 +1,10 @@
 <?php /* @var $this Ajde_Template_Parser_Phtml_Helper */
 
-$fromName = Config::get('sitename');
-$fromEmail = Config::get('email');
+$fromName = config("app.title");
+$fromEmail = config("app.email");
 
 $options = new Ajde_Crud_Options();
-$options	
+$options
 	->selectFields()
 		->selectField('name')
 			->setEmphasis(true)
@@ -29,7 +29,7 @@ $options
         ->selectField('from_email')
             ->setHelp('When left blank, use default (' . $fromEmail . ')')
             ->up()
-		->up()			
+		->up()
 	->selectList()
 		->selectButtons()
 			->setNew(true)
@@ -61,9 +61,9 @@ $options
 						->setTitle('Sender')
 						->setClass('sidebar well')
 						->setShow(array('from_name', 'from_email'))
-						->up()		
-									
-		
+						->up()
+
+
 	->finished();
 
 $crud = $this->ACCrudList('email', $options);
@@ -75,7 +75,7 @@ $crud = $this->ACCrudList('email', $options);
 		<?php echo $this->includeModule('admin/cms:menu'); ?>
 	</div><!--/span-->
 	<div class="span10 expandInIframe">
-		
+
 		<div class="page-header">
 			<h1>
 				<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
@@ -85,8 +85,8 @@ $crud = $this->ACCrudList('email', $options);
         <?php if (!Ajde::app()->getRequest()->has('edit') && !Ajde::app()->getRequest()->has('new')) {
             echo $this->includeModule('admin/email:menu');
         } ?>
-		
+
 		<?php echo $crud->output(); ?>
-		
+
 	</div><!--/span-->
 </div><!--/row-->

@@ -139,7 +139,7 @@ class Ajde_Resource_Local extends Ajde_Resource
     protected function getLinkUrl()
     {
         $base = '_core/component:resourceLocal';
-        if (Config::get('debug') === true) {
+        if (config("app.debug") === true) {
             $url = $base . '/' . urlencode($this->getFingerprint()) . '.' . $this->getType() . '?' . str_replace([
                     '%2F',
                     '%5C'

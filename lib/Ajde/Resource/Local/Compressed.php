@@ -46,7 +46,7 @@ class Ajde_Resource_Local_Compressed extends Ajde_Resource
         //$url = '_core/component:resourceCompressed/' . $this->getType() . '/' . $hash . '/';
         $url = '_core/component:resourceCompressed/' . urlencode($this->getFingerprint()) . '.' . $this->getType();
 
-        if (Config::get('debug') === true) {
+        if (config("app.debug") === true) {
             $url .= '?file=' . str_replace(['%2F', '%5C'], ':', urlencode($this->getFilename()));
         }
 

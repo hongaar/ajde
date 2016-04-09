@@ -21,7 +21,7 @@ class UserController extends Ajde_User_Controller
             (isset($_GET['returnto']) && substr($_GET['returnto'], 0, 5) == 'admin') ||
             $adminAccess
         ) {
-            Ajde::app()->getDocument()->setLayout(new Ajde_Layout(Config::get('adminLayout')));
+            Ajde::app()->getDocument()->setLayout(new Ajde_Layout(config("layout.admin")));
         }
         Ajde_Cache::getInstance()->disable();
 
@@ -67,7 +67,7 @@ class UserController extends Ajde_User_Controller
     public function social()
     {
         $user = $this->getLoggedInUser();
-        $this->getView()->assign('sso', Config::get('ssoProviders'));
+        $this->getView()->assign('sso', config("user.sso.providers"));
         $this->getView()->assign('user', $user);
 
         return $this->render();
@@ -195,7 +195,7 @@ class UserController extends Ajde_User_Controller
             $this->getView()->assign('returnto',
                 Ajde::app()->getRequest()->getParam('returnto', $_SERVER['REDIRECT_STATUS'] == 200 ? 'user' : false));
         }
-        $this->getView()->assign('sso', Config::get('ssoProviders'));
+        $this->getView()->assign('sso', config("user.sso.providers"));
 
         return $this->render();
     }
@@ -410,7 +410,7 @@ class UserController extends Ajde_User_Controller
 
         $provider = false;
         if ($providername) {
-            $sso = Config::get('ssoProviders');
+            $sso = config("user.sso.providers");
             if (!in_array($providername, $sso)) {
                 Ajde_Http_Response::redirectNotFound();
             }

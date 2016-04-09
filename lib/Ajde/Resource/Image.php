@@ -42,7 +42,7 @@ class Ajde_Resource_Image extends Ajde_Resource
         // @see http://www.php.net/manual/en/reserved.variables.php#84025
         $url = '_core/component:image/' . urlencode(urlencode($this->getFingerprint())) . '.data';
 
-        if (Config::get('debug') === true) {
+        if (config("app.debug") === true) {
             $url .= '?file=' . str_replace(['%2F', '%5C'], ':', urlencode($this->_source));
         }
 

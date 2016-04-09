@@ -35,11 +35,11 @@ class EmailModel extends Ajde_Model
 
     public function getFromName()
     {
-        return parent::hasNotEmpty('from_name') ? parent::get('from_name') : Config::get('sitename');
+        return parent::hasNotEmpty('from_name') ? parent::get('from_name') : config("app.title");
     }
 
     public function getFromEmail()
     {
-        return parent::hasNotEmpty('from_email') ? parent::get('from_email') : Config::get('email');
+        return parent::hasNotEmpty('from_email') ? parent::get('from_email') : config("app.email");
     }
 }

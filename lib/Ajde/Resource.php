@@ -46,7 +46,7 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
         if (Ajde::app()->getDocument()->hasLayout()) {
             $layout = Ajde::app()->getDocument()->getLayout();
         } else {
-            $layout = new Ajde_Layout(Config::get("layout"));
+            $layout = new Ajde_Layout(config("layout"));
         }
         $format = issetor($format, 'html');
 

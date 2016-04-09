@@ -10,5 +10,9 @@
         "Ajde_Core_Autodebug",
         "Ajde_Shop_Cart_Merge",
         "Ajde_Cms"
-    ]
+    ],
+    "protocol": null,
+    "domain": null,
+    "path": null,
+    "rootUrl": null
 }

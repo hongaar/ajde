@@ -69,7 +69,7 @@ class Ajde_Crud_Field_Fk extends Ajde_Crud_Field_Enum
 
             // Filter lang by current (page) language
             if ($langFilter == 'page') {
-                $lang = Config::get('lang');
+                $lang = config("i18n.default");
             }
 
             if ($langFilter && $lang && method_exists($this->_collection, 'getLanguageField')) {

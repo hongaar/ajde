@@ -1,6 +1,7 @@
 {
     "enabled": true,
-    "lang": "en_GB",
+    "default": "en_GB",
     "autodetect": true,
-    "adapter": "ini"
+    "adapter": "ini",
+    "rootUrl": null
 }

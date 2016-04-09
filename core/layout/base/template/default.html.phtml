@@ -27,7 +27,7 @@ if (($user = UserModel::getLoggedIn()) && $user->isAdmin()) {
 
 ?>
 <!DOCTYPE html>
-<html lang='<?php echo Ajde_Lang::getInstance()->getShortLang(); ?>' id='<?php echo Config::get('ident'); ?>' data-lifetime='<?php echo (Config::get('sessionLifetime') == 0 ? 180 : Config::get('sessionLifetime')); ?>' data-alert='<?php echo _e(Ajde_Session_Flash::get('alert')); ?>'>
+<html lang='<?php echo Ajde_Lang::getInstance()->getShortLang(); ?>' id='<?php echo config("app.id"); ?>' data-lifetime='<?php echo (config("session.lifetime") == 0 ? 180 : config("session.lifetime")); ?>' data-alert='<?php echo _e(Ajde_Session_Flash::get('alert')); ?>'>
 
     <head>
 
@@ -46,24 +46,24 @@ if (($user = UserModel::getLoggedIn()) && $user->isAdmin()) {
         <meta property='og:title' content='<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>' />
         <meta property='og:type' content='website' />
         <?php if (Ajde::app()->hasController()) {
-            ?><meta property='og:url' content='<?php echo Config::get('site_root') . Ajde::app()->getController()->getCanonicalUrl(); ?>' />
+            ?><meta property='og:url' content='<?php echo config("app.rootUrl") . Ajde::app()->getController()->getCanonicalUrl(); ?>' />
         <?php }
         if (Ajde::app()->getDocument()->hasNotEmpty('featuredImage')) {
-            ?><meta property='og:image' content='<?php echo Config::get('site_root') . Ajde::app()->getDocument()->getFeaturedImage(); ?>' />
+            ?><meta property='og:image' content='<?php echo config("app.rootUrl") . Ajde::app()->getDocument()->getFeaturedImage(); ?>' />
         <?php }
         ?><meta property='og:description' content='<?php echo _e(Ajde::app()->getDocument()->getDescription()); ?>' />
         <meta property='og:locale' content='<?php echo Ajde_Lang::getInstance()->getShortLang(); ?>' />
-        <meta property='og:site_name' content='<?php echo _e(Config::get('sitename')); ?>' />
+        <meta property='og:site_name' content='<?php echo _e(config("app.title")); ?>' />
 
         <!-- Mobile presentation meta tags -->
         <meta name='viewport' content='width=device-width, initial-scale=1.0'>
 
         <!-- Define the root of the site -->
-        <base href='<?php echo Config::get('lang_root'); ?>' />
+        <base href='<?php echo config("i18n.rootUrl"); ?>' />
 
         <!-- Canonical URL -->
         <?php if (Ajde::app()->hasController()) {
-            ?><link rel='canonical' href='<?php echo Config::get('site_root') . Ajde::app()->getController()->getCanonicalUrl(); ?>' />
+            ?><link rel='canonical' href='<?php echo config("app.rootUrl") . Ajde::app()->getController()->getCanonicalUrl(); ?>' />
         <?php } ?>
 
         <!-- Language links -->
@@ -104,7 +104,7 @@ if (($user = UserModel::getLoggedIn()) && $user->isAdmin()) {
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="."><?php echo _e(Config::get('sitename')); ?></a>
+                    <a class="navbar-brand" href="."><?php echo _e(config("app.title")); ?></a>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
@@ -129,7 +129,7 @@ if (($user = UserModel::getLoggedIn()) && $user->isAdmin()) {
         <footer class='container'>
             <div class='row'>
                 <div class='col-sm-12'>
-                    &copy; <?php echo date('Y'); ?> <?php echo Config::get('author'); ?>
+                    &copy; <?php echo date('Y'); ?> <?php echo config("app.author"); ?>
                 </div>
             </div>
         </footer>
@@ -164,10 +164,10 @@ if (($user = UserModel::getLoggedIn()) && $user->isAdmin()) {
     </body>
 </html>
 
-<?php if (Config::get('debug')) { ?>
+<?php if (config("app.debug")) { ?>
 <!-- Some debugging info -->
 <!--[<pre>
-	<?php $version = Config::get('version'); echo Config::get('ident') . ', v' . $version['number'] . ' (' . $version['name'] . ')'; ?>
+	<?php echo config("app.id") . ', ' . config("app.version"); ?>
 	Cache <?php echo Ajde_Cache::getInstance()->isEnabled() ? 'enabled' : 'disabled' ?>
 	Last modified on <?php echo date("r", Ajde_Cache::getInstance()->getLastModified()); ?>
 </pre><![-->

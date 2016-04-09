@@ -9,7 +9,7 @@
         "id": null
     },
     "aliases": [],
-    "routes": [],
+    "list": [],
     "errors": {
         "401": "user/logon.html",
         "403": "main/code403.html",

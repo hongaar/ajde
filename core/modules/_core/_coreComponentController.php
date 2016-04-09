@@ -144,7 +144,7 @@ class _coreComponentController extends Ajde_Controller
         $this->setAction('image/show');
 
         if ($this->hasAbsoluteUrl() && $this->getAbsoluteUrl()) {
-            $this->getView()->assign('href', Config::get('site_root') . $image->getLinkUrl());
+            $this->getView()->assign('href', config("app.rootUrl") . $image->getLinkUrl());
         } else {
             $this->getView()->assign('href', $image->getLinkUrl());
         }

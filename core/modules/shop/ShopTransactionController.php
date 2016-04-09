@@ -38,7 +38,7 @@ class ShopTransactionController extends ShopController
 
         /** @var Ajde_Document_Format_Generated $doc */
         $doc      = Ajde::app()->getDocument();
-        $url      = Config::get('site_root') . 'shop/transaction:view/' . $this->getId() . '.html';
+        $url      = config("app.rootUrl") . 'shop/transaction:view/' . $this->getId() . '.html';
         $filename = $transaction->getOrderId();
 
         if ($this->getFormat() === 'pdf') {
@@ -508,16 +508,16 @@ class ShopTransactionController extends ShopController
 
     public function mailUpdateAdmin(TransactionModel $transaction, $subject = null)
     {
-        $recipient = Config::get('email');
+        $recipient = config("app.email");
 
         $mailer = new Ajde_Mailer();
-        $mailer->SendQuickMail($recipient, $recipient, Config::get('sitename'),
+        $mailer->SendQuickMail($recipient, $recipient, config("app.title"),
             isset($subject) ? $subject : 'Order update', $transaction->getOverviewHtml());
     }
 
     public function mailUser(TransactionModel $transaction)
     {
-        $viewLink = Config::get('site_root') . 'shop/transaction:view/' . $transaction->secret . '.html';
+        $viewLink = config("app.rootUrl") . 'shop/transaction:view/' . $transaction->secret . '.html';
 
         $mailer = new Ajde_Mailer();
         $mailer->sendUsingModel('your_order', $transaction->email, $transaction->name, [
@@ -541,14 +541,14 @@ class ShopTransactionController extends ShopController
 
         $mailer->IsMail(); // use php mail()
         $mailer->AddAddress($transaction->email, $transaction->name);
-        $mailer->From     = Config::get('email');
-        $mailer->FromName = Config::get('sitename');
+        $mailer->From     = config("app.email");
+        $mailer->FromName = config("app.title");
         $mailer->Subject  = 'Your order';
-        $mailer->Body     = '<h2>Your order on ' . Config::get('sitename') . '</h2>' .
+        $mailer->Body     = '<h2>Your order on ' . config("app.title") . '</h2>' .
             '<p>Thank you for shopping with us. We will ship your items as soon as possible if you chose for delivery.<br/>' .
             'To view the status of your order, please click this link:</p>' .
-            '<p><a href=\'' . Config::get('site_root') . 'shop/transaction:view/' . $transaction->secret . '.html\'>View your order status</a></p>' .
-            '<p>Hope to welcome you again soon on <a href=\'' . Config::get('site_root') . '\'>' . Config::get('sitename') . '</a></p>';
+            '<p><a href=\'' . config("app.rootUrl") . 'shop/transaction:view/' . $transaction->secret . '.html\'>View your order status</a></p>' .
+            '<p>Hope to welcome you again soon on <a href=\'' . config("app.rootUrl") . '\'>' . config("app.title") . '</a></p>';
         $mailer->IsHTML(true);
         if (!$mailer->Send()) {
             Ajde_Log::log('Mail to ' . $transaction->email . ' failed');

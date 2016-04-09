@@ -130,7 +130,7 @@ class Ajde_Crud extends Ajde_Object_Standard
                         $row[] = $value;
                         // File
                     } elseif ($this->getField($fieldName) instanceof Ajde_Crud_Field_File) {
-                        $row[] = Config::get('site_root') . $field->getSaveDir() . $value;
+                        $row[] = config("app.rootUrl") . $field->getSaveDir() . $value;
                         // Text value
                     } else {
                         $row[] = strip_tags($value);

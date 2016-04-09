@@ -11,7 +11,7 @@ if ($OOChartsApiKey = SettingModel::byName('oocharts_api_key')) {
 	</div><!--/span-->
 	<div class="span8">
 		<div class="hero-unit">
-			<h1><?php echo _e(Config::get('sitename')); ?> back-end</h1>
+			<h1><?php echo _e(config("app.title")); ?> back-end</h1>
 			<p>Welcome back, <?php echo _e(UserModel::getLoggedIn()->getFullname()); ?>!</p>
 			<p>
 				<a href="admin/node:view" class="btn btn-primary btn-large">node overview &raquo;</a>

@@ -12,7 +12,7 @@
         ?>
     </p>
     <p>
-        <a class='btn btn-success' href='<?php echo Config::get('site_root') . 'shop/transaction:callback/test.html?r=1&txn=' . $txn_id; ?>'>Authorize payment</a>
-        <a class='btn btn-danger' href='<?php echo Config::get('site_root') . 'shop/transaction:callback/test.html?r=0&txn=' . $txn_id; ?>'>Refuse payment</a>
+        <a class='btn btn-success' href='<?php echo config("app.rootUrl") . 'shop/transaction:callback/test.html?r=1&txn=' . $txn_id; ?>'>Authorize payment</a>
+        <a class='btn btn-danger' href='<?php echo config("app.rootUrl") . 'shop/transaction:callback/test.html?r=0&txn=' . $txn_id; ?>'>Refuse payment</a>
     </p>
 </div>

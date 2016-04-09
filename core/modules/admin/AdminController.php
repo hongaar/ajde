@@ -13,7 +13,7 @@ class AdminController extends Ajde_Acl_Controller
     public function beforeInvoke($allowed = [])
     {
         // set admin layout
-        Ajde::app()->getDocument()->setLayout(new Ajde_Layout(Config::get('adminLayout')));
+        Ajde::app()->getDocument()->setLayout(new Ajde_Layout(config("layout.admin")));
 
         // disable cache and auto translations
         Ajde_Cache::getInstance()->disable();

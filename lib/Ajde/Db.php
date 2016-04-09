@@ -23,11 +23,17 @@ class Ajde_Db extends Ajde_Object_Singleton
 
     protected function __construct()
     {
-        $adapterName    = 'Ajde_Db_Adapter_' . ucfirst(Config::get('dbAdapter'));
-        $dsn            = Config::get('dbDsn');
-        $user           = Config::get('dbUser');
-        $password       = Config::get('dbPassword');
-        $this->_adapter = new $adapterName($dsn, $user, $password);
+        $adapterName = 'Ajde_Db_Adapter_' . ucfirst(config("database.adapter"));
+        $host        = config("database.host");
+        $db          = config("database.db");
+        $user        = config("database.user");
+        $password    = config("database.password");
+
+        // TODO Move DSN template to adapter
+        $this->_adapter = new $adapterName([
+            'host' => $host,
+            'dbname' => $db
+        ], $user, $password);
     }
 
     /**

@@ -34,20 +34,20 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
         $transaction = $this->getTransaction();
 
         // NOOOO.. THE UGLY HACKING
-        $return = Config::get('site_root') . 'presale/transaction:complete';
+        $return = config("app.rootUrl") . 'presale/transaction:complete';
         $method = $transaction->shipment_method;
         if ($method == 'presale-remainder') {
-            $return = Config::get('site_root') . 'presale/transaction:confirm_complete';
+            $return = config("app.rootUrl") . 'presale/transaction:confirm_complete';
         }
 
         return [
             'cmd'               => '_xclick',
-            'business'          => Config::get('shopPaypalAccount'),
-            'notify_url'        => Config::get('site_root') . $this->returnRoute . 'paypal' . $this->getMethod() . '.html',
-            'bn'                => Config::get('ident') . '_BuyNow_WPS_' . strtoupper(Ajde_Lang::getInstance()->getShortLang()),
+            'business'          => config("shop.transaction.paypal.account"),
+            'notify_url'        => config("app.rootUrl") . $this->returnRoute . 'paypal' . $this->getMethod() . '.html',
+            'bn'                => config("app.id") . '_BuyNow_WPS_' . strtoupper(Ajde_Lang::getInstance()->getShortLang()),
             'amount'            => $transaction->payment_amount,
             'item_name'         => issetor($description,
-                Config::get('sitename') . ': ' . Ajde_Component_String::makePlural($transaction->shipment_itemsqty,
+                config("app.title") . ': ' . Ajde_Component_String::makePlural($transaction->shipment_itemsqty,
                     'item')),
             'quantity'          => 1,
             'address_ override' => 1,
@@ -58,7 +58,7 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
             'country'           => $transaction->shipment_country,
             'email'             => $transaction->email,
             'first_name'        => $transaction->name,
-            'currency_code'     => Config::get('currencyCode'),
+            'currency_code'     => config("shop.currency.code"),
             'custom'            => $transaction->secret,
             'no_shipping'       => 1,
             // do not prompt for an address

@@ -46,9 +46,10 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 
         $_SERVER['REDIRECT_STATUS'] = $code;
 
-        if (array_key_exists($code, Config::getInstance()->responseCodeRoute)) {
+        $errorRoutes = config("routes.errors");
+        if (isset($errorRoutes[$code])) {
             try {
-                self::dieOnRoute(Config::getInstance()->responseCodeRoute[$code]);
+                self::dieOnRoute($errorRoutes[$code]);
             } catch (Exception $e) {
                 Ajde_Exception_Log::logException($e);
             }
@@ -78,7 +79,7 @@ class Ajde_Http_Response extends Ajde_Object_Standard
         $actionResult = $controller->invoke();
         $document->setBody($actionResult);
         if (!$document->hasLayout()) {
-            $layout = new Ajde_Layout(Config::get("layout"));
+            $layout = new Ajde_Layout(config("layout"));
             $document->setLayout($layout);
         }
         echo $document->render();
@@ -121,16 +122,16 @@ class Ajde_Http_Response extends Ajde_Object_Standard
     public function setRedirect($url = self::REDIRECT_SELF)
     {
         if ($url === true || $url === self::REDIRECT_HOMEPAGE) {
-            $this->addHeader("Location", Config::get('site_root'));
+            $this->addHeader("Location", config("app.rootUrl"));
         } elseif ($url === self::REDIRECT_REFFERER) {
             $this->addHeader("Location", Ajde_Http_Request::getRefferer());
         } elseif ($url === self::REDIRECT_SELF || empty($url)) {
             $route = (string)Ajde::app()->getRoute();
-            $this->addHeader("Location", Config::get('site_root') . $route);
+            $this->addHeader("Location", config("app.rootUrl") . $route);
         } elseif (substr($url, 0, 7) == "http://" || substr($url, 0, 8) == "https://") {
             $this->addHeader("Location", $url);
         } elseif ($url) {
-            $this->addHeader("Location", Config::get('site_root') . $url);
+            $this->addHeader("Location", config("app.rootUrl") . $url);
         }
         // Don't load any content after Location header is set
         Ajde::app()->getDocument()->setLayout(new Ajde_Layout('empty'));

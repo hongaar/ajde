@@ -20,7 +20,7 @@ class Ajde_Log extends Ajde_Object_Static
 
     private static function getWriters()
     {
-        $writerArray = Config::get('logWriter');
+        $writerArray = config("security.log.writer");
         $getWriters  = [];
         foreach ($writerArray as $writer) {
             $getWriters[] = 'Ajde_Log_Writer_' . ucfirst($writer);
@@ -31,7 +31,7 @@ class Ajde_Log extends Ajde_Object_Static
 
     private static function shouldLog($level)
     {
-        $configLevel = current(explode(':', Config::get('logLevel')));
+        $configLevel = current(explode(':', config("security.log.level")));
         $logLevel    = current(explode(':', $level));
 
         return $configLevel >= $logLevel;

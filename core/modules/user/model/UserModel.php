@@ -141,7 +141,7 @@ class UserModel extends Ajde_User
 
     public function sendResetMail($hash)
     {
-        $resetLink = Config::get('site_root') . 'user/reset?h=' . $hash;
+        $resetLink = config("app.rootUrl") . 'user/reset?h=' . $hash;
 
         $mailer = new Ajde_Mailer();
         $mailer->sendUsingModel('user_reset_link', $this->getEmail(), $this->getFullname(), [

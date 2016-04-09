@@ -33,7 +33,7 @@ class Ajde_Db_PDOStatement extends PDOStatement
     public function execute($input_parameters = null)
     {
         $log = ['query' => ''];
-        if (Config::get('debug') === true) {
+        if (config("app.debug") === true) {
             //$cache = Ajde_Db_Cache::getInstance();
             if (count($input_parameters)) {
                 $log = ['query' => vsprintf(str_replace("?", "%s", $this->queryString), $input_parameters)];
@@ -80,11 +80,11 @@ class Ajde_Db_PDOStatement extends PDOStatement
             if (substr_count(strtolower($e->getMessage()), 'integrity constraint violation')) {
                 throw new Ajde_Db_IntegrityException($e->getMessage());
             } else {
-                if (Config::get('debug') === true) {
+                if (config("app.debug") === true) {
                     if (isset($this->queryString)) {
                         dump($this->queryString);
                     }
-                    dump('Go to ' . Config::get('site_root') . '?install=1 to install DB');
+                    dump('Go to ' . config("app.rootUrl") . '?install=1 to install DB');
                     throw new Ajde_Db_Exception($e->getMessage());
                 } else {
                     Ajde_Exception_Log::logException($e);
