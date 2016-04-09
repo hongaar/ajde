@@ -12,11 +12,12 @@ class Ajde_Core_Autodebug extends Ajde_Object_Singleton
     static public function __bootstrap()
     {
         if (($user = Ajde_User::getLoggedIn()) && $user->getDebug()) {
-            $config        = Config::getInstance();
-            $config->debug = true;
+            Config::set("app.debug", true);
 
-            if (!in_array('Debugger', $config->documentProcessors['html'])) {
-                $config->documentProcessors['html'][] = 'Debugger';
+            $htmlProcessors = config("layout.filters.documentProcessors.html");
+            if (is_array($htmlProcessors) && !in_array('Debugger', $htmlProcessors)) {
+                $htmlProcessors[] = "Debugger";
+                Config::set("layout.filters.documentProcessors.html", $htmlProcessors);
             }
         }
 

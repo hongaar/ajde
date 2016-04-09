@@ -1,10 +1,13 @@
-![Ajde logo](https://raw.github.com/nabble/ajde/master/public/assets/media/ajde-medium.png "Ajde logo")
+# ![Ajde](https://raw.github.com/nabble/ajde/master/public/assets/media/ajde-medium.png "Ajde logo")
 
-# Ajde
+[![Code Climate](https://img.shields.io/codeclimate/github/nabble/ajde.svg)](https://codeclimate.com/github/nabble/ajde)
+[![Scrutinizer](https://img.shields.io/scrutinizer/g/nabble/ajde.svg)](https://scrutinizer-ci.com/g/nabble/ajde/)
 
-Yet another PHP 5.0 CMS framework.
+## Upgrade 
 
-----------------
+The framework is getting a major overhaul. Slowly we're refactoring code and upgrading the overall quality.
+
+---
 
 ## Introduction
 
@@ -247,7 +250,7 @@ When using the Ajde_User extension, user cookies are hashed with the client IP a
 License
 -------------------------
 
-Copyright (c) 2015 Joram van den Boezem
+Copyright (c) 2016 Joram van den Boezem
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

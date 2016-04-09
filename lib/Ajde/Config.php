@@ -14,7 +14,7 @@ class Ajde_Config
     {
         $this->repository = new Ajde_Config_Repository(CONFIG_DIR);
 
-        if ($this->repository->get("security.secret") === 'RANDOMSTRING') {
+        if ($this->repository->get("security.secret") === '_RANDOM_12_16_OR_32_CHAR_STRING_') {
             Ajde_Dump::warn('Using unsafe secret: your app is insecure. See security.json');
         }
     }
