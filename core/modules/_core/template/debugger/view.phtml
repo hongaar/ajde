@@ -73,7 +73,7 @@ $expand = false;
 				</table>
 			</dd>
 
-			<dt>Stage</dt>
+			<dt>Environment</dt>
 			<dd class='summary'><?php echo $this->environment; ?></dd>
 
 			<dt>Language</dt>
@@ -191,6 +191,14 @@ $expand = false;
 				<?php echo $table; ?>
 			</dd>
 			<?php } ?>
+
+            <dt>Configuration</dt>
+            <dd class='summary'>
+                <a href='javascript:void(0)' onclick='$("#ajdeDebuggerConfig").slideToggle("fast");'>view</a>
+            </dd>
+            <dd id='ajdeDebuggerConfig' class='details'>
+                <?php var_dump(Config::getInstance()->repository()->values());?>
+            </dd>
 
 		</dl>
 	</div>

@@ -15,7 +15,7 @@ class Ajde_Config
         $this->repository = new Ajde_Config_Repository(CONFIG_DIR);
 
         if ($this->repository->get("security.secret") === 'RANDOMSTRING') {
-            Ajde_Dump::warn('Using unsafe secret: your app is insecure. See class Config_Application');
+            Ajde_Dump::warn('Using unsafe secret: your app is insecure. See security.json');
         }
     }
 
@@ -56,5 +56,17 @@ class Ajde_Config
         $instance = self::getInstance();
 
         $instance->repository->set($param, $value);
+    }
+
+    /**
+     * TODO
+     *
+     * @return Ajde_Config_Repository
+     */
+    public static function repository()
+    {
+        $instance = self::getInstance();
+
+        return $instance->repository;
     }
 }
