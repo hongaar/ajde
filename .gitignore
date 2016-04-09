@@ -1,3 +1,5 @@
-# vencor files
-/node_modules/
+# environment
+.env
+
+# vendor files
 /vendor/
