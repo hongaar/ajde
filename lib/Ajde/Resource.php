@@ -66,11 +66,16 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
 
     protected static function exist($filename)
     {
-        if (is_file(LOCAL_ROOT . $filename)) {
+        if (is_file(self::realpath($filename))) {
             return true;
         }
 
         return false;
+    }
+
+    protected static function realpath($filename)
+    {
+        return LOCAL_ROOT . $filename;
     }
 
     public static function encodeFingerprint($array)
@@ -134,8 +139,8 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
         $filename = $this->getFilename();
 
         Ajde_Cache::getInstance()->addFile($filename);
-        if (is_file($filename)) {
-            include $filename;
+        if ($this->exist($filename)) {
+            include $this->realpath($filename);
         }
 
         $contents = ob_get_contents();
