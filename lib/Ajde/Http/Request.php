@@ -380,8 +380,8 @@ class Ajde_Http_Request extends Ajde_Object_Standard
         $baseURI = str_replace('index.php', '', $_SERVER['PHP_SELF']);
 
         // Strip public from request and base
-        $requestURI = str_replace(PUBLIC_URI, '', $requestURI);
-        $baseURI = str_replace(PUBLIC_URI, '', $baseURI);
+        $requestURI = str_replace(PUBLIC_DIR, '', $requestURI);
+        $baseURI = str_replace(PUBLIC_DIR, '', $baseURI);
 
         return str_replace($baseURI, '', $requestURI);
     }

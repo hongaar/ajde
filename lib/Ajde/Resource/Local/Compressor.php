@@ -148,7 +148,7 @@ abstract class Ajde_Resource_Local_Compressor extends Ajde_Object_Standard
             /* @var $resource Ajde_Resource_Local */
             $this->_contents .= $resource->getContents() . PHP_EOL;
         }
-        if (!is_writable($this->getBase())) {
+        if (!is_writable(LOCAL_ROOT . $this->getBase())) {
             throw new Ajde_Exception(sprintf("Directory %s is not writable", $this->getBase()), 90014);
         }
 
@@ -158,7 +158,7 @@ abstract class Ajde_Resource_Local_Compressor extends Ajde_Object_Standard
         Ajde_Event::trigger($this, 'afterCompress');
 
         // Save file to cache folder
-        file_put_contents($this->getFilename(), $this->_contents);
+        file_put_contents(LOCAL_ROOT . $this->getFilename(), $this->_contents);
     }
 
     public function getContents()

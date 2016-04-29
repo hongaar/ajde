@@ -126,7 +126,7 @@ class MediaModel extends Ajde_Model
 
             if (!$this->replaceOldFile) {
                 // don't overwrite previous files that were uploaded
-                while (is_file($this->uploadDirectory . $filename . '.' . $ext)) {
+                while (LOCAL_ROOT . is_file($this->uploadDirectory . $filename . '.' . $ext)) {
                     $filename .= rand(10, 99);
                 }
             }
@@ -157,7 +157,7 @@ class MediaModel extends Ajde_Model
 
             if (!$this->replaceOldFile) {
                 // don't overwrite previous files that were uploaded
-                while (is_file($this->uploadDirectory . $filename . '.' . $ext)) {
+                while (is_file(LOCAL_ROOT . $this->uploadDirectory . $filename . '.' . $ext)) {
                     $filename .= rand(10, 99);
                 }
             }

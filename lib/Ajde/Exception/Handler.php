@@ -99,13 +99,13 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 
                 $exceptionDocumentation = '';
                 if ($exception instanceof Ajde_Exception && $exception->getCode()) {
-                    $exceptionDocumentation = sprintf("<div style='margin-top: 4px;'><img src='" . config("app.rootUrl") . MEDIA_URI . "_core/globe_16.png' style='vertical-align: bottom;' title='Primary key' width='16' height='16' /> <a href='%s'>Documentation on error %s</a>&nbsp;</div>",
+                    $exceptionDocumentation = sprintf("<div style='margin-top: 4px;'><img src='" . config("app.rootUrl") . MEDIA_DIR . "_core/globe_16.png' style='vertical-align: bottom;' title='Primary key' width='16' height='16' /> <a href='%s'>Documentation on error %s</a>&nbsp;</div>",
                         Ajde_Core_Documentation::getUrl($exception->getCode()),
                         $exception->getCode()
                     );
                 }
 
-                $exceptionMessage = sprintf("<summary style='background-image: url(\"" . config("app.rootUrl") . MEDIA_URI . "_core/warning_48.png\");'><h3 style='margin:0;'>%s:</h3><h2 style='margin:0;'>%s</h2> Exception thrown in %s%s</summary><h3>Trace:</h3>\n",
+                $exceptionMessage = sprintf("<summary style='background-image: url(\"" . config("app.rootUrl") . MEDIA_DIR . "_core/warning_48.png\");'><h3 style='margin:0;'>%s:</h3><h2 style='margin:0;'>%s</h2> Exception thrown in %s%s</summary><h3>Trace:</h3>\n",
                     $type,
                     $exception->getMessage(),
                     self::embedScript(
@@ -137,8 +137,8 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
                 }
 
                 $style = false;
-                if (file_exists(CORE_DIR . MODULE_DIR . '_core/res/css/debugger/handler.css')) {
-                    $style = file_get_contents(CORE_DIR . MODULE_DIR . '_core/res/css/debugger/handler.css');
+                if (file_exists(LOCAL_ROOT . CORE_DIR . MODULE_DIR . '_core/res/css/debugger/handler.css')) {
+                    $style = file_get_contents(LOCAL_ROOT . CORE_DIR . MODULE_DIR . '_core/res/css/debugger/handler.css');
                 }
                 if ($style === false) {
                     // For shutdown() call
@@ -152,7 +152,7 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
                     $header    = '';
                 } else {
                     $collapsed = '<div id="details">' . $exceptionDump . $exceptionMessage . $traceMessage . '</div>';
-                    $header    = '<header><h1><img src="' . config("app.rootUrl") . MEDIA_URI . 'ajde-small.png">Something went wrong</h1><a href="javascript:history.go(-1);">Go back</a> <a href="#details">Show details</a></header>';
+                    $header    = '<header><h1><img src="' . config("app.rootUrl") . MEDIA_DIR . 'ajde-small.png">Something went wrong</h1><a href="javascript:history.go(-1);">Go back</a> <a href="#details">Show details</a></header>';
                 }
 
                 $message = $style . $script . $header . $collapsed;

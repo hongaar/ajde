@@ -39,7 +39,7 @@ class TemplateModel extends Ajde_Model_With_I18n
 
         if ($style) {
             $stylesheet = ASSETS_DIR . 'css' . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'email' . DIRECTORY_SEPARATOR . $style . '.css';
-            if (!is_file($stylesheet)) {
+            if (!is_file(LOCAL_ROOT . $stylesheet)) {
                 throw new Ajde_Exception('Stylesheet ' . $stylesheet . ' not found');
             }
             $stylesheetContent = file_get_contents($stylesheet);

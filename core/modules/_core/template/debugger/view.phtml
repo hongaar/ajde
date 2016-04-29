@@ -7,7 +7,7 @@ $expand = false;
 <div id="ajdeDebugger" <?php if (isset($this->warn)) { echo 'class="warning"'; } ?>>
 	<div id="ajdeDebuggerHeader"></div>
 	<div id="ajdeDebuggerContent">
-		<h4><img src="<?php echo MEDIA_URI; ?>ajde-small.png" /> web console</h4>
+		<h4><img src="<?php echo MEDIA_DIR; ?>ajde-small.png" /> web console</h4>
 		<?php if (isset($this->warn)) { ?>
 			<?php foreach($this->warn as $message) { ?>
 				<div class="warn">

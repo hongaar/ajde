@@ -46,7 +46,7 @@ class Ajde_Config_Repository extends Ajde_Object_Standard
         // URI fragments
         $this->set("app.protocol", (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS'])) ? 'https://' : 'http://');
         $this->set("app.domain", $_SERVER['SERVER_NAME']);
-        $this->set("app.path", str_replace(PUBLIC_URI . 'index.php', '', $_SERVER['PHP_SELF']));
+        $this->set("app.path", str_replace(PUBLIC_DIR . 'index.php', '', $_SERVER['PHP_SELF']));
         $this->set("app.rootUrl", $this->get("app.protocol") . $this->get("app.domain") . $this->get("app.path"));
         $this->set("i18n.rootUrl", $this->get("app.rootUrl"));
 

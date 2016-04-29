@@ -19,7 +19,7 @@ class Ajde_Resource_Image extends Ajde_Resource
 
     public function __construct($file)
     {
-        if (file_exists($file)) {
+        if (file_exists(LOCAL_ROOT . $file)) {
             $this->_source = $file;
         } else {
             $this->_source = MEDIA_DIR . 'notfound.png';
@@ -121,13 +121,13 @@ class Ajde_Resource_Image extends Ajde_Resource
             switch ($this->_type) {
                 case "jpg":
                 case "jpeg":
-                    $this->_image = imagecreatefromjpeg($this->_source);
+                    $this->_image = imagecreatefromjpeg(LOCAL_ROOT . $this->_source);
                     break;
                 case "png":
-                    $this->_image = imagecreatefrompng($this->_source);
+                    $this->_image = imagecreatefrompng(LOCAL_ROOT . $this->_source);
                     break;
                 case "gif":
-                    $this->_image = imagecreatefromgif($this->_source);
+                    $this->_image = imagecreatefromgif(LOCAL_ROOT . $this->_source);
                     break;
             }
         }
@@ -145,7 +145,7 @@ class Ajde_Resource_Image extends Ajde_Resource
 
     public function imageInCache($width, $height, $crop = true)
     {
-        if (is_file($cache = $this->getGeneratedFilename($width, $height, $crop))) {
+        if (is_file($cache = LOCAL_ROOT . $this->getGeneratedFilename($width, $height, $crop))) {
             $this->_cache = $cache;
 
             return true;
@@ -316,13 +316,13 @@ class Ajde_Resource_Image extends Ajde_Resource
         switch ($this->_type) {
             case "jpg":
             case "jpeg":
-                imagejpeg($this->_image, $target);
+                imagejpeg($this->_image, LOCAL_ROOT . $target);
                 break;
             case "png":
-                imagepng($this->_image, $target);
+                imagepng($this->_image, LOCAL_ROOT . $target);
                 break;
             case "gif":
-                imagegif($this->_image, $target);
+                imagegif($this->_image, LOCAL_ROOT . $target);
                 break;
         }
     }

@@ -60,9 +60,9 @@ class Ajde_Cache extends Ajde_Object_Singleton
     public function addFile($filename)
     {
         if (!isset($this->_hashFinal)) {
-            if (is_file($filename)) {
-                hash_update_file($this->getHashContext(), $filename);
-                $this->addLastModified(filemtime($filename));
+            if (is_file(LOCAL_ROOT . $filename)) {
+                hash_update_file($this->getHashContext(), LOCAL_ROOT . $filename);
+                $this->addLastModified(filemtime(LOCAL_ROOT . $filename));
             }
         }
     }
@@ -157,11 +157,11 @@ class Ajde_Cache extends Ajde_Object_Singleton
         $safeKey       = substr(preg_replace('/[^a-zA-Z0-9_-]/', '-', $key), 0, 100);
         $cacheFilename = CACHE_DIR . 'STATIC_CACHE_' . $safeKey;
 
-        if (file_exists($cacheFilename) && filemtime($cacheFilename) > (time() - $ttl)) {
-            return json_decode(file_get_contents($cacheFilename));
+        if (file_exists(LOCAL_ROOT . $cacheFilename) && filemtime(LOCAL_ROOT . $cacheFilename) > (time() - $ttl)) {
+            return json_decode(file_get_contents(LOCAL_ROOT . $cacheFilename));
         } else {
             $result = $callback->__invoke();
-            file_put_contents($cacheFilename, json_encode($result));
+            file_put_contents(LOCAL_ROOT . $cacheFilename, json_encode($result));
 
             return $result;
         }

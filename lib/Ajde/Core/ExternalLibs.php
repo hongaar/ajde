@@ -16,8 +16,8 @@ class Ajde_Core_ExternalLibs extends Ajde_Object_Singleton
 
     public function __bootstrap()
     {
-        if (file_exists(LIB_DIR . 'HTMLPurifier/HTMLPurifier.auto.php')) {
-            require_once LIB_DIR . 'HTMLPurifier/HTMLPurifier.auto.php';
+        if (file_exists(LOCAL_ROOT . LIB_DIR . 'HTMLPurifier/HTMLPurifier.auto.php')) {
+            require_once LOCAL_ROOT . LIB_DIR . 'HTMLPurifier/HTMLPurifier.auto.php';
             // Optional components still need to be included--you'll know if you try to
             // use a feature and you get a class doesn't exists error! The autoloader
             // can be used in conjunction with this approach to catch classes that are

@@ -38,13 +38,13 @@ class AdminSystemController extends AdminController
             }
         }
 
-        $config = Config::getAll();
+        $config = Config::getInstance()->repository()->values();
         $hidden = 'HASH: ';
         $hide   = [
-            'dbPassword',
-            'secret',
-            'shopWedealPassword',
-            'shopWedealCallbackPassword'
+//            'dbPassword',
+//            'secret',
+//            'shopWedealPassword',
+//            'shopWedealCallbackPassword'
         ];
         foreach ($hide as $field) {
             $config[$field] = $hidden . md5($config[$field]);

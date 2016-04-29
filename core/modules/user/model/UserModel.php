@@ -84,7 +84,7 @@ class UserModel extends Ajde_User
             $extension = Ajde_Fs_File::getExtensionFromMime($mimeType);
 
             // don't overwrite previous files that were uploaded
-            while (is_file(AVATAR_DIR . $filename . '.' . $extension)) {
+            while (is_file(LOCAL_ROOT . AVATAR_DIR . $filename . '.' . $extension)) {
                 $filename .= rand(10, 99);
             }
 

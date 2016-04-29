@@ -43,7 +43,7 @@ $field = $this->field;
 				echo "<a href='javascript:void(0);' title='" . esc(str_replace(LOCAL_ROOT . DIRECTORY_SEPARATOR . $field->getSaveDir(), '', $file)) . "'>";
 					if ($isImage = in_array(strtolower($extension), array('jpg', 'jpeg', 'png', 'gif'))) {
 						// Don't use $this->ACImage() to support lazy loading
-						$image = new Ajde_Resource_Image($file);
+						$image = new Ajde_Resource_Image(str_replace(LOCAL_ROOT, '', $file));
 						$image->setWidth(50);
 						$image->setHeight(50);
 						$image->setCrop(true);
@@ -53,9 +53,9 @@ $field = $this->field;
 						echo "<span class='icon'><img class='icon' src='" . Ajde_Resource_FileIcon::_($extension) . "' /></span>";
 					}
 					echo "<span>";
-						echo "<span class='filename'>" . str_replace(LOCAL_ROOT . DIRECTORY_SEPARATOR . $field->getSaveDir(), '', $file) . "</span>";
+						echo "<span class='filename'>" . str_replace(LOCAL_ROOT . $field->getSaveDir(), '', $file) . "</span>";
 						if ($isImage) {
-							echo "<span class='imagePreview preview' data-fancybox-group='preview" . ucfirst($field->getName()) . "' title='" . esc(str_replace(LOCAL_ROOT . DIRECTORY_SEPARATOR . $field->getSaveDir(), '', $file)) . "' href='" . $this->escape(str_replace(LOCAL_ROOT . DIRECTORY_SEPARATOR, '', $file)) . "'>preview</span>";
+							echo "<span class='imagePreview preview' data-fancybox-group='preview" . ucfirst($field->getName()) . "' title='" . esc(str_replace(LOCAL_ROOT . $field->getSaveDir(), '', $file)) . "' href='" . $this->escape(str_replace(LOCAL_ROOT, '', $file)) . "'>preview</span>";
 						} else {
 							echo "<span class='filePreview preview' href='" . $this->escape(str_replace(LOCAL_ROOT . DIRECTORY_SEPARATOR, '', $file)) . "'>preview</span>";
 						}

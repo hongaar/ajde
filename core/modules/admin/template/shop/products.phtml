@@ -8,7 +8,7 @@ $options
 			->up()
 		->selectField('image')
 			->setType('file')
-			->setSaveDir(MEDIA_DIR . ProductModel::$imageDir)
+			->setSaveDir(UPLOAD_DIR . ProductModel::$imageDir)
 			->setExtensions(array('png', 'jpg', 'pdf', 'docx'))
 			->setMultiple(false)
 			->setLabel('Plaatje')

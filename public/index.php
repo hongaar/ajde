@@ -40,10 +40,17 @@ ini_set('display_startup_errors', 0);
 define('DS', DIRECTORY_SEPARATOR);
 define('UP', '..' . DS);
 
+// Define root
 define('LOCAL_ROOT', realpath(__DIR__ . DS . UP) . DS);
 
+// Main directories
 define('APP_DIR', 'app' . DS);
 define('CORE_DIR', 'core' . DS);
+define('DEV_DIR', 'dev' . DS);
+define('LIB_DIR', 'lib' . DS);
+define('VENDOR_DIR', 'vendor' . DS);
+define('VAR_DIR', 'var' . DS);
+define('PUBLIC_DIR', 'public' . DS);
 
 // These paths could exist in both app or core dir
 define('CONFIG_DIR', 'config' . DS);
@@ -51,34 +58,29 @@ define('LAYOUT_DIR', 'layout' . DS);
 define('MODULE_DIR', 'modules' . DS);
 define('TEMPLATE_DIR', 'template' . DS);
 
+// These paths only exist in app dir
 define('LANG_DIR', APP_DIR . 'lang' . DS);
 
-define('DEV_DIR', UP . 'dev' . DS);
-define('LIB_DIR', UP . 'lib' . DS);
-define('VENDOR_DIR', UP . 'vendor' . DS);
-define('VAR_DIR', UP . 'var' . DS);
-
+// Var subdirectories
 define('CACHE_DIR', VAR_DIR . 'cache' . DS);
 define('LOG_DIR', VAR_DIR . 'log' . DS);
 define('TMP_DIR', VAR_DIR . 'tmp' . DS);
 
-define('PUBLIC_URI', 'public' . DS);
+// Asset directories and URIs
 define('ASSETS_URI', 'assets' . DS);
 define('MEDIA_URI', ASSETS_URI . 'media' . DS);
 define('UPLOAD_URI', MEDIA_URI . 'upload' . DS);
 define('AVATAR_URI', UPLOAD_URI . 'avatar' . DS);
 
-define('PUBLIC_DIR', UP . 'public' . DS);
-
-define('ASSETS_DIR', 'assets' . DS);
-define('MEDIA_DIR', ASSETS_DIR . 'media' . DS);
-define('UPLOAD_DIR', MEDIA_DIR . 'upload' . DS);
-define('AVATAR_DIR', UPLOAD_DIR . 'avatar' . DS);
+define('ASSETS_DIR', PUBLIC_DIR . ASSETS_URI);
+define('MEDIA_DIR', PUBLIC_DIR . MEDIA_URI);
+define('UPLOAD_DIR', PUBLIC_DIR . UPLOAD_URI);
+define('AVATAR_DIR', PUBLIC_DIR . AVATAR_URI);
 
 // --------------------
 // Require composer autoloader
 // --------------------
-require_once VENDOR_DIR . 'autoload.php';
+require_once LOCAL_ROOT . VENDOR_DIR . 'autoload.php';
 
 // --------------------
 // Run the main application

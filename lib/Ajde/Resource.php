@@ -19,26 +19,39 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
 
     abstract protected function getLinkUrl();
 
-    public function getType()
+    protected static function exist($filename)
     {
-        return $this->get('type');
+        if (is_file(self::realpath($filename))) {
+            return true;
+        }
+
+        return false;
     }
 
-    public function setPosition($position)
+    protected static function realpath($filename)
     {
-        $this->set('position', $position);
+//        dump($filename, realpath(LOCAL_ROOT . $filename));
+        return realpath(LOCAL_ROOT . $filename);
     }
 
-    public function getPosition()
+    public static function encodeFingerprint($array)
     {
-        return $this->get('position');
+        return self::_urlEncode(serialize($array));
     }
 
-    protected function _getLinkTemplateFilename()
+    public static function decodeFingerprint($fingerprint)
     {
-        $format = $this->hasFormat() ? $this->getFormat() : null;
+        return unserialize(self::_urlDecode($fingerprint));
+    }
 
-        return self::getLinkTemplateFilename($this->getType(), $format);
+    public static function _urlDecode($string)
+    {
+        return base64_decode($string);
+    }
+
+    public static function _urlEncode($string)
+    {
+        return base64_encode($string);
     }
 
     public static function getLinkTemplateFilename($type, $format = 'null')
@@ -64,47 +77,26 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
         return false;
     }
 
-    protected static function exist($filename)
+    public function getType()
     {
-        if (is_file(self::realpath($filename))) {
-            return true;
-        }
-
-        return false;
+        return $this->get('type');
     }
 
-    protected static function realpath($filename)
+    public function setPosition($position)
     {
-        return LOCAL_ROOT . $filename;
+        $this->set('position', $position);
     }
 
-    public static function encodeFingerprint($array)
+    public function getPosition()
     {
-        return self::_urlEncode(serialize($array));
+        return $this->get('position');
     }
 
-    public static function decodeFingerprint($fingerprint)
+    protected function _getLinkTemplateFilename()
     {
-        return unserialize(self::_urlDecode($fingerprint));
-    }
+        $format = $this->hasFormat() ? $this->getFormat() : null;
 
-    public static function _urlDecode($string)
-    {
-        // return self::_rotUrl($string);
-        return base64_decode($string);
-    }
-
-    public static function _urlEncode($string)
-    {
-        // return self::_rotUrl($string);
-        return base64_encode($string);
-    }
-
-    public static function _rotUrl($string)
-    {
-        return strtr($string,
-            '/-:?=&%#{}"; QXJKVWPYRHGB abcdefghijklmnopqrstuv123456789ACDEFILMNOSTUwxyz',
-            'QXJKVWPYRHGB /-:?=&%#{}"; 123456789ACDEFILMNOSTUabcdefghijklmnopqrstuvwxyz');
+        return self::getLinkTemplateFilename($this->getType(), $format);
     }
 
     public function getLinkCode()
@@ -140,7 +132,7 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
 
         Ajde_Cache::getInstance()->addFile($filename);
         if ($this->exist($filename)) {
-            include realpath($this->realpath($filename));
+            include $this->realpath($filename);
         } else {
             throw new Exception("Couldn't find resource " . $filename);
         }

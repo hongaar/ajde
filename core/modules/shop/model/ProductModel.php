@@ -7,7 +7,7 @@ class ProductModel extends Ajde_Model
 
     protected $_slugPrefix = 'shop';
 
-    public static $imageDir = 'upload/shop/';
+    public static $imageDir = 'shop/';
 
     public function __construct()
     {

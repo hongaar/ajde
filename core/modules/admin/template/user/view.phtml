@@ -40,7 +40,7 @@ $options
             ->up()
         ->selectField('avatar')
             ->setType('file')
-            ->setSaveDir(UPLOAD_DIR . 'avatar' . DIRECTORY_SEPARATOR)
+            ->setSaveDir(AVATAR_DIR)
             ->setExtensions(array('jpg', 'jpeg', 'png', 'gif'))
             ->setThumbDim(500, 200)
             ->setMultiple(false)
