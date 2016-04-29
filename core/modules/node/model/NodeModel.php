@@ -367,6 +367,8 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
             $this->slug = new Ajde_Db_Function('slug');
         }
 
+        $this->added = new Ajde_Db_Function('added');
+
         $this->shadowCall('beforeSave');
     }
 
