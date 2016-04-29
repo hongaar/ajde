@@ -1,6 +1,6 @@
 <?php
 
-class Ajde_Cms extends Ajde_Object_Singleton
+class Ajde_Cms extends Ajde_Object_Singleton implements Ajde_BootstrapInterface
 {
     private $_homepageSet = false;
 
