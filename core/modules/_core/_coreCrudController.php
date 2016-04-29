@@ -752,7 +752,7 @@ class _coreCrudController extends Ajde_Acl_Controller
                         $thumbDim = isset($fieldProperties['thumbDim']) ? $fieldProperties['thumbDim'] : ['width'  => 75,
                                                                                                           'height' => 75
                         ];
-                        $html     = "<a class='imagePreview img' title='" . _e($value) . "' href='" . $extraField['saveDir'] . $value . "' target='_blank'>";
+                        $html     = "<a class='imagePreview img' title='" . esc($value) . "' href='" . $extraField['saveDir'] . $value . "' target='_blank'>";
                         $image    = new Ajde_Resource_Image($extraField['saveDir'] . $value);
                         $image->setWidth($thumbDim['width']);
                         $image->setHeight($thumbDim['height']);

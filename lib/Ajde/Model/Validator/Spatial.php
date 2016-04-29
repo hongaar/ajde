@@ -6,7 +6,7 @@ class Ajde_Model_Validator_Spatial extends Ajde_Model_ValidatorAbstract
     {
         $trimmed = trim($this->_value);
         if ($this->getIsRequired() && empty($trimmed)) {
-            return ['valid' => false, 'error' => __('Required field')];
+            return ['valid' => false, 'error' => trans('Required field')];
         }
 
         return ['valid' => true];

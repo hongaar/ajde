@@ -1,4 +1,4 @@
-<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ 
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */
 
 $options = new Ajde_Crud_Options();
 $options
@@ -28,7 +28,7 @@ $options
                     ->setSpan(8)
 					->addBlock()
 						->setShow(array('name'))
-						
+
 	->finished();
 
 $crud = $this->ACCrudList('tag', $options);
@@ -37,17 +37,17 @@ $crud = $this->ACCrudList('tag', $options);
 
 <div class="row-fluid">
 	<div class="span2 hideInIframe">
-		<?php echo $this->includeModule('admin/cms:menu'); ?>		
+		<?php echo $this->includeModule('admin/cms:menu'); ?>
 	</div><!--/span-->
 	<div class="span10 expandInIframe">
-		
+
 		<div class="page-header">
 			<h1>
-				<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
+				<?php echo esc(Ajde::app()->getDocument()->getTitle()); ?>
 			</h1>
-		</div>		
-		
+		</div>
+
 		<?php echo $crud->output(); ?>
-		
+
 	</div><!--/span-->
 </div><!--/row-->

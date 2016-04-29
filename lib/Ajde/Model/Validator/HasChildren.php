@@ -36,7 +36,7 @@ class Ajde_Model_Validator_HasChildren extends Ajde_Model_ValidatorAbstract
         $count = $results[0];
 
         if ($count == 0) {
-            return ['valid' => false, 'error' => __('Please add at least one ' . $this->_niceName)];
+            return ['valid' => false, 'error' => trans('Please add at least one ' . $this->_niceName)];
         }
 
         return ['valid' => true];

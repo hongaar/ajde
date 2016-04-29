@@ -222,7 +222,7 @@ abstract class Ajde_User extends Ajde_Model
         }
         if ($this->getCookieHash($includeDomain) === $hash) {
             $this->login();
-            Ajde_Session_Flash::alert(sprintf(__('Welcome back %s'), $this->getFullname()));
+            Ajde_Session_Flash::alert(sprintf(trans('Welcome back %s'), $this->getFullname()));
             Ajde_Cache::getInstance()->disable();
         } else {
 

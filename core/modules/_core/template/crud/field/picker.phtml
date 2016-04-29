@@ -8,7 +8,7 @@ $field = $this->field;
 
 /* @var $value Ajde_Model */
 $value = $field->getValue();
-	
+
 $useImage = $field->has('useImage') && $field->get('useImage') === true;
 $listRoute = ($field->has('listRoute') ? $field->get('listRoute') : false);
 $listRoute = $field->has('listRouteFunction') ? $field->getCrud()->getModel()->{$field->get('listRouteFunction')}() : $listRoute;
@@ -27,16 +27,16 @@ $listRoute = $field->has('listRouteFunction') ? $field->getCrud()->getModel()->{
 		<?php } ?>
 		<div class='input
 			<?php if ($useImage && $value instanceof Ajde_Model && $value->hasLoaded()) { echo 'with-image'; } ?>'>
-			<?php			
+			<?php
 			if ($useImage) {
 				if ($value instanceof Ajde_Model && $value->hasLoaded()) {
-					$extraField = current($field->getTableFields());		
+					$extraField = current($field->getTableFields());
 					$filename = $field->getValue()->get($extraField['name']);
-					
+
 					$extension = pathinfo($filename, PATHINFO_EXTENSION);
 					if ($isImage = in_array(strtolower($extension), array('jpg', 'jpeg', 'png', 'gif'))) {
 						$thumbDim = $field->hasThumbDim() ? $field->getThumbDim() : array('width' => 75, 'height' => 75); ?>
-						<a class='imagePreview img' title='<?php echo _e($filename); ?>' href='<?php echo $extraField['saveDir'] . $filename; ?>' target='_blank'>
+						<a class='imagePreview img' title='<?php echo esc($filename); ?>' href='<?php echo $extraField['saveDir'] . $filename; ?>' target='_blank'>
 							<?php echo $this->ACImage(array(
 									'filename' => $extraField['saveDir'] . $filename,
 									'width' => $thumbDim['width'],
@@ -52,20 +52,20 @@ $listRoute = $field->has('listRouteFunction') ? $field->getCrud()->getModel()->{
 					<input type="text" readonly="readonly" value="Please choose one" />
 				<?php } ?>
 			<?php } else { ?>
-				<input type="text" readonly="readonly" value="<?php 	
+				<input type="text" readonly="readonly" value="<?php
 					if ($value instanceof Ajde_Model && $value->hasLoaded()) {
-						echo _e($field->getValue()->get($field->getValue()->getDisplayField()));
+						echo esc($field->getValue()->get($field->getValue()->getDisplayField()));
 					} else if ($value instanceof Ajde_Model || empty($value)) {
 						echo 'Please choose one';
 					} else {
-						echo _e($field->getValue());
+						echo esc($field->getValue());
 					}
 					?>" />
-			<?php } ?>			
-		</div>        
+			<?php } ?>
+		</div>
 		<?php
 		if ($field->hasIsRequired() && $field->getIsRequired() === false) { ?>
 			<a href='javascript:void(null);' class='setnull'><i class='icon-remove'></i></a>
-		<?php } ?>   
+		<?php } ?>
 	</div>
 </div>

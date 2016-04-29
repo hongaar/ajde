@@ -33,7 +33,7 @@ class Ajde_Shop_Cart_Merge extends Ajde_Object_Singleton
 
                 if ($userCart->hasItems()) {
                     // Set alert message
-                    Ajde_Session_Flash::alert(__("Your items are still in the shopping cart"));
+                    Ajde_Session_Flash::alert(trans("Your items are still in the shopping cart"));
                 }
 
                 // Merge items

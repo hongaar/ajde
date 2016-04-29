@@ -1,4 +1,4 @@
-<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ 
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */
 
 $this->requireJsPublic('core/complexify/jquery.complexify.banlist.js');
 $this->requireJsPublic('core/complexify/jquery.complexify.min.js');
@@ -40,16 +40,16 @@ $user = $this->user;
                                 </a>
                             </div>
                             <div class="span7 col-sm-7">
-                                Connected as <?php echo _e($model->getUsername()); ?>.
+                                Connected as <?php echo esc($model->getUsername()); ?>.
                                 <?php if ($hasPassword) { ?>
-                                    <a href="user/sso:disconnect?returnto=<?php echo _e( $_GET['_route'] ); ?>&amp;provider=<?php echo $sso; ?>">Disconnect</a>.
+                                    <a href="user/sso:disconnect?returnto=<?php echo esc($_GET['_route'] ); ?>&amp;provider=<?php echo $sso; ?>">Disconnect</a>.
                                 <?php } else { ?>
                                     <a href="user/settings">Set password</a> first to disconnect.
                                 <?php } ?>
                             </div>
                         <?php } else { ?>
                             <div class="span5 col-sm-5">
-                                <a class="btn btn-primary btn-block" style="border: 0; background-color: #<?php echo $color; ?>;" href="user/sso:login?returnto=<?php echo _e( $_GET['_route'] ); ?>&amp;provider=<?php echo $sso; ?>">
+                                <a class="btn btn-primary btn-block" style="border: 0; background-color: #<?php echo $color; ?>;" href="user/sso:login?returnto=<?php echo esc($_GET['_route'] ); ?>&amp;provider=<?php echo $sso; ?>">
                                     <i class="fa fa-<?php echo $icon; ?> pull-left"></i> connect with <?php echo ucfirst($sso); ?>
                                 </a>
                             </div>

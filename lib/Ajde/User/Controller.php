@@ -14,7 +14,7 @@ abstract class Ajde_User_Controller extends Ajde_Controller
         if ($this->hasAccess()) {
             return true;
         } else {
-            Ajde::app()->getRequest()->set('message', __('Please log on to view this page'));
+            Ajde::app()->getRequest()->set('message', trans('Please log on to view this page'));
             Ajde::app()->getResponse()->dieOnCode(Ajde_Http_Response::RESPONSE_TYPE_UNAUTHORIZED);
         }
     }

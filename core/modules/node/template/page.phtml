@@ -6,22 +6,22 @@ $node = $this->node;
 ?>
 
 <div class="container main">
-	
+
 	<div class="row">
 		<div class="col-sm-12">
-            <h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
+            <h1><?php echo esc(Ajde::app()->getDocument()->getTitle()); ?></h1>
 		</div>
 	</div>
-	
+
 	<div class="row">
 		<div class="col-sm-6">
-			<?php echo _c($node->content); ?>
-			
+			<?php echo clean($node->content); ?>
+
 			<p>
 				<?php foreach($node->getChildren() as $child) {
 					/* @var $child NodeModel */ ?>
-					<a class='btn btn-default' href='<?php echo _e($child->getUrl())?>'>
-						<?php echo _e($child->getTitle()); ?>
+					<a class='btn btn-default' href='<?php echo esc($child->getUrl())?>'>
+						<?php echo esc($child->getTitle()); ?>
 					</a>
 				<?php } ?>
 			</p>
@@ -34,7 +34,7 @@ $node = $this->node;
             <?php if (($media = $node->getMedia()) && $media->hasLoaded()) { ?>
                 <figure>
                     <?php echo $media->getLazyTag(800, null, null, 'img-responsive'); ?>
-                    <?php if ($media->caption) { echo _c($media->caption); } ?>
+                    <?php if ($media->caption) { echo clean($media->caption); } ?>
                 </figure>
             <?php } ?>
 
@@ -52,11 +52,11 @@ $node = $this->node;
                 } else { ?>
                     <figure>
                         <?php echo $media->getLazyTag(800, null, null, 'img-responsive'); ?>
-                        <?php if ($media->caption) { echo _c($media->caption); } ?>
+                        <?php if ($media->caption) { echo clean($media->caption); } ?>
                     </figure>
                 <?php } ?>
             <?php } ?>
 		</div>
 	</div>
-	
+
 </div>

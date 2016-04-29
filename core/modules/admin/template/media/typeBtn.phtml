@@ -25,7 +25,7 @@ $currentGrouper = '';
 					</a>
 					<ul class="dropdown-menu sub-menu">
 			<?php } ?>
-			<li><a href="javascript:void(null);" data-id="<?php echo $mediaType->getPK(); ?>"><?php echo _e($mediaType->getName()); ?></a></li>
+			<li><a href="javascript:void(null);" data-id="<?php echo $mediaType->getPK(); ?>"><?php echo esc($mediaType->getName()); ?></a></li>
 		<?php }
 		if ($mediaTypes->count() && !empty($currentGrouper)) { ?>
 			</ul>

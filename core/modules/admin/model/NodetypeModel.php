@@ -7,7 +7,7 @@ class NodetypeModel extends Ajde_Model
 
     public function displayIcon()
     {
-        return '<span class="badge-icon" title="' . _e($this->displayField()) . '"><i class="' . $this->getIcon() . '"></i></span>';
+        return '<span class="badge-icon" title="' . esc($this->displayField()) . '"><i class="' . $this->getIcon() . '"></i></span>';
     }
 
     public function beforeSave()

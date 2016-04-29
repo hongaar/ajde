@@ -3,8 +3,8 @@
 ?>
 
 <?php echo $this->ACAjaxForm('shop/cart:add.json', null, 'addToCart'); ?>
-	<input type='hidden' name='entity' value='<?php echo _e($this->entity); ?>' />
-	<input type='hidden' name='entity_id' value='<?php echo _e($this->entity_id); ?>' />
+	<input type='hidden' name='entity' value='<?php echo esc($this->entity); ?>' />
+	<input type='hidden' name='entity_id' value='<?php echo esc($this->entity_id); ?>' />
 	<input type='number' name='qty' class='qty' value='1' />
-	<input type='submit' value='<?php echo __('Add to shopping cart', 'shop'); ?>' class="btn btn-sm btn-default" />
+	<input type='submit' value='<?php echo trans('Add to shopping cart', 'shop'); ?>' class="btn btn-sm btn-default" />
 </form>

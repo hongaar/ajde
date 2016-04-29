@@ -207,8 +207,8 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
             $ret = $ret . '<span class="tree-spacer last"></span>';
         }
         //$ret .= '<span class="badge">'. strtolower($nodetype) . '</span>';
-        $ret .= '<span class="badge-icon" title="' . _e($nodetype) . '"><i class="' . $icon . '"></i></span>';
-        $ret .= ' <span class="title">' . _c($this->title) . '</span>';
+        $ret .= '<span class="badge-icon" title="' . esc($nodetype) . '"><i class="' . $icon . '"></i></span>';
+        $ret .= ' <span class="title">' . clean($this->title) . '</span>';
 
         return $ret;
     }
@@ -223,7 +223,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
             $parent->loadByPK($parentId);
             $ret .= '<span class="badge">' . strtolower($parent->getTitle()) . '</span>';
         }
-        $ret .= ' <span class="title">' . _c($this->title) . '</span>';
+        $ret .= ' <span class="title">' . clean($this->title) . '</span>';
 
         return $ret;
     }
@@ -235,7 +235,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
         if ($root) {
             $ret .= '<span class="badge">' . strtolower($root->getTitle()) . '</span>';
         }
-        $ret .= ' <span class="title">' . _c($this->title) . '</span>';
+        $ret .= ' <span class="title">' . clean($this->title) . '</span>';
 
         return $ret;
     }

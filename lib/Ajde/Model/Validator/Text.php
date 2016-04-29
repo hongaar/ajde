@@ -10,7 +10,7 @@ class Ajde_Model_Validator_Text extends Ajde_Model_ValidatorAbstract
                     return [
                         'valid' => false,
                         'error' => sprintf(
-                            __('Text is too long (max. %s characters)'), $length
+                            trans('Text is too long (max. %s characters)'), $length
                         )
                     ];
                 }
@@ -18,7 +18,7 @@ class Ajde_Model_Validator_Text extends Ajde_Model_ValidatorAbstract
         }
         $strippedHtml = strip_tags($this->_value);
         if ($this->getIsRequired() && empty($strippedHtml) && $this->getDefault() == '') {
-            return ['valid' => false, 'error' => __('Required field')];
+            return ['valid' => false, 'error' => trans('Required field')];
         }
 
         return ['valid' => true];

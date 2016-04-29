@@ -5,7 +5,7 @@
 <div class="container main">
 
     <div class="page-header">
-        <h2><?php echo __('Shipping details') ?></h2>
+        <h2><?php echo trans('Shipping details') ?></h2>
     </div>
 
     <div class="row form-group">
@@ -13,20 +13,20 @@
             <ul class="nav nav-pills nav-justified thumbnail setup-panel">
                 <li>
                     <a href="shop/checkout">
-                        <h4 class="list-group-item-heading">1. <?php echo __('Review', 'shop'); ?></h4>
-                        <p class="list-group-item-text"><?php echo __('Review your shopping cart', 'shop'); ?></p>
+                        <h4 class="list-group-item-heading">1. <?php echo trans('Review', 'shop'); ?></h4>
+                        <p class="list-group-item-text"><?php echo trans('Review your shopping cart', 'shop'); ?></p>
                     </a>
                 </li>
                 <li class="active">
                     <a>
-                        <h4 class="list-group-item-heading">2. <?php echo __('Your details', 'shop'); ?></h4>
-                        <p class="list-group-item-text"><?php echo __('Your name, address and shipping'); ?></p>
+                        <h4 class="list-group-item-heading">2. <?php echo trans('Your details', 'shop'); ?></h4>
+                        <p class="list-group-item-text"><?php echo trans('Your name, address and shipping'); ?></p>
                     </a>
                 </li>
                 <li class="disabled">
                     <a>
-                        <h4 class="list-group-item-heading">3. <?php echo __('Payment', 'shop'); ?></h4>
-                        <p class="list-group-item-text"><?php echo __('Payment and order confirmation'); ?></p>
+                        <h4 class="list-group-item-heading">3. <?php echo trans('Payment', 'shop'); ?></h4>
+                        <p class="list-group-item-text"><?php echo trans('Payment and order confirmation'); ?></p>
                     </a>
                 </li>
             </ul>
@@ -36,62 +36,62 @@
     <?php echo $this->ACAjaxForm('shop/transaction:setup', null, 'transactionSetup form-horizontal'); ?>
 
         <div class="status">
-            <?php echo __('Please fill in your details', 'shop') ?>
+            <?php echo trans('Please fill in your details', 'shop') ?>
         </div>
 
         <div class="row">
             <div class="col-md-6">
 
                 <div class="col-sm-7 col-sm-offset-5">
-                    <h4><?php echo __('Your name and address', 'shop') ?></h4>
+                    <h4><?php echo trans('Your name and address', 'shop') ?></h4>
                 </div>
 
                 <div class="form-group">
-                    <label for="name" class="col-sm-5 control-label"><?php echo __('Full name', 'shop') ?></label>
+                    <label for="name" class="col-sm-5 control-label"><?php echo trans('Full name', 'shop') ?></label>
                     <div class="col-sm-7">
-                        <input type='text' name='name' class="form-control" required value='<?php echo _e($this->name); ?>' />
+                        <input type='text' name='name' class="form-control" required value='<?php echo esc($this->name); ?>' />
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="email" class="col-sm-5 control-label"><?php echo __('E-mail address', 'shop') ?></label>
+                    <label for="email" class="col-sm-5 control-label"><?php echo trans('E-mail address', 'shop') ?></label>
                     <div class="col-sm-7">
-                        <input type='text' name='email' class="form-control" required value='<?php echo _e($this->email); ?>' />
+                        <input type='text' name='email' class="form-control" required value='<?php echo esc($this->email); ?>' />
                     </div>
                 </div>
 
                 <hr/>
 
                 <div class="form-group">
-                    <label for="shipment_address" class="col-sm-5 control-label"><?php echo __('Address', 'shop') ?></label>
+                    <label for="shipment_address" class="col-sm-5 control-label"><?php echo trans('Address', 'shop') ?></label>
                     <div class="col-sm-7">
-                        <input type='text' name='shipment_address' class="form-control" required value='<?php echo _e($this->address); ?>' />
+                        <input type='text' name='shipment_address' class="form-control" required value='<?php echo esc($this->address); ?>' />
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="shipment_zipcode" class="col-sm-5 control-label"><?php echo __('Zipcode', 'shop') ?></label>
+                    <label for="shipment_zipcode" class="col-sm-5 control-label"><?php echo trans('Zipcode', 'shop') ?></label>
                     <div class="col-sm-7">
-                        <input type='text' name='shipment_zipcode' class="form-control" required value='<?php echo _e($this->zipcode); ?>' />
+                        <input type='text' name='shipment_zipcode' class="form-control" required value='<?php echo esc($this->zipcode); ?>' />
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="shipment_city" class="col-sm-5 control-label"><?php echo __('City', 'shop') ?></label>
+                    <label for="shipment_city" class="col-sm-5 control-label"><?php echo trans('City', 'shop') ?></label>
                     <div class="col-sm-7">
-                        <input type='text' name='shipment_city' class="form-control" required value='<?php echo _e($this->city); ?>' />
+                        <input type='text' name='shipment_city' class="form-control" required value='<?php echo esc($this->city); ?>' />
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="shipment_region" class="col-sm-5 control-label"><?php echo __('Region', 'shop') ?></label>
+                    <label for="shipment_region" class="col-sm-5 control-label"><?php echo trans('Region', 'shop') ?></label>
                     <div class="col-sm-7">
-                        <input type='text' name='shipment_region' class="form-control" value='<?php echo _e($this->region); ?>' placeholder="<?php echo __('Optional', 'shop') ?>" />
+                        <input type='text' name='shipment_region' class="form-control" value='<?php echo esc($this->region); ?>' placeholder="<?php echo trans('Optional', 'shop') ?>" />
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="shipment_country" class="col-sm-5 control-label"><?php echo __('Country', 'shop') ?></label>
+                    <label for="shipment_country" class="col-sm-5 control-label"><?php echo trans('Country', 'shop') ?></label>
                     <div class="col-sm-7">
                         <?php
                         $countries = Ajde_Core_Autoloader::getFile(MODULE_DIR . 'shop' . DIRECTORY_SEPARATOR . TEMPLATE_DIR . DIRECTORY_SEPARATOR . 'transaction' . DIRECTORY_SEPARATOR, 'countries.phtml');
@@ -107,7 +107,7 @@
                             <div class="checkbox">
                                 <label for='save_details'>
                                     <input type='checkbox' name='save_details' checked="checked" id='save_details' />
-                                    <?php echo __('Save shipping details for next order', 'shop') ?>
+                                    <?php echo trans('Save shipping details for next order', 'shop') ?>
                                 </label>
                             </div>
                         </div>
@@ -122,9 +122,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="comment" class="col-sm-5 control-label"><?php echo __('Comment', 'shop') ?></label>
+                    <label for="comment" class="col-sm-5 control-label"><?php echo trans('Comment', 'shop') ?></label>
                     <div class="col-sm-7">
-                        <textarea name='comment' rows="7" cols="50" class="form-control" placeholder="<?php echo __('Optional', 'shop') ?>"><?php echo _e($this->comment); ?></textarea>
+                        <textarea name='comment' rows="7" cols="50" class="form-control" placeholder="<?php echo trans('Optional', 'shop') ?>"><?php echo esc($this->comment); ?></textarea>
                     </div>
                 </div>
 
@@ -133,10 +133,10 @@
 
         <div class='toolbar'>
             <button type='submit' class='pull-right btn btn-success btn-lg'>
-                <?php echo __('Proceed to payment', 'shop'); ?>
+                <?php echo trans('Proceed to payment', 'shop'); ?>
                 <span class="glyphicon glyphicon-chevron-right"></span>
             </button>
-            <a href='shop/transaction:view'><?php echo __('View current order', 'shop') ?></a>
+            <a href='shop/transaction:view'><?php echo trans('View current order', 'shop') ?></a>
         </div>
 
     </form>

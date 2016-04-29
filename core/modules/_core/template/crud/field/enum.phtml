@@ -8,13 +8,13 @@ if ($field->useRadio()) { ?>
 	<fieldset class='picker-container'>
 		<?php
 		$counter = 0;
-		if (!$field->getIsRequired() && !$field->getDefault()) { 
+		if (!$field->getIsRequired() && !$field->getDefault()) {
 			$counter++; ?>
-			<input type="radio" <?php echo $field->getHtmlAttributes(); ?> id="radio_<?php echo $field->getName(); ?>" value="" 
-				<?php if (!trim($field->getValue()) && !$field->getDefault()) { echo "checked='checked'"; } ?> 
-			/> 	
+			<input type="radio" <?php echo $field->getHtmlAttributes(); ?> id="radio_<?php echo $field->getName(); ?>" value=""
+				<?php if (!trim($field->getValue()) && !$field->getDefault()) { echo "checked='checked'"; } ?>
+			/>
 			<label class="radio" for="radio_<?php echo $field->getName(); ?>"><span class="gray">None</span></label>
-		<?php } ?>		
+		<?php } ?>
 
 		<?php foreach($options as $k => $option) {
 			$counter++;
@@ -23,7 +23,7 @@ if ($field->useRadio()) { ?>
 			?>
 			<input type="radio" <?php echo $field->getHtmlAttributes(); ?> id="radio_<?php echo $field->getName(); ?>_<?php echo $counter; ?>" value='<?php echo $k; ?>' <?php
 				if ($k == trim($field->getValue()) || ( !trim($field->getValue()) && $field->getDefault() == $k ) ) { echo "checked='checked'"; }
-				elseif ($field->hasReadonly() && $field->getReadonly() === true) { echo ' disabled="disabled" '; } ?>				
+				elseif ($field->hasReadonly() && $field->getReadonly() === true) { echo ' disabled="disabled" '; } ?>
 			/>
 			<label class="radio" for="radio_<?php echo $field->getName(); ?>_<?php echo $counter; ?>">
 				<?php echo $option; ?>
@@ -43,11 +43,11 @@ if ($field->useRadio()) { ?>
             $k = trim($k);
 			$option = trim($option); ?>
 			<option value='<?php echo $k; ?>'
-				<?php 
+				<?php
 				if ($k == trim($field->getValue())) { echo "selected='selected'"; }
 				elseif ($field->hasReadonly() && $field->getReadonly() === true) { echo ' disabled="disabled" '; }
-				?>				
-				><?php echo __($option); ?></option>
+				?>
+				><?php echo trans($option); ?></option>
 		<?php } ?>
 	</select>
 

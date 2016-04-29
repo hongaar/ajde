@@ -1,4 +1,4 @@
-<?php 
+<?php
 /* @var $this Ajde_Template_Parser_Phtml_Helper */
 
 /* @var $field Ajde_Crud_Field_Publish */
@@ -6,13 +6,13 @@ $field = $this->field;
 
 if ($field->getMode() === Ajde_Crud_Field_Publish::MODE_NEW || $field->getMode() === Ajde_Crud_Field_Publish::MODE_UNPUBLISHED) {
 	?>
-	
+
 	<input
 		<?php echo $field->getHtmlAttributes(); ?>
 	/>
-	
+
 	<fieldset class='picker-container'>
-	
+
 		<input
 			type='checkbox'
 			class='autoUpdateCrud'
@@ -20,22 +20,22 @@ if ($field->getMode() === Ajde_Crud_Field_Publish::MODE_NEW || $field->getMode()
 			if ($field->getValue()) echo 'checked="checked"';
 			if ($this->id) { echo 'id="' . $this->id . '"'; } else { echo 'id="check_' . $field->getName() . '"'; }
 			if ($field->hasReadonly() && $field->getReadonly() === true) {
-				echo ' disabled="disabled" ';	
+				echo ' disabled="disabled" ';
 			}
 			?>
 		/>
 		<label class="radio" for="<?php if ($this->id) { echo $this->id; } else { echo 'check_' . $field->getName(); } ?>">
 			<?php if ($field->getValue()) { echo 'On'; } else { echo 'Off'; } ?>
 		</label>
-	
+
 	</fieldset>
-	
+
 <?php } else if ($field->getMode() === Ajde_Crud_Field_Publish::MODE_PUBLISHED) { ?>
-	
+
 	<input
 		<?php echo $field->getHtmlAttributes(); ?>
 	/>
-	
-	<i class="icon-ok"></i> <a href="<?php echo _e($field->getValue()); ?>" target="_blank" class="btn">Open publication</a>
-	<?php 
+
+	<i class="icon-ok"></i> <a href="<?php echo esc($field->getValue()); ?>" target="_blank" class="btn">Open publication</a>
+	<?php
 } ?>

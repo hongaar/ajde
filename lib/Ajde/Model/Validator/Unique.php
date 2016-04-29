@@ -35,7 +35,7 @@ class Ajde_Model_Validator_Unique extends Ajde_Model_ValidatorAbstract
             if ($result === false || empty($result)) {
                 // Not found
             } else {
-                return ['valid' => false, 'error' => __('This ' . $this->getName() . ' already exists')];
+                return ['valid' => false, 'error' => trans('This ' . $this->getName() . ' already exists')];
             }
         }
 

@@ -8,11 +8,11 @@ $crud = $this->ACCrudList('node', $options);
 
 if (!Ajde::app()->getRequest()->has('new') && !Ajde::app()->getRequest()->has('edit')) {
 	$collection = $crud->getCollection();
-	
+
 	// add nodetype info
 	/* @var $collection NodeCollection */
 	$collection->joinNodetype();
-	$collection->getQuery()->addSelect('nodetype.name AS nodetype_name');		
+	$collection->getQuery()->addSelect('nodetype.name AS nodetype_name');
 	$collection->getQuery()->addSelect('nodetype.icon AS nodetype_icon');
 }
 
@@ -27,15 +27,15 @@ $crudOutput = $crud->output();
 		<?php echo $this->includeModule('admin/cms:nav'); ?>
 	</div><!--/span-->
 	<div class="span10 expandInIframe">
-		
+
 		<div class="page-header">
 			<h1>
-				<!--<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>-->
+				<!--<?php echo esc(Ajde::app()->getDocument()->getTitle()); ?>-->
 				<?php echo $this->ACCrudMainFilterBadge($crud, true); ?>
 			</h1>
-		</div>		
-		
+		</div>
+
 		<?php echo $crudOutput; ?>
-		
+
 	</div><!--/span-->
 </div><!--/row-->

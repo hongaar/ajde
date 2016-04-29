@@ -13,21 +13,21 @@ class MainController extends Ajde_Controller
 
     public function code403()
     {
-        Ajde::app()->getDocument()->setTitle(__("Forbidden"));
+        Ajde::app()->getDocument()->setTitle(trans("Forbidden"));
 
         return $this->render();
     }
 
     public function code404()
     {
-        Ajde::app()->getDocument()->setTitle(__("Not Found"));
+        Ajde::app()->getDocument()->setTitle(trans("Not Found"));
 
         return $this->render();
     }
 
     public function code500()
     {
-        Ajde::app()->getDocument()->setTitle(__("Internal Server Error"));
+        Ajde::app()->getDocument()->setTitle(trans("Internal Server Error"));
 
         return $this->render();
     }

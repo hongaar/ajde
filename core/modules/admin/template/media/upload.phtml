@@ -2,17 +2,17 @@
 
 <div class="row-fluid">
 	<div class="span2">
-		<?php echo $this->includeModule('admin/cms:menu'); ?>		
+		<?php echo $this->includeModule('admin/cms:menu'); ?>
 	</div><!--/span-->
 	<div class="span10">
-		
+
 		<div class="page-header">
-			<h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
-		</div>        
-        
+			<h1><?php echo esc(Ajde::app()->getDocument()->getTitle()); ?></h1>
+		</div>
+
         <?php echo $this->ACAjaxForm('admin/media:upload', 'mediaUpload', 'form-horizontal'); ?>
 			<input type="hidden" name="filename" />
-			
+
             <div class='row-fluid'>
 
                 <div class='column span12'>
@@ -22,15 +22,15 @@
 						<div class="controls">
 							<legend>Choose one or multiple files</legend>
 						</div>
-												
+
 						<div class="control-group">
 
 							<label class='control-label' for='in_files' title='' class='required'>
 								Files
 							</label>
 
-							<div class="controls">        
-								
+							<div class="controls">
+
 								<?php
 								$options = array(
 									'saveDir' => $this->uploaddir,
@@ -40,7 +40,7 @@
 								);
 								echo $this->ACAjaxUpload('files', $options);
 								?>
-								
+
 							</div>
 
 						</div>
@@ -48,7 +48,7 @@
 					</fieldset>
 
 				</div> <!-- /span -->
-                   		
+
 			</div> <!-- /row -->
 
             <div class="form-actions">
@@ -58,6 +58,6 @@
             </div>
 
         </form>
-		
+
 	</div><!--/span-->
 </div><!--/row-->

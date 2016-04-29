@@ -11,7 +11,7 @@ $cart = $this->cart;
 <div class="container main">
 
     <div class="page-header">
-        <h2><?php echo __('Checkout', 'shop'); ?></h2>
+        <h2><?php echo trans('Checkout', 'shop'); ?></h2>
     </div>
 
     <div class="row form-group">
@@ -19,20 +19,20 @@ $cart = $this->cart;
             <ul class="nav nav-pills nav-justified thumbnail setup-panel">
                 <li class="active">
                     <a>
-                        <h4 class="list-group-item-heading">1. <?php echo __('Review', 'shop'); ?></h4>
-                        <p class="list-group-item-text"><?php echo __('Review your shopping cart', 'shop'); ?></p>
+                        <h4 class="list-group-item-heading">1. <?php echo trans('Review', 'shop'); ?></h4>
+                        <p class="list-group-item-text"><?php echo trans('Review your shopping cart', 'shop'); ?></p>
                     </a>
                 </li>
                 <li class="disabled">
                     <a>
-                        <h4 class="list-group-item-heading">2. <?php echo __('Your details', 'shop'); ?></h4>
-                        <p class="list-group-item-text"><?php echo __('Your name, address and shipping'); ?></p>
+                        <h4 class="list-group-item-heading">2. <?php echo trans('Your details', 'shop'); ?></h4>
+                        <p class="list-group-item-text"><?php echo trans('Your name, address and shipping'); ?></p>
                     </a>
                 </li>
                 <li class="disabled">
                     <a>
-                        <h4 class="list-group-item-heading">3. <?php echo __('Payment', 'shop'); ?></h4>
-                        <p class="list-group-item-text"><?php echo __('Payment and order confirmation'); ?></p>
+                        <h4 class="list-group-item-heading">3. <?php echo trans('Payment', 'shop'); ?></h4>
+                        <p class="list-group-item-text"><?php echo trans('Payment and order confirmation'); ?></p>
                     </a>
                 </li>
             </ul>
@@ -41,50 +41,50 @@ $cart = $this->cart;
 
     <?php if ($transaction->hasLoaded() && !$transaction->isSameAsCart($cart)) { ?>
 
-        <h4><?php echo __('You have an unfinished order', 'shop'); ?></h4>
+        <h4><?php echo trans('You have an unfinished order', 'shop'); ?></h4>
 
         <?php if ($transaction->payment_status == 'pending') { ?>
 
             <?php if ($cart->hasItems()) { ?>
 
                 <p>
-                    <?php echo __('Update this order in progress by replacing the items from your cart in the current order', 'shop'); ?>:
+                    <?php echo trans('Update this order in progress by replacing the items from your cart in the current order', 'shop'); ?>:
                 </p>
 
                 <?php echo $this->includeModule('shop/cart:widget'); ?>
 
                 <div class='toolbar'>
                     <a class='btn btn-success btn-lg pull-right' href='shop/transaction:update'>
-                        <?php echo __('Update order', 'shop'); ?>
+                        <?php echo trans('Update order', 'shop'); ?>
                         <span class="glyphicon glyphicon-chevron-right"></span>
                     </a>
-                    <a href='shop/transaction:view'><?php echo __('View current order', 'shop'); ?></a>
+                    <a href='shop/transaction:view'><?php echo trans('View current order', 'shop'); ?></a>
                 </div>
 
             <?php } else { ?>
 
                 <p>
-                    <?php echo __('You have no items in your shopping cart, but you can continue or cancel the current order', 'shop'); ?>
+                    <?php echo trans('You have no items in your shopping cart, but you can continue or cancel the current order', 'shop'); ?>
                 </p>
-                <a class='btn btn-info' href='shop/transaction:view'><?php echo __('View current order', 'shop'); ?></a>
+                <a class='btn btn-info' href='shop/transaction:view'><?php echo trans('View current order', 'shop'); ?></a>
 
             <?php } ?>
 
         <?php } else { ?>
 
-            <p><?php echo __('There is a order in progress which can not be updated, as payment has already been initialized', 'shop'); ?>.</p>
-            <a class='btn btn-info' href='shop/transaction:view'><?php echo __('View current order', 'shop'); ?></a>
-            <?php echo __('or', 'shop'); ?>
-            <a href='shop/transaction:startNew'><?php echo __('create a new order', 'shop'); ?></a>
+            <p><?php echo trans('There is a order in progress which can not be updated, as payment has already been initialized', 'shop'); ?>.</p>
+            <a class='btn btn-info' href='shop/transaction:view'><?php echo trans('View current order', 'shop'); ?></a>
+            <?php echo trans('or', 'shop'); ?>
+            <a href='shop/transaction:startNew'><?php echo trans('create a new order', 'shop'); ?></a>
 
         <?php } ?>
 
     <?php } else { ?>
 
-        <h4><?php echo __('Review your shopping cart', 'shop'); ?></h4>
+        <h4><?php echo trans('Review your shopping cart', 'shop'); ?></h4>
         <?php echo $this->includeModule('shop/cart:widget'); ?>
         <p class="text-right">
-            <a class='btn btn-default btn-sm' href="shop/cart:edit"><?php echo __('Edit shopping cart', 'shop'); ?></a>
+            <a class='btn btn-default btn-sm' href="shop/cart:edit"><?php echo trans('Edit shopping cart', 'shop'); ?></a>
         </p>
 
         <?php if (config("shop.offerLogin") && !$transaction->hasLoaded()) { ?>
@@ -92,17 +92,17 @@ $cart = $this->cart;
             <hr/>
 
             <?php if ($this->user) { ?>
-                <h4><?php echo __('You are currently logged in as', 'shop'); ?>: <?php echo _e($this->user->getFullname()); ?></h4>
-                <p><?php echo __('We use your account info to pre-fill some details for your order.', 'shop'); ?></p>
-                <p><a class='btn btn-info btn-sm' href='shop/cart:switchUser?returnto=shop/checkout'><?php echo __('Switch user', 'shop'); ?></a></p>
+                <h4><?php echo trans('You are currently logged in as', 'shop'); ?>: <?php echo esc($this->user->getFullname()); ?></h4>
+                <p><?php echo trans('We use your account info to pre-fill some details for your order.', 'shop'); ?></p>
+                <p><a class='btn btn-info btn-sm' href='shop/cart:switchUser?returnto=shop/checkout'><?php echo trans('Switch user', 'shop'); ?></a></p>
             <?php } else { ?>
-                <h4><?php echo __('You are not currently logged in', 'shop'); ?></h4>
+                <h4><?php echo trans('You are not currently logged in', 'shop'); ?></h4>
                 <p>
-                    <?php echo __('We\'ll gladly take your order, but if you plan on coming back soon, please take some time to register yourself so you won\'t need to fill out your details in the future.', 'shop'); ?>
+                    <?php echo trans('We\'ll gladly take your order, but if you plan on coming back soon, please take some time to register yourself so you won\'t need to fill out your details in the future.', 'shop'); ?>
                 </p>
                 <p>
-                    <a href='user/logon?returnto=shop/checkout' class='btn btn-info btn-sm'><?php echo __('Login now', 'shop'); ?></a>
-                    <?php echo __('Or if you don\'t have an account yet', 'shop'); ?> <a href='user/register?returnto=shop/checkout'><?php echo __('register for an account', 'shop'); ?></a>.
+                    <a href='user/logon?returnto=shop/checkout' class='btn btn-info btn-sm'><?php echo trans('Login now', 'shop'); ?></a>
+                    <?php echo trans('Or if you don\'t have an account yet', 'shop'); ?> <a href='user/register?returnto=shop/checkout'><?php echo trans('register for an account', 'shop'); ?></a>.
                 </p>
             <?php } ?>
 
@@ -112,14 +112,14 @@ $cart = $this->cart;
             <?php if ($transaction->hasLoaded() && $transaction->isSameAsCart($cart)) { ?>
                 <div class='toolbar text-right'>
                     <a class='btn btn-success btn-lg' href='shop/transaction:update'>
-                        <?php echo __('Proceed with checkout', 'shop'); ?>
+                        <?php echo trans('Proceed with checkout', 'shop'); ?>
                         <span class="glyphicon glyphicon-chevron-right"></span>
                     </a>
                 </div>
             <?php } else { ?>
                 <div class='toolbar text-right'>
                     <a class='btn btn-success btn-lg' href='shop/transaction:setup'>
-                        <?php echo __('Proceed with checkout', 'shop'); ?>
+                        <?php echo trans('Proceed with checkout', 'shop'); ?>
                         <span class="glyphicon glyphicon-chevron-right"></span>
                     </a>
                 </div>
@@ -127,8 +127,8 @@ $cart = $this->cart;
         <?php } else { ?>
             <hr/>
             <p>
-                <a class='action' href='shop'><?php echo __('', 'shop'); ?>
-                    <?php echo __('Do some shopping first', 'shop'); ?>
+                <a class='action' href='shop'><?php echo trans('', 'shop'); ?>
+                    <?php echo trans('Do some shopping first', 'shop'); ?>
                 </a>
             </p>
         <?php } ?>

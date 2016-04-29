@@ -13,6 +13,6 @@
         if ($this->extraClass) { echo "class='$this->extraClass' "; }
     } ?>
     <?php if ($this->attributes) { foreach($this->attributes as $k => $v) {
-        echo $k . '="' . _e($v) . '" ';
+        echo $k . '="' . esc($v) . '" ';
     } } ?>
 />

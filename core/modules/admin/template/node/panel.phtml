@@ -9,7 +9,7 @@ $item = $this->item;
 ?>
 
 <h3>
-	<?php echo _e($item->getTitle()); ?>
+	<?php echo esc($item->getTitle()); ?>
 </h3>
 
 <div class="container">
@@ -20,7 +20,7 @@ $item = $this->item;
 					<td>
 						<?php echo $item->getMediaTag(150, 150, true, 'pull-left padding-right'); ?>
 						<p>
-							<?php echo nl2br(_c(Ajde_Component_String::trim( strip_tags( $item->getContent()), 450 ))); ?>
+							<?php echo nl2br(clean(Ajde_Component_String::trim( strip_tags( $item->getContent()), 450 ))); ?>
 						</p>
 					</td>
 				</tr>
@@ -30,14 +30,14 @@ $item = $this->item;
 			<table class="table table-condensed">
 				<tr>
 					<th>Published</th>
-					<td>					
+					<td>
 						<?php echo $item->getPublished() ? 'On' : 'Off'; ?>
 					</td>
 				</tr>
 				<tr>
 					<th>Added</th>
-					<td>					
-						<?php 
+					<td>
+						<?php
 						$timestamp = new DateTime($item->get('added'));
 						$timestamp = $timestamp->format('U');
 						echo Ajde_Component_String::time2str($timestamp);

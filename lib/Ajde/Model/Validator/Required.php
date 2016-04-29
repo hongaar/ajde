@@ -6,7 +6,7 @@ class Ajde_Model_Validator_Required extends Ajde_Model_ValidatorAbstract
     {
         if (empty($this->_value)) {
             if (!$this->getIsAutoIncrement()) {
-                return ['valid' => false, 'error' => __('Required field')];
+                return ['valid' => false, 'error' => trans('Required field')];
             }
         }
 

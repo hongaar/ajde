@@ -83,11 +83,11 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
                             <?php
                             $fieldLabels = $crud->getFieldLabels();
                             foreach($fieldsToShow as $fieldName) { ?>
-                                <option value="<?php echo _c($fieldName); ?>" selected><?php echo _c(issetor($fieldLabels[$fieldName], $fieldName)); ?></option>
+                                <option value="<?php echo clean($fieldName); ?>" selected><?php echo clean(issetor($fieldLabels[$fieldName], $fieldName)); ?></option>
                             <?php }
                             foreach($fieldLabels as $fieldName => $fieldLabel) {
                                 if (!in_array($fieldName, $fieldsToShow)) { ?>
-                                    <option value="<?php echo _c($fieldName); ?>"><?php echo _c($fieldLabel); ?></option>
+                                    <option value="<?php echo clean($fieldName); ?>"><?php echo clean($fieldLabel); ?></option>
                                 <?php }
                             } ?>
                         </select>
@@ -141,7 +141,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 							$fieldFilter = $crudView->getFilterForField($field->getName()); ?>
 
 							<select class="filter span12 <?php if ($fieldFilter) echo 'active'; ?>" name="view[filter][<?php echo $field->getName(); ?>]">
-								<option value="" class="select"><?php echo __("No filter"); ?></option>
+								<option value="" class="select"><?php echo trans("No filter"); ?></option>
 								<?php foreach($field->getValues() as $key => $option) { ?>
 									<option value='<?php echo $key; ?>'
 										<?php if ($key == $fieldFilter) { echo "selected='selected'"; } ?>
@@ -151,23 +151,23 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 						<?php } else if ($field instanceof Ajde_Crud_Field_Boolean) {
                             $fieldFilter = $crudView->getFilterForField($field->getName()); ?>
                             <select class="filter span12 <?php if (strlen($fieldFilter)) echo 'active'; ?>" name="view[filter][<?php echo $field->getName(); ?>]">
-                                <option value="" class="select"><?php echo __("No filter"); ?></option>
-                                    <option value='0' <?php if ('0' == $fieldFilter) { echo "selected='selected'"; } ?>><?php echo __('Off'); ?></option>
-                                    <option value='1' <?php if ('1' == $fieldFilter) { echo "selected='selected'"; } ?>><?php echo __('On'); ?></option>
+                                <option value="" class="select"><?php echo trans("No filter"); ?></option>
+                                    <option value='0' <?php if ('0' == $fieldFilter) { echo "selected='selected'"; } ?>><?php echo trans('Off'); ?></option>
+                                    <option value='1' <?php if ('1' == $fieldFilter) { echo "selected='selected'"; } ?>><?php echo trans('On'); ?></option>
                             </select>
                         <?php } else if ($field instanceof Ajde_Crud_Field_Text || $field instanceof Ajde_Crud_Field_File) {
                             if ($crud->getModel()->isFieldEncrypted($field->getName())) {
                                 echo '<small style="color: silver; font-weight: 300;"><abbr title="Encrypted fields ca\'t be searched, filtered or sorted on">encrypted</abbr></small>';
                             } else {
                                 $fieldFilter = $crudView->getFilterForField($field->getName()); ?>
-                                <input class="filter span12 <?php if (strlen($fieldFilter)) echo 'active'; ?>" name="view[filter][<?php echo $field->getName(); ?>]" type="text" value="<?php echo _e($fieldFilter); ?>" />
+                                <input class="filter span12 <?php if (strlen($fieldFilter)) echo 'active'; ?>" name="view[filter][<?php echo $field->getName(); ?>]" type="text" value="<?php echo esc($fieldFilter); ?>" />
                             <?php } ?>
                         <?php } else if ($field instanceof Ajde_Crud_Field_Date) {
                             $fieldFilter = $crudView->getFilterForField($field->getName());
                             $start = $fieldFilter['start'];
                             $end = $fieldFilter['end']; ?>
-                            <input class="filter span12 <?php if (strlen($start)) echo 'active'; ?>" name="view[filter][<?php echo $field->getName(); ?>][start]" type="date" value="<?php echo _c($start); ?>" title="Start date" /><br/>
-                            <input class="filter span12 <?php if (strlen($end)) echo 'active'; ?>" name="view[filter][<?php echo $field->getName(); ?>][end]" type="date" value="<?php echo _c($end); ?>" title="End date" />
+                            <input class="filter span12 <?php if (strlen($start)) echo 'active'; ?>" name="view[filter][<?php echo $field->getName(); ?>][start]" type="date" value="<?php echo clean($start); ?>" title="Start date" /><br/>
+                            <input class="filter span12 <?php if (strlen($end)) echo 'active'; ?>" name="view[filter][<?php echo $field->getName(); ?>][end]" type="date" value="<?php echo clean($end); ?>" title="End date" />
                         <?php } ?>
 					</th>
 				<?php } ?>
@@ -178,7 +178,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
             <th <?php if (!$crud->getOption('list.buttons.select', true)) { ?>class="hidden"<?php } ?>></th>
             <th colspan="<?php echo $columnCount + 1; ?>">
                 <?php if ($crud->getOption('list.search', true)) { ?>
-                    <input type="search" name="view[search]" class="span12 search <?php if ($crudView->getSearch()) echo 'active'; ?>" value="<?php echo $crudView->getSearch(); ?>" placeholder="<?php echo __("Search"); ?>"/>
+                    <input type="search" name="view[search]" class="span12 search <?php if ($crudView->getSearch()) echo 'active'; ?>" value="<?php echo $crudView->getSearch(); ?>" placeholder="<?php echo trans("Search"); ?>"/>
                 <?php } ?>
             </th>
         </tr>
@@ -262,9 +262,9 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 		?>
 		<tr id="row-<?php echo $model->getPK(); ?>" data-path="<?php
             if (method_exists($model, 'getSlug')) {
-                echo _e($model->getSlug());
+                echo esc($model->getSlug());
             } else if (method_exists($model, 'getPath')) {
-                echo _e($model->getPath());
+                echo esc($model->getPath());
             } ?>" class="<?php if ($crud->getOption('list.rowClassFunction', false)) { echo $model->{$crud->getOption('list.rowClassFunction')}(); } ?>">
 			<td class="<?php if (!$crud->getOption('list.buttons.select', true)) { ?>hidden<?php } ?>">
 				<input type="checkbox" class="id nopicker" name="id[]" value="<?php echo $model->getPK(); ?>" />
@@ -303,7 +303,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 					$displayFunction = $field->getFunction();
 					$displayFunctionArgs = $field->hasFunctionArgs() ? $field->getFunctionArgs() : array();
 					$funcValue = call_user_func_array(array($model, $displayFunction), $displayFunctionArgs); ?>
-					<td <?php echo $gridData; ?> title="<?php echo _e(strip_tags($funcValue)); ?>" class="<?php if ($field->hasClassname()) { echo $field->getClassname(); } if ($crud->getOption('list.main', false) == $field->getName()) { echo ' main'; } ?>">
+					<td <?php echo $gridData; ?> title="<?php echo esc(strip_tags($funcValue)); ?>" class="<?php if ($field->hasClassname()) { echo $field->getClassname(); } if ($crud->getOption('list.main', false) == $field->getName()) { echo ' main'; } ?>">
 						<?php echo $funcValue; ?>
 					</td>
 				<?php
@@ -422,7 +422,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 		<tr>
 			<td <?php if (!$crud->getOption('list.buttons.select', true)) { ?>class="hidden"<?php } ?>></td>
 			<td colspan="<?php echo $columnCount + 1; ?>">
-				<?php echo __("No items found"); ?>
+				<?php echo trans("No items found"); ?>
 			</td>
 		</tr>
 	<?php } ?>
@@ -462,7 +462,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
 			</td>
 			<td class="buttons">
 				<span>
-					<?php echo __("Show"); ?>
+					<?php echo trans("Show"); ?>
 				</span>
 				<select name="view[pageSize]" class="pageSize">
 					<?php foreach(array(5, 10, 25, 50, 100, 250, 500, 1000) as $pageSize) { ?>

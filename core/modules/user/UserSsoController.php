@@ -90,9 +90,9 @@ class UserSsoController extends Ajde_User_Controller
                 $email    = $this->_provider->getEmailSuggestion();
                 $fullname = $this->_provider->getNameSuggestion();
                 $this->redirect('user/register?provider=' . $this->_providername .
-                    '&username=' . _e($username) .
-                    '&email=' . _e($email) .
-                    '&fullname=' . _e($fullname) .
+                    '&username=' . esc($username) .
+                    '&email=' . esc($email) .
+                    '&fullname=' . esc($fullname) .
                     '&hidepassword=1&returnto=' . $returnto);
             }
         }

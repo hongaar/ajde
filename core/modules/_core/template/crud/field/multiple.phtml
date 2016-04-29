@@ -22,7 +22,7 @@ $field = $this->field;
 	if ($field->hasPrefillField()) { ?>
 	data-prefill='<?php echo implode(',', array_keys($field->getPrefillField())); ?>'
 		<?php foreach ($field->getPrefillField() as $fieldName => $value) { ?>
-			data-prefill-<?php echo $fieldName; ?>='<?php echo _e($value); ?>'
+			data-prefill-<?php echo $fieldName; ?>='<?php echo esc($value); ?>'
 		<?php }
 	} ?>
 >
@@ -37,7 +37,7 @@ $field = $this->field;
                 foreach($children as $child) {
                     $ids[] = $child->getPK();
                 } ?>
-                <select class='chosen' name='<?php echo $field->getName(); ?>[]' multiple='multiple' data-placeholder="<?php echo __('Choose some options'); ?>">
+                <select class='chosen' name='<?php echo $field->getName(); ?>[]' multiple='multiple' data-placeholder="<?php echo trans('Choose some options'); ?>">
                     <?php foreach($field->getValues() as $model) {
                         /* @var $model Ajde_Model */ ?>
                         <option value='<?php echo $model->getPK(); ?>' <?php if (in_array($model->getPK(), $ids)) { echo 'selected="selected"'; } ?> >
@@ -70,7 +70,7 @@ $field = $this->field;
 				<?php } else { ?>
 
 					<div class='btn-group'>
-						<select class='chosen' name='<?php echo $field->getName(); ?>' data-placeholder="<?php echo __('Choose existing'); ?>">
+						<select class='chosen' name='<?php echo $field->getName(); ?>' data-placeholder="<?php echo trans('Choose existing'); ?>">
 							<option value='' class='choose'></option>
 							<?php foreach($field->getValues() as $model) {
 								/* @var $model Ajde_Model */ ?>
@@ -174,7 +174,7 @@ $field = $this->field;
                                         $extension = pathinfo($value, PATHINFO_EXTENSION);
                                         if ($isImage = in_array(strtolower($extension), array('jpg', 'jpeg', 'png', 'gif'))) {
                                             $thumbDim = $field->hasThumbDim() ? $field->getThumbDim() : array('width' => 75, 'height' => 75); ?>
-                                            <a class='imagePreview img' title='<?php echo _e($value); ?>' href='<?php echo $extraField['saveDir'] . $value; ?>' target='_blank'>
+                                            <a class='imagePreview img' title='<?php echo esc($value); ?>' href='<?php echo $extraField['saveDir'] . $value; ?>' target='_blank'>
                                                 <?php echo $this->ACImage(array(
                                                         'filename' => $extraField['saveDir'] . $value,
                                                         'width' => $thumbDim['width'],

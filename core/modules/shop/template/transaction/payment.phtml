@@ -8,7 +8,7 @@ $transaction = $this->transaction;
 <div class="container main">
 
     <div class="page-header">
-        <h2><?php echo __('Payment') ?></h2>
+        <h2><?php echo trans('Payment') ?></h2>
     </div>
 
     <div class="row form-group">
@@ -16,20 +16,20 @@ $transaction = $this->transaction;
             <ul class="nav nav-pills nav-justified thumbnail setup-panel">
                 <li>
                     <a href="shop/checkout">
-                        <h4 class="list-group-item-heading">1. <?php echo __('Review', 'shop'); ?></h4>
-                        <p class="list-group-item-text"><?php echo __('Review your shopping cart', 'shop'); ?></p>
+                        <h4 class="list-group-item-heading">1. <?php echo trans('Review', 'shop'); ?></h4>
+                        <p class="list-group-item-text"><?php echo trans('Review your shopping cart', 'shop'); ?></p>
                     </a>
                 </li>
                 <li>
                     <a href="shop/transaction:setup">
-                        <h4 class="list-group-item-heading">2. <?php echo __('Your details', 'shop'); ?></h4>
-                        <p class="list-group-item-text"><?php echo __('Your name, address and shipping'); ?></p>
+                        <h4 class="list-group-item-heading">2. <?php echo trans('Your details', 'shop'); ?></h4>
+                        <p class="list-group-item-text"><?php echo trans('Your name, address and shipping'); ?></p>
                     </a>
                 </li>
                 <li class="active">
                     <a>
-                        <h4 class="list-group-item-heading">3. <?php echo __('Payment', 'shop'); ?></h4>
-                        <p class="list-group-item-text"><?php echo __('Payment and order confirmation'); ?></p>
+                        <h4 class="list-group-item-heading">3. <?php echo trans('Payment', 'shop'); ?></h4>
+                        <p class="list-group-item-text"><?php echo trans('Payment and order confirmation'); ?></p>
                     </a>
                 </li>
             </ul>
@@ -38,25 +38,25 @@ $transaction = $this->transaction;
 
     <?php if ($transaction->hasLoaded() === false) { ?>
 
-        <h4><?php echo __('Order not found') ?></h4>
-        <p><a href='shop'><?php echo __('Back to shop') ?></a></p>
+        <h4><?php echo trans('Order not found') ?></h4>
+        <p><a href='shop'><?php echo trans('Back to shop') ?></a></p>
 
     <?php } else { ?>
 
         <?php echo $this->ACAjaxForm('shop/transaction:payment', null, 'transactionPayment form-horizontal'); ?>
 
             <div class="status">
-                <?php echo __('Please choose your method of payment') ?>
+                <?php echo trans('Please choose your method of payment') ?>
             </div>
 
             <div class="col-sm-8 col-sm-offset-2">
 
-                <h4><?php echo __('Order summary'); ?></h4>
+                <h4><?php echo trans('Order summary'); ?></h4>
                 <table class="table table-condensed">
                     <thead>
                         <tr>
-                            <th><?php echo __('Description'); ?></th>
-                            <th class="text-right"><?php echo __('Amount'); ?></th>
+                            <th><?php echo trans('Description'); ?></th>
+                            <th class="text-right"><?php echo trans('Amount'); ?></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -65,13 +65,13 @@ $transaction = $this->transaction;
                             <td class="text-right"><?php echo $transaction->getFormattedItemsTotal(); ?></td>
                         </tr>
                         <tr>
-                            <td><?php echo __('Shipping with'); ?> <?php echo $transaction->getShipping()->getCurrentMethod()->getDescription(); ?></td>
+                            <td><?php echo trans('Shipping with'); ?> <?php echo $transaction->getShipping()->getCurrentMethod()->getDescription(); ?></td>
                             <td class="text-right"><?php echo $transaction->getFormattedShippingTotal(); ?></td>
                         </tr>
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th><?php echo __('Total payable amount', 'shop') ?></th>
+                            <th><?php echo trans('Total payable amount', 'shop') ?></th>
                             <th class="text-right"><?php echo $transaction->getFormattedTotal(); ?></th>
                         </tr>
                     </tfoot>
@@ -84,38 +84,38 @@ $transaction = $this->transaction;
             <?php if ($transaction->payment_status == 'completed') { ?>
 
                 <div class="col-sm-7 col-sm-offset-5">
-                    <p><?php echo __('This transaction is already paid for.') ?></p>
+                    <p><?php echo trans('This transaction is already paid for.') ?></p>
                 </div>
 
             <?php } elseif ($transaction->payment_status != 'pending') { ?>
 
                 <div class="col-sm-7 col-sm-offset-5">
                     <p>
-                        <?php echo __('Payment was already initiated for this order. If you canceled your payment, you can now reset the payment status of this transaction and try again.') ?>
+                        <?php echo trans('Payment was already initiated for this order. If you canceled your payment, you can now reset the payment status of this transaction and try again.') ?>
                     </p>
                     <p>
                         <a href="shop/transaction:resetPayment" class="btn btn-info">
                             <span class="glyphicon glyphicon-repeat"></span>
-                            <?php echo __('Try again'); ?>
+                            <?php echo trans('Try again'); ?>
                         </a>
-                        <?php echo __('or'); ?> <a href="shop/transaction:view"><?php echo __('View current order'); ?></a>
+                        <?php echo trans('or'); ?> <a href="shop/transaction:view"><?php echo trans('View current order'); ?></a>
                     </p>
                 </div>
 
             <?php } else { ?>
 
                 <div class="form-group">
-                    <label class="col-sm-5 control-label"><?php echo __('Choose payment method', 'shop') ?></label>
+                    <label class="col-sm-5 control-label"><?php echo trans('Choose payment method', 'shop') ?></label>
                     <div class="col-sm-7 provider">
 
                         <?php foreach($transaction->getProviders() as $key => $provider) {
                             /* @var $provider Ajde_Shop_Transaction_Provider */ ?>
-                            <label for='<?php echo _e($key); ?>' data-toggle="tooltip" data-placement="right" title="<?php echo _e($provider->getName()); ?>">
-                                <input type='radio' name='provider' value='<?php echo _e($key); ?>' id='<?php echo _e($key); ?>' />
+                            <label for='<?php echo esc($key); ?>' data-toggle="tooltip" data-placement="right" title="<?php echo esc($provider->getName()); ?>">
+                                <input type='radio' name='provider' value='<?php echo esc($key); ?>' id='<?php echo esc($key); ?>' />
                                 <?php if ($provider->getLogo()) { ?>
-                                    <img src='<?php echo _e($provider->getLogo()); ?>' alt='<?php echo _e($provider->getName()); ?>' width='75' style='vertical-align: middle;' />
+                                    <img src='<?php echo esc($provider->getLogo()); ?>' alt='<?php echo esc($provider->getName()); ?>' width='75' style='vertical-align: middle;' />
                                 <?php } else { ?>
-                                    <?php echo _e($provider->getName()); ?>
+                                    <?php echo esc($provider->getName()); ?>
                                 <?php } ?>
                             </label>
                             <br/>
@@ -128,12 +128,12 @@ $transaction = $this->transaction;
 
                 <div class='toolbar'>
                     <button type='submit' class='pull-right btn btn-success btn-lg'>
-                        <?php echo _e(__('Pay and complete order', 'shop')); ?>
+                        <?php echo esc(trans('Pay and complete order', 'shop')); ?>
                         <span class="glyphicon glyphicon-chevron-right"></span>
                     </button>
                     <a href='shop/transaction:setup'>
                         <span class="glyphicon glyphicon-chevron-left"></span>
-                        <?php echo __('Edit shipping details', 'shop'); ?>
+                        <?php echo trans('Edit shipping details', 'shop'); ?>
                     </a>
                 </div>
 

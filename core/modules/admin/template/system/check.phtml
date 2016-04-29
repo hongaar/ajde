@@ -1,5 +1,5 @@
 <?php
-/* @var $this Ajde_Template_Parser_Phtml_Helper */ 
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
 ?>
 
 <div class="row-fluid">
@@ -9,9 +9,9 @@
     <div class="span10">
 		<div class="page-header">
 			<h1>
-				<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
+				<?php echo esc(Ajde::app()->getDocument()->getTitle()); ?>
 			</h1>
-		</div>			
+		</div>
 
 
         <div class="row-fluid">
@@ -22,10 +22,10 @@
                 <?php foreach($this->results as $result) { ?>
                     <div>
                         <span class="label label-<?php echo $result['status']; ?>">
-                            <?php echo _e($result['check']); ?>
+                            <?php echo esc($result['check']); ?>
                         </span>
                         <span class="pull-right">
-                            <?php echo _e($result['msg']); ?>
+                            <?php echo esc($result['msg']); ?>
                         </span>
                     </div>
                 <?php } ?>
@@ -43,13 +43,13 @@
                         <?php foreach($this->config as $k => $v) { ?>
                             <tr>
                                 <td>
-                                    <?php echo _e($k); ?>
+                                    <?php echo esc($k); ?>
                                 </td>
                                 <td>
                                     <?php if (is_array($v)) { ?>
-                                        <?php echo _e(json_encode($v)); ?>
+                                        <?php echo esc(json_encode($v)); ?>
                                     <?php } else { ?>
-                                        <?php echo _e($v); ?>
+                                        <?php echo esc($v); ?>
                                     <?php } ?>
                                 </td>
                             </tr>

@@ -209,6 +209,11 @@ class Ajde_Lang extends Ajde_Object_Singleton
         $this->setLang($this->detect());
     }
 
+    public static function trans($ident, $module = null)
+    {
+        return self::getInstance()->translate($ident, $module);
+    }
+
     public function getLang()
     {
         return $this->_lang;
@@ -350,11 +355,6 @@ class Ajde_Lang extends Ajde_Object_Singleton
         }
 
         return $this->_adapter;
-    }
-
-    public static function _($ident, $module = null)
-    {
-        return self::getInstance()->translate($ident, $module);
     }
 
     public function translate($ident, $module = null)

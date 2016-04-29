@@ -10,7 +10,7 @@ $this->requireCssRemote("//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-a
 
             <?php echo $this->ACAjaxForm('user/logon', 'loginform', 'form-horizontal well'); ?>
                 <fieldset>
-                    <legend><?php echo __('Please sign in'); ?></legend>
+                    <legend><?php echo trans('Please sign in'); ?></legend>
 
                     <input type="hidden" name="returnto" id="returnto" value="<?php echo $this->returnto; ?>" />
 
@@ -21,7 +21,7 @@ $this->requireCssRemote("//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-a
                     </div>
 
                     <div class="control-group form-group give-status">
-                        <label class="control-label col-lg-2" for="in_user"><?php echo __(ucfirst($this->user->usernameField)); ?></label>
+                        <label class="control-label col-lg-2" for="in_user"><?php echo trans(ucfirst($this->user->usernameField)); ?></label>
                         <div class="controls col-lg-10">
                             <input type="text" id="in_user" name="<?php echo $this->user->usernameField; ?>" placeholder="" required />
                             <span class="help-inline status-text"></span>
@@ -29,7 +29,7 @@ $this->requireCssRemote("//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-a
                     </div>
 
                     <div class="control-group form-group">
-                        <label class="control-label col-lg-2" for="in_pass"><?php echo __(ucfirst($this->user->passwordField)); ?></label>
+                        <label class="control-label col-lg-2" for="in_pass"><?php echo trans(ucfirst($this->user->passwordField)); ?></label>
                         <div class="controls col-lg-10">
                             <input type="password" name="password" placeholder="****" required />
                             <span class="help-inline"><a href="user/forgot">Forgot password?</a></span>
@@ -39,12 +39,12 @@ $this->requireCssRemote("//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-a
                     <div class="control-group form-group">
                         <div class="controls col-lg-10 col-lg-offset-2 col-offset-2">
                             <input type="checkbox" name="rememberme" id='rememberme' checked="checked" />
-                            <label class='checkbox' for='rememberme'><?php echo __('Remember me'); ?></label>
+                            <label class='checkbox' for='rememberme'><?php echo trans('Remember me'); ?></label>
                         </div>
                     </div>
 
                     <div class="form-actions col-lg-10 col-lg-offset-2 col-offset-2">
-                        <button class="btn btn-large btn-success" type="submit"><?php echo __('logon'); ?></button>
+                        <button class="btn btn-large btn-success" type="submit"><?php echo trans('logon'); ?></button>
                     </div>
                 </fieldset>
             </form>
@@ -61,7 +61,7 @@ $this->requireCssRemote("//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-a
                     $icon = call_user_func(array($staticClass, 'getIconName'));
                     $color = call_user_func(array($staticClass, 'getColor'));
                     ?>
-                    <a class="btn btn-primary btn-block" style="border: 0; background-color: #<?php echo $color; ?>;" href="user/sso:login?returnto=<?php echo _e( $this->returnto ? $this->returnto : issetor($_GET['_route']) ); ?>&amp;provider=<?php echo $sso; ?>">
+                    <a class="btn btn-primary btn-block" style="border: 0; background-color: #<?php echo $color; ?>;" href="user/sso:login?returnto=<?php echo esc( $this->returnto ? $this->returnto : issetor($_GET['_route']) ); ?>&amp;provider=<?php echo $sso; ?>">
                         <i class="fa fa-<?php echo $icon; ?> pull-left"></i> sign in using <?php echo ucfirst($sso); ?>
                     </a>
                 </div>
@@ -74,7 +74,7 @@ $this->requireCssRemote("//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-a
                 Click the link below to register for an account.
             </p>
             <p>
-                <a class='btn btn-primary' href="user/register?returnto=<?php echo $this->returnto ? $this->returnto : $_GET['_route']; ?>"><?php echo __('register'); ?></a>
+                <a class='btn btn-primary' href="user/register?returnto=<?php echo $this->returnto ? $this->returnto : $_GET['_route']; ?>"><?php echo trans('register'); ?></a>
             </p>
 
         </div>

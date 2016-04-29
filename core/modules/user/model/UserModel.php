@@ -108,7 +108,7 @@ class UserModel extends Ajde_User
 
     public function emailLink()
     {
-        return '<a href="mailto:' . _e($this->getEmail()) . '">' . _e($this->getEmail()) . '</a>';
+        return '<a href="mailto:' . esc($this->getEmail()) . '">' . esc($this->getEmail()) . '</a>';
     }
 
     public function parseForCrud(Ajde_Crud $crud)

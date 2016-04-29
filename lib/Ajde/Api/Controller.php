@@ -23,7 +23,7 @@ abstract class Ajde_Api_Controller extends Ajde_Acl_Controller
             return parent::beforeInvoke($allowed);
         }
 
-        Ajde::app()->getRequest()->set('message', __('You may not have the required permission to view this page'));
+        Ajde::app()->getRequest()->set('message', trans('You may not have the required permission to view this page'));
         Ajde::app()->getResponse()->dieOnCode(Ajde_Http_Response::RESPONSE_TYPE_UNAUTHORIZED);
     }
 }

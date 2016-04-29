@@ -9,7 +9,7 @@
     <div class="span10">
 		<div class="page-header">
 			<h1>
-				<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
+				<?php echo esc(Ajde::app()->getDocument()->getTitle()); ?>
 			</h1>
 		</div>
 
@@ -24,7 +24,7 @@
                 foreach($this->unused as $media) { ?>
                     <div style="display: inline-block; max-width: 20%; margin: 10px; float: left;">
                         <?php echo $media->getTag(200, 200, false, 'img-polaroid'); ?>
-                        <h4><?php echo _e($media->pointer); ?></h4>
+                        <h4><?php echo esc($media->pointer); ?></h4>
                     </div>
                 <?php } ?>
 
@@ -36,7 +36,7 @@
 
                 <?php foreach($this->cleaning as $file) { ?>
                     <div style="display: inline-block; max-width: 20%; margin: 10px; float: left;">
-                        <img src="assets/media/upload/<?php echo _c($file); ?>" class="img-polaroid"/>
+                        <img src="assets/media/upload/<?php echo clean($file); ?>" class="img-polaroid"/>
                         <h4><?php echo $file; ?></h4>
                     </div>
                 <?php } ?>

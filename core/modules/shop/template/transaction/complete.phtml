@@ -7,31 +7,31 @@ $transaction = $this->transaction;
 
 <div class="container main">
 
-    <h2><?php echo __('Order complete') ?></h2>
+    <h2><?php echo trans('Order complete') ?></h2>
 
     <p>
-        <?php echo __('Your order has been received. We will notify you as soon as we are shipping your order.') ?>
+        <?php echo trans('Your order has been received. We will notify you as soon as we are shipping your order.') ?>
     </p>
 
     <?php if ($transaction->hasLoaded()) { ?>
         <hr/>
-        <h4><?php echo __('Your order'); ?></h4>
+        <h4><?php echo trans('Your order'); ?></h4>
         <p>
-            <?php echo _c($transaction->shipment_description); ?>
+            <?php echo clean($transaction->shipment_description); ?>
         </p>
         <div class='toolbar'>
             <a href="shop/transaction:view/<?php echo $transaction->secret; ?>.html" class="pull-right btn btn-info btn-lg">
                 <span class="glyphicon glyphicon-info-sign"></span>
-                <?php echo __('More order details'); ?>
+                <?php echo trans('More order details'); ?>
             </a>
-            <a href='shop'><?php echo __('Back to shop') ?></a>
+            <a href='shop'><?php echo trans('Back to shop') ?></a>
         </div>
         <p>
 
         </p>
     <?php } else { ?>
         <p>
-            <a href='shop'><?php echo __('Back to shop') ?></a>
+            <a href='shop'><?php echo trans('Back to shop') ?></a>
         </p>
     <?php } ?>
 

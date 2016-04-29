@@ -4,24 +4,24 @@
 
 <div id="cart_widget" data-quickcheckout='<?php echo $this->quickcheckout ? 1 : 0; ?>'>
 	<table class='table table-condensed cart'>
-		<colgroup>			
+		<colgroup>
 			<col width="1*"/>
 			<col width="40" />
 			<col width="70" />
 		</colgroup>
 	<?php if ($this->items->length() === 0) { ?>
 		<tr>
-			<td colspan='3'><?php echo __('Your cart is empty', 'shop'); ?></td>
+			<td colspan='3'><?php echo trans('Your cart is empty', 'shop'); ?></td>
 		</tr>
 	<?php } else { ?>
         <thead>
             <tr>
-                <th><?php echo __('Product', 'shop'); ?></th>
-                <th class='qty'><?php echo __('Quantity', 'shop'); ?></th>
-                <th class='price'><?php echo __('Price', 'shop'); ?></th>
+                <th><?php echo trans('Product', 'shop'); ?></th>
+                <th class='qty'><?php echo trans('Quantity', 'shop'); ?></th>
+                <th class='price'><?php echo trans('Price', 'shop'); ?></th>
             </tr>
         </thead>
-		<?php foreach($this->items as $item) { 
+		<?php foreach($this->items as $item) {
 			/* @var $item CartItemModel */ ?>
 			<tr>
 				<td><?php echo $item->getDescription(); ?></td>
@@ -31,7 +31,7 @@
 		<?php } ?>
 		<tfoot>
 			<tr>
-				<td colspan='2'><?php echo __('Total', 'shop'); ?></td>
+				<td colspan='2'><?php echo trans('Total', 'shop'); ?></td>
 				<td class='price'><?php echo $this->items->getFormattedTotal(); ?></td>
 			</tr>
 		</tfoot>
@@ -40,8 +40,8 @@
 
 	<?php if ($this->quickcheckout && $this->items->length()) { ?>
 	<p class="text-right">
-		<a class='btn btn-sm btn-success' href="shop/checkout"><?php echo __('Checkout', 'shop'); ?></a>
-        <?php echo __('or', 'shop'); ?> <a href="shop/cart:edit"><?php echo __('edit cart', 'shop'); ?></a>
+		<a class='btn btn-sm btn-success' href="shop/checkout"><?php echo trans('Checkout', 'shop'); ?></a>
+        <?php echo trans('or', 'shop'); ?> <a href="shop/cart:edit"><?php echo trans('edit cart', 'shop'); ?></a>
 	</p>
 	<?php } ?>
 </div>

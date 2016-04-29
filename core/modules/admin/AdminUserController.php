@@ -19,7 +19,7 @@ class AdminUserController extends AdminController
 
         if (false !== $user->loadByPK($id)) {
             $user->login();
-            Ajde_Session_Flash::alert(sprintf(__('Welcome back %s'), $user->getFullname()));
+            Ajde_Session_Flash::alert(sprintf(trans('Welcome back %s'), $user->getFullname()));
             $return = ['success' => true];
         } else {
             $return = [

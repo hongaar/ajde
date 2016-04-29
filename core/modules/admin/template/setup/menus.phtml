@@ -1,4 +1,4 @@
-<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */ 
+<?php /* @var $this Ajde_Template_Parser_Phtml_Helper */
 
 $options = new Ajde_Crud_Options();
 $options
@@ -14,7 +14,7 @@ $options
 			->setModelName('menu')
 			->setUsePopupSelector(true)
 			->setListRoute('admin/setup:menus.crud')
-			->up()	
+			->up()
 		->selectField('sort')
 			->setType('sort')
 			->up()
@@ -26,12 +26,12 @@ $options
 			->setEditRoute('admin/menu:view.crud')
 			->addTableField('type')
 			->addSortField('sort')
-			->up()	
+			->up()
 		->selectField('node')
 			->setIsRequired(true)
             ->addShowOnlyWhen('type', array('submenu', 'nodelink'))
 			->setLabel('Node link')
-			->up()		
+			->up()
 		->selectField('url')
 			->setIsRequired(true)
 			->addShowOnlyWhen('type', 'url')
@@ -43,7 +43,7 @@ $options
 			->setFunction('displayLang')
 			->setType('i18n')
 			->setCloneFields(array(
-						
+
 			))
 			->up()
 		->up()
@@ -90,7 +90,7 @@ $options
 						->setClass('narrow sidebar well')
 						->setShow(array('lang'))
 						->up()
-						
+
 	->finished();
 
 $crud = $this->ACCrudList('menu', $options);
@@ -99,17 +99,17 @@ $crud = $this->ACCrudList('menu', $options);
 
 <div class="row-fluid">
 	<div class="span2 hideInIframe">
-		<?php echo $this->includeModule('admin/cms:setupmenu'); ?>		
+		<?php echo $this->includeModule('admin/cms:setupmenu'); ?>
 	</div><!--/span-->
 	<div class="span10 expandInIframe">
-		
+
 		<div class="page-header">
 			<h1>
-				<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
+				<?php echo esc(Ajde::app()->getDocument()->getTitle()); ?>
 			</h1>
-		</div>		
-		
+		</div>
+
 		<?php echo $crud->output(); ?>
-		
+
 	</div><!--/span-->
 </div><!--/row-->

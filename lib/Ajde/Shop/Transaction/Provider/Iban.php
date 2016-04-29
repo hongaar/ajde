@@ -4,7 +4,7 @@ class Ajde_Shop_Transaction_Provider_Iban extends Ajde_Shop_Transaction_Provider
 {
     public function getName()
     {
-        return __('IBAN bank transfer', 'shop');
+        return trans('IBAN bank transfer', 'shop');
     }
 
     public function getLogo()

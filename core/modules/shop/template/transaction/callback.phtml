@@ -27,17 +27,17 @@ $transaction = $this->transaction;
                 <dd><hr/></dd>
 
                 <dt>&nbsp;</dt>
-                <dd class="status"><?php echo __('Please choose your method of payment') ?></dd>
+                <dd class="status"><?php echo trans('Please choose your method of payment') ?></dd>
 
                 <dt>Payment provider:</dt>
                 <dd class='provider'>
                     <?php foreach($transaction->getProviders() as $key => $provider) {
                         /* @var $provider Ajde_Shop_Transaction_Provider */ ?>
-                    <input type='radio' name='provider' value='<?php echo _e($key); ?>' id='<?php echo _e($key); ?>' /><label for='<?php echo _e($key); ?>'>
+                    <input type='radio' name='provider' value='<?php echo esc($key); ?>' id='<?php echo esc($key); ?>' /><label for='<?php echo esc($key); ?>'>
                         <?php if ($provider->getLogo()) { ?>
-                            <img src='<?php echo _e($provider->getLogo()); ?>' alt='<?php echo _e($provider->getName()); ?>' width='75' style='vertical-align: middle;' />
+                            <img src='<?php echo esc($provider->getLogo()); ?>' alt='<?php echo esc($provider->getName()); ?>' width='75' style='vertical-align: middle;' />
                         <?php } else { ?>
-                            <?php echo _e($provider->getName()); ?>
+                            <?php echo esc($provider->getName()); ?>
                         <?php } ?>
                     </label>
                     <?php } ?>

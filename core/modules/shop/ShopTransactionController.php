@@ -7,7 +7,7 @@ class ShopTransactionController extends ShopController
     {
         $transaction = new TransactionModel();
 
-        Ajde::app()->getDocument()->setTitle(__('Your order'));
+        Ajde::app()->getDocument()->setTitle(trans('Your order'));
 
         // Get from ID
         if ($this->hasNotEmpty('id')) {
@@ -193,19 +193,19 @@ class ShopTransactionController extends ShopController
             ) {
                 return [
                     'success' => false,
-                    'message' => __("Not all your details are filled out")
+                    'message' => trans("Not all your details are filled out")
                 ];
             }
             if (Ajde_Component_String::validEmail($email) === false) {
                 return [
                     'success' => false,
-                    'message' => __('Please provide a valid e-mail address')
+                    'message' => trans('Please provide a valid e-mail address')
                 ];
             }
             if (empty($shipmentMethod)) {
                 return [
                     'success' => false,
-                    'message' => __('Please choose a shipment method')
+                    'message' => trans('Please choose a shipment method')
                 ];
             }
         }
@@ -262,7 +262,7 @@ class ShopTransactionController extends ShopController
                 if (!$transaction->shipment_itemsqty > 0) {
                     return [
                         'success' => false,
-                        'message' => __("No items added to current order")
+                        'message' => trans("No items added to current order")
                     ];
                 }
 
@@ -273,7 +273,7 @@ class ShopTransactionController extends ShopController
 
             return [
                 'success' => false,
-                'message' => __("Something went wrong")
+                'message' => trans("Something went wrong")
             ];
         }
 
@@ -284,7 +284,7 @@ class ShopTransactionController extends ShopController
             if (!$transaction->shipment_itemsqty > 0) {
                 return [
                     'success' => false,
-                    'message' => __("No items added to current transaction")
+                    'message' => trans("No items added to current transaction")
                 ];
             }
 
@@ -296,7 +296,7 @@ class ShopTransactionController extends ShopController
         // Everything else failed
         return [
             'success' => false,
-            'message' => __("Something went wrong")
+            'message' => trans("Something went wrong")
         ];
     }
 
@@ -331,7 +331,7 @@ class ShopTransactionController extends ShopController
         if ($session->has('currentTransaction') && $transaction->loadByPK($session->get('currentTransaction'))) {
             $this->updateFromCart($transaction);
         }
-        Ajde_Session_Flash::alert(__('Your order has been updated', 'shop'));
+        Ajde_Session_Flash::alert(trans('Your order has been updated', 'shop'));
         $this->redirect('shop/transaction:setup');
         //		$this->setAction('view');
         //		return $this->view();
@@ -347,7 +347,7 @@ class ShopTransactionController extends ShopController
             $transaction->save();
             $session->destroy();
         }
-        Ajde_Session_Flash::alert(__('Your order has been cancelled', 'shop'));
+        Ajde_Session_Flash::alert(trans('Your order has been cancelled', 'shop'));
         $this->redirect('shop');
     }
 
@@ -398,7 +398,7 @@ class ShopTransactionController extends ShopController
         if (empty($provider)) {
             return [
                 'success' => false,
-                'message' => __('Please choose a payment provider')
+                'message' => trans('Please choose a payment provider')
             ];
         }
 
@@ -409,13 +409,13 @@ class ShopTransactionController extends ShopController
             if ($transaction->payment_status !== 'pending') {
                 return [
                     'success' => false,
-                    'message' => __('Payment already initiated, please refresh this page')
+                    'message' => trans('Payment already initiated, please refresh this page')
                 ];
             }
         } else {
             return [
                 'success' => false,
-                'message' => __('No current order found')
+                'message' => trans('No current order found')
             ];
         }
 

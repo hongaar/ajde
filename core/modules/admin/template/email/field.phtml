@@ -1,7 +1,7 @@
 <?php /* @var $this Ajde_Template_Parser_Phtml_Helper */
 
 $options = new Ajde_Crud_Options();
-$options	
+$options
 	->selectFields()
 		->selectField('name')
 			->up()
@@ -60,9 +60,9 @@ $options
 						->setTitle('Metadata')
 						->setClass('well')
 						->setShow(array('lang'))
-						->up()		
-									
-		
+						->up()
+
+
 	->finished();
 
 $crud = $this->ACCrudList('template', $options);
@@ -71,21 +71,21 @@ $crud = $this->ACCrudList('template', $options);
 
 <div class="row-fluid">
 	<div class="span2 hideInIframe">
-		<?php echo $this->includeModule('admin/cms:menu'); ?>		
+		<?php echo $this->includeModule('admin/cms:menu'); ?>
 	</div><!--/span-->
 	<div class="span10 expandInIframe">
-		
+
 		<div class="page-header">
 			<h1>
-				<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
+				<?php echo esc(Ajde::app()->getDocument()->getTitle()); ?>
 			</h1>
 		</div>
 
         <?php if (!Ajde::app()->getRequest()->has('edit') && !Ajde::app()->getRequest()->has('new')) {
             echo $this->includeModule('admin/email:menu');
         } ?>
-		
+
 		<?php echo $crud->output(); ?>
-		
+
 	</div><!--/span-->
 </div><!--/row-->

@@ -11,7 +11,7 @@ $this->requireJsPublic('core/complexify/jquery.complexify.min.js');
 
             <?php echo $this->ACAjaxForm('user/register', 'registerform', 'form-horizontal well'); ?>
                 <fieldset>
-                    <legend><?php echo __('Register for a new account'); ?></legend>
+                    <legend><?php echo trans('Register for a new account'); ?></legend>
 
                     <p>
                         Your password, e-mail address and other identifiable information will be encrypted securely.
@@ -27,7 +27,7 @@ $this->requireJsPublic('core/complexify/jquery.complexify.min.js');
                     </div>
 
                     <div class="control-group form-group">
-                        <label class="control-label col-lg-4" for="in_user"><?php echo __(ucfirst($this->user->usernameField)); ?></label>
+                        <label class="control-label col-lg-4" for="in_user"><?php echo trans(ucfirst($this->user->usernameField)); ?></label>
                         <div class="controls col-lg-6">
                             <input type="text" name="<?php echo $this->user->usernameField; ?>" placeholder="" <?php if ($this->username) { echo 'value="' . $this->username . '"'; } ?> required id="in_user" />
                         </div>
@@ -35,7 +35,7 @@ $this->requireJsPublic('core/complexify/jquery.complexify.min.js');
 
                     <?php if (!$this->hidepassword) { ?>
                         <div class="control-group form-group">
-                            <label class="control-label col-lg-4" for="in_pass1"><?php echo __(ucfirst($this->user->passwordField)); ?></label>
+                            <label class="control-label col-lg-4" for="in_pass1"><?php echo trans(ucfirst($this->user->passwordField)); ?></label>
                             <div class="controls col-lg-6">
                                 <input type="password" name="password" placeholder="****" required id="in_pass1" />
                                 <div class='complexity'>
@@ -46,7 +46,7 @@ $this->requireJsPublic('core/complexify/jquery.complexify.min.js');
                         </div>
 
                         <div class="control-group form-group">
-                            <label class="control-label col-lg-4" for="in_pass2"><?php echo __('Verify') . ' ' . __($this->user->passwordField); ?></label>
+                            <label class="control-label col-lg-4" for="in_pass2"><?php echo trans('Verify') . ' ' . trans($this->user->passwordField); ?></label>
                             <div class="controls col-lg-6">
                                 <input type="password" name="passwordCheck" placeholder="****" required id="in_pass2" />
                             </div>
@@ -54,21 +54,21 @@ $this->requireJsPublic('core/complexify/jquery.complexify.min.js');
                     <?php } ?>
 
                     <div class="control-group form-group">
-                        <label class="control-label col-lg-4" for="in_email"><?php echo __('E-mail'); ?></label>
+                        <label class="control-label col-lg-4" for="in_email"><?php echo trans('E-mail'); ?></label>
                         <div class="controls col-lg-6">
                             <input type="text" name="email" required id="in_email" <?php if ($this->email) { echo 'value="' . $this->email . '"'; } ?>  />
                         </div>
                     </div>
 
                     <div class="control-group form-group">
-                        <label class="control-label col-lg-4" for="in_name"><?php echo __('Full name'); ?></label>
+                        <label class="control-label col-lg-4" for="in_name"><?php echo trans('Full name'); ?></label>
                         <div class="controls col-lg-6">
                             <input type="text" name="fullname" required id="in_name" <?php if ($this->fullname) { echo 'value="' . $this->fullname . '"'; } ?> />
                         </div>
                     </div>
 
                     <div class="form-actions col-lg-6 col-lg-offset-4 col-offset-4">
-                        <button class="btn btn-primary" type="submit"><?php echo __('register'); ?></button>
+                        <button class="btn btn-primary" type="submit"><?php echo trans('register'); ?></button>
                     </div>
                 </fieldset>
             </form>
@@ -81,7 +81,7 @@ $this->requireJsPublic('core/complexify/jquery.complexify.min.js');
                 Click the link below to log on with an existing account:
             </p>
             <p>
-                <a class='btn btn-success' href="user/logon?returnto=<?php echo $this->returnto; ?>"><?php echo __('logon'); ?></a>
+                <a class='btn btn-success' href="user/logon?returnto=<?php echo $this->returnto; ?>"><?php echo trans('logon'); ?></a>
             </p>
 
         </div>

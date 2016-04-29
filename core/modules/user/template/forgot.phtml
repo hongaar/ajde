@@ -4,10 +4,10 @@
 
                 <?php echo $this->ACAjaxForm('user/forgot', 'forgotform', 'form-horizontal well'); ?>
                     <fieldset>
-                        <legend><?php echo __('What is your username of e-mail address?'); ?></legend>
+                        <legend><?php echo trans('What is your username of e-mail address?'); ?></legend>
 
                         <div class="control-group form-group give-status">
-                            <label class="control-label col-lg-4" for="in_user"><?php echo __('Username or e-mail address'); ?></label>
+                            <label class="control-label col-lg-4" for="in_user"><?php echo trans('Username or e-mail address'); ?></label>
                             <div class="controls col-lg-6">
                                 <input type="text" id="in_user" name="user" placeholder="" required />
                                 <span class="help-inline status-text"></span>
@@ -15,7 +15,7 @@
                         </div>
 
                         <div class="form-actions col-lg-6 col-lg-offset-4 col-offset-4">
-                            <button class="btn btn-large btn-success" type="submit"><?php echo __('reset password'); ?></button>
+                            <button class="btn btn-large btn-success" type="submit"><?php echo trans('reset password'); ?></button>
                         </div>
                     </fieldset>
                 </form>
@@ -28,7 +28,7 @@
                     If you suddenly remember your password, click the link below to login:
                 </p>
                 <p>
-                    <a class='btn btn-primary' href="user/logon"><?php echo __('login'); ?></a>
+                    <a class='btn btn-primary' href="user/logon"><?php echo trans('login'); ?></a>
                 </p>
 
             </div>

@@ -5,7 +5,7 @@
 <html lang='<?php echo Ajde_Lang::getInstance()->getShortLang(); ?>' id='<?php echo config("app.id"); ?>'>
 	<head>
 		<meta charset='utf-8'>
-		<title><?php echo _e(strip_tags(Ajde::app()->getDocument()->getFullTitle())); ?></title>
+		<title><?php echo esc(strip_tags(Ajde::app()->getDocument()->getFullTitle())); ?></title>
 		<?php echo Ajde::app()->getDocument()->getHead('css'); ?>
 	</head>
     <body>

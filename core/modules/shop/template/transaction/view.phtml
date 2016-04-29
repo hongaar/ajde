@@ -13,23 +13,23 @@ $this->requireCss('transaction/view.print', 'html', null, Ajde_Document_Format_H
         <div class="hidden-print btn-group pull-right">
             <a class="btn btn-primary" onclick="window.print();">
                 <i class="glyphicon glyphicon-print"></i>
-                <?php echo __('Print'); ?>
+                <?php echo trans('Print'); ?>
             </a>
             <a class="btn btn-default" href="shop/transaction:export/<?php echo $transaction->getSecret(); ?>.pdf">
                 <i class="glyphicon glyphicon-file"></i>
-                <?php echo __('PDF'); ?>
+                <?php echo trans('PDF'); ?>
             </a>
         </div>
 
         <h2>
-            <?php echo __('Order'); ?>
+            <?php echo trans('Order'); ?>
         </h2>
     </div>
 
     <?php if ($transaction->hasLoaded() === false) { ?>
 
-        <h4><?php echo __('Order not found'); ?></h4>
-        <p><a href='shop'><?php echo __('Back to shop'); ?></a></p>
+        <h4><?php echo trans('Order not found'); ?></h4>
+        <p><a href='shop'><?php echo trans('Back to shop'); ?></a></p>
 
     <?php } else { ?>
 
@@ -43,12 +43,12 @@ $this->requireCss('transaction/view.print', 'html', null, Ajde_Document_Format_H
                 <table class="order order-table" style="margin-bottom: 50px;">
                     <tbody>
                         <tr>
-                            <td><?php echo __('Order ID') ?></td>
-                            <td><?php echo _e($transaction->getOrderId()); ?></td>
+                            <td><?php echo trans('Order ID') ?></td>
+                            <td><?php echo esc($transaction->getOrderId()); ?></td>
                         </tr>
                         <tr>
-                            <td><?php echo __('Date') ?></td>
-                            <td><?php echo _e(strftime('%e %B %Y', strtotime($transaction->added))); ?></td>
+                            <td><?php echo trans('Date') ?></td>
+                            <td><?php echo esc(strftime('%e %B %Y', strtotime($transaction->added))); ?></td>
                         </tr>
                     </tbody>
                 </table>
@@ -63,38 +63,38 @@ $this->requireCss('transaction/view.print', 'html', null, Ajde_Document_Format_H
                     <thead>
                         <tr>
                             <th colspan="2">
-                                <h4><?php echo __('Your details'); ?></h4>
+                                <h4><?php echo trans('Your details'); ?></h4>
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><?php echo __('Full name', 'shop') ?></td>
-                            <td><?php echo _e($transaction->name); ?></td>
+                            <td><?php echo trans('Full name', 'shop') ?></td>
+                            <td><?php echo esc($transaction->name); ?></td>
                         </tr>
                         <tr>
-                            <td><?php echo __('E-mail address', 'shop') ?></td>
-                            <td><?php echo _e($transaction->email); ?></td>
+                            <td><?php echo trans('E-mail address', 'shop') ?></td>
+                            <td><?php echo esc($transaction->email); ?></td>
                         </tr>
                         <tr>
-                            <td><?php echo __('Address', 'shop') ?></td>
-                            <td><?php echo _e($transaction->shipment_address); ?></td>
+                            <td><?php echo trans('Address', 'shop') ?></td>
+                            <td><?php echo esc($transaction->shipment_address); ?></td>
                         </tr>
                         <tr>
-                            <td><?php echo __('Zipcode', 'shop') ?></td>
-                            <td><?php echo _e($transaction->shipment_zipcode); ?></td>
+                            <td><?php echo trans('Zipcode', 'shop') ?></td>
+                            <td><?php echo esc($transaction->shipment_zipcode); ?></td>
                         </tr>
                         <tr>
-                            <td><?php echo __('City', 'shop') ?></td>
-                            <td><?php echo _e($transaction->shipment_city); ?></td>
+                            <td><?php echo trans('City', 'shop') ?></td>
+                            <td><?php echo esc($transaction->shipment_city); ?></td>
                         </tr>
                         <tr>
-                            <td><?php echo __('Region', 'shop') ?></td>
-                            <td><?php echo _e($transaction->shipment_region); ?></td>
+                            <td><?php echo trans('Region', 'shop') ?></td>
+                            <td><?php echo esc($transaction->shipment_region); ?></td>
                         </tr>
                         <tr>
-                            <td><?php echo __('Country', 'shop') ?></td>
-                            <td><?php echo _e($transaction->shipment_country); ?></td>
+                            <td><?php echo trans('Country', 'shop') ?></td>
+                            <td><?php echo esc($transaction->shipment_country); ?></td>
                         </tr>
                     </tbody>
                 </table>
@@ -103,14 +103,14 @@ $this->requireCss('transaction/view.print', 'html', null, Ajde_Document_Format_H
                     <thead>
                     <tr>
                         <th>
-                            <h4><?php echo __('Your comment'); ?></h4>
+                            <h4><?php echo trans('Your comment'); ?></h4>
                         </th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td class="left">
-                            <?php echo _e($transaction->comment); ?>
+                            <?php echo esc($transaction->comment); ?>
                         </td>
                     </tr>
                     </tbody>
@@ -123,14 +123,14 @@ $this->requireCss('transaction/view.print', 'html', null, Ajde_Document_Format_H
                     <thead>
                     <tr>
                         <th>
-                            <h4><?php echo __('Order'); ?></h4>
+                            <h4><?php echo trans('Order'); ?></h4>
                         </th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td class='summary'>
-                            <?php echo _c($transaction->shipment_description); ?>
+                            <?php echo clean($transaction->shipment_description); ?>
                         </td>
                     </tr>
                     </tbody>
@@ -140,7 +140,7 @@ $this->requireCss('transaction/view.print', 'html', null, Ajde_Document_Format_H
                     <thead>
                         <tr>
                             <th>
-                                <h4><?php echo __('Shipment method'); ?></h4>
+                                <h4><?php echo trans('Shipment method'); ?></h4>
                             </th>
                         </tr>
                     </thead>
@@ -149,7 +149,7 @@ $this->requireCss('transaction/view.print', 'html', null, Ajde_Document_Format_H
                             <td class="left">
                                 <?php
                                 if ($shipping = $transaction->getShipping()->getCurrentMethod()) {
-                                    echo _c($shipping->getDescription());
+                                    echo clean($shipping->getDescription());
                                     echo "<span class='pull-right'>" . $transaction->getFormattedShippingTotal() . "</span>";
                                 } ?>
                             </td>
@@ -161,7 +161,7 @@ $this->requireCss('transaction/view.print', 'html', null, Ajde_Document_Format_H
                     <thead>
                         <tr>
                             <th>
-                                <h4><?php echo __('Status'); ?></h4>
+                                <h4><?php echo trans('Status'); ?></h4>
                             </th>
                         </tr>
                     </thead>
@@ -174,26 +174,26 @@ $this->requireCss('transaction/view.print', 'html', null, Ajde_Document_Format_H
                                             <p>
                                                 <a href="shop/transaction:resetPayment/<?php echo $transaction->getSecret(); ?>.html" class="btn btn-info btn-sm pull-right">
                                                     <span class="glyphicon glyphicon-repeat"></span>
-                                                    <?php echo __('Pay now'); ?>
+                                                    <?php echo trans('Pay now'); ?>
                                                 </a>
-                                                <?php echo __('Not paid'); ?>
+                                                <?php echo trans('Not paid'); ?>
                                             </p>
                                             <?php
                                         } else {
-                                            echo __('Not paid');
+                                            echo trans('Not paid');
                                         }
                                         break;
                                     case 'requested':
                                     case 'refused':
                                     case 'cancelled': ?>
                                         <p>
-                                            <?php echo __('paymentStatus' . ucfirst($transaction->payment_status)); ?>.
-                                            <?php echo __('You can make a new payment for this order.') ?>
+                                            <?php echo trans('paymentStatus' . ucfirst($transaction->payment_status)); ?>.
+                                            <?php echo trans('You can make a new payment for this order.') ?>
                                         </p>
                                         <p>
                                             <a href="shop/transaction:resetPayment/<?php echo $transaction->getSecret(); ?>.html" class="btn btn-info">
                                                 <span class="glyphicon glyphicon-repeat"></span>
-                                                <?php echo __('Retry payment'); ?>
+                                                <?php echo trans('Retry payment'); ?>
                                             </a>
                                         </p>
                                         <?php
@@ -201,8 +201,8 @@ $this->requireCss('transaction/view.print', 'html', null, Ajde_Document_Format_H
                                     case 'completed': ?>
 
                                         <p>
-                                            <img src='<?php echo _e($transaction->getProvider()->getLogo()); ?>' width='75' style='vertical-align: middle;' class="pull-right" />
-                                            <?php echo __('Paid'); ?> <?php echo __('with'); ?>
+                                            <img src='<?php echo esc($transaction->getProvider()->getLogo()); ?>' width='75' style='vertical-align: middle;' class="pull-right" />
+                                            <?php echo trans('Paid'); ?> <?php echo trans('with'); ?>
                                             <?php echo $transaction->getProvider()->getName(); ?>
                                         </p>
 
@@ -219,19 +219,19 @@ $this->requireCss('transaction/view.print', 'html', null, Ajde_Document_Format_H
         <?php if ($this->source == 'session' && $transaction->payment_status == 'pending') { ?>
             <div class='toolbar hidden-print'>
                 <a href='shop/transaction:setup' class='btn btn-success btn-lg pull-right'>
-                    <?php echo __('Continue with order'); ?>
+                    <?php echo trans('Continue with order'); ?>
                     <span class="glyphicon glyphicon-chevron-right"></span>
                 </a>
-                <a href='shop/transaction:cancel' class="btn btn-danger"><?php echo __('Cancel order'); ?></a>
-                <?php echo __('or'); ?>
-                <a href='shop'><?php echo __('continue shopping'); ?></a>
+                <a href='shop/transaction:cancel' class="btn btn-danger"><?php echo trans('Cancel order'); ?></a>
+                <?php echo trans('or'); ?>
+                <a href='shop'><?php echo trans('continue shopping'); ?></a>
             </div>
         <?php } elseif ($this->source == 'session' && $transaction->payment_status == 'refused') { ?>
             <div class='toolbar hidden-print'>
                 <a href='shop/transaction:resetPayment' class='btn btn-success btn-lg pull-right'>
-                    <?php echo __('Reset payment and try again'); ?>
+                    <?php echo trans('Reset payment and try again'); ?>
                 </a>
-                <a href='shop/transaction:cancel' class="btn btn-danger"><?php echo __('Cancel order'); ?></a>
+                <a href='shop/transaction:cancel' class="btn btn-danger"><?php echo trans('Cancel order'); ?></a>
             </div>
         <?php } ?>
 

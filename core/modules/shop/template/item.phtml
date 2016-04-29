@@ -9,7 +9,7 @@ $product = $this->product;
 
     <div class="row">
         <div class="col-sm-12">
-            <h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
+            <h1><?php echo esc(Ajde::app()->getDocument()->getTitle()); ?></h1>
         </div>
     </div>
 
@@ -17,22 +17,22 @@ $product = $this->product;
         <div class="col-sm-8">
             <div class="row">
                 <div class="col-sm-6">
-                    <?php echo _c($product->content); ?>
+                    <?php echo clean($product->content); ?>
                     <p>
                         € <?php echo $product->getFormattedPriceInclVat(); ?>
-                        <small>incl. € <?php echo $product->getFormattedVat(); ?> <?php echo __('VAT'); ?></small>
+                        <small>incl. € <?php echo $product->getFormattedVat(); ?> <?php echo trans('VAT'); ?></small>
                     </p>
                     <p>
                         <?php echo $this->includeModule('shop/cart:add/html/product:' . $product->getPK()); ?>
                     </p>
                     <p>
-                        <a href="shop"><?php echo __('Back'); ?></a>
+                        <a href="shop"><?php echo trans('Back'); ?></a>
                     </p>
                 </div>
                 <div class="col-sm-6">
                     <?php if ($image = $product->getImage()) { ?>
                         <figure>
-                            <img src="<?php echo _e($image->getUrl(800)); ?>" class="img-responsive" />
+                            <img src="<?php echo esc($image->getUrl(800)); ?>" class="img-responsive" />
                         </figure>
                     <?php } ?>
                 </div>

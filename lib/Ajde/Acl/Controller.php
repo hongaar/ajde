@@ -14,7 +14,7 @@ abstract class Ajde_Acl_Controller extends Ajde_User_Controller
         ) {
             Ajde_Log::_('ACL firewall hit', Ajde_Log::CHANNEL_SECURITY, Ajde_Log::LEVEL_INFORMATIONAL,
                 implode(PHP_EOL, Ajde_Acl::$log));
-            Ajde::app()->getRequest()->set('message', __('You may not have the required permission to view this page'));
+            Ajde::app()->getRequest()->set('message', trans('You may not have the required permission to view this page'));
             Ajde::app()->getResponse()->dieOnCode(Ajde_Http_Response::RESPONSE_TYPE_UNAUTHORIZED);
         } else {
             return true;

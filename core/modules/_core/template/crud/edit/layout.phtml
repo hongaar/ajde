@@ -102,7 +102,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudEdit
                                 'default' => '',
                                 'label' => ucfirst($fieldName),
                                 'isRequired' => false,
-                                'isPK' => false,				
+                                'isPK' => false,
                                 'isAutoIncrement' => false,
                                 'isAutoUpdate' => false,
                                 'value' => $crud->getModel()->{"has".ucfirst($fieldName)}() ? $crud->getModel()->{"get".ucfirst($fieldName)}() : false
@@ -110,7 +110,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudEdit
                         }
                         echo $field->getHtml();
                     } ?>
-                        
+
                 </fieldset>
 
                 <?php
@@ -118,7 +118,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudEdit
 
             </div> <!-- /span -->
             <?php
-        } ?>			
+        } ?>
         </div> <!-- /row -->
         <?php
     }
@@ -138,7 +138,7 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudEdit
             if (!in_array($field->getName(), $fieldsShown)) {
                 /** @var Ajde_Crud_Field $field */
                 ?>
-                <input type="hidden" name="<?php echo _e($field->getName()); ?>" value="<?php echo _e($field->getValue()); ?>" />
+                <input type="hidden" name="<?php echo esc($field->getName()); ?>" value="<?php echo esc($field->getValue()); ?>" />
                 <?php
 //                echo $field->getInput();
             }

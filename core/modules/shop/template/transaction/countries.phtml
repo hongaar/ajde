@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 function countryList($selectedCountry, $name, $preferCountries = array(), $class = '')
 {
@@ -197,20 +197,20 @@ function countryList($selectedCountry, $name, $preferCountries = array(), $class
 		"Zambia",
 		"Zimbabwe"
 	);
-	
+
 	if (!empty($preferCountries)) {
 		array_unshift($countriesList, '');
 	}
 	foreach($preferCountries as $prefCountry) {
 		if ($key = array_search($prefCountry, $countriesList)) {
-			array_unshift($countriesList, $countriesList[$key]);			
+			array_unshift($countriesList, $countriesList[$key]);
 		}
 	}
-	
+
 	echo '<select required name=\'' . $name . '\' class=\'' . $class . '\'>';
 		echo '<option value=\'\'>Please select a country</option>';
 		foreach($countriesList as $country) { ?>
-			<option value="<?php echo _e($country); ?>" <?php if (strtolower($country) == strtolower($selectedCountry)) { echo 'selected=\'selected\''; } ?>><?php echo _e($country); ?></option>
+			<option value="<?php echo esc($country); ?>" <?php if (strtolower($country) == strtolower($selectedCountry)) { echo 'selected=\'selected\''; } ?>><?php echo esc($country); ?></option>
 		<?php }
 	echo '</select>';
 }

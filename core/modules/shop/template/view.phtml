@@ -10,7 +10,7 @@ $products = $this->products;
 
     <div class="row">
         <div class="col-sm-12">
-            <h1><?php echo _e(Ajde::app()->getDocument()->getTitle()); ?></h1>
+            <h1><?php echo esc(Ajde::app()->getDocument()->getTitle()); ?></h1>
         </div>
     </div>
 
@@ -22,14 +22,14 @@ $products = $this->products;
                     <div class="col-sm-6">
                         <div class="panel panel-default">
                             <h3 class="panel-heading" style="margin: 0;">
-                                <a href="<?php echo _e($product->getSlug()); ?>">
-                                    <?php echo _e($product->title); ?>
+                                <a href="<?php echo esc($product->getSlug()); ?>">
+                                    <?php echo esc($product->title); ?>
                                 </a>
                             </h3>
-                            <a class="panel-body" href="<?php echo _e($product->getSlug()); ?>">
+                            <a class="panel-body" href="<?php echo esc($product->getSlug()); ?>">
                                 <?php if ($image = $product->getImage()) { ?>
                                     <figure>
-                                        <img src="<?php echo _e($image->getUrl(600, 200, true)); ?>" class="img-responsive" />
+                                        <img src="<?php echo esc($image->getUrl(600, 200, true)); ?>" class="img-responsive" />
                                     </figure>
                                 <?php } ?>
                                 <p>

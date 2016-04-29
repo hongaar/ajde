@@ -58,14 +58,14 @@ $edit = false;
 >
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		<h3 id="myModalLabel">Choose <?php echo _e(strtolower($filterField->getLabel())); ?></h3>
+		<h3 id="myModalLabel">Choose <?php echo esc(strtolower($filterField->getLabel())); ?></h3>
 	</div>
 	<div class="modal-body">
 
 		<?php if ( ! ($filterField instanceof Ajde_Crud_Field_Enum || $filterField instanceof Ajde_Crud_Field_Fk)) { ?>
 			<p>Field type is not supported by main filter</p>
 		<?php } else {
-			if ($crudView->hasMainFilterGrouper()) { 
+			if ($crudView->hasMainFilterGrouper()) {
 				$grouper = $crudView->getMainFilterGrouper();
 				// Assume we have a collection available, with sort field
 				$collectionName = ucfirst($mainFilter) . 'Collection';
@@ -74,7 +74,7 @@ $edit = false;
 				$collection->orderBy($grouper);
 				$collection->orderBy('sort');
 				$currentGrouper = ''; ?>
-			
+
 				<div class='mainFilterButtons'>
 					<?php foreach($collection as $item) {
 						/* @var $item Ajde_Model */
@@ -89,12 +89,12 @@ $edit = false;
 						   data-value='<?php echo $item->getPK(); ?>'
 						   class='filter btn <?php if ($item->getPK() != $currentFilter) { echo 'btn-info'; } ?>'
 						   <?php if ($item->getPK() == $currentFilter) { echo 'data-init="true"'; } ?>
-						><?php echo _e($item->get($item->getDisplayField())); ?></a>
+						><?php echo esc($item->get($item->getDisplayField())); ?></a>
 					<?php } ?>
 				</div>
-			
+
 			<?php } else { ?>
-			
+
 				<div class='mainFilterButtons'>
 					<?php foreach($filterField->getValues() as $key => $option) { ?>
 						<a href='javascript:void(null);'
@@ -102,10 +102,10 @@ $edit = false;
 						   data-value='<?php echo $key; ?>'
 						   class='filter btn <?php if ($key != $currentFilter) { echo 'btn-info'; } ?>'
 						   <?php if ($key == $currentFilter) { echo 'data-init="true"'; } ?>
-						><?php echo _e($option); ?></a>
+						><?php echo esc($option); ?></a>
 					<?php } ?>
 				</div>
-			
+
 			<?php } ?>
 
 		<?php } ?>

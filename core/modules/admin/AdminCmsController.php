@@ -91,9 +91,9 @@ class AdminCmsController extends AdminController
     {
         $nodetype = $node->has('nodetype_name') ? $node->get('nodetype_name') : $node->getNodetype()->displayField();
         $icon     = $node->has('nodetype_icon') ? $node->get('nodetype_icon') : $node->getNodetype()->getIcon();
-        $label    = '<span class="badge-icon" title="' . _e($nodetype) . '"><i class="' . $icon . '"></i></span>';
+        $label    = '<span class="badge-icon" title="' . esc($nodetype) . '"><i class="' . $icon . '"></i></span>';
 
-        return $label . ' <span class="title">' . _c($node->getTitle()) . '</span>';
+        return $label . ' <span class="title">' . clean($node->getTitle()) . '</span>';
     }
 
     private function navChildrenArray($collection)

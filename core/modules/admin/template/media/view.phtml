@@ -3,7 +3,7 @@
 $this->requireCssRemote("//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css");
 
 $options = new Ajde_Crud_Options();
-$options	
+$options
 	->selectFields()
 		->selectField('mediatype')
 			->setOrderBy('sort')
@@ -48,7 +48,7 @@ $options
             ->setThumbDim(500, 200)
             ->setMultiple(false)
             ->up()
-		->up()			
+		->up()
 	->selectList()
 		->selectButtons()
 			->setNew(true)
@@ -77,7 +77,7 @@ $options
                     ->setSpan(8)
 					->addBlock()
 						->setShow(array('name', 'pointer'))
-						->up()					
+						->up()
 					->up()
 				->addColumn()
 					->setSpan(4)
@@ -94,9 +94,9 @@ $options
 						->setTitle('Metadata')
 						->setClass('sidebar well')
 						->setShow(array('added', 'updated', 'user'))
-						->up()		
-									
-		
+						->up()
+
+
 	->finished();
 
 $crud = $this->ACCrudList('media', $options);
@@ -110,18 +110,18 @@ if (Ajde::app()->getRequest()->has('new')) {
 
 <div class="row-fluid">
 	<div class="span2 hideInIframe">
-		<?php echo $this->includeModule('admin/cms:menu'); ?>		
+		<?php echo $this->includeModule('admin/cms:menu'); ?>
 	</div><!--/span-->
 	<div class="span10 expandInIframe">
-		
+
 		<div class="page-header">
 			<h1>
-				<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
+				<?php echo esc(Ajde::app()->getDocument()->getTitle()); ?>
 				<?php echo $this->ACCrudMainFilterBadge($crud, true); ?>
 			</h1>
-		</div>		
-		
+		</div>
+
 		<?php echo $crud->output(); ?>
-		
+
 	</div><!--/span-->
 </div><!--/row-->

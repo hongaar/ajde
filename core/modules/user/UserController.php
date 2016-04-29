@@ -89,7 +89,7 @@ class UserController extends Ajde_User_Controller
         if (!$user) {
             $return = [
                 'success' => false,
-                'message' => __("Not logged in")
+                'message' => trans("Not logged in")
             ];
         }
 
@@ -106,43 +106,43 @@ class UserController extends Ajde_User_Controller
         if (empty($username)) {
             $return = [
                 'success' => false,
-                'message' => __("Please provide a " . $user->usernameField)
+                'message' => trans("Please provide a " . $user->usernameField)
             ];
         } else {
             if (!$user->canChangeUsernameTo($username)) {
                 $return = [
                     'success' => false,
-                    'message' => __(ucfirst($user->usernameField) . " already exist")
+                    'message' => trans(ucfirst($user->usernameField) . " already exist")
                 ];
             } else {
                 if ($password && $password !== $passwordCheck) {
                     $return = [
                         'success' => false,
-                        'message' => __("Passwords do not match")
+                        'message' => trans("Passwords do not match")
                     ];
                 } else {
                     if (empty($email)) {
                         $return = [
                             'success' => false,
-                            'message' => __("Please provide an e-mail address")
+                            'message' => trans("Please provide an e-mail address")
                         ];
                     } else {
                         if (Ajde_Component_String::validEmail($email) === false) {
                             $return = [
                                 'success' => false,
-                                'message' => __('Please provide a valid e-mail address')
+                                'message' => trans('Please provide a valid e-mail address')
                             ];
                         } else {
                             if (!$user->canChangeEmailTo($email)) {
                                 $return = [
                                     'success' => false,
-                                    'message' => __("A user with this e-mail address already exist")
+                                    'message' => trans("A user with this e-mail address already exist")
                                 ];
                             } else {
                                 if (empty($fullname)) {
                                     $return = [
                                         'success' => false,
-                                        'message' => __("Please provide a full name")
+                                        'message' => trans("Please provide a full name")
                                     ];
                                 } else {
                                     $user->set($user->usernameField, $username);
@@ -153,7 +153,7 @@ class UserController extends Ajde_User_Controller
                                         $user->set($user->passwordField, $hash);
                                     }
                                     if ($user->save()) {
-                                        Ajde_Session_Flash::alert(__('Your settings have been saved'));
+                                        Ajde_Session_Flash::alert(trans('Your settings have been saved'));
                                         $return = [
                                             'success'  => true,
                                             'returnto' => $returnto
@@ -161,7 +161,7 @@ class UserController extends Ajde_User_Controller
                                     } else {
                                         $return = [
                                             'success' => false,
-                                            'message' => __("Something went wrong")
+                                            'message' => trans("Something went wrong")
                                         ];
                                     }
                                 }
@@ -212,7 +212,7 @@ class UserController extends Ajde_User_Controller
 
         if (false !== $user->loadByCredentials($username, $password)) {
             $user->login();
-            Ajde_Session_Flash::alert(sprintf(__('Welcome back %s'), $user->getFullname()));
+            Ajde_Session_Flash::alert(sprintf(trans('Welcome back %s'), $user->getFullname()));
             if ($rememberme === true) {
                 $user->storeCookie($this->includeDomain);
             }
@@ -226,7 +226,7 @@ class UserController extends Ajde_User_Controller
             }
             $return = [
                 'success' => false,
-                'message' => __("We could not log you in with these credentials")
+                'message' => trans("We could not log you in with these credentials")
             ];
         }
 
@@ -256,12 +256,12 @@ class UserController extends Ajde_User_Controller
 
         if (false !== $found) {
             if ($user->resetUser()) {
-                Ajde_Session_Flash::alert(__('A password reset link is sent to your e-mail address.'));
+                Ajde_Session_Flash::alert(trans('A password reset link is sent to your e-mail address.'));
                 $return = ['success' => true];
             } else {
                 $return = [
                     'success' => false,
-                    'message' => __("We could not reset your password. Please contact our technical staff.")
+                    'message' => trans("We could not reset your password. Please contact our technical staff.")
                 ];
             }
         } else {
@@ -273,7 +273,7 @@ class UserController extends Ajde_User_Controller
             }
             $return = [
                 'success' => false,
-                'message' => __("No matching user found")
+                'message' => trans("No matching user found")
             ];
         }
 
@@ -320,13 +320,13 @@ class UserController extends Ajde_User_Controller
         if (empty($password)) {
             $return = [
                 'success' => false,
-                'message' => __("Please provide a password")
+                'message' => trans("Please provide a password")
             ];
         } else {
             if ($password !== $passwordCheck) {
                 $return = [
                     'success' => false,
-                    'message' => __("Passwords do not match")
+                    'message' => trans("Passwords do not match")
                 ];
             } else {
                 $hash = $user->createHash($password);
@@ -336,14 +336,14 @@ class UserController extends Ajde_User_Controller
 
                 if ($user->save()) {
                     $user->login();
-                    Ajde_Session_Flash::alert(sprintf(__('Welcome %s, you are now logged in'), $user->getFullname()));
+                    Ajde_Session_Flash::alert(sprintf(trans('Welcome %s, you are now logged in'), $user->getFullname()));
                     $return = [
                         'success' => true
                     ];
                 } else {
                     $return = [
                         'success' => false,
-                        'message' => __("Something went wrong")
+                        'message' => trans("Something went wrong")
                     ];
                 }
             }
@@ -423,55 +423,55 @@ class UserController extends Ajde_User_Controller
         if (empty($username)) {
             $return = [
                 'success' => false,
-                'message' => __("Please provide a " . $user->usernameField . "")
+                'message' => trans("Please provide a " . $user->usernameField . "")
             ];
         } else {
             if (!$provider && empty($password)) {
                 $return = [
                     'success' => false,
-                    'message' => __("Please provide a password")
+                    'message' => trans("Please provide a password")
                 ];
             } else {
                 if ($shadowUser->loadByField($shadowUser->usernameField, $username)) {
                     $return = [
                         'success' => false,
-                        'message' => __(ucfirst($user->usernameField) . " already exist")
+                        'message' => trans(ucfirst($user->usernameField) . " already exist")
                     ];
                 } else {
                     if (!$provider && $password !== $passwordCheck) {
                         $return = [
                             'success' => false,
-                            'message' => __("Passwords do not match")
+                            'message' => trans("Passwords do not match")
                         ];
                     } else {
                         if (empty($email)) {
                             $return = [
                                 'success' => false,
-                                'message' => __("Please provide an e-mail address")
+                                'message' => trans("Please provide an e-mail address")
                             ];
                         } else {
                             if (Ajde_Component_String::validEmail($email) === false) {
                                 $return = [
                                     'success' => false,
-                                    'message' => __('Please provide a valid e-mail address')
+                                    'message' => trans('Please provide a valid e-mail address')
                                 ];
                             } else {
                                 if ($shadowUser->loadByField('email', $email)) {
                                     $return = [
                                         'success' => false,
-                                        'message' => __("A user with this e-mail address already exist")
+                                        'message' => trans("A user with this e-mail address already exist")
                                     ];
                                 } else {
                                     if (empty($fullname)) {
                                         $return = [
                                             'success' => false,
-                                            'message' => __("Please provide a full name")
+                                            'message' => trans("Please provide a full name")
                                         ];
                                     } else {
                                         if ($provider && !$provider->getData()) {
                                             $return = [
                                                 'success' => false,
-                                                'message' => __("Something went wrong with fetching your credentials from an external service")
+                                                'message' => trans("Something went wrong with fetching your credentials from an external service")
                                             ];
                                         } else {
                                             $user->set('email', $email);
@@ -493,7 +493,7 @@ class UserController extends Ajde_User_Controller
                                                 }
                                                 $user->login();
                                                 $user->storeCookie($this->includeDomain);
-                                                Ajde_Session_Flash::alert(sprintf(__('Welcome %s, you are now logged in'),
+                                                Ajde_Session_Flash::alert(sprintf(trans('Welcome %s, you are now logged in'),
                                                     $fullname));
                                                 $return = [
                                                     'success'  => true,
@@ -502,7 +502,7 @@ class UserController extends Ajde_User_Controller
                                             } else {
                                                 $return = [
                                                     'success' => false,
-                                                    'message' => __("Something went wrong")
+                                                    'message' => trans("Something went wrong")
                                                 ];
                                             }
                                         }

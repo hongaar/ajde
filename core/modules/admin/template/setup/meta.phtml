@@ -8,7 +8,7 @@ $options
 	->selectFields()
 		->selectField('name')
 			->setEmphasis(true)
-			->up()		
+			->up()
 		->selectField('type')
             ->setType('enum')
 			->setShowLabel(false)
@@ -50,7 +50,7 @@ $options
 						->setTitle('Field type')
 						->setShow(array('type'))
 						->up()
-					
+
 	->finished();
 
 $decorator->setActiveBlock(1);
@@ -62,22 +62,22 @@ $decorator->decorateOptions();
 
 $crud = $this->ACCrudList('meta', $options);
 //$crud->setSessionName('meta.node');
-	
+
 ?>
 
 <div class="row-fluid">
 	<div class="span2 hideInIframe">
-		<?php echo $this->includeModule('admin/cms:setupmenu'); ?>		
+		<?php echo $this->includeModule('admin/cms:setupmenu'); ?>
 	</div><!--/span-->
 	<div class="span10 expandInIframe">
-		
+
 		<div class="page-header">
 			<h1>
-				<?php echo _e(Ajde::app()->getDocument()->getTitle()); ?>
+				<?php echo esc(Ajde::app()->getDocument()->getTitle()); ?>
 			</h1>
-		</div>	
+		</div>
 
 		<?php echo $crud->output(); ?>
-		
+
 	</div><!--/span-->
 </div><!--/row-->

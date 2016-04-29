@@ -3,22 +3,22 @@
 ?>
 
 <div class="col-sm-7 col-sm-offset-5">
-    <h4><?php echo __('Shipment', 'shop'); ?></h4>
+    <h4><?php echo trans('Shipment', 'shop'); ?></h4>
 </div>
 
 <?php if ($this->transaction === false || ($this->transaction !== false && empty($this->transaction->shipment_country))) { ?>
 
     <div class="form-group">
-        <label for="comment" class="col-sm-5 control-label"><?php echo __('Choose shipment method', 'shop') ?></label>
+        <label for="comment" class="col-sm-5 control-label"><?php echo trans('Choose shipment method', 'shop') ?></label>
         <div class="col-sm-7 method">
-	        <p><?php echo __('Shipment options will be available after you choose a country...', 'shop') ?></p>
+	        <p><?php echo trans('Shipment options will be available after you choose a country...', 'shop') ?></p>
         </div>
     </div>
 
 <?php } else { ?>
 
     <div class="form-group">
-        <label for="comment" class="col-sm-5 control-label"><?php echo __('Choose shipment method', 'shop') ?></label>
+        <label for="comment" class="col-sm-5 control-label"><?php echo trans('Choose shipment method', 'shop') ?></label>
         <div class="col-sm-7 method">
 
             <table>
@@ -31,15 +31,15 @@
                 /* @var $method Ajde_Shop_Shipping_Method */ ?>
                     <tr>
                         <td>
-                            <input type='radio' name='shipment_method' <?php if ($this->method == $method->getName()) { echo 'checked=\'checked\''; } ?> value='<?php echo _e($method->getName()); ?>' id='<?php echo _e($method->getName()); ?>' />
+                            <input type='radio' name='shipment_method' <?php if ($this->method == $method->getName()) { echo 'checked=\'checked\''; } ?>value='<?php echo esc($method->getName()); ?>' id='<?php echo esc($method->getName()); ?>' />
                         </td>
                         <td>
-                            <label for='<?php echo _e($method->getName()); ?>'>
-                                <?php echo _c($method->getDescription()); ?>
+                            <label for='<?php echo esc($method->getName()); ?>'>
+                                <?php echo clean($method->getDescription()); ?>
                             </label>
                         </td>
                         <td>
-                            <?php echo _e($method->getFormattedTotal()); ?>
+                            <?php echo esc($method->getFormattedTotal()); ?>
                         </td>
                     </tr>
                 <?php } ?>

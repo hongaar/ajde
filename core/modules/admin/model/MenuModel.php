@@ -26,7 +26,7 @@ class MenuModel extends Ajde_Model_With_I18n
 
     public function getTreeName()
     {
-        $ret = _c($this->name);
+        $ret = clean($this->name);
         $ret = str_repeat('<span class="tree-spacer"></span>', $this->get('level')) . $ret;
 
         return $ret;

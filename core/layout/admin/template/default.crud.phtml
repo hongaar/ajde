@@ -55,14 +55,14 @@ $this->requireCss('default.crud');
 ?>
 <!-- Inspired by HTML5 Boilerplate -->
 <!doctype html>
-<html lang='<?php echo Ajde_Lang::getInstance()->getShortLang(); ?>' id='<?php echo config("app.id"); ?>' data-lifetime='<?php echo (config("session.lifetime") == 0 ? 180 : config("session.lifetime")); ?>' data-alert='<?php echo _e(Ajde_Session_Flash::get('alert')); ?>'>
+<html lang='<?php echo Ajde_Lang::getInstance()->getShortLang(); ?>' id='<?php echo config("app.id"); ?>' data-lifetime='<?php echo (config("session.lifetime") == 0 ? 180 : config("session.lifetime")); ?>' data-alert='<?php echo esc(Ajde_Session_Flash::get('alert')); ?>'>
 	<head>
 
 		<!-- UTF-8 please (also in the headers, just to be sure) -->
 		<meta charset='utf-8'>
 
 		<!-- Some content meta tags -->
-		<title><?php echo _e(strip_tags(Ajde::app()->getDocument()->getFullTitle())); ?></title>
+		<title><?php echo esc(strip_tags(Ajde::app()->getDocument()->getFullTitle())); ?></title>
 
 		<!-- Define the root of the site -->
 		<base href='<?php echo config("i18n.rootUrl"); ?>' />

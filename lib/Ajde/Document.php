@@ -88,7 +88,7 @@ abstract class Ajde_Document extends Ajde_Object_Standard
 
     public function getTitle()
     {
-        return $this->has('title') ? $this->get('title') : __('Untitled page');
+        return $this->has('title') ? $this->get('title') : trans('Untitled page');
     }
 
     public function getFullTitle()

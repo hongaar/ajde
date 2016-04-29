@@ -1,4 +1,4 @@
-<?php 
+<?php
 /* @var $field Ajde_Crud_Field_Text */
 $field = $this->field;
 ?>
@@ -7,7 +7,7 @@ $field = $this->field;
 
     <?php if ( ($field->hasReadonly() && $field->getReadonly() === true) && !($field->hasDisableRichText() && $field->getDisableRichText()) ) { ?>
 
-        <?php echo _c($field->getValue()); ?>
+        <?php echo clean($field->getValue()); ?>
 
     <?php } else { ?>
 

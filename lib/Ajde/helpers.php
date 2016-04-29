@@ -1,12 +1,16 @@
 <?php
 
-class Ajde extends Ajde_Application
-{
-}
+class Ajde extends Ajde_Application {}
 
-class Config extends Ajde_Config
-{
-}
+class Config extends Ajde_Config {}
+
+class Dump extends Ajde_Dump {}
+
+class Lang extends Ajde_Lang {}
+
+class Str extends Ajde_Component_String {}
+
+class Arr extends Ajde_Core_Array {}
 
 /**
  * Return value when it is set, or something else otherwise.
@@ -31,7 +35,7 @@ function issetor(&$what, $else = null)
  */
 function dump($var, $expand = true)
 {
-    Ajde_Dump::dump($var, $expand);
+    Dump::dump($var, $expand);
 }
 
 /**
@@ -41,9 +45,9 @@ function dump($var, $expand = true)
  * @param string $module
  * @return string
  */
-function __($ident, $module = null)
+function trans($ident, $module = null)
 {
-    return Ajde_Lang::getInstance()->translate($ident, $module);
+    return Lang::trans($ident, $module);
 }
 
 /**
@@ -52,9 +56,9 @@ function __($ident, $module = null)
  * @param string $var
  * @return string
  */
-function _e($var)
+function esc($var)
 {
-    return Ajde_Component_String::escape($var);
+    return Str::escape($var);
 }
 
 /**
@@ -63,9 +67,9 @@ function _e($var)
  * @param string $var
  * @return string
  */
-function _c($var)
+function clean($var)
 {
-    return Ajde_Component_String::clean($var);
+    return Str::clean($var);
 }
 
 /**
