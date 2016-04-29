@@ -1378,7 +1378,7 @@ class CssParser
      *
      * @var string
      */
-    private $buffer = "";
+    public $buffer = "";
     /**
      * {@link aCssParserPlugin Plugins}.
      *
