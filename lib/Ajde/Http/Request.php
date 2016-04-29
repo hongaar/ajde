@@ -377,7 +377,11 @@ class Ajde_Http_Request extends Ajde_Object_Standard
         $requestURI    = reset($URIComponents);
 
         // Route is the part after our base path
-        $baseURI = str_replace(PUBLIC_URI . 'index.php', '', $_SERVER['PHP_SELF']);
+        $baseURI = str_replace('index.php', '', $_SERVER['PHP_SELF']);
+
+        // Strip public from request and base
+        $requestURI = str_replace(PUBLIC_URI, '', $requestURI);
+        $baseURI = str_replace(PUBLIC_URI, '', $baseURI);
 
         return str_replace($baseURI, '', $requestURI);
     }
