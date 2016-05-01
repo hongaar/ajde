@@ -30,4 +30,22 @@ class SettingModel extends Ajde_Model
 
         return false;
     }
+
+    public static function getMedia($settingName)
+    {
+        $metaValue = (int) self::byName($settingName);
+        $media     = new MediaModel();
+        $media->loadByPK($metaValue);
+
+        return $media->hasLoaded() ? $media : false;
+    }
+
+    public static function getNode($settingName)
+    {
+        $metaValue = (int) self::byName($settingName);
+        $node      = new NodeModel();
+        $node->loadByPK($metaValue);
+
+        return $node->hasLoaded() ? $node : false;
+    }
 }

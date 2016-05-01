@@ -327,7 +327,7 @@ class AdminSystemController extends AdminController
         $toBeCleaned = $this->_tobecleaned();
 
         foreach ($toBeCleaned as $file) {
-            unlink(UPLOAD_DIR . $file);
+            unlink(LOCAL_ROOT . UPLOAD_DIR . $file);
         }
 
         Ajde_Session_Flash::alert('Orphan files cleaned');

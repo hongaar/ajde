@@ -115,7 +115,7 @@ AC.Crud.Edit.Text = function() {
             CKEDITOR.config.autoParagraph = false;
 
 			CKEDITOR.config.baseHref = document.getElementsByTagName('base')[0].href;
-			CKEDITOR.config.contentsCss = [CKEDITOR.basePath + 'contents.css', 'public/css/core/ckeditor/style.css'];
+			CKEDITOR.config.contentsCss = [CKEDITOR.basePath + 'contents.css', 'public/assets/css/core/ckeditor/style.css'];
 
 			CKEDITOR.config.removePlugins = 'elementspath';
 			CKEDITOR.config.removeButtons = '';

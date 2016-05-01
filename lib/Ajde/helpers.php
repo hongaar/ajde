@@ -83,3 +83,14 @@ function config($param)
 {
     return Config::get($param);
 }
+
+/**
+ * Shortcut to get setting contents
+ *
+ * @param string $name
+ * @return bool|mixed
+ */
+function setting($name)
+{
+    return SettingModel::byName($name);
+}
