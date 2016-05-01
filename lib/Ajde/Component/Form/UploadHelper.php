@@ -136,7 +136,7 @@ class qqFileUploader
      */
     function handleUpload($uploadDirectory, $replaceOldFile = false)
     {
-        if (!is_writable($uploadDirectory)) {
+        if (!is_writable(LOCAL_ROOT . $uploadDirectory)) {
             return ['error' => "Server error. Upload directory isn't writable."];
         }
 
@@ -172,7 +172,7 @@ class qqFileUploader
             }
         }
 
-        if ($this->file->save($uploadDirectory . $filename . '.' . $ext)) {
+        if ($this->file->save(LOCAL_ROOT . $uploadDirectory . $filename . '.' . $ext)) {
             return ['success' => true, 'filename' => $filename . '.' . $ext];
         } else {
             return [
