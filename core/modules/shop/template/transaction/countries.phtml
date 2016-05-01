@@ -201,7 +201,7 @@ function countryList($selectedCountry, $name, $preferCountries = array(), $class
 	if (!empty($preferCountries)) {
 		array_unshift($countriesList, '');
 	}
-	foreach($preferCountries as $prefCountry) {
+	foreach(array_reverse($preferCountries) as $prefCountry) {
 		if ($key = array_search($prefCountry, $countriesList)) {
 			array_unshift($countriesList, $countriesList[$key]);
 		}

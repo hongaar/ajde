@@ -94,10 +94,9 @@
                     <label for="shipment_country" class="col-sm-5 control-label"><?php echo trans('Country', 'shop') ?></label>
                     <div class="col-sm-7">
                         <?php
-                        $countries = Ajde_Core_Autoloader::getFile(MODULE_DIR . 'shop' . DIRECTORY_SEPARATOR . TEMPLATE_DIR . DIRECTORY_SEPARATOR . 'transaction' . DIRECTORY_SEPARATOR, 'countries.phtml');
-                        include $countries;
+                        include 'countries.phtml';
                         ?>
-                        <?php countryList($this->country, 'shipment_country', array('The Netherlands'), 'form-control'); ?>
+                        <?php countryList($this->country, 'shipment_country', array('The Netherlands', 'Belgium', 'Germany'), 'form-control'); ?>
                     </div>
                 </div>
 

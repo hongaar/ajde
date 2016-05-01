@@ -42,7 +42,7 @@ class TemplateModel extends Ajde_Model_With_I18n
             if (!is_file(LOCAL_ROOT . $stylesheet)) {
                 throw new Ajde_Exception('Stylesheet ' . $stylesheet . ' not found');
             }
-            $stylesheetContent = file_get_contents($stylesheet);
+            $stylesheetContent = file_get_contents(LOCAL_ROOT . $stylesheet);
             $content           = "<html><body><style>" . $stylesheetContent . "</style>" . $content . "</body></html>";
         }
 

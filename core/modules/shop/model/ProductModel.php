@@ -106,7 +106,7 @@ class ProductModel extends Ajde_Model
     public function getImage()
     {
         if ($this->hasNotEmpty('image')) {
-            return new Ajde_Resource_Image(MEDIA_DIR . self::$imageDir . $this->get('image'));
+            return new Ajde_Resource_Image(UPLOAD_DIR . self::$imageDir . $this->get('image'));
         }
 
         return false;
