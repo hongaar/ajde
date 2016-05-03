@@ -1,5 +1,11 @@
 <?php
 /* @var $crud Ajde_Crud */
+
+// Selectize
+$this->requireJsPublic('core/jqueryui/sortable/jquery-ui.min.js');
+$this->requireJsPublic('core/selectize/selectize.min.js');
+$this->requireCssPublic('core/selectize/selectize.css');
+
 $crud = $this->crud;
 $editOptions = $crud->getOptions('edit');
 

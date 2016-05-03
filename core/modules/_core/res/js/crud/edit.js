@@ -97,7 +97,16 @@ AC.Crud.Edit = function() {
                 });
             }
 
+            // Sub init
+            AC.Crud.Edit.initAdditionalControls();
+
 		},
+
+        initAdditionalControls: function() {
+            $('select.selectize').selectize({
+                plugins: ['remove_button', 'drag_drop']
+            });
+        },
 
         setDirty: function(e) {
             $(this).parents('form.ACCrudEdit').find('.btn.cancel')

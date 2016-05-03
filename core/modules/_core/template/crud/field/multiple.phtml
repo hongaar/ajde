@@ -37,7 +37,7 @@ $field = $this->field;
                 foreach($children as $child) {
                     $ids[] = $child->getPK();
                 } ?>
-                <select class='chosen' name='<?php echo $field->getName(); ?>[]' multiple='multiple' data-placeholder="<?php echo trans('Choose some options'); ?>">
+                <select class='selectize' name='<?php echo $field->getName(); ?>[]' multiple='multiple' data-placeholder="<?php echo trans('Choose some options'); ?>">
                     <?php foreach($field->getValues() as $model) {
                         /* @var $model Ajde_Model */ ?>
                         <option value='<?php echo $model->getPK(); ?>' <?php if (in_array($model->getPK(), $ids)) { echo 'selected="selected"'; } ?> >
@@ -70,7 +70,7 @@ $field = $this->field;
 				<?php } else { ?>
 
 					<div class='btn-group'>
-						<select class='chosen' name='<?php echo $field->getName(); ?>' data-placeholder="<?php echo trans('Choose existing'); ?>">
+						<select class='selectize' name='<?php echo $field->getName(); ?>' data-placeholder="<?php echo trans('Choose existing'); ?>">
 							<option value='' class='choose'></option>
 							<?php foreach($field->getValues() as $model) {
 								/* @var $model Ajde_Model */ ?>
