@@ -16,6 +16,7 @@
     },
     "log": {
         "writer": [
+            "php",
             "db",
             "file"
         ],
