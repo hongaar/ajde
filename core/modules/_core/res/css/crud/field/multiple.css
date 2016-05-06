@@ -5,14 +5,14 @@ div.multiple div.controls-row {
 		width: 50px;
 		float: right !important;
 	}
-	
+
 	div.input {
 		margin-right: 50px;
-		
+
 		select {
 			width: 100%;
 		}
-		
+
 		li.search-field input {
 			height: 16px !important;
 		}
@@ -23,11 +23,11 @@ div.multiple div.picker {
 	display: inline-block;
     position: relative;
     top: 10px;
-	
+
 	div.input {
 		display: none;
 	}
-	
+
 	div.controls-row a.btn {
 		float: none !important;
 		width: auto;
@@ -36,11 +36,23 @@ div.multiple div.picker {
 
 div.multipleToolbar {
 	margin: 10px 0;
-	
+
 	.chosen-container .chosen-single {
 		height: 26px;
 		top: 0;
 	}
+
+    .selectize-control {
+        float: left;
+        height: 1px;
+
+        .selectize-input {
+            height: 30px;
+            padding-top: 4px;
+            padding-bottom: 4px;
+            padding-right: 30px;
+        }
+    }
 }
 
 table.multipleList {
@@ -66,7 +78,7 @@ table.multipleList tr.template {
 table.multipleList.hideMainColumn td.main,
 table.multipleList.hideMainColumn th.main {
 	display: none;
-} 
+}
 
 span.or {
 	position: relative;

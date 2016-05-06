@@ -1024,3 +1024,13 @@ table.revisions {
     }
 
 }
+
+// Selectize
+.selectize-control {
+    .selectize-input {
+        border-radius: 0;
+
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+}
