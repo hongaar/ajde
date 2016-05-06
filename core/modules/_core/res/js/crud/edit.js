@@ -103,9 +103,11 @@ AC.Crud.Edit = function() {
 		},
 
         initAdditionalControls: function() {
-            $('select.selectize').selectize({
-                plugins: ['remove_button', 'drag_drop']
-            });
+            if (typeof $.fn.selectize !== 'undefined') {
+                $('select.selectize').selectize({
+                    plugins: ['remove_button', 'drag_drop']
+                });
+            }
         },
 
         setDirty: function(e) {
