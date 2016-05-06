@@ -56,11 +56,14 @@ abstract class Ajde_Acl_Proxy_Model extends Ajde_Model
         return $return;
     }
 
-    public function insert($pkValue = null)
+    public function insert($pkValue = null, $skipBeforeInsert = false)
     {
+        if (method_exists($this, 'beforeInsert')) {
+            $this->beforeInsert();
+        }
         $this->validateAccess('insert');
 
-        return parent::insert($pkValue);
+        return parent::insert($pkValue, true);
     }
 
     public function delete()

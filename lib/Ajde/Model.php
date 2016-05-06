@@ -556,9 +556,9 @@ class Ajde_Model extends Ajde_Object_Standard
         return $return;
     }
 
-    public function insert($pkValue = null)
+    public function insert($pkValue = null, $skipBeforeInsert = false)
     {
-        if (method_exists($this, 'beforeInsert')) {
+        if (method_exists($this, 'beforeInsert') && $skipBeforeInsert === false) {
             $this->beforeInsert();
         }
         $pk = $this->getTable()->getPK();

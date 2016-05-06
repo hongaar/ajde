@@ -322,6 +322,14 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
+     * Sets the edit route for fields with type 'multiple'
+     *
+     * @param bool $flag
+     * @return Ajde_Crud_Options_Fields_Field
+     */
+    public function setDisableAddExisting($flag) { return $this->_set('disableAddExisting', $flag); }
+    
+    /**
      * Sets the edit route function for fields with type 'multiple'
      *
      * @param string $function

@@ -115,15 +115,20 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
                 if ($field instanceof Ajde_Crud_Field_Enum || $field instanceof Ajde_Crud_Field_Fk || $field instanceof Ajde_Crud_Field_Boolean || $field instanceof Ajde_Crud_Field_Date) {
                     $showFilters = true;
                 }
-				?>
-				<th <?php if ($crud->getOption('list.main', false) == $field->getName()) { echo 'class="main"'; } ?>>
-					<a href="javascript:void(null);" class='order <?php echo $class; ?>' data-orderBy='<?php echo $field->getName(); ?>' data-orderDir='<?php echo $orderDir; ?>'>
+                if (!in_array($fieldName, $crud->getModel()->getTable()->getFieldNames()) || $crud->getModel()->isFieldEncrypted($fieldName)) { ?>) { ?>
+                    <th <?php if ($crud->getOption('list.main', false) == $field->getName()) { echo 'class="main"'; } ?>>
                         <?php echo $field->getLabel(); ?>
-                        <?php if ($class) { ?>
-                            <i class="icon-arrow-<?php echo ($class == 'asc' ? 'down' : 'up'); ?>"></i>
-                        <?php } ?>
-                    </a>
-				</th>
+                    </th>
+                <?php } else { ?>
+                    <th <?php if ($crud->getOption('list.main', false) == $field->getName()) { echo 'class="main"'; } ?>>
+                        <a href="javascript:void(null);" class='order <?php echo $class; ?>' data-orderBy='<?php echo $field->getName(); ?>' data-orderDir='<?php echo $orderDir; ?>'>
+                            <?php echo $field->getLabel(); ?>
+                            <?php if ($class) { ?>
+                                <i class="icon-arrow-<?php echo ($class == 'asc' ? 'down' : 'up'); ?>"></i>
+                            <?php } ?>
+                        </a>
+                    </th>
+                <?php } ?>
 			<?php } ?>
 			<th></th>
 		</tr>
@@ -137,6 +142,8 @@ echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrud ACCrudList
                         if ($mainFilter == $fieldName) {
                             // skip this one
                             echo '<small style="color: silver; font-weight: 300;">see above</small>';
+                        } elseif (!in_array($fieldName, $crud->getModel()->getTable()->getFieldNames())) {
+                            // skip this one
                         } else if ($field instanceof Ajde_Crud_Field_Enum || $field instanceof Ajde_Crud_Field_Fk) {
 							$fieldFilter = $crudView->getFilterForField($field->getName()); ?>
 

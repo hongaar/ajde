@@ -42,13 +42,20 @@ class Ajde_Crud_Cms_Meta extends Ajde_Crud_Cms_Meta_Fieldlist
     }
 
     /**
+     * @param bool $filterTypes
      * @return array
      */
-    public function getTypesNiceNames()
+    public function getTypesNiceNames($filterTypes = false)
     {
-        $list = [];
-        foreach ($this->getTypes() as $type) {
-            $list[] = $type->niceName();
+        $filter = Config::get('metaFilter');
+
+        $list = array();
+        foreach($this->getTypes() as $type)
+        {
+            $name = $type->niceName();
+            if ( ($filterTypes == true && in_array($name, $filter)) || $filterTypes === false) {
+                $list[] = $name;
+            }
         }
 
         return $list;

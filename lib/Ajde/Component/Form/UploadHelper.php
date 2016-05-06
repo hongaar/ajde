@@ -136,6 +136,10 @@ class qqFileUploader
      */
     function handleUpload($uploadDirectory, $replaceOldFile = false)
     {
+        if (!file_exists($uploadDirectory)) {
+            mkdir($uploadDirectory, 0777, true);
+        }
+
         if (!is_writable(LOCAL_ROOT . $uploadDirectory)) {
             return ['error' => "Server error. Upload directory isn't writable."];
         }
