@@ -36,7 +36,7 @@ class Ajde_Cms extends Ajde_Object_Singleton implements Ajde_BootstrapInterface
         }
         $this->_homepageSet = true;
 
-        $homepageNodeId = (int)SettingModel::byName('homepage');
+        $homepageNodeId = (int) SettingModel::byName('homepage');
 
         if ($homepageNodeId) {
             $node = NodeModel::fromPk($homepageNodeId);

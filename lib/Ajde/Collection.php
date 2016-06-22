@@ -468,6 +468,18 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
         return $this->_items = $this->_statement->fetchAll(PDO::FETCH_CLASS, $this->_modelName);
     }
 
+    public function first()
+    {
+        $this->limit(1);
+        $items = $this->load();
+
+        if (count($items)) {
+            return $items[0];
+        }
+
+        return null;
+    }
+
     public function loadParents()
     {
         if (count($this) > 0) {

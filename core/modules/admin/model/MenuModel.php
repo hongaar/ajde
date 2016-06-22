@@ -126,6 +126,10 @@ class MenuModel extends Ajde_Model_With_I18n
                 $current = 'active';
             }
 
+            if (Ajde::app()->getRoute()->getOriginalRoute() == '' && $url == config('routes.homepage')) {
+                $current = 'active';
+            }
+
             if ($url == $currentParentUrl) {
                 $current = 'active sub-active';
             }

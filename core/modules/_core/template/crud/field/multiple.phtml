@@ -36,9 +36,26 @@ $field = $this->field;
                 $ids = array();
                 foreach($children as $child) {
                     $ids[] = $child->getPK();
-                } ?>
+                }
+
+                // Prepend ids to values
+                $values = [];
+                $remaining = $field->getValues()->load();
+                foreach($ids as $id) {
+                    $currentIteration = [];
+                    foreach($remaining as $model) {
+                        if ($id == $model->getPK()) {
+                            $values[] = $model;
+                        } else {
+                            $currentIteration[] = $model;
+                        }
+                    }
+                    $remaining = $currentIteration;
+                }
+                $values = array_merge($values, $remaining);
+                ?>
                 <select class='selectize' name='<?php echo $field->getName(); ?>[]' multiple='multiple' data-placeholder="<?php echo trans('Choose some options'); ?>">
-                    <?php foreach($field->getValues() as $model) {
+                    <?php foreach($values as $model) {
                         /* @var $model Ajde_Model */ ?>
                         <option value='<?php echo $model->getPK(); ?>' <?php if (in_array($model->getPK(), $ids)) { echo 'selected="selected"'; } ?> >
                             <?php echo $model->get($model->getDisplayField()); ?>

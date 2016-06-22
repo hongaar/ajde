@@ -89,9 +89,10 @@ AC.Crud.List = function() {
 		},
 
         initAdditionalControls: function() {
-            $('select.selectize').selectize({
-                plugins: ['remove_button', 'drag_drop']
-            });
+            // Moved to default.js
+            // $('select.selectize').selectize({
+            //     plugins: ['remove_button', 'drag_drop']
+            // });
         },
 
         initView: function() {

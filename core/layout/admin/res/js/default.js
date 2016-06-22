@@ -28,6 +28,11 @@
             if (!filtersVisible) $('.filters.view').removeClass('visible');
 		}, 100);
 
+        // Selectize
+        $('select.selectize').selectize({
+            plugins: ['remove_button', 'drag_drop']
+        });
+
 		// Picker
 		$("input[type=radio], input[type=checkbox]").not('.nopicker').filter(':visible').picker();
 		$("input[type=radio], input[type=checkbox]").not('.nopicker').filter('.picker:hidden').picker();
