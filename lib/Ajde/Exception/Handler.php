@@ -14,7 +14,7 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
         if (config("app.debug")) {
             ini_set('html_errors', 1);
         }
-        
+
         set_error_handler(['Ajde_Exception_Handler', 'errorHandler']);
         set_exception_handler(['Ajde_Exception_Handler', 'handler']);
 
@@ -39,7 +39,10 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
     }
 
 
-    public static function handler(Exception $exception)
+    /**
+     * @param Throwable $exception
+     */
+    public static function handler($exception)
     {
         try {
             if (config("app.debug") === true) {
@@ -62,7 +65,12 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
     }
 
 
-    public static function trace(Exception $exception, $output = self::EXCEPTION_TRACE_HTML)
+    /**
+     * @param Throwable $exception
+     * @param int $output
+     * @return string
+     */
+    public static function trace($exception, $output = self::EXCEPTION_TRACE_HTML)
     {
         $simpleJsonTrace = false;
         if ($simpleJsonTrace && Ajde::app()->hasDocument() && Ajde::app()->getDocument()->getFormat() == 'json') {
@@ -188,7 +196,11 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
     }
 
 
-    public static function getTypeDescription(Exception $exception)
+    /**
+     * @param Throwable $exception
+     * @return string
+     */
+    public static function getTypeDescription($exception)
     {
         if ($exception instanceof ErrorException) {
             $type = "PHP Error " . self::getErrorType($exception->getSeverity());
@@ -202,7 +214,11 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
     }
 
 
-    public static function getExceptionChannelMap(Exception $exception)
+    /**
+     * @param Throwable $exception
+     * @return string
+     */
+    public static function getExceptionChannelMap($exception)
     {
         if ($exception instanceof ErrorException) {
             return Ajde_Log::CHANNEL_ERROR;
@@ -218,7 +234,11 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
     }
 
 
-    public static function getExceptionLevelMap(Exception $exception)
+    /**
+     * @param Throwable $exception
+     * @return string
+     */
+    public static function getExceptionLevelMap($exception)
     {
         if ($exception instanceof ErrorException) {
             return Ajde_Log::LEVEL_ERROR;

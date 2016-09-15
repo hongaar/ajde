@@ -76,10 +76,6 @@ class PhpClosure
     var $_cache_dir           = "";
     var $_code_url_prefix     = "";
 
-    function PhpClosure()
-    {
-    }
-
     /**
      * Adds a source file to the list of files to compile.  Files will be
      * concatenated in the order they are added.

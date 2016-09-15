@@ -2,7 +2,10 @@
 
 class Ajde_Exception_Log extends Ajde_Object_Static
 {
-    static public function logException(Exception $exception)
+    /**
+     * @param Throwable $exception
+     */
+    static public function logException($exception)
     {
         $type    = Ajde_Exception_Handler::getTypeDescription($exception);
         $level   = Ajde_Exception_Handler::getExceptionLevelMap($exception);
