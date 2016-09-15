@@ -383,7 +383,8 @@ class Ajde_Http_Request extends Ajde_Object_Standard
         $requestURI = str_replace(PUBLIC_DIR, '', $requestURI);
         $baseURI = str_replace(PUBLIC_DIR, '', $baseURI);
 
-        return str_replace($baseURI, '', $requestURI);
+        // TODO: potential bug when baseuri is something like /node (now all requests with /node/node will return '')
+        return $baseURI !== '/' ? str_replace($baseURI, '', $requestURI) : trim($requestURI, '/');
     }
 
     public function initRoute()

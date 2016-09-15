@@ -32,8 +32,23 @@ class MediaModel extends Ajde_Model
 
     public function afterDelete()
     {
-        // TODO: Delete files?
-        // dump($this);
+        // Delete main file
+        $clean = Ajde_Fs_Find::findFiles($this->uploadDirectory, $this->pointer);
+
+        // Delete thumbnail file
+        $clean = array_merge($clean, Ajde_Fs_Find::findFiles($this->uploadDirectory, $this->thumbnail));
+
+        // Delete thumbs of main file
+        $clean = array_merge($clean, Ajde_Fs_Find::findFiles($this->uploadDirectory . Ajde_Resource_Image::$_thumbDir . DS,
+            pathinfo($this->pointer, PATHINFO_FILENAME) . '_*x*.' . pathinfo($this->pointer, PATHINFO_EXTENSION)));
+
+        // Delete thumbs of thumbnail file
+        $clean = array_merge($clean, Ajde_Fs_Find::findFiles($this->uploadDirectory . Ajde_Resource_Image::$_thumbDir . DS,
+            pathinfo($this->thumbnail, PATHINFO_FILENAME) . '_*x*.' . pathinfo($this->thumbnail, PATHINFO_EXTENSION)));
+
+        foreach (array_unique($clean) as $path) {
+            unlink($path);
+        }
     }
 
     /**

@@ -38,18 +38,26 @@ class AdminSystemController extends AdminController
             }
         }
 
-        $config = Config::getInstance()->repository()->values();
-        $hidden = 'HASH: ';
+        $repository = clone Config::getInstance()->repository();
+        $hidden = 'md5=';
         $hide   = [
-//            'dbPassword',
-//            'secret',
-//            'shopWedealPassword',
-//            'shopWedealCallbackPassword'
+            'database.password',
+            'security.secret',
+            'services.twitter.secret',
+            'services.facebook.secret',
+            'services.google.secret',
+            'services.soundcloud.secret',
+            'shop.transaction.wedeal.password',
+            'shop.transaction.wedeal.callbackPassword',
+            'shop.transaction.mollie.liveKey',
         ];
         foreach ($hide as $field) {
-            $config[$field] = $hidden . md5($config[$field]);
+            if ($repository->has($field)) {
+                $repository->set($field, $hidden . md5($repository->get($field)));
+            }
         }
 
+        $config = $repository->values();
         $this->getView()->assign('results', $results);
         $this->getView()->assign('config', $config);
 
@@ -210,7 +218,7 @@ class AdminSystemController extends AdminController
         ];
         $ret   = [];
         foreach ($files as $file) {
-            if (file_exists($file)) {
+            if (file_exists(LOCAL_ROOT . $file)) {
                 $ret[] = [
                     'msg'    => 'File ' . $file . ' should be deleted in production environment',
                     'status' => 'warning'
@@ -231,7 +239,7 @@ class AdminSystemController extends AdminController
         ];
         $ret  = [];
         foreach ($dirs as $dir) {
-            if (!is_writable($dir)) {
+            if (!is_writable(LOCAL_ROOT . $dir)) {
                 $ret[] = [
                     'msg'    => 'Directory ' . $dir . ' is not writable',
                     'status' => 'important'
@@ -351,7 +359,7 @@ class AdminSystemController extends AdminController
             '*.*');
 
         foreach ($toBeCleaned as $file) {
-            unlink(UPLOAD_DIR . Ajde_Resource_Image::$_thumbDir . DIRECTORY_SEPARATOR . $file);
+            unlink(LOCAL_ROOT . UPLOAD_DIR . Ajde_Resource_Image::$_thumbDir . DIRECTORY_SEPARATOR . $file);
         }
 
         Ajde_Session_Flash::alert('Thumbnails will be refreshed next time they are loaded');

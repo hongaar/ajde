@@ -21,7 +21,7 @@ class Ajde_Fs_Find extends Ajde_Object_Static
         $search = LOCAL_ROOT . $dir . $pattern;
 
         $return = [];
-        $files  = (array)glob($search, $flags);
+        $files  = (array) glob($search, $flags);
         foreach ($files as $filename) {
             $return[] = $filename;
         }

@@ -47,7 +47,8 @@
                                 </td>
                                 <td>
                                     <?php if (is_array($v)) { ?>
-                                        <?php echo esc(json_encode($v)); ?>
+                                        <pre><?php echo esc(json_encode($v, JSON_PRETTY_PRINT)); ?>
+                                        </pre>
                                     <?php } else { ?>
                                         <?php echo esc($v); ?>
                                     <?php } ?>

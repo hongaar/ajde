@@ -272,7 +272,7 @@ class Ajde_Lang extends Ajde_Object_Singleton
             }
         }
 
-        return $defaultLang = config("lang");
+        return $defaultLang = config("i18n.default");
     }
 
     public function disableAutoTranslationOfModels()

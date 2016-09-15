@@ -9,8 +9,7 @@ class Ajde_Component_Form_UploadHelper
  * @see https://github.com/valums/ajax-upload
  * Handle file uploads via XMLHttpRequest
  */
-class qqUploadedFileXhr
-{
+class qqUploadedFileXhr  {
     /**
      * Save the file to the specified path
      *
@@ -136,8 +135,8 @@ class qqFileUploader
      */
     function handleUpload($uploadDirectory, $replaceOldFile = false)
     {
-        if (!file_exists($uploadDirectory)) {
-            mkdir($uploadDirectory, 0777, true);
+        if (!file_exists(LOCAL_ROOT . $uploadDirectory)) {
+            mkdir(LOCAL_ROOT . $uploadDirectory, 0777, true);
         }
 
         if (!is_writable(LOCAL_ROOT . $uploadDirectory)) {
