@@ -20,7 +20,7 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
             'shipment_country',
             'shipment_description',
             'shipment_trackingcode',
-            'shipment_secret'
+            'shipment_secret',
         ]);
     }
 
@@ -33,8 +33,8 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
 
     private static function _getProviders()
     {
-        $return    = [];
-        $providers = config("shop.transaction.providers");
+        $return = [];
+        $providers = config('shop.transaction.providers');
         foreach ($providers as $provider) {
             $return[$provider] = Ajde_Shop_Transaction_Provider::getProvider($provider);
         }
@@ -43,7 +43,6 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
     }
 
     /**
-     *
      * @return Ajde_Shop_Transaction_Provider
      */
     public function getProvider()
@@ -56,10 +55,10 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
     public function beforeInsert()
     {
         $this->secret = $this->generateSecret();
-        $this->ip     = $_SERVER["REMOTE_ADDR"];
+        $this->ip = $_SERVER['REMOTE_ADDR'];
 
         // Added
-        $this->added = new Ajde_Db_Function("NOW()");
+        $this->added = new Ajde_Db_Function('NOW()');
 
         // Event
         Ajde_Event::trigger($this, 'onCreate');
@@ -73,7 +72,6 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
     // Shipping
 
     /**
-     *
      * @return Ajde_Shop_Shipping
      */
     public function getShipping()
@@ -92,14 +90,14 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
 
     public function getOrderId()
     {
-        return date('Y') . str_pad($this->id + 1000, 6, '0', STR_PAD_LEFT);
+        return date('Y').str_pad($this->id + 1000, 6, '0', STR_PAD_LEFT);
     }
 
     public function displayOrderId()
     {
-        $secret = '<span data-secret="' . $this->getSecret() . '"></span>';
+        $secret = '<span data-secret="'.$this->getSecret().'"></span>';
 
-        return $secret . $this->getOrderId();
+        return $secret.$this->getOrderId();
     }
 
     protected function _format($value)
@@ -114,23 +112,23 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
 
     public function getFormattedTotal()
     {
-        return config("shop.currency.symbol") . '&nbsp;' . $this->_format($this->getTotal());
+        return config('shop.currency.symbol').'&nbsp;'.$this->_format($this->getTotal());
     }
 
     public function getFormattedItemsTotal()
     {
-        return config("shop.currency.symbol") . '&nbsp;' . $this->_format($this->shipment_itemstotal);
+        return config('shop.currency.symbol').'&nbsp;'.$this->_format($this->shipment_itemstotal);
     }
 
     public function getFormattedShippingTotal()
     {
-        return config("shop.currency.symbol") . '&nbsp;' . $this->_format($this->shipment_cost);
+        return config('shop.currency.symbol').'&nbsp;'.$this->_format($this->shipment_cost);
     }
 
     public function getOverviewHtml()
     {
         if ($this->hasLoaded()) {
-            $view = new Ajde_View(MODULE_DIR . 'shop/', 'transaction/view');
+            $view = new Ajde_View(MODULE_DIR.'shop/', 'transaction/view');
             $view->assign('source', 'id');
             $view->assign('transaction', $this);
 
@@ -142,21 +140,22 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
 
     /**
      * @param Ajde_Shop_Cart $cart
+     *
      * @return bool
      */
     public function isSameAsCart(Ajde_Shop_Cart $cart)
     {
         $transactionItems = $this->getItems()->toArray();
-        $cartItems        = $cart->getItems()->toArray();
+        $cartItems = $cart->getItems()->toArray();
 
         $same = false;
 
         $transformer = function ($elm) {
-            return $elm['entity'] . ':' . $elm['entity_id'] . ':' . $elm['qty'];
+            return $elm['entity'].':'.$elm['entity_id'].':'.$elm['qty'];
         };
 
         $transactionItems = array_map($transformer, $transactionItems);
-        $cartItems        = array_map($transformer, $cartItems);
+        $cartItems = array_map($transformer, $cartItems);
 
         sort($transactionItems);
         sort($cartItems);
@@ -177,26 +176,25 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
         $items->deleteAll();
 
         // Add items
-        /** @var Ajde_Shop_Cart_Item $item */
+        /* @var Ajde_Shop_Cart_Item $item */
         foreach ($cart->getItems() as $cartItem) {
-            $item              = new TransactionItemModel();
+            $item = new TransactionItemModel();
             $item->transaction = $this->getPK();
-            $item->entity      = $cartItem->entity;
-            $item->entity_id   = $cartItem->entity_id;
-            $item->unitprice   = $cartItem->unitprice;
-            $item->qty         = $cartItem->qty;
+            $item->entity = $cartItem->entity;
+            $item->entity_id = $cartItem->entity_id;
+            $item->unitprice = $cartItem->unitprice;
+            $item->qty = $cartItem->qty;
             $item->insert();
         }
     }
 
     /**
-     *
      * @return Ajde_Collection
      */
     public function getItems()
     {
         $collectionClass = $this->_itemModel;
-        $collection      = new $collectionClass();
+        $collection = new $collectionClass();
         $collection->addFilter(new Ajde_Filter_Where('transaction', Ajde_Filter::FILTER_EQUALS, $this->getPK()));
 
         return $collection;
@@ -209,5 +207,4 @@ abstract class Ajde_Shop_Transaction extends Ajde_Model
         $this->payment_status = 'completed';
         $this->save();
     }
-
 }

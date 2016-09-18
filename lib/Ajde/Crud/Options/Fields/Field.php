@@ -3,7 +3,6 @@
 class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 {
     /**
-     *
      * @return Ajde_Crud_Options_Fields
      */
     public function up($obj = false)
@@ -20,9 +19,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     // =========================================================================
 
     /**
-     * Set fieldtype for field (see Ajde_Crud_Field_*)
+     * Set fieldtype for field (see Ajde_Crud_Field_*).
      *
      * @param string $type
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setType($type)
@@ -31,9 +31,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * For 'file' fieldtypes, sets the dir to save the files relative to the sites root
+     * For 'file' fieldtypes, sets the dir to save the files relative to the sites root.
      *
      * @param string $saveDir
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setSaveDir($saveDir)
@@ -42,9 +43,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * For 'file' fieldtypes, sets the allowed extensions of the uploaded files
+     * For 'file' fieldtypes, sets the allowed extensions of the uploaded files.
      *
      * @param array $extensions
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setExtensions($extensions)
@@ -55,7 +57,8 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     /**
      * For 'file' fieldtypes, can multiple files be uploaded at once?
      *
-     * @param boolean $multiple
+     * @param bool $multiple
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setMultiple($multiple)
@@ -64,9 +67,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Overrides the field label
+     * Overrides the field label.
      *
      * @param string $label
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setLabel($label)
@@ -75,9 +79,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Overrides the field length
+     * Overrides the field length.
      *
-     * @param integer $length
+     * @param int $length
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setLength($length)
@@ -86,9 +91,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Sets the options for an ENUM/SET field
+     * Sets the options for an ENUM/SET field.
      *
      * @param $array
+     *
      * @return $this
      */
     public function setOptions($array)
@@ -97,9 +103,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Overrides whether the field is required
+     * Overrides whether the field is required.
      *
-     * @param boolean $isRequired
+     * @param bool $isRequired
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setIsRequired($isRequired)
@@ -108,9 +115,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Overrides the default value
+     * Overrides the default value.
      *
      * @param mixed $default
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setDefault($default)
@@ -119,9 +127,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Filter based on language
+     * Filter based on language.
      *
      * @param mixed $mode On of false|'parent'|'page'
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setFilterLang($mode)
@@ -130,9 +139,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Overrides whether the field has the auto increment attribute
+     * Overrides whether the field has the auto increment attribute.
      *
-     * @param boolean $isAutoIncrement
+     * @param bool $isAutoIncrement
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setIsAutoIncrement($isAutoIncrement)
@@ -141,9 +151,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Sets the helptext
+     * Sets the helptext.
      *
      * @param string help
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setHelp($help)
@@ -152,9 +163,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Whether the field is read only
+     * Whether the field is read only.
      *
-     * @param boolean $isReadonly
+     * @param bool $isReadonly
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setIsReadonly($isReadonly)
@@ -163,9 +175,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Sets the field value
+     * Sets the field value.
      *
      * @param string $value
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setValue($value)
@@ -174,9 +187,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Sets the allowed values
+     * Sets the allowed values.
      *
      * @param array $filter
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setFilter($filter)
@@ -185,9 +199,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Sets an array of Ajde_Filter to apply to field
+     * Sets an array of Ajde_Filter to apply to field.
      *
      * @param array $advancedFilter
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setAdvancedFilter($advancedFilter)
@@ -196,9 +211,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Sets the order field of the foreign table
+     * Sets the order field of the foreign table.
      *
      * @param string $field
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setOrderBy($field)
@@ -207,9 +223,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Sets the display function of the model for the list view
+     * Sets the display function of the model for the list view.
      *
      * @param string $function
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setFunction($function)
@@ -218,9 +235,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Sets the class of the cell for the list view
+     * Sets the class of the cell for the list view.
      *
      * @param string $function
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setListClass($className)
@@ -229,9 +247,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Sets the display function arguments of the model for the list view
+     * Sets the display function arguments of the model for the list view.
      *
      * @param array $arguments
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setFunctionArgs($args)
@@ -240,10 +259,11 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Sets thumbnail dimensions of images
+     * Sets thumbnail dimensions of images.
      *
      * @param type $width
      * @param type $height
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setThumbDim($width, $height)
@@ -252,9 +272,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Put emphasis on this field
+     * Put emphasis on this field.
      *
-     * @param boolean $emphasis
+     * @param bool $emphasis
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setEmphasis($emphasis)
@@ -263,9 +284,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Sets placeholder for this field
+     * Sets placeholder for this field.
      *
      * @param string $emphasis
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setPlaceholder($placeholder)
@@ -274,9 +296,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Defines a many-to-many relationshop for fields with type 'multiple'
+     * Defines a many-to-many relationshop for fields with type 'multiple'.
      *
      * @param string $table
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setCrossReferenceTable($table)
@@ -285,15 +308,16 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Sets an extra constraint for the cross reference table
+     * Sets an extra constraint for the cross reference table.
      *
      * @param string $field
      * @param string $value
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function addCrossReferenceTableConstraint($field, $value)
     {
-        $constraints         = ($this->has('crossRefConstraints') ? $this->get('crossRefConstraints') : []);
+        $constraints = ($this->has('crossRefConstraints') ? $this->get('crossRefConstraints') : []);
         $constraints[$field] = $value;
 
         return $this->_set('crossRefConstraints', $constraints);
@@ -302,7 +326,8 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     /**
      * Display the label?
      *
-     * @param boolean $display
+     * @param bool $display
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setShowLabel($display)
@@ -311,9 +336,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Sets the edit route for fields with type 'multiple'
+     * Sets the edit route for fields with type 'multiple'.
      *
      * @param string $route
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setEditRoute($route)
@@ -322,17 +348,22 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Sets the edit route for fields with type 'multiple'
+     * Sets the edit route for fields with type 'multiple'.
      *
      * @param bool $flag
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
-    public function setDisableAddExisting($flag) { return $this->_set('disableAddExisting', $flag); }
-    
+    public function setDisableAddExisting($flag)
+    {
+        return $this->_set('disableAddExisting', $flag);
+    }
+
     /**
-     * Sets the edit route function for fields with type 'multiple'
+     * Sets the edit route function for fields with type 'multiple'.
      *
      * @param string $function
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setEditRouteFunction($function)
@@ -341,9 +372,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Sets the list route for fields with type 'fk'
+     * Sets the list route for fields with type 'fk'.
      *
      * @param string $route
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setListRoute($route)
@@ -352,9 +384,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Sets the list route function for fields with type 'fk'
+     * Sets the list route function for fields with type 'fk'.
      *
      * @param string $function
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setListRouteFunction($function)
@@ -363,9 +396,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Disables rich text editing for text fields
+     * Disables rich text editing for text fields.
      *
-     * @param boolean $disable
+     * @param bool $disable
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setDisableRichText($disable)
@@ -374,9 +408,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Sets the textarea height in em for text fields
+     * Sets the textarea height in em for text fields.
      *
-     * @param integer $em
+     * @param int $em
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setTextInputHeight($em)
@@ -385,9 +420,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Sets the textarea width in em for text fields
+     * Sets the textarea width in em for text fields.
      *
-     * @param integer $em
+     * @param int $em
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setTextInputWidth($em)
@@ -396,9 +432,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Sets the model to use for fields with type 'multiple' or 'fk'
+     * Sets the model to use for fields with type 'multiple' or 'fk'.
      *
      * @param string $model
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setModelName($model)
@@ -407,9 +444,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Sets the parent field if it is different from the model name for fields with type 'multiple'
+     * Sets the parent field if it is different from the model name for fields with type 'multiple'.
      *
      * @param string $field
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setParent($field)
@@ -418,9 +456,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Sets the child field name if it is different from the model name for fields with type 'multiple'
+     * Sets the child field name if it is different from the model name for fields with type 'multiple'.
      *
      * @param string $field
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setChildField($field)
@@ -429,9 +468,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Hide this field in iframe (when adding from multiple field)
+     * Hide this field in iframe (when adding from multiple field).
      *
-     * @param boolean $hidden
+     * @param bool $hidden
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setHideInIframe($hidden)
@@ -440,10 +480,11 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Shows this field only when another field has a certain value
+     * Shows this field only when another field has a certain value.
      *
      * @param string $field
      * @param mixed  $value
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function addShowOnlyWhen($field, $value)
@@ -462,10 +503,11 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Sorts this field accoding to a dynamic sorting rule
+     * Sorts this field accoding to a dynamic sorting rule.
      *
      * @param string $field
      * @param mixed  $value
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function addDynamicSort($field, $value)
@@ -484,9 +526,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Use a simple selector for fields with type 'multiple'
+     * Use a simple selector for fields with type 'multiple'.
      *
-     * @param boolean $simple
+     * @param bool $simple
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setSimpleSelector($simple)
@@ -495,9 +538,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Hides the main column (for fields with type 'multiple')
+     * Hides the main column (for fields with type 'multiple').
      *
-     * @param boolean $hide
+     * @param bool $hide
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setHideMainColumn($hide)
@@ -506,42 +550,45 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Adds a column to the cross reference table (for fields with type 'multiple')
+     * Adds a column to the cross reference table (for fields with type 'multiple').
      *
      * @param string $field
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function addTableField($field)
     {
-        $fields   = ($this->has('tableFields') ? $this->get('tableFields') : []);
+        $fields = ($this->has('tableFields') ? $this->get('tableFields') : []);
         $fields[] = ['name' => $field, 'type' => 'text'];
 
         return $this->_set('tableFields', $fields);
     }
 
     /**
-     * Adds an image column to the cross reference table (for fields with type 'multiple')
+     * Adds an image column to the cross reference table (for fields with type 'multiple').
      *
      * @param string $field
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function addTableFileField($field, $saveDir)
     {
-        $fields   = ($this->has('tableFields') ? $this->get('tableFields') : []);
+        $fields = ($this->has('tableFields') ? $this->get('tableFields') : []);
         $fields[] = ['name' => $field, 'type' => 'file', 'saveDir' => $saveDir];
 
         return $this->_set('tableFields', $fields);
     }
 
     /**
-     * Defines a sort field on the foreign table
+     * Defines a sort field on the foreign table.
      *
      * @param string $table
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function addSortField($field)
     {
-        $fields   = ($this->has('tableFields') ? $this->get('tableFields') : []);
+        $fields = ($this->has('tableFields') ? $this->get('tableFields') : []);
         $fields[] = ['name' => $field, 'type' => 'sort'];
         $this->setSortBy($field);
 
@@ -549,23 +596,25 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Adds an image column to the cross reference table (for fields with type 'multiple')
+     * Adds an image column to the cross reference table (for fields with type 'multiple').
      *
      * @param string $field
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function addMetaField($metaId, $function = false)
     {
-        $fields   = ($this->has('tableFields') ? $this->get('tableFields') : []);
+        $fields = ($this->has('tableFields') ? $this->get('tableFields') : []);
         $fields[] = ['name' => $metaId, 'type' => 'meta', 'function' => $function];
 
         return $this->_set('tableFields', $fields);
     }
 
     /**
-     * Sort the foreign table by this field
+     * Sort the foreign table by this field.
      *
      * @param string $table
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setSortBy($field)
@@ -574,15 +623,16 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Prefills the foreign record with this value when adding/editing
+     * Prefills the foreign record with this value when adding/editing.
      *
      * @param string $field
      * @param string $value
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function addPrefillField($field, $value)
     {
-        $fields         = ($this->has('prefillField') ? $this->get('prefillField') : []);
+        $fields = ($this->has('prefillField') ? $this->get('prefillField') : []);
         $fields[$field] = $value;
 
         return $this->_set('prefillField', $fields);
@@ -590,9 +640,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
 
     /**
      * Use an image for spatial field instead of Google Maps or
-     * use an image in fk selected field (with setUsePopupSelector=true)
+     * use an image in fk selected field (with setUsePopupSelector=true).
      *
-     * @param boolean $image
+     * @param bool $image
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setUseImage($image)
@@ -601,9 +652,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Use this image for spatial field instead of Google Maps
+     * Use this image for spatial field instead of Google Maps.
      *
      * @param string $image
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setLayerImage($image)
@@ -612,9 +664,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Type db column for fields with type 'media'
+     * Type db column for fields with type 'media'.
      *
      * @param string $fieldname
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setTypeField($fieldname)
@@ -623,9 +676,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Type db column for fields with type 'media'
+     * Type db column for fields with type 'media'.
      *
      * @param string $fieldname
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setThumbField($fieldname)
@@ -634,9 +688,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Filename db column for fields with type 'media'
+     * Filename db column for fields with type 'media'.
      *
      * @param string $fieldname
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setFilenameField($fieldname)
@@ -645,9 +700,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Use popup list selector for fk or multiple type fields
+     * Use popup list selector for fk or multiple type fields.
      *
-     * @param boolean $use
+     * @param bool $use
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setUsePopupSelector($use)
@@ -656,9 +712,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Use this package for fields with type icon
+     * Use this package for fields with type icon.
      *
      * @param string $package
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setIconPackage($package)
@@ -667,9 +724,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Use max chars in list view
+     * Use max chars in list view.
      *
      * @param string $package
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setMaxChars($maxChars)
@@ -678,9 +736,10 @@ class Ajde_Crud_Options_Fields_Field extends Ajde_Crud_Options
     }
 
     /**
-     * Sets the fields to clone when creating a translation
+     * Sets the fields to clone when creating a translation.
      *
      * @param array $fields
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function setCloneFields($array)

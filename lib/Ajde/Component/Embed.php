@@ -12,7 +12,7 @@ class Ajde_Component_Embed extends Ajde_Component
     protected function _init()
     {
         return [
-            'url' => 'render'
+            'url' => 'render',
         ];
     }
 

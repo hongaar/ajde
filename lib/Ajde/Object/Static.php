@@ -18,5 +18,4 @@ abstract class Ajde_Object_Static extends Ajde_Object
     final protected function __clone()
     {
     }
-
 }

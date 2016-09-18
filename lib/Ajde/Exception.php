@@ -19,5 +19,4 @@ class Ajde_Exception extends Exception
     {
         return Ajde_Exception_Handler::handler($this);
     }
-
 }

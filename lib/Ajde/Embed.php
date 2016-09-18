@@ -5,7 +5,7 @@ class Ajde_Embed extends Ajde_Object_Standard
     protected $_code;
     protected $_parser;
 
-    protected $_width  = 650;
+    protected $_width = 650;
     protected $_height = 471;
 
     protected $_allowedTags = '<iframe><embed><object>';
@@ -14,12 +14,12 @@ class Ajde_Embed extends Ajde_Object_Standard
         'soundcloud' => 'soundcloud.com',
         'vimeo'      => 'vimeo.com',
         'youtube'    => ['youtube.com', 'youtu.be'],
-        'mixcloud'   => 'mixcloud.com'
+        'mixcloud'   => 'mixcloud.com',
     ];
 
     /**
-     *
      * @param type $code
+     *
      * @return Ajde_Embed
      */
     public static function fromCode($code)
@@ -29,7 +29,7 @@ class Ajde_Embed extends Ajde_Object_Standard
             if (is_array($test)) {
                 foreach ($test as $testPart) {
                     if (substr_count($code, $testPart) > 0) {
-                        $providerClass = 'Ajde_Embed_' . ucfirst($provider);
+                        $providerClass = 'Ajde_Embed_'.ucfirst($provider);
                         if (class_exists($providerClass)) {
                             $embedClass = $providerClass;
                         }
@@ -37,7 +37,7 @@ class Ajde_Embed extends Ajde_Object_Standard
                 }
             } else {
                 if (substr_count($code, $test) > 0) {
-                    $providerClass = 'Ajde_Embed_' . ucfirst($provider);
+                    $providerClass = 'Ajde_Embed_'.ucfirst($provider);
                     if (class_exists($providerClass)) {
                         $embedClass = $providerClass;
                     }
@@ -75,15 +75,15 @@ class Ajde_Embed extends Ajde_Object_Standard
 
     protected function _setWidth()
     {
-        $ptn         = "/width=(\'|\")([0-9]+)(\'|\")/";
-        $rpltxt      = "width='" . $this->_width . "'";
+        $ptn = "/width=(\'|\")([0-9]+)(\'|\")/";
+        $rpltxt = "width='".$this->_width."'";
         $this->_code = preg_replace($ptn, $rpltxt, $this->_code);
     }
 
     protected function _setHeight()
     {
-        $ptn         = "/height=(\'|\")([0-9]+)(\'|\")/";
-        $rpltxt      = "height='" . $this->_height . "'";
+        $ptn = "/height=(\'|\")([0-9]+)(\'|\")/";
+        $rpltxt = "height='".$this->_height."'";
         $this->_code = preg_replace($ptn, $rpltxt, $this->_code);
     }
 
@@ -99,6 +99,5 @@ class Ajde_Embed extends Ajde_Object_Standard
 
     public function getThumbnail()
     {
-        return null;
     }
 }

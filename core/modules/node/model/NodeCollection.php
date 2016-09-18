@@ -50,15 +50,15 @@ class NodeCollection extends Ajde_Collection_With_AclI18n
     public function filterChildrenOfParent($parentId, $levels = 6)
     {
         $this->getQuery()->setDistinct(true);
-        $subqueryFragment = "(SELECT t%.id FROM node AS t1";
+        $subqueryFragment = '(SELECT t%.id FROM node AS t1';
         for ($i = 2; $i < $levels + 1; $i++) {
-            $subqueryFragment .= " LEFT JOIN node AS t$i ON t$i.parent = t" . ($i - 1) . ".id";
+            $subqueryFragment .= " LEFT JOIN node AS t$i ON t$i.parent = t".($i - 1).'.id';
         }
-        $subqueryFragment .= " WHERE";
+        $subqueryFragment .= ' WHERE';
         for ($i = 1; $i < $levels + 1; $i++) {
-            $subqueryFragment .= " t$i.parent = " . (int)(string)$parentId;
+            $subqueryFragment .= " t$i.parent = ".(int) (string) $parentId;
             if ($i < $levels) {
-                $subqueryFragment .= " OR";
+                $subqueryFragment .= ' OR';
             }
         }
         $subqueryFragment .= ')';
@@ -76,7 +76,7 @@ class NodeCollection extends Ajde_Collection_With_AclI18n
         $lookupField = 'meta.id';
         if (!is_numeric($meta)) {
             $lookupField = 'meta.name';
-            $meta        = str_replace('_', ' ', $meta);
+            $meta = str_replace('_', ' ', $meta);
         }
         $this->addFilter(new Ajde_Filter_Where($lookupField, Ajde_Filter::FILTER_EQUALS, $meta));
         $this->addFilter(new Ajde_Filter_Where('node_meta.value', Ajde_Filter::FILTER_EQUALS, $value));
@@ -90,7 +90,7 @@ class NodeCollection extends Ajde_Collection_With_AclI18n
         $lookupField = 'meta.id';
         if (!is_numeric($meta)) {
             $lookupField = 'meta.name';
-            $meta        = str_replace('_', ' ', $meta);
+            $meta = str_replace('_', ' ', $meta);
         }
         $whereGroup = new Ajde_Filter_WhereGroup();
         foreach ($values as $value) {
@@ -114,12 +114,12 @@ class NodeCollection extends Ajde_Collection_With_AclI18n
             $ids[] = $nodetype->id;
         }
         $this->addFilter(new Ajde_Filter_Where('nodetype', Ajde_Filter_Where::FILTER_IN,
-            new Ajde_Db_Function('(' . implode(',', $ids) . ')'), $operator));
+            new Ajde_Db_Function('('.implode(',', $ids).')'), $operator));
     }
 
     public function filterByLevel($level)
     {
-        $this->addFilter(new Ajde_Filter_Where('level', Ajde_Filter::FILTER_EQUALS, (int)$level));
+        $this->addFilter(new Ajde_Filter_Where('level', Ajde_Filter::FILTER_EQUALS, (int) $level));
 
         return $this;
     }
@@ -144,12 +144,12 @@ class NodeCollection extends Ajde_Collection_With_AclI18n
 
     public function joinMetaAs($metaId, $as)
     {
-        $nodemeta = 'table' . md5('nodemeta' . rand(0, 999) . microtime(true));
-        $meta     = 'table' . md5('meta' . rand(0, 999) . microtime(true));
-        $this->addFilter(new Ajde_Filter_Join('node_meta ' . $nodemeta, $nodemeta . '.node', 'node.id'));
-        $this->addFilter(new Ajde_Filter_Join('meta ' . $meta, $meta . '.id', $nodemeta . '.meta'));
-        $this->addFilter(new Ajde_Filter_Where($meta . '.id', Ajde_Filter::FILTER_EQUALS, $metaId));
-        $this->getQuery()->addSelect($nodemeta . '.value AS ' . $as);
+        $nodemeta = 'table'.md5('nodemeta'.rand(0, 999).microtime(true));
+        $meta = 'table'.md5('meta'.rand(0, 999).microtime(true));
+        $this->addFilter(new Ajde_Filter_Join('node_meta '.$nodemeta, $nodemeta.'.node', 'node.id'));
+        $this->addFilter(new Ajde_Filter_Join('meta '.$meta, $meta.'.id', $nodemeta.'.meta'));
+        $this->addFilter(new Ajde_Filter_Where($meta.'.id', Ajde_Filter::FILTER_EQUALS, $metaId));
+        $this->getQuery()->addSelect($nodemeta.'.value AS '.$as);
 
         return $this;
     }
@@ -166,7 +166,7 @@ class NodeCollection extends Ajde_Collection_With_AclI18n
         $this->addFilter(new Ajde_Filter_Join('node_tag', 'node.id', 'node_tag.node'));
         $this->addFilter(new Ajde_Filter_Join('tag', 'tag.id', 'node_tag.tag'));
         $this->getQuery()->addSelect(new Ajde_Db_Function(
-            'GROUP_CONCAT(tag.name)' .
+            'GROUP_CONCAT(tag.name)'.
             'AS tags'
         ));
         $this->getQuery()->addGroupBy('node.id');

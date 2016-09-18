@@ -21,7 +21,7 @@ require_once 'Google/Service/Exception.php';
 require_once 'Google/Utils/URITemplate.php';
 
 /**
- * This class implements the RESTful transport of apiServiceRequest()'s
+ * This class implements the RESTful transport of apiServiceRequest()'s.
  *
  * @author Chris Chabot <chabotc@google.com>
  * @author Chirag Shah <chirags@google.com>
@@ -34,9 +34,11 @@ class Google_Http_REST
      *
      * @param Google_Client       $client
      * @param Google_Http_Request $req
-     * @return array decoded result
+     *
      * @throws Google_Service_Exception on server side error (ie: not authenticated,
-     *  invalid or malformed post body, invalid url)
+     *                                  invalid or malformed post body, invalid url)
+     *
+     * @return array decoded result
      */
     public static function execute(Google_Client $client, Google_Http_Request $req)
     {
@@ -50,19 +52,22 @@ class Google_Http_REST
      * Decode an HTTP Response.
      *
      * @static
-     * @throws Google_Service_Exception
+     *
      * @param Google_Http_Request $response The http response to be decoded.
+     *
+     * @throws Google_Service_Exception
+     *
      * @return mixed|null
      */
     public static function decodeHttpResponse($response)
     {
-        $code    = $response->getResponseHttpCode();
-        $body    = $response->getResponseBody();
+        $code = $response->getResponseHttpCode();
+        $body = $response->getResponseBody();
         $decoded = null;
 
-        if ((intVal($code)) >= 300) {
+        if ((intval($code)) >= 300) {
             $decoded = json_decode($body, true);
-            $err     = 'Error calling ' . $response->getRequestMethod() . ' ' . $response->getUrl();
+            $err = 'Error calling '.$response->getRequestMethod().' '.$response->getUrl();
             if (isset($decoded['error']) &&
                 isset($decoded['error']['message']) &&
                 isset($decoded['error']['code'])
@@ -80,14 +85,14 @@ class Google_Http_REST
         // Only attempt to decode the response, if the response code wasn't (204) 'no content'
         if ($code != '204') {
             $decoded = json_decode($body, true);
-            if ($decoded === null || $decoded === "") {
+            if ($decoded === null || $decoded === '') {
                 throw new Google_Service_Exception("Invalid json in service response: $body");
             }
 
             $decoded = isset($decoded['data']) ? $decoded['data'] : $decoded;
 
             if ($response->getExpectedClass()) {
-                $class   = $response->getExpectedClass();
+                $class = $response->getExpectedClass();
                 $decoded = new $class($decoded);
             }
         }
@@ -100,16 +105,18 @@ class Google_Http_REST
      * request uri.
      *
      * @static
+     *
      * @param string $servicePath
      * @param string $restPath
      * @param array  $params
+     *
      * @return string $requestUrl
      */
     public static function createRequestUri($servicePath, $restPath, $params)
     {
-        $requestUrl      = $servicePath . $restPath;
+        $requestUrl = $servicePath.$restPath;
         $uriTemplateVars = [];
-        $queryVars       = [];
+        $queryVars = [];
         foreach ($params as $paramName => $paramSpec) {
             if ($paramSpec['type'] == 'boolean') {
                 $paramSpec['value'] = ($paramSpec['value']) ? 'true' : 'false';
@@ -120,10 +127,10 @@ class Google_Http_REST
                 if ($paramSpec['location'] == 'query') {
                     if (isset($paramSpec['repeated']) && is_array($paramSpec['value'])) {
                         foreach ($paramSpec['value'] as $value) {
-                            $queryVars[] = $paramName . '=' . rawurlencode($value);
+                            $queryVars[] = $paramName.'='.rawurlencode($value);
                         }
                     } else {
-                        $queryVars[] = $paramName . '=' . rawurlencode($paramSpec['value']);
+                        $queryVars[] = $paramName.'='.rawurlencode($paramSpec['value']);
                     }
                 }
             }
@@ -131,11 +138,11 @@ class Google_Http_REST
 
         if (count($uriTemplateVars)) {
             $uriTemplateParser = new Google_Utils_URITemplate();
-            $requestUrl        = $uriTemplateParser->parse($requestUrl, $uriTemplateVars);
+            $requestUrl = $uriTemplateParser->parse($requestUrl, $uriTemplateVars);
         }
 
         if (count($queryVars)) {
-            $requestUrl .= '?' . implode($queryVars, '&');
+            $requestUrl .= '?'.implode($queryVars, '&');
         }
 
         return $requestUrl;

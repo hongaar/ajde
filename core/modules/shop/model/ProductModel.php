@@ -3,7 +3,7 @@
 class ProductModel extends Ajde_Model
 {
     protected $_autoloadParents = true;
-    protected $_displayField    = 'title';
+    protected $_displayField = 'title';
 
     protected $_slugPrefix = 'shop';
 
@@ -16,9 +16,9 @@ class ProductModel extends Ajde_Model
     }
 
     /**
-     *
      * @param int $id
-     * @return ProductModel|boolean
+     *
+     * @return ProductModel|bool
      */
     public static function fromPk($id)
     {
@@ -31,8 +31,8 @@ class ProductModel extends Ajde_Model
     }
 
     /**
-     *
      * @param $slug
+     *
      * @return bool|ProductModel
      */
     public static function fromSlug($slug)
@@ -67,16 +67,15 @@ class ProductModel extends Ajde_Model
     }
 
     /**
-     * PRICE
+     * PRICE.
      */
-
     public function getVATPercentage()
     {
         if ($this->hasVat() && !$this->getVat() instanceof Ajde_Model) {
             $this->loadParents();
         }
 
-        return $this->hasVat() ? ((float)$this->getVat()->getPercentage() / 100) : 0;
+        return $this->hasVat() ? ((float) $this->getVat()->getPercentage() / 100) : 0;
     }
 
     public function getFormattedPriceInclVat()
@@ -94,19 +93,19 @@ class ProductModel extends Ajde_Model
         return money_format('%!i', $this->getUnitprice() * $this->getVATPercentage());
     }
 
-
     /**
-     * IMAGE
+     * IMAGE.
      */
 
     /**
-     * @return Ajde_Resource_Image|bool
      * @throws Ajde_Exception
+     *
+     * @return Ajde_Resource_Image|bool
      */
     public function getImage()
     {
         if ($this->hasNotEmpty('image')) {
-            return new Ajde_Resource_Image(UPLOAD_DIR . self::$imageDir . $this->get('image'));
+            return new Ajde_Resource_Image(UPLOAD_DIR.self::$imageDir.$this->get('image'));
         }
 
         return false;
@@ -122,29 +121,28 @@ class ProductModel extends Ajde_Model
     }
 
     /**
-     * SLUG
+     * SLUG.
      */
-
     public function getSlug()
     {
         if (!$this->hasSlug()) {
             $this->slug = $this->_makeSlug();
         }
 
-        return $this->_slugPrefix . '/' . $this->slug;
+        return $this->_slugPrefix.'/'.$this->slug;
     }
 
     private function _makeSlug()
     {
         $name = $this->has('title') ? $this->title : '';
 
-        $ghost     = new self();
+        $ghost = new self();
         $uniqifier = 0;
 
         do {
             $ghost->reset();
             $slug = $this->_sluggify($name);
-            $slug = $slug . ($uniqifier > 0 ? '-' . $uniqifier : '');
+            $slug = $slug.($uniqifier > 0 ? '-'.$uniqifier : '');
             $ghost->loadBySlug($slug);
             $uniqifier++;
             if ($uniqifier >= 100) {
@@ -167,9 +165,8 @@ class ProductModel extends Ajde_Model
     }
 
     /**
-     * LOAD
+     * LOAD.
      */
-
     public function loadBySlug($slug, $publishedCheck = false)
     {
         $this->loadByField('slug', $slug);

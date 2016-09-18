@@ -3,10 +3,11 @@
 class Ajde_Core_Array
 {
     /**
-     * TODO
+     * TODO.
      *
      * @param array $array1
      * @param array $array2
+     *
      * @return array
      */
     public static function mergeRecursive(array $array1, array $array2)
@@ -33,9 +34,10 @@ class Ajde_Core_Array
     /**
      * Get an item from an array using "dot" notation.
      *
-     * @param  array  $array
-     * @param  string $key
-     * @param  mixed  $default
+     * @param array  $array
+     * @param string $key
+     * @param mixed  $default
+     *
      * @return mixed
      */
     public static function get($array, $key, $default = null)
@@ -64,9 +66,10 @@ class Ajde_Core_Array
      *
      * If no key is given to the method, the entire array will be replaced.
      *
-     * @param  array  $array
-     * @param  string $key
-     * @param  mixed  $value
+     * @param array  $array
+     * @param string $key
+     * @param mixed  $value
+     *
      * @return array
      */
     public static function set(&$array, $key, $value)
@@ -87,7 +90,7 @@ class Ajde_Core_Array
                 $array[$key] = [];
             }
 
-            $array =& $array[$key];
+            $array = &$array[$key];
         }
 
         $array[array_shift($keys)] = $value;

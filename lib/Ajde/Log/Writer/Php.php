@@ -2,7 +2,6 @@
 
 class Ajde_Log_Writer_Php extends Ajde_Log_Writer_Abstract
 {
-
     public static function _(
         $message,
         $channel = Ajde_Log::CHANNEL_INFO,
@@ -11,7 +10,7 @@ class Ajde_Log_Writer_Php extends Ajde_Log_Writer_Abstract
         $code = '',
         $trace = ''
     ) {
-        error_log($message . PHP_EOL . $trace);
+        error_log($message.PHP_EOL.$trace);
 
         return false; // Passthrough
     }

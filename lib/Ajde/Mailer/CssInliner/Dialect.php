@@ -4,16 +4,17 @@ class Ajde_Mailer_CssInliner_Dialect implements Ajde_Mailer_CssInliner_CssInline
 {
     /**
      * @param string $html
+     *
      * @return mixed
      */
     public static function inlineCss($html)
     {
-        $url    = 'http://premailer.dialect.ca/api/0.1/documents';
-        $data   = [
+        $url = 'http://premailer.dialect.ca/api/0.1/documents';
+        $data = [
             'html'            => $html,
-            'preserve_styles' => 'false'
+            'preserve_styles' => 'false',
         ];
-        $json   = Ajde_Http_Curl::post($url, $data);
+        $json = Ajde_Http_Curl::post($url, $data);
         $result = @json_decode($json);
         if (is_object($result) && isset($result->documents)) {
             $url = $result->documents->html;

@@ -3,7 +3,7 @@
 class Ajde_Core_Route extends Ajde_Object_Standard
 {
     protected $_originalRoute = null;
-    protected $_route         = null;
+    protected $_route = null;
 
     public function __construct($route)
     {
@@ -11,10 +11,10 @@ class Ajde_Core_Route extends Ajde_Object_Standard
         // See if first part is language code (i.e. first part is exactly
         // two characters in length)
         if (strlen($route) === 2 || substr($route, 2, 1) === '/') {
-            $shortLang    = substr($route, 0, 2);
+            $shortLang = substr($route, 0, 2);
             $langInstance = Ajde_Lang::getInstance();
             if ($lang = $langInstance->getAvailableLang($shortLang)) {
-                $this->set("lang", $lang);
+                $this->set('lang', $lang);
                 $route = substr($route, 3);
                 // set global lang
                 $langInstance->setGlobalLang($lang);
@@ -22,10 +22,10 @@ class Ajde_Core_Route extends Ajde_Object_Standard
         }
         Ajde_Event::trigger($this, 'onAfterLangSet');
         if (!$route) {
-            $route = config("routes.homepage");
+            $route = config('routes.homepage');
         }
         // Check for route aliases
-        $aliases = config("routes.aliases");
+        $aliases = config('routes.aliases');
         if (array_key_exists($route, $aliases)) {
             $this->_route = $aliases[$route];
         } else {
@@ -35,12 +35,12 @@ class Ajde_Core_Route extends Ajde_Object_Standard
         // Get route parts
         $routeParts = $this->_extractRouteParts();
         if (empty($routeParts)) {
-            $exception = new Ajde_Core_Exception_Routing(sprintf("Invalid route: %s",
+            $exception = new Ajde_Core_Exception_Routing(sprintf('Invalid route: %s',
                 $route), 90021);
             Ajde::routingError($exception);
         }
-        $defaultParts = config("routes.default");
-        $parts        = array_merge($defaultParts, $routeParts);
+        $defaultParts = config('routes.default');
+        $parts = array_merge($defaultParts, $routeParts);
         foreach ($parts as $part => $value) {
             $this->set($part, $value);
         }
@@ -55,15 +55,15 @@ class Ajde_Core_Route extends Ajde_Object_Standard
     {
         $route = '';
         if ($includeLang && $this->hasLang()) {
-            $route .= substr($this->getLang(), 0, 2) . '/';
+            $route .= substr($this->getLang(), 0, 2).'/';
         }
-        $route .= $this->getModule() . '/';
+        $route .= $this->getModule().'/';
         if ($this->getController()) {
-            $route .= $this->getController() . ':';
+            $route .= $this->getController().':';
         }
-        $route .= $this->getAction() . '/' . $this->getFormat();
+        $route .= $this->getAction().'/'.$this->getFormat();
         if ($this->hasNotEmpty('id')) {
-            $route .= '/' . $this->getId();
+            $route .= '/'.$this->getId();
         }
 
         return $route;
@@ -90,7 +90,7 @@ class Ajde_Core_Route extends Ajde_Object_Standard
             throw new Ajde_Core_Exception_Deprecated();
         }
 
-        return $this->get("module", $default);
+        return $this->get('module', $default);
     }
 
     public function getController($default = null)
@@ -99,7 +99,7 @@ class Ajde_Core_Route extends Ajde_Object_Standard
             throw new Ajde_Core_Exception_Deprecated();
         }
 
-        return $this->get("controller", $default);
+        return $this->get('controller', $default);
     }
 
     public function getAction($default = null)
@@ -108,7 +108,7 @@ class Ajde_Core_Route extends Ajde_Object_Standard
             throw new Ajde_Core_Exception_Deprecated();
         }
 
-        return $this->get("action", $default);
+        return $this->get('action', $default);
     }
 
     public function getFormat($default = null)
@@ -117,7 +117,7 @@ class Ajde_Core_Route extends Ajde_Object_Standard
             throw new Ajde_Core_Exception_Deprecated();
         }
 
-        return $this->get("format", $default);
+        return $this->get('format', $default);
     }
 
     public function getLang($default = null)
@@ -126,12 +126,12 @@ class Ajde_Core_Route extends Ajde_Object_Standard
             throw new Ajde_Core_Exception_Deprecated();
         }
 
-        return $this->get("lang", $default);
+        return $this->get('lang', $default);
     }
 
     protected function _extractRouteParts()
     {
-        $matches      = [];
+        $matches = [];
         $defaultRules = [
             // module/controller:view
             ['%^([^/\.]+)/([^/\.]+):([^/\.]+)/?$%' => ['module', 'controller', 'action']],
@@ -144,8 +144,8 @@ class Ajde_Core_Route extends Ajde_Object_Standard
                     'controller',
                     'action',
                     'format',
-                    'id'
-                ]
+                    'id',
+                ],
             ],
             // module/controller:view.html
             ['%^([^/\.]+)/([^/\.]+):([^/\.]+)\.([^/\.]+)$%' => ['module', 'controller', 'action', 'format']],
@@ -156,8 +156,8 @@ class Ajde_Core_Route extends Ajde_Object_Standard
                     'controller',
                     'action',
                     'id',
-                    'format'
-                ]
+                    'format',
+                ],
             ],
             // module
             ['%^([^/\.]+)/?$%' => ['module']],
@@ -179,17 +179,17 @@ class Ajde_Core_Route extends Ajde_Object_Standard
             ['%^([^/\.]+)/([^/\.]+)/([^/\.]+)\.([^/\.]+)$%' => ['module', 'action', 'id', 'format']],
         ];
 
-        $configRules = config("routes.list");
-        $rules       = array_merge($configRules, $defaultRules);
+        $configRules = config('routes.list');
+        $rules = array_merge($configRules, $defaultRules);
 
         foreach ($rules as $rule) {
             $pattern = key($rule);
-            $parts   = current($rule);
+            $parts = current($rule);
             if (preg_match($pattern, $this->_route, $matches)) {
                 // removes first element of matches
                 array_shift($matches);
                 if (count($parts) != count($matches)) {
-                    throw new Ajde_Exception("Number of routeparts does not match regular expression", 90020);
+                    throw new Ajde_Exception('Number of routeparts does not match regular expression', 90020);
                 }
 
                 return array_combine($parts, $matches);

@@ -11,5 +11,4 @@ class PickupModel extends Ajde_Shop_Shipping_Method
     {
         return 0;
     }
-
 }

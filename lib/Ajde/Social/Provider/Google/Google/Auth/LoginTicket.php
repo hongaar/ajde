@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-require_once "Google/Auth/Exception.php";
+require_once 'Google/Auth/Exception.php';
 
 /**
  * Class to hold information about an authenticated login.
@@ -24,7 +24,7 @@ require_once "Google/Auth/Exception.php";
  */
 class Google_Auth_LoginTicket
 {
-    const USER_ATTR = "id";
+    const USER_ATTR = 'id';
 
     // Information from id token envelope.
     private $envelope;
@@ -41,13 +41,14 @@ class Google_Auth_LoginTicket
     public function __construct($envelope, $payload)
     {
         $this->envelope = $envelope;
-        $this->payload  = $payload;
+        $this->payload = $payload;
     }
 
     /**
      * Returns the numeric identifier for the user.
      *
      * @throws Google_Auth_Exception
+     *
      * @return
      */
     public function getUserId()
@@ -55,7 +56,7 @@ class Google_Auth_LoginTicket
         if (array_key_exists(self::USER_ATTR, $this->payload)) {
             return $this->payload[self::USER_ATTR];
         }
-        throw new Google_Auth_Exception("No user_id in token");
+        throw new Google_Auth_Exception('No user_id in token');
     }
 
     /**
@@ -66,6 +67,6 @@ class Google_Auth_LoginTicket
      */
     public function getAttributes()
     {
-        return ["envelope" => $this->envelope, "payload" => $this->payload];
+        return ['envelope' => $this->envelope, 'payload' => $this->payload];
     }
 }

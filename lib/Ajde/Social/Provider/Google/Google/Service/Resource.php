@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 require_once 'Google/Client.php';
 require_once 'Google/Exception.php';
 require_once 'Google/Utils.php';
@@ -29,7 +28,6 @@ require_once 'Google/Http/REST.php';
  *
  * @author Chris Chabot <chabotc@google.com>
  * @author Chirag Shah <chirags@google.com>
- *
  */
 class Google_Service_Resource
 {
@@ -64,11 +62,11 @@ class Google_Service_Resource
 
     public function __construct($service, $serviceName, $resourceName, $resource)
     {
-        $this->service      = $service;
-        $this->client       = $service->getClient();
-        $this->serviceName  = $serviceName;
+        $this->service = $service;
+        $this->client = $service->getClient();
+        $this->serviceName = $serviceName;
         $this->resourceName = $resourceName;
-        $this->methods      = isset($resource['methods']) ?
+        $this->methods = isset($resource['methods']) ?
             $resource['methods'] :
             [$resourceName => $resource];
     }
@@ -79,18 +77,20 @@ class Google_Service_Resource
      * @param $name
      * @param $arguments
      * @param $expected_class - optional, the expected class name
-     * @return Google_Http_Request|expected_class
+     *
      * @throws Google_Exception
+     *
+     * @return Google_Http_Request|expected_class
      */
     public function call($name, $arguments, $expected_class = null)
     {
         if (!isset($this->methods[$name])) {
             throw new Google_Exception(
-                "Unknown function: " .
+                'Unknown function: '.
                 "{$this->serviceName}->{$this->resourceName}->{$name}()"
             );
         }
-        $method     = $this->methods[$name];
+        $method = $this->methods[$name];
         $parameters = $arguments[0];
 
         // postBody is a special case since it's not defined in the discovery
@@ -136,8 +136,8 @@ class Google_Service_Resource
                 throw new Google_Exception("($name) missing required param: '$paramName'");
             }
             if (isset($parameters[$paramName])) {
-                $value                           = $parameters[$paramName];
-                $parameters[$paramName]          = $paramSpec;
+                $value = $parameters[$paramName];
+                $parameters[$paramName] = $paramSpec;
                 $parameters[$paramName]['value'] = $value;
                 unset($parameters[$paramName]['required']);
             } else {
@@ -163,7 +163,7 @@ class Google_Service_Resource
         );
 
         if ($postBody) {
-            $contentTypeHeader                 = [];
+            $contentTypeHeader = [];
             $contentTypeHeader['content-type'] = 'application/json; charset=UTF-8';
             $httpRequest->setRequestHeaders($contentTypeHeader);
             $httpRequest->setPostBody($postBody);
@@ -194,7 +194,7 @@ class Google_Service_Resource
 
     protected function convertToArrayAndStripNulls($o)
     {
-        $o = (array)$o;
+        $o = (array) $o;
         foreach ($o as $k => $v) {
             if ($v === null) {
                 unset($o[$k]);

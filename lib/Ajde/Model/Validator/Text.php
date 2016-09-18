@@ -11,7 +11,7 @@ class Ajde_Model_Validator_Text extends Ajde_Model_ValidatorAbstract
                         'valid' => false,
                         'error' => sprintf(
                             trans('Text is too long (max. %s characters)'), $length
-                        )
+                        ),
                     ];
                 }
             }

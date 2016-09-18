@@ -9,16 +9,17 @@ class Ajde_Component_Form_UploadHelper
  * @see https://github.com/valums/ajax-upload
  * Handle file uploads via XMLHttpRequest
  */
-class qqUploadedFileXhr  {
+class qqUploadedFileXhr
+{
     /**
-     * Save the file to the specified path
+     * Save the file to the specified path.
      *
-     * @return boolean TRUE on success
+     * @return bool TRUE on success
      */
-    function save($path)
+    public function save($path)
     {
-        $input    = fopen("php://input", "r");
-        $temp     = tmpfile();
+        $input = fopen('php://input', 'r');
+        $temp = tmpfile();
         $realSize = stream_copy_to_stream($input, $temp);
         fclose($input);
 
@@ -26,7 +27,7 @@ class qqUploadedFileXhr  {
             return false;
         }
 
-        $target = fopen($path, "w");
+        $target = fopen($path, 'w');
         fseek($temp, 0, SEEK_SET);
         stream_copy_to_stream($temp, $target);
         fclose($target);
@@ -34,15 +35,15 @@ class qqUploadedFileXhr  {
         return true;
     }
 
-    function getName()
+    public function getName()
     {
         return $_GET['qqfile'];
     }
 
-    function getSize()
+    public function getSize()
     {
-        if (isset($_SERVER["CONTENT_LENGTH"])) {
-            return (int)$_SERVER["CONTENT_LENGTH"];
+        if (isset($_SERVER['CONTENT_LENGTH'])) {
+            return (int) $_SERVER['CONTENT_LENGTH'];
         } else {
             throw new Exception('Getting content length is not supported.');
         }
@@ -50,16 +51,16 @@ class qqUploadedFileXhr  {
 }
 
 /**
- * Handle file uploads via regular form post (uses the $_FILES array)
+ * Handle file uploads via regular form post (uses the $_FILES array).
  */
 class qqUploadedFileForm
 {
     /**
-     * Save the file to the specified path
+     * Save the file to the specified path.
      *
-     * @return boolean TRUE on success
+     * @return bool TRUE on success
      */
-    function save($path)
+    public function save($path)
     {
         if (!move_uploaded_file($_FILES['qqfile']['tmp_name'], $path)) {
             return false;
@@ -68,12 +69,12 @@ class qqUploadedFileForm
         return true;
     }
 
-    function getName()
+    public function getName()
     {
         return $_FILES['qqfile']['name'];
     }
 
-    function getSize()
+    public function getSize()
     {
         return $_FILES['qqfile']['size'];
     }
@@ -82,15 +83,15 @@ class qqUploadedFileForm
 class qqFileUploader
 {
     private $allowedExtensions = [];
-    private $sizeLimit         = 10485760;
+    private $sizeLimit = 10485760;
     private $file;
 
-    function __construct(array $allowedExtensions = [], $sizeLimit = 10485760)
+    public function __construct(array $allowedExtensions = [], $sizeLimit = 10485760)
     {
-        $allowedExtensions = array_map("strtolower", $allowedExtensions);
+        $allowedExtensions = array_map('strtolower', $allowedExtensions);
 
         $this->allowedExtensions = $allowedExtensions;
-        $this->sizeLimit         = $sizeLimit;
+        $this->sizeLimit = $sizeLimit;
 
         $this->checkServerSettings();
 
@@ -105,18 +106,18 @@ class qqFileUploader
 
     private function checkServerSettings()
     {
-        $postSize   = $this->toBytes(ini_get('post_max_size'));
+        $postSize = $this->toBytes(ini_get('post_max_size'));
         $uploadSize = $this->toBytes(ini_get('upload_max_filesize'));
 
         if ($postSize < $this->sizeLimit || $uploadSize < $this->sizeLimit) {
-            $size = max(1, $this->sizeLimit / 1024 / 1024) . 'M';
+            $size = max(1, $this->sizeLimit / 1024 / 1024).'M';
             die("{'error':'increase post_max_size and upload_max_filesize to $size'}");
         }
     }
 
     private function toBytes($str)
     {
-        $val  = trim($str);
+        $val = trim($str);
         $last = strtolower($str[strlen($str) - 1]);
         switch ($last) {
             case 'g':
@@ -131,15 +132,15 @@ class qqFileUploader
     }
 
     /**
-     * Returns array('success'=>true) or array('error'=>'error message')
+     * Returns array('success'=>true) or array('error'=>'error message').
      */
-    function handleUpload($uploadDirectory, $replaceOldFile = false)
+    public function handleUpload($uploadDirectory, $replaceOldFile = false)
     {
-        if (!file_exists(LOCAL_ROOT . $uploadDirectory)) {
-            mkdir(LOCAL_ROOT . $uploadDirectory, 0777, true);
+        if (!file_exists(LOCAL_ROOT.$uploadDirectory)) {
+            mkdir(LOCAL_ROOT.$uploadDirectory, 0777, true);
         }
 
-        if (!is_writable(LOCAL_ROOT . $uploadDirectory)) {
+        if (!is_writable(LOCAL_ROOT.$uploadDirectory)) {
             return ['error' => "Server error. Upload directory isn't writable."];
         }
 
@@ -170,17 +171,17 @@ class qqFileUploader
 
         if (!$replaceOldFile) {
             /// don't overwrite previous files that were uploaded
-            while (is_file(LOCAL_ROOT . $uploadDirectory . $filename . '.' . $ext)) {
+            while (is_file(LOCAL_ROOT.$uploadDirectory.$filename.'.'.$ext)) {
                 $filename .= rand(10, 99);
             }
         }
 
-        if ($this->file->save(LOCAL_ROOT . $uploadDirectory . $filename . '.' . $ext)) {
-            return ['success' => true, 'filename' => $filename . '.' . $ext];
+        if ($this->file->save(LOCAL_ROOT.$uploadDirectory.$filename.'.'.$ext)) {
+            return ['success' => true, 'filename' => $filename.'.'.$ext];
         } else {
             return [
-                'error' => 'Could not save uploaded file.' .
-                    'The upload was cancelled, or server error encountered'
+                'error' => 'Could not save uploaded file.'.
+                    'The upload was cancelled, or server error encountered',
             ];
         }
     }

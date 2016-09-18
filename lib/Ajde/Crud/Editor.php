@@ -2,5 +2,5 @@
 
 abstract class Ajde_Crud_Editor extends Ajde_Object_Standard
 {
-    abstract function getResources(&$view);
+    abstract public function getResources(&$view);
 }

@@ -2,9 +2,8 @@
 
 interface Ajde_Object_SingletonInterface
 {
-
     /**
-     * Example:
+     * Example:.
      *
      * public static function getInstance()
      * {

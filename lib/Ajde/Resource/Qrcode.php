@@ -1,5 +1,6 @@
 <?php
-require LIB_DIR . 'Ajde/Resource/Qrcode/lib/phpqrcode.php';
+
+require LIB_DIR.'Ajde/Resource/Qrcode/lib/phpqrcode.php';
 
 class Ajde_Resource_Qrcode extends Ajde_Resource
 {
@@ -14,10 +15,10 @@ class Ajde_Resource_Qrcode extends Ajde_Resource
     {
         // Double url encoding because of mod_rewrite url decoding bug
         // @see http://www.php.net/manual/en/reserved.variables.php#84025
-        $url = '_core/component:qrcode/' . urlencode(urlencode($this->getFingerprint())) . '.data';
+        $url = '_core/component:qrcode/'.urlencode(urlencode($this->getFingerprint())).'.data';
 
-        if (config("app.debug") === true) {
-            $url .= '&text=' . urlencode($this->_text);
+        if (config('app.debug') === true) {
+            $url .= '&text='.urlencode($this->_text);
         }
 
         return $url;

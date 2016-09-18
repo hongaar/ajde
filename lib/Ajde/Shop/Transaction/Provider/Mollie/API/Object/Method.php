@@ -29,14 +29,15 @@
  *     http://www.opensource.org/licenses/bsd-license.php
  * @author      Mollie B.V. <info@mollie.nl>
  * @copyright   Mollie B.V.
+ *
  * @link        https://www.mollie.nl
  */
 class Mollie_API_Object_Method
 {
-    const IDEAL       = "ideal";
-    const PAYSAFECARD = "paysafecard";
-    const CREDITCARD  = "creditcard";
-    const MISTERCASH  = "mistercash";
+    const IDEAL = 'ideal';
+    const PAYSAFECARD = 'paysafecard';
+    const CREDITCARD = 'creditcard';
+    const MISTERCASH = 'mistercash';
 
     /**
      * Id of the payment method.
@@ -65,10 +66,10 @@ class Mollie_API_Object_Method
     public function getMinimumAmount()
     {
         if (empty($this->amount)) {
-            return null;
+            return;
         }
 
-        return (float)$this->amount->minimum;
+        return (float) $this->amount->minimum;
     }
 
     /**
@@ -77,9 +78,9 @@ class Mollie_API_Object_Method
     public function getMaximumAmount()
     {
         if (empty($this->amount)) {
-            return null;
+            return;
         }
 
-        return (float)$this->amount->maximum;
+        return (float) $this->amount->maximum;
     }
 }

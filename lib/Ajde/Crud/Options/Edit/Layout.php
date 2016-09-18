@@ -6,7 +6,6 @@ class Ajde_Crud_Options_Edit_Layout extends Ajde_Crud_Options
     private $_row = 0;
 
     /**
-     *
      * @return Ajde_Crud_Options_Edit
      */
     public function up($obj = false)
@@ -19,7 +18,7 @@ class Ajde_Crud_Options_Edit_Layout extends Ajde_Crud_Options
     // =========================================================================
 
     /**
-     * Adds a row to the layout
+     * Adds a row to the layout.
      *
      * @return Ajde_Crud_Options_Edit_Layout_Rows_Row
      */
@@ -36,5 +35,4 @@ class Ajde_Crud_Options_Edit_Layout extends Ajde_Crud_Options
     // =========================================================================
     // Set functions
     // =========================================================================
-
 }

@@ -2,13 +2,13 @@
 
 class Ajde_Acl extends Ajde_Model
 {
-    public static $log    = [];
+    public static $log = [];
     public static $access = null;
 
     protected $_autoloadParents = false;
 
     private static $_aclCollectionCache = [];
-    private static $_aclRulesCache      = [];
+    private static $_aclRulesCache = [];
 
     private static $_user;
 
@@ -40,7 +40,7 @@ class Ajde_Acl extends Ajde_Model
     {
         $user = self::getUser();
         if ($user !== false) {
-            return (string)$user->getUsergroup();
+            return (string) $user->getUsergroup();
         }
 
         return -1;
@@ -63,19 +63,18 @@ class Ajde_Acl extends Ajde_Model
     }
 
     /**
-     *
-     * @return Ajde_Acl|boolean
+     * @return Ajde_Acl|bool
      */
     public static function lookup($usergroup, $entity, $module, $action = '*', $extra = '*', $permission = false)
     {
-        $acl    = self::getAclModel();
-        $type   = ($usergroup === 'public' ? 'public' : 'usergroup');
+        $acl = self::getAclModel();
+        $type = ($usergroup === 'public' ? 'public' : 'usergroup');
         $fields = [
             'entity' => $entity,
             'type'   => $type,
             'module' => $module,
             'action' => $action,
-            'extra'  => $extra
+            'extra'  => $extra,
         ];
         if (is_numeric($usergroup)) {
             $fields['usergroup'] = $usergroup;
@@ -109,7 +108,7 @@ class Ajde_Acl extends Ajde_Model
     public static function removeModelPermissions($usergroup, $model, $extra = '*')
     {
         $collection = self::getModelActions($usergroup, $model, $extra);
-        $success    = true;
+        $success = true;
         foreach ($collection as $acl) {
             $success = $success * $acl->delete();
         }
@@ -119,15 +118,15 @@ class Ajde_Acl extends Ajde_Model
 
     public static function addPermission($permission, $entity, $usergroup, $module, $action = '*', $extra = '*')
     {
-        $acl    = self::getAclModel();
-        $type   = ($usergroup === 'public' ? 'public' : 'usergroup');
+        $acl = self::getAclModel();
+        $type = ($usergroup === 'public' ? 'public' : 'usergroup');
         $values = [
             'entity'     => $entity,
             'type'       => $type,
             'module'     => $module,
             'action'     => $action,
             'extra'      => $extra,
-            'permission' => $permission
+            'permission' => $permission,
         ];
         if (is_numeric($usergroup)) {
             $values['usergroup'] = $usergroup;
@@ -138,7 +137,6 @@ class Ajde_Acl extends Ajde_Model
     }
 
     /**
-     *
      * @return AclCollection
      */
     public static function getModelActions($usergroup, $model, $extra = '*', $permission = false)
@@ -162,7 +160,7 @@ class Ajde_Acl extends Ajde_Model
     public static function getModelActionsAsArray($usergroup, $model, $extra = '*', $permission = false)
     {
         $collection = self::getModelActions($usergroup, $model, $extra, $permission);
-        $actions    = [];
+        $actions = [];
         foreach ($collection as $acl) {
             $actions[] = $acl->getAction();
         }
@@ -182,8 +180,8 @@ class Ajde_Acl extends Ajde_Model
 
     public static function validateController($module, $action, $extra)
     {
-        $access           = self::validatePage($module, $action, $extra);
-        Ajde_Acl::$access = $access;
+        $access = self::validatePage($module, $action, $extra);
+        self::$access = $access;
 
         return $access;
     }
@@ -211,6 +209,7 @@ class Ajde_Acl extends Ajde_Model
      * @param bool   $ownerCallback
      * @param bool   $parentCallback
      * @param bool   $determineWildcard
+     *
      * @return bool
      */
     public static function doValidation(
@@ -222,22 +221,22 @@ class Ajde_Acl extends Ajde_Model
         $parentCallback = false,
         $determineWildcard = false
     ) {
-        $uid       = self::getUserId();
+        $uid = self::getUserId();
         $usergroup = self::getUsergroupId();
 
         $isWildcard = false;
 
         $callbackHash = '';
         if ($ownerCallback !== false && $parentCallback !== false) {
-            $callbackHash = md5(get_class($ownerCallback[0]) . get_class($parentCallback[0]) . $ownerCallback[1] . $parentCallback[1]);
+            $callbackHash = md5(get_class($ownerCallback[0]).get_class($parentCallback[0]).$ownerCallback[1].$parentCallback[1]);
         }
-        $validationHash = md5($entity . '/' . $module . '/' . $action . '/' . $extra . '/' . $uid . '/' . $usergroup . '/' . $callbackHash);
+        $validationHash = md5($entity.'/'.$module.'/'.$action.'/'.$extra.'/'.$uid.'/'.$usergroup.'/'.$callbackHash);
 
         if (isset(self::$_aclRulesCache[$validationHash])) {
             $orderedRules = self::$_aclRulesCache[$validationHash];
         } else {
 
-            /**
+            /*
              * Allright, this is how things go down here:
              * We want to check for at least one allowed or owner record in this direction:
              *
@@ -267,46 +266,46 @@ class Ajde_Acl extends Ajde_Model
             $access = null;
 
             $moduleAction = [
-                "A1" => [
+                'A1' => [
                     'module' => '*',
                     'action' => '*',
-                    'extra'  => '*'
+                    'extra'  => '*',
                 ],
-                "A2" => [
+                'A2' => [
                     'module' => '*',
                     'action' => '*',
-                    'extra'  => $extra
+                    'extra'  => $extra,
                 ],
-                "B1" => [
+                'B1' => [
                     'module' => '*',
                     'action' => $action,
-                    'extra'  => '*'
+                    'extra'  => '*',
                 ],
-                "B2" => [
+                'B2' => [
                     'module' => '*',
                     'action' => $action,
-                    'extra'  => $extra
+                    'extra'  => $extra,
                 ],
-                "C1" => [
+                'C1' => [
                     'module' => $module,
                     'action' => '*',
-                    'extra'  => '*'
+                    'extra'  => '*',
                 ],
-                "C2" => [
+                'C2' => [
                     'module' => $module,
                     'action' => '*',
-                    'extra'  => $extra
+                    'extra'  => $extra,
                 ],
-                "D1" => [
+                'D1' => [
                     'module' => $module,
                     'action' => $action,
-                    'extra'  => '*'
+                    'extra'  => '*',
                 ],
-                "D2" => [
+                'D2' => [
                     'module' => $module,
                     'action' => $action,
-                    'extra'  => $extra
-                ]
+                    'extra'  => $extra,
+                ],
             ];
 
             $userGroup = [
@@ -314,20 +313,18 @@ class Ajde_Acl extends Ajde_Model
                 2 => ['user', null],
                 3 => ['usergroup', $usergroup],
                 4 => ['user', $uid],
-                5 => ['public', null]
+                5 => ['public', null],
             ];
 
-            /**
+            /*
              * Allright, let's prepare the SQL!
              */
 
             // From cache
             if (isset(self::$_aclCollectionCache[$entity])) {
-
                 $rules = self::$_aclCollectionCache[$entity];
                 // Load collection
             } else {
-
                 $rules = self::getAclCollection();
                 $rules->reset();
 
@@ -360,7 +357,7 @@ class Ajde_Acl extends Ajde_Model
                 self::$_aclCollectionCache[$entity] = $rules;
             }
 
-            /**
+            /*
              * Oempfff... now let's traverse and set the order
              *
              * Update: It seems that we can just load the entire ACL table in the collection
@@ -375,10 +372,10 @@ class Ajde_Acl extends Ajde_Model
                 foreach ($moduleAction as $maKey => $moduleActionPart) {
                     $module = $moduleActionPart['module'];
                     $action = $moduleActionPart['action'];
-                    $extra  = $moduleActionPart['extra'];
-                    $rule   = $rules->findRule($type, $ugId, $module, $action, $extra);
+                    $extra = $moduleActionPart['extra'];
+                    $rule = $rules->findRule($type, $ugId, $module, $action, $extra);
                     if ($rule !== false) {
-                        $orderedRules[$ugpKey . $maKey] = $rule;
+                        $orderedRules[$ugpKey.$maKey] = $rule;
                     }
                 }
             }
@@ -386,73 +383,73 @@ class Ajde_Acl extends Ajde_Model
             self::$_aclRulesCache[$validationHash] = $orderedRules;
         }
 
-        /**
+        /*
          * Finally, determine access
          */
-        $extra = ($extra !== '*' && $extra !== '') ? ' (' . $extra . ')' : '';
+        $extra = ($extra !== '*' && $extra !== '') ? ' ('.$extra.')' : '';
         foreach ($orderedRules as $key => $rule) {
             if ($rule->type === 'public' && self::getUser() === false) {
                 switch ($rule->permission) {
-                    case "allow":
-                        Ajde_Acl::$log[] = $key . ' match with ACL rule id ' . $rule->getPK() . ' allows access for ' . $module . '/' . $action . $extra . ' (public)';
-                        $access          = true;
-                        $isWildcard      = $rule->extra == '*';
+                    case 'allow':
+                        self::$log[] = $key.' match with ACL rule id '.$rule->getPK().' allows access for '.$module.'/'.$action.$extra.' (public)';
+                        $access = true;
+                        $isWildcard = $rule->extra == '*';
                         break 2;
-                    case "deny":
+                    case 'deny':
                     default:
-                        Ajde_Acl::$log[] = $key . ' match with ACL rule id ' . $rule->getPK() . ' denies access for ' . $module . '/' . $action . $extra . ' (public)';
-                        $access          = false;
+                        self::$log[] = $key.' match with ACL rule id '.$rule->getPK().' denies access for '.$module.'/'.$action.$extra.' (public)';
+                        $access = false;
                         break;
                 }
             } else {
                 if ($rule->type !== 'public') {
                     if (self::getUser()) {
                         switch ($rule->permission) {
-                            case "deny":
-                                Ajde_Acl::$log[] = $key . ' match with ACL rule id ' . $rule->getPK() . ' denies access for ' . $module . '/' . $action . $extra;
-                                $access          = false;
+                            case 'deny':
+                                self::$log[] = $key.' match with ACL rule id '.$rule->getPK().' denies access for '.$module.'/'.$action.$extra;
+                                $access = false;
                                 break;
-                            case "own":
+                            case 'own':
                                 if (call_user_func_array($ownerCallback, [$uid, $usergroup])) {
-                                    Ajde_Acl::$log[] = $key . ' match with ACL rule id ' . $rule->getPK() . ' allows access for ' . $module . '/' . $action . $extra . ' (owner)';
-                                    $access          = true;
-                                    $isWildcard      = $rule->extra == '*';
+                                    self::$log[] = $key.' match with ACL rule id '.$rule->getPK().' allows access for '.$module.'/'.$action.$extra.' (owner)';
+                                    $access = true;
+                                    $isWildcard = $rule->extra == '*';
                                     break 2;
                                 } else {
-                                    Ajde_Acl::$log[] = $key . ' match with ACL rule id ' . $rule->getPK() . ' denies access for ' . $module . '/' . $action . $extra . ' (owner)';
+                                    self::$log[] = $key.' match with ACL rule id '.$rule->getPK().' denies access for '.$module.'/'.$action.$extra.' (owner)';
                                     // TODO: or inherit?
                                     $access = false;
                                 }
                                 break;
-                            case "parent":
+                            case 'parent':
                                 if (call_user_func_array($parentCallback, [$uid, $usergroup])) {
-                                    Ajde_Acl::$log[] = $key . ' match with ACL rule id ' . $rule->getPK() . ' allows access for ' . $module . '/' . $action . $extra . ' (parent)';
-                                    $access          = true;
-                                    $isWildcard      = $rule->extra == '*';
+                                    self::$log[] = $key.' match with ACL rule id '.$rule->getPK().' allows access for '.$module.'/'.$action.$extra.' (parent)';
+                                    $access = true;
+                                    $isWildcard = $rule->extra == '*';
                                     break 2;
                                 } else {
-                                    Ajde_Acl::$log[] = $key . ' match with ACL rule id ' . $rule->getPK() . ' denies access for ' . $module . '/' . $action . $extra . ' (parent)';
+                                    self::$log[] = $key.' match with ACL rule id '.$rule->getPK().' denies access for '.$module.'/'.$action.$extra.' (parent)';
                                     // TODO: or inherit?
                                     $access = false;
                                 }
                                 break;
-                            case "allow":
-                                Ajde_Acl::$log[] = $key . ' match with ACL rule id ' . $rule->getPK() . ' allows access for ' . $module . '/' . $action . $extra;
-                                $access          = true;
-                                $isWildcard      = $rule->extra == '*';
+                            case 'allow':
+                                self::$log[] = $key.' match with ACL rule id '.$rule->getPK().' allows access for '.$module.'/'.$action.$extra;
+                                $access = true;
+                                $isWildcard = $rule->extra == '*';
                                 break 2;
                         }
                     } else {
-                        Ajde_Acl::$log[] = $key . ' match with ACL rule id ' . $rule->getPK() . ' denies access for ' . $module . '/' . $action . $extra . ' (not logged in)';
-                        $access          = false;
+                        self::$log[] = $key.' match with ACL rule id '.$rule->getPK().' denies access for '.$module.'/'.$action.$extra.' (not logged in)';
+                        $access = false;
                     }
                 }
             }
         }
 
         if (!isset($access)) {
-            Ajde_Acl::$log[] = 'No match in ACL rules denies access for ' . $module . '/' . $action . $extra;
-            $access          = false;
+            self::$log[] = 'No match in ACL rules denies access for '.$module.'/'.$action.$extra;
+            $access = false;
         }
 
         if ($determineWildcard) {

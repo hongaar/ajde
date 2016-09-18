@@ -22,8 +22,8 @@ class Ajde_Resource_Local_Compressor_Css extends Ajde_Resource_Local_Compressor
 
     public function getCompressor($contents)
     {
-        require_once 'lib/' . ucfirst($this->_lib) . '.php';
-        $className = 'Ajde_Resource_Local_Compressor_Css_' . ucfirst($this->_lib);
+        require_once 'lib/'.ucfirst($this->_lib).'.php';
+        $className = 'Ajde_Resource_Local_Compressor_Css_'.ucfirst($this->_lib);
 
         return new $className($contents);
     }

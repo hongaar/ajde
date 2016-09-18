@@ -3,9 +3,9 @@
 class MailerlogModel extends Ajde_Model
 {
     protected $_autoloadParents = true;
-    protected $_displayField    = 'subject';
+    protected $_displayField = 'subject';
 
-    public static function log($fromEmail, $fromName = '', $toEmail, $toName = '', $subject, $body, $status = 0)
+    public static function log($fromEmail, $fromName, $toEmail, $toName, $subject, $body, $status = 0)
     {
         $mailerlog = new self();
         $mailerlog->populate([
@@ -15,7 +15,7 @@ class MailerlogModel extends Ajde_Model
             'to_email'   => $toEmail,
             'subject'    => $subject,
             'body'       => $body,
-            'status'     => $status
+            'status'     => $status,
         ]);
 
         return $mailerlog->insert();

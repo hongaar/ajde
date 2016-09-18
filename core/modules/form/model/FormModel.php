@@ -3,7 +3,7 @@
 class FormModel extends Ajde_Model
 {
     protected $_autoloadParents = true;
-    protected $_displayField    = 'name';
+    protected $_displayField = 'name';
 
     /**
      * @return EmailModel

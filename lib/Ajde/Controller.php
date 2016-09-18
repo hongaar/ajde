@@ -3,13 +3,11 @@
 class Ajde_Controller extends Ajde_Object_Standard
 {
     /**
-     *
      * @var Ajde_View
      */
     protected $_view = null;
 
     /**
-     *
      * @var Ajde_Core_Route
      */
     protected $_route = null;
@@ -18,7 +16,7 @@ class Ajde_Controller extends Ajde_Object_Standard
     {
         $this->setModule(strtolower(str_replace('Controller', '', get_class($this))));
         if (!isset($action) || !isset($format)) {
-            $defaultParts = config("routes.default");
+            $defaultParts = config('routes.default');
         }
         $this->setAction(isset($action) ? $action : $defaultParts['action']);
         $this->setFormat(isset($format) ? $format : $defaultParts['format']);
@@ -33,7 +31,7 @@ class Ajde_Controller extends Ajde_Object_Standard
         if (Ajde_Event::has('Ajde_Controller', 'call')) {
             return Ajde_Event::trigger('Ajde_Controller', 'call', [$method, $arguments]);
         }
-        throw new Ajde_Exception("Call to undefined method " . get_class($this) . "::$method()", 90006);
+        throw new Ajde_Exception('Call to undefined method '.get_class($this)."::$method()", 90006);
     }
 
     public function getModule()
@@ -67,26 +65,26 @@ class Ajde_Controller extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @param Ajde_Core_Route $route
+     *
      * @return Ajde_Controller
      */
     public static function fromRoute(Ajde_Core_Route $route)
     {
         if ($controller = $route->getController()) {
-            $moduleController = ucfirst($route->getModule()) . ucfirst($controller) . 'Controller';
+            $moduleController = ucfirst($route->getModule()).ucfirst($controller).'Controller';
         } else {
-            $moduleController = ucfirst($route->getModule()) . 'Controller';
+            $moduleController = ucfirst($route->getModule()).'Controller';
         }
         if (!class_exists($moduleController)) {
 
             // Prevent resursive 404 routing
-            $errorRoutes = config("routes.errors");
+            $errorRoutes = config('routes.errors');
             if (isset($errorRoutes[Ajde_Http_Response::RESPONSE_TYPE_NOTFOUND])) {
                 $notFoundRoute = new Ajde_Core_Route($errorRoutes[Ajde_Http_Response::RESPONSE_TYPE_NOTFOUND]);
                 if ($route->buildRoute() == $notFoundRoute->buildRoute()) {
                     Ajde_Http_Response::setResponseType(404);
-                    die('<h2>Ouch, something broke.</h2><p>This is serious. We tried to give you a nice error page, but even that failed.</p><button onclick="location.href=\'' . config("app.rootUrl") . '\';">Go back to homepage</button>');
+                    die('<h2>Ouch, something broke.</h2><p>This is serious. We tried to give you a nice error page, but even that failed.</p><button onclick="location.href=\''.config('app.rootUrl').'\';">Go back to homepage</button>');
                 }
             }
 
@@ -99,7 +97,7 @@ class Ajde_Controller extends Ajde_Object_Standard
             }
             Ajde::routingError($exception);
         }
-        $controller         = new $moduleController($route->getAction(), $route->getFormat());
+        $controller = new $moduleController($route->getAction(), $route->getFormat());
         $controller->_route = $route;
         foreach ($route->values() as $part => $value) {
             $controller->set($part, $value);
@@ -111,26 +109,28 @@ class Ajde_Controller extends Ajde_Object_Standard
     /**
      * @param string|null $action
      * @param string|null $format
-     * @return mixed
+     *
      * @throws Ajde_Exception
      * @throws Exception
+     *
+     * @return mixed
      */
     public function invoke($action = null, $format = null)
     {
-        $timerKey = Ajde::app()->addTimer((string)$this->_route);
-        $action   = issetor($action, $this->getAction());
-        $format   = issetor($format, $this->getFormat());
-        $method   = strtolower($_SERVER['REQUEST_METHOD']);
+        $timerKey = Ajde::app()->addTimer((string) $this->_route);
+        $action = issetor($action, $this->getAction());
+        $format = issetor($format, $this->getFormat());
+        $method = strtolower($_SERVER['REQUEST_METHOD']);
 
         $tryTheseFunctions = [];
 
-        $formatFunction  = $action . ucfirst($format);
-        $defaultFunction = $action . "Default";
-        $emptyFunction   = $action;
+        $formatFunction = $action.ucfirst($format);
+        $defaultFunction = $action.'Default';
+        $emptyFunction = $action;
 
-        $tryTheseFunctions[] = $formatFunction . ucfirst($method);
-        $tryTheseFunctions[] = $defaultFunction . ucfirst($method);
-        $tryTheseFunctions[] = $emptyFunction . ucfirst($method);
+        $tryTheseFunctions[] = $formatFunction.ucfirst($method);
+        $tryTheseFunctions[] = $defaultFunction.ucfirst($method);
+        $tryTheseFunctions[] = $emptyFunction.ucfirst($method);
         $tryTheseFunctions[] = $formatFunction;
         $tryTheseFunctions[] = $defaultFunction;
         $tryTheseFunctions[] = $emptyFunction;
@@ -146,7 +146,7 @@ class Ajde_Controller extends Ajde_Object_Standard
         //        dump(get_class($this) . '::' .  $invokeFunction);
 
         if (!$invokeFunction) {
-            $exception = new Ajde_Core_Exception_Routing(sprintf("Action %s for module %s not found",
+            $exception = new Ajde_Core_Exception_Routing(sprintf('Action %s for module %s not found',
                 $this->getAction(),
                 $this->getModule()
             ), 90011);
@@ -158,7 +158,7 @@ class Ajde_Controller extends Ajde_Object_Standard
             $return = $this->beforeInvoke();
             if ($return !== true && $return !== false) {
                 // TODO:
-                throw new Ajde_Exception(sprintf("beforeInvoke() must return either TRUE or FALSE"));
+                throw new Ajde_Exception(sprintf('beforeInvoke() must return either TRUE or FALSE'));
             }
         }
         if ($return === true) {
@@ -173,7 +173,6 @@ class Ajde_Controller extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @return Ajde_View
      */
     public function getView()
@@ -186,7 +185,6 @@ class Ajde_Controller extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @param Ajde_View $view
      */
     public function setView(Ajde_View $view)
@@ -195,7 +193,7 @@ class Ajde_Controller extends Ajde_Object_Standard
     }
 
     /**
-     * Shorthand for $controller->getView()->getContents();
+     * Shorthand for $controller->getView()->getContents();.
      */
     public function render()
     {
@@ -204,7 +202,7 @@ class Ajde_Controller extends Ajde_Object_Standard
             $return = $this->beforeRender();
             if ($return !== true && $return !== false) {
                 // TODO:
-                throw new Ajde_Exception(sprintf("beforeRender() must return either TRUE or FALSE"));
+                throw new Ajde_Exception(sprintf('beforeRender() must return either TRUE or FALSE'));
             }
         }
         if ($return === true) {
@@ -237,7 +235,6 @@ class Ajde_Controller extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @param Ajde_Model|Ajde_Collection $object
      */
     public function touchCache($object = null)

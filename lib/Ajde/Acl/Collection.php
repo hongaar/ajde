@@ -22,8 +22,8 @@ class Ajde_Acl_Collection extends Ajde_Collection
     }
 
     /**
-     *
      * @param string $entity
+     *
      * @return Ajde_Acl_Collection
      */
     public function filterByEntity($entity)

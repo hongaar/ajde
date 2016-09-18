@@ -20,30 +20,30 @@
  *
  * @author Stuart Langley <slangley@google.com>
  */
-
 require_once 'Google/IO/Abstract.php';
 
 class Google_IO_Stream extends Google_IO_Abstract
 {
-
-    private static $ENTITY_HTTP_METHODS = ["POST" => null, "PUT" => null];
+    private static $ENTITY_HTTP_METHODS = ['POST' => null, 'PUT' => null];
 
     private static $DEFAULT_HTTP_CONTEXT = [
-        "follow_location" => 0,
-        "ignore_errors"   => 1,
+        'follow_location' => 0,
+        'ignore_errors'   => 1,
     ];
 
     private static $DEFAULT_SSL_CONTEXT = [
-        "verify_peer" => true,
+        'verify_peer' => true,
     ];
 
     /**
-     * Execute a apiHttpRequest
+     * Execute a apiHttpRequest.
      *
      * @param Google_HttpRequest $request the http request to be executed
-     * @return Google_HttpRequest http request with the response http code,
-     *                                    response headers and response body filled in
+     *
      * @throws Google_IOException on curl or IO error
+     *
+     * @return Google_HttpRequest http request with the response http code,
+     *                            response headers and response body filled in
      */
     public function makeRequest(Google_Http_Request $request)
     {
@@ -67,37 +67,37 @@ class Google_IO_Stream extends Google_IO_Abstract
         }
 
         if ($request->getPostBody()) {
-            $requestHttpContext["content"] = $request->getPostBody();
+            $requestHttpContext['content'] = $request->getPostBody();
         }
 
         $requestHeaders = $request->getRequestHeaders();
         if ($requestHeaders && is_array($requestHeaders)) {
-            $headers = "";
+            $headers = '';
             foreach ($requestHeaders as $k => $v) {
                 $headers .= "$k: $v\n";
             }
-            $requestHttpContext["header"] = $headers;
+            $requestHttpContext['header'] = $headers;
         }
 
-        $requestHttpContext["method"]     = $request->getRequestMethod();
-        $requestHttpContext["user_agent"] = $request->getUserAgent();
+        $requestHttpContext['method'] = $request->getRequestMethod();
+        $requestHttpContext['user_agent'] = $request->getUserAgent();
 
         $requestSslContext = array_key_exists('ssl', $default_options) ?
             $default_options['ssl'] : [];
 
-        if (!array_key_exists("cafile", $requestSslContext)) {
-            $requestSslContext["cafile"] = dirname(__FILE__) . '/cacerts.pem';
+        if (!array_key_exists('cafile', $requestSslContext)) {
+            $requestSslContext['cafile'] = dirname(__FILE__).'/cacerts.pem';
         }
 
         $options = [
-            "http" => array_merge(
+            'http' => array_merge(
                 self::$DEFAULT_HTTP_CONTEXT,
                 $requestHttpContext
             ),
-            "ssl"  => array_merge(
+            'ssl'  => array_merge(
                 self::$DEFAULT_SSL_CONTEXT,
                 $requestSslContext
-            )
+            ),
         ];
 
         $context = stream_context_create($options);
@@ -109,10 +109,10 @@ class Google_IO_Stream extends Google_IO_Abstract
         );
 
         if (false === $response_data) {
-            throw new Google_IOException("HTTP Error: Unable to connect");
+            throw new Google_IOException('HTTP Error: Unable to connect');
         }
 
-        $respHttpCode    = $this->getHttpResponseCode($http_response_header);
+        $respHttpCode = $this->getHttpResponseCode($http_response_header);
         $responseHeaders = $this->getHttpResponseHeaders($http_response_header);
 
         if ($respHttpCode == 304 && $cached) {
@@ -123,7 +123,7 @@ class Google_IO_Stream extends Google_IO_Abstract
         }
 
         if (!isset($responseHeaders['Date']) && !isset($responseHeaders['date'])) {
-            $responseHeaders['Date'] = date("r");
+            $responseHeaders['Date'] = date('r');
         }
 
         $request->setResponseHttpCode($respHttpCode);
@@ -152,7 +152,7 @@ class Google_IO_Stream extends Google_IO_Abstract
 
         for ($i = 0; $i < $header_count; $i++) {
             $header = $response_headers[$i];
-            if (strncasecmp("HTTP", $header, strlen("HTTP")) == 0) {
+            if (strncasecmp('HTTP', $header, strlen('HTTP')) == 0) {
                 $response = explode(' ', $header);
 
                 return $response[1];

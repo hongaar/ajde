@@ -9,21 +9,21 @@ class AdminShopController extends AdminController
 
     public function products()
     {
-        Ajde::app()->getDocument()->setTitle("Product catalogue");
+        Ajde::app()->getDocument()->setTitle('Product catalogue');
 
         return $this->render();
     }
 
     public function carts()
     {
-        Ajde::app()->getDocument()->setTitle("Carts overview");
+        Ajde::app()->getDocument()->setTitle('Carts overview');
 
         return $this->render();
     }
 
     public function transactions()
     {
-        Ajde::app()->getDocument()->setTitle("Transactions overview");
+        Ajde::app()->getDocument()->setTitle('Transactions overview');
 
         return $this->render();
     }
@@ -50,7 +50,7 @@ class AdminShopController extends AdminController
 
         return [
             'success' => true,
-            'message' => Ajde_Component_String::makePlural($c, 'transaction') . ' marked as paid'
+            'message' => Ajde_Component_String::makePlural($c, 'transaction').' marked as paid',
         ];
     }
 
@@ -181,7 +181,7 @@ class AdminShopController extends AdminController
                 'shipment_country',
                 'shipment_status',
                 'shipment_method',
-                'shipment_trackingcode'
+                'shipment_trackingcode',
             ])
             ->up()
             ->up()
@@ -194,7 +194,7 @@ class AdminShopController extends AdminController
                 'shipment_itemsvatamount',
                 'shipment_itemstotal',
                 'shipment_cost',
-                'payment_amount'
+                'payment_amount',
             ])
             ->up()
             ->addBlock()

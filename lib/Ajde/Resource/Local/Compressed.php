@@ -9,8 +9,8 @@ class Ajde_Resource_Local_Compressed extends Ajde_Resource
     }
 
     /**
-     *
      * @param string $hash
+     *
      * @return Ajde_Resource
      */
     public static function fromHash($hash)
@@ -27,7 +27,7 @@ class Ajde_Resource_Local_Compressed extends Ajde_Resource
         $array = self::decodeFingerprint($fingerprint);
         extract($array);
 
-        return new Ajde_Resource_Local_Compressed($type, $f);
+        return new self($type, $f);
     }
 
     public function getFingerprint()
@@ -44,10 +44,10 @@ class Ajde_Resource_Local_Compressed extends Ajde_Resource
         //$session->set($hash, $this);
 
         //$url = '_core/component:resourceCompressed/' . $this->getType() . '/' . $hash . '/';
-        $url = '_core/component:resourceCompressed/' . urlencode($this->getFingerprint()) . '.' . $this->getType();
+        $url = '_core/component:resourceCompressed/'.urlencode($this->getFingerprint()).'.'.$this->getType();
 
-        if (config("app.debug") === true) {
-            $url .= '?file=' . str_replace(['%2F', '%5C'], ':', urlencode($this->getFilename()));
+        if (config('app.debug') === true) {
+            $url .= '?file='.str_replace(['%2F', '%5C'], ':', urlencode($this->getFilename()));
         }
 
         return $url;

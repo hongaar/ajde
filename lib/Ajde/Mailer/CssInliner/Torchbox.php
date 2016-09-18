@@ -4,14 +4,15 @@ class Ajde_Mailer_CssInliner_Torchbox implements Ajde_Mailer_CssInliner_CssInlin
 {
     /**
      * @param string $html
+     *
      * @return mixed
      */
     public static function inlineCss($html)
     {
-        $url  = 'https://inlinestyler.torchbox.com:443/styler/convert/';
+        $url = 'https://inlinestyler.torchbox.com:443/styler/convert/';
         $data = [
             'returnraw' => '1',
-            'source'    => $html
+            'source'    => $html,
         ];
 
         return Ajde_Http_Curl::post($url, $data);

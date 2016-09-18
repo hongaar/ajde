@@ -3,7 +3,7 @@
 class EmailModel extends Ajde_Model
 {
     protected $_autoloadParents = true;
-    protected $_displayField    = 'name';
+    protected $_displayField = 'name';
 
     public function beforeInsert()
     {
@@ -22,12 +22,13 @@ class EmailModel extends Ajde_Model
 
     /**
      * @param bool|string $useLang
+     *
      * @return TemplateModel
      */
     public function getTemplate($useLang = false)
     {
         /* @var $template TemplateModel */
-        $template    = parent::getTemplate();
+        $template = parent::getTemplate();
         $translation = $template->getTranslatedLazy($useLang);
 
         return $translation;
@@ -35,11 +36,11 @@ class EmailModel extends Ajde_Model
 
     public function getFromName()
     {
-        return parent::hasNotEmpty('from_name') ? parent::get('from_name') : config("app.title");
+        return parent::hasNotEmpty('from_name') ? parent::get('from_name') : config('app.title');
     }
 
     public function getFromEmail()
     {
-        return parent::hasNotEmpty('from_email') ? parent::get('from_email') : config("app.email");
+        return parent::hasNotEmpty('from_email') ? parent::get('from_email') : config('app.email');
     }
 }

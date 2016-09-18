@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-require_once "Google/Cache/Abstract.php";
-require_once "Google/Cache/Exception.php";
+require_once 'Google/Cache/Abstract.php';
+require_once 'Google/Cache/Exception.php';
 
 /**
  * A persistent storage class based on the memcache, which is not
@@ -31,30 +31,30 @@ require_once "Google/Cache/Exception.php";
 class Google_Cache_Memcache extends Google_Cache_Abstract
 {
     private $connection = false;
-    private $mc         = false;
+    private $mc = false;
     private $host;
     private $port;
 
     public function __construct(Google_Client $client)
     {
-        if (!function_exists('memcache_connect') && !class_exists("Memcached")) {
-            throw new Google_Cache_Exception("Memcache functions not available");
+        if (!function_exists('memcache_connect') && !class_exists('Memcached')) {
+            throw new Google_Cache_Exception('Memcache functions not available');
         }
         if ($client->isAppEngine()) {
             // No credentials needed for GAE.
-            $this->mc         = new Memcached();
+            $this->mc = new Memcached();
             $this->connection = true;
         } else {
             $this->host = $client->getClassConfig($this, 'host');
             $this->port = $client->getClassConfig($this, 'port');
             if (empty($this->host) || empty($this->port)) {
-                throw new Google_Cache_Exception("You need to supply a valid memcache host and port");
+                throw new Google_Cache_Exception('You need to supply a valid memcache host and port');
             }
         }
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function get($key, $expiration = false)
     {
@@ -78,9 +78,11 @@ class Google_Cache_Memcache extends Google_Cache_Abstract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
+     *
      * @param string $key
      * @param string $value
+     *
      * @throws Google_Cache_Exception
      */
     public function set($key, $value)
@@ -89,7 +91,7 @@ class Google_Cache_Memcache extends Google_Cache_Abstract
         // we store it with the cache_time default expiration so objects will at
         // least get cleaned eventually.
         $data = ['time' => time(), 'data' => $value];
-        $rc   = false;
+        $rc = false;
         if ($this->mc) {
             $rc = $this->mc->set($key, $data);
         } else {
@@ -101,8 +103,9 @@ class Google_Cache_Memcache extends Google_Cache_Abstract
     }
 
     /**
-     * @inheritDoc
-     * @param String $key
+     * {@inheritdoc}
+     *
+     * @param string $key
      */
     public function delete($key)
     {
@@ -124,7 +127,7 @@ class Google_Cache_Memcache extends Google_Cache_Abstract
             return;
         }
 
-        if (class_exists("Memcached")) {
+        if (class_exists('Memcached')) {
             $this->mc = new Memcached();
             $this->mc->addServer($this->host, $this->port);
             $this->connection = true;

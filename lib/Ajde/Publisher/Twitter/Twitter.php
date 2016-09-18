@@ -11,10 +11,10 @@ class Ajde_Publisher_Twitter extends Ajde_Publisher
 
     public function setOptions($options)
     {
-        $this->_consumerKey    = $options['consumerKey'];
+        $this->_consumerKey = $options['consumerKey'];
         $this->_consumerSecret = $options['consumerSecret'];
-        $this->_token          = $options['token'];
-        $this->_tokenSecret    = $options['tokenSecret'];
+        $this->_token = $options['token'];
+        $this->_tokenSecret = $options['tokenSecret'];
 
         $this->_twitter = new Ajde_Social_Provider_Twitter($this->_consumerKey, $this->_consumerSecret, $this->_token,
             $this->_tokenSecret);
@@ -24,7 +24,7 @@ class Ajde_Publisher_Twitter extends Ajde_Publisher
     {
         $tweet = $this->getTitle();
         if ($url = $this->getUrl()) {
-            $tweet = substr($tweet, 0, 140 - strlen($url) - 5) . '... ' . $url;
+            $tweet = substr($tweet, 0, 140 - strlen($url) - 5).'... '.$url;
         }
 
         while ($curlength = iconv_strlen(htmlspecialchars($tweet, ENT_QUOTES, 'UTF-8'), 'UTF-8') >= 140) {
@@ -41,10 +41,9 @@ class Ajde_Publisher_Twitter extends Ajde_Publisher
         }
 
         if ($response->user && $response->user->id && $response->id_str) {
-            return sprintf("http://twitter.com/%s/status/%s", $response->user->id, $response->id_str);
+            return sprintf('http://twitter.com/%s/status/%s', $response->user->id, $response->id_str);
         } else {
             return false;
         }
     }
-
 }

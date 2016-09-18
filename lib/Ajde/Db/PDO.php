@@ -6,7 +6,7 @@
 
 /**
  * Extends PDO and logs all queries that are executed and how long
- * they take, including queries issued via prepared statements
+ * they take, including queries issued via prepared statements.
  */
 class Ajde_Db_PDO extends PDO
 {
@@ -15,7 +15,7 @@ class Ajde_Db_PDO extends PDO
     public function __construct($dsn, $username = null, $password = null, $options = [])
     {
         $options = $options + [
-                PDO::ATTR_STATEMENT_CLASS => ['Ajde_Db_PDOStatement', [$this]]
+                PDO::ATTR_STATEMENT_CLASS => ['Ajde_Db_PDOStatement', [$this]],
             ];
         parent::__construct($dsn, $username, $password, $options);
     }
@@ -23,18 +23,18 @@ class Ajde_Db_PDO extends PDO
     public function query($query)
     {
         //$cache = Ajde_Db_Cache::getInstance();
-        $log   = ['query' => $query];
+        $log = ['query' => $query];
         $start = microtime(true);
         //if (!$cache->has($query)) {
 
         try {
             $result = parent::query($query);
         } catch (Exception $e) {
-            if (config("app.debug") === true) {
+            if (config('app.debug') === true) {
                 if (isset($this->queryString)) {
                     dump($this->queryString);
                 }
-                dump('Go to ' . config("app.rootUrl") . '?install=1 to install DB');
+                dump('Go to '.config('app.rootUrl').'?install=1 to install DB');
                 throw new Ajde_Db_Exception($e->getMessage());
             } else {
                 Ajde_Exception_Log::logException($e);
@@ -48,7 +48,7 @@ class Ajde_Db_PDO extends PDO
         //	$result = $cache->get($query);
         //	$log['cache'] = true;
         //}
-        $time        = microtime(true) - $start;
+        $time = microtime(true) - $start;
         $log['time'] = round($time * 1000, 0);
         self::$log[] = $log;
 
@@ -60,4 +60,3 @@ class Ajde_Db_PDO extends PDO
         return self::$log;
     }
 }
-

@@ -24,11 +24,11 @@ class Ajde_Document_Processor_Html_Beautifier extends Ajde_Object_Static impleme
         $html,
         // @see http://tidy.sourceforge.net/docs/quickref.html
         $config = [
-            "output-xhtml"  => true,
-            "char-encoding" => "utf8",
-            "indent"        => true,
-            "indent-spaces" => 4,
-            "wrap"          => 0
+            'output-xhtml'  => true,
+            'char-encoding' => 'utf8',
+            'indent'        => true,
+            'indent-spaces' => 4,
+            'wrap'          => 0,
         ]
     ) {
         if (!class_exists('Tidy')) {
@@ -40,5 +40,4 @@ class Ajde_Document_Processor_Html_Beautifier extends Ajde_Object_Static impleme
         // @see http://bugs.php.net/bug.php?id=35647
         return $tidy->repairString($html, $config, 'utf8');
     }
-
 }

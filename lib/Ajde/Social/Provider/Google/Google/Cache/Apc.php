@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-require_once "Google/Cache/Abstract.php";
-require_once "Google/Cache/Exception.php";
+require_once 'Google/Cache/Abstract.php';
+require_once 'Google/Cache/Exception.php';
 
 /**
  * A persistent storage class based on the APC cache, which is not
@@ -31,12 +31,12 @@ class Google_Cache_Apc extends Google_Cache_Abstract
     public function __construct(Google_Client $client)
     {
         if (!function_exists('apc_add')) {
-            throw new Google_Cache_Exception("Apc functions not available");
+            throw new Google_Cache_Exception('Apc functions not available');
         }
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function get($key, $expiration = false)
     {
@@ -54,7 +54,7 @@ class Google_Cache_Apc extends Google_Cache_Abstract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function set($key, $value)
     {
@@ -65,8 +65,9 @@ class Google_Cache_Apc extends Google_Cache_Abstract
     }
 
     /**
-     * @inheritDoc
-     * @param String $key
+     * {@inheritdoc}
+     *
+     * @param string $key
      */
     public function delete($key)
     {

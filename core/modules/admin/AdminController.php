@@ -6,14 +6,14 @@ class AdminController extends Ajde_Acl_Controller
 
     /**
      * Optional function called before controller is invoked
-     * When returning false, invocation is cancelled
+     * When returning false, invocation is cancelled.
      *
-     * @return boolean
+     * @return bool
      */
     public function beforeInvoke($allowed = [])
     {
         // set admin layout
-        Ajde::app()->getDocument()->setLayout(new Ajde_Layout(config("layout.admin")));
+        Ajde::app()->getDocument()->setLayout(new Ajde_Layout(config('layout.admin')));
 
         // disable cache and auto translations
         Ajde_Cache::getInstance()->disable();
@@ -23,7 +23,7 @@ class AdminController extends Ajde_Acl_Controller
     }
 
     /**
-     * Optional function called after controller is invoked
+     * Optional function called after controller is invoked.
      */
     public function afterInvoke()
     {
@@ -35,13 +35,13 @@ class AdminController extends Ajde_Acl_Controller
     }
 
     /**
-     * Default action for controller, returns the 'view.phtml' template body
+     * Default action for controller, returns the 'view.phtml' template body.
      *
      * @return string
      */
     public function view()
     {
-        Ajde::app()->getDocument()->setTitle("Admin dashboard");
+        Ajde::app()->getDocument()->setTitle('Admin dashboard');
 
         return $this->render();
     }

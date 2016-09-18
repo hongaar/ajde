@@ -2,7 +2,7 @@
 
 abstract class Ajde_Lang_Proxy_Model extends Ajde_Model
 {
-    protected $languageField     = 'lang';
+    protected $languageField = 'lang';
     protected $languageRootField = 'lang_root';
 
     public function getLanguageField()
@@ -28,23 +28,23 @@ abstract class Ajde_Lang_Proxy_Model extends Ajde_Model
     }
 
     /**
-     *
      * @param string $lang
-     * @return Ajde_Lang_Proxy_Acl_Model|boolean
+     *
+     * @return Ajde_Lang_Proxy_Acl_Model|bool
      */
     public function getTranslated($lang)
     {
         $autoTranslate = Ajde_Lang::getInstance()->autoTranslateModels();
         Ajde_Lang::getInstance()->disableAutoTranslationOfModels();
 
-        $modelName = $this->toCamelCase($this->_tableName) . 'Model';
+        $modelName = $this->toCamelCase($this->_tableName).'Model';
         /* @var $translation Ajde_Lang_Proxy_Model */
         $translation = new $modelName();
 
         // if this is the root model, search for a translated leaf
         $exist = $translation->loadByFields([
             $this->languageRootField => $this->getPK(),
-            $this->languageField     => $lang
+            $this->languageField     => $lang,
         ]);
         $exist = $exist & $translation->hasLoaded();
 
@@ -52,7 +52,7 @@ abstract class Ajde_Lang_Proxy_Model extends Ajde_Model
         if (!$exist && $this->has($this->languageRootField)) {
             $exist = $translation->loadByFields([
                 $this->getTable()->getPK() => $this->get($this->languageRootField),
-                $this->languageField       => $lang
+                $this->languageField       => $lang,
             ]);
             $exist = $exist & $translation->hasLoaded();
         }
@@ -61,7 +61,7 @@ abstract class Ajde_Lang_Proxy_Model extends Ajde_Model
         if (!$exist && $this->has($this->languageRootField)) {
             $exist = $translation->loadByFields([
                 $this->languageRootField => $this->get($this->languageRootField),
-                $this->languageField     => $lang
+                $this->languageField     => $lang,
             ]);
             $exist = $exist & $translation->hasLoaded();
         }
@@ -72,8 +72,8 @@ abstract class Ajde_Lang_Proxy_Model extends Ajde_Model
     }
 
     /**
-     *
      * @param string $lang
+     *
      * @return Ajde_Lang_Proxy_Model
      */
     public function getTranslatedLazy($lang)
@@ -84,8 +84,7 @@ abstract class Ajde_Lang_Proxy_Model extends Ajde_Model
     }
 
     /**
-     *
-     * @return Ajde_Lang_Proxy_Model|boolean
+     * @return Ajde_Lang_Proxy_Model|bool
      */
     public function getRootLang()
     {

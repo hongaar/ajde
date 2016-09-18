@@ -12,7 +12,7 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
 
     public function __toString()
     {
-        return implode(", ", $this->_data);
+        return implode(', ', $this->_data);
     }
 
     abstract public function getFilename();
@@ -30,8 +30,8 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
 
     protected static function realpath($filename)
     {
-//        dump($filename, realpath(LOCAL_ROOT . $filename));
-        return realpath(LOCAL_ROOT . $filename);
+        //        dump($filename, realpath(LOCAL_ROOT . $filename));
+        return realpath(LOCAL_ROOT.$filename);
     }
 
     public static function encodeFingerprint($array)
@@ -59,18 +59,18 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
         if (Ajde::app()->getDocument()->hasLayout()) {
             $layout = Ajde::app()->getDocument()->getLayout();
         } else {
-            $layout = new Ajde_Layout(config("layout.frontend"));
+            $layout = new Ajde_Layout(config('layout.frontend'));
         }
         $format = issetor($format, 'html');
 
         $dirPrefixPatterns = [
             APP_DIR,
-            CORE_DIR
+            CORE_DIR,
         ];
         foreach ($dirPrefixPatterns as $dirPrefixPattern) {
-            $prefixedLayout = $dirPrefixPattern . LAYOUT_DIR;
-            if (self::exist($prefixedLayout . $layout->getName() . '/link/' . $type . '.' . $format . '.php')) {
-                return $prefixedLayout . $layout->getName() . '/link/' . $type . '.' . $format . '.php';
+            $prefixedLayout = $dirPrefixPattern.LAYOUT_DIR;
+            if (self::exist($prefixedLayout.$layout->getName().'/link/'.$type.'.'.$format.'.php')) {
+                return $prefixedLayout.$layout->getName().'/link/'.$type.'.'.$format.'.php';
             }
         }
 
@@ -104,7 +104,7 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
         ob_start();
 
         // variables for use in included link template
-        $url       = $this->getLinkUrl();
+        $url = $this->getLinkUrl();
         $arguments = $this->hasArguments() ? $this->getArguments() : '';
 
         // create temporary resource for link filename
@@ -113,9 +113,9 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
         // TODO: performance gain?
         // Ajde_Cache::getInstance()->addFile($linkFilename);
         if ($linkFilename) {
-            include LOCAL_ROOT . $linkFilename;
+            include LOCAL_ROOT.$linkFilename;
         } else {
-            throw new Ajde_Exception('Link filename for ' . $url . ' not found');
+            throw new Ajde_Exception('Link filename for '.$url.' not found');
         }
 
         $contents = ob_get_contents();
@@ -134,7 +134,7 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
         if ($this->exist($filename)) {
             include $this->realpath($filename);
         } else {
-            throw new Exception("Couldn't find resource " . $filename);
+            throw new Exception("Couldn't find resource ".$filename);
         }
 
         $contents = ob_get_contents();

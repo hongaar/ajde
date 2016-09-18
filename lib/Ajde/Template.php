@@ -3,7 +3,7 @@
 class Ajde_Template extends Ajde_Object_Standard
 {
     protected $_contents = null;
-    protected $_table    = [];
+    protected $_table = [];
 
     public function __construct($base, $action, $format = 'html')
     {
@@ -16,13 +16,13 @@ class Ajde_Template extends Ajde_Object_Standard
     protected function setFileinfo()
     {
         if (($fileInfo = $this->getFileInfo()) === false) {
-            $exception = new Ajde_Core_Exception_Routing(sprintf("Template file in %s,
-					for action %s with format %s not found",
+            $exception = new Ajde_Core_Exception_Routing(sprintf('Template file in %s,
+					for action %s with format %s not found',
                 $this->getBase(), $this->getAction(), $this->getFormat()), 90010);
             Ajde::routingError($exception);
         }
-        $className = 'Ajde_Template_Parser_' . $fileInfo['parser'];
-        $parser    = new $className($this);
+        $className = 'Ajde_Template_Parser_'.$fileInfo['parser'];
+        $parser = new $className($this);
 
         $this->setFilename($fileInfo['filename']);
         $this->setParser($parser);
@@ -52,7 +52,7 @@ class Ajde_Template extends Ajde_Object_Standard
         if (method_exists($helper, $method)) {
             return call_user_func_array([$helper, $method], $arguments);
         } else {
-            throw new Ajde_Exception("Call to undefined method " . get_class($this) . "::$method()", 90006);
+            throw new Ajde_Exception('Call to undefined method '.get_class($this)."::$method()", 90006);
         }
     }
 
@@ -66,30 +66,30 @@ class Ajde_Template extends Ajde_Object_Standard
         // go see what templates are available
         $dirPrefixPatterns = [
             APP_DIR,
-            CORE_DIR
+            CORE_DIR,
         ];
-        $fileNamePatterns  = [
-            $action . '.' . $format,
-            $action
+        $fileNamePatterns = [
+            $action.'.'.$format,
+            $action,
         ];
-        $fileTypes         = [
+        $fileTypes = [
             'phtml' => 'Phtml',
-            'xhtml' => 'Xhtml'
+            'xhtml' => 'Xhtml',
         ];
         foreach ($dirPrefixPatterns as $dirPrefixPattern) {
-            $prefixedBase = $dirPrefixPattern . $base;
+            $prefixedBase = $dirPrefixPattern.$base;
             foreach ($fileNamePatterns as $fileNamePattern) {
                 foreach ($fileTypes as $fileType => $parserType) {
-                    $filePattern = $fileNamePattern . '.' . $fileType;
-                    if (!substr_count($prefixedBase, DIRECTORY_SEPARATOR . 'layout' . DIRECTORY_SEPARATOR)) {
-                        $layoutDir = 'layout.' . Ajde::app()->getDocument()->getLayout()->getName() . DIRECTORY_SEPARATOR;
-                        if ($fileMatch = Ajde_Fs_Find::findFile($prefixedBase . TEMPLATE_DIR . $layoutDir,
+                    $filePattern = $fileNamePattern.'.'.$fileType;
+                    if (!substr_count($prefixedBase, DIRECTORY_SEPARATOR.'layout'.DIRECTORY_SEPARATOR)) {
+                        $layoutDir = 'layout.'.Ajde::app()->getDocument()->getLayout()->getName().DIRECTORY_SEPARATOR;
+                        if ($fileMatch = Ajde_Fs_Find::findFile($prefixedBase.TEMPLATE_DIR.$layoutDir,
                             $filePattern)
                         ) {
                             return ['filename' => $fileMatch, 'parser' => $parserType];
                         }
                     }
-                    if ($fileMatch = Ajde_Fs_Find::findFile($prefixedBase . TEMPLATE_DIR, $filePattern)) {
+                    if ($fileMatch = Ajde_Fs_Find::findFile($prefixedBase.TEMPLATE_DIR, $filePattern)) {
                         return ['filename' => $fileMatch, 'parser' => $parserType];
                     }
                 }
@@ -105,7 +105,6 @@ class Ajde_Template extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @return Ajde_Template_Parser
      */
     public function getParser()
@@ -125,7 +124,7 @@ class Ajde_Template extends Ajde_Object_Standard
 
     public function getFilename()
     {
-        return $this->get("filename");
+        return $this->get('filename');
     }
 
     public function getBase()
@@ -184,7 +183,7 @@ class Ajde_Template extends Ajde_Object_Standard
     }
 
     /**
-     * Alias for $this->getContents()
+     * Alias for $this->getContents().
      *
      * @see self::getContents()
      */

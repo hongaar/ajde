@@ -12,7 +12,7 @@ abstract class Ajde_Lang_Adapter_Abstract
         if (!$module) {
             foreach (debug_backtrace() as $item) {
                 if (!empty($item['class'])) {
-                    if (is_subclass_of($item['class'], "Ajde_Controller")) {
+                    if (is_subclass_of($item['class'], 'Ajde_Controller')) {
                         $module = current(explode('_', Ajde_Component_String::toSnakeCase($item['class'])));
                         break;
                     }
@@ -29,7 +29,7 @@ abstract class Ajde_Lang_Adapter_Abstract
     public function log($ident, $module)
     {
         Ajde_Log::_(
-            'Language key [' . $module . '.' . $ident . '] not found for language [' . Ajde_Lang::getInstance()->getLang() . ']',
+            'Language key ['.$module.'.'.$ident.'] not found for language ['.Ajde_Lang::getInstance()->getLang().']',
             Ajde_Log::CHANNEL_INFO,
             Ajde_Log::LEVEL_DEBUG,
             '',

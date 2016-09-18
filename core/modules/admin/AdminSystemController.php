@@ -4,28 +4,28 @@ class AdminSystemController extends AdminController
 {
     protected $_allowedActions = [
         'chromeApp',
-        'chromeAppDownload'
+        'chromeAppDownload',
     ];
 
     public function check()
     {
-        Ajde::app()->getDocument()->setTitle("System check");
+        Ajde::app()->getDocument()->setTitle('System check');
 
         $checks = [];
 
         $checks[] = [
             'msg' => 'Directories writable?',
-            'fn'  => 'writable'
+            'fn'  => 'writable',
         ];
         $checks[] = [
             'msg' => 'Production ready?',
-            'fn'  => 'production'
+            'fn'  => 'production',
         ];
 
         $ret = [];
 
         foreach ($checks as $check) {
-            $ret = call_user_func([$this, 'check' . ucfirst($check['fn'])]);
+            $ret = call_user_func([$this, 'check'.ucfirst($check['fn'])]);
             if (empty($ret)) {
                 $ret = [['msg' => 'OK', 'status' => 'success']];
             }
@@ -33,14 +33,14 @@ class AdminSystemController extends AdminController
                 $results[] = [
                     'check'  => $check['msg'],
                     'msg'    => $re['msg'],
-                    'status' => $re['status']
+                    'status' => $re['status'],
                 ];
             }
         }
 
         $repository = clone Config::getInstance()->repository();
         $hidden = 'md5=';
-        $hide   = [
+        $hide = [
             'database.password',
             'security.secret',
             'services.twitter.secret',
@@ -53,7 +53,7 @@ class AdminSystemController extends AdminController
         ];
         foreach ($hide as $field) {
             if ($repository->has($field)) {
-                $repository->set($field, $hidden . md5($repository->get($field)));
+                $repository->set($field, $hidden.md5($repository->get($field)));
             }
         }
 
@@ -66,7 +66,7 @@ class AdminSystemController extends AdminController
 
     public function updateHtml()
     {
-        Ajde::app()->getDocument()->setTitle("Ajde updater");
+        Ajde::app()->getDocument()->setTitle('Ajde updater');
 
         $updater = Ajde_Core_Updater::getInstance();
 
@@ -77,10 +77,10 @@ class AdminSystemController extends AdminController
 
     public function updateJson()
     {
-        $step   = Ajde::app()->getRequest()->getPostParam('step', 'start');
+        $step = Ajde::app()->getRequest()->getPostParam('step', 'start');
         $status = true;
         if ($step !== 'start') {
-            $status  = false;
+            $status = false;
             $updater = Ajde_Core_Updater::getInstance();
             try {
                 $status = $updater->update($step);
@@ -95,7 +95,7 @@ class AdminSystemController extends AdminController
 
     public function chromeApp()
     {
-        Ajde::app()->getDocument()->setTitle("Chrome app");
+        Ajde::app()->getDocument()->setTitle('Chrome app');
 
         return $this->render();
     }
@@ -104,38 +104,38 @@ class AdminSystemController extends AdminController
     public function chromeAppDownload()
     {
         // Temp dir
-        $appdir = TMP_DIR . 'app' . DIRECTORY_SEPARATOR;
+        $appdir = TMP_DIR.'app'.DIRECTORY_SEPARATOR;
         mkdir($appdir);
 
         // manifest.json
-        $url      = config("i18n.rootUrl") . 'admin/?chromeapp=1';
-        $manifest = (object)[
-            "manifest_version" => 2,
-            "name"             => config("app.title"),
-            "description"      => config("app.description"),
-            "version"          => "1.0",
-            "icons"            => (object)["128" => "app.png"],
-            "app"              => (object)[
-                "urls"   => [$url],
-                "launch" => (object)["web_url" => $url]
+        $url = config('i18n.rootUrl').'admin/?chromeapp=1';
+        $manifest = (object) [
+            'manifest_version' => 2,
+            'name'             => config('app.title'),
+            'description'      => config('app.description'),
+            'version'          => '1.0',
+            'icons'            => (object) ['128' => 'app.png'],
+            'app'              => (object) [
+                'urls'   => [$url],
+                'launch' => (object) ['web_url' => $url],
             ],
-            "permissions"      => ["unlimitedStorage", "notifications"]
+            'permissions'      => ['unlimitedStorage', 'notifications'],
         ];
-        $json     = json_encode($manifest);
+        $json = json_encode($manifest);
 
         // Clean temp dir
         Ajde_Fs_Directory::truncate($appdir);
 
         // Put files
-        file_put_contents($appdir . 'manifest.json', $json);
-        copy(MEDIA_DIR . 'app.png', $appdir . 'app.png');
+        file_put_contents($appdir.'manifest.json', $json);
+        copy(MEDIA_DIR.'app.png', $appdir.'app.png');
 
         // All files to zip
         $appfiles = Ajde_Fs_Find::findFiles($appdir, '*');
 
         // Make the zip file
-        $zipfile = TMP_DIR . 'app.zip';
-        $zip     = new ZipArchive();
+        $zipfile = TMP_DIR.'app.zip';
+        $zip = new ZipArchive();
         $zip->open($zipfile, ZIPARCHIVE::OVERWRITE);
         foreach ($appfiles as $file) {
             $zip->addFile($file, basename($file));
@@ -146,10 +146,10 @@ class AdminSystemController extends AdminController
         $zipcontents = file_get_contents($zipfile);
 
         // Path to crx file
-        $crxfile = TMP_DIR . 'app.crx';
+        $crxfile = TMP_DIR.'app.crx';
 
         // Path to pem file
-        $pemfile     = DEV_DIR . 'app.pem';
+        $pemfile = DEV_DIR.'app.pem';
         $pemcontents = file_get_contents($pemfile);
 
         // Fetch private key from file and ready it
@@ -157,7 +157,7 @@ class AdminSystemController extends AdminController
 
         // Get public key
         $pubkey = openssl_pkey_get_details($privkey);
-        $pubkey = $pubkey["key"];
+        $pubkey = $pubkey['key'];
 
         // geting rid of -----BEGIN/END PUBLIC KEY-----
         $pubkey = explode('-----', $pubkey);
@@ -170,18 +170,18 @@ class AdminSystemController extends AdminController
         openssl_sign($zipcontents, $signature, $privkey, OPENSSL_ALGO_SHA1);
         openssl_free_key($privkey);
 
-        # .crx package format:
-        #
-        #   magic number               char(4)
-        #   crx format ver             byte(4)
-        #   pub key lenth              byte(4)
-        #   signature length           byte(4)
-        #   public key                 string
-        #   signature                  string
-        #   package contents, zipped   string
-        #
-        # see http://code.google.com/chrome/extensions/crx.html
-        #
+        // .crx package format:
+        //
+        //   magic number               char(4)
+        //   crx format ver             byte(4)
+        //   pub key lenth              byte(4)
+        //   signature length           byte(4)
+        //   public key                 string
+        //   signature                  string
+        //   package contents, zipped   string
+        //
+        // see http://code.google.com/chrome/extensions/crx.html
+        //
         $fh = fopen($crxfile, 'wb');
         fwrite($fh, 'Cr24');                             // extension file magic number
         fwrite($fh, pack('V', 2));                       // crx format version
@@ -214,14 +214,14 @@ class AdminSystemController extends AdminController
         $files = [
             'phpinfo.php',
             'loadtest.php',
-            'install.php'
+            'install.php',
         ];
-        $ret   = [];
+        $ret = [];
         foreach ($files as $file) {
-            if (file_exists(LOCAL_ROOT . $file)) {
+            if (file_exists(LOCAL_ROOT.$file)) {
                 $ret[] = [
-                    'msg'    => 'File ' . $file . ' should be deleted in production environment',
-                    'status' => 'warning'
+                    'msg'    => 'File '.$file.' should be deleted in production environment',
+                    'status' => 'warning',
                 ];
             }
         }
@@ -235,14 +235,14 @@ class AdminSystemController extends AdminController
             TMP_DIR,
             LOG_DIR,
             CACHE_DIR,
-            UPLOAD_DIR
+            UPLOAD_DIR,
         ];
-        $ret  = [];
+        $ret = [];
         foreach ($dirs as $dir) {
-            if (!is_writable(LOCAL_ROOT . $dir)) {
+            if (!is_writable(LOCAL_ROOT.$dir)) {
                 $ret[] = [
-                    'msg'    => 'Directory ' . $dir . ' is not writable',
-                    'status' => 'important'
+                    'msg'    => 'Directory '.$dir.' is not writable',
+                    'status' => 'important',
                 ];
             }
         }
@@ -252,7 +252,7 @@ class AdminSystemController extends AdminController
 
     public function log()
     {
-        Ajde::app()->getDocument()->setTitle("System log");
+        Ajde::app()->getDocument()->setTitle('System log');
 
         return $this->render();
     }
@@ -267,7 +267,7 @@ class AdminSystemController extends AdminController
 
     private function _unused()
     {
-        $used   = new MediaCollection();
+        $used = new MediaCollection();
         $unused = new MediaCollection();
         $unused->addFilter(new Ajde_Filter_Where('id', Ajde_Filter::FILTER_EQUALS, '-9999'));
 
@@ -275,19 +275,19 @@ class AdminSystemController extends AdminController
 
         /** @var MediaModel $media */
         foreach ($used as $media) {
-            $stmt = $db->query('SELECT id FROM node WHERE media = ' . $media->getPK());
+            $stmt = $db->query('SELECT id FROM node WHERE media = '.$media->getPK());
             $stmt->execute();
             $node = $stmt->rowCount();
 
-            $stmt = $db->query('SELECT id FROM node_media WHERE media = ' . $media->getPK());
+            $stmt = $db->query('SELECT id FROM node_media WHERE media = '.$media->getPK());
             $stmt->execute();
             $nodeMedia = $stmt->rowCount();
 
             $meta = 0;
-            $stmt = $db->query('SELECT * FROM node_meta INNER JOIN meta ON meta.id = node_meta.meta AND node_meta.`value` <> \'\' AND meta.type = \'media\' AND node_meta.`value` = ' . $media->getPK());
+            $stmt = $db->query('SELECT * FROM node_meta INNER JOIN meta ON meta.id = node_meta.meta AND node_meta.`value` <> \'\' AND meta.type = \'media\' AND node_meta.`value` = '.$media->getPK());
             $stmt->execute();
             $meta += $stmt->rowCount();
-            $stmt = $db->query('SELECT * FROM setting_meta INNER JOIN meta ON meta.id = setting_meta.meta AND setting_meta.`value` <> \'\' AND meta.type = \'media\' AND setting_meta.`value` = ' . $media->getPK());
+            $stmt = $db->query('SELECT * FROM setting_meta INNER JOIN meta ON meta.id = setting_meta.meta AND setting_meta.`value` <> \'\' AND meta.type = \'media\' AND setting_meta.`value` = '.$media->getPK());
             $stmt->execute();
             $meta += $stmt->rowCount();
 
@@ -301,7 +301,7 @@ class AdminSystemController extends AdminController
 
     private function _tobecleaned()
     {
-        $allMedia    = new MediaCollection();
+        $allMedia = new MediaCollection();
         $toBeCleaned = Ajde_Fs_Find::findFilenames(UPLOAD_DIR, '*.*');
 
         foreach ($allMedia as $media) {
@@ -323,7 +323,7 @@ class AdminSystemController extends AdminController
 
         $unused = $this->_unused();
 
-        Ajde::app()->getDocument()->setTitle("Clean uploads");
+        Ajde::app()->getDocument()->setTitle('Clean uploads');
         $this->getView()->assign('cleaning', $toBeCleaned);
         $this->getView()->assign('unused', $unused);
 
@@ -335,7 +335,7 @@ class AdminSystemController extends AdminController
         $toBeCleaned = $this->_tobecleaned();
 
         foreach ($toBeCleaned as $file) {
-            unlink(LOCAL_ROOT . UPLOAD_DIR . $file);
+            unlink(LOCAL_ROOT.UPLOAD_DIR.$file);
         }
 
         Ajde_Session_Flash::alert('Orphan files cleaned');
@@ -355,11 +355,11 @@ class AdminSystemController extends AdminController
 
     public function doCleanthumbs()
     {
-        $toBeCleaned = Ajde_Fs_Find::findFilenames(UPLOAD_DIR . Ajde_Resource_Image::$_thumbDir . DIRECTORY_SEPARATOR,
+        $toBeCleaned = Ajde_Fs_Find::findFilenames(UPLOAD_DIR.Ajde_Resource_Image::$_thumbDir.DIRECTORY_SEPARATOR,
             '*.*');
 
         foreach ($toBeCleaned as $file) {
-            unlink(LOCAL_ROOT . UPLOAD_DIR . Ajde_Resource_Image::$_thumbDir . DIRECTORY_SEPARATOR . $file);
+            unlink(LOCAL_ROOT.UPLOAD_DIR.Ajde_Resource_Image::$_thumbDir.DIRECTORY_SEPARATOR.$file);
         }
 
         Ajde_Session_Flash::alert('Thumbnails will be refreshed next time they are loaded');

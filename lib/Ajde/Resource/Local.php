@@ -14,11 +14,11 @@ class Ajde_Resource_Local extends Ajde_Resource
     }
 
     /**
-     *
      * @param string $type
      * @param string $base
      * @param string $action
      * @param string $format (optional)
+     *
      * @return Ajde_Resource
      */
     public static function lazyCreate($type, $base, $action, $format = 'html')
@@ -31,11 +31,12 @@ class Ajde_Resource_Local extends Ajde_Resource
     }
 
     /**
-     *
      * @param string $hash
-     * @return Ajde_Resource
+     *
      * @throws Ajde_Core_Exception_Deprecated
      * @throws Ajde_Exception
+     *
+     * @return Ajde_Resource
      */
     public static function fromHash($hash)
     {
@@ -51,7 +52,7 @@ class Ajde_Resource_Local extends Ajde_Resource
         $array = self::decodeFingerprint($fingerprint);
         extract($array);
 
-        return new Ajde_Resource_Local($type, $b, $a, $f);
+        return new self($type, $b, $a, $f);
     }
 
     public function getFingerprint()
@@ -83,33 +84,27 @@ class Ajde_Resource_Local extends Ajde_Resource
 
     protected static function _getFilename($base, $type, $action, $format)
     {
-        $dirPrefixPatterns    = [
+        $dirPrefixPatterns = [
             CORE_DIR,
-            APP_DIR
+            APP_DIR,
         ];
-        $layoutDir            = 'layout.' . Ajde::app()->getDocument()->getLayout()->getName() . DIRECTORY_SEPARATOR;
+        $layoutDir = 'layout.'.Ajde::app()->getDocument()->getLayout()->getName().DIRECTORY_SEPARATOR;
         $layoutPrefixPatterns = ['', $layoutDir];
 
         $filename = false;
 
         foreach ($dirPrefixPatterns as $dirPrefixPattern) {
-
             foreach ($layoutPrefixPatterns as $layoutPrefixPattern) {
-
-                $prefixedBase   = $dirPrefixPattern . $base;
-                $formatResource = $prefixedBase . 'res/' . $type . DIRECTORY_SEPARATOR . $layoutPrefixPattern . $action . '.' . $format . '.' . $type;
+                $prefixedBase = $dirPrefixPattern.$base;
+                $formatResource = $prefixedBase.'res/'.$type.DIRECTORY_SEPARATOR.$layoutPrefixPattern.$action.'.'.$format.'.'.$type;
 
                 if (self::exist($formatResource)) {
-
                     $filename = $formatResource;
-
                 } else {
-
-                    $noFormatResource = $prefixedBase . 'res/' . $type . DIRECTORY_SEPARATOR . $layoutPrefixPattern . $action . '.' . $type;
+                    $noFormatResource = $prefixedBase.'res/'.$type.DIRECTORY_SEPARATOR.$layoutPrefixPattern.$action.'.'.$type;
                     if (self::exist($noFormatResource)) {
                         $filename = $noFormatResource;
                     }
-
                 }
             }
         }
@@ -127,7 +122,7 @@ class Ajde_Resource_Local extends Ajde_Resource
         if (!$this->_filename) {
             // TODO:
             throw new Ajde_Exception(sprintf('Resource %s could not be found',
-                $this->getBase() . 'res/' . $this->getType() . DS . $this->getAction() . '[.' . $this->getFormat() . '].' . $this->getType()));
+                $this->getBase().'res/'.$this->getType().DS.$this->getAction().'[.'.$this->getFormat().'].'.$this->getType()));
         }
 
         return $this->_filename;
@@ -141,13 +136,13 @@ class Ajde_Resource_Local extends Ajde_Resource
     protected function getLinkUrl()
     {
         $base = '_core/component:resourceLocal';
-        if (config("app.debug") === true) {
-            $url = $base . '/' . urlencode($this->getFingerprint()) . '.' . $this->getType() . '?' . str_replace([
+        if (config('app.debug') === true) {
+            $url = $base.'/'.urlencode($this->getFingerprint()).'.'.$this->getType().'?'.str_replace([
                     '%2F',
-                    '%5C'
+                    '%5C',
                 ], ':', urlencode($this->getFilename()));
         } else {
-            $url = $base . '/' . urlencode($this->getFingerprint()) . '.' . $this->getType();
+            $url = $base.'/'.urlencode($this->getFingerprint()).'.'.$this->getType();
         }
 
         return $url;

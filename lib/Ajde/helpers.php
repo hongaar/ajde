@@ -1,22 +1,35 @@
 <?php
 
-class Ajde extends Ajde_Application {}
+class Ajde extends Ajde_Application
+{
+}
 
-class Config extends Ajde_Config {}
+class Config extends Ajde_Config
+{
+}
 
-class Dump extends Ajde_Dump {}
+class Dump extends Ajde_Dump
+{
+}
 
-class Lang extends Ajde_Lang {}
+class Lang extends Ajde_Lang
+{
+}
 
-class Str extends Ajde_Component_String {}
+class Str extends Ajde_Component_String
+{
+}
 
-class Arr extends Ajde_Core_Array {}
+class Arr extends Ajde_Core_Array
+{
+}
 
 /**
  * Return value when it is set, or something else otherwise.
  *
  * @param      $what
  * @param null $else
+ *
  * @return null
  */
 function issetor(&$what, $else = null)
@@ -39,10 +52,11 @@ function dump($var, $expand = true)
 }
 
 /**
- * Translates the string with Ajde_Lang::translate
+ * Translates the string with Ajde_Lang::translate.
  *
  * @param string $ident
  * @param string $module
+ *
  * @return string
  */
 function trans($ident, $module = null)
@@ -51,9 +65,10 @@ function trans($ident, $module = null)
 }
 
 /**
- * Escapes the string with Ajde_Component_String::escape
+ * Escapes the string with Ajde_Component_String::escape.
  *
  * @param string $var
+ *
  * @return string
  */
 function esc($var)
@@ -62,9 +77,10 @@ function esc($var)
 }
 
 /**
- * Cleans the string with Ajde_Component_String::clean
+ * Cleans the string with Ajde_Component_String::clean.
  *
  * @param string $var
+ *
  * @return string
  */
 function clean($var)
@@ -73,11 +89,13 @@ function clean($var)
 }
 
 /**
- * Shortcut to retrieve config param
+ * Shortcut to retrieve config param.
  *
  * @param $param
- * @return mixed
+ *
  * @throws Ajde_Exception
+ *
+ * @return mixed
  */
 function config($param)
 {
@@ -85,9 +103,10 @@ function config($param)
 }
 
 /**
- * Shortcut to get setting contents
+ * Shortcut to get setting contents.
  *
  * @param string $name
+ *
  * @return bool|mixed
  */
 function setting($name)

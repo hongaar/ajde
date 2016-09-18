@@ -8,7 +8,6 @@ abstract class Ajde_Shop_Shipping_Method extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @return Ajde_Shop_Transaction
      */
     protected function getTransaction()
@@ -27,6 +26,6 @@ abstract class Ajde_Shop_Shipping_Method extends Ajde_Object_Standard
 
     public function getFormattedTotal()
     {
-        return config("shop.currency.symbol") . ' ' . $this->_format($this->getTotal());
+        return config('shop.currency.symbol').' '.$this->_format($this->getTotal());
     }
 }

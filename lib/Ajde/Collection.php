@@ -2,7 +2,6 @@
 
 class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countable
 {
-
     /**
      * @var string
      */
@@ -30,8 +29,8 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
      */
     protected $_table;
 
-    protected $_filters      = [];
-    public    $_filterValues = [];
+    protected $_filters = [];
+    public $_filterValues = [];
 
     /**
      * @var Ajde_Collection_View
@@ -39,7 +38,7 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
     protected $_view;
 
     // For Iterator
-    protected $_items    = null;
+    protected $_items = null;
     protected $_position = 0;
 
     private $_sqlInitialized = false;
@@ -54,23 +53,22 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
         // TODO: if last triggered in event cueue, throw exception
         // throw new Ajde_Exception("Call to undefined method ".get_class($controller)."::$method()", 90006);
         // Now, we give other callbacks in event cueue chance to return
-        return null;
     }
 
     public static function getCollection($name)
     {
-        $collectionName = ucfirst($name) . 'Collection';
+        $collectionName = ucfirst($name).'Collection';
 
         return new $collectionName();
     }
 
     public function __construct()
     {
-        $this->_modelName  = str_replace('Collection', '', get_class($this)) . 'Model';
+        $this->_modelName = str_replace('Collection', '', get_class($this)).'Model';
         $this->_connection = Ajde_Db::getInstance()->getConnection();
 
         $tableNameCC = str_replace('Collection', '', get_class($this));
-        $tableName   = $this->fromCamelCase($tableNameCC);
+        $tableName = $this->fromCamelCase($tableNameCC);
 
         $this->_table = Ajde_Db::getInstance()->getTable($tableName);
         $this->_query = new Ajde_Query();
@@ -79,12 +77,12 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
     public function reset()
     {
         parent::reset();
-        $this->_query          = new Ajde_Query();
-        $this->_filters        = [];
-        $this->_filterValues   = [];
-        $this->_items          = null;
-        $this->_position       = 0;
-        $this->_queryCount     = null;
+        $this->_query = new Ajde_Query();
+        $this->_filters = [];
+        $this->_filterValues = [];
+        $this->_items = null;
+        $this->_position = 0;
+        $this->_queryCount = null;
         $this->_sqlInitialized = false;
     }
 
@@ -133,7 +131,7 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
                     }
                 }
                 $this->_statement->execute();
-                $result            = $this->_statement->fetch(PDO::FETCH_ASSOC);
+                $result = $this->_statement->fetch(PDO::FETCH_ASSOC);
                 $this->_queryCount = $result['count'];
             }
 
@@ -148,9 +146,9 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
     }
 
     /**
-     *
      * @param string $field
      * @param mixed  $value
+     *
      * @return Ajde_Model | boolean
      */
     public function find($field, $value)
@@ -164,7 +162,7 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
         return false;
     }
 
-    function valid()
+    public function valid()
     {
         return isset($this->_items[$this->_position]);
     }
@@ -235,7 +233,7 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 
     public function limit($count, $start = 0)
     {
-        $this->getQuery()->limit((int)$count, (int)$start);
+        $this->getQuery()->limit((int) $count, (int) $start);
 
         return $this;
     }
@@ -263,7 +261,7 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function hasView()
     {
@@ -288,10 +286,10 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 
         // ORDER BY
         if (!$view->isEmpty('orderBy')) {
-            $oldOrderBy                = $this->getQuery()->orderBy;
+            $oldOrderBy = $this->getQuery()->orderBy;
             $this->getQuery()->orderBy = [];
             if (in_array($view->getOrderBy(), $this->getTable()->getFieldNames())) {
-                $this->orderBy((string)$this->getTable() . '.' . $view->getOrderBy(), $view->getOrderDir());
+                $this->orderBy((string) $this->getTable().'.'.$view->getOrderBy(), $view->getOrderDir());
             } else {
                 // custom column, make sure to add it to the query first!
                 $this->orderBy($view->getOrderBy(), $view->getOrderDir());
@@ -309,25 +307,25 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
                     if ($fieldType == Ajde_Db::FIELD_TYPE_DATE) {
                         // date fields
                         $start = $filterValue['start'] ? date('Y-m-d H:i:s',
-                            strtotime($filterValue['start'] . ' 00:00:00')) : false;
-                        $end   = $filterValue['end'] ? date('Y-m-d H:i:s',
-                            strtotime($filterValue['end'] . ' 23:59:59')) : false;
+                            strtotime($filterValue['start'].' 00:00:00')) : false;
+                        $end = $filterValue['end'] ? date('Y-m-d H:i:s',
+                            strtotime($filterValue['end'].' 23:59:59')) : false;
                         if ($start) {
-                            $this->addFilter(new Ajde_Filter_Where((string)$this->getTable() . '.' . $fieldName,
+                            $this->addFilter(new Ajde_Filter_Where((string) $this->getTable().'.'.$fieldName,
                                 Ajde_Filter::FILTER_GREATEROREQUAL, $start));
                         }
                         if ($end) {
-                            $this->addFilter(new Ajde_Filter_Where((string)$this->getTable() . '.' . $fieldName,
+                            $this->addFilter(new Ajde_Filter_Where((string) $this->getTable().'.'.$fieldName,
                                 Ajde_Filter::FILTER_LESSOREQUAL, $end));
                         }
                     } else {
                         if ($fieldType == Ajde_Db::FIELD_TYPE_TEXT) {
                             // text fields (fuzzy)
-                            $this->addFilter(new Ajde_Filter_Where((string)$this->getTable() . '.' . $fieldName,
-                                Ajde_Filter::FILTER_LIKE, '%' . $filterValue . '%'));
+                            $this->addFilter(new Ajde_Filter_Where((string) $this->getTable().'.'.$fieldName,
+                                Ajde_Filter::FILTER_LIKE, '%'.$filterValue.'%'));
                         } else {
                             // non-date fields (exact match)
-                            $this->addFilter(new Ajde_Filter_Where((string)$this->getTable() . '.' . $fieldName,
+                            $this->addFilter(new Ajde_Filter_Where((string) $this->getTable().'.'.$fieldName,
                                 Ajde_Filter::FILTER_EQUALS, $filterValue));
                         }
                     }
@@ -353,8 +351,8 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 
     public function getTextFilterGroup($text, $operator = Ajde_Query::OP_AND, $condition = Ajde_Filter::CONDITION_WHERE)
     {
-        $groupClass  = 'Ajde_Filter_' . ucfirst($condition) . 'Group';
-        $filterClass = 'Ajde_Filter_' . ucfirst($condition);
+        $groupClass = 'Ajde_Filter_'.ucfirst($condition).'Group';
+        $filterClass = 'Ajde_Filter_'.ucfirst($condition);
 
         $searchFilter = new $groupClass($operator);
         $fieldOptions = $this->getTable()->getFieldProperties();
@@ -362,12 +360,12 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
             switch ($fieldProperties['type']) {
                 case Ajde_Db::FIELD_TYPE_TEXT:
                 case Ajde_Db::FIELD_TYPE_ENUM:
-                    $searchFilter->addFilter(new $filterClass((string)$this->getTable() . '.' . $fieldName,
-                        Ajde_Filter::FILTER_LIKE, '%' . $text . '%', Ajde_Query::OP_OR));
+                    $searchFilter->addFilter(new $filterClass((string) $this->getTable().'.'.$fieldName,
+                        Ajde_Filter::FILTER_LIKE, '%'.$text.'%', Ajde_Query::OP_OR));
                     break;
                 case Ajde_Db::FIELD_TYPE_NUMERIC:
-                    $searchFilter->addFilter(new $filterClass('CAST(' . (string)$this->getTable() . '.' . $fieldName . ' AS CHAR)',
-                        Ajde_Filter::FILTER_LIKE, '%' . $text . '%', Ajde_Query::OP_OR));
+                    $searchFilter->addFilter(new $filterClass('CAST('.(string) $this->getTable().'.'.$fieldName.' AS CHAR)',
+                        Ajde_Filter::FILTER_LIKE, '%'.$text.'%', Ajde_Query::OP_OR));
                     break;
                 default:
                     break;
@@ -381,7 +379,7 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
     {
         if (!$this->_sqlInitialized) {
             foreach ($this->getTable()->getFieldNames() as $field) {
-                $this->getQuery()->addSelect((string)$this->getTable() . '.' . $field);
+                $this->getQuery()->addSelect((string) $this->getTable().'.'.$field);
             }
             if (!empty($this->_filters)) {
                 foreach ($this->getFilter('select') as $select) {
@@ -412,9 +410,9 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
         $this->getSql();
         $query = clone $this->getQuery();
         /* @var $query Ajde_Query */
-        $query->select  = [];
+        $query->select = [];
         $query->orderBy = [];
-        $query->limit   = ['start' => null, 'count' => null];
+        $query->limit = ['start' => null, 'count' => null];
         $query->addSelect('COUNT(*) AS count');
 
         return $query->getSql();
@@ -476,8 +474,6 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
         if (count($items)) {
             return $items[0];
         }
-
-        return null;
     }
 
     public function loadParents()

@@ -2,7 +2,7 @@
 
 class Ajde_Crud extends Ajde_Object_Standard
 {
-    protected $_model      = null;
+    protected $_model = null;
     protected $_collection = null;
 
     protected $_fields = null;
@@ -17,7 +17,7 @@ class Ajde_Crud extends Ajde_Object_Standard
         if ($model instanceof Ajde_Model) {
             $this->_model = $model;
         } else {
-            $modelName    = $this->toCamelCase($model, true) . 'Model';
+            $modelName = $this->toCamelCase($model, true).'Model';
             $this->_model = new $modelName();
         }
         if ($options instanceof Ajde_Crud_Options) {
@@ -34,16 +34,17 @@ class Ajde_Crud extends Ajde_Object_Standard
             $output = Ajde_Exception_Handler::handler($e);
         }
 
-        return (string)$output;
+        return (string) $output;
     }
 
     /**
-     * @return mixed
      * @throws Ajde_Exception
+     *
+     * @return mixed
      */
     public function output()
     {
-        $controller = Ajde_Controller::fromRoute(new Ajde_Core_Route('_core/crud:' . $this->getOperation()));
+        $controller = Ajde_Controller::fromRoute(new Ajde_Core_Route('_core/crud:'.$this->getOperation()));
         $controller->setCrudInstance($this);
 
         return $controller->invoke();
@@ -53,8 +54,8 @@ class Ajde_Crud extends Ajde_Object_Standard
     {
         /* @var $exporter Ajde_Crud_Export_Interface */
 
-        $exporterClass = 'Ajde_Crud_Export_' . ucfirst($format);
-        $exporter      = new $exporterClass;
+        $exporterClass = 'Ajde_Crud_Export_'.ucfirst($format);
+        $exporter = new $exporterClass();
 
         $table = [];
 
@@ -73,7 +74,7 @@ class Ajde_Crud extends Ajde_Object_Standard
                 $maxJsonFields = 0;
                 $useJsonFields = [];
                 foreach ($items as $model) {
-                    $jsonFields = (array)@json_decode($model->has($fieldName) ? $model->get($fieldName) : '');
+                    $jsonFields = (array) @json_decode($model->has($fieldName) ? $model->get($fieldName) : '');
                     if (count($jsonFields) > $maxJsonFields) {
                         $useJsonFields = array_keys($jsonFields);
                         $maxJsonFields = count($jsonFields);
@@ -84,7 +85,7 @@ class Ajde_Crud extends Ajde_Object_Standard
                 }
                 // Normal
             } else {
-                $field     = $this->getField($fieldName);
+                $field = $this->getField($fieldName);
                 $headers[] = $field->getLabel();
             }
         }
@@ -98,13 +99,12 @@ class Ajde_Crud extends Ajde_Object_Standard
             $row = [];
 
             foreach ($fieldsToShow as $fieldName) {
-
                 $field = $this->getField($fieldName);
                 $value = $model->has($fieldName) ? $model->get($fieldName) : false;
 
                 // JSON
                 if ($model->isFieldJson($fieldName)) {
-                    foreach (($jsonFields = (array)@json_decode($value)) as $item) {
+                    foreach (($jsonFields = (array) @json_decode($value)) as $item) {
                         $row[] = $item;
                     }
                     for ($i = 0; $i < ($maxJsonFields - count($jsonFields)); $i++) {
@@ -121,7 +121,7 @@ class Ajde_Crud extends Ajde_Object_Standard
                         //                    $row[] = $funcValue;
                         // Linked Model (not loaded)
                     } elseif ($value instanceof Ajde_Model && !$value->hasLoaded()) {
-                        $row[] = "(not set)";
+                        $row[] = '(not set)';
                         // Linked Model
                     } elseif ($value instanceof Ajde_Model && $value->hasLoaded()) {
                         $row[] = $value->get($value->getDisplayField());
@@ -130,7 +130,7 @@ class Ajde_Crud extends Ajde_Object_Standard
                         $row[] = $value;
                         // File
                     } elseif ($this->getField($fieldName) instanceof Ajde_Crud_Field_File) {
-                        $row[] = config("app.rootUrl") . $field->getSaveDir() . $value;
+                        $row[] = config('app.rootUrl').$field->getSaveDir().$value;
                         // Text value
                     } else {
                         $row[] = strip_tags($value);
@@ -147,11 +147,10 @@ class Ajde_Crud extends Ajde_Object_Standard
     }
 
     /**
-     * GETTERS & SETTERS
+     * GETTERS & SETTERS.
      */
 
     /**
-     *
      * @return string
      */
     public function getAction()
@@ -191,16 +190,16 @@ class Ajde_Crud extends Ajde_Object_Standard
     }
 
     /**
-     * OPTIONS
+     * OPTIONS.
      *
      * @param            $name
      * @param bool|mixed $default
+     *
      * @return array|bool
      */
-
     public function getOption($name, $default = false)
     {
-        $path    = explode('.', $name);
+        $path = explode('.', $name);
         $options = $this->getOptions();
         foreach ($path as $key) {
             if (isset($options[$key])) {
@@ -215,9 +214,9 @@ class Ajde_Crud extends Ajde_Object_Standard
 
     public function setOption($name, $value)
     {
-        $path    = explode('.', $name);
+        $path = explode('.', $name);
         $options = $this->getOptions();
-        $wc      = &$options;
+        $wc = &$options;
         foreach ($path as $key) {
             if (!isset($wc[$key])) {
                 $wc[$key] = [];
@@ -229,7 +228,6 @@ class Ajde_Crud extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @return array
      */
     public function getOptions($key = null)
@@ -249,9 +247,8 @@ class Ajde_Crud extends Ajde_Object_Standard
     }
 
     /**
-     * MISC
+     * MISC.
      */
-
     public function setItem($value)
     {
         parent::setItem($value);
@@ -268,7 +265,7 @@ class Ajde_Crud extends Ajde_Object_Standard
             return parent::getCustomTemplateModule();
         }
 
-        return (string)$this->getModel()->getTable();
+        return (string) $this->getModel()->getTable();
     }
 
     public function setEditAction($value)
@@ -319,7 +316,7 @@ class Ajde_Crud extends Ajde_Object_Standard
     public function getCollection()
     {
         if (!isset($this->_collection)) {
-            $collectionName    = str_replace('Model', '', get_class($this->getModel())) . 'Collection';
+            $collectionName = str_replace('Model', '', get_class($this->getModel())).'Collection';
             $this->_collection = new $collectionName();
         }
 
@@ -335,7 +332,6 @@ class Ajde_Crud extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @return string
      */
     public function getHash()
@@ -344,9 +340,8 @@ class Ajde_Crud extends Ajde_Object_Standard
     }
 
     /**
-     * HELPERS
+     * HELPERS.
      */
-
     public function loadItem($id = null)
     {
         $model = $this->getModel();
@@ -359,7 +354,6 @@ class Ajde_Crud extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @return Ajde_Model
      */
     public function getItem()
@@ -386,11 +380,10 @@ class Ajde_Crud extends Ajde_Object_Standard
 
     public function isNew()
     {
-        return (!$this->hasId() || $this->getId() === false || is_null($this->getId()));
+        return !$this->hasId() || $this->getId() === false || is_null($this->getId());
     }
 
     /**
-     *
      * @return Ajde_Collection
      */
     public function getItems()
@@ -429,13 +422,13 @@ class Ajde_Crud extends Ajde_Object_Standard
     public function setReadOnlyForAllFields()
     {
         foreach ($this->getModel()->getTable()->getFieldNames() as $fieldName) {
-            $this->setOption('fields.' . $fieldName . '.readonly', true);
+            $this->setOption('fields.'.$fieldName.'.readonly', true);
         }
     }
 
     public function loadFields()
     {
-        $fields    = [];
+        $fields = [];
         $allFields = $this->getDeclaredFieldNames();
 
         $fieldsArray = $this->getModel()->getTable()->getFieldProperties();
@@ -447,12 +440,12 @@ class Ajde_Crud extends Ajde_Object_Standard
             if (isset($fieldsArray[$fieldName])) {
                 $fieldProperties = $fieldsArray[$fieldName];
             }
-            $fieldOptions         = $this->getFieldOptions($fieldName, $fieldProperties);
+            $fieldOptions = $this->getFieldOptions($fieldName, $fieldProperties);
             $fieldOptions['name'] = $fieldName;
             if (in_array($fieldOptions['name'], $parents)) {
                 $fieldOptions['type'] = 'fk';
             }
-            $field              = $this->createField($fieldOptions);
+            $field = $this->createField($fieldOptions);
             $fields[$fieldName] = $field;
         }
 
@@ -464,8 +457,8 @@ class Ajde_Crud extends Ajde_Object_Standard
         if (!isset($fieldOptions['type'])) {
             $fieldOptions['type'] = 'text';
         }
-        $fieldClass = Ajde_Core_ExternalLibs::getClassname("Ajde_Crud_Field_" . ucfirst($fieldOptions['type']));
-        $field      = new $fieldClass($this, $fieldOptions);
+        $fieldClass = Ajde_Core_ExternalLibs::getClassname('Ajde_Crud_Field_'.ucfirst($fieldOptions['type']));
+        $field = new $fieldClass($this, $fieldOptions);
         if ($this->getOperation() === 'edit') {
             if (!$field->hasValue() || $field->hasEmpty('value')) {
                 if ($this->isNew() && $field->hasNotEmpty('default')) {
@@ -482,10 +475,11 @@ class Ajde_Crud extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @param string $fieldName
-     * @return Ajde_Crud_Field
+     *
      * @throws Ajde_Exception
+     *
+     * @return Ajde_Crud_Field
      */
     public function getField($fieldName, $strict = true)
     {
@@ -497,7 +491,7 @@ class Ajde_Crud extends Ajde_Object_Standard
         } else {
             if ($strict === true) {
                 // TODO:
-                throw new Ajde_Exception($fieldName . ' is not a field in ' . (string)$this->getModel()->getTable());
+                throw new Ajde_Exception($fieldName.' is not a field in '.(string) $this->getModel()->getTable());
             } else {
                 return false;
             }
@@ -524,7 +518,7 @@ class Ajde_Crud extends Ajde_Object_Standard
     public function getFieldOptions($fieldName, $fieldProperties = [])
     {
         $fieldsOptions = $this->getOptions('fields');
-        $fieldOptions  = issetor($fieldsOptions[$fieldName], []);
+        $fieldOptions = issetor($fieldsOptions[$fieldName], []);
 
         return array_merge($fieldProperties, $fieldOptions);
     }
@@ -553,14 +547,14 @@ class Ajde_Crud extends Ajde_Object_Standard
         if (parent::hasSessionName()) {
             return parent::getSessionName();
         } else {
-            return (string)$this->getModel()->getTable();
+            return (string) $this->getModel()->getTable();
         }
     }
 
     /**
+     * @param array       $viewParams
+     * @param bool|string $persist
      *
-     * @param array          $viewParams
-     * @param boolean|string $persist
      * @return Ajde_Collection_View
      */
     public function getCollectionView($viewParams = [], $persist = 'auto')
@@ -599,19 +593,18 @@ class Ajde_Crud extends Ajde_Object_Standard
     }
 
     /**
-     * RENDERING
+     * RENDERING.
      */
-
     public function getTemplate()
     {
-        $template = new Ajde_Template(MODULE_DIR . '_core/', 'crud/' . $this->getOperation());
+        $template = new Ajde_Template(MODULE_DIR.'_core/', 'crud/'.$this->getOperation());
         Ajde::app()->getDocument()->autoAddResources($template);
         if ($this->getOperation() !== $this->getAction()) {
-            $template = new Ajde_Template(MODULE_DIR . '_core/', 'crud/' . $this->getAction());
+            $template = new Ajde_Template(MODULE_DIR.'_core/', 'crud/'.$this->getAction());
         }
         if ($this->_hasCustomTemplate()) {
-            $base     = $this->_getCustomTemplateBase();
-            $action   = $this->_getCustomTemplateAction();
+            $base = $this->_getCustomTemplateBase();
+            $action = $this->_getCustomTemplateAction();
             $template = new Ajde_Template($base, $action);
         }
         $template->assignArray($this->_templateData);
@@ -621,12 +614,12 @@ class Ajde_Crud extends Ajde_Object_Standard
 
     public function setTemplateData($array)
     {
-        $this->_templateData = (array)$array;
+        $this->_templateData = (array) $array;
     }
 
     private function _hasCustomTemplate()
     {
-        $base   = $this->_getCustomTemplateBase();
+        $base = $this->_getCustomTemplateBase();
         $action = $this->_getCustomTemplateAction();
 
         return Ajde_Template::exist($base, $action) !== false;
@@ -634,11 +627,11 @@ class Ajde_Crud extends Ajde_Object_Standard
 
     private function _getCustomTemplateBase()
     {
-        return MODULE_DIR . $this->getCustomTemplateModule() . DIRECTORY_SEPARATOR;
+        return MODULE_DIR.$this->getCustomTemplateModule().DIRECTORY_SEPARATOR;
     }
 
     private function _getCustomTemplateAction()
     {
-        return 'crud/' . (string)$this->getModel()->getTable() . DIRECTORY_SEPARATOR . $this->getAction();
+        return 'crud/'.(string) $this->getModel()->getTable().DIRECTORY_SEPARATOR.$this->getAction();
     }
 }

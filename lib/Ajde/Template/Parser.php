@@ -3,19 +3,16 @@
 class Ajde_Template_Parser extends Ajde_Object_Standard
 {
     /**
-     *
      * @var Ajde_Template
      */
     protected $_template = null;
 
     /**
-     *
      * @var Ajde_Template_Parser_Phtml_Helper
      */
     protected $_helper = null;
 
     /**
-     *
      * @param Ajde_Template $template
      */
     public function __construct(Ajde_Template $template)
@@ -36,7 +33,7 @@ class Ajde_Template_Parser extends Ajde_Object_Standard
         if ($template->hasAssigned($name)) {
             return $template->getAssigned($name);
         } else {
-            throw new Ajde_Exception("No variable with name '" . $name . "' assigned to template.", 90019);
+            throw new Ajde_Exception("No variable with name '".$name."' assigned to template.", 90019);
         }
     }
 
@@ -46,12 +43,11 @@ class Ajde_Template_Parser extends Ajde_Object_Standard
         if (method_exists($helper, $method)) {
             return call_user_func_array([$helper, $method], $arguments);
         } else {
-            throw new Ajde_Exception("Call to undefined method " . get_class($this) . "::$method()", 90006);
+            throw new Ajde_Exception('Call to undefined method '.get_class($this)."::$method()", 90006);
         }
     }
 
     /**
-     *
      * @return Ajde_Template_Parser_Phtml_Helper
      */
     public function getHelper()
@@ -64,7 +60,6 @@ class Ajde_Template_Parser extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @return Ajde_Template
      */
     public function getTemplate()

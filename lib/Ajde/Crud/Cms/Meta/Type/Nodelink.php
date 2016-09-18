@@ -41,7 +41,7 @@ class Ajde_Crud_Cms_Meta_Type_Nodelink extends Ajde_Crud_Cms_Meta_Type
         $field->setModelName('node');
         if ($meta->getOption('usenodetype')) {
             $field->setAdvancedFilter([
-                new Ajde_Filter_Where('nodetype', Ajde_Filter::FILTER_EQUALS, $meta->getOption('usenodetype'))
+                new Ajde_Filter_Where('nodetype', Ajde_Filter::FILTER_EQUALS, $meta->getOption('usenodetype')),
             ]);
         }
         if ($meta->getOption('popup')) {

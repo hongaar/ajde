@@ -8,14 +8,14 @@ class Ajde_Lang_Adapter_Ini extends Ajde_Lang_Adapter_Abstract
     {
         $module = $this->getModule($module);
 
-        $lang        = Ajde_Lang::getInstance()->getLang();
-        $iniFilename = LANG_DIR . $lang . DIRECTORY_SEPARATOR . $module . '.ini';
-        if (is_file(LOCAL_ROOT . $iniFilename)) {
-            $book = parse_ini_file(LOCAL_ROOT . $iniFilename);
+        $lang = Ajde_Lang::getInstance()->getLang();
+        $iniFilename = LANG_DIR.$lang.DIRECTORY_SEPARATOR.$module.'.ini';
+        if (is_file(LOCAL_ROOT.$iniFilename)) {
+            $book = parse_ini_file(LOCAL_ROOT.$iniFilename);
 
             // Strip slashes
-            foreach($book as $key => $value) {
-                $key = str_replace("'", "", $key);
+            foreach ($book as $key => $value) {
+                $key = str_replace("'", '', $key);
                 $book[$key] = $value;
             }
 

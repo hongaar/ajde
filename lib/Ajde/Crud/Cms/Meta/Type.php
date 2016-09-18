@@ -5,7 +5,7 @@ abstract class Ajde_Crud_Cms_Meta_Type extends Ajde_Crud_Cms_Meta_Fieldlist
     private $_forbiddenFieldNames = [
         'values',
         'options',
-        'type'
+        'type',
     ];
 
     protected $niceName = false;
@@ -23,9 +23,9 @@ abstract class Ajde_Crud_Cms_Meta_Type extends Ajde_Crud_Cms_Meta_Fieldlist
     }
 
     /**
-     * Gets called before model save of this meta type
+     * Gets called before model save of this meta type.
      *
-     * @return boolean
+     * @return bool
      */
     public function beforeSave(MetaModel $meta, $value, Ajde_Model $model)
     {
@@ -33,7 +33,7 @@ abstract class Ajde_Crud_Cms_Meta_Type extends Ajde_Crud_Cms_Meta_Fieldlist
     }
 
     /**
-     * Gets called after model save of this meta type
+     * Gets called after model save of this meta type.
      */
     public function afterSave(MetaModel $meta, $value, Ajde_Model $model)
     {
@@ -41,13 +41,12 @@ abstract class Ajde_Crud_Cms_Meta_Type extends Ajde_Crud_Cms_Meta_Fieldlist
     }
 
     /**
-     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     protected function fieldFactory($name)
     {
         if (in_array($name, $this->_forbiddenFieldNames)) {
-            throw new Ajde_Exception('The field name \'' . $name . '\' can not be used');
+            throw new Ajde_Exception('The field name \''.$name.'\' can not be used');
         }
         if ($this->hasField($name)) {
             $field = $this->getField($name);
@@ -61,14 +60,14 @@ abstract class Ajde_Crud_Cms_Meta_Type extends Ajde_Crud_Cms_Meta_Fieldlist
     }
 
     /**
-     *
      * @param MetaModel $meta
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     protected function decorationFactory(MetaModel $meta)
     {
         $field = new Ajde_Crud_Options_Fields_Field();
-        $field->setName('meta_' . $meta->getPK());
+        $field->setName('meta_'.$meta->getPK());
         $field->setType('text');
         $field->setLabel($meta->get('name'));
         if ($meta->getOption('help')) {
@@ -87,8 +86,8 @@ abstract class Ajde_Crud_Cms_Meta_Type extends Ajde_Crud_Cms_Meta_Fieldlist
     }
 
     /**
-     *
      * @param MetaModel $meta
+     *
      * @return Ajde_Crud_Options_Fields_Field
      */
     public function getMetaField(MetaModel $meta)

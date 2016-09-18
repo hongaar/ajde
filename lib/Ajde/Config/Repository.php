@@ -3,7 +3,7 @@
 class Ajde_Config_Repository extends Ajde_Object_Standard
 {
     /**
-     * TODO
+     * TODO.
      *
      * @param string $directory
      */
@@ -14,9 +14,10 @@ class Ajde_Config_Repository extends Ajde_Object_Standard
     }
 
     /**
-     * TODO
+     * TODO.
      *
      * @param string $directory
+     *
      * @throws Exception
      */
     public function readConfigDir($directory)
@@ -24,16 +25,16 @@ class Ajde_Config_Repository extends Ajde_Object_Standard
         $environment = Ajde_Environment::current();
 
         $searchDirs = [
-            CORE_DIR . $directory,
-            CORE_DIR . $directory . $environment . DS,
-            APP_DIR . $directory,
-            APP_DIR . $directory . $environment . DS
+            CORE_DIR.$directory,
+            CORE_DIR.$directory.$environment.DS,
+            APP_DIR.$directory,
+            APP_DIR.$directory.$environment.DS,
         ];
 
         foreach ($searchDirs as $searchDir) {
             foreach (Ajde_Fs_Find::findFiles($searchDir, '*.json') as $configFile) {
                 if (!$configData = json_decode(file_get_contents($configFile), true)) {
-                    throw new Exception('Config file ' . $configFile . ' contains invalid JSON');
+                    throw new Exception('Config file '.$configFile.' contains invalid JSON');
                 }
 
                 $this->merge(pathinfo($configFile, PATHINFO_FILENAME), $configData);
@@ -48,13 +49,13 @@ class Ajde_Config_Repository extends Ajde_Object_Standard
         $scriptPath = current(explode('index.php', $scriptPath));
 
         // URI fragments
-        $this->set("app.protocol", (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS'])) ? 'https://' : 'http://');
-        $this->set("app.domain", $_SERVER['SERVER_NAME']);
-        $this->set("app.path", str_replace(PUBLIC_DIR, '', $scriptPath));
-        $this->set("app.rootUrl", $this->get("app.protocol") . $this->get("app.domain") . $this->get("app.path"));
-        $this->set("i18n.rootUrl", $this->get("app.rootUrl"));
+        $this->set('app.protocol', (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS'])) ? 'https://' : 'http://');
+        $this->set('app.domain', $_SERVER['SERVER_NAME']);
+        $this->set('app.path', str_replace(PUBLIC_DIR, '', $scriptPath));
+        $this->set('app.rootUrl', $this->get('app.protocol').$this->get('app.domain').$this->get('app.path'));
+        $this->set('i18n.rootUrl', $this->get('app.rootUrl'));
 
         // Set default timezone now
-        date_default_timezone_set($this->get("app.timezone"));
+        date_default_timezone_set($this->get('app.timezone'));
     }
 }

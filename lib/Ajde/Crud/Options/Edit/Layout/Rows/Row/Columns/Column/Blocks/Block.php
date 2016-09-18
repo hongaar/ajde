@@ -3,7 +3,6 @@
 class Ajde_Crud_Options_Edit_Layout_Rows_Row_Columns_Column_Blocks_Block extends Ajde_Crud_Options
 {
     /**
-     *
      * @return Ajde_Crud_Options_Edit_Layout_Rows_Row_Columns_Column
      */
     public function up($obj = false)
@@ -22,9 +21,10 @@ class Ajde_Crud_Options_Edit_Layout_Rows_Row_Columns_Column_Blocks_Block extends
     // =========================================================================
 
     /**
-     * Sets which fields to show
+     * Sets which fields to show.
      *
      * @param array $fields
+     *
      * @return Ajde_Crud_Options_Edit_Layout_Rows_Row_Columns_Column_Blocks_Block
      */
     public function setShow($fields)
@@ -33,9 +33,10 @@ class Ajde_Crud_Options_Edit_Layout_Rows_Row_Columns_Column_Blocks_Block extends
     }
 
     /**
-     * Sets block title
+     * Sets block title.
      *
      * @param string $title
+     *
      * @return Ajde_Crud_Options_Edit_Layout_Rows_Row_Columns_Column_Blocks_Block
      */
     public function setTitle($title)
@@ -44,9 +45,10 @@ class Ajde_Crud_Options_Edit_Layout_Rows_Row_Columns_Column_Blocks_Block extends
     }
 
     /**
-     * Sets CSS classname(s)
+     * Sets CSS classname(s).
      *
      * @param string $cssClass
+     *
      * @return Ajde_Crud_Options_Edit_Layout_Rows_Row_Columns_Column_Blocks_Block
      */
     public function setClass($cssClass)

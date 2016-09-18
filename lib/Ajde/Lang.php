@@ -201,7 +201,7 @@ class Ajde_Lang extends Ajde_Object_Singleton
     {
         static $instance;
 
-        return $instance === null ? $instance = new self : $instance;
+        return $instance === null ? $instance = new self() : $instance;
     }
 
     protected function __construct()
@@ -226,21 +226,21 @@ class Ajde_Lang extends Ajde_Object_Singleton
 
     public function getAlternateUrl($lang = null)
     {
-        $routeLang  = $this->getShortLang();
-        $currentUrl = preg_replace('/^' . $routeLang . '\/?/', '', Ajde::app()->getRoute()->getOriginalRoute());
+        $routeLang = $this->getShortLang();
+        $currentUrl = preg_replace('/^'.$routeLang.'\/?/', '', Ajde::app()->getRoute()->getOriginalRoute());
 
-        return config("app.rootUrl") . $this->getShortLang($lang) . '/' . $currentUrl;
+        return config('app.rootUrl').$this->getShortLang($lang).'/'.$currentUrl;
     }
 
     public function setLang($lang)
     {
-        setlocale(LC_ALL, $lang, $lang . '.utf8', $lang . '.UTF8', $lang . 'utf-8', $lang . '.UTF-8');
+        setlocale(LC_ALL, $lang, $lang.'.utf8', $lang.'.UTF8', $lang.'utf-8', $lang.'.UTF-8');
         $this->_lang = $lang;
     }
 
     public function getAvailableLang($langCode)
     {
-        $availableLangs      = $this->getAvailable();
+        $availableLangs = $this->getAvailable();
         $availableShortLangs = [];
         foreach ($availableLangs as $availableLang) {
             $availableShortLangs[substr($availableLang, 0, 2)] = $availableLang;
@@ -258,12 +258,12 @@ class Ajde_Lang extends Ajde_Object_Singleton
     public function setGlobalLang($lang)
     {
         $this->setLang($lang);
-        Config::set("i18n.rootUrl", config("app.rootUrl") . $this->getShortLang() . '/');
+        Config::set('i18n.rootUrl', config('app.rootUrl').$this->getShortLang().'/');
     }
 
     protected function detect()
     {
-        if (config("i18n.autodetect")) {
+        if (config('i18n.autodetect')) {
             $acceptedLangs = $this->getLanguagesFromHeader();
             foreach ($acceptedLangs as $acceptedLang => $priority) {
                 if ($langMatch = $this->getAvailableLang($acceptedLang)) {
@@ -272,7 +272,7 @@ class Ajde_Lang extends Ajde_Object_Singleton
             }
         }
 
-        return $defaultLang = config("i18n.default");
+        return $defaultLang = config('i18n.default');
     }
 
     public function disableAutoTranslationOfModels()
@@ -323,7 +323,7 @@ class Ajde_Lang extends Ajde_Object_Singleton
 
     public function getAvailable()
     {
-        $langs  = Ajde_Fs_Find::findFiles(LANG_DIR, '*');
+        $langs = Ajde_Fs_Find::findFiles(LANG_DIR, '*');
         $return = [];
         foreach ($langs as $lang) {
             $return[] = basename($lang);
@@ -334,10 +334,10 @@ class Ajde_Lang extends Ajde_Object_Singleton
 
     public function getAvailableNiceNames()
     {
-        $langs  = Ajde_Fs_Find::findFiles(LANG_DIR, '*');
+        $langs = Ajde_Fs_Find::findFiles(LANG_DIR, '*');
         $return = [];
         foreach ($langs as $lang) {
-            $lang          = basename($lang);
+            $lang = basename($lang);
             $return[$lang] = $this->getNiceName($lang);
         }
 
@@ -350,7 +350,7 @@ class Ajde_Lang extends Ajde_Object_Singleton
     public function getAdapter()
     {
         if ($this->_adapter === null) {
-            $adapterName    = 'Ajde_Lang_Adapter_' . ucfirst(config("i18n.adapter"));
+            $adapterName = 'Ajde_Lang_Adapter_'.ucfirst(config('i18n.adapter'));
             $this->_adapter = new $adapterName();
         }
 
@@ -381,5 +381,4 @@ class Ajde_Lang extends Ajde_Object_Singleton
     {
         return self::$_niceNames[substr(strtolower($lang), 0, 2)];
     }
-
 }

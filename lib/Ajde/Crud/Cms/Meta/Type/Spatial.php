@@ -49,7 +49,7 @@ class Ajde_Crud_Cms_Meta_Type_Spatial extends Ajde_Crud_Cms_Meta_Type
             $media = new MediaModel();
             $media->loadByPK($meta->getOption('media'));
             $field->setUseImage(true);
-            $field->setLayerImage($this->_uploaddir . $media->get('thumbnail'));
+            $field->setLayerImage($this->_uploaddir.$media->get('thumbnail'));
         }
 
         return $field;

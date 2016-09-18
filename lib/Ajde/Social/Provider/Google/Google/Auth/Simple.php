@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-require_once "Google/Auth/Abstract.php";
-require_once "Google/Http/Request.php";
+require_once 'Google/Auth/Abstract.php';
+require_once 'Google/Http/Request.php';
 
 /**
  * Simple API access implementation. Can either be used to make requests
@@ -40,11 +40,12 @@ class Google_Auth_Simple extends Google_Auth_Abstract
      * Perform an authenticated / signed apiHttpRequest.
      * This function takes the apiHttpRequest, calls apiAuth->sign on it
      * (which can modify the request in what ever way fits the auth mechanism)
-     * and then calls apiCurlIO::makeRequest on the signed request
+     * and then calls apiCurlIO::makeRequest on the signed request.
      *
      * @param Google_Http_Request $request
+     *
      * @return Google_Http_Request The resulting HTTP response including the
-     * responseHttpCode, responseHeaders and responseBody.
+     *                             responseHttpCode, responseHeaders and responseBody.
      */
     public function authenticatedRequest(Google_Http_Request $request)
     {
@@ -55,7 +56,7 @@ class Google_Auth_Simple extends Google_Auth_Abstract
 
     public function authenticate($code)
     {
-        throw new Google_Auth_Exception("Simple auth does not exchange tokens.");
+        throw new Google_Auth_Exception('Simple auth does not exchange tokens.');
     }
 
     public function setAccessToken($accessToken)
@@ -65,12 +66,10 @@ class Google_Auth_Simple extends Google_Auth_Abstract
 
     public function getAccessToken()
     {
-        return null;
     }
 
     public function createAuthUrl($scope)
     {
-        return null;
     }
 
     public function refreshToken($refreshToken)

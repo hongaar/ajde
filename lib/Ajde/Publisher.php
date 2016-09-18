@@ -47,5 +47,5 @@ abstract class Ajde_Publisher extends Ajde_Object_Standard
         return $this->_url;
     }
 
-    abstract function publish();
+    abstract public function publish();
 }

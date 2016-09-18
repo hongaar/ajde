@@ -9,7 +9,7 @@ class Ajde_Shop_Transaction_Provider_Test extends Ajde_Shop_Transaction_Provider
 
     public function getLogo()
     {
-        return MEDIA_DIR . 'core/shop/test.png';
+        return MEDIA_DIR.'core/shop/test.png';
     }
 
     public function usePostProxy()
@@ -19,7 +19,7 @@ class Ajde_Shop_Transaction_Provider_Test extends Ajde_Shop_Transaction_Provider
 
     public function getRedirectUrl($description = null)
     {
-        return config("app.rootUrl") . 'shop/transaction:test?txn=' . $this->getTransaction()->getPK();
+        return config('app.rootUrl').'shop/transaction:test?txn='.$this->getTransaction()->getPK();
     }
 
     public function getRedirectParams($description = null)
@@ -29,11 +29,11 @@ class Ajde_Shop_Transaction_Provider_Test extends Ajde_Shop_Transaction_Provider
 
     public function updatePayment()
     {
-        $txn_id      = $_GET['txn'];
+        $txn_id = $_GET['txn'];
         $transaction = new TransactionModel();
         $transaction->loadByPK($txn_id);
 
-        $result = !!$_GET['r'];
+        $result = (bool) $_GET['r'];
 
         if ($result) {
             $transaction->payment_details = 'paid with test';
@@ -42,7 +42,7 @@ class Ajde_Shop_Transaction_Provider_Test extends Ajde_Shop_Transaction_Provider
             return [
                 'success'     => true,
                 'changed'     => true,
-                'transaction' => $transaction
+                'transaction' => $transaction,
             ];
         } else {
             $transaction->payment_status = 'refused';
@@ -51,7 +51,7 @@ class Ajde_Shop_Transaction_Provider_Test extends Ajde_Shop_Transaction_Provider
             return [
                 'success'     => false,
                 'changed'     => true,
-                'transaction' => $transaction
+                'transaction' => $transaction,
             ];
         }
     }

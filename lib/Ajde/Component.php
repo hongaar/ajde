@@ -6,31 +6,28 @@ abstract class Ajde_Component extends Ajde_Object_Standard
     const AV_XMLNS = 'av';
 
     public $attributes = [];
-    public $innerXml   = null;
+    public $innerXml = null;
 
     protected $_parseRules = [];
 
     /**
-     *
      * @var Ajde_Template_Parser
      */
     protected $_parser = null;
 
     /**
-     *
      * @param Ajde_Template_Parser $parser
      * @param array                $attributes
      */
     public function __construct(Ajde_Template_Parser $parser, $attributes, $innerXml = null)
     {
-        $this->attributes  = $attributes;
-        $this->innerXml    = $innerXml;
-        $this->_parser     = $parser;
+        $this->attributes = $attributes;
+        $this->innerXml = $innerXml;
+        $this->_parser = $parser;
         $this->_parseRules = $this->_init();
     }
 
     /**
-     *
      * @return Ajde_Template_Parser
      */
     public function getParser()
@@ -39,17 +36,17 @@ abstract class Ajde_Component extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @param DOMNode $node
+     *
      * @return Ajde_Component
      */
     public static function fromNode(Ajde_Template_Parser $parser, DOMNode $node)
     {
-        $componentName  = ucfirst(str_replace(self::AC_XMLNS . ':', '', $node->nodeName));
-        $className      = 'Ajde_Component_' . $componentName;
+        $componentName = ucfirst(str_replace(self::AC_XMLNS.':', '', $node->nodeName));
+        $className = 'Ajde_Component_'.$componentName;
         $nodeAttributes = $node->attributes;
-        $innerXml       = $parser->innerXml($node);
-        $attributes     = [];
+        $innerXml = $parser->innerXml($node);
+        $attributes = [];
         foreach ($nodeAttributes as $attribute) {
             $attributes[$attribute->name] = $attribute->value;
         }

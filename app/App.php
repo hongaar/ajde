@@ -6,7 +6,7 @@ class App extends Ajde_Object_Singleton implements Ajde_BootstrapInterface
     {
         static $instance;
 
-        return $instance === null ? $instance = new self : $instance;
+        return $instance === null ? $instance = new self() : $instance;
     }
 
     public function __bootstrap()
@@ -17,9 +17,9 @@ class App extends Ajde_Object_Singleton implements Ajde_BootstrapInterface
         Ajde_Event::register('TransactionModel', 'onCreate', [$this, 'onTransactionCreated']);
 
         if (UserModel::isTester() || UserModel::isAdmin()) {
-            $providers   = config("shop.transaction.providers");
+            $providers = config('shop.transaction.providers');
             $providers[] = 'test';
-            Config::set("shop.transaction.providers", $providers);
+            Config::set('shop.transaction.providers', $providers);
         }
 
         return true;
@@ -30,7 +30,7 @@ class App extends Ajde_Object_Singleton implements Ajde_BootstrapInterface
         /** @var TransactionItemModel $item */
         foreach ($transaction->getItems() as $item) {
             $entity = $item->getEntity();
-            $qty    = $item->qty;
+            $qty = $item->qty;
 
             if ($entity instanceof ProductModel) {
                 $entity->stock = $entity->stock - $qty;

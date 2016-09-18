@@ -1,4 +1,5 @@
 <?php
+
 require_once 'lib/less/lessc.inc.php';
 
 class Ajde_Document_Processor_Css_Less extends Ajde_Object_Static implements Ajde_Document_Processor
@@ -42,5 +43,4 @@ class Ajde_Document_Processor_Css_Less extends Ajde_Object_Static implements Ajd
 
         return $lesser;
     }
-
 }

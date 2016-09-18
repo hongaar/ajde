@@ -20,6 +20,6 @@ class Ajde_Document_Processor_Html_Debugger extends Ajde_Object_Static implement
     public static function postProcess(Ajde_Layout $layout)
     {
         $debugger = Ajde_Controller::fromRoute(new Ajde_Core_Route('_core/debugger:view.html'))->invoke();
-        $layout->setContents($layout->getContents() . $debugger);
+        $layout->setContents($layout->getContents().$debugger);
     }
 }

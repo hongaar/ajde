@@ -4,6 +4,7 @@ class Ajde_Mailer_CssInliner_Emogrifier implements Ajde_Mailer_CssInliner_CssInl
 {
     /**
      * @param string $html
+     *
      * @return mixed
      */
     public static function inlineCss($html)

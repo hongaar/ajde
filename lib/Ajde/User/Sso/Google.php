@@ -11,7 +11,7 @@ class Ajde_User_Sso_Google extends Ajde_User_Sso
     const SSO_SESSION_KEY = 'sso.google.credentials';
 
     public static $iconName = 'google-plus';
-    public static $color    = 'db4a39';
+    public static $color = 'db4a39';
 
     public function __construct($credentials = false)
     {
@@ -24,10 +24,10 @@ class Ajde_User_Sso_Google extends Ajde_User_Sso
             }
         }
         $google = new Ajde_Social_Provider_Google();
-        $google->setRedirectUri(config("app.rootUrl") . 'user/sso:callback?provider=google');
-        $google->setScopes("https://www.googleapis.com/auth/plus.login");
+        $google->setRedirectUri(config('app.rootUrl').'user/sso:callback?provider=google');
+        $google->setScopes('https://www.googleapis.com/auth/plus.login');
         $google->setScopes('https://www.googleapis.com/auth/plus.profile.emails.read');
-        $this->_plus     = $google->getPlus();
+        $this->_plus = $google->getPlus();
         $this->_provider = $google;
         if ($this->_credentials) {
             $this->_provider->setAccessToken($this->_credentials['oauth_token']);
@@ -98,7 +98,7 @@ class Ajde_User_Sso_Google extends Ajde_User_Sso
 
         // set returnto in session, google is very strict with callback urls
         $returntoSession = new Ajde_Session('returnto');
-        $returntoSession->set("url", $returnto);
+        $returntoSession->set('url', $returnto);
 
         return $connection->createAuthUrl();
     }
@@ -110,11 +110,11 @@ class Ajde_User_Sso_Google extends Ajde_User_Sso
         }
 
         $connection = $this->getProvider();
-        $code       = Ajde::app()->getRequest()->getRaw('code');
+        $code = Ajde::app()->getRequest()->getRaw('code');
 
         $connection->authenticate($code);
         $this->setCredentials([
-            'oauth_token' => $connection->getAccessToken()
+            'oauth_token' => $connection->getAccessToken(),
         ]);
 
         return true;
@@ -123,7 +123,7 @@ class Ajde_User_Sso_Google extends Ajde_User_Sso
     public function getUsernameSuggestion()
     {
         if ($this->hasCredentials()) {
-            $me   = $this->getMe();
+            $me = $this->getMe();
             $name = $me->__get('name');
 
             return $name['givenName'];
@@ -135,7 +135,7 @@ class Ajde_User_Sso_Google extends Ajde_User_Sso
     public function getEmailSuggestion()
     {
         if ($this->hasCredentials()) {
-            $me     = $this->getMe();
+            $me = $this->getMe();
             $emails = $me->__get('emails');
 
             return $emails[0]['value'];
@@ -161,7 +161,7 @@ class Ajde_User_Sso_Google extends Ajde_User_Sso
             if ($image instanceof Google_Service_Plus_PersonImage) {
                 $url = $image->getUrl();
 
-                return str_replace('?sz=50', '?sz=' . $size, $url);
+                return str_replace('?sz=50', '?sz='.$size, $url);
             }
         }
     }

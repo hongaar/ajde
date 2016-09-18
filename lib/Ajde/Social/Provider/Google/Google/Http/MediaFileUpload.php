@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 require_once 'Google/Client.php';
 require_once 'Google/Exception.php';
 require_once 'Google/Http/Request.php';
@@ -23,11 +22,10 @@ require_once 'Google/Utils.php';
 
 /**
  * @author Chirag Shah <chirags@google.com>
- *
  */
 class Google_Http_MediaFileUpload
 {
-    const UPLOAD_MEDIA_TYPE     = 'media';
+    const UPLOAD_MEDIA_TYPE = 'media';
     const UPLOAD_MULTIPART_TYPE = 'multipart';
     const UPLOAD_RESUMABLE_TYPE = 'resumable';
 
@@ -77,18 +75,18 @@ class Google_Http_MediaFileUpload
         $chunkSize = false,
         $boundary = false
     ) {
-        $this->client    = $client;
-        $this->request   = $request;
-        $this->mimeType  = $mimeType;
-        $this->data      = $data;
-        $this->size      = strlen($this->data);
+        $this->client = $client;
+        $this->request = $request;
+        $this->mimeType = $mimeType;
+        $this->data = $data;
+        $this->size = strlen($this->data);
         $this->resumable = $resumable;
         if (!$chunkSize) {
             $chunkSize = 256 * 1024;
         }
         $this->chunkSize = $chunkSize;
-        $this->progress  = 0;
-        $this->boundary  = $boundary;
+        $this->progress = 0;
+        $this->boundary = $boundary;
 
         // Process Media Request
         $this->process();
@@ -105,7 +103,7 @@ class Google_Http_MediaFileUpload
     }
 
     /**
-     * Return the progress on the upload
+     * Return the progress on the upload.
      *
      * @return int progress in bytes uploaded.
      */
@@ -131,7 +129,7 @@ class Google_Http_MediaFileUpload
         }
 
         $lastBytePos = $this->progress + strlen($chunk) - 1;
-        $headers     = [
+        $headers = [
             'content-range'  => "bytes $this->progress-$lastBytePos/$this->size",
             'content-type'   => $this->request->getRequestHeader('content-type'),
             'content-length' => $this->chunkSize,
@@ -145,13 +143,13 @@ class Google_Http_MediaFileUpload
             $headers,
             $chunk
         );
-        $response    = $this->client->getIo()->makeRequest($httpRequest);
+        $response = $this->client->getIo()->makeRequest($httpRequest);
         $response->setExpectedClass($this->request->getExpectedClass());
         $code = $response->getResponseHttpCode();
 
         if (308 == $code) {
             // Track the amount uploaded.
-            $range          = explode('-', $response->getResponseHeader('range'));
+            $range = explode('-', $response->getResponseHeader('range'));
             $this->progress = $range[1] + 1;
 
             // Allow for changing upload URLs.
@@ -170,12 +168,13 @@ class Google_Http_MediaFileUpload
     /**
      * @param $meta
      * @param $params
+     *
      * @return array|bool
      * @visible for testing
      */
     private function process()
     {
-        $postBody    = false;
+        $postBody = false;
         $contentType = false;
 
         $meta = $this->request->getPostBody();
@@ -190,24 +189,24 @@ class Google_Http_MediaFileUpload
 
         if (self::UPLOAD_RESUMABLE_TYPE == $uploadType) {
             $contentType = $mimeType;
-            $postBody    = is_string($meta) ? $meta : json_encode($meta);
+            $postBody = is_string($meta) ? $meta : json_encode($meta);
         } else {
             if (self::UPLOAD_MEDIA_TYPE == $uploadType) {
                 $contentType = $mimeType;
-                $postBody    = $this->data;
+                $postBody = $this->data;
             } else {
                 if (self::UPLOAD_MULTIPART_TYPE == $uploadType) {
                     // This is a multipart/related upload.
-                    $boundary    = $this->boundary ? $this->boundary : mt_rand();
-                    $boundary    = str_replace('"', '', $boundary);
-                    $contentType = 'multipart/related; boundary=' . $boundary;
-                    $related     = "--$boundary\r\n";
+                    $boundary = $this->boundary ? $this->boundary : mt_rand();
+                    $boundary = str_replace('"', '', $boundary);
+                    $contentType = 'multipart/related; boundary='.$boundary;
+                    $related = "--$boundary\r\n";
                     $related .= "Content-Type: application/json; charset=UTF-8\r\n";
-                    $related .= "\r\n" . json_encode($meta) . "\r\n";
+                    $related .= "\r\n".json_encode($meta)."\r\n";
                     $related .= "--$boundary\r\n";
                     $related .= "Content-Type: $mimeType\r\n";
                     $related .= "Content-Transfer-Encoding: base64\r\n";
-                    $related .= "\r\n" . base64_encode($this->data) . "\r\n";
+                    $related .= "\r\n".base64_encode($this->data)."\r\n";
                     $related .= "--$boundary--";
                     $postBody = $related;
                 }
@@ -225,7 +224,7 @@ class Google_Http_MediaFileUpload
     private function transformToUploadUrl()
     {
         $base = $this->request->getBasePath();
-        $url  = str_replace($base, $base . "/upload", $this->request->getBaseUrl());
+        $url = str_replace($base, $base.'/upload', $this->request->getBaseUrl());
         $this->request->setBaseUrl($url);
     }
 
@@ -233,9 +232,10 @@ class Google_Http_MediaFileUpload
      * Valid upload types:
      * - resumable (UPLOAD_RESUMABLE_TYPE)
      * - media (UPLOAD_MEDIA_TYPE)
-     * - multipart (UPLOAD_MULTIPART_TYPE)
+     * - multipart (UPLOAD_MULTIPART_TYPE).
      *
      * @param $meta
+     *
      * @return string
      * @visible for testing
      */
@@ -255,7 +255,7 @@ class Google_Http_MediaFileUpload
     private function getResumeUri()
     {
         $result = null;
-        $body   = $this->request->getPostBody();
+        $body = $this->request->getPostBody();
         if ($body) {
             $headers = [
                 'content-type'            => 'application/json; charset=UTF-8',
@@ -269,11 +269,11 @@ class Google_Http_MediaFileUpload
 
         $response = $this->client->getIo()->makeRequest($this->request);
         $location = $response->getResponseHeader('location');
-        $code     = $response->getResponseHttpCode();
+        $code = $response->getResponseHttpCode();
 
         if (200 == $code && true == $location) {
             return $location;
         }
-        throw new Google_Exception("Failed to start the resumable upload");
+        throw new Google_Exception('Failed to start the resumable upload');
     }
 }

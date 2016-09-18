@@ -15,31 +15,30 @@
  * limitations under the License.
  */
 
-require_once "Google/Auth/Abstract.php";
-require_once "Google/Auth/AssertionCredentials.php";
-require_once "Google/Auth/Exception.php";
-require_once "Google/Auth/LoginTicket.php";
-require_once "Google/Client.php";
-require_once "Google/Http/Request.php";
-require_once "Google/Utils.php";
-require_once "Google/Verifier/Pem.php";
+require_once 'Google/Auth/Abstract.php';
+require_once 'Google/Auth/AssertionCredentials.php';
+require_once 'Google/Auth/Exception.php';
+require_once 'Google/Auth/LoginTicket.php';
+require_once 'Google/Client.php';
+require_once 'Google/Http/Request.php';
+require_once 'Google/Utils.php';
+require_once 'Google/Verifier/Pem.php';
 
 /**
- * Authentication class that deals with the OAuth 2 web-server authentication flow
+ * Authentication class that deals with the OAuth 2 web-server authentication flow.
  *
  * @author Chris Chabot <chabotc@google.com>
  * @author Chirag Shah <chirags@google.com>
- *
  */
 class Google_Auth_OAuth2 extends Google_Auth_Abstract
 {
-    const OAUTH2_REVOKE_URI        = 'https://accounts.google.com/o/oauth2/revoke';
-    const OAUTH2_TOKEN_URI         = 'https://accounts.google.com/o/oauth2/token';
-    const OAUTH2_AUTH_URL          = 'https://accounts.google.com/o/oauth2/auth';
-    const CLOCK_SKEW_SECS          = 300; // five minutes in seconds
+    const OAUTH2_REVOKE_URI = 'https://accounts.google.com/o/oauth2/revoke';
+    const OAUTH2_TOKEN_URI = 'https://accounts.google.com/o/oauth2/token';
+    const OAUTH2_AUTH_URL = 'https://accounts.google.com/o/oauth2/auth';
+    const CLOCK_SKEW_SECS = 300; // five minutes in seconds
     const AUTH_TOKEN_LIFETIME_SECS = 300; // five minutes in seconds
-    const MAX_TOKEN_LIFETIME_SECS  = 86400; // one day in seconds
-    const OAUTH2_ISSUER            = 'accounts.google.com';
+    const MAX_TOKEN_LIFETIME_SECS = 86400; // one day in seconds
+    const OAUTH2_ISSUER = 'accounts.google.com';
 
     /** @var Google_Auth_AssertionCredentials $assertionCredentials */
     private $assertionCredentials;
@@ -72,11 +71,12 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
      * Perform an authenticated / signed apiHttpRequest.
      * This function takes the apiHttpRequest, calls apiAuth->sign on it
      * (which can modify the request in what ever way fits the auth mechanism)
-     * and then calls apiCurlIO::makeRequest on the signed request
+     * and then calls apiCurlIO::makeRequest on the signed request.
      *
      * @param Google_Http_Request $request
+     *
      * @return Google_Http_Request The resulting HTTP response including the
-     * responseHttpCode, responseHeaders and responseBody.
+     *                             responseHttpCode, responseHeaders and responseBody.
      */
     public function authenticatedRequest(Google_Http_Request $request)
     {
@@ -87,13 +87,15 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
 
     /**
      * @param string $code
+     *
      * @throws Google_Auth_Exception
+     *
      * @return string
      */
     public function authenticate($code)
     {
         if (strlen($code) == 0) {
-            throw new GoogleAuth_Exception("Invalid code");
+            throw new GoogleAuth_Exception('Invalid code');
         }
 
         // We got here from the redirect from a successful authorization grant,
@@ -109,7 +111,7 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
                     'grant_type'    => 'authorization_code',
                     'redirect_uri'  => $this->client->getClassConfig($this, 'redirect_uri'),
                     'client_id'     => $this->client->getClassConfig($this, 'client_id'),
-                    'client_secret' => $this->client->getClassConfig($this, 'client_secret')
+                    'client_secret' => $this->client->getClassConfig($this, 'client_secret'),
                 ]
             )
         );
@@ -120,7 +122,7 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
 
             return $this->getAccessToken();
         } else {
-            $response        = $request->getResponseBody();
+            $response = $request->getResponseBody();
             $decodedResponse = json_decode($response, true);
             if ($decodedResponse != null && $decodedResponse['error']) {
                 $response = $decodedResponse['error'];
@@ -141,6 +143,7 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
      * authenticate, and then grant/deny the access request.
      *
      * @param string $scope The scope is expressed as a list of space-delimited strings.
+     *
      * @return string
      */
     public function createAuthUrl($scope)
@@ -165,11 +168,12 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
             $params['state'] = $this->state;
         }
 
-        return self::OAUTH2_AUTH_URL . "?" . http_build_query($params);
+        return self::OAUTH2_AUTH_URL.'?'.http_build_query($params);
     }
 
     /**
      * @param string $token
+     *
      * @throws Google_Auth_Exception
      */
     public function setAccessToken($token)
@@ -179,7 +183,7 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
             throw new Google_Auth_Exception('Could not json decode the token');
         }
         if (!isset($token['access_token'])) {
-            throw new Google_Auth_Exception("Invalid token format");
+            throw new Google_Auth_Exception('Invalid token format');
         }
         $this->token = $token;
     }
@@ -203,8 +207,10 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
      * Include an accessToken in a given apiHttpRequest.
      *
      * @param Google_Http_Request $request
-     * @return Google_Http_Request
+     *
      * @throws Google_Auth_Exception
+     *
+     * @return Google_Http_Request
      */
     public function sign(Google_Http_Request $request)
     {
@@ -226,9 +232,9 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
             } else {
                 if (!array_key_exists('refresh_token', $this->token)) {
                     throw new Google_Auth_Exception(
-                        "The OAuth 2.0 access token has expired,"
-                        . " and a refresh token is not available. Refresh tokens"
-                        . "are not returned for responses that were auto-approved."
+                        'The OAuth 2.0 access token has expired,'
+                        .' and a refresh token is not available. Refresh tokens'
+                        .'are not returned for responses that were auto-approved.'
                     );
                 }
                 $this->refreshToken($this->token['refresh_token']);
@@ -237,7 +243,7 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
 
         // Add the OAuth2 header to the request
         $request->setRequestHeaders(
-            ['Authorization' => 'Bearer ' . $this->token['access_token']]
+            ['Authorization' => 'Bearer '.$this->token['access_token']]
         );
 
         return $request;
@@ -247,6 +253,7 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
      * Fetches a fresh access token with the given refresh token.
      *
      * @param string $refreshToken
+     *
      * @return void
      */
     public function refreshToken($refreshToken)
@@ -256,7 +263,7 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
                 'client_id'     => $this->client->getClassConfig($this, 'client_id'),
                 'client_secret' => $this->client->getClassConfig($this, 'client_secret'),
                 'refresh_token' => $refreshToken,
-                'grant_type'    => 'refresh_token'
+                'grant_type'    => 'refresh_token',
             ]
         );
     }
@@ -265,6 +272,7 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
      * Fetches a fresh access token with a given assertion token.
      *
      * @param Google_Auth_AssertionCredentials $assertionCredentials optional.
+     *
      * @return void
      */
     public function refreshTokenWithAssertion($assertionCredentials = null)
@@ -307,7 +315,7 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
 
     private function refreshTokenRequest($params)
     {
-        $http    = new Google_Http_Request(
+        $http = new Google_Http_Request(
             $this->client,
             self::OAUTH2_TOKEN_URI,
             'POST',
@@ -321,16 +329,16 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
         if (200 == $code) {
             $token = json_decode($body, true);
             if ($token == null) {
-                throw new Google_Auth_Exception("Could not json decode the access token");
+                throw new Google_Auth_Exception('Could not json decode the access token');
             }
 
             if (!isset($token['access_token']) || !isset($token['expires_in'])) {
-                throw new Google_Auth_Exception("Invalid token format");
+                throw new Google_Auth_Exception('Invalid token format');
             }
 
             $this->token['access_token'] = $token['access_token'];
-            $this->token['expires_in']   = $token['expires_in'];
-            $this->token['created']      = time();
+            $this->token['expires_in'] = $token['expires_in'];
+            $this->token['created'] = time();
         } else {
             throw new Google_Auth_Exception("Error refreshing the OAuth2 token, message: '$body'", $code);
         }
@@ -340,16 +348,18 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
      * Revoke an OAuth2 access token or refresh token. This method will revoke the current access
      * token, if a token isn't provided.
      *
-     * @throws Google_Auth_Exception
      * @param string|null $token The token (access token or a refresh token) that should be revoked.
-     * @return boolean Returns True if the revocation was successful, otherwise False.
+     *
+     * @throws Google_Auth_Exception
+     *
+     * @return bool Returns True if the revocation was successful, otherwise False.
      */
     public function revokeToken($token = null)
     {
         if (!$token) {
             $token = $this->token['access_token'];
         }
-        $request  = new Google_Http_Request(
+        $request = new Google_Http_Request(
             $this->client,
             self::OAUTH2_REVOKE_URI,
             'POST',
@@ -357,7 +367,7 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
             "token=$token"
         );
         $response = $this->client->getIo()->makeRequest($request);
-        $code     = $response->getResponseHttpCode();
+        $code = $response->getResponseHttpCode();
         if ($code == 200) {
             $this->token = null;
 
@@ -399,19 +409,20 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
      * Retrieve and cache a certificates file.
      *
      * @param $url location
+     *
      * @return array certificates
      */
     public function retrieveCertsFromLocation($url)
     {
         // If we're retrieving a local file, just grab it.
-        if ("http" != substr($url, 0, 4)) {
+        if ('http' != substr($url, 0, 4)) {
             $file = file_get_contents($url);
             if ($file) {
                 return json_decode($file, true);
             } else {
                 throw new Google_Auth_Exception(
-                    "Failed to retrieve verification certificates: '" .
-                    $url . "'."
+                    "Failed to retrieve verification certificates: '".
+                    $url."'."
                 );
             }
         }
@@ -430,8 +441,8 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
             }
         }
         throw new Google_Auth_Exception(
-            "Failed to retrieve verification certificates: '" .
-            $request->getResponseBody() . "'.",
+            "Failed to retrieve verification certificates: '".
+            $request->getResponseBody()."'.",
             $request->getResponseHttpCode()
         );
     }
@@ -444,6 +455,7 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
      *
      * @param $id_token
      * @param $audience
+     *
      * @return Google_Auth_LoginTicket
      */
     public function verifyIdToken($id_token = null, $audience = null)
@@ -467,6 +479,7 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
      * @param $required_audience the expected consumer of the token
      * @param [$issuer] the expected issues, defaults to Google
      * @param [$max_expiry] the max lifetime of a token, defaults to MAX_TOKEN_LIFETIME_SECS
+     *
      * @return token information if valid, false if not
      */
     public function verifySignedJwtWithCerts(
@@ -481,24 +494,24 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
             $max_expiry = self::MAX_TOKEN_LIFETIME_SECS;
         }
 
-        $segments = explode(".", $jwt);
+        $segments = explode('.', $jwt);
         if (count($segments) != 3) {
             throw new Google_Auth_Exception("Wrong number of segments in token: $jwt");
         }
-        $signed    = $segments[0] . "." . $segments[1];
+        $signed = $segments[0].'.'.$segments[1];
         $signature = Google_Utils::urlSafeB64Decode($segments[2]);
 
         // Parse envelope.
         $envelope = json_decode(Google_Utils::urlSafeB64Decode($segments[0]), true);
         if (!$envelope) {
-            throw new Google_Auth_Exception("Can't parse token envelope: " . $segments[0]);
+            throw new Google_Auth_Exception("Can't parse token envelope: ".$segments[0]);
         }
 
         // Parse token
         $json_body = Google_Utils::urlSafeB64Decode($segments[1]);
-        $payload   = json_decode($json_body, true);
+        $payload = json_decode($json_body, true);
         if (!$payload) {
-            throw new Google_Auth_Exception("Can't parse token payload: " . $segments[1]);
+            throw new Google_Auth_Exception("Can't parse token payload: ".$segments[1]);
         }
 
         // Check signature
@@ -517,8 +530,8 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
 
         // Check issued-at timestamp
         $iat = 0;
-        if (array_key_exists("iat", $payload)) {
-            $iat = $payload["iat"];
+        if (array_key_exists('iat', $payload)) {
+            $iat = $payload['iat'];
         }
         if (!$iat) {
             throw new Google_Auth_Exception("No issue time in token: $json_body");
@@ -528,15 +541,15 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
         // Check expiration timestamp
         $now = time();
         $exp = 0;
-        if (array_key_exists("exp", $payload)) {
-            $exp = $payload["exp"];
+        if (array_key_exists('exp', $payload)) {
+            $exp = $payload['exp'];
         }
         if (!$exp) {
             throw new Google_Auth_Exception("No expiration time in token: $json_body");
         }
         if ($exp >= $now + $max_expiry) {
             throw new Google_Auth_Exception(
-                sprintf("Expiration time too far in future: %s", $json_body)
+                sprintf('Expiration time too far in future: %s', $json_body)
             );
         }
 
@@ -544,7 +557,7 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
         if ($now < $earliest) {
             throw new Google_Auth_Exception(
                 sprintf(
-                    "Token used too early, %s < %s: %s",
+                    'Token used too early, %s < %s: %s',
                     $now,
                     $earliest,
                     $json_body
@@ -554,7 +567,7 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
         if ($now > $latest) {
             throw new Google_Auth_Exception(
                 sprintf(
-                    "Token used too late, %s > %s: %s",
+                    'Token used too late, %s > %s: %s',
                     $now,
                     $latest,
                     $json_body
@@ -566,7 +579,7 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
         if ($issuer && $iss != $issuer) {
             throw new Google_Auth_Exception(
                 sprintf(
-                    "Invalid issuer, %s != %s: %s",
+                    'Invalid issuer, %s != %s: %s',
                     $iss,
                     $issuer,
                     $json_body
@@ -575,11 +588,11 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
         }
 
         // Check audience
-        $aud = $payload["aud"];
+        $aud = $payload['aud'];
         if ($aud != $required_audience) {
             throw new Google_Auth_Exception(
                 sprintf(
-                    "Wrong recipient, %s != %s:",
+                    'Wrong recipient, %s != %s:',
                     $aud,
                     $required_audience,
                     $json_body

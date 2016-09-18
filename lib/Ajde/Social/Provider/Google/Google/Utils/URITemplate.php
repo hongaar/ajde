@@ -23,67 +23,67 @@
 class Google_Utils_URITemplate
 {
     /**
-     * @var $operators array
-     * These are valid at the start of a template block to
-     * modify the way in which the variables inside are
-     * processed.
+     * @var array
+     *            These are valid at the start of a template block to
+     *            modify the way in which the variables inside are
+     *            processed.
      */
     private $operators = [
-        "+" => "reserved",
-        "/" => "segments",
-        "." => "dotprefix",
-        "#" => "fragment",
-        ";" => "semicolon",
-        "?" => "form",
-        "&" => "continuation"
+        '+' => 'reserved',
+        '/' => 'segments',
+        '.' => 'dotprefix',
+        '#' => 'fragment',
+        ';' => 'semicolon',
+        '?' => 'form',
+        '&' => 'continuation',
     ];
 
     /**
      * @var reserved array
-     * These are the characters which should not be URL encoded in reserved
-     * strings.
+     *               These are the characters which should not be URL encoded in reserved
+     *               strings.
      */
-    private $reserved        = [
-        "=",
-        ",",
-        "!",
-        "@",
-        "|",
-        ":",
-        "/",
-        "?",
-        "#",
-        "[",
-        "]",
-        "$",
-        "&",
+    private $reserved = [
+        '=',
+        ',',
+        '!',
+        '@',
+        '|',
+        ':',
+        '/',
+        '?',
+        '#',
+        '[',
+        ']',
+        '$',
+        '&',
         "'",
-        "(",
-        ")",
-        "*",
-        "+",
-        ";"
+        '(',
+        ')',
+        '*',
+        '+',
+        ';',
     ];
     private $reservedEncoded = [
-        "%3D",
-        "%2C",
-        "%21",
-        "%40",
-        "%7C",
-        "%3A",
-        "%2F",
-        "%3F",
-        "%23",
-        "%5B",
-        "%5D",
-        "%24",
-        "%26",
-        "%27",
-        "%28",
-        "%29",
-        "%2A",
-        "%2B",
-        "%3B"
+        '%3D',
+        '%2C',
+        '%21',
+        '%40',
+        '%7C',
+        '%3A',
+        '%2F',
+        '%3F',
+        '%23',
+        '%5B',
+        '%5D',
+        '%24',
+        '%26',
+        '%27',
+        '%28',
+        '%29',
+        '%2A',
+        '%2B',
+        '%3B',
     ];
 
     public function parse($string, array $parameters)
@@ -98,11 +98,11 @@ class Google_Utils_URITemplate
      */
     private function resolveNextSection($string, $parameters)
     {
-        $start = strpos($string, "{");
+        $start = strpos($string, '{');
         if ($start === false) {
             return $string;
         }
-        $end = strpos($string, "}");
+        $end = strpos($string, '}');
         if ($end === false) {
             return $string;
         }
@@ -119,36 +119,36 @@ class Google_Utils_URITemplate
         // If the first character is one of the reserved operators, it effects
         // the processing of the stream.
         if (isset($this->operators[$data[0]])) {
-            $op   = $this->operators[$data[0]];
+            $op = $this->operators[$data[0]];
             $data = substr($data, 1);
             switch ($op) {
-                case "reserved":
+                case 'reserved':
                     // Reserved means certain characters should not be URL encoded
-                    $data = $this->replaceVars($data, $parameters, ",", null, true);
+                    $data = $this->replaceVars($data, $parameters, ',', null, true);
                     break;
-                case "fragment":
+                case 'fragment':
                     // Comma separated with fragment prefix. Bare values only.
-                    $data = "#" . $this->replaceVars($data, $parameters, ",", null, true);
+                    $data = '#'.$this->replaceVars($data, $parameters, ',', null, true);
                     break;
-                case "segments":
+                case 'segments':
                     // Slash separated data. Bare values only.
-                    $data = "/" . $this->replaceVars($data, $parameters, "/");
+                    $data = '/'.$this->replaceVars($data, $parameters, '/');
                     break;
-                case "dotprefix":
+                case 'dotprefix':
                     // Dot separated data. Bare values only.
-                    $data = "." . $this->replaceVars($data, $parameters, ".");
+                    $data = '.'.$this->replaceVars($data, $parameters, '.');
                     break;
-                case "semicolon":
+                case 'semicolon':
                     // Semicolon prefixed and separated. Uses the key name
-                    $data = ";" . $this->replaceVars($data, $parameters, ";", "=", false, true);
+                    $data = ';'.$this->replaceVars($data, $parameters, ';', '=', false, true);
                     break;
-                case "form":
+                case 'form':
                     // Standard URL format. Uses the key name
-                    $data = "?" . $this->replaceVars($data, $parameters, "&", "=");
+                    $data = '?'.$this->replaceVars($data, $parameters, '&', '=');
                     break;
-                case "continuation":
+                case 'continuation':
                     // Standard URL, but with leading ampersand. Uses key name.
-                    $data = "&" . $this->replaceVars($data, $parameters, "&", "=");
+                    $data = '&'.$this->replaceVars($data, $parameters, '&', '=');
                     break;
             }
         } else {
@@ -157,26 +157,26 @@ class Google_Utils_URITemplate
         }
 
         // This is chops out the {...} and replaces with the new section.
-        return substr($string, 0, $start) . $data . substr($string, $end + 1);
+        return substr($string, 0, $start).$data.substr($string, $end + 1);
     }
 
     private function replaceVars(
         $section,
         $parameters,
-        $sep = ",",
+        $sep = ',',
         $combine = null,
         $reserved = false,
         $tag_empty = false
     ) {
-        if (strpos($section, ",") === false) {
+        if (strpos($section, ',') === false) {
             // If we only have a single value, we can immediately process.
             return $this->combine($section, $parameters, $combine, $reserved, $tag_empty);
         } else {
             // If we have multiple values, we need to split and loop over them.
             // Each is treated individually, then glued together with the
             // separator character.
-            $vars = explode(",", $section);
-            $ret  = [];
+            $vars = explode(',', $section);
+            $ret = [];
             foreach ($vars as $var) {
                 $ret[] = $this->combine($var, $parameters, $combine, $reserved, $tag_empty);
             }
@@ -196,7 +196,7 @@ class Google_Utils_URITemplate
                 return $key;
             } else {
                 // Otherwise we can return empty string.
-                $value = "";
+                $value = '';
             }
         }
         if ($reserved) {
@@ -209,6 +209,6 @@ class Google_Utils_URITemplate
         }
 
         // Else we combine the key name: foo=bar
-        return $key . $combine . $value;
+        return $key.$combine.$value;
     }
 }

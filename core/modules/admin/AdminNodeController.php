@@ -9,7 +9,7 @@ class AdminNodeController extends AdminController
 
     public function view()
     {
-        Ajde::app()->getDocument()->setTitle("Nodes");
+        Ajde::app()->getDocument()->setTitle('Nodes');
 
         return $this->render();
     }
@@ -24,9 +24,9 @@ class AdminNodeController extends AdminController
 
     public function quickJson()
     {
-        $parent    = Ajde::app()->getRequest()->getPostParam('parent');
-        $title     = Ajde::app()->getRequest()->getPostParam('title');
-        $due       = Ajde::app()->getRequest()->getPostParam('due');
+        $parent = Ajde::app()->getRequest()->getPostParam('parent');
+        $title = Ajde::app()->getRequest()->getPostParam('title');
+        $due = Ajde::app()->getRequest()->getPostParam('due');
         $allocated = Ajde::app()->getRequest()->getPostParam('allocated');
 
         $model = new NodeModel();
@@ -35,7 +35,7 @@ class AdminNodeController extends AdminController
             'parent'   => $parent,
             'title'    => $title,
             'user'     => UserModel::getLoggedIn()->getPK(),
-            'nodetype' => NodeModel::NODETYPE_ISSUE
+            'nodetype' => NodeModel::NODETYPE_ISSUE,
         ]);
 
         Ajde_Event::trigger($model, 'beforeCrudSave', []);
@@ -48,7 +48,7 @@ class AdminNodeController extends AdminController
 
         return [
             'success' => $success,
-            'message' => $success ? 'Node added' : 'Something went wrong'
+            'message' => $success ? 'Node added' : 'Something went wrong',
         ];
     }
 
@@ -56,8 +56,8 @@ class AdminNodeController extends AdminController
     {
         $id = Ajde::app()->getRequest()->getParam('id');
 
-        $meta  = Ajde::app()->getRequest()->getPostParam('meta');
-        $key   = Ajde::app()->getRequest()->getPostParam('key');
+        $meta = Ajde::app()->getRequest()->getPostParam('meta');
+        $key = Ajde::app()->getRequest()->getPostParam('key');
         $value = Ajde::app()->getRequest()->getPostParam('value');
 
         $model = new NodeModel();
@@ -74,7 +74,7 @@ class AdminNodeController extends AdminController
 
         return [
             'success' => true,
-            'message' => $success ? 'Node updated' : 'Something went wrong'
+            'message' => $success ? 'Node updated' : 'Something went wrong',
         ];
     }
 
@@ -85,7 +85,7 @@ class AdminNodeController extends AdminController
         $collection = new NodeCollection();
 
         // split search terms
-        $terms = explode(" ", $q);
+        $terms = explode(' ', $q);
 
         // search on node fields
         $searchGroup = new Ajde_Filter_WhereGroup(Ajde_Query::OP_OR);
@@ -102,7 +102,7 @@ class AdminNodeController extends AdminController
         $searchGroup = new Ajde_Filter_WhereGroup(Ajde_Query::OP_OR);
         foreach ($terms as $term) {
             $searchGroup->addFilter(new Ajde_Filter_Where('node_meta.value', Ajde_Filter::FILTER_LIKE,
-                '%' . $term . '%', Ajde_Query::OP_OR));
+                '%'.$term.'%', Ajde_Query::OP_OR));
         }
         $collection->addFilter($searchGroup);
         $collection->getQuery()->addGroupBy('node.id');
@@ -116,15 +116,14 @@ class AdminNodeController extends AdminController
         foreach ($collection as $node) {
             /* @var $node NodeModel */
             $suggestions[] = [
-                'value' => "<i class='" . $node->get('nodetype_icon') . "'></i> " . $node->displayField(),
-                'data'  => $node->getPK()
+                'value' => "<i class='".$node->get('nodetype_icon')."'></i> ".$node->displayField(),
+                'data'  => $node->getPK(),
             ];
         }
 
         return [
             'query'       => $q,
-            'suggestions' => $suggestions
+            'suggestions' => $suggestions,
         ];
     }
-
 }

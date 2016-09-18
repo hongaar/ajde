@@ -6,7 +6,7 @@ class SsoModel extends Ajde_Model
     {
         parent::__construct();
         $this->setEncryptedFields([
-            'data'
+            'data',
         ]);
     }
 }

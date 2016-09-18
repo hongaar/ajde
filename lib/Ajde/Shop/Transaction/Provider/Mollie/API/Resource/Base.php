@@ -29,6 +29,7 @@
  *     http://www.opensource.org/licenses/bsd-license.php
  * @author      Mollie B.V. <info@mollie.nl>
  * @copyright   Mollie B.V.
+ *
  * @link        https://www.mollie.nl
  */
 abstract class Mollie_API_Resource_Base
@@ -62,7 +63,7 @@ abstract class Mollie_API_Resource_Base
      */
     protected function getResourceName()
     {
-        $class_parts = explode("_", get_class($this));
+        $class_parts = explode('_', get_class($this));
 
         return mb_strtolower(end($class_parts));
     }
@@ -107,12 +108,12 @@ abstract class Mollie_API_Resource_Base
      */
     private function rest_list($rest_resource, $offset = 0, $limit = self::DEFAULT_LIMIT)
     {
-        $api_path = $rest_resource . "?" . http_build_query(["offset" => $offset, "count" => $limit]);
+        $api_path = $rest_resource.'?'.http_build_query(['offset' => $offset, 'count' => $limit]);
 
         $result = $this->performApiCall(self::REST_LIST, $api_path);
 
         /** @var Mollie_API_Object_List $collection */
-        $collection = $this->copy($result, new Mollie_API_Object_List);
+        $collection = $this->copy($result, new Mollie_API_Object_List());
 
         foreach ($result->data as $data_result) {
             $collection[] = $this->copy($data_result, $this->getResourceObject());
@@ -153,19 +154,20 @@ abstract class Mollie_API_Resource_Base
      * @param array $data An array containing details on the resource. Fields supported depend on the resource created.
      *
      * @throws Mollie_API_Exception
+     *
      * @return object
      */
     public function create(array $data = [])
     {
         $encoded = json_encode($data);
 
-        if (version_compare(phpversion(), "5.3.0", ">=")) {
+        if (version_compare(phpversion(), '5.3.0', '>=')) {
             if (json_last_error() != JSON_ERROR_NONE) {
-                throw new Mollie_API_Exception("Error encoding parameters into JSON: \"" . json_last_error() . "\".");
+                throw new Mollie_API_Exception('Error encoding parameters into JSON: "'.json_last_error().'".');
             }
         } else {
             if ($encoded === false) {
-                throw new Mollie_API_Exception("Error encoding parameters into JSON.");
+                throw new Mollie_API_Exception('Error encoding parameters into JSON.');
             }
         }
 
@@ -180,6 +182,7 @@ abstract class Mollie_API_Resource_Base
      * @param string $resource_id
      *
      * @throws Mollie_API_Exception
+     *
      * @return object
      */
     public function get($resource_id)
@@ -207,8 +210,9 @@ abstract class Mollie_API_Resource_Base
      * @param      $api_method
      * @param null $http_body
      *
-     * @return object
      * @throws Mollie_API_Exception
+     *
+     * @return object
      */
     protected function performApiCall($http_method, $api_method, $http_body = null)
     {

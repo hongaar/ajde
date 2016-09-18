@@ -9,29 +9,29 @@ class Ajde_Filter_Match extends Ajde_Filter
 
     public function __construct($fields, $against, $operator = Ajde_Query::OP_AND, $table = null)
     {
-        $this->_fields   = $fields;
-        $this->_against  = $against;
+        $this->_fields = $fields;
+        $this->_against = $against;
         $this->_operator = $operator;
-        $this->_table    = $table;
+        $this->_table = $table;
     }
 
     public function prepare(Ajde_Db_Table $table = null)
     {
         if (isset($this->_table)) {
-            $useTable = (string)$this->_table;
+            $useTable = (string) $this->_table;
         } else {
-            $useTable = (string)$table;
+            $useTable = (string) $table;
         }
-        $sql = 'MATCH (' . implode(', ', $this->_fields) . ') AGAINST (:' . spl_object_hash($this) . ')';
+        $sql = 'MATCH ('.implode(', ', $this->_fields).') AGAINST (:'.spl_object_hash($this).')';
 
         return [
             'where'  => [
                 'arguments' => [$sql, $this->_operator],
-                'values'    => [spl_object_hash($this) => $this->_against]
+                'values'    => [spl_object_hash($this) => $this->_against],
             ],
             'select' => [
-                'arguments' => [$sql . ' AS relevancy_' . $useTable]
-            ]
+                'arguments' => [$sql.' AS relevancy_'.$useTable],
+            ],
         ];
     }
 }

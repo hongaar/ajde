@@ -8,19 +8,19 @@ class Ajde_Config
     private $repository;
 
     /**
-     * TODO
+     * TODO.
      */
     public function __construct()
     {
         $this->repository = new Ajde_Config_Repository(CONFIG_DIR);
 
-        if ($this->repository->get("security.secret") === '_RANDOM_12_16_OR_32_CHAR_STRING_') {
+        if ($this->repository->get('security.secret') === '_RANDOM_12_16_OR_32_CHAR_STRING_') {
             Ajde_Dump::warn('Using unsafe secret: your app is insecure. See security.json');
         }
     }
 
     /**
-     * TODO
+     * TODO.
      *
      * @return Config
      */
@@ -28,15 +28,17 @@ class Ajde_Config
     {
         static $instance;
 
-        return $instance === null ? $instance = new self : $instance;
+        return $instance === null ? $instance = new self() : $instance;
     }
 
     /**
-     * TODO
+     * TODO.
      *
      * @param string $param
-     * @return mixed
+     *
      * @throws Ajde_Exception
+     *
+     * @return mixed
      */
     public static function get($param)
     {
@@ -46,7 +48,7 @@ class Ajde_Config
     }
 
     /**
-     * TODO
+     * TODO.
      *
      * @param string $param
      * @param mixed  $value
@@ -59,7 +61,7 @@ class Ajde_Config
     }
 
     /**
-     * TODO
+     * TODO.
      *
      * @return Ajde_Config_Repository
      */

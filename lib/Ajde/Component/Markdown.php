@@ -1,4 +1,5 @@
 <?php
+
 include 'Markdown/markdown.php';
 
 class Ajde_Component_Markdown extends Ajde_Component

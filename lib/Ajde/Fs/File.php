@@ -3,7 +3,7 @@
 class Ajde_Fs_File extends Ajde_Object_Static
 {
     const TYPE_EXTENSION = 'ext';
-    const TYPE_MIMETYPE  = 'mime';
+    const TYPE_MIMETYPE = 'mime';
 
     public static function getMimeType($filename)
     {
@@ -43,6 +43,6 @@ class Ajde_Fs_File extends Ajde_Object_Static
 
     private static function _mimetypes()
     {
-        return include "mimetypes.php";
+        return include 'mimetypes.php';
     }
 }

@@ -3,7 +3,6 @@
 class Ajde_Crud_Options_List_View extends Ajde_Crud_Options
 {
     /**
-     *
      * @return Ajde_Crud_Options_List
      */
     public function up($obj = false)
@@ -75,9 +74,10 @@ class Ajde_Crud_Options_List_View extends Ajde_Crud_Options
     }
 
     /**
-     * Sets the current page
+     * Sets the current page.
      *
-     * @param integer $page
+     * @param int $page
+     *
      * @return Ajde_Crud_Options_List_View
      */
     public function setPage($page)
@@ -86,9 +86,10 @@ class Ajde_Crud_Options_List_View extends Ajde_Crud_Options
     }
 
     /**
-     * Sets the page size
+     * Sets the page size.
      *
-     * @param integer $size
+     * @param int $size
+     *
      * @return Ajde_Crud_Options_List_View
      */
     public function setPageSize($size)
@@ -97,9 +98,10 @@ class Ajde_Crud_Options_List_View extends Ajde_Crud_Options
     }
 
     /**
-     * Sets a search term
+     * Sets a search term.
      *
      * @param string $q
+     *
      * @return Ajde_Crud_Options_List_View
      */
     public function setSearch($q)
@@ -108,9 +110,10 @@ class Ajde_Crud_Options_List_View extends Ajde_Crud_Options
     }
 
     /**
-     * Sets the ordering field
+     * Sets the ordering field.
      *
      * @param string $orderBy
+     *
      * @return Ajde_Crud_Options_List_View
      */
     public function setOrderBy($orderBy)
@@ -119,11 +122,13 @@ class Ajde_Crud_Options_List_View extends Ajde_Crud_Options
     }
 
     /**
-     * Sets the parent and sort fields for rendering a tree view
+     * Sets the parent and sort fields for rendering a tree view.
      *
      * @param string $parentField
      * @param string $sortField
+     *
      * @return Ajde_Crud_Options_List_View
+     *
      * @internal param string $orderBy
      */
     public function setTreeView($parentField, $sortField)
@@ -132,9 +137,10 @@ class Ajde_Crud_Options_List_View extends Ajde_Crud_Options
     }
 
     /**
-     * Sets the ordering direction
+     * Sets the ordering direction.
      *
      * @param string $dir (Ajde_Query::ORDER_ASC|Ajde_Query::ORDER_DESC)
+     *
      * @return Ajde_Crud_Options_List_View
      */
     public function setOrderDir($dir)
@@ -142,16 +148,13 @@ class Ajde_Crud_Options_List_View extends Ajde_Crud_Options
         return $this->_set('orderDir', $dir);
     }
 
-
-
-
-
     /** UI ELEMENTS **/
 
     /**
-     * Sets the view name
+     * Sets the view name.
      *
      * @param string $name
+     *
      * @return Ajde_Crud_Options_List_View
      */
     public function setName($name)
@@ -160,9 +163,10 @@ class Ajde_Crud_Options_List_View extends Ajde_Crud_Options
     }
 
     /**
-     * Sets the list view
+     * Sets the list view.
      *
      * @param enum $type ('grid'|'list')
+     *
      * @return Ajde_Crud_Options_List_View
      */
     public function setViewType($type)
@@ -171,9 +175,10 @@ class Ajde_Crud_Options_List_View extends Ajde_Crud_Options
     }
 
     /**
-     * Whether or not the filters are visible
+     * Whether or not the filters are visible.
      *
-     * @param boolean $visible
+     * @param bool $visible
+     *
      * @return Ajde_Crud_Options_List_View
      */
     public function setFilterVisible($visible)
@@ -182,9 +187,10 @@ class Ajde_Crud_Options_List_View extends Ajde_Crud_Options
     }
 
     /**
-     * Whether or not the filters can be toggled
+     * Whether or not the filters can be toggled.
      *
-     * @param boolean $disable
+     * @param bool $disable
+     *
      * @return Ajde_Crud_Options_List_View
      */
     public function setDisableFilter($disable)
@@ -193,9 +199,10 @@ class Ajde_Crud_Options_List_View extends Ajde_Crud_Options
     }
 
     /**
-     * Enable the main list filter for this field
+     * Enable the main list filter for this field.
      *
      * @param string $field
+     *
      * @return Ajde_Crud_Options_List_View
      */
     public function setMainFilter($field)
@@ -204,9 +211,10 @@ class Ajde_Crud_Options_List_View extends Ajde_Crud_Options
     }
 
     /**
-     * Sets a main filter grouper
+     * Sets a main filter grouper.
      *
      * @param string $field
+     *
      * @return Ajde_Crud_Options_List_View
      */
     public function setMainFilterGrouper($field)
@@ -215,10 +223,11 @@ class Ajde_Crud_Options_List_View extends Ajde_Crud_Options
     }
 
     /**
-     * Adds a filter
+     * Adds a filter.
      *
      * @param string $field
      * @param string $value
+     *
      * @return Ajde_Crud_Options_List_View
      */
     public function addFilter($field, $value)
@@ -226,7 +235,7 @@ class Ajde_Crud_Options_List_View extends Ajde_Crud_Options
         if (!$this->hasFilter()) {
             $this->setFilter([]);
         }
-        $filter         = $this->get('filter');
+        $filter = $this->get('filter');
         $filter[$field] = $value;
         $this->set('filter', $filter);
 

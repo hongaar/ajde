@@ -6,10 +6,10 @@ class Ajde_User_Autologon extends Ajde_Object_Singleton
     {
         static $instance;
 
-        return $instance === null ? $instance = new self : $instance;
+        return $instance === null ? $instance = new self() : $instance;
     }
 
-    static public function __bootstrap()
+    public static function __bootstrap()
     {
         if (Ajde_User::getLoggedIn()) {
             return true;

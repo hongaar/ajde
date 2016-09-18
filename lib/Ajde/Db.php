@@ -3,12 +3,12 @@
 class Ajde_Db extends Ajde_Object_Singleton
 {
     protected $_adapter = null;
-    protected $_tables  = null;
+    protected $_tables = null;
 
     const FIELD_TYPE_NUMERIC = 'numeric';
-    const FIELD_TYPE_TEXT    = 'text';
-    const FIELD_TYPE_ENUM    = 'enum';
-    const FIELD_TYPE_DATE    = 'date';
+    const FIELD_TYPE_TEXT = 'text';
+    const FIELD_TYPE_ENUM = 'enum';
+    const FIELD_TYPE_DATE = 'date';
     const FIELD_TYPE_SPATIAL = 'spatial';
 
     /**
@@ -18,21 +18,21 @@ class Ajde_Db extends Ajde_Object_Singleton
     {
         static $instance;
 
-        return $instance === null ? $instance = new self : $instance;
+        return $instance === null ? $instance = new self() : $instance;
     }
 
     protected function __construct()
     {
-        $adapterName = 'Ajde_Db_Adapter_' . ucfirst(config("database.adapter"));
-        $host        = config("database.host");
-        $db          = config("database.db");
-        $user        = config("database.user");
-        $password    = config("database.password");
+        $adapterName = 'Ajde_Db_Adapter_'.ucfirst(config('database.adapter'));
+        $host = config('database.host');
+        $db = config('database.db');
+        $user = config('database.user');
+        $password = config('database.password');
 
         // TODO Move DSN template to adapter
         $this->_adapter = new $adapterName([
-            'host' => $host,
-            'dbname' => $db
+            'host'   => $host,
+            'dbname' => $db,
         ], $user, $password);
     }
 
@@ -72,17 +72,17 @@ class Ajde_Db extends Ajde_Object_Singleton
         $commands = file_get_contents($filename);
 
         // delete comments
-        $lines    = explode("\n", $commands);
+        $lines = explode("\n", $commands);
         $commands = '';
         foreach ($lines as $line) {
             $line = trim($line);
             if ($line && !(substr($line, 0, 2) === '--')) {
-                $commands .= $line . "\n";
+                $commands .= $line."\n";
             }
         }
 
         // convert to array
-        $commands = explode(";" . PHP_EOL, $commands);
+        $commands = explode(';'.PHP_EOL, $commands);
 
         // run commands
         $total = $success = 0;
@@ -91,7 +91,7 @@ class Ajde_Db extends Ajde_Object_Singleton
                 try {
                     $success += ($this->getConnection()->query($command) === false ? 0 : 1);
                 } catch (Exception $e) {
-                    echo $e->getMessage() . "<br/>";
+                    echo $e->getMessage().'<br/>';
                 }
                 $total += 1;
             }
@@ -99,8 +99,8 @@ class Ajde_Db extends Ajde_Object_Singleton
 
         // return number of successful queries and total number of queries found
         return [
-            "success" => $success,
-            "total"   => $total
+            'success' => $success,
+            'total'   => $total,
         ];
     }
 
@@ -125,7 +125,7 @@ class Ajde_Db extends Ajde_Object_Singleton
 
     private function installFromVersion($version = 'v0')
     {
-        $sqlFiles = Ajde_Fs_Find::findFiles(DEV_DIR . 'db' . DIRECTORY_SEPARATOR, 'v*.sql');
+        $sqlFiles = Ajde_Fs_Find::findFiles(DEV_DIR.'db'.DIRECTORY_SEPARATOR, 'v*.sql');
         usort($sqlFiles, [$this, 'versionSort']);
         foreach ($sqlFiles as $sqlFile) {
             $sqlFileVersion = pathinfo($sqlFile, PATHINFO_FILENAME);
@@ -142,13 +142,13 @@ class Ajde_Db extends Ajde_Object_Singleton
 
     private function updateVersion($version = AJDE_VERSION)
     {
-        $this->getConnection()->query("UPDATE ajde SET v = '" . $version . "' WHERE k = 'version' LIMIT 1");
+        $this->getConnection()->query("UPDATE ajde SET v = '".$version."' WHERE k = 'version' LIMIT 1");
     }
 
     public function install()
     {
         if ($this->isInstalled()) {
-            die("DB already installed");
+            die('DB already installed');
         }
 
         $this->installFromVersion();

@@ -1,4 +1,5 @@
 <?php
+
 require_once 'ShopController.php';
 
 class ShopCartController extends ShopController
@@ -8,7 +9,7 @@ class ShopCartController extends ShopController
         'edit',
         'add',
         'widget',
-        'switchUser'
+        'switchUser',
     ];
 
     public function view()
@@ -23,11 +24,11 @@ class ShopCartController extends ShopController
 
         if (Ajde::app()->getRequest()->hasPostParam('update')) {
             $qtyArray = Ajde::app()->getRequest()->getPostParam('qty');
-            $item     = new CartItemModel();
+            $item = new CartItemModel();
             foreach ($qtyArray as $itemId => $qty) {
                 $item->loadByPK($itemId);
-                if ($item->cart == (string)$cart) {
-                    if ((int)$qty == 0) {
+                if ($item->cart == (string) $cart) {
+                    if ((int) $qty == 0) {
                         $item->delete();
                     } else {
                         $item->qty = $qty;
@@ -65,7 +66,7 @@ class ShopCartController extends ShopController
         Ajde_Shop_Cart_Merge::mergeUserToClient();
         $user = $this->getLoggedInUser();
         $user->logout();
-        $this->redirect('user/logon?returnto=' . Ajde::app()->getRequest()->getParam('returnto', ''));
+        $this->redirect('user/logon?returnto='.Ajde::app()->getRequest()->getParam('returnto', ''));
     }
 
     public function addHtml()
@@ -87,9 +88,9 @@ class ShopCartController extends ShopController
         $cart = new CartModel();
         $cart->loadCurrent();
 
-        $entity    = Ajde::app()->getRequest()->getPostParam('entity');
+        $entity = Ajde::app()->getRequest()->getPostParam('entity');
         $entity_id = Ajde::app()->getRequest()->getPostParam('entity_id');
-        $qty       = Ajde::app()->getRequest()->getPostParam('qty');
+        $qty = Ajde::app()->getRequest()->getPostParam('qty');
 
         $cart->addItem($entity, $entity_id, $qty);
 
@@ -105,8 +106,7 @@ class ShopCartController extends ShopController
 
         return [
             'entity' => $array[0],
-            'id'     => $array[1]
+            'id'     => $array[1],
         ];
     }
-
 }

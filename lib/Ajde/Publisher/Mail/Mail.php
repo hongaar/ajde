@@ -13,11 +13,11 @@ class Ajde_Publisher_Mail extends Ajde_Publisher
     {
         $mailer = new Ajde_Mailer();
 
-        $mailer->From     = config("app.email");
-        $mailer->FromName = config("app.title");
-        $mailer->Subject  = $this->getTitle();
-        $mailer->Body     = $this->getMessage() . PHP_EOL . PHP_EOL . $this->getUrl();
-        $mailer->AltBody  = strip_tags($mailer->Body);
+        $mailer->From = config('app.email');
+        $mailer->FromName = config('app.title');
+        $mailer->Subject = $this->getTitle();
+        $mailer->Body = $this->getMessage().PHP_EOL.PHP_EOL.$this->getUrl();
+        $mailer->AltBody = strip_tags($mailer->Body);
         $mailer->isHTML(true);
 
         $count = 0;
@@ -29,7 +29,6 @@ class Ajde_Publisher_Mail extends Ajde_Publisher
             }
         }
 
-        return "javascript:alert('Message sent as e-mail to " . $count . " recipients');";
+        return "javascript:alert('Message sent as e-mail to ".$count." recipients');";
     }
-
 }

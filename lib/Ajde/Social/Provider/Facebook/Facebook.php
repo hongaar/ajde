@@ -1,6 +1,6 @@
 <?php
 
-require_once "Facebook.lib.php";
+require_once 'Facebook.lib.php';
 
 class Ajde_Social_Provider_Facebook extends Facebook
 {
@@ -9,8 +9,8 @@ class Ajde_Social_Provider_Facebook extends Facebook
 
     public function __construct($config = [])
     {
-        $this->_key    = config("services.facebook.key");
-        $this->_secret = config("services.facebook.secret");
+        $this->_key = config('services.facebook.key');
+        $this->_secret = config('services.facebook.secret');
 
         $config = array_merge($config, [
             'appId'  => $this->_key,

@@ -4,7 +4,7 @@ class UserSsoController extends Ajde_User_Controller
 {
     protected $_allowedActions = [
         'login',
-        'callback'
+        'callback',
     ];
 
     /**
@@ -18,13 +18,13 @@ class UserSsoController extends Ajde_User_Controller
         Ajde_Cache::getInstance()->disable();
 
         $this->_providername = Ajde::app()->getRequest()->getParam('provider', false);
-        $sso                 = config('ssoProviders');
+        $sso = config('ssoProviders');
         if (!$this->_providername || !in_array($this->_providername, $sso)) {
             Ajde_Http_Response::redirectNotFound();
         }
 
-        $classname       = 'Ajde_User_Sso_' . ucfirst($this->_providername);
-        $this->_provider = new $classname;
+        $classname = 'Ajde_User_Sso_'.ucfirst($this->_providername);
+        $this->_provider = new $classname();
 
         return parent::beforeInvoke();
     }
@@ -32,7 +32,7 @@ class UserSsoController extends Ajde_User_Controller
     public function login()
     {
         $returnto = Ajde::app()->getRequest()->getParam('returnto', '');
-        $url      = $this->_provider->getAuthenticationURL($returnto);
+        $url = $this->_provider->getAuthenticationURL($returnto);
         $this->redirect($url);
     }
 
@@ -52,7 +52,7 @@ class UserSsoController extends Ajde_User_Controller
         }
 
         if (!$this->_provider->isAuthenticated()) {
-            Ajde_Session_Flash::alert('Permission request cancelled for ' . ucfirst($this->_providername));
+            Ajde_Session_Flash::alert('Permission request cancelled for '.ucfirst($this->_providername));
             $this->redirect($returnto);
 
             return false;
@@ -61,7 +61,7 @@ class UserSsoController extends Ajde_User_Controller
         // We already have a user for this SSO, log that user in and redirect
         if ($user = $this->_provider->getUser()) {
             if ($this->getLoggedInUser()) {
-                Ajde_Session_Flash::alert(ucfirst($this->_providername) . ' user ' . $this->_provider->getUsernameSuggestion() . ' is already connected to another account.');
+                Ajde_Session_Flash::alert(ucfirst($this->_providername).' user '.$this->_provider->getUsernameSuggestion().' is already connected to another account.');
                 $this->redirect($returnto);
             } else {
                 $user->login();
@@ -79,7 +79,7 @@ class UserSsoController extends Ajde_User_Controller
                     'avatar'   => $this->_provider->getAvatarSuggestion(),
                     'profile'  => $this->_provider->getProfileSuggestion(),
                     'uid'      => $this->_provider->getUidHash(),
-                    'data'     => serialize($this->_provider->getData())
+                    'data'     => serialize($this->_provider->getData()),
                 ]);
                 $sso->insert();
                 $user->copyAvatarFromSso($sso);
@@ -87,13 +87,13 @@ class UserSsoController extends Ajde_User_Controller
                 // No match found, redirect to register page
             } else {
                 $username = $this->_provider->getUsernameSuggestion();
-                $email    = $this->_provider->getEmailSuggestion();
+                $email = $this->_provider->getEmailSuggestion();
                 $fullname = $this->_provider->getNameSuggestion();
-                $this->redirect('user/register?provider=' . $this->_providername .
-                    '&username=' . esc($username) .
-                    '&email=' . esc($email) .
-                    '&fullname=' . esc($fullname) .
-                    '&hidepassword=1&returnto=' . $returnto);
+                $this->redirect('user/register?provider='.$this->_providername.
+                    '&username='.esc($username).
+                    '&email='.esc($email).
+                    '&fullname='.esc($fullname).
+                    '&hidepassword=1&returnto='.$returnto);
             }
         }
     }
@@ -106,15 +106,15 @@ class UserSsoController extends Ajde_User_Controller
             $sso = new SsoModel();
             if ($sso->loadByFields([
                 'user'     => $user->getPK(),
-                'provider' => $this->_providername
+                'provider' => $this->_providername,
             ])
             ) {
                 $this->_provider->destroySession();
                 $sso->delete();
-                Ajde_Session_Flash::alert('Disconnected from ' . ucfirst($this->_providername));
+                Ajde_Session_Flash::alert('Disconnected from '.ucfirst($this->_providername));
                 $this->redirect($returnto);
             } else {
-                Ajde_Session_Flash::alert('Could not disconnect from ' . ucfirst($this->_providername));
+                Ajde_Session_Flash::alert('Could not disconnect from '.ucfirst($this->_providername));
                 $this->redirect($returnto);
             }
         }

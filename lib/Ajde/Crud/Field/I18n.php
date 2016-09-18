@@ -7,17 +7,17 @@ class Ajde_Crud_Field_I18n extends Ajde_Crud_Field_Enum
     public function __construct(Ajde_Crud $crud, $fieldOptions)
     {
         parent::__construct($crud, $fieldOptions);
-        $this->set('default', config("i18n.default"));
+        $this->set('default', config('i18n.default'));
     }
 
     public function getFieldsToClone()
     {
-        return ($this->has('cloneFields') ? (array)$this->get('cloneFields') : []);
+        return $this->has('cloneFields') ? (array) $this->get('cloneFields') : [];
     }
 
     public function getValues()
     {
-        $lang  = Ajde_Lang::getInstance();
+        $lang = Ajde_Lang::getInstance();
         $langs = $lang->getAvailableNiceNames();
 
         return $langs;
@@ -25,7 +25,7 @@ class Ajde_Crud_Field_I18n extends Ajde_Crud_Field_Enum
 
     public function getAvailableTranslations()
     {
-        $lang  = Ajde_Lang::getInstance();
+        $lang = Ajde_Lang::getInstance();
         $langs = $lang->getAvailableNiceNames();
 
         $model = $this->_crud->getModel();
@@ -56,7 +56,7 @@ class Ajde_Crud_Field_I18n extends Ajde_Crud_Field_Enum
 
     public function _getHtmlAttributes()
     {
-        $attributes          = [];
+        $attributes = [];
         $attributes['class'] = 'lang';
 
         return $attributes;

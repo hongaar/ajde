@@ -3,7 +3,6 @@
 class NodeController extends Ajde_Controller
 {
     /**
-     *
      * @var NodeModel
      */
     protected $node;
@@ -11,8 +10,8 @@ class NodeController extends Ajde_Controller
     public function getCanonicalUrl()
     {
         if ($this->node->hasLoaded()) {
-            return config("i18n.enabled") ?
-                Ajde_Lang::getInstance()->getShortLang() . '/' . $this->node->getSlug() :
+            return config('i18n.enabled') ?
+                Ajde_Lang::getInstance()->getShortLang().'/'.$this->node->getSlug() :
                 $this->node->getSlug();
         }
 
@@ -70,7 +69,7 @@ class NodeController extends Ajde_Controller
 
         // set template
         $nodetype = $node->getNodetype();
-        $action   = str_replace(' ', '_', strtolower($nodetype->get($nodetype->getDisplayField())));
+        $action = str_replace(' ', '_', strtolower($nodetype->get($nodetype->getDisplayField())));
         $this->setAction($action);
 
         // featured image
@@ -104,10 +103,10 @@ class NodeController extends Ajde_Controller
             'additional_media',
             'children',
             'published',
-            'related_nodes'
+            'related_nodes',
         ];
-        $showOnlyWhen       = [];
-        $nodetypes          = new NodetypeCollection();
+        $showOnlyWhen = [];
+        $nodetypes = new NodetypeCollection();
         foreach ($nodetypes as $nodetype) {
             foreach ($showOnlyWhenFields as $field) {
                 if (!isset($showOnlyWhen[$field])) {
@@ -234,7 +233,7 @@ class NodeController extends Ajde_Controller
                     ->setType('i18n')
                     ->setCloneFields([
                         'nodetype',
-                        'media'
+                        'media',
                     ])
                     ->up()
                 ->up()
@@ -313,7 +312,7 @@ class NodeController extends Ajde_Controller
         $decorator->setActiveBlock(1);
         $decorator->setOptions($options);
         $decorator->decorateInputs('nodetype_meta', 'nodetype', 'sort', 'nodetype', [
-            new Ajde_Filter_Where('target', Ajde_Filter::FILTER_EQUALS, 'node')
+            new Ajde_Filter_Where('target', Ajde_Filter::FILTER_EQUALS, 'node'),
         ]);
 
         if (Ajde::app()->getRequest()->has('new')) {
@@ -324,9 +323,9 @@ class NodeController extends Ajde_Controller
 
             if (!UserModel::isAdmin()) {
                 $currentUser = UserModel::getLoggedIn();
-                $subquery    = "(SELECT user_node.user FROM user_node WHERE user_node.node IN (SELECT user_node.node FROM user_node WHERE user_node.user = " . (int)$currentUser->getPK() . " GROUP BY user_node.node))";
+                $subquery = '(SELECT user_node.user FROM user_node WHERE user_node.node IN (SELECT user_node.node FROM user_node WHERE user_node.user = '.(int) $currentUser->getPK().' GROUP BY user_node.node))';
                 $userFilters = [
-                    new Ajde_Filter_Where('user.id', Ajde_Filter::FILTER_IN, new Ajde_Db_Function($subquery))
+                    new Ajde_Filter_Where('user.id', Ajde_Filter::FILTER_IN, new Ajde_Db_Function($subquery)),
                 ];
                 $options->selectFields()->selectField('user')->setAdvancedFilter($userFilters);
             }
