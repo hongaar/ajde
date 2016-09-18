@@ -538,6 +538,8 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
         foreach ($collection as $item) {
             $this->add($item);
         }
+
+        return $this;
     }
 
     public function deleteAll()

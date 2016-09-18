@@ -4,7 +4,7 @@ class Ajde_Resource_Public extends Ajde_Resource
 {
     public function __construct($type, $filename, $arguments = '')
     {
-        $url = ASSETS_DIR . $type . '/' . $filename;
+        $url = ASSETS_URI . $type . '/' . $filename;
         $this->setUrl($url);
         $this->setArguments($arguments);
         parent::__construct($type);
