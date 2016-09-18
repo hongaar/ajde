@@ -3,7 +3,6 @@
 class Ajde_Crud_Options_List extends Ajde_Crud_Options
 {
     /**
-     *
      * @return Ajde_Crud_Options
      */
     public function up($obj = false)
@@ -16,7 +15,6 @@ class Ajde_Crud_Options_List extends Ajde_Crud_Options
     // =========================================================================
 
     /**
-     *
      * @return Ajde_Crud_Options_List_Buttons
      */
     public function selectButtons()
@@ -25,7 +23,6 @@ class Ajde_Crud_Options_List extends Ajde_Crud_Options
     }
 
     /**
-     *
      * @return Ajde_Crud_Options_List_View
      */
     public function selectView()
@@ -38,9 +35,10 @@ class Ajde_Crud_Options_List extends Ajde_Crud_Options
     // =========================================================================
 
     /**
-     * Set fieldname to set as main column in listview
+     * Set fieldname to set as main column in listview.
      *
      * @param string $main
+     *
      * @return Ajde_Crud_Options_List
      */
     public function setMain($fieldname)
@@ -49,9 +47,10 @@ class Ajde_Crud_Options_List extends Ajde_Crud_Options
     }
 
     /**
-     * Show the search box
+     * Show the search box.
      *
-     * @param boolean $show
+     * @param bool $show
+     *
      * @return Ajde_Crud_Options_List
      */
     public function setSearch($show)
@@ -60,9 +59,10 @@ class Ajde_Crud_Options_List extends Ajde_Crud_Options
     }
 
     /**
-     * Shows the column names
+     * Shows the column names.
      *
-     * @param boolean $show
+     * @param bool $show
+     *
      * @return Ajde_Crud_Options_List
      */
     public function setShowColumnNames($show)
@@ -71,9 +71,10 @@ class Ajde_Crud_Options_List extends Ajde_Crud_Options
     }
 
     /**
-     * Shows the table header
+     * Shows the table header.
      *
-     * @param boolean $show
+     * @param bool $show
+     *
      * @return Ajde_Crud_Options_List
      */
     public function setShowHeader($show)
@@ -82,9 +83,10 @@ class Ajde_Crud_Options_List extends Ajde_Crud_Options
     }
 
     /**
-     * Shows the table toolbar
+     * Shows the table toolbar.
      *
-     * @param boolean $show
+     * @param bool $show
+     *
      * @return Ajde_Crud_Options_List
      */
     public function setShowToolbar($show)
@@ -93,9 +95,10 @@ class Ajde_Crud_Options_List extends Ajde_Crud_Options
     }
 
     /**
-     * Enables the export button
+     * Enables the export button.
      *
-     * @param boolean $show
+     * @param bool $show
+     *
      * @return Ajde_Crud_Options_List
      */
     public function setAllowExport($allow)
@@ -104,9 +107,10 @@ class Ajde_Crud_Options_List extends Ajde_Crud_Options
     }
 
     /**
-     * Shows the table header
+     * Shows the table header.
      *
-     * @param boolean $show
+     * @param bool $show
+     *
      * @return Ajde_Crud_Options_List
      */
     public function setShowFooter($show)
@@ -115,9 +119,10 @@ class Ajde_Crud_Options_List extends Ajde_Crud_Options
     }
 
     /**
-     * Single click on table row goes into edit mode
+     * Single click on table row goes into edit mode.
      *
-     * @param boolean $singleClick
+     * @param bool $singleClick
+     *
      * @return Ajde_Crud_Options_List
      */
     public function setSingleClickEdits($singleClick)
@@ -126,9 +131,10 @@ class Ajde_Crud_Options_List extends Ajde_Crud_Options
     }
 
     /**
-     * Sets which fields to show
+     * Sets which fields to show.
      *
      * @param array $fields
+     *
      * @return Ajde_Crud_Options_List
      */
     public function setShow($fields)
@@ -137,9 +143,10 @@ class Ajde_Crud_Options_List extends Ajde_Crud_Options
     }
 
     /**
-     * Sets a function which generates the row class
+     * Sets a function which generates the row class.
      *
      * @param array $fields
+     *
      * @return Ajde_Crud_Options_List
      */
     public function setRowClassFunction($modelFunction)
@@ -148,9 +155,10 @@ class Ajde_Crud_Options_List extends Ajde_Crud_Options
     }
 
     /**
-     * Sets which fields to show in grid view
+     * Sets which fields to show in grid view.
      *
      * @param array $fields
+     *
      * @return Ajde_Crud_Options_List
      */
     public function setGridShow($fields)
@@ -159,10 +167,11 @@ class Ajde_Crud_Options_List extends Ajde_Crud_Options
     }
 
     /**
-     * Sets thumbnail dimensions of images
+     * Sets thumbnail dimensions of images.
      *
      * @param type $width
      * @param type $height
+     *
      * @return Ajde_Crud_Options_List
      */
     public function setThumbDim($width, $height)
@@ -171,9 +180,10 @@ class Ajde_Crud_Options_List extends Ajde_Crud_Options
     }
 
     /**
-     * Sets info panel function
+     * Sets info panel function.
      *
      * @param string $function
+     *
      * @return Ajde_Crud_Options_List
      */
     public function setPanelFunction($function)

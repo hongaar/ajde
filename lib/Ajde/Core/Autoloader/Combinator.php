@@ -10,8 +10,8 @@ class Ajde_Core_Autoloader_Combinator
         $source_contents = file_get_contents($source_contents);
 
         $contents = str_replace(
-            "<?php",
-            "",
+            '<?php',
+            '',
             $source_contents
         );
 
@@ -31,7 +31,7 @@ class Ajde_Core_Autoloader_Combinator
 
         if ($return === false) {
             var_dump(self::php_syntax_error($contents));
-            throw new Ajde_Exception("Dynamic class creation of " . $class . " failed");
+            throw new Ajde_Exception('Dynamic class creation of '.$class.' failed');
         }
     }
 
@@ -39,15 +39,17 @@ class Ajde_Core_Autoloader_Combinator
      * @see http://stackoverflow.com/a/3224985/938297
      *
      * Check the syntax of some PHP code.
+     *
      * @param string $code PHP code to check.
-     * @return boolean|array If false, then check was successful, otherwise an array(message,line) of errors is
-     *                     returned.
+     *
+     * @return bool|array If false, then check was successful, otherwise an array(message,line) of errors is
+     *                    returned.
      */
     public static function php_syntax_error($code)
     {
-        $braces   = 0;
+        $braces = 0;
         $inString = 0;
-        foreach (token_get_all('<?php ' . $code) as $token) {
+        foreach (token_get_all('<?php '.$code) as $token) {
             if (is_array($token)) {
                 switch ($token[0]) {
                     case T_CURLY_OPEN:
@@ -93,7 +95,7 @@ class Ajde_Core_Autoloader_Combinator
             }
         }
         $inString = @ini_set('log_errors', false);
-        $token    = @ini_set('display_errors', true);
+        $token = @ini_set('display_errors', true);
         ob_start();
         $braces || $code = "if(0){{$code}\n}";
         if (eval($code) === false) {
@@ -106,10 +108,10 @@ class Ajde_Core_Autoloader_Combinator
             $code = ob_get_clean();
             $code = strip_tags($code);
             if (preg_match("'syntax error, (.+) in .+ on line \d+)$'s", $code, $code)) {
-                $code[2] = (int)$code[2];
-                $code    = $code[2] <= $braces
+                $code[2] = (int) $code[2];
+                $code = $code[2] <= $braces
                     ? [$code[1], $code[2]]
-                    : ['unexpected $end' . substr($code[1], 14), $braces];
+                    : ['unexpected $end'.substr($code[1], 14), $braces];
             } else {
                 $code = ['syntax error', 0];
             }

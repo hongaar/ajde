@@ -18,7 +18,7 @@ class UserModel extends Ajde_User
             'zipcode',
             'city',
             'region',
-            'country'
+            'country',
         ]);
     }
 
@@ -66,11 +66,11 @@ class UserModel extends Ajde_User
             // extract filename (without extension)
             $basename = basename(parse_url($this->get($fieldName), PHP_URL_PATH));
             $filename = preg_replace('/[^A-Za-z0-9_\-]/', '_',
-                    $this->get($this->usernameField)) . '_' . pathinfo($basename, PATHINFO_FILENAME);
+                    $this->get($this->usernameField)).'_'.pathinfo($basename, PATHINFO_FILENAME);
 
             // save to tmp directory
-            $tmp_path = TMP_DIR . $filename;
-            $fh       = fopen($tmp_path, 'wb');
+            $tmp_path = TMP_DIR.$filename;
+            $fh = fopen($tmp_path, 'wb');
             fwrite($fh, $image);
             fclose($fh);
 
@@ -84,17 +84,17 @@ class UserModel extends Ajde_User
             $extension = Ajde_Fs_File::getExtensionFromMime($mimeType);
 
             // don't overwrite previous files that were uploaded
-            while (is_file(LOCAL_ROOT . AVATAR_DIR . $filename . '.' . $extension)) {
+            while (is_file(LOCAL_ROOT.AVATAR_DIR.$filename.'.'.$extension)) {
                 $filename .= rand(10, 99);
             }
 
             // save to avatar directory
-            $path = AVATAR_DIR . $filename . '.' . $extension;
-            $fh   = fopen($path, 'wb');
+            $path = AVATAR_DIR.$filename.'.'.$extension;
+            $fh = fopen($path, 'wb');
             fwrite($fh, $image);
             fclose($fh);
 
-            $this->set($fieldName, $filename . '.' . $extension);
+            $this->set($fieldName, $filename.'.'.$extension);
         }
     }
 
@@ -108,7 +108,7 @@ class UserModel extends Ajde_User
 
     public function emailLink()
     {
-        return '<a href="mailto:' . esc($this->getEmail()) . '">' . esc($this->getEmail()) . '</a>';
+        return '<a href="mailto:'.esc($this->getEmail()).'">'.esc($this->getEmail()).'</a>';
     }
 
     public function parseForCrud(Ajde_Crud $crud)
@@ -130,7 +130,7 @@ class UserModel extends Ajde_User
     {
         if ($this->hasNotEmpty($this->passwordField)) {
             $password = $this->get($this->passwordField);
-            $hash     = $this->createHash($password);
+            $hash = $this->createHash($password);
             $this->set($this->passwordField, $hash);
         }
 
@@ -141,11 +141,11 @@ class UserModel extends Ajde_User
 
     public function sendResetMail($hash)
     {
-        $resetLink = config("app.rootUrl") . 'user/reset?h=' . $hash;
+        $resetLink = config('app.rootUrl').'user/reset?h='.$hash;
 
         $mailer = new Ajde_Mailer();
         $mailer->sendUsingModel('user_reset_link', $this->getEmail(), $this->getFullname(), [
-            'resetlink' => $resetLink
+            'resetlink' => $resetLink,
         ]);
     }
 
@@ -158,7 +158,7 @@ class UserModel extends Ajde_User
     public function displayAvatar($width = 90, $class = '')
     {
         if ($this->hasNotEmpty('avatar')) {
-            return Ajde_Component_Image::getImageTag(AVATAR_DIR . $this->getAvatar(), $width, $width, true, $class);
+            return Ajde_Component_Image::getImageTag(AVATAR_DIR.$this->getAvatar(), $width, $width, true, $class);
         } else {
             return $this->displayGravatar($width, $class);
         }

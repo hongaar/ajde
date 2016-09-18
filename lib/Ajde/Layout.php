@@ -7,7 +7,7 @@ class Ajde_Layout extends Ajde_Template
         $this->setName($name);
         $this->setStyle($style);
 
-        $base   = LAYOUT_DIR . $this->getName() . DIRECTORY_SEPARATOR;
+        $base = LAYOUT_DIR.$this->getName().DIRECTORY_SEPARATOR;
         $action = $this->getStyle();
         if (!$format) {
             if ((Ajde_Http_Request::isAjax() && $this->exist($base, $action, 'ajax'))
@@ -27,12 +27,12 @@ class Ajde_Layout extends Ajde_Template
 
     public function setName($name)
     {
-        $this->set("name", $name);
+        $this->set('name', $name);
     }
 
     public function setStyle($style)
     {
-        $this->set("style", $style);
+        $this->set('style', $style);
     }
 
     public function getName()
@@ -67,6 +67,6 @@ class Ajde_Layout extends Ajde_Template
 
     public function requireTimeoutWarning()
     {
-        $this->requireJs('core.timeout', 'html', LAYOUT_DIR . 'admin/');
+        $this->requireJs('core.timeout', 'html', LAYOUT_DIR.'admin/');
     }
 }

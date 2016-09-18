@@ -2,35 +2,35 @@
 
 class Ajde_Query extends Ajde_Object_Standard
 {
-    const ORDER_ASC  = 'ASC';
+    const ORDER_ASC = 'ASC';
     const ORDER_DESC = 'DESC';
 
     const OP_AND = 'AND';
-    const OP_OR  = 'OR';
+    const OP_OR = 'OR';
 
     const JOIN_INNER = 'INNER';
-    const JOIN_LEFT  = 'LEFT';
+    const JOIN_LEFT = 'LEFT';
 
-    public $select   = [];
+    public $select = [];
     public $distinct = false;
-    public $from     = [];
-    public $where    = [];
-    public $having   = [];
-    public $join     = [];
-    public $groupBy  = [];
-    public $orderBy  = [];
-    public $limit    = ['start' => null, 'count' => null];
+    public $from = [];
+    public $where = [];
+    public $having = [];
+    public $join = [];
+    public $groupBy = [];
+    public $orderBy = [];
+    public $limit = ['start' => null, 'count' => null];
 
     public function reset()
     {
-        $this->select  = [];
-        $this->from    = [];
-        $this->where   = [];
-        $this->having  = [];
-        $this->join    = [];
+        $this->select = [];
+        $this->from = [];
+        $this->where = [];
+        $this->having = [];
+        $this->join = [];
         $this->groupBy = [];
         $this->orderBy = [];
-        $this->limit   = ['start' => null, 'count' => null];
+        $this->limit = ['start' => null, 'count' => null];
     }
 
     public function addSelect($select)
@@ -40,7 +40,7 @@ class Ajde_Query extends Ajde_Object_Standard
 
     public function setDistinct($distinct)
     {
-        $this->distinct = (boolean)$distinct;
+        $this->distinct = (bool) $distinct;
     }
 
     public function addFrom($from)
@@ -68,7 +68,7 @@ class Ajde_Query extends Ajde_Object_Standard
         $direction = strtoupper($direction);
         if (!in_array($direction, [self::ORDER_ASC, self::ORDER_DESC])) {
             // TODO:
-            throw new Ajde_Exception('Collection ordering direction "' . $direction . '" not valid');
+            throw new Ajde_Exception('Collection ordering direction "'.$direction.'" not valid');
         }
         $this->orderBy[] = ['field' => $field, 'direction' => $direction];
     }
@@ -80,19 +80,19 @@ class Ajde_Query extends Ajde_Object_Standard
 
     public function limit($count, $start = 0)
     {
-        $this->limit = ['count' => (int)$count, 'start' => (int)$start];
+        $this->limit = ['count' => (int) $count, 'start' => (int) $start];
     }
 
     public function getSql()
     {
-        $sql      = '';
+        $sql = '';
         $distinct = $this->distinct ? 'DISTINCT ' : '';
 
         // SELECT
         if (empty($this->select)) {
-            $sql .= 'SELECT ' . $distinct . '*';
+            $sql .= 'SELECT '.$distinct.'*';
         } else {
-            $sql .= 'SELECT ' . $distinct . implode(', ', $this->select);
+            $sql .= 'SELECT '.$distinct.implode(', ', $this->select);
         }
 
         // FROM
@@ -100,13 +100,13 @@ class Ajde_Query extends Ajde_Object_Standard
             // TODO:
             throw new Ajde_Exception('FROM clause can not be empty in query');
         } else {
-            $sql .= ' FROM ' . implode(', ', $this->from);
+            $sql .= ' FROM '.implode(', ', $this->from);
         }
 
         // JOIN
         if (!empty($this->join)) {
             foreach ($this->join as $join) {
-                $sql .= ' ' . $join['type'] . ' JOIN ' . $join['sql'];
+                $sql .= ' '.$join['type'].' JOIN '.$join['sql'];
             }
         }
 
@@ -116,9 +116,9 @@ class Ajde_Query extends Ajde_Object_Standard
             $sql .= ' WHERE';
             foreach ($this->where as $where) {
                 if ($first === false) {
-                    $sql .= ' ' . $where['operator'];
+                    $sql .= ' '.$where['operator'];
                 }
-                $sql .= ' ' . $where['sql'];
+                $sql .= ' '.$where['sql'];
                 $first = false;
             }
         }
@@ -126,7 +126,7 @@ class Ajde_Query extends Ajde_Object_Standard
         // GROUP BY
         if (!empty($this->groupBy)) {
             $sql .= ' GROUP BY';
-            $sql .= ' ' . implode(', ', $this->groupBy);
+            $sql .= ' '.implode(', ', $this->groupBy);
         }
 
         // HAVING
@@ -135,9 +135,9 @@ class Ajde_Query extends Ajde_Object_Standard
             $sql .= ' HAVING';
             foreach ($this->having as $having) {
                 if ($first === false) {
-                    $sql .= ' ' . $having['operator'];
+                    $sql .= ' '.$having['operator'];
                 }
-                $sql .= ' ' . $having['sql'];
+                $sql .= ' '.$having['sql'];
                 $first = false;
             }
         }
@@ -147,16 +147,16 @@ class Ajde_Query extends Ajde_Object_Standard
             $sql .= ' ORDER BY';
             $orderBySql = [];
             foreach ($this->orderBy as $orderBy) {
-                $orderBySql[] = $orderBy['field'] . ' ' . $orderBy['direction'];
+                $orderBySql[] = $orderBy['field'].' '.$orderBy['direction'];
             }
-            $sql .= ' ' . implode(', ', $orderBySql);
+            $sql .= ' '.implode(', ', $orderBySql);
         }
 
         // LIMIT
         if (isset($this->limit['count']) && !isset($this->limit['start'])) {
-            $sql .= ' LIMIT ' . $this->limit['count'];
+            $sql .= ' LIMIT '.$this->limit['count'];
         } elseif (isset($this->limit['count']) && isset($this->limit['start'])) {
-            $sql .= ' LIMIT ' . $this->limit['start'] . ', ' . $this->limit['count'];
+            $sql .= ' LIMIT '.$this->limit['start'].', '.$this->limit['count'];
         }
 
         return $sql;

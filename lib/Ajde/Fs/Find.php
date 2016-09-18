@@ -4,7 +4,7 @@ class Ajde_Fs_Find extends Ajde_Object_Static
 {
     public static function findFile($dir, $pattern)
     {
-        $search = LOCAL_ROOT . DS . $dir . $pattern;
+        $search = LOCAL_ROOT.DS.$dir.$pattern;
         $result = glob($search);
         if ($result === false) {
             return false;
@@ -18,10 +18,10 @@ class Ajde_Fs_Find extends Ajde_Object_Static
 
     public static function findFiles($dir, $pattern, $flags = 0)
     {
-        $search = LOCAL_ROOT . $dir . $pattern;
+        $search = LOCAL_ROOT.$dir.$pattern;
 
         $return = [];
-        $files  = (array) glob($search, $flags);
+        $files = (array) glob($search, $flags);
         foreach ($files as $filename) {
             $return[] = $filename;
         }
@@ -31,7 +31,7 @@ class Ajde_Fs_Find extends Ajde_Object_Static
 
     public static function findFilenames($dir, $pattern, $flags = 0)
     {
-        $files  = self::findFiles($dir, $pattern, $flags);
+        $files = self::findFiles($dir, $pattern, $flags);
         $return = [];
         foreach ($files as $file) {
             $return[] = basename($file);
@@ -41,8 +41,8 @@ class Ajde_Fs_Find extends Ajde_Object_Static
     }
 
     /**
-     *
      * @param array $array
+     *
      * @return array
      */
     public static function mkglobi($array)
@@ -55,7 +55,7 @@ class Ajde_Fs_Find extends Ajde_Object_Static
             $item = '';
             for ($i = 0; $i < strlen($extension); $i++) {
                 $letter = substr($extension, $i, 1);
-                $item   = $item . '[' . strtolower($letter) . strtoupper($letter) . ']';
+                $item = $item.'['.strtolower($letter).strtoupper($letter).']';
             }
             $ret[] = $item;
         }

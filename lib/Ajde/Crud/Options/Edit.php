@@ -3,7 +3,6 @@
 class Ajde_Crud_Options_Edit extends Ajde_Crud_Options
 {
     /**
-     *
      * @return Ajde_Crud_Options
      */
     public function up($obj = false)
@@ -16,7 +15,6 @@ class Ajde_Crud_Options_Edit extends Ajde_Crud_Options
     // =========================================================================
 
     /**
-     *
      * @return Ajde_Crud_Options_Edit_Layout
      */
     public function selectLayout()
@@ -29,9 +27,10 @@ class Ajde_Crud_Options_Edit extends Ajde_Crud_Options
     // =========================================================================
 
     /**
-     * Sets which fields to show
+     * Sets which fields to show.
      *
      * @param array $fields
+     *
      * @return Ajde_Crud_Options_Edit
      */
     public function setShow($fields)
@@ -40,9 +39,10 @@ class Ajde_Crud_Options_Edit extends Ajde_Crud_Options
     }
 
     /**
-     * Sets a custom template
+     * Sets a custom template.
      *
      * @param string $action
+     *
      * @return Ajde_Crud_Options_Edit
      */
     public function setAction($action)
@@ -51,9 +51,10 @@ class Ajde_Crud_Options_Edit extends Ajde_Crud_Options
     }
 
     /**
-     * Whether the view is read only
+     * Whether the view is read only.
      *
-     * @param boolean $isReadonly
+     * @param bool $isReadonly
+     *
      * @return Ajde_Crud_Options_Edit
      */
     public function setIsReadonly($isReadonly)
@@ -62,9 +63,10 @@ class Ajde_Crud_Options_Edit extends Ajde_Crud_Options
     }
 
     /**
-     * Enables / disable autosave
+     * Enables / disable autosave.
      *
-     * @param boolean $enabled
+     * @param bool $enabled
+     *
      * @return Ajde_Crud_Options_Edit
      */
     public function setAutosave($enabled)

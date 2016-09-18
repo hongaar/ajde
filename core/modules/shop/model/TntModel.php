@@ -9,7 +9,7 @@ class TntModel extends Ajde_Shop_Shipping_Method
 
     public function getTotal()
     {
-        $total = (float)$this->getTransaction()->shipment_itemstotal;
+        $total = (float) $this->getTransaction()->shipment_itemstotal;
         if ($total > 500) {
             return 0;
         } else {
@@ -20,5 +20,4 @@ class TntModel extends Ajde_Shop_Shipping_Method
             }
         }
     }
-
 }

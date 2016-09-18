@@ -22,9 +22,9 @@ class Ajde_Collection_View extends Ajde_Object_Standard
             'disableFilter'     => false,
             'mainFilter'        => '',
             'mainFilterGrouper' => '',
-            'columns'           => []
+            'columns'           => [],
         ];
-        $options        = array_merge($defaultOptions, $listOptions);
+        $options = array_merge($defaultOptions, $listOptions);
         $this->setOptions($options);
     }
 
@@ -94,7 +94,7 @@ class Ajde_Collection_View extends Ajde_Object_Standard
     {
         $filters = $this->getFilter();
         if (!array_key_exists($fieldName, $filters)) {
-            return null;
+            return;
         }
 
         return $filters[$fieldName];
@@ -106,11 +106,11 @@ class Ajde_Collection_View extends Ajde_Object_Standard
             return $collection->count(true);
         }
         if (!isset($this->_rowCount)) {
-            $sql        = 'SELECT COUNT(*) AS count FROM ' . $this->_tableName;
+            $sql = 'SELECT COUNT(*) AS count FROM '.$this->_tableName;
             $connection = Ajde_Db::getInstance()->getConnection();
-            $statement  = $connection->prepare($sql);
+            $statement = $connection->prepare($sql);
             $statement->execute();
-            $result          = $statement->fetch(PDO::FETCH_ASSOC);
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
             $this->_rowCount = $result['count'];
         }
 
@@ -136,5 +136,4 @@ class Ajde_Collection_View extends Ajde_Object_Standard
     {
         return ($this->getPage() - 1) * $this->getPageSize();
     }
-
 }

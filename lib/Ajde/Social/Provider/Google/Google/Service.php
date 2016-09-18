@@ -18,10 +18,10 @@
 
 class Google_Service
 {
-    public  $version;
-    public  $servicePath;
-    public  $availableScopes;
-    public  $resource;
+    public $version;
+    public $servicePath;
+    public $availableScopes;
+    public $resource;
     private $client;
 
     public function __construct(Google_Client $client)

@@ -6,12 +6,12 @@
 class NodeModel extends Ajde_Model_With_AclI18nRevision
 {
     protected $_autoloadParents = false;
-    protected $_displayField    = 'title';
-    protected $_hasMeta         = true;
+    protected $_displayField = 'title';
+    protected $_hasMeta = true;
 
     protected $_shadowModel;
 
-    protected $_ignoreFieldInRevision        = ['updated', 'added', 'level', 'sort', 'lang_root'];
+    protected $_ignoreFieldInRevision = ['updated', 'added', 'level', 'sort', 'lang_root'];
     protected $_ignoreFieldInRevisionIfEmpty = ['slug'];
 
     public static $_parentAclCache = [];
@@ -23,9 +23,9 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
     }
 
     /**
-     *
      * @param int $id
-     * @return NodeModel|boolean
+     *
+     * @return NodeModel|bool
      */
     public static function fromPk($id)
     {
@@ -38,8 +38,8 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
     }
 
     /**
-     *
      * @param $slug
+     *
      * @return bool|NodeModel
      */
     public static function fromSlug($slug)
@@ -112,12 +112,12 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 
     public function getAclParam()
     {
-        return ($this->has('nodetype') ? (string)$this->get('nodetype') : '');
+        return $this->has('nodetype') ? (string) $this->get('nodetype') : '';
     }
 
     public function validateOwner($uid, $gid)
     {
-        return ((string)$this->get('user')) == $uid;
+        return ((string) $this->get('user')) == $uid;
     }
 
     public function validateParent($uid, $gid)
@@ -126,10 +126,10 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
         if (isset(self::$_parentAclCache[$rootId])) {
             $users = self::$_parentAclCache[$rootId];
         } else {
-            $root                      = new self();
+            $root = new self();
             $root->ignoreAccessControl = true;
             $root->loadByPK($rootId);
-            $users                          = $root->findChildUsersAsUidArray();
+            $users = $root->findChildUsersAsUidArray();
             self::$_parentAclCache[$rootId] = $users;
         }
 
@@ -148,7 +148,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
     public function findChildUsersAsUidArray()
     {
         $users = $this->findChildUsers();
-        $ids   = [];
+        $ids = [];
         foreach ($users as $user) {
             $ids[] = $user->_data['id'];
         }
@@ -157,9 +157,8 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
     }
 
     /**
-     * DISPLAY FUNCTIONS
+     * DISPLAY FUNCTIONS.
      */
-
     public function getPublishData()
     {
         if ($return = $this->shadowCall('getPublishData')) {
@@ -170,7 +169,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
             'title'   => $this->getTitle(),
             'message' => $this->getSummary(),
             'image'   => $this->getMediaAbsoluteUrl(),
-            'url'     => $this->getUrl(false)
+            'url'     => $this->getUrl(false),
         ];
     }
 
@@ -179,7 +178,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
         if ($return = $this->shadowCall('getPublishRecipients')) {
             return $return;
         }
-        $users     = new UserCollection();
+        $users = new UserCollection();
         $addresses = [];
         foreach ($users as $user) {
             /* @var $user UserModel */
@@ -191,7 +190,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 
     public function displayPanel()
     {
-        $nodetype   = (string)$this->get('nodetype');
+        $nodetype = (string) $this->get('nodetype');
         $controller = Ajde_Controller::fromRoute(new Ajde_Core_Route('admin/node:panel'));
         $controller->setItem($this);
 
@@ -201,41 +200,41 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
     public function displayTreeName()
     {
         $nodetype = $this->has('nodetype_name') ? $this->get('nodetype_name') : $this->getNodetype()->displayField();
-        $icon     = $this->has('nodetype_icon') ? $this->get('nodetype_icon') : $this->getNodetype()->getIcon();
-        $ret      = str_repeat('<span class="tree-spacer"></span>', max(0, $this->get('level') - 1));
+        $icon = $this->has('nodetype_icon') ? $this->get('nodetype_icon') : $this->getNodetype()->getIcon();
+        $ret = str_repeat('<span class="tree-spacer"></span>', max(0, $this->get('level') - 1));
         if ($this->get('level') > 0) {
-            $ret = $ret . '<span class="tree-spacer last"></span>';
+            $ret = $ret.'<span class="tree-spacer last"></span>';
         }
         //$ret .= '<span class="badge">'. strtolower($nodetype) . '</span>';
-        $ret .= '<span class="badge-icon" title="' . esc($nodetype) . '"><i class="' . $icon . '"></i></span>';
-        $ret .= ' <span class="title">' . clean($this->title) . '</span>';
+        $ret .= '<span class="badge-icon" title="'.esc($nodetype).'"><i class="'.$icon.'"></i></span>';
+        $ret .= ' <span class="title">'.clean($this->title).'</span>';
 
         return $ret;
     }
 
     public function displayParentName()
     {
-        $ret      = '';
+        $ret = '';
         $parentId = $this->has('parent') ? $this->getParent() : false;
         if ($parentId) {
-            $parent                      = new self();
+            $parent = new self();
             $parent->ignoreAccessControl = true;
             $parent->loadByPK($parentId);
-            $ret .= '<span class="badge">' . strtolower($parent->getTitle()) . '</span>';
+            $ret .= '<span class="badge">'.strtolower($parent->getTitle()).'</span>';
         }
-        $ret .= ' <span class="title">' . clean($this->title) . '</span>';
+        $ret .= ' <span class="title">'.clean($this->title).'</span>';
 
         return $ret;
     }
 
     public function displayRootName()
     {
-        $ret  = '';
+        $ret = '';
         $root = $this->findRootNoAccessChecks();
         if ($root) {
-            $ret .= '<span class="badge">' . strtolower($root->getTitle()) . '</span>';
+            $ret .= '<span class="badge">'.strtolower($root->getTitle()).'</span>';
         }
-        $ret .= ' <span class="title">' . clean($this->title) . '</span>';
+        $ret .= ' <span class="title">'.clean($this->title).'</span>';
 
         return $ret;
     }
@@ -269,7 +268,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
                 }
             }
         } else {
-            return "";
+            return '';
         }
     }
 
@@ -277,13 +276,13 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
     {
         Ajde::app()->getDocument()->getLayout()->getParser()->getHelper()->requireCssPublic('core/flags.css');
 
-        $lang        = Ajde_Lang::getInstance();
+        $lang = Ajde_Lang::getInstance();
         $currentLang = $this->get('lang');
         if ($currentLang) {
-            $image = '<img src="" class="flag flag-' . strtolower(substr($currentLang, 3,
-                    2)) . '" alt="' . $currentLang . '" />';
+            $image = '<img src="" class="flag flag-'.strtolower(substr($currentLang, 3,
+                    2)).'" alt="'.$currentLang.'" />';
 
-            return $image . $lang->getNiceName($currentLang);
+            return $image.$lang->getNiceName($currentLang);
         }
 
         return '';
@@ -293,7 +292,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
     {
         $class = strtolower($this->getNodetype()->getName());
         if ($this->has('status')) {
-            $class .= ' ' . strtolower($this->get('status'));
+            $class .= ' '.strtolower($this->get('status'));
         }
 
         return $class;
@@ -306,7 +305,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
             $childtype = $this->getNodetype()->get('child_type');
         }
 
-        return 'admin/node:view.crud?view[filter][nodetype]=' . $childtype;
+        return 'admin/node:view.crud?view[filter][nodetype]='.$childtype;
     }
 
     public function listRouteParent()
@@ -316,7 +315,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
             $parenttype = $this->getNodetype()->get('parent_type');
         }
 
-        return 'admin/node:view.crud?view[filter][nodetype]=' . $parenttype;
+        return 'admin/node:view.crud?view[filter][nodetype]='.$parenttype;
     }
 
     public function addChildButton()
@@ -324,7 +323,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
         if ($this->hasLoaded() && $childtype = $this->getNodetype()->get('child_type')) {
             $this->getNodetype()->loadParent('child_type');
 
-            return '<i class="icon-plus icon-white" data-nodetype="' . $childtype . '"></i><span class="text-slide"> ' . strtolower($this->getNodetype()->get('child_type')->getName()) . '</span>';
+            return '<i class="icon-plus icon-white" data-nodetype="'.$childtype.'"></i><span class="text-slide"> '.strtolower($this->getNodetype()->get('child_type')->getName()).'</span>';
         }
         if ($this->hasLoaded() && $childtype = $this->getNodetype()->get('children')) {
             return '<i class="icon-plus icon-white"></i>';
@@ -334,9 +333,8 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
     }
 
     /**
-     * BEFORE / AFTER FUNCTIONS
+     * BEFORE / AFTER FUNCTIONS.
      */
-
     public function afterSort()
     {
         $this->sortTree('NodeCollection');
@@ -375,7 +373,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
     public function beforeInsert()
     {
         // Added
-        $this->added = new Ajde_Db_Function("NOW()");
+        $this->added = new Ajde_Db_Function('NOW()');
 
         // Sort
         //		$collection = new NodeCollection();
@@ -402,13 +400,12 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
     }
 
     /**
-     * Shadow model
+     * Shadow model.
      */
-
     public function getShadowModel()
     {
         if (!isset($this->_shadowModel)) {
-            $modelName = ucfirst($this->getNodetype()->getName()) . 'NodeModel';
+            $modelName = ucfirst($this->getNodetype()->getName()).'NodeModel';
             if (class_exists($modelName)) {
                 $this->_shadowModel = new $modelName();
             } else {
@@ -447,9 +444,8 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
     }
 
     /**
-     * SLUG FUNCTIONS
+     * SLUG FUNCTIONS.
      */
-
     public function getSlug()
     {
         if (!$this->hasSlug()) {
@@ -463,13 +459,13 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
     {
         $name = $this->title;
 
-        $ghost     = new self();
+        $ghost = new self();
         $uniqifier = 0;
 
         do {
             $ghost->reset();
             $slug = $this->_sluggify($name);
-            $slug = $slug . ($uniqifier > 0 ? '-' . $uniqifier : '');
+            $slug = $slug.($uniqifier > 0 ? '-'.$uniqifier : '');
             $ghost->loadBySlug($slug);
             $uniqifier++;
             if ($uniqifier >= 100) {
@@ -482,6 +478,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 
     /**
      * @param bool $breadcrumb
+     *
      * @deprecated use $this->slug = $this->_makeSlug();
      */
     private function _setSlug()
@@ -511,9 +508,8 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
     }
 
     /**
-     * PUBLISHED FUNCTIONS
+     * PUBLISHED FUNCTIONS.
      */
-
     public function checkPublished()
     {
         if ($this->getNodetype()->get('published')) {
@@ -553,13 +549,13 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
     }
 
     /**
-     * TREE FUNCTIONS
+     * TREE FUNCTIONS.
      */
 
     /**
+     * @param bool $returnModel
      *
-     * @param boolean $returnModel
-     * @return NodeModel|boolean
+     * @return NodeModel|bool
      */
     public function getRoot($returnModel = true)
     {
@@ -569,20 +565,19 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 
                 return parent::getRoot();
             } else {
-                return (string)parent::getRoot();
+                return (string) parent::getRoot();
             }
         } else {
             if ($returnModel) {
                 return $this;
             } else {
-                return (string)$this;
+                return (string) $this;
             }
         }
     }
 
     /**
-     *
-     * @return NodeModel|boolean
+     * @return NodeModel|bool
      */
     public function findRootNoAccessChecks($load = true)
     {
@@ -590,9 +585,9 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
     }
 
     /**
-     *
      * @param bool $accessChecks
      * @param bool $load
+     *
      * @return bool|NodeModel
      */
     public function findRoot($accessChecks = true, $load = true)
@@ -602,7 +597,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
             $node->ignoreAccessControl = true;
         }
         $lastParent = $this->getPK();
-        $parent     = $this->has('parent') ? $this->getParent(false) : false;
+        $parent = $this->has('parent') ? $this->getParent(false) : false;
         while ($parent) {
             $lastParent = $parent;
             $node->loadByPK($parent);
@@ -621,7 +616,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 
                     return $root;
                 } else {
-                    return (string)$lastParent;
+                    return (string) $lastParent;
                 }
             }
         }
@@ -637,9 +632,9 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
         $this->setRoot(($this->getPK() != $root) ? $root : null);
 
         // go through all direct descendants
-        $collection                      = new NodeCollection();
+        $collection = new NodeCollection();
         $collection->ignoreAccessControl = true;
-        $collection->autoRedirect        = false;
+        $collection->autoRedirect = false;
         $collection->filterChildrenOfParent($root);
         foreach ($collection as $child) {
             $child->setRoot(($child->getPK() != $root) ? $root : null);
@@ -648,7 +643,6 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
     }
 
     /**
-     *
      * @return NodeCollection
      */
     public function getRelatedNodes()
@@ -662,7 +656,6 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
     }
 
     /**
-     *
      * @return MediaCollection
      */
     public function getAdditionalMedia()
@@ -677,7 +670,6 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
     }
 
     /**
-     *
      * @return NodeModel
      */
     public function getParent($load = true)
@@ -688,11 +680,10 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
             return $this->get('parent');
         }
 
-        return (string)$this->get('parent');
+        return (string) $this->get('parent');
     }
 
     /**
-     *
      * @return NodeCollection
      */
     public function getChildren()
@@ -718,17 +709,17 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
     {
         if ($dir == 'next') {
             $filter = Ajde_Filter::FILTER_GREATER;
-            $order  = Ajde_Query::ORDER_ASC;
+            $order = Ajde_Query::ORDER_ASC;
         } else {
             $filter = Ajde_Filter::FILTER_LESS;
-            $order  = Ajde_Query::ORDER_DESC;
+            $order = Ajde_Query::ORDER_DESC;
         }
 
         if ($this->has('parent')) {
             $siblings = new NodeCollection();
             $siblings->addFilter(new Ajde_Filter_Where('sort', $filter, $this->sort));
             $siblings->addFilter(new Ajde_Filter_Where('parent', Ajde_Filter::FILTER_EQUALS,
-                (string)$this->get('parent')));
+                (string) $this->get('parent')));
             $siblings->orderBy('sort', $order);
             $siblings->limit(1);
             if ($siblings->count()) {
@@ -739,7 +730,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
         if ($loop === true) {
             $siblings->reset();
             $siblings->addFilter(new Ajde_Filter_Where('parent', Ajde_Filter::FILTER_EQUALS,
-                (string)$this->get('parent')));
+                (string) $this->get('parent')));
             $siblings->orderBy('sort', $order);
             $siblings->limit(1);
             if ($siblings->count()) {
@@ -757,6 +748,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 
     /**
      * @return bool|string
+     *
      * @deprecated
      */
     public function getPath()
@@ -769,7 +761,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
         if ($this->getPK()) {
             $url = $this->getFullUrl();
 
-            return $relative ? $url : config("app.rootUrl") . $url;
+            return $relative ? $url : config('app.rootUrl').$url;
         }
 
         return false;
@@ -778,14 +770,13 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
     public function getFullUrl()
     {
         if (($parent = $this->getParent()) && $parent->hasLoaded()) {
-            return $parent->getFullUrl() . '/' . $this->getSlug();
+            return $parent->getFullUrl().'/'.$this->getSlug();
         }
 
         return $this->getSlug();
     }
 
     /**
-     *
      * @return NodetypeModel
      */
     public function getNodetype()
@@ -796,7 +787,6 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
     }
 
     /**
-     *
      * @return MediaModel
      */
     public function getMedia()
@@ -846,10 +836,10 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
 
     public function getTags()
     {
-        $id                  = $this->getPK();
+        $id = $this->getPK();
         $crossReferenceTable = 'node_tag';
 
-        $subQuery   = new Ajde_Db_Function('(SELECT tag FROM ' . $crossReferenceTable . ' WHERE node = ' . $this->getPK() . ')');
+        $subQuery = new Ajde_Db_Function('(SELECT tag FROM '.$crossReferenceTable.' WHERE node = '.$this->getPK().')');
         $collection = new TagCollection();
         $collection->addFilter(new Ajde_Filter_Where('id', Ajde_Filter::FILTER_IN, $subQuery));
 
@@ -857,21 +847,20 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
     }
 
     /** META **/
-
     public function getMetaValues()
     {
         if (empty($this->_metaValues)) {
             $meta = [];
             if ($this->hasLoaded()) {
-                $sql       = "
+                $sql = '
 					SELECT node_meta.*, nodetype_meta.sort AS sort
 					FROM node_meta
 					INNER JOIN nodetype_meta ON nodetype_meta.meta = node_meta.meta
 						AND nodetype_meta.nodetype = ?
 					WHERE node = ?
-					ORDER BY sort ASC";
+					ORDER BY sort ASC';
                 $statement = $this->getConnection()->prepare($sql);
-                $statement->execute([(string)$this->getNodetype(), $this->getPK()]);
+                $statement->execute([(string) $this->getNodetype(), $this->getPK()]);
                 $results = $statement->fetchAll(PDO::FETCH_ASSOC);
                 foreach ($results as $result) {
                     if (isset($meta[$result['meta']])) {
@@ -880,7 +869,7 @@ class NodeModel extends Ajde_Model_With_AclI18nRevision
                         } else {
                             $meta[$result['meta']] = [
                                 $meta[$result['meta']],
-                                $result['value']
+                                $result['value'],
                             ];
                         }
                     } else {

@@ -5,13 +5,11 @@ class Ajde_Crud_Options extends Ajde_Object_Standard
     protected $_key;
 
     /**
-     *
      * @var Ajde_Crud_Options
      */
     protected $_parent = null;
 
     /**
-     *
      * @var array
      */
     public $_stack = [];
@@ -27,11 +25,11 @@ class Ajde_Crud_Options extends Ajde_Object_Standard
     {
         $key = isset($key) ? $key : $name;
         // Get new active object
-        $className = get_class($this) . '_' . ucfirst($name);
+        $className = get_class($this).'_'.ucfirst($name);
         /* @var $new Ajde_Crud_Options */
-        $new          = new $className();
+        $new = new $className();
         $new->_parent = $this;
-        $new->_key    = $key;
+        $new->_key = $key;
         if (isset($this->_stack[$key])) {
             $new->_stack = $this->_stack[$key];
         }
@@ -49,7 +47,6 @@ class Ajde_Crud_Options extends Ajde_Object_Standard
     // Public functions
 
     /**
-     *
      * @return Ajde_Crud_Options
      */
     public function up($obj = false)
@@ -66,7 +63,6 @@ class Ajde_Crud_Options extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @return Ajde_Crud_Options
      */
     public function finished()
@@ -80,7 +76,6 @@ class Ajde_Crud_Options extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @return Ajde_Crud_Options
      */
     public function display()
@@ -91,7 +86,6 @@ class Ajde_Crud_Options extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @return array
      */
     public function getArray()
@@ -104,7 +98,6 @@ class Ajde_Crud_Options extends Ajde_Object_Standard
     // =========================================================================
 
     /**
-     *
      * @return Ajde_Crud_Options_Fields
      */
     public function selectFields()
@@ -113,7 +106,6 @@ class Ajde_Crud_Options extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @return Ajde_Crud_Options_List
      */
     public function selectList()
@@ -122,7 +114,6 @@ class Ajde_Crud_Options extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @return Ajde_Crud_Options_Edit
      */
     public function selectEdit()
@@ -133,5 +124,4 @@ class Ajde_Crud_Options extends Ajde_Object_Standard
     // =========================================================================
     // Set functions
     // =========================================================================
-
 }

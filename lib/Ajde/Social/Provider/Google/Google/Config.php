@@ -25,7 +25,7 @@ class Google_Config
     /**
      * Create a new Google_Config. Can accept an ini file location with the
      * local configuration. For example:
-     *     application_name: "My App";
+     *     application_name: "My App";.
      *
      * @param [$ini_file_location] - optional - The location of the ini file to load
      */
@@ -58,13 +58,12 @@ class Google_Config
                     'access_type'                => 'online',
                     'approval_prompt'            => 'auto',
                     'request_visible_actions'    => '',
-                    'federated_signon_certs_url' =>
-                        'https://www.googleapis.com/oauth2/v1/certs',
+                    'federated_signon_certs_url' => 'https://www.googleapis.com/oauth2/v1/certs',
                 ],
                 // Set a default directory for the file cache.
                 'Google_Cache_File'  => [
-                    'directory' => sys_get_temp_dir() . '/Google_Client'
-                ]
+                    'directory' => sys_get_temp_dir().'/Google_Client',
+                ],
             ],
             // Definition of service specific values like scopes, oauth token URLs,
             // etc. Example:
@@ -82,7 +81,7 @@ class Google_Config
     /**
      * Set configuration specific to a given class.
      * $config->setClassConfig('Google_Cache_File',
-     *   array('directory' => '/tmp/cache'));
+     *   array('directory' => '/tmp/cache'));.
      *
      * @param $class  The class name for the configuration
      * @param $config string key or an array of configuration values
@@ -103,7 +102,7 @@ class Google_Config
     public function getClassConfig($class, $key = null)
     {
         if (!isset($this->configuration['classes'][$class])) {
-            return null;
+            return;
         }
         if ($key === null) {
             return $this->configuration['classes'][$class];
@@ -253,7 +252,7 @@ class Google_Config
     }
 
     /**
-     * Set the the access type requested (offline or online.)
+     * Set the the access type requested (offline or online.).
      *
      * @param $access string - the access type
      */
@@ -263,7 +262,7 @@ class Google_Config
     }
 
     /**
-     * Set when to show the approval prompt (auto or force)
+     * Set when to show the approval prompt (auto or force).
      *
      * @param $approval string - the approval request
      */

@@ -28,7 +28,6 @@ abstract class Ajde_Log_Writer_Abstract
 
     public static function getRequest()
     {
-        return issetor($_SERVER["REQUEST_URI"]);
+        return issetor($_SERVER['REQUEST_URI']);
     }
-
 }

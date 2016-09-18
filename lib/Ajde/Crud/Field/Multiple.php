@@ -3,27 +3,24 @@
 class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
 {
     /**
-     *
      * @var Ajde_Collection
      */
     private $_collection;
 
     /**
-     *
      * @var Ajde_Model
      */
     private $_model;
 
     protected function _getHtmlAttributes()
     {
-        $attributes         = [];
-        $attributes['type'] = "hidden";
+        $attributes = [];
+        $attributes['type'] = 'hidden';
 
         return $attributes;
     }
 
     /**
-     *
      * @return string
      */
     public function getModelName()
@@ -36,7 +33,6 @@ class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
     }
 
     /**
-     *
      * @return string
      */
     public function getParentName()
@@ -44,19 +40,18 @@ class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
         if ($this->hasParent()) {
             return $this->get('parent');
         } else {
-            return (string)$this->_crud->getModel()->getTable();
+            return (string) $this->_crud->getModel()->getTable();
         }
     }
 
     /**
-     *
      * @return Ajde_Collection
      */
     public function getCollection()
     {
         if (!isset($this->_collection)) {
-            $collectionName    = ucfirst($this->getModelName()) . 'Collection';
-            $this->_collection = new $collectionName;
+            $collectionName = ucfirst($this->getModelName()).'Collection';
+            $this->_collection = new $collectionName();
         }
 
         return $this->_collection;
@@ -85,14 +80,13 @@ class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
     }
 
     /**
-     *
      * @return Ajde_Model
      */
     public function getModel()
     {
         if (!isset($this->_model)) {
-            $modelName    = ucfirst($this->getModelName()) . 'Model';
-            $this->_model = new $modelName;
+            $modelName = ucfirst($this->getModelName()).'Model';
+            $this->_model = new $modelName();
         }
 
         return $this->_model;
@@ -105,7 +99,7 @@ class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
 
         if ($this->hasFilter()) {
             $filter = $this->getFilter();
-            $group  = new Ajde_Filter_WhereGroup();
+            $group = new Ajde_Filter_WhereGroup();
             foreach ($filter as $rule) {
                 $group->addFilter(new Ajde_Filter_Where($this->getModel()->getDisplayField(),
                     Ajde_Filter::FILTER_EQUALS, $rule, Ajde_Query::OP_OR));
@@ -115,7 +109,7 @@ class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
 
         if ($this->hasAdvancedFilter()) {
             $filters = $this->getAdvancedFilter();
-            $group   = new Ajde_Filter_WhereGroup();
+            $group = new Ajde_Filter_WhereGroup();
             foreach ($filters as $filter) {
                 if ($filter instanceof Ajde_Filter_Where) {
                     $group->addFilter($filter);
@@ -138,11 +132,11 @@ class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
     public function getChildren()
     {
         if ($this->hasCrossReferenceTable()) {
-            $childPk             = $this->getModel()->getTable()->getPK();
-            $parent              = (string)$this->getCrud()->getModel()->getTable();
-            $parentId            = $this->getCrud()->getModel()->getPK();
+            $childPk = $this->getModel()->getTable()->getPK();
+            $parent = (string) $this->getCrud()->getModel()->getTable();
+            $parentId = $this->getCrud()->getModel()->getPK();
             $crossReferenceTable = $this->getCrossReferenceTable();
-            $childField          = $this->has('childField') ? $this->get('childField') : $this->getModelName();
+            $childField = $this->has('childField') ? $this->get('childField') : $this->getModelName();
 
             // TODO: implement $this->getAdvancedFilter() filters in subquery
 
@@ -152,34 +146,33 @@ class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
             //$subQuery = new Ajde_Db_Function('(SELECT ' . $this->getModelName() . ' FROM ' . $crossReferenceTable . ' WHERE ' . $parent . ' = ' . (integer) $parentId . $orderBy . ')');
             //$collection->addFilter(new Ajde_Filter_Where($childPk, Ajde_Filter::FILTER_IN, $subQuery));
 
-            $collection->getQuery()->addSelect($crossReferenceTable . '.id AS crossId');
-            $collection->addFilter(new Ajde_Filter_Join($crossReferenceTable, $crossReferenceTable . '.' . $childField,
-                $this->getModelName() . '.' . $childPk));
-            $collection->addFilter(new Ajde_Filter_Where($crossReferenceTable . '.' . $parent,
-                Ajde_Filter::FILTER_EQUALS, (integer)$parentId));
+            $collection->getQuery()->addSelect($crossReferenceTable.'.id AS crossId');
+            $collection->addFilter(new Ajde_Filter_Join($crossReferenceTable, $crossReferenceTable.'.'.$childField,
+                $this->getModelName().'.'.$childPk));
+            $collection->addFilter(new Ajde_Filter_Where($crossReferenceTable.'.'.$parent,
+                Ajde_Filter::FILTER_EQUALS, (int) $parentId));
 
             if ($this->getSortField()) {
-                $collection->orderBy($crossReferenceTable . '.' . $this->getSortField());
+                $collection->orderBy($crossReferenceTable.'.'.$this->getSortField());
             }
 
             if ($this->hasCrossRefConstraints()) {
                 $constraints = $this->getCrossRefConstraints();
-                $group       = new Ajde_Filter_WhereGroup();
+                $group = new Ajde_Filter_WhereGroup();
                 foreach ($constraints as $k => $v) {
                     $group->addFilter(new Ajde_Filter_Where($k, Ajde_Filter::FILTER_EQUALS, $v));
                 }
                 $collection->addFilter($group);
             }
             //			echo $collection->getEmulatedSql();
-
         } else {
             $collection = $this->getCollection();
             $collection->addFilter(new Ajde_Filter_Where($this->getParentName(), Ajde_Filter::FILTER_EQUALS,
-                (string)$this->_crud->getModel()));
+                (string) $this->_crud->getModel()));
 
             if ($this->hasAdvancedFilter()) {
                 $filters = $this->getAdvancedFilter();
-                $group   = new Ajde_Filter_WhereGroup();
+                $group = new Ajde_Filter_WhereGroup();
                 foreach ($filters as $filter) {
                     if ($filter instanceof Ajde_Filter_Where) {
                         $group->addFilter($filter);
@@ -194,7 +187,6 @@ class Ajde_Crud_Field_Multiple extends Ajde_Crud_Field
                 $collection->orderBy($this->getSortField());
             }
             //			echo $collection->getEmulatedSql();
-
         }
 
         return $collection;

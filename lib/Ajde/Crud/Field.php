@@ -3,18 +3,16 @@
 abstract class Ajde_Crud_Field extends Ajde_Object_Standard
 {
     /**
-     *
      * @var Ajde_Crud
      */
     protected $_crud;
 
     /**
-     *
      * @var string
      */
     protected $_type;
 
-    protected $_useSpan    = 12;
+    protected $_useSpan = 12;
     protected $_attributes = [];
 
     public function __construct(Ajde_Crud $crud, $fieldOptions)
@@ -34,7 +32,7 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
             'isRequired'      => false,
             'isPK'            => false,
             'isAutoIncrement' => false,
-            'isAutoUpdate'    => false
+            'isAutoUpdate'    => false,
         ];
 
         /* options */
@@ -50,9 +48,8 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
     }
 
     /**
-     * Getters and setters
+     * Getters and setters.
      */
-
     public function getName()
     {
         return parent::getName();
@@ -113,9 +110,8 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
     }
 
     /**
-     * Template functions
+     * Template functions.
      */
-
     public function getHtml()
     {
         $template = $this->_getFieldTemplate();
@@ -140,32 +136,32 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
 
     protected function _getInputTemplate()
     {
-        return $this->_getTemplate('field/' . $this->_type);
+        return $this->_getTemplate('field/'.$this->_type);
     }
 
     protected function _getTemplate($action)
     {
         $template = null;
-        if (Ajde_Template::exist(MODULE_DIR . '_core/', 'crud/' . $action) !== false) {
-            $template = new Ajde_Template(MODULE_DIR . '_core/', 'crud/' . $action);
+        if (Ajde_Template::exist(MODULE_DIR.'_core/', 'crud/'.$action) !== false) {
+            $template = new Ajde_Template(MODULE_DIR.'_core/', 'crud/'.$action);
             Ajde::app()->getDocument()->autoAddResources($template);
         }
         if ($this->_hasCustomTemplate($action)) {
-            $base     = $this->_getCustomTemplateBase();
-            $action   = $this->_getCustomTemplateAction($action);
+            $base = $this->_getCustomTemplateBase();
+            $action = $this->_getCustomTemplateAction($action);
             $template = new Ajde_Template($base, $action);
         }
         if ($template instanceof Ajde_Template) {
             return $template;
         } else {
             // TODO:
-            throw new Ajde_Exception('No crud template found for field ' . $action);
+            throw new Ajde_Exception('No crud template found for field '.$action);
         }
     }
 
     protected function _hasCustomTemplate($action)
     {
-        $base   = $this->_getCustomTemplateBase();
+        $base = $this->_getCustomTemplateBase();
         $action = $this->_getCustomTemplateAction($action);
 
         return Ajde_Template::exist($base, $action) !== false;
@@ -173,18 +169,17 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
 
     protected function _getCustomTemplateBase()
     {
-        return MODULE_DIR . $this->_crud->getCustomTemplateModule() . '/';
+        return MODULE_DIR.$this->_crud->getCustomTemplateModule().'/';
     }
 
     protected function _getCustomTemplateAction($action)
     {
-        return 'crud/' . (string)$this->_crud->getModel()->getTable() . '/' . $action;
+        return 'crud/'.(string) $this->_crud->getModel()->getTable().'/'.$action;
     }
 
     /**
-     * HTML functions
+     * HTML functions.
      */
-
     public function getHtmlRequired()
     {
         //return '<span class="required">*</span>';
@@ -193,7 +188,7 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
 
     public function getHtmlPK()
     {
-        return " <img src='" . MEDIA_DIR . "icons/16/key_login.png' style='vertical-align: middle;' title='Primary key' />";
+        return " <img src='".MEDIA_DIR."icons/16/key_login.png' style='vertical-align: middle;' title='Primary key' />";
     }
 
     public function getHtmlAttributesAsArray()
@@ -204,21 +199,21 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
                 $attributes = $this->_getHtmlAttributes();
             }
             $attributes['name'] = $this->getName();
-            if (!key_exists('id', $attributes)) {
-                $attributes['id'] = 'in_' . $this->getName();
+            if (!array_key_exists('id', $attributes)) {
+                $attributes['id'] = 'in_'.$this->getName();
             }
             if ($this->hasNotEmpty('class')) {
-                if (key_exists('class', $attributes)) {
-                    $attributes['class'] .= ' ' . $this->getClass();
+                if (array_key_exists('class', $attributes)) {
+                    $attributes['class'] .= ' '.$this->getClass();
                 } else {
                     $attributes['class'] = $this->getClass();
                 }
             }
             if ($this->_useSpan !== false) {
-                if (key_exists('class', $attributes)) {
-                    $attributes['class'] .= ' span' . $this->_useSpan;
+                if (array_key_exists('class', $attributes)) {
+                    $attributes['class'] .= ' span'.$this->_useSpan;
                 } else {
-                    $attributes['class'] = 'span' . $this->_useSpan;
+                    $attributes['class'] = 'span'.$this->_useSpan;
                 }
             }
             $this->_attributes = $attributes;
@@ -244,7 +239,7 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
         $text = '';
         foreach ($attributes as $k => $v) {
             if (strlen($v)) {
-                $text .= $k . '="' . $v . '" ';
+                $text .= $k.'="'.$v.'" ';
             }
         }
 
@@ -252,12 +247,10 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @return Ajde_Crud
      */
     public function getCrud()
     {
         return $this->_crud;
     }
-
 }

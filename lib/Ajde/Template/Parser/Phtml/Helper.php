@@ -3,13 +3,11 @@
 class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 {
     /**
-     *
      * @var Ajde_Template_Parser
      */
     protected $_parser = null;
 
     /**
-     *
      * @param Ajde_Template_Parser $parser
      */
     public function __construct(Ajde_Template_Parser $parser)
@@ -18,7 +16,6 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @return Ajde_Template_Parser
      */
     public function getParser()
@@ -27,7 +24,6 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @return Ajde_Document
      */
     public function getDocument()
@@ -44,9 +40,9 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
      ************************/
 
     /**
-     *
      * @param string $name
      * @param string $version
+     *
      * @return void
      */
     public function requireJsLibrary($name, $version = false)
@@ -55,11 +51,11 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
     }
 
     /**
+     * @param string $action
+     * @param string $format
+     * @param string $base
+     * @param int    $position
      *
-     * @param string  $action
-     * @param string  $format
-     * @param string  $base
-     * @param integer $position
      * @return void
      */
     public function requireJs(
@@ -74,15 +70,15 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
             'format'    => $format,
             'base'      => $base,
             'position'  => $position,
-            'arguments' => $arguments
+            'arguments' => $arguments,
         ]);
     }
 
     /**
-     *
      * @param string $action
      * @param string $format
      * @param string $base
+     *
      * @return void
      */
     public function requireJsFirst($action, $format = 'html', $base = null, $arguments = '')
@@ -92,10 +88,10 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @param string $action
      * @param string $format
      * @param string $base
+     *
      * @return void
      */
     public function requireJsTop($action, $format = 'html', $base = null, $arguments = '')
@@ -104,9 +100,9 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
     }
 
     /**
+     * @param string $filename
+     * @param int    $position
      *
-     * @param string  $filename
-     * @param integer $position
      * @return void
      */
     public function requireJsPublic(
@@ -119,9 +115,9 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
     }
 
     /**
+     * @param string $url
+     * @param int    $position
      *
-     * @param string  $url
-     * @param integer $position
      * @return void
      */
     public function requireJsRemote(
@@ -138,9 +134,9 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
      ************************/
 
     /**
-     *
      * @param string $name
      * @param string $version
+     *
      * @return void
      */
     public function requireGWebFont($family, $weight = [400], $subset = ['latin'])
@@ -150,11 +146,11 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
     }
 
     /**
+     * @param string $action
+     * @param string $format
+     * @param string $base
+     * @param int    $position
      *
-     * @param string  $action
-     * @param string  $format
-     * @param string  $base
-     * @param integer $position
      * @return void
      */
     public function requireCss(
@@ -169,15 +165,15 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
             'format'    => $format,
             'base'      => $base,
             'position'  => $position,
-            'arguments' => $arguments
+            'arguments' => $arguments,
         ]);
     }
 
     /**
-     *
      * @param string $action
      * @param string $format
      * @param string $base
+     *
      * @return void
      */
     public function requireCssFirst($action, $format = 'html', $base = null, $arguments = '')
@@ -187,10 +183,10 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @param string $action
      * @param string $format
      * @param string $base
+     *
      * @return void
      */
     public function requireCssTop($action, $format = 'html', $base = null, $arguments = '')
@@ -199,9 +195,9 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
     }
 
     /**
+     * @param string $filename
+     * @param int    $position
      *
-     * @param string  $filename
-     * @param integer $position
      * @return void
      */
     public function requireCssPublic(
@@ -214,9 +210,9 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
     }
 
     /**
+     * @param string $url
+     * @param int    $position
      *
-     * @param string  $url
-     * @param integer $position
      * @return void
      */
     public function requireCssRemote(
@@ -233,8 +229,8 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
      ************************/
 
     /**
-     *
      * @param string $route
+     *
      * @return string
      */
     public function includeModule($route, $vars = [])
@@ -247,9 +243,9 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
      ************************/
 
     /**
-     *
      * @param string $route
      * @param mixed  $id
+     *
      * @return string
      */
     public function ACForm($route, $id = null, $class = null)
@@ -259,9 +255,9 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @param string $route
      * @param mixed  $id
+     *
      * @return string
      */
     public function ACAjaxForm($route, $id = null, $class = null, $format = 'json')
@@ -271,8 +267,8 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @param string $target
+     *
      * @return string
      */
     public function ACAjaxUpload($name, $options = [], $id = null, $class = null)
@@ -282,9 +278,9 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @param string $route
      * @param mixed  $id
+     *
      * @return string
      */
     public function ACEmbedForm($formId)
@@ -297,8 +293,8 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
      ************************/
 
     /**
-     *
      * @param string $target
+     *
      * @return string
      */
     public function ACImage($attributes)
@@ -307,8 +303,8 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @param string $target
+     *
      * @return string
      */
     public function ACLazyImage($attributes)
@@ -321,8 +317,8 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
      ************************/
 
     /**
-     *
      * @param string $target
+     *
      * @return string
      */
     public function ACQrcode($attributes)
@@ -335,8 +331,8 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
      ************************/
 
     /**
-     *
      * @param string $target
+     *
      * @return string
      */
     public function ACMarkdown($attributes)
@@ -349,8 +345,8 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
      ************************/
 
     /**
-     *
      * @param string $attributes
+     *
      * @return string
      */
     public function ACEmbed($attributes)
@@ -363,9 +359,9 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
      ************************/
 
     /**
-     *
      * @param mixed                   $model
      * @param array|Ajde_Crud_Options $options
+     *
      * @return Ajde_Crud
      */
     public function ACCrudList($model, $options = [])
@@ -374,14 +370,14 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
             [
                 'list'    => true,
                 'model'   => $model,
-                'options' => $options
+                'options' => $options,
             ]
         );
     }
 
     /**
-     *
      * @param mixed $model
+     *
      * @return Ajde_Crud
      */
     public function ACCrudEdit($model, $id, $options = [])
@@ -391,14 +387,14 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
                 'edit'    => true,
                 'model'   => $model,
                 'id'      => $id,
-                'options' => $options
+                'options' => $options,
             ]
         );
     }
 
     /**
-     *
      * @param Ajde_Crud $crud
+     *
      * @return string
      */
     public function ACCrudMainFilterBadge($crud, $refresh = false)
@@ -407,7 +403,7 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
             [
                 'mainfilter' => true,
                 'crud'       => $crud,
-                'refresh'    => $refresh
+                'refresh'    => $refresh,
             ]
         );
     }
@@ -417,8 +413,8 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
      ************************/
 
     /**
-     *
      * @param mixed $model
+     *
      * @return string
      */
     public function ACString($var)
@@ -426,7 +422,7 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
         return Ajde_Component_String::processStatic($this->getParser(),
             [
                 'escape' => true,
-                'var'    => $var
+                'var'    => $var,
             ]
         );
     }
@@ -441,7 +437,7 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
         return Ajde_Component_String::processStatic($this->getParser(),
             [
                 'clean' => true,
-                'var'   => $var
+                'var'   => $var,
             ]
         );
     }

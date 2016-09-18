@@ -20,23 +20,23 @@ function desc()
     global $code;
     switch ($code) {
         case 400:
-            return "Bad Request";
+            return 'Bad Request';
         case 401:
-            return "Unauthorized";
+            return 'Unauthorized';
         case 403:
-            return "Forbidden";
+            return 'Forbidden';
         case 404:
-            return "Not Found";
+            return 'Not Found';
         case 500:
-            return "Internal Server Error";
+            return 'Internal Server Error';
         case 501:
-            return "Not Implemented";
+            return 'Not Implemented';
         case 502:
-            return "Bad Gateway";
+            return 'Bad Gateway';
         case 503:
-            return "Service Unavailable";
+            return 'Service Unavailable';
         case 504:
-            return "Bad Timeout";
+            return 'Bad Timeout';
     }
 }
 

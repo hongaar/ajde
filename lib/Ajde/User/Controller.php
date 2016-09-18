@@ -7,7 +7,7 @@ abstract class Ajde_User_Controller extends Ajde_Controller
     protected $_allowedActions = [
         'logon',
     ];
-    protected $_logonRoute     = 'user/logon/html';
+    protected $_logonRoute = 'user/logon/html';
 
     public function beforeInvoke()
     {
@@ -23,7 +23,7 @@ abstract class Ajde_User_Controller extends Ajde_Controller
     {
         // TODO: possible undesired behaviour when called by Ajde_Acl_Controller,
         // when that controller is invoked with a allowed action like 'logon'
-        return (in_array($this->getAction(), $this->_allowedActions) || $this->getLoggedInUser() !== false);
+        return in_array($this->getAction(), $this->_allowedActions) || $this->getLoggedInUser() !== false;
     }
 
     protected function addTimeoutWarning()
@@ -35,7 +35,6 @@ abstract class Ajde_User_Controller extends Ajde_Controller
     }
 
     /**
-     *
      * @return UserModel
      */
     protected function getLoggedInUser()

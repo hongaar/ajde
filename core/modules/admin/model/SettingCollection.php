@@ -4,9 +4,8 @@ class SettingCollection extends Ajde_Collection
 {
     public static function byName($name)
     {
-
         $niceName = str_replace('_', ' ', $name);
-        $settings = new SettingCollection();
+        $settings = new self();
         $settings->addFilter(new Ajde_Filter_Join('setting_meta', 'setting_meta.setting', 'setting.id'));
         $settings->addFilter(new Ajde_Filter_Join('meta', 'meta.id', 'setting_meta.meta'));
         $settings->addFilter(new Ajde_Filter_Where('setting.name', Ajde_Filter::FILTER_EQUALS, $niceName));

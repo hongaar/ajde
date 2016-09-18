@@ -3,13 +3,13 @@
 class AdminCmsController extends AdminController
 {
     /**
-     * Default action for controller, returns the 'view.phtml' template body
+     * Default action for controller, returns the 'view.phtml' template body.
      *
      * @return string
      */
     public function view()
     {
-        Ajde::app()->getDocument()->setTitle("CMS");
+        Ajde::app()->getDocument()->setTitle('CMS');
 
         return $this->render();
     }
@@ -36,7 +36,7 @@ class AdminCmsController extends AdminController
     public function navJson()
     {
         $recursive = true;
-        $parent    = Ajde::app()->getRequest()->getInt('node', false);
+        $parent = Ajde::app()->getRequest()->getInt('node', false);
 
         $nodes = new NodeCollection();
         $nodes->addFilter(new Ajde_Filter_Where('level', Ajde_Filter::FILTER_EQUALS, 0));
@@ -49,8 +49,8 @@ class AdminCmsController extends AdminController
                 /* @var $node NodeModel */
 
                 $nodeArray = [
-                    "label" => $this->navLabel($node),
-                    "id"    => $node->getPK()
+                    'label' => $this->navLabel($node),
+                    'id'    => $node->getPK(),
                 ];
 
                 $children = $node->getChildren();
@@ -76,10 +76,10 @@ class AdminCmsController extends AdminController
             foreach ($nodes as $node) {
                 /* @var $node NodeModel */
                 $children = $node->get('children');
-                $json[]   = [
-                    "label"          => $this->navLabel($node),
-                    "id"             => $node->getPK(),
-                    "load_on_demand" => $children ? true : false
+                $json[] = [
+                    'label'          => $this->navLabel($node),
+                    'id'             => $node->getPK(),
+                    'load_on_demand' => $children ? true : false,
                 ];
             }
 
@@ -90,10 +90,10 @@ class AdminCmsController extends AdminController
     private function navLabel($node)
     {
         $nodetype = $node->has('nodetype_name') ? $node->get('nodetype_name') : $node->getNodetype()->displayField();
-        $icon     = $node->has('nodetype_icon') ? $node->get('nodetype_icon') : $node->getNodetype()->getIcon();
-        $label    = '<span class="badge-icon" title="' . esc($nodetype) . '"><i class="' . $icon . '"></i></span>';
+        $icon = $node->has('nodetype_icon') ? $node->get('nodetype_icon') : $node->getNodetype()->getIcon();
+        $label = '<span class="badge-icon" title="'.esc($nodetype).'"><i class="'.$icon.'"></i></span>';
 
-        return $label . ' <span class="title">' . clean($node->getTitle()) . '</span>';
+        return $label.' <span class="title">'.clean($node->getTitle()).'</span>';
     }
 
     private function navChildrenArray($collection)
@@ -104,8 +104,8 @@ class AdminCmsController extends AdminController
             /* @var $node NodeModel */
 
             $nodeArray = [
-                "label" => $this->navLabel($node),
-                "id"    => $node->getPK()
+                'label' => $this->navLabel($node),
+                'id'    => $node->getPK(),
             ];
 
             $children = $node->getChildren();
@@ -126,35 +126,35 @@ class AdminCmsController extends AdminController
 
     public function nodes()
     {
-        Ajde::app()->getDocument()->setTitle("Nodes");
+        Ajde::app()->getDocument()->setTitle('Nodes');
 
         return $this->render();
     }
 
     public function media()
     {
-        Ajde::app()->getDocument()->setTitle("Media");
+        Ajde::app()->getDocument()->setTitle('Media');
 
         return $this->render();
     }
 
     public function menus()
     {
-        Ajde::app()->getDocument()->setTitle("Menus");
+        Ajde::app()->getDocument()->setTitle('Menus');
 
         return $this->render();
     }
 
     public function tags()
     {
-        Ajde::app()->getDocument()->setTitle("Tags");
+        Ajde::app()->getDocument()->setTitle('Tags');
 
         return $this->render();
     }
 
     public function settings()
     {
-        Ajde::app()->getDocument()->setTitle("Settings");
+        Ajde::app()->getDocument()->setTitle('Settings');
 
         $decorator = new Ajde_Crud_Cms_Meta_Decorator();
         $this->getView()->assign('decorator', $decorator);

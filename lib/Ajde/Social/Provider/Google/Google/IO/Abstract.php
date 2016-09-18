@@ -16,9 +16,8 @@
  */
 
 /**
- * Abstract IO base class
+ * Abstract IO base class.
  */
-
 require_once 'Google/Client.php';
 require_once 'Google/IO/Exception.php';
 require_once 'Google/Http/CacheParser.php';
@@ -26,7 +25,7 @@ require_once 'Google/Http/Request.php';
 
 abstract class Google_IO_Abstract
 {
-    const FORM_URLENCODED        = 'application/x-www-form-urlencoded';
+    const FORM_URLENCODED = 'application/x-www-form-urlencoded';
     const CONNECTION_ESTABLISHED = "HTTP/1.0 200 Connection established\r\n\r\n";
 
     /** @var Google_Client */
@@ -38,9 +37,10 @@ abstract class Google_IO_Abstract
     }
 
     /**
-     * Executes a Google_Http_Request and returns the resulting populated Google_Http_Request
+     * Executes a Google_Http_Request and returns the resulting populated Google_Http_Request.
      *
      * @param Google_Http_Request $request
+     *
      * @return Google_Http_Request $request
      */
     abstract public function makeRequest(Google_Http_Request $request);
@@ -55,9 +55,11 @@ abstract class Google_IO_Abstract
     /**
      * @visible for testing.
      * Cache the response to an HTTP request if it is cacheable.
+     *
      * @param Google_Http_Request $request
+     *
      * @return bool Returns true if the insertion was successful.
-     * Otherwise, return false.
+     *              Otherwise, return false.
      */
     public function setCachedRequest(Google_Http_Request $request)
     {
@@ -73,9 +75,11 @@ abstract class Google_IO_Abstract
 
     /**
      * @visible for testing.
+     *
      * @param Google_Http_Request $request
+     *
      * @return Google_Http_Request|bool Returns the cached object or
-     * false if the operation was unsuccessful.
+     *                                  false if the operation was unsuccessful.
      */
     public function getCachedRequest(Google_Http_Request $request)
     {
@@ -89,13 +93,15 @@ abstract class Google_IO_Abstract
     /**
      * @visible for testing
      * Process an http request that contains an enclosed entity.
+     *
      * @param Google_Http_Request $request
+     *
      * @return Google_Http_Request Processed request with the enclosed entity.
      */
     public function processEntityRequest(Google_Http_Request $request)
     {
-        $postBody    = $request->getPostBody();
-        $contentType = $request->getRequestHeader("content-type");
+        $postBody = $request->getPostBody();
+        $contentType = $request->getRequestHeader('content-type');
 
         // Set the default content-type as application/x-www-form-urlencoded.
         if (false == $contentType) {
@@ -179,6 +185,7 @@ abstract class Google_IO_Abstract
      *
      * @param $respData
      * @param $headerSize
+     *
      * @return array
      */
     public function parseHttpResponse($respData, $headerSize)
@@ -188,7 +195,7 @@ abstract class Google_IO_Abstract
         }
 
         if ($headerSize) {
-            $responseBody    = substr($respData, $headerSize);
+            $responseBody = substr($respData, $headerSize);
             $responseHeaders = substr($respData, 0, $headerSize);
         } else {
             list($responseHeaders, $responseBody) = explode("\r\n\r\n", $respData, 2);
@@ -200,9 +207,10 @@ abstract class Google_IO_Abstract
     }
 
     /**
-     * Parse out headers from raw headers
+     * Parse out headers from raw headers.
      *
      * @param rawHeaders array or string
+     *
      * @return array
      */
     public function getHttpResponseHeaders($rawHeaders)
@@ -224,7 +232,7 @@ abstract class Google_IO_Abstract
                 list($header, $value) = explode(': ', $headerLine, 2);
                 $header = strtolower($header);
                 if (isset($responseHeaders[$header])) {
-                    $headers[$header] .= "\n" . $value;
+                    $headers[$header] .= "\n".$value;
                 } else {
                     $headers[$header] = $value;
                 }
@@ -237,7 +245,7 @@ abstract class Google_IO_Abstract
     private function parseArrayHeaders($rawHeaders)
     {
         $header_count = count($rawHeaders);
-        $headers      = [];
+        $headers = [];
 
         for ($i = 0; $i < $header_count; $i++) {
             $header = $rawHeaders[$i];

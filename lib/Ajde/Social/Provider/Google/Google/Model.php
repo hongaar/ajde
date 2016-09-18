@@ -18,10 +18,9 @@
 /**
  * This class defines attributes, valid values, and usage which is generated
  * from a given json schema.
- * http://tools.ietf.org/html/draft-zyp-json-schema-03#section-5
+ * http://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.
  *
  * @author Chirag Shah <chirags@google.com>
- *
  */
 class Google_Model implements ArrayAccess
 {
@@ -76,6 +75,7 @@ class Google_Model implements ArrayAccess
      * Initialize this object's properties from an array.
      *
      * @param array $array Used to seed this object's properties.
+     *
      * @return void
      */
     protected function mapTypes($array)
@@ -96,6 +96,7 @@ class Google_Model implements ArrayAccess
      * Returns true only if the array is associative.
      *
      * @param array $array
+     *
      * @return bool True if the array is associative.
      */
     protected function isAssociativeArray($array)
@@ -118,6 +119,7 @@ class Google_Model implements ArrayAccess
      *
      * @param $name
      * @param $item
+     *
      * @return object The object from the item.
      */
     private function createObjectFromName($name, $item)
@@ -130,16 +132,17 @@ class Google_Model implements ArrayAccess
     /**
      * Verify if $obj is an array.
      *
-     * @throws Google_Exception Thrown if $obj isn't an array.
      * @param array  $obj    Items that should be validated.
      * @param string $method Method expecting an array as an argument.
+     *
+     * @throws Google_Exception Thrown if $obj isn't an array.
      */
     public function assertIsArray($obj, $method)
     {
         if ($obj && !is_array($obj)) {
             throw new Google_Exception(
                 "Incorrect parameter type passed to $method(),"
-                . " expected an array."
+                .' expected an array.'
             );
         }
     }
@@ -161,7 +164,7 @@ class Google_Model implements ArrayAccess
         if (property_exists($this, $offset)) {
             $this->$offset = $value;
         } else {
-            $this->data[$offset]      = $value;
+            $this->data[$offset] = $value;
             $this->processed[$offset] = true;
         }
     }
@@ -173,11 +176,11 @@ class Google_Model implements ArrayAccess
 
     protected function keyType($key)
     {
-        return $key . "Type";
+        return $key.'Type';
     }
 
     protected function dataType($key)
     {
-        return $key . "DataType";
+        return $key.'DataType';
     }
 }

@@ -8,7 +8,7 @@ class Ajde_Db_Table extends Ajde_Object_Standard
 
     public function __construct($name)
     {
-        $this->_name       = $name;
+        $this->_name = $name;
         $this->_connection = Ajde_Db::getInstance()->getConnection();
         $this->initTableStructure();
     }
@@ -25,17 +25,17 @@ class Ajde_Db_Table extends Ajde_Object_Standard
     {
         $structure = Ajde_Db::getInstance()->getAdapter()->getTableStructure($this->_name);
         foreach ($structure as $field) {
-            $fieldName       = $field['Field'];
-            $fieldType       = $field['Type'];
+            $fieldName = $field['Field'];
+            $fieldType = $field['Type'];
             $fieldParsedType = Ajde_Db::getInstance()->getAdapter()->getFieldType($fieldType);
-            $fieldDefault    = $field['Default'];
-            $fieldLabel      = !empty($field['Comment']) ? $field['Comment'] : $field['Field'];
+            $fieldDefault = $field['Default'];
+            $fieldLabel = !empty($field['Comment']) ? $field['Comment'] : $field['Field'];
 
-            $fieldIsRequired      = strtoupper($field['Null']) === 'NO';
-            $fieldIsPK            = strtoupper($field['Key']) === 'PRI';
+            $fieldIsRequired = strtoupper($field['Null']) === 'NO';
+            $fieldIsPK = strtoupper($field['Key']) === 'PRI';
             $fieldIsAutoIncrement = strtolower($field['Extra']) === 'auto_increment';
-            $fieldIsAutoUpdate    = strtolower($field['Extra']) === 'on update current_timestamp';
-            $fieldIsUnique        = strtoupper($field['Key']) === 'UNI';
+            $fieldIsAutoUpdate = strtolower($field['Extra']) === 'on update current_timestamp';
+            $fieldIsUnique = strtoupper($field['Key']) === 'UNI';
 
             // Fix for certain MySQL versions
             if (strtolower($fieldDefault) === 'current_timestamp') {
@@ -53,7 +53,7 @@ class Ajde_Db_Table extends Ajde_Object_Standard
                 'isPK'            => $fieldIsPK,
                 'isAutoIncrement' => $fieldIsAutoIncrement,
                 'isAutoUpdate'    => $fieldIsAutoUpdate,
-                'isUnique'        => $fieldIsUnique
+                'isUnique'        => $fieldIsUnique,
             ];
         }
     }
@@ -70,24 +70,24 @@ class Ajde_Db_Table extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @param Ajde_Db_Table|string $parent
+     *
      * @return array
      */
     public function getFK($column)
     {
-        $fk = Ajde_Db::getInstance()->getAdapter()->getForeignKey((string)$this, (string)$column);
+        $fk = Ajde_Db::getInstance()->getAdapter()->getForeignKey((string) $this, (string) $column);
 
         return [
             'field'        => $fk['COLUMN_NAME'],
             'parent_table' => $fk['REFERENCED_TABLE_NAME'],
-            'parent_field' => $fk['REFERENCED_COLUMN_NAME']
+            'parent_field' => $fk['REFERENCED_COLUMN_NAME'],
         ];
     }
 
     public function getParents()
     {
-        $parents       = Ajde_Db::getInstance()->getAdapter()->getParents((string)$this);
+        $parents = Ajde_Db::getInstance()->getAdapter()->getParents((string) $this);
         $parentColumns = [];
         foreach ($parents as $parent) {
             if (

@@ -4,7 +4,6 @@ abstract class Ajde_Api_Controller extends Ajde_Acl_Controller
 {
     public function beforeInvoke($allowed = [])
     {
-
         $token = Ajde::app()->getRequest()->getParam('token', false);
         if ($token) {
             $user = new UserModel();

@@ -6,7 +6,6 @@ class Ajde_Crud_Options_Edit_Layout_Rows_Row_Columns_Column extends Ajde_Crud_Op
     private $_block = 0;
 
     /**
-     *
      * @return Ajde_Crud_Options_Edit_Layout_Rows_Row
      */
     public function up($obj = false)
@@ -21,7 +20,7 @@ class Ajde_Crud_Options_Edit_Layout_Rows_Row_Columns_Column extends Ajde_Crud_Op
     // =========================================================================
 
     /**
-     * Adds a block to the column
+     * Adds a block to the column.
      *
      * @return Ajde_Crud_Options_Edit_Layout_Rows_Row_Columns_Column_Blocks_Block
      */
@@ -40,10 +39,12 @@ class Ajde_Crud_Options_Edit_Layout_Rows_Row_Columns_Column extends Ajde_Crud_Op
     // =========================================================================
 
     /**
-     * Sets the column width in px
+     * Sets the column width in px.
      *
-     * @param integer $pixels
+     * @param int $pixels
+     *
      * @return Ajde_Crud_Options_Edit_Layout_Rows_Row_Columns_Column
+     *
      * @deprecated Use setSpan instead
      */
     public function setWidth($pixels)
@@ -52,10 +53,12 @@ class Ajde_Crud_Options_Edit_Layout_Rows_Row_Columns_Column extends Ajde_Crud_Op
     }
 
     /**
-     * Sets the column alignment
+     * Sets the column alignment.
      *
      * @param enum $align ('left'|'right')
+     *
      * @return Ajde_Crud_Options_Edit_Layout_Rows_Row_Columns_Column
+     *
      * @deprecated Use column order instead
      */
     public function setAlign($alignment)
@@ -64,9 +67,10 @@ class Ajde_Crud_Options_Edit_Layout_Rows_Row_Columns_Column extends Ajde_Crud_Op
     }
 
     /**
-     * Sets the column span in columns (12-based)
+     * Sets the column span in columns (12-based).
      *
-     * @param integer $columns
+     * @param int $columns
+     *
      * @return Ajde_Crud_Options_Edit_Layout_Rows_Row_Columns_Column
      */
     public function setSpan($columns)

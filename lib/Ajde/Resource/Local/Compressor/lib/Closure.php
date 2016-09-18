@@ -18,14 +18,14 @@ class Ajde_Resource_Local_Compressor_Js_Closure extends PhpClosure
 
     // Overrides
 
-    function _readSources()
+    public function _readSources()
     {
         return $this->_contents;
     }
 }
 
 /**
- * Copyright 2010 Daniel Pupius (http://code.google.com/p/php-closure/)
+ * Copyright 2010 Daniel Pupius (http://code.google.com/p/php-closure/).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,21 +66,20 @@ class Ajde_Resource_Local_Compressor_Js_Closure extends PhpClosure
  */
 class PhpClosure
 {
-
-    var $_srcs                = [];
-    var $_mode                = "WHITESPACE_ONLY";
-    var $_warning_level       = "DEFAULT";
-    var $_use_closure_library = false;
-    var $_pretty_print        = false;
-    var $_debug               = true;
-    var $_cache_dir           = "";
-    var $_code_url_prefix     = "";
+    public $_srcs = [];
+    public $_mode = 'WHITESPACE_ONLY';
+    public $_warning_level = 'DEFAULT';
+    public $_use_closure_library = false;
+    public $_pretty_print = false;
+    public $_debug = true;
+    public $_cache_dir = '';
+    public $_code_url_prefix = '';
 
     /**
      * Adds a source file to the list of files to compile.  Files will be
      * concatenated in the order they are added.
      */
-    function add($file)
+    public function add($file)
     {
         $this->_srcs[] = $file;
 
@@ -90,9 +89,9 @@ class PhpClosure
     /**
      * Sets the directory where the compilation results should be cached, if
      * not set then caching will be disabled and the compiler will be invoked
-     * for every request (NOTE: this will hit ratelimits pretty fast!)
+     * for every request (NOTE: this will hit ratelimits pretty fast!).
      */
-    function cacheDir($dir)
+    public function cacheDir($dir)
     {
         $this->_cache_dir = $dir;
 
@@ -103,7 +102,7 @@ class PhpClosure
      * Sets whether to use the Closure Library.  i.e. goog.requires will be
      * resolved and the library code made available.
      */
-    function useClosureLibrary()
+    public function useClosureLibrary()
     {
         $this->_use_closure_library = true;
 
@@ -132,7 +131,7 @@ class PhpClosure
      * This assumes your PHP script is in a directory /app/ and that the JS is in
      * /app/js/ and accessible via HTTP.
      */
-    function useCodeUrl($code_url_prefix)
+    public function useCodeUrl($code_url_prefix)
     {
         $this->_code_url_prefix = $code_url_prefix;
 
@@ -142,7 +141,7 @@ class PhpClosure
     /**
      * Tells the compiler to pretty print the output.
      */
-    function prettyPrint()
+    public function prettyPrint()
     {
         $this->_pretty_print = true;
 
@@ -153,7 +152,7 @@ class PhpClosure
      * Turns of the debug info.
      * By default statistics, errors and warnings are logged to the console.
      */
-    function hideDebugInfo()
+    public function hideDebugInfo()
     {
         $this->_debug = false;
 
@@ -163,9 +162,9 @@ class PhpClosure
     /**
      * Sets the compilation mode to optimize whitespace only.
      */
-    function whitespaceOnly()
+    public function whitespaceOnly()
     {
-        $this->_mode = "WHITESPACE_ONLY";
+        $this->_mode = 'WHITESPACE_ONLY';
 
         return $this;
     }
@@ -173,9 +172,9 @@ class PhpClosure
     /**
      * Sets the compilation mode to simple optimizations.
      */
-    function simpleMode()
+    public function simpleMode()
     {
-        $this->_mode = "SIMPLE_OPTIMIZATIONS";
+        $this->_mode = 'SIMPLE_OPTIMIZATIONS';
 
         return $this;
     }
@@ -183,9 +182,9 @@ class PhpClosure
     /**
      * Sets the compilation mode to advanced optimizations (recommended).
      */
-    function advancedMode()
+    public function advancedMode()
     {
-        $this->_mode = "ADVANCED_OPTIMIZATIONS";
+        $this->_mode = 'ADVANCED_OPTIMIZATIONS';
 
         return $this;
     }
@@ -194,7 +193,7 @@ class PhpClosure
      * Gets the compilation mode from the URL, set the mode param to
      * 'w', 's' or 'a'.
      */
-    function getModeFromUrl()
+    public function getModeFromUrl()
     {
         if ($_GET['mode'] == 's') {
             $this->simpleMode();
@@ -212,9 +211,9 @@ class PhpClosure
     /**
      * Sets the warning level to QUIET.
      */
-    function quiet()
+    public function quiet()
     {
-        $this->_warning_level = "QUIET";
+        $this->_warning_level = 'QUIET';
 
         return $this;
     }
@@ -222,9 +221,9 @@ class PhpClosure
     /**
      * Sets the default warning level.
      */
-    function defaultWarnings()
+    public function defaultWarnings()
     {
-        $this->_warning_level = "DEFAULT";
+        $this->_warning_level = 'DEFAULT';
 
         return $this;
     }
@@ -232,9 +231,9 @@ class PhpClosure
     /**
      * Sets the warning level to VERBOSE.
      */
-    function verbose()
+    public function verbose()
     {
-        $this->_warning_level = "VERBOSE";
+        $this->_warning_level = 'VERBOSE';
 
         return $this;
     }
@@ -243,12 +242,12 @@ class PhpClosure
      * Writes the compiled response.  Reading from either the cache, or
      * invoking a recompile, if necessary.
      */
-    function write()
+    public function write()
     {
-        header("Content-Type: text/javascript");
+        header('Content-Type: text/javascript');
 
         // No cache directory so just dump the output.
-        if ($this->_cache_dir == "") {
+        if ($this->_cache_dir == '') {
             echo $this->_compile();
         } else {
             $cache_file = $this->_getCacheFileName();
@@ -259,13 +258,13 @@ class PhpClosure
             } else {
                 // No recompile needed, but see if we can send a 304 to the browser.
                 $cache_mtime = filemtime($cache_file);
-                $etag        = md5_file($cache_file);
-                header("Last-Modified: " . gmdate("D, d M Y H:i:s", $cache_mtime) . " GMT");
+                $etag = md5_file($cache_file);
+                header('Last-Modified: '.gmdate('D, d M Y H:i:s', $cache_mtime).' GMT');
                 header("Etag: $etag");
                 if (@strtotime(@$_SERVER['HTTP_IF_MODIFIED_SINCE']) == $cache_mtime ||
                     @trim(@$_SERVER['HTTP_IF_NONE_MATCH']) == $etag
                 ) {
-                    header("HTTP/1.1 304 Not Modified");
+                    header('HTTP/1.1 304 Not Modified');
                 } else {
                     // Read the cache file and send it to the client.
                     echo file_get_contents($cache_file);
@@ -276,7 +275,7 @@ class PhpClosure
 
     // ----- Privates -----
 
-    function _isRecompileNeeded($cache_file)
+    public function _isRecompileNeeded($cache_file)
     {
         // If there is no cache file, we obviously need to recompile.
         if (!file_exists($cache_file)) {
@@ -295,7 +294,7 @@ class PhpClosure
         // If this script calling the compiler is newer than the cache file,
         // recompile.  Note, this might not be accurate if the file doing the
         // compilation is loaded via an include().
-        if (filemtime($_SERVER["SCRIPT_FILENAME"]) > $cache_mtime) {
+        if (filemtime($_SERVER['SCRIPT_FILENAME']) > $cache_mtime) {
             return true;
         }
 
@@ -303,7 +302,7 @@ class PhpClosure
         return false;
     }
 
-    function _compile()
+    public function _compile()
     {
         // Quieten strict notices.
         $code = $originalSize = $originalGzipSize = $compressedSize = $compressedGzipSize = $compileTime = '';
@@ -312,33 +311,33 @@ class PhpClosure
 
         $result = $tree;
         foreach ($result as $node) {
-            switch ($node["tag"]) {
-                case "compiledCode":
-                    $code = $node["value"];
+            switch ($node['tag']) {
+                case 'compiledCode':
+                    $code = $node['value'];
                     break;
-                case "warnings":
-                    $warnings = $node["value"];
+                case 'warnings':
+                    $warnings = $node['value'];
                     break;
-                case "errors":
-                    $errors = $node["value"];
+                case 'errors':
+                    $errors = $node['value'];
                     break;
-                case "statistics":
-                    foreach ($node["value"] as $stat) {
-                        switch ($stat["tag"]) {
-                            case "originalSize":
-                                $originalSize = $stat["value"];
+                case 'statistics':
+                    foreach ($node['value'] as $stat) {
+                        switch ($stat['tag']) {
+                            case 'originalSize':
+                                $originalSize = $stat['value'];
                                 break;
-                            case "originalGzipSize":
-                                $originalGzipSize = $stat["value"];
+                            case 'originalGzipSize':
+                                $originalGzipSize = $stat['value'];
                                 break;
-                            case "compressedSize":
-                                $compressedSize = $stat["value"];
+                            case 'compressedSize':
+                                $compressedSize = $stat['value'];
                                 break;
-                            case "compressedGzipSize":
-                                $compressedGzipSize = $stat["value"];
+                            case 'compressedGzipSize':
+                                $compressedGzipSize = $stat['value'];
                                 break;
-                            case "compileTime":
-                                $compileTime = $stat["value"];
+                            case 'compileTime':
+                                $compileTime = $stat['value'];
                                 break;
                         }
                     }
@@ -346,22 +345,22 @@ class PhpClosure
             }
         }
 
-        $result = "";
+        $result = '';
         if ($this->_debug) {
-            $result = "if(window.console&&window.console.log){\r\n" .
-                "window.console.log('Closure Compiler Stats:\\n" .
-                "-----------------------\\n" .
-                "Original Size: $originalSize\\n" .
-                "Original Gzip Size: $originalGzipSize\\n" .
-                "Compressed Size: $compressedSize\\n" .
-                "Compressed Gzip Size: $compressedGzipSize\\n" .
-                "Compile Time: $compileTime\\n" .
-                "Generated: " . Date("Y/m/d H:i:s T") . "');\r\n";
+            $result = "if(window.console&&window.console.log){\r\n".
+                "window.console.log('Closure Compiler Stats:\\n".
+                '-----------------------\\n'.
+                "Original Size: $originalSize\\n".
+                "Original Gzip Size: $originalGzipSize\\n".
+                "Compressed Size: $compressedSize\\n".
+                "Compressed Gzip Size: $compressedGzipSize\\n".
+                "Compile Time: $compileTime\\n".
+                'Generated: '.date('Y/m/d H:i:s T')."');\r\n";
             if (isset($errors)) {
-                $result .= $this->_printWarnings($errors, "error");
+                $result .= $this->_printWarnings($errors, 'error');
             }
             if (isset($warnings)) {
-                $result .= $this->_printWarnings($warnings, "warn");
+                $result .= $this->_printWarnings($warnings, 'warn');
             }
             $result .= "}\r\n\r\n";
         }
@@ -370,103 +369,103 @@ class PhpClosure
         return $result;
     }
 
-    function _printWarnings($warnings, $level = "log")
+    public function _printWarnings($warnings, $level = 'log')
     {
-        $result = "";
+        $result = '';
         foreach ($warnings as $warning) {
-            $desc   = addslashes($warning["value"]);
-            $type   = $warning["attributes"]["type"];
-            $lineno = $warning["attributes"]["lineno"];
-            $charno = $warning["attributes"]["charno"];
-            $line   = trim(addslashes($warning["attributes"]["line"]));
+            $desc = addslashes($warning['value']);
+            $type = $warning['attributes']['type'];
+            $lineno = $warning['attributes']['lineno'];
+            $charno = $warning['attributes']['charno'];
+            $line = trim(addslashes($warning['attributes']['line']));
             $result .= "window.console.$level('$type: $desc\\nLine: $lineno\\nChar: $charno\\nLine: $line');\r\n";
         }
 
         return $result;
     }
 
-    function _getCacheFileName()
+    public function _getCacheFileName()
     {
-        return $this->_cache_dir . $this->_getHash() . ".js";
+        return $this->_cache_dir.$this->_getHash().'.js';
     }
 
-    function _getHash()
+    public function _getHash()
     {
-        return md5(implode(",", $this->_srcs) . "-" .
-            $this->_mode . "-" .
-            $this->_warning_level . "-" .
-            $this->_use_closure_library . "-" .
-            $this->_pretty_print . "-" .
+        return md5(implode(',', $this->_srcs).'-'.
+            $this->_mode.'-'.
+            $this->_warning_level.'-'.
+            $this->_use_closure_library.'-'.
+            $this->_pretty_print.'-'.
             $this->_debug);
     }
 
-    function _getParams()
+    public function _getParams()
     {
         $params = [];
         foreach ($this->_getParamList() as $key => $value) {
-            $params[] = preg_replace("/_[0-9]$/", "", $key) . "=" . urlencode($value);
+            $params[] = preg_replace('/_[0-9]$/', '', $key).'='.urlencode($value);
         }
 
-        return implode("&", $params);
+        return implode('&', $params);
     }
 
-    function _getParamList()
+    public function _getParamList()
     {
         $params = [];
         if ($this->_code_url_prefix) {
             // Send the URL to each source file instead of the raw source.
             $i = 0;
             foreach ($this->_srcs as $file) {
-                $params["code_url_$i"] = $this->_code_url_prefix . $file;
+                $params["code_url_$i"] = $this->_code_url_prefix.$file;
                 $i++;
             }
         } else {
-            $params["js_code"] = $this->_readSources();
+            $params['js_code'] = $this->_readSources();
         }
-        $params["compilation_level"] = $this->_mode;
-        $params["output_format"]     = "xml";
-        $params["warning_level"]     = $this->_warning_level;
+        $params['compilation_level'] = $this->_mode;
+        $params['output_format'] = 'xml';
+        $params['warning_level'] = $this->_warning_level;
         if ($this->_pretty_print) {
-            $params["formatting"] = "pretty_print";
+            $params['formatting'] = 'pretty_print';
         }
         if ($this->_use_closure_library) {
-            $params["use_closure_library"] = "true";
+            $params['use_closure_library'] = 'true';
         }
-        $params["output_info_1"] = "compiled_code";
-        $params["output_info_2"] = "statistics";
-        $params["output_info_3"] = "warnings";
-        $params["output_info_4"] = "errors";
+        $params['output_info_1'] = 'compiled_code';
+        $params['output_info_2'] = 'statistics';
+        $params['output_info_3'] = 'warnings';
+        $params['output_info_4'] = 'errors';
 
         return $params;
     }
 
-    function _readSources()
+    public function _readSources()
     {
-        $code = "";
+        $code = '';
         foreach ($this->_srcs as $src) {
-            $code .= file_get_contents($src) . "\n\n";
+            $code .= file_get_contents($src)."\n\n";
         }
 
         return $code;
     }
 
-    function _makeRequest()
+    public function _makeRequest()
     {
         $data = $this->_getParams();
-        $referer = @$_SERVER["HTTP_REFERER"] or "";
+        $referer = @$_SERVER['HTTP_REFERER'] or '';
 
-        $fp = fsockopen("closure-compiler.appspot.com", 80) or die("Unable to open socket");;
+        $fp = fsockopen('closure-compiler.appspot.com', 80) or die('Unable to open socket');
 
         if ($fp) {
-            fputs($fp, "POST /compile HTTP/1.1\r\n");
-            fputs($fp, "Host: closure-compiler.appspot.com\r\n");
-            fputs($fp, "Referer: $referer\r\n");
-            fputs($fp, "Content-type: application/x-www-form-urlencoded\r\n");
-            fputs($fp, "Content-length: " . strlen($data) . "\r\n");
-            fputs($fp, "Connection: close\r\n\r\n");
-            fputs($fp, $data);
+            fwrite($fp, "POST /compile HTTP/1.1\r\n");
+            fwrite($fp, "Host: closure-compiler.appspot.com\r\n");
+            fwrite($fp, "Referer: $referer\r\n");
+            fwrite($fp, "Content-type: application/x-www-form-urlencoded\r\n");
+            fwrite($fp, 'Content-length: '.strlen($data)."\r\n");
+            fwrite($fp, "Connection: close\r\n\r\n");
+            fwrite($fp, $data);
 
-            $result = "";
+            $result = '';
             while (!feof($fp)) {
                 $result .= fgets($fp, 128);
             }
@@ -475,20 +474,20 @@ class PhpClosure
         }
 
         $data = substr($result, (strpos($result, "\r\n\r\n") + 4));
-        if (strpos(strtolower($result), "transfer-encoding: chunked") !== false) {
+        if (strpos(strtolower($result), 'transfer-encoding: chunked') !== false) {
             $data = $this->_unchunk($data);
         }
 
         return $data;
     }
 
-    function _unchunk($data)
+    public function _unchunk($data)
     {
-        $fp      = 0;
-        $outData = "";
+        $fp = 0;
+        $outData = '';
         while ($fp < strlen($data)) {
             $rawnum = substr($data, $fp, strpos(substr($data, $fp), "\r\n") + 2);
-            $num    = hexdec(trim($rawnum));
+            $num = hexdec(trim($rawnum));
             $fp += strlen($rawnum);
             $chunk = substr($data, $fp, $num);
             $outData .= $chunk;
@@ -498,21 +497,21 @@ class PhpClosure
         return $outData;
     }
 
-    function _parseXml($data)
+    public function _parseXml($data)
     {
         $xml = new SimpleXMLElement($data);
 
         return $this->_parseXmlHelper($xml);
     }
 
-    function _parseXmlHelper($xml)
+    public function _parseXmlHelper($xml)
     {
         $tree = null;
         foreach ($xml->children() as $name => $child) {
-            $value = (string)$child;
-            $node  = [
+            $value = (string) $child;
+            $node = [
                 'tag'   => $name,
-                'value' => count($child->children()) == 0 ? $value : $this->_parseXmlHelper($child)
+                'value' => count($child->children()) == 0 ? $value : $this->_parseXmlHelper($child),
             ];
 
             foreach ($child->attributes() as $attr => $value) {

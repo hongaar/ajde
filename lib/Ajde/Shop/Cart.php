@@ -4,7 +4,7 @@ abstract class Ajde_Shop_Cart extends Ajde_Model
 {
     protected $_autoloadParents = false;
 
-    protected $_cartItemModel      = null;
+    protected $_cartItemModel = null;
     protected $_cartItemCollection = null;
 
     private $_items;
@@ -12,11 +12,10 @@ abstract class Ajde_Shop_Cart extends Ajde_Model
     public function beforeInsert()
     {
         // Added
-        $this->added = new Ajde_Db_Function("NOW()");
+        $this->added = new Ajde_Db_Function('NOW()');
     }
 
     /**
-     *
      * @return UserModel
      */
     public function loadCurrent()
@@ -32,7 +31,7 @@ abstract class Ajde_Shop_Cart extends Ajde_Model
         } else {
             // Do we have a cart from IP address?
             if ($this->loadByClient() === false) {
-                $this->client = md5($_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
+                $this->client = md5($_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']);
                 $this->insert();
             }
         }
@@ -47,14 +46,14 @@ abstract class Ajde_Shop_Cart extends Ajde_Model
 
     public function loadByClient()
     {
-        return $this->loadByField('client', md5($_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']));
+        return $this->loadByField('client', md5($_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']));
     }
 
     public function addItem($entity, $id = null, $qty = 1)
     {
         if (!$this->hasLoaded()) {
             // TODO:
-            throw new Ajde_Exception("No shopping cart is loaded");
+            throw new Ajde_Exception('No shopping cart is loaded');
         }
 
         if ($entity instanceof Ajde_Model) {
@@ -63,8 +62,8 @@ abstract class Ajde_Shop_Cart extends Ajde_Model
                 throw new Ajde_Exception('Entity is instance of Ajde_Model but not loaded when calling Ajde_Shop_Cart::addItem()');
             }
             /* @var $entity Ajde_Model */
-            $id     = $entity->getPK();
-            $entity = (string)$entity->getTable();
+            $id = $entity->getPK();
+            $entity = (string) $entity->getTable();
         } else {
             if (!isset($id)) {
                 // TODO:
@@ -76,7 +75,7 @@ abstract class Ajde_Shop_Cart extends Ajde_Model
         $cartItem = $this->getItem($entity, $id);
         /* @var $cartItem Ajde_Shop_Cart_Item */
 
-        $this->updated = new Ajde_Db_Function("NOW()");
+        $this->updated = new Ajde_Db_Function('NOW()');
 
         if ($cartItem->hasLoaded()) {
             $cartItem->addQty($qty);
@@ -91,9 +90,9 @@ abstract class Ajde_Shop_Cart extends Ajde_Model
     }
 
     /**
+     * @param string $entity
+     * @param int    $id
      *
-     * @param string  $entity
-     * @param integer $id
      * @return Ajde_Shop_Cart_Item
      */
     public function getItem($entity, $id)
@@ -105,7 +104,6 @@ abstract class Ajde_Shop_Cart extends Ajde_Model
     }
 
     /**
-     *
      * @return Ajde_Shop_Cart_Item_Collection
      */
     public function getItems()
@@ -132,10 +130,10 @@ abstract class Ajde_Shop_Cart extends Ajde_Model
             $success = $success * $item->delete();
         }
 
-        $this->updated = new Ajde_Db_Function("NOW()");
+        $this->updated = new Ajde_Db_Function('NOW()');
         $this->save();
 
-        return (bool)$success;
+        return (bool) $success;
     }
 
     public function countItems()
@@ -153,25 +151,25 @@ abstract class Ajde_Shop_Cart extends Ajde_Model
         $items = $this->getItems();
         $table = '<table class="table table-condensed"><thead>';
         $table .= '<tr>';
-        $table .= '<th>' . trans('Quantity') . '</th>';
-        $table .= '<th>' . trans('Description') . '</th>';
-        $table .= '<th>' . trans('VAT') . '</th>';
-        $table .= '<th>' . trans('Total') . '</th>';
+        $table .= '<th>'.trans('Quantity').'</th>';
+        $table .= '<th>'.trans('Description').'</th>';
+        $table .= '<th>'.trans('VAT').'</th>';
+        $table .= '<th>'.trans('Total').'</th>';
         $table .= '</tr></thead><tbody>';
         foreach ($items as $item) {
             /* @var $item Ajde_Shop_Cart_Item */
             $table .= '<tr>';
-            $table .= '<td>' . $item->getQty() . '</td>';
-            $table .= '<td>' . $item->getDescription() . '</td>';
-            $table .= '<td>' . $item->getFormattedVATAmount() . '</td>';
-            $table .= '<td>' . $item->getFormattedTotal() . '</td>';
+            $table .= '<td>'.$item->getQty().'</td>';
+            $table .= '<td>'.$item->getDescription().'</td>';
+            $table .= '<td>'.$item->getFormattedVATAmount().'</td>';
+            $table .= '<td>'.$item->getFormattedTotal().'</td>';
             $table .= '</tr>';
         }
         $table .= '</tbody><tfoot><tr>';
-        $table .= '<td>' . $this->countQty() . '</td>';
-        $table .= '<td>' . trans('Total') . '</td>';
-        $table .= '<td>' . $items->getFormattedVATAmount() . '</td>';
-        $table .= '<td>' . $items->getFormattedTotal() . '</td>';
+        $table .= '<td>'.$this->countQty().'</td>';
+        $table .= '<td>'.trans('Total').'</td>';
+        $table .= '<td>'.$items->getFormattedVATAmount().'</td>';
+        $table .= '<td>'.$items->getFormattedTotal().'</td>';
         $table .= '</tr></tfoot>';
         $table .= '</table>';
 
@@ -179,7 +177,6 @@ abstract class Ajde_Shop_Cart extends Ajde_Model
     }
 
     /**
-     *
      * @return Ajde_Shop_Cart_Item
      */
     protected function _getItemModel()

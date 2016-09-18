@@ -1,4 +1,5 @@
 <?php
+
 require_once 'lib/maximizer/CSS3Maximizer.php';
 require_once 'lib/maximizer/inc/ColorSpace.php';
 
@@ -38,5 +39,4 @@ class Ajde_Document_Processor_Css_Maximizer extends Ajde_Object_Static implement
         // }
         return $maximized;
     }
-
 }

@@ -13,6 +13,7 @@ class Ajde_Environment extends Ajde_Object_Singleton
      * Environment <-> network map.
      *
      * @author http://en.wikipedia.org/wiki/Private_network
+     *
      * @var array
      */
     public static $networks = [
@@ -22,11 +23,11 @@ class Ajde_Environment extends Ajde_Object_Singleton
             '/10\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/',
             '/172\.[1-3][0-9]\.[0-9]{1,3}\.[0-9]{1,3}/',
             '/192\.168\.[0-9]{1,3}\.[0-9]{1,3}/',
-        ]
+        ],
     ];
 
     /**
-     * TODO
+     * TODO.
      */
     public function __construct()
     {
@@ -34,7 +35,7 @@ class Ajde_Environment extends Ajde_Object_Singleton
     }
 
     /**
-     * TODO
+     * TODO.
      *
      * @return Ajde_Environment
      */
@@ -42,11 +43,11 @@ class Ajde_Environment extends Ajde_Object_Singleton
     {
         static $instance;
 
-        return $instance === null ? $instance = new self : $instance;
+        return $instance === null ? $instance = new self() : $instance;
     }
 
     /**
-     * TODO
+     * TODO.
      *
      * @return string
      */
@@ -58,7 +59,7 @@ class Ajde_Environment extends Ajde_Object_Singleton
     }
 
     /**
-     * TODO
+     * TODO.
      *
      * @return string
      */
@@ -68,14 +69,14 @@ class Ajde_Environment extends Ajde_Object_Singleton
     }
 
     /**
-     * TODO
+     * TODO.
      *
      * @return string
      */
     private function autoDetect()
     {
-        if (file_exists(LOCAL_ROOT . '.env')) {
-            return trim(file_get_contents(LOCAL_ROOT . '.env'));
+        if (file_exists(LOCAL_ROOT.'.env')) {
+            return trim(file_get_contents(LOCAL_ROOT.'.env'));
         }
 
         foreach (self::$networks as $environment => $ips) {

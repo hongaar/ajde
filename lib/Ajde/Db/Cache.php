@@ -11,6 +11,6 @@ class Ajde_Db_Cache extends Ajde_Object_Singleton
     {
         static $instance;
 
-        return $instance === null ? $instance = new self : $instance;
+        return $instance === null ? $instance = new self() : $instance;
     }
 }

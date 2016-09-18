@@ -7,7 +7,7 @@ abstract class Ajde_Db_Adapter_Abstract
         $options = $options + [
                 // Not compatible with custom PDO::ATTR_STATEMENT_CLASS
                 //PDO::ATTR_PERSISTENT 			=> true,					// Fast, please
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION    // Exceptions, please);
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,    // Exceptions, please);
             ];
         try {
             $connection = new Ajde_Db_PDO($dsn, $user, $password, $options);

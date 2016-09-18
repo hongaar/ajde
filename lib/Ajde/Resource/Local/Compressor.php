@@ -3,8 +3,8 @@
 abstract class Ajde_Resource_Local_Compressor extends Ajde_Object_Standard
 {
     const CACHE_STATUS_NOT_EXIST = 0;
-    const CACHE_STATUS_EXIST     = 1;
-    const CACHE_STATUS_UPDATE    = 2;
+    const CACHE_STATUS_EXIST = 1;
+    const CACHE_STATUS_UPDATE = 2;
 
     protected $_resources = [];
     protected $_contents;
@@ -16,16 +16,15 @@ abstract class Ajde_Resource_Local_Compressor extends Ajde_Object_Standard
 
     public static function fromType($type)
     {
-        $className = __CLASS__ . '_' . ucfirst($type);
+        $className = __CLASS__.'_'.ucfirst($type);
         if (!class_exists($className)) {
-            throw new Ajde_Exception(sprintf("Compressor for type %s not found", $type), 90017);
+            throw new Ajde_Exception(sprintf('Compressor for type %s not found', $type), 90017);
         }
 
         return new $className();
     }
 
     /**
-     *
      * @param array $resources Array of Ajde_Resource_Local
      */
     public function setResources($resources)
@@ -38,7 +37,6 @@ abstract class Ajde_Resource_Local_Compressor extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @param Ajde_Resource_Local $resource
      */
     public function addResource(Ajde_Resource_Local $resource)
@@ -70,7 +68,7 @@ abstract class Ajde_Resource_Local_Compressor extends Ajde_Object_Standard
     {
         $hash = $this->getHash();
 
-        return $this->getBase() . $hash['fileName'] . '.' . $hash['fileTime'] . '.' . $this->getType();
+        return $this->getBase().$hash['fileName'].'.'.$hash['fileTime'].'.'.$this->getType();
     }
 
     public function setFilename($filename)
@@ -85,12 +83,12 @@ abstract class Ajde_Resource_Local_Compressor extends Ajde_Object_Standard
             $fileNameContext = hash_init('md5');
             foreach ($this->_resources as $resource) {
                 /* @var $resource Ajde_Resource_Local */
-                hash_update($fileTimeContext, filemtime(LOCAL_ROOT . $resource->getFilename()));
+                hash_update($fileTimeContext, filemtime(LOCAL_ROOT.$resource->getFilename()));
                 hash_update($fileNameContext, $resource->getFilename());
             }
             $this->setHash([
                 'fileTime' => hash_final($fileTimeContext),
-                'fileName' => hash_final($fileNameContext)
+                'fileName' => hash_final($fileNameContext),
             ]);
         }
 
@@ -104,12 +102,12 @@ abstract class Ajde_Resource_Local_Compressor extends Ajde_Object_Standard
 
     public function getCacheStatus()
     {
-        $hash            = $this->getHash();
-        $fileTimePattern = $hash['fileName'] . '.' . $hash['fileTime'] . '.' . $this->getType();
+        $hash = $this->getHash();
+        $fileTimePattern = $hash['fileName'].'.'.$hash['fileTime'].'.'.$this->getType();
         if ($fileName = Ajde_Fs_Find::findFile($this->getBase(), $fileTimePattern)) {
             return ['status' => self::CACHE_STATUS_EXIST, 'fileName' => $fileName];
         }
-        $fileNamePattern = $hash['fileName'] . '.*.' . $this->getType();
+        $fileNamePattern = $hash['fileName'].'.*.'.$this->getType();
         if ($fileName = Ajde_Fs_Find::findFile($this->getBase(), $fileNamePattern)) {
             return ['status' => self::CACHE_STATUS_UPDATE, 'fileName' => $fileName];
         }
@@ -118,7 +116,6 @@ abstract class Ajde_Resource_Local_Compressor extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @return Ajde_Resource_Local_Compressed
      */
     public function process()
@@ -146,10 +143,10 @@ abstract class Ajde_Resource_Local_Compressor extends Ajde_Object_Standard
         $this->_contents = '';
         foreach ($this->_resources as $resource) {
             /* @var $resource Ajde_Resource_Local */
-            $this->_contents .= $resource->getContents() . PHP_EOL;
+            $this->_contents .= $resource->getContents().PHP_EOL;
         }
-        if (!is_writable(LOCAL_ROOT . $this->getBase())) {
-            throw new Ajde_Exception(sprintf("Directory %s is not writable", $this->getBase()), 90014);
+        if (!is_writable(LOCAL_ROOT.$this->getBase())) {
+            throw new Ajde_Exception(sprintf('Directory %s is not writable', $this->getBase()), 90014);
         }
 
         // Execute compression
@@ -158,7 +155,7 @@ abstract class Ajde_Resource_Local_Compressor extends Ajde_Object_Standard
         Ajde_Event::trigger($this, 'afterCompress');
 
         // Save file to cache folder
-        file_put_contents(LOCAL_ROOT . $this->getFilename(), $this->_contents);
+        file_put_contents(LOCAL_ROOT.$this->getFilename(), $this->_contents);
     }
 
     public function getContents()
@@ -172,5 +169,4 @@ abstract class Ajde_Resource_Local_Compressor extends Ajde_Object_Standard
     }
 
     abstract public function compress();
-
 }

@@ -29,14 +29,15 @@
  *     http://www.opensource.org/licenses/bsd-license.php
  * @author      Mollie B.V. <info@mollie.nl>
  * @copyright   Mollie B.V.
+ *
  * @link        https://www.mollie.nl
  */
 class Mollie_API_Object_Payment
 {
-    const STATUS_OPEN      = "open";
-    const STATUS_CANCELLED = "cancelled";
-    const STATUS_EXPIRED   = "expired";
-    const STATUS_PAID      = "paid";
+    const STATUS_OPEN = 'open';
+    const STATUS_CANCELLED = 'cancelled';
+    const STATUS_EXPIRED = 'expired';
+    const STATUS_PAID = 'paid';
 
     /**
      * Id of the payment (on the Mollie platform).
@@ -71,6 +72,7 @@ class Mollie_API_Object_Payment
      * If method is empty/null, the customer can pick his/her preferred payment method.
      *
      * @see Mollie_API_Object_Method
+     *
      * @var string|null
      */
     public $method;
@@ -86,6 +88,7 @@ class Mollie_API_Object_Payment
      * Date and time the payment was created in ISO-8601 format.
      *
      * @example "2013-12-25T10:30:54.0Z"
+     *
      * @var string|null
      */
     public $createdDatetime;
@@ -160,7 +163,7 @@ class Mollie_API_Object_Payment
     public function getPaymentUrl()
     {
         if (empty($this->links->paymentUrl)) {
-            return null;
+            return;
         }
 
         return $this->links->paymentUrl;

@@ -2,7 +2,7 @@
 
 class _coreDebuggerController extends Ajde_Controller
 {
-    function view()
+    public function view()
     {
         if (Ajde::app()->getRequest()->isAjax()) {
             $this->setAction('ajax');

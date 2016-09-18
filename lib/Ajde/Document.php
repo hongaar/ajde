@@ -2,28 +2,28 @@
 
 abstract class Ajde_Document extends Ajde_Object_Standard
 {
-    const CACHE_CONTROL_PUBLIC  = 'public';
+    const CACHE_CONTROL_PUBLIC = 'public';
     const CACHE_CONTROL_PRIVATE = 'private';
     const CACHE_CONTROL_NOCACHE = 'no-cache';
 
     protected $_cacheControl = self::CACHE_CONTROL_PUBLIC;
-    protected $_contentType  = 'text/html';
-    protected $_maxAge       = 604800; // 1 week
+    protected $_contentType = 'text/html';
+    protected $_maxAge = 604800; // 1 week
 
     public function __construct()
     {
-        $this->setFormat(strtolower(str_replace("Ajde_Document_Format_", '', get_class($this))));
+        $this->setFormat(strtolower(str_replace('Ajde_Document_Format_', '', get_class($this))));
     }
 
     /**
-     *
      * @param Ajde_Core_Route $route
+     *
      * @return Ajde_Document
      */
     public static function fromRoute(Ajde_Core_Route $route)
     {
-        $format        = $route->getFormat();
-        $documentClass = "Ajde_Document_Format_" . ucfirst($format);
+        $format = $route->getFormat();
+        $documentClass = 'Ajde_Document_Format_'.ucfirst($format);
         if (!class_exists($documentClass)) {
             $exception = new Ajde_Core_Exception_Routing("Document format $format not found",
                 90009);
@@ -43,7 +43,7 @@ abstract class Ajde_Document extends Ajde_Object_Standard
         }
         $layout->setDocument($this);
 
-        return $this->set("layout", $layout);
+        return $this->set('layout', $layout);
     }
 
     /**
@@ -53,14 +53,13 @@ abstract class Ajde_Document extends Ajde_Object_Standard
     {
         if (!$this->hasLayout()) {
             // Load default layout into document
-            $this->setLayout(new Ajde_Layout(config("layout.frontend")));
+            $this->setLayout(new Ajde_Layout(config('layout.frontend')));
         }
 
-        return $this->get("layout");
+        return $this->get('layout');
     }
 
     /**
-     *
      * @param string $contents
      */
     public function setBody($contents)
@@ -69,7 +68,6 @@ abstract class Ajde_Document extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @return string
      */
     public function getBody()
@@ -93,9 +91,9 @@ abstract class Ajde_Document extends Ajde_Object_Standard
 
     public function getFullTitle()
     {
-        $projectTitle = config("app.title");
+        $projectTitle = config('app.title');
         if ($this->has('title')) {
-            return sprintf(config("layout.titleFormat"),
+            return sprintf(config('layout.titleFormat'),
                 $projectTitle,
                 $this->get('title')
             );
@@ -114,7 +112,7 @@ abstract class Ajde_Document extends Ajde_Object_Standard
         if ($this->has('description')) {
             return $this->get('description');
         } else {
-            return config("app.description");
+            return config('app.description');
         }
     }
 
@@ -128,7 +126,7 @@ abstract class Ajde_Document extends Ajde_Object_Standard
         if ($this->has('author')) {
             return $this->get('author');
         } else {
-            return config("app.author");
+            return config('app.author');
         }
     }
 
@@ -159,16 +157,15 @@ abstract class Ajde_Document extends Ajde_Object_Standard
 
     public function getMaxAge()
     {
-        return (int)$this->_maxAge;
+        return (int) $this->_maxAge;
     }
 
     public function setMaxAge($days)
     {
-        $this->_maxAge = (int)(60 * 60 * 24 * $days);
+        $this->_maxAge = (int) (60 * 60 * 24 * $days);
     }
 
     /**
-     *
      * @param Ajde_Resource $resource
      */
     public function addResource(Ajde_Resource $resource)
@@ -182,8 +179,8 @@ abstract class Ajde_Document extends Ajde_Object_Standard
     // Render helpers
 
     /**
-     *
      * @deprecated
+     *
      * @throws Ajde_Core_Exception_Deprecated
      */
     protected function setContentTypeHeader($contentType = null)
@@ -192,8 +189,8 @@ abstract class Ajde_Document extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @deprecated
+     *
      * @throws Ajde_Core_Exception_Deprecated
      */
     protected function setCacheControlHeader($cacheControl = null)
@@ -203,22 +200,22 @@ abstract class Ajde_Document extends Ajde_Object_Standard
 
     public static function registerDocumentProcessor($format, $registerOn = 'layout')
     {
-        $documentProcessors = config("layout.filters.documentProcessors");
+        $documentProcessors = config('layout.filters.documentProcessors');
         if (is_array($documentProcessors) && isset($documentProcessors[$format])) {
             foreach ($documentProcessors[$format] as $processor) {
-                $processorClass = 'Ajde_Document_Processor_' . ucfirst($format) . '_' . $processor;
+                $processorClass = 'Ajde_Document_Processor_'.ucfirst($format).'_'.$processor;
                 if (!class_exists($processorClass)) {
                     // TODO:
-                    throw new Ajde_Exception('Processor ' . $processorClass . ' not found', 90022);
+                    throw new Ajde_Exception('Processor '.$processorClass.' not found', 90022);
                 }
                 if ($registerOn == 'layout') {
-                    Ajde_Event::register('Ajde_Layout', 'beforeGetContents', $processorClass . '::preProcess');
-                    Ajde_Event::register('Ajde_Layout', 'afterGetContents', $processorClass . '::postProcess');
+                    Ajde_Event::register('Ajde_Layout', 'beforeGetContents', $processorClass.'::preProcess');
+                    Ajde_Event::register('Ajde_Layout', 'afterGetContents', $processorClass.'::postProcess');
                 } elseif ($registerOn == 'compressor') {
                     Ajde_Event::register('Ajde_Resource_Local_Compressor', 'beforeCompress',
-                        $processorClass . '::preCompress');
+                        $processorClass.'::preCompress');
                     Ajde_Event::register('Ajde_Resource_Local_Compressor', 'afterCompress',
-                        $processorClass . '::postCompress');
+                        $processorClass.'::postCompress');
                 } else {
                     // TODO:
                     throw new Ajde_Exception('Document processor must be registered on either \'layout\' or \'compressor\'');

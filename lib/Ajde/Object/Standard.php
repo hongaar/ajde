@@ -10,12 +10,13 @@ abstract class Ajde_Object_Standard extends Ajde_Object_Magic
     }
 
     /**
-     * This can now be natively done since PHP 5.4
+     * This can now be natively done since PHP 5.4.
      *
      * @see http://docs.php.net/manual/en/migration54.new-features.php
      *
-     * @return Ajde_Object_Standard
      * @throws Ajde_Exception
+     *
+     * @return Ajde_Object_Standard
      */
     public static function create()
     {

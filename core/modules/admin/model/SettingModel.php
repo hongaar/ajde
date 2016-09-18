@@ -3,8 +3,8 @@
 class SettingModel extends Ajde_Model
 {
     protected $_autoloadParents = false;
-    protected $_displayField    = 'name';
-    protected $_hasMeta         = true;
+    protected $_displayField = 'name';
+    protected $_hasMeta = true;
 
     private static $_cache = [];
 
@@ -22,7 +22,7 @@ class SettingModel extends Ajde_Model
         $settings->getQuery()->addSelect('setting_meta.value');
 
         if ($settings->count()) {
-            $setting             = $settings->current();
+            $setting = $settings->current();
             self::$_cache[$name] = $setting->get('value');
 
             return $setting->get('value');
@@ -34,7 +34,7 @@ class SettingModel extends Ajde_Model
     public static function getMedia($settingName)
     {
         $metaValue = (int) self::byName($settingName);
-        $media     = new MediaModel();
+        $media = new MediaModel();
         $media->loadByPK($metaValue);
 
         return $media->hasLoaded() ? $media : false;
@@ -43,7 +43,7 @@ class SettingModel extends Ajde_Model
     public static function getNode($settingName)
     {
         $metaValue = (int) self::byName($settingName);
-        $node      = new NodeModel();
+        $node = new NodeModel();
         $node->loadByPK($metaValue);
 
         return $node->hasLoaded() ? $node : false;

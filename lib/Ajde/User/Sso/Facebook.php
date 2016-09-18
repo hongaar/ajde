@@ -7,7 +7,7 @@ class Ajde_User_Sso_Facebook extends Ajde_User_Sso
     private $_me;
 
     public static $iconName = 'facebook';
-    public static $color    = '3b5998';
+    public static $color = '3b5998';
 
     public function __construct($credentials = false)
     {
@@ -17,7 +17,7 @@ class Ajde_User_Sso_Facebook extends Ajde_User_Sso
         $facebook = new Ajde_Social_Provider_Facebook();
         if ($facebook->getUser()) {
             $this->setCredentials([
-                'oauth_token' => $facebook->getAccessToken()
+                'oauth_token' => $facebook->getAccessToken(),
             ]);
         }
         $this->_provider = $facebook;
@@ -85,11 +85,11 @@ class Ajde_User_Sso_Facebook extends Ajde_User_Sso
         $connection = $this->getProvider();
 
         /* Set callback URL */
-        $callbackUrl = config("app.rootUrl") . 'user/sso:callback?provider=facebook&returnto=' . $returnto;
+        $callbackUrl = config('app.rootUrl').'user/sso:callback?provider=facebook&returnto='.$returnto;
 
         return $connection->getLoginUrl([
             'redirect_uri' => $callbackUrl,
-            'scope'        => 'email'
+            'scope'        => 'email',
         ]);
     }
 
@@ -125,7 +125,7 @@ class Ajde_User_Sso_Facebook extends Ajde_User_Sso
         if ($this->hasCredentials()) {
             $me = $this->getMe();
 
-            return 'https://www.facebook.com/' . $me['id'];
+            return 'https://www.facebook.com/'.$me['id'];
         } else {
             return false;
         }
@@ -156,9 +156,9 @@ class Ajde_User_Sso_Facebook extends Ajde_User_Sso
     public function getAvatarSuggestion()
     {
         if ($this->hasCredentials()) {
-            $me    = $this->getMe();
-            $id    = $me['id'];
-            $image = 'http://graph.facebook.com/' . $id . '/picture?type=large';
+            $me = $this->getMe();
+            $id = $me['id'];
+            $image = 'http://graph.facebook.com/'.$id.'/picture?type=large';
 
             return $image;
         } else {

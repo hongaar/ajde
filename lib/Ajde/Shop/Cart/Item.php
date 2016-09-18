@@ -20,7 +20,6 @@ abstract class Ajde_Shop_Cart_Item extends Ajde_Model
     }
 
     /**
-     *
      * @param Ajde_Shop_Cart $cart
      */
     public function setCart(Ajde_Shop_Cart $cart)
@@ -29,7 +28,6 @@ abstract class Ajde_Shop_Cart_Item extends Ajde_Model
     }
 
     /**
-     *
      * @return Ajde_Shop_Cart
      */
     public function getCart()
@@ -50,18 +48,18 @@ abstract class Ajde_Shop_Cart_Item extends Ajde_Model
         return $this->loadByFields([
             'cart'      => $this->getCart()->getPK(),
             'entity'    => $entity,
-            'entity_id' => $id
+            'entity_id' => $id,
         ]);
     }
 
     public function getQty()
     {
-        return (int)parent::getQty();
+        return (int) parent::getQty();
     }
 
     public function addQty($qty)
     {
-        $this->setQty($this->getQty() + (int)$qty);
+        $this->setQty($this->getQty() + (int) $qty);
     }
 
     public function setEntityById($entityName, $id)
@@ -90,14 +88,13 @@ abstract class Ajde_Shop_Cart_Item extends Ajde_Model
     }
 
     /**
-     *
      * @return Ajde_Model
      */
     public function getEntity()
     {
         $entity = $this->get('entity_id');
         if (!$entity instanceof Ajde_Model) {
-            $id     = $entity;
+            $id = $entity;
             $entity = $this->_getEntityModel($this->get('entity'));
             $entity->loadByPK($id);
         }
@@ -106,19 +103,18 @@ abstract class Ajde_Shop_Cart_Item extends Ajde_Model
     }
 
     /**
-     *
      * @param string $entity
+     *
      * @return Ajde_Model
      */
     protected function _getEntityModel($entityName)
     {
-        $entityModelName = ucfirst((string)$entityName) . 'Model';
+        $entityModelName = ucfirst((string) $entityName).'Model';
 
         return new $entityModelName();
     }
 
     /**
-     *
      * @return Ajde_Shop_Cart_Item
      */
     protected function _getCartModel()
@@ -139,7 +135,7 @@ abstract class Ajde_Shop_Cart_Item extends Ajde_Model
 
     public function getFormattedUnitprice()
     {
-        return config("shop.currency.symbol") . '&nbsp;' . $this->_format(($this->getVATPercentage() + 1) * $this->getUnitprice());
+        return config('shop.currency.symbol').'&nbsp;'.$this->_format(($this->getVATPercentage() + 1) * $this->getUnitprice());
     }
 
     public function getVATPercentage()
@@ -149,7 +145,7 @@ abstract class Ajde_Shop_Cart_Item extends Ajde_Model
             return $entity->getVATPercentage();
         }
 
-        return config("shop.vat.default");
+        return config('shop.vat.default');
     }
 
     public function getVATAmount()
@@ -159,7 +155,7 @@ abstract class Ajde_Shop_Cart_Item extends Ajde_Model
 
     public function getFormattedVATAmount()
     {
-        return config("shop.currency.symbol") . '&nbsp;' . $this->_format($this->getVATAmount());
+        return config('shop.currency.symbol').'&nbsp;'.$this->_format($this->getVATAmount());
     }
 
     public function getSubTotal()
@@ -174,7 +170,6 @@ abstract class Ajde_Shop_Cart_Item extends Ajde_Model
 
     public function getFormattedTotal()
     {
-        return config("shop.currency.symbol") . '&nbsp;' . $this->_format($this->getTotal());
+        return config('shop.currency.symbol').'&nbsp;'.$this->_format($this->getTotal());
     }
-
 }

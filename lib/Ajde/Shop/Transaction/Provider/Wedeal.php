@@ -2,9 +2,9 @@
 
 class Ajde_Shop_Transaction_Provider_Wedeal extends Ajde_Shop_Transaction_Provider
 {
-    private static $_debug    = false;
-    private static $_api_url  = "www.paydutch.nl";
-    private static $_api_path = "/api/processreq.aspx";
+    private static $_debug = false;
+    private static $_api_url = 'www.paydutch.nl';
+    private static $_api_path = '/api/processreq.aspx';
 
     public function getName()
     {
@@ -13,7 +13,7 @@ class Ajde_Shop_Transaction_Provider_Wedeal extends Ajde_Shop_Transaction_Provid
 
     public function getLogo()
     {
-        return MEDIA_DIR . 'core/shop/ideal.png';
+        return MEDIA_DIR.'core/shop/ideal.png';
     }
 
     public function usePostProxy()
@@ -26,34 +26,34 @@ class Ajde_Shop_Transaction_Provider_Wedeal extends Ajde_Shop_Transaction_Provid
         $transaction = $this->getTransaction();
 
         $request = [
-            "type"           => "transaction",
-            "transactionreq" => [
-                "username"    => config("shop.transaction.wedeal.username"),
-                "password"    => config("shop.transaction.wedeal.password"),
-                "reference"   => $transaction->secret,
-                "description" => config("app.id") . ': ' . Ajde_Component_String::makePlural($transaction->shipment_itemsqty,
+            'type'           => 'transaction',
+            'transactionreq' => [
+                'username'    => config('shop.transaction.wedeal.username'),
+                'password'    => config('shop.transaction.wedeal.password'),
+                'reference'   => $transaction->secret,
+                'description' => config('app.id').': '.Ajde_Component_String::makePlural($transaction->shipment_itemsqty,
                         'item'),
-                "amount"      => str_replace(".", ",", (string)$transaction->payment_amount),
-                "methodcode"  => "0101",
-                "maxcount"    => "1",
-                "test"        => $this->isSandbox() ? "true" : "false",
-                "successurl"  => config("app.rootUrl") . 'shop/transaction:callback/wedeal.html',
-                "failurl"     => config("app.rootUrl") . 'shop/transaction:callback/wedeal.html'
-            ]
+                'amount'      => str_replace('.', ',', (string) $transaction->payment_amount),
+                'methodcode'  => '0101',
+                'maxcount'    => '1',
+                'test'        => $this->isSandbox() ? 'true' : 'false',
+                'successurl'  => config('app.rootUrl').'shop/transaction:callback/wedeal.html',
+                'failurl'     => config('app.rootUrl').'shop/transaction:callback/wedeal.html',
+            ],
         ];
-        $res     = $this->sendRequest($request, true);
+        $res = $this->sendRequest($request, true);
 
         if ($res['success'] === true) {
             $url = $res['response'];
             if (substr($url, 0, 7) === 'http://' || substr($url, 0, 8) === 'https://') {
                 return $this->ping($url) ? $res['response'] : false;
             } else {
-                Ajde_Log::log("Wedeal::getRedirectUrl() returned no URL but: " . $res['response']);
+                Ajde_Log::log('Wedeal::getRedirectUrl() returned no URL but: '.$res['response']);
 
                 return false;
             }
         } else {
-            Ajde_Log::log("Wedeal::getRedirectUrl() returned no URL but: " . $res['response']);
+            Ajde_Log::log('Wedeal::getRedirectUrl() returned no URL but: '.$res['response']);
 
             return false;
         }
@@ -68,37 +68,37 @@ class Ajde_Shop_Transaction_Provider_Wedeal extends Ajde_Shop_Transaction_Provid
     {
         $request = Ajde::app()->getRequest();
 
-        $username      = $request->getParam('Username');
-        $password      = $request->getParam('Password');
-        $id            = $request->getParam('ID');
-        $secret        = $request->getParam('Reference');
+        $username = $request->getParam('Username');
+        $password = $request->getParam('Password');
+        $id = $request->getParam('ID');
+        $secret = $request->getParam('Reference');
         $paymentMethod = $request->getParam('PaymentMethod');
-        $state         = $request->getParam('PaymentState');
-        $description   = $request->getParam('Description');
+        $state = $request->getParam('PaymentState');
+        $description = $request->getParam('Description');
 
-        if ($username != config("shop.transaction.wedeal.callbackUsername")) {
-            Ajde_Log::log('Invalid username for callback of transaction ' . $secret);
+        if ($username != config('shop.transaction.wedeal.callbackUsername')) {
+            Ajde_Log::log('Invalid username for callback of transaction '.$secret);
 
             return false;
         }
-        if ($password != config("shop.transaction.wedeal.callbackPassword")) {
-            Ajde_Log::log('Invalid password for callback of transaction ' . $secret);
+        if ($password != config('shop.transaction.wedeal.callbackPassword')) {
+            Ajde_Log::log('Invalid password for callback of transaction '.$secret);
 
             return false;
         }
 
         $transaction = new TransactionModel();
         if (!$transaction->loadByField('secret', $secret)) {
-            Ajde_Log::log('Could not find transaction for PayPal payment with txn id ' . $txn_id . ' and transaction secret ' . $secret);
+            Ajde_Log::log('Could not find transaction for PayPal payment with txn id '.$txn_id.' and transaction secret '.$secret);
         }
 
         $request = [
-            "type"     => 'query',
-            "merchant" => [
-                "username"  => config("shop.transaction.wedeal.username"),
-                "password"  => config("shop.transaction.wedeal.password"),
-                "reference" => $secret,
-            ]
+            'type'     => 'query',
+            'merchant' => [
+                'username'  => config('shop.transaction.wedeal.username'),
+                'password'  => config('shop.transaction.wedeal.password'),
+                'reference' => $secret,
+            ],
         ];
 
         // Pause a little before request is made to allow for processing on provider
@@ -109,46 +109,46 @@ class Ajde_Shop_Transaction_Provider_Wedeal extends Ajde_Shop_Transaction_Provid
 
         if ($res['success'] === true) {
             $response = $res['response']->paymentinfo;
-            $count    = (int)$res['response']->count;
+            $count = (int) $res['response']->count;
 
             // get transaction details
             if ($count == 0) {
                 $transaction->payment_status = 'refused';
                 $transaction->save();
-                Ajde_Log::log('iDeal callback didn\'t return any transaction for ' . $secret);
-            } elseif (self::isPaid((string)$response->state)) {
-                if ((string)$response->id != $id) {
-                    Ajde_Log::log('IDs don\'t match for iDeal callback of transaction ' . $secret);
+                Ajde_Log::log('iDeal callback didn\'t return any transaction for '.$secret);
+            } elseif (self::isPaid((string) $response->state)) {
+                if ((string) $response->id != $id) {
+                    Ajde_Log::log('IDs don\'t match for iDeal callback of transaction '.$secret);
                 } else {
-                    $details                      = 'AMOUNT: ' . (string)$response->amount . PHP_EOL .
-                        'PAYER_NAME: ' . (string)$response->consumername . PHP_EOL .
-                        'PAYER_ACCOUNT: ' . (string)$response->consumeraccount . PHP_EOL .
-                        'PAYER_CITY: ' . (string)$response->consumercity . PHP_EOL .
-                        'PAYER_COUNTRY: ' . (string)$response->consumercountry . PHP_EOL .
-                        'WEDEAL_ID: ' . (string)$response->id;
+                    $details = 'AMOUNT: '.(string) $response->amount.PHP_EOL.
+                        'PAYER_NAME: '.(string) $response->consumername.PHP_EOL.
+                        'PAYER_ACCOUNT: '.(string) $response->consumeraccount.PHP_EOL.
+                        'PAYER_CITY: '.(string) $response->consumercity.PHP_EOL.
+                        'PAYER_COUNTRY: '.(string) $response->consumercountry.PHP_EOL.
+                        'WEDEAL_ID: '.(string) $response->id;
                     $transaction->payment_details = $details;
-                    $transaction->payment_status  = 'completed';
+                    $transaction->payment_status = 'completed';
                     $transaction->save();
 
                     return [
                         'success'     => true,
-                        'transaction' => $transaction
+                        'transaction' => $transaction,
                     ];
                 }
-            } elseif (self::isRefused((string)$response->state)) {
+            } elseif (self::isRefused((string) $response->state)) {
                 $transaction->payment_status = 'refused';
                 $transaction->save();
-                Ajde_Log::log("iDeal payment refused with state " . (string)$response->state);
+                Ajde_Log::log('iDeal payment refused with state '.(string) $response->state);
             } else {
-                Ajde_Log::log("iDeal payment callback called with state " . (string)$response->state . " but no status change for transaction " . $secret . " detected");
+                Ajde_Log::log('iDeal payment callback called with state '.(string) $response->state.' but no status change for transaction '.$secret.' detected');
             }
         } else {
-            Ajde_Log::log("Wedeal::updatePayment() failed because: " . $res['response']);
+            Ajde_Log::log('Wedeal::updatePayment() failed because: '.$res['response']);
         }
 
         return [
             'success'     => false,
-            'transaction' => $transaction
+            'transaction' => $transaction,
         ];
     }
 
@@ -156,35 +156,34 @@ class Ajde_Shop_Transaction_Provider_Wedeal extends Ajde_Shop_Transaction_Provid
 
     private function sendRequest($request, $asRaw = false)
     {
-
         if (self::$_debug) {
-            Ajde_Log::log("INPUT DATA: " . var_export($request, true));
+            Ajde_Log::log('INPUT DATA: '.var_export($request, true));
         }
 
         $xml = self::buildXML($request);
-        $url = fsockopen("ssl://" . self::$_api_url, 443);
+        $url = fsockopen('ssl://'.self::$_api_url, 443);
 
         if ($url === false) {
             return [
                 'success'  => false,
-                'response' => 'iDeal foutmelding: Kan niet verbinden'
+                'response' => 'iDeal foutmelding: Kan niet verbinden',
             ];
         }
 
-        $data   = $xml->saveXML();
+        $data = $xml->saveXML();
         $length = strlen($data);
 
         if (self::$_debug) {
-            Ajde_Log::log("REQUEST XML: " . var_export($data, true));
+            Ajde_Log::log('REQUEST XML: '.var_export($data, true));
         }
 
-        $post = "GET " . self::$_api_path . " HTTP/1.0\n";
+        $post = 'GET '.self::$_api_path." HTTP/1.0\n";
         $post .= "Content-Length: $length\n";
         $post .= "Content-Type: text/xml\n";
         $post .= "Connection: Close\n\n";
         $post .= "$data\n\n";
 
-        fputs($url, $post);
+        fwrite($url, $post);
 
         $response = '';
         while (!feof($url)) {
@@ -194,24 +193,22 @@ class Ajde_Shop_Transaction_Provider_Wedeal extends Ajde_Shop_Transaction_Provid
         fclose($url);
 
         if (self::$_debug) {
-            Ajde_Log::log("RESPONSE DATA: " . var_export($response, true));
+            Ajde_Log::log('RESPONSE DATA: '.var_export($response, true));
         }
 
         if ($asRaw) {
-
-            $contentLenght = strpos($response, PHP_EOL . 'Content-Length:') + 1;
-            $nextLine      = strpos($response, PHP_EOL, $contentLenght);
-            $result        = trim(substr($response, $nextLine));
+            $contentLenght = strpos($response, PHP_EOL.'Content-Length:') + 1;
+            $nextLine = strpos($response, PHP_EOL, $contentLenght);
+            $result = trim(substr($response, $nextLine));
         } else {
-
-            if (strpos($response, "<?xml") === false) {
+            if (strpos($response, '<?xml') === false) {
                 return [
                     'success'  => false,
-                    'response' => "iDeal foutmelding: Ongeldig antwoord"
+                    'response' => 'iDeal foutmelding: Ongeldig antwoord',
                 ];
             }
 
-            $start    = strpos($response, '<?xml');
+            $start = strpos($response, '<?xml');
             $response = substr($response, $start);
 
             $xml = new DOMDocument();
@@ -220,58 +217,58 @@ class Ajde_Shop_Transaction_Provider_Wedeal extends Ajde_Shop_Transaction_Provid
             $result = simplexml_import_dom($xml);
 
             if (self::$_debug) {
-                Ajde_Log::log("OUTPUT XML: " . var_export($result, true));
+                Ajde_Log::log('OUTPUT XML: '.var_export($result, true));
             }
 
             if ($result->error) {
                 return [
                     'success'  => false,
-                    'response' => "iDeal foutmelding ($result->error): " . self::getError($result->error)
+                    'response' => "iDeal foutmelding ($result->error): ".self::getError($result->error),
                 ];
             }
         }
 
         return [
             'success'  => true,
-            'response' => $result
+            'response' => $result,
         ];
     }
 
     private static function getError($errno)
     {
         switch ($errno) {
-            case "0000":
-                return "Onbekend bericht";
-            case "0100":
-                return "Test-omgeving is niet geactiveerd";
-            case "0200":
-                return "Live-omgeving is niet geactiveerd";
-            case "1100":
-                return "Banklist aanvraag mislukt";
-            case "2000":
-                return "Transactie open";
-            case "2100":
-                return "Transactie succesvol";
-            case "2200":
-                return "Transactie mislukt";
-            case "2300":
-                return "Transactie verlopen";
-            case "2400":
-                return "Transactie niet gevonden";
-            case "2500":
-                return "Bedrag is te laag. Het minimum zijn uw transactiekosten.";
-            case "3000":
-                return "Login succesvol";
-            case "3100":
-                return "Merchant bestaat niet";
-            case "3200":
-                return "Wachtwoord onjuist";
-            case "3300":
-                return "Merchant is geblokkeerd";
-            case "4000":
-                return "Het bedrag is niet in centen. Gebruik dus geen , of .";
-            case "9000":
-                return "SSL niet gebruikt, gebruik HTTPS";
+            case '0000':
+                return 'Onbekend bericht';
+            case '0100':
+                return 'Test-omgeving is niet geactiveerd';
+            case '0200':
+                return 'Live-omgeving is niet geactiveerd';
+            case '1100':
+                return 'Banklist aanvraag mislukt';
+            case '2000':
+                return 'Transactie open';
+            case '2100':
+                return 'Transactie succesvol';
+            case '2200':
+                return 'Transactie mislukt';
+            case '2300':
+                return 'Transactie verlopen';
+            case '2400':
+                return 'Transactie niet gevonden';
+            case '2500':
+                return 'Bedrag is te laag. Het minimum zijn uw transactiekosten.';
+            case '3000':
+                return 'Login succesvol';
+            case '3100':
+                return 'Merchant bestaat niet';
+            case '3200':
+                return 'Wachtwoord onjuist';
+            case '3300':
+                return 'Merchant is geblokkeerd';
+            case '4000':
+                return 'Het bedrag is niet in centen. Gebruik dus geen , of .';
+            case '9000':
+                return 'SSL niet gebruikt, gebruik HTTPS';
         }
     }
 
@@ -297,12 +294,13 @@ class Ajde_Shop_Transaction_Provider_Wedeal extends Ajde_Shop_Transaction_Provid
 
     /**
      * @param $request
+     *
      * @return DOMDocument
      */
     private static function buildXML($request)
     {
-        $xml    = new DOMDocument();
-        $reqelm = $xml->createElement("request");
+        $xml = new DOMDocument();
+        $reqelm = $xml->createElement('request');
         self::appendData($reqelm, $xml, $request);
         $xml->appendChild($reqelm);
 

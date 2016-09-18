@@ -29,6 +29,7 @@
  *     http://www.opensource.org/licenses/bsd-license.php
  * @author      Mollie B.V. <info@mollie.nl>
  * @copyright   Mollie B.V.
+ *
  * @link        https://www.mollie.nl
  */
 class Mollie_API_Object_Issuer
@@ -51,6 +52,7 @@ class Mollie_API_Object_Issuer
      * The payment method this issuer belongs to.
      *
      * @see Mollie_API_Object_Method
+     *
      * @var string
      */
     public $method;

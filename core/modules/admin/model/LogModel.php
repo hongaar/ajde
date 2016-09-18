@@ -14,14 +14,14 @@ class LogModel extends Ajde_Model
     {
         $severity = explode(':', $this->getLevel());
 
-        return "<span class='label label-" . $this->getLevelColor($severity[0]) . "'>" . $severity[1] . '</span>';
+        return "<span class='label label-".$this->getLevelColor($severity[0])."'>".$severity[1].'</span>';
     }
 
     public function displayChannel()
     {
         $channel = $this->getChannel();
 
-        return '<i class="' . $this->getChannelIcon($channel) . '"></i>' . $channel;
+        return '<i class="'.$this->getChannelIcon($channel).'"></i>'.$channel;
     }
 
     public function getLevelColor($level)

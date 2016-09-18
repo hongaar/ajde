@@ -7,11 +7,11 @@ class Ajde_Session extends Ajde_Object_Standard
     public function __bootstrap()
     {
         // Session name
-        $sessionName = config("app.id") . '_session';
+        $sessionName = config('app.id').'_session';
         session_name($sessionName);
 
         // Session lifetime
-        $lifetime = config("session.lifetime");
+        $lifetime = config('session.lifetime');
 
         // Security garbage collector
         ini_set('session.gc_maxlifetime',
@@ -20,8 +20,8 @@ class Ajde_Session extends Ajde_Object_Standard
         //		ini_set('session.gc_probability', 1);	// @see http://www.php.net/manual/en/function.session-save-path.php#98106
 
         // Set session save path
-        if (config("session.savepath")) {
-            ini_set('session.save_path', str_replace('~', LOCAL_ROOT, config("session.savepath")));
+        if (config('session.savepath')) {
+            ini_set('session.save_path', str_replace('~', LOCAL_ROOT, config('session.savepath')));
         }
 
         // Set sessions to use cookies
@@ -30,10 +30,10 @@ class Ajde_Session extends Ajde_Object_Standard
             1); // @see http://www.php.net/manual/en/session.configuration.php#ini.session.use-only-cookies
 
         // Session cookie parameter
-        $path     = config("app.path");
-        $domain   = config("security.cookie.domain");
-        $secure   = config("security.cookie.secure");
-        $httponly = config("security.cookie.httponly");
+        $path = config('app.path');
+        $domain = config('security.cookie.domain');
+        $secure = config('security.cookie.secure');
+        $httponly = config('security.cookie.httponly');
 
         // Set cookie lifetime
         session_set_cookie_params($lifetime * 60, $path, $domain, $secure, $httponly);
@@ -55,7 +55,7 @@ class Ajde_Session extends Ajde_Object_Standard
             isset($_SERVER['HTTP_USER_AGENT']) &&
             substr_count($_SERVER['HTTP_USER_AGENT'], 'chromeframe/') === 0 &&
             isset($_SESSION['client']) &&
-            $_SESSION['client'] !== md5($remoteIp . $_SERVER['HTTP_USER_AGENT'] . config("security.secret"))
+            $_SESSION['client'] !== md5($remoteIp.$_SERVER['HTTP_USER_AGENT'].config('security.secret'))
         ) {
 
             // TODO: overhead to call session_regenerate_id? is it not required??
@@ -68,13 +68,13 @@ class Ajde_Session extends Ajde_Object_Standard
 
             // TODO:
             $exception = new Ajde_Core_Exception_Security('Possible session hijacking detected. Bailing out.');
-            if (config("app.debug") === true) {
+            if (config('app.debug') === true) {
                 throw $exception;
             } else {
                 // don't redirect/log for resource items, as they should have no side effect
                 // this makes it possible for i.e. web crawlers/error pages to view resources
                 $request = Ajde_Http_Request::fromGlobal();
-                $route   = $request->initRoute();
+                $route = $request->initRoute();
                 Ajde::app()->setRequest($request);
                 if (!in_array($route->getFormat(), ['css', 'js'])) {
                     Ajde_Exception_Log::logException($exception);
@@ -84,7 +84,7 @@ class Ajde_Session extends Ajde_Object_Standard
                 }
             }
         } else {
-            $_SESSION['client'] = md5($remoteIp . issetor($_SERVER['HTTP_USER_AGENT']) . config("security.secret"));
+            $_SESSION['client'] = md5($remoteIp.issetor($_SERVER['HTTP_USER_AGENT']).config('security.secret'));
 
             if ($lifetime > 0) {
                 // Force send new cookie with updated lifetime (forcing keep-alive)

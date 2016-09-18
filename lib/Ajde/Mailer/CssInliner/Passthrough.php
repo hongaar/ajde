@@ -4,6 +4,7 @@ class Ajde_Mailer_CssInliner_Passthrough implements Ajde_Mailer_CssInliner_CssIn
 {
     /**
      * @param string $html
+     *
      * @return mixed
      */
     public static function inlineCss($html)

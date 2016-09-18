@@ -4,37 +4,37 @@ abstract class Ajde_Object_Magic extends Ajde_Object
 {
     protected $_data = [];
 
-    public final function __call($method, $arguments)
+    final public function __call($method, $arguments)
     {
         $prefix = strtolower(substr($method, 0, 3));
-        $key    = substr($method, 3);
-        $key    = strtolower(substr($key, 0, 1)) . substr($key, 1);
+        $key = substr($method, 3);
+        $key = strtolower(substr($key, 0, 1)).substr($key, 1);
         switch ($prefix) {
-            case "get":
+            case 'get':
                 if ($this->has($key)) {
                     return $this->get($key);
                 } else {
                     if (!method_exists($this, '__fallback')) {
-                        throw new Ajde_Exception("Property '$key' not set in class " . get_class($this) . " when calling get('$key')",
+                        throw new Ajde_Exception("Property '$key' not set in class ".get_class($this)." when calling get('$key')",
                             90007);
                     }
                 }
                 break;
-            case "set":
+            case 'set':
                 return $this->set($key, $arguments[0]);
                 break;
-            case "has":
+            case 'has':
                 return $this->has($key);
                 break;
         }
         if (method_exists($this, '__fallback')) {
             return call_user_func_array([$this, '__fallback'], [$method, $arguments]);
         }
-        throw new Ajde_Exception("Call to undefined method " . get_class($this) . "::$method()", 90006);
+        throw new Ajde_Exception('Call to undefined method '.get_class($this)."::$method()", 90006);
     }
 
     /**
-     * TODO
+     * TODO.
      *
      * @param string $key
      * @param mixed  $value
@@ -45,7 +45,7 @@ abstract class Ajde_Object_Magic extends Ajde_Object
     }
 
     /**
-     * TODO
+     * TODO.
      *
      * @param string $key
      * @param mixed  $value
@@ -69,7 +69,7 @@ abstract class Ajde_Object_Magic extends Ajde_Object
         if ($this->has($key)) {
             return $this->_get($key);
         } else {
-            throw new Ajde_Exception("Parameter '$key' not set in class " . get_class($this) . " when calling get('$key')",
+            throw new Ajde_Exception("Parameter '$key' not set in class ".get_class($this)." when calling get('$key')",
                 90007);
         }
     }
@@ -91,7 +91,7 @@ abstract class Ajde_Object_Magic extends Ajde_Object
             $exist = !is_null(Ajde_Core_Array::get($this->_data, $key));
         }
 
-        return !!$exist;
+        return (bool) $exist;
     }
 
     public function isEmpty($key)
@@ -122,12 +122,12 @@ abstract class Ajde_Object_Magic extends Ajde_Object
         $this->_data = [];
     }
 
-    public final function values()
+    final public function values()
     {
         return $this->_data;
     }
 
-    public final function merge($key, array $value)
+    final public function merge($key, array $value)
     {
         if (!$this->has($key)) {
             $this->set($key, []);
@@ -136,7 +136,7 @@ abstract class Ajde_Object_Magic extends Ajde_Object
         $this->set($key, Ajde_Core_Array::mergeRecursive($this->get($key), $value));
     }
 
-    public final function valuesAsSingleDimensionArray()
+    final public function valuesAsSingleDimensionArray()
     {
         $array = [];
         foreach ($this->_data as $k => $item) {
@@ -146,7 +146,7 @@ abstract class Ajde_Object_Magic extends Ajde_Object
                 if (is_array($item)) {
                     $array[$k] = serialize($item);
                 } else {
-                    if ($item instanceof Ajde_Object_Magic) {
+                    if ($item instanceof self) {
                         $array[$k] = serialize($item->valuesAsSingleDimensionArray());
                     } else {
                         if (is_object($item)) {
@@ -161,26 +161,30 @@ abstract class Ajde_Object_Magic extends Ajde_Object
     }
 
     /**
-     * Translates a camel case string into a string with underscores (e.g. firstName -&gt; first_name)
+     * Translates a camel case string into a string with underscores (e.g. firstName -&gt; first_name).
      *
      * @see http://www.paulferrett.com/2009/php-camel-case-functions/
+     *
      * @param string $str String in camel case format
+     *
      * @return string $str Translated into underscore format
      */
     public static function fromCamelCase($str)
     {
         $str[0] = strtolower($str[0]);
-        $func   = create_function('$c', 'return "_" . strtolower($c[1]);');
+        $func = create_function('$c', 'return "_" . strtolower($c[1]);');
 
         return preg_replace_callback('/([A-Z])/', $func, $str);
     }
 
     /**
-     * Translates a string with underscores into camel case (e.g. first_name -&gt; firstName)
+     * Translates a string with underscores into camel case (e.g. first_name -&gt; firstName).
      *
      * @see http://www.paulferrett.com/2009/php-camel-case-functions/
+     *
      * @param string $str                   String in underscore format
      * @param bool   $capitalise_first_char If true, capitalise the first char in $str
+     *
      * @return string $str translated into camel caps
      */
     public static function toCamelCase($str, $capitalise_first_char = false)

@@ -3,7 +3,7 @@
 class Ajde_Document_Format_Js extends Ajde_Document
 {
     protected $_cacheControl = self::CACHE_CONTROL_PUBLIC;
-    protected $_contentType  = 'text/javascript';
+    protected $_contentType = 'text/javascript';
 
     public function render()
     {

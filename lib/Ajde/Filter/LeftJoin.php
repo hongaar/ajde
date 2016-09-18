@@ -8,20 +8,20 @@ class Ajde_Filter_LeftJoin extends Ajde_Filter
 
     public function __construct($table, $ownerField, $childField)
     {
-        $this->_table      = $table;
+        $this->_table = $table;
         $this->_ownerField = $ownerField;
         $this->_childField = $childField;
     }
 
     public function prepare(Ajde_Db_Table $table = null)
     {
-        $sql = $this->_table . ' ON ' . $this->_ownerField . ' = ' . $this->_childField;
+        $sql = $this->_table.' ON '.$this->_ownerField.' = '.$this->_childField;
 
         return [
             'join' => [
                 'arguments' => [$sql, Ajde_Query::JOIN_LEFT],
-                'values'    => []
-            ]
+                'values'    => [],
+            ],
         ];
     }
 }

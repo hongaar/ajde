@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Default to extend Ajde_Acl_Controller for enhanced security
+ * Default to extend Ajde_Acl_Controller for enhanced security.
  */
 class _coreCrudController extends Ajde_Acl_Controller
 {
@@ -19,7 +19,7 @@ class _coreCrudController extends Ajde_Acl_Controller
         $crud = $this->hasCrudInstance() ? $this->getCrudInstance() : false;
         if (!$crud && Ajde::app()->getRequest()->has('crudId')) {
             $session = new Ajde_Session('AC.Crud');
-            $crud    = $session->getModel(Ajde::app()->getRequest()->getParam('crudId'));
+            $crud = $session->getModel(Ajde::app()->getRequest()->getParam('crudId'));
         }
         if ($crud) {
             /* @var $crud Ajde_Crud */
@@ -115,7 +115,7 @@ class _coreCrudController extends Ajde_Acl_Controller
                     //					$crud->setAction('edit');
 
                     // Insert layout and set action
-                    $show        = $crud->getOption('edit.show');
+                    $show = $crud->getOption('edit.show');
                     $editOptions = new Ajde_Crud_Options_Edit();
                     $editOptions->selectLayout()->addRow()->addColumn()->setSpan(12)->addBlock()->setShow($show)->finished();
                     $crud->setOption('edit', $editOptions->getArray());
@@ -141,28 +141,28 @@ class _coreCrudController extends Ajde_Acl_Controller
 
             // update mainfilter for new records
             if (Ajde::app()->getRequest()->has('new')) {
-                $crud->setOption('fields.' . $mainFilter . '.value', $currentFilter);
+                $crud->setOption('fields.'.$mainFilter.'.value', $currentFilter);
             }
 
             // hide mainfilter fields
-            $crud->setOption('fields.' . $mainFilter . '.hidden', true);
+            $crud->setOption('fields.'.$mainFilter.'.hidden', true);
         }
 
         // Set prefilled, disabled and hidden fields from request
         $disable = Ajde::app()->getRequest()->getParam('disable', []);
-        $hide    = Ajde::app()->getRequest()->getParam('hide', []);
+        $hide = Ajde::app()->getRequest()->getParam('hide', []);
         $prefill = Ajde::app()->getRequest()->getParam('prefill', []);
         foreach ($prefill as $field => $value) {
-            $crud->setOption('fields.' . $field . '.value', $value);
+            $crud->setOption('fields.'.$field.'.value', $value);
         }
         foreach ($disable as $field => $value) {
             if ($value) {
-                $crud->setOption('fields.' . $field . '.readonly', true);
+                $crud->setOption('fields.'.$field.'.readonly', true);
             }
         }
         foreach ($hide as $field => $value) {
             if ($value) {
-                $crud->setOption('fields.' . $field . '.hidden', true);
+                $crud->setOption('fields.'.$field.'.hidden', true);
             }
         }
 
@@ -179,13 +179,13 @@ class _coreCrudController extends Ajde_Acl_Controller
 
         $view = $crud->getTemplate();
 
-        $view->requireJsFirst('component/shortcut', 'html', MODULE_DIR . '_core/');
+        $view->requireJsFirst('component/shortcut', 'html', MODULE_DIR.'_core/');
         $view->assign('crud', $crud);
 
         // Editor
-        if (config("layout.textEditor")) {
-            $editorClassName = "Ajde_Crud_Editor_" . ucfirst(config("layout.textEditor"));
-            $textEditor      = new $editorClassName();
+        if (config('layout.textEditor')) {
+            $editorClassName = 'Ajde_Crud_Editor_'.ucfirst(config('layout.textEditor'));
+            $textEditor = new $editorClassName();
             /* @var $textEditor Ajde_Crud_Editor */
             $textEditor->getResources($view);
         }
@@ -205,8 +205,8 @@ class _coreCrudController extends Ajde_Acl_Controller
     public function commitJson()
     {
         $operation = Ajde::app()->getRequest()->getParam('operation');
-        $crudId    = Ajde::app()->getRequest()->getParam('crudId');
-        $id        = Ajde::app()->getRequest()->getPostParam('id', false);
+        $crudId = Ajde::app()->getRequest()->getParam('crudId');
+        $id = Ajde::app()->getRequest()->getPostParam('id', false);
         if (Ajde::app()->getRequest()->getPostParam('form_submission', false)) {
             $operation = 'submission';
         }
@@ -245,8 +245,8 @@ class _coreCrudController extends Ajde_Acl_Controller
     private function delete($crudId, $id)
     {
         $session = new Ajde_Session('AC.Crud');
-        $crud    = $session->getModel($crudId);
-        $model   = $crud->getModel();
+        $crud = $session->getModel($crudId);
+        $model = $crud->getModel();
 
         if (!is_array($id)) {
             $id = [$id];
@@ -264,8 +264,8 @@ class _coreCrudController extends Ajde_Acl_Controller
 
         return [
             'operation' => 'delete',
-            'success'   => (bool)$success,
-            'message'   => Ajde_Component_String::makePlural($deleted, 'record') . ' deleted'
+            'success'   => (bool) $success,
+            'message'   => Ajde_Component_String::makePlural($deleted, 'record').' deleted',
         ];
     }
 
@@ -273,7 +273,7 @@ class _coreCrudController extends Ajde_Acl_Controller
     {
         $session = new Ajde_Session('AC.Crud');
         /* @var $crud Ajde_Crud */
-        $crud  = $session->getModel($crudId);
+        $crud = $session->getModel($crudId);
         $model = $crud->getModel();
 
         // Extra careful handling of parameters, as we are baking crude SQL here
@@ -282,7 +282,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 
             // Only allow alfanumeric, ., _ and - in table and field names
             $sortField = preg_replace("/[^0-9a-zA-Z_\-\.]/i", '', Ajde::app()->getRequest()->getPostParam('field'));
-            $sortPK    = preg_replace("/[^0-9a-zA-Z_\-\.]/i", '', Ajde::app()->getRequest()->getPostParam('pk'));
+            $sortPK = preg_replace("/[^0-9a-zA-Z_\-\.]/i", '', Ajde::app()->getRequest()->getPostParam('pk'));
             $sortTable = preg_replace("/[^0-9a-zA-Z_\-\.]/i", '', Ajde::app()->getRequest()->getPostParam('table'));
 
             if (!is_array($id)) {
@@ -293,13 +293,13 @@ class _coreCrudController extends Ajde_Acl_Controller
             $ids = [];
             foreach ($id as $elm) {
                 if ($elm) {
-                    $ids[] = (int)$elm;
+                    $ids[] = (int) $elm;
                 }
             }
 
             // Get lowest current sort values
             $idString = implode(', ', $ids);
-            $sql      = "SELECT MIN(" . $sortField . ") AS min FROM " . $sortTable . " WHERE " . $sortPK . " IN (" . $idString . ")";
+            $sql = 'SELECT MIN('.$sortField.') AS min FROM '.$sortTable.' WHERE '.$sortPK.' IN ('.$idString.')';
 
             $statement = $model->getConnection()->prepare($sql);
             $statement->execute();
@@ -313,17 +313,17 @@ class _coreCrudController extends Ajde_Acl_Controller
             $success = true;
             foreach ($ids as $id) {
                 $values = [$sortValue, $id];
-                $sql    = "UPDATE " . $sortTable . " SET " . $sortField . " = ? WHERE " . $sortPK . " = ?";
+                $sql = 'UPDATE '.$sortTable.' SET '.$sortField.' = ? WHERE '.$sortPK.' = ?';
 
                 $statement = $model->getConnection()->prepare($sql);
-                $success   = $success * $statement->execute($values);
+                $success = $success * $statement->execute($values);
                 $sortValue++;
             }
         } else {
             // Get and validate sort field
             $sortField = Ajde::app()->getRequest()->getPostParam('field');
-            $sortTable = (string)$model->getTable();
-            $field     = $crud->getField($sortField); // throws exception when not found
+            $sortTable = (string) $model->getTable();
+            $field = $crud->getField($sortField); // throws exception when not found
 
             if (!is_array($id)) {
                 $id = [$id];
@@ -333,13 +333,13 @@ class _coreCrudController extends Ajde_Acl_Controller
             $ids = [];
             foreach ($id as $elm) {
                 if (!empty($elm)) {
-                    $ids[] = (int)$elm;
+                    $ids[] = (int) $elm;
                 }
             }
 
             // Get lowest current sort values
             $idString = implode(', ', $ids);
-            $sql      = "SELECT MIN(" . $sortField . ") AS min FROM " . $sortTable . " WHERE " . $model->getTable()->getPK() . " IN (" . $idString . ")";
+            $sql = 'SELECT MIN('.$sortField.') AS min FROM '.$sortTable.' WHERE '.$model->getTable()->getPK().' IN ('.$idString.')';
 
             $statement = $model->getConnection()->prepare($sql);
             $statement->execute();
@@ -371,8 +371,8 @@ class _coreCrudController extends Ajde_Acl_Controller
 
         return [
             'operation' => 'sort',
-            'success'   => (bool)$success,
-            'message'   => 'Records sorted'
+            'success'   => (bool) $success,
+            'message'   => 'Records sorted',
         ];
     }
 
@@ -400,7 +400,7 @@ class _coreCrudController extends Ajde_Acl_Controller
             //				unset($post[$key]);
             //			}
         }
-        $id        = issetor($post["id"]);
+        $id = issetor($post['id']);
         $operation = empty($id) ? 'insert' : 'save';
 
         if ($operation === 'save') {
@@ -434,7 +434,6 @@ class _coreCrudController extends Ajde_Acl_Controller
         }
 
         if ($success === true) {
-
             if (Ajde::app()->getRequest()->getParam('fromAutoSave', '0') != 1) {
 
                 // Destroy reference to crud instance
@@ -442,7 +441,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 
                 if (Ajde::app()->getRequest()->getParam('fromIframe', '0') != 1) {
                     // Set flash alert
-                    Ajde_Session_Flash::alert('Record ' . ($operation == 'insert' ? 'added' : 'saved') . ': ' . $model->get($model->getDisplayField()));
+                    Ajde_Session_Flash::alert('Record '.($operation == 'insert' ? 'added' : 'saved').': '.$model->get($model->getDisplayField()));
                 }
             }
         }
@@ -451,7 +450,7 @@ class _coreCrudController extends Ajde_Acl_Controller
             'operation'    => $operation,
             'id'           => $model->getPK(),
             'displayField' => $model->get($model->getDisplayField()),
-            'success'      => $success
+            'success'      => $success,
         ];
     }
 
@@ -473,7 +472,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 
         // Get POST params
         $post = Ajde_Http_Request::globalPost();
-        $id   = issetor($post["id"]);
+        $id = issetor($post['id']);
 
         // verify that we have a valid form model
         if (!$id) {
@@ -494,22 +493,22 @@ class _coreCrudController extends Ajde_Acl_Controller
         $values = [];
         foreach ($post as $key => $value) {
             if (substr($key, 0, 5) === 'meta_') {
-                $metaId            = str_replace('meta_', '', $key);
-                $metaName          = MetaModel::getNameFromId($metaId);
+                $metaId = str_replace('meta_', '', $key);
+                $metaName = MetaModel::getNameFromId($metaId);
                 $values[$metaName] = $value;
             }
         }
 
         $entryText = '';
         foreach ($values as $k => $v) {
-            $entryText .= $k . ': ' . $v . PHP_EOL;
+            $entryText .= $k.': '.$v.PHP_EOL;
         }
 
-        $submission             = new SubmissionModel();
-        $submission->form       = $id;
-        $submission->ip         = $_SERVER["REMOTE_ADDR"];
-        $submission->user       = Ajde_User::getLoggedIn();
-        $submission->entry      = json_encode($values);
+        $submission = new SubmissionModel();
+        $submission->form = $id;
+        $submission->ip = $_SERVER['REMOTE_ADDR'];
+        $submission->user = Ajde_User::getLoggedIn();
+        $submission->entry = json_encode($values);
         $submission->entry_text = $entryText;
 
         $success = $submission->insert();
@@ -525,8 +524,8 @@ class _coreCrudController extends Ajde_Acl_Controller
             $mailer = new Ajde_Mailer();
 
             // send email to administrator
-            $body = 'Form: ' . $model->displayField() . '<br/><br/>' . nl2br($entryText);
-            $mailer->SendQuickMail(config("app.email"), config("app.email"), config("app.title"),
+            $body = 'Form: '.$model->displayField().'<br/><br/>'.nl2br($entryText);
+            $mailer->SendQuickMail(config('app.email'), config('app.email'), config('app.title'),
                 'New form submission', $body);
 
             // send email to user
@@ -534,10 +533,10 @@ class _coreCrudController extends Ajde_Acl_Controller
             /* @var $email EmailModel */
             $email_to = $model->getEmailTo();
             /* @var $email MetaModel */
-            $email_address = issetor($post['meta_' . $email_to->getPK()]);
+            $email_address = issetor($post['meta_'.$email_to->getPK()]);
             if ($email->hasLoaded() && $email_to->hasLoaded() && $email_address) {
                 $mailer->sendUsingModel($email->getIdentifier(), $email_address, $email_address, [
-                    'entry' => nl2br($entryText)
+                    'entry' => nl2br($entryText),
                 ]);
             }
         }
@@ -546,7 +545,7 @@ class _coreCrudController extends Ajde_Acl_Controller
             'operation'    => 'save',
             'id'           => $model->getPK(),
             'displayField' => $model->get($model->getDisplayField()),
-            'success'      => $success
+            'success'      => $success,
         ];
     }
 
@@ -557,57 +556,57 @@ class _coreCrudController extends Ajde_Acl_Controller
             $crud = $crudId;
         } else {
             $session = new Ajde_Session('AC.Crud');
-            $crud    = $session->getModel($crudId);
+            $crud = $session->getModel($crudId);
         }
 
         /* @var $model Ajde_Model */
         $model = $crud->getModel();
 
-        $parentId  = isset($parentId) ? $parentId : Ajde::app()->getRequest()->getPostParam('parent_id');
+        $parentId = isset($parentId) ? $parentId : Ajde::app()->getRequest()->getPostParam('parent_id');
         $fieldName = isset($fieldName) ? $fieldName : Ajde::app()->getRequest()->getPostParam('field');
 
         // Get field properties
-        $fieldProperties = $crud->getOption('fields.' . $fieldName);
+        $fieldProperties = $crud->getOption('fields.'.$fieldName);
 
-        $success   = false;
-        $modelName = $crud->getOption('fields.' . $fieldName . '.modelName', $fieldName);
+        $success = false;
+        $modelName = $crud->getOption('fields.'.$fieldName.'.modelName', $fieldName);
         if (isset($fieldProperties['crossReferenceTable'])) {
             if ($all === true) {
-                $parentField = (string)$model->getTable();
-                $sql         = 'DELETE FROM ' . $fieldProperties['crossReferenceTable'] . ' WHERE ' . $parentField . ' = ?';
-                $values      = [$parentId];
+                $parentField = (string) $model->getTable();
+                $sql = 'DELETE FROM '.$fieldProperties['crossReferenceTable'].' WHERE '.$parentField.' = ?';
+                $values = [$parentId];
 
                 // Setup constraints
                 if (isset($fieldProperties['crossRefConstraints'])) {
                     foreach ($fieldProperties['crossRefConstraints'] as $k => $v) {
-                        $sql .= ' AND ' . $k . ' = ?';
+                        $sql .= ' AND '.$k.' = ?';
                         $values[] = $v;
                     }
                 }
 
                 $statement = $model->getConnection()->prepare($sql);
-                $success   = $statement->execute($values);
+                $success = $statement->execute($values);
             } else {
-                $childField  = isset($fieldProperties['childField']) ? $fieldProperties['childField'] : $modelName;
-                $parentField = (string)$model->getTable();
-                $sql         = 'DELETE FROM ' . $fieldProperties['crossReferenceTable'] . ' WHERE ' . $parentField . ' = ? AND ' . $childField . ' = ?';
-                $values      = [$parentId, $id];
+                $childField = isset($fieldProperties['childField']) ? $fieldProperties['childField'] : $modelName;
+                $parentField = (string) $model->getTable();
+                $sql = 'DELETE FROM '.$fieldProperties['crossReferenceTable'].' WHERE '.$parentField.' = ? AND '.$childField.' = ?';
+                $values = [$parentId, $id];
 
                 // Setup constraints
                 if (isset($fieldProperties['crossRefConstraints'])) {
                     foreach ($fieldProperties['crossRefConstraints'] as $k => $v) {
-                        $sql .= ' AND ' . $k . ' = ?';
+                        $sql .= ' AND '.$k.' = ?';
                         $values[] = $v;
                     }
                 }
 
                 $sql .= ' LIMIT 1';
                 $statement = $model->getConnection()->prepare($sql);
-                $success   = $statement->execute($values);
+                $success = $statement->execute($values);
             }
         } else {
-            $childClass = ucfirst($modelName) . 'Model';
-            $child      = new $childClass();
+            $childClass = ucfirst($modelName).'Model';
+            $child = new $childClass();
             /* @var $child Ajde_Model */
             $child->loadByPK($id);
             $success = $child->delete();
@@ -616,7 +615,7 @@ class _coreCrudController extends Ajde_Acl_Controller
         return [
             'operation' => 'deleteMultiple',
             'success'   => $success,
-            'message'   => ucfirst($modelName) . (isset($fieldProperties['crossReferenceTable']) ? ' disconnected' : ' deleted')
+            'message'   => ucfirst($modelName).(isset($fieldProperties['crossReferenceTable']) ? ' disconnected' : ' deleted'),
         ];
     }
 
@@ -627,58 +626,57 @@ class _coreCrudController extends Ajde_Acl_Controller
             $crud = $crudId;
         } else {
             $session = new Ajde_Session('AC.Crud');
-            $crud    = $session->getModel($crudId);
+            $crud = $session->getModel($crudId);
         }
 
         /* @var $model Ajde_Model */
         $model = $crud->getModel();
 
-        $parentId  = isset($parentId) ? $parentId : Ajde::app()->getRequest()->getPostParam('parent_id');
+        $parentId = isset($parentId) ? $parentId : Ajde::app()->getRequest()->getPostParam('parent_id');
         $fieldName = isset($fieldName) ? $fieldName : Ajde::app()->getRequest()->getPostParam('field');
 
         // Get field properties
-        $fieldProperties = $crud->getOption('fields.' . $fieldName);
+        $fieldProperties = $crud->getOption('fields.'.$fieldName);
 
-        $success   = false;
-        $modelName = $crud->getOption('fields.' . $fieldName . '.modelName', $fieldName);
+        $success = false;
+        $modelName = $crud->getOption('fields.'.$fieldName.'.modelName', $fieldName);
         if (isset($fieldProperties['crossReferenceTable'])) {
-
             $childField = isset($fieldProperties['childField']) ? $fieldProperties['childField'] : $modelName;
 
             // Already in there?
-            $parentField = (string)$model->getTable();
-            $values      = [$parentId, $id];
-            $sql         = 'SELECT * FROM ' . $fieldProperties['crossReferenceTable'];
-            $sql .= ' WHERE ' . $parentField . ' = ? AND ' . $childField . ' = ?';
+            $parentField = (string) $model->getTable();
+            $values = [$parentId, $id];
+            $sql = 'SELECT * FROM '.$fieldProperties['crossReferenceTable'];
+            $sql .= ' WHERE '.$parentField.' = ? AND '.$childField.' = ?';
             if (isset($fieldProperties['crossRefConstraints'])) {
                 foreach ($fieldProperties['crossRefConstraints'] as $k => $v) {
-                    $sql .= ' AND ' . $k . ' = ?';
+                    $sql .= ' AND '.$k.' = ?';
                     $values[] = $v;
                 }
             }
             $sql .= ' LIMIT 1';
             $statement = $model->getConnection()->prepare($sql);
-            $success   = $statement->execute($values);
-            $result    = $statement->fetch(PDO::FETCH_ASSOC);
+            $success = $statement->execute($values);
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
             if ($success === true && $result !== false && !empty($result)) {
                 return [
                     'operation' => 'addMultiple',
                     'success'   => false,
-                    'message'   => ucfirst($fieldName) . ' already connected'
+                    'message'   => ucfirst($fieldName).' already connected',
                 ];
             }
 
             // Sql to use when no sorting
             $fieldList = '';
             $valueList = '?, ?';
-            $values    = [$parentId, $id];
+            $values = [$parentId, $id];
 
             // Sort fields?
             if (isset($fieldProperties['tableFields'])) {
                 foreach ($fieldProperties['tableFields'] as $extraField) {
                     if ($extraField['type'] == 'sort') {
                         // Get highest current sort value
-                        $sql = "SELECT MAX(" . $extraField['name'] . ") AS max FROM " . $fieldProperties['crossReferenceTable'];
+                        $sql = 'SELECT MAX('.$extraField['name'].') AS max FROM '.$fieldProperties['crossReferenceTable'];
 
                         $statement = $model->getConnection()->prepare($sql);
                         $statement->execute();
@@ -688,9 +686,9 @@ class _coreCrudController extends Ajde_Acl_Controller
                         } else {
                             $sortValue = $result['max'] + 1;
                         }
-                        $fieldList .= ', ' . $extraField['name'];
+                        $fieldList .= ', '.$extraField['name'];
                         $valueList = '?, ?, ?';
-                        $values[]  = $sortValue;
+                        $values[] = $sortValue;
                     }
                 }
             }
@@ -698,16 +696,16 @@ class _coreCrudController extends Ajde_Acl_Controller
             // Setup constraints
             if (isset($fieldProperties['crossRefConstraints'])) {
                 foreach ($fieldProperties['crossRefConstraints'] as $k => $v) {
-                    $fieldList .= ', ' . $k;
+                    $fieldList .= ', '.$k;
                     $valueList .= ', ?';
                     $values[] = $v;
                 }
             }
 
-            $sql       = 'INSERT INTO ' . $fieldProperties['crossReferenceTable'] . ' (' . $parentField . ', ' . $childField . $fieldList . ') VALUES (' . $valueList . ')';
+            $sql = 'INSERT INTO '.$fieldProperties['crossReferenceTable'].' ('.$parentField.', '.$childField.$fieldList.') VALUES ('.$valueList.')';
             $statement = $model->getConnection()->prepare($sql);
-            $success   = $statement->execute($values);
-            $lastId    = $model->getConnection()->lastInsertId();
+            $success = $statement->execute($values);
+            $lastId = $model->getConnection()->lastInsertId();
         } else {
             // Not possible
         }
@@ -716,7 +714,7 @@ class _coreCrudController extends Ajde_Acl_Controller
             'operation' => 'addMultiple',
             'success'   => $success,
             'lastId'    => $lastId,
-            'message'   => $success ? ucfirst($modelName) . ' added' : 'An error occured'
+            'message'   => $success ? ucfirst($modelName).' added' : 'An error occured',
         ];
     }
 
@@ -729,14 +727,14 @@ class _coreCrudController extends Ajde_Acl_Controller
         $model = $crud->getModel();
 
         // Get field properties
-        $id              = Ajde::app()->getRequest()->getParam('id');
-        $fieldName       = Ajde::app()->getRequest()->getParam('field');
-        $fieldProperties = $crud->getOption('fields.' . $fieldName);
-        $modelName       = $crud->getOption('fields.' . $fieldName . '.modelName', $fieldName);
+        $id = Ajde::app()->getRequest()->getParam('id');
+        $fieldName = Ajde::app()->getRequest()->getParam('field');
+        $fieldProperties = $crud->getOption('fields.'.$fieldName);
+        $modelName = $crud->getOption('fields.'.$fieldName.'.modelName', $fieldName);
 
         // Get child model
-        $className = ucfirst($modelName) . 'Model';
-        $child     = new $className;
+        $className = ucfirst($modelName).'Model';
+        $child = new $className();
         /* @var $child Ajde_Model */
         $child->loadByPK($id);
 
@@ -744,24 +742,24 @@ class _coreCrudController extends Ajde_Acl_Controller
         if (isset($fieldProperties['tableFields'])) {
             foreach ($fieldProperties['tableFields'] as $extraField) {
                 $value = $child->has($extraField['name']) ? $child->get($extraField['name']) : false;
-                $type  = $extraField['type'];
-                $html  = false;
+                $type = $extraField['type'];
+                $html = false;
                 if ($type == 'file' && $value) {
                     $extension = pathinfo($value, PATHINFO_EXTENSION);
                     if ($isImage = in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'gif'])) {
                         $thumbDim = isset($fieldProperties['thumbDim']) ? $fieldProperties['thumbDim'] : ['width'  => 75,
-                                                                                                          'height' => 75
+                                                                                                          'height' => 75,
                         ];
-                        $html     = "<a class='imagePreview img' title='" . esc($value) . "' href='" . $extraField['saveDir'] . $value . "' target='_blank'>";
-                        $image    = new Ajde_Resource_Image($extraField['saveDir'] . $value);
+                        $html = "<a class='imagePreview img' title='".esc($value)."' href='".$extraField['saveDir'].$value."' target='_blank'>";
+                        $image = new Ajde_Resource_Image($extraField['saveDir'].$value);
                         $image->setWidth($thumbDim['width']);
                         $image->setHeight($thumbDim['height']);
                         $image->setCrop(true);
-                        $html = $html . "<img src='" . $image->getLinkUrl() . "' width='" . $thumbDim['width'] . "' height='" . $thumbDim['height'] . "' />";
-                        $html = $html . "</a>";
+                        $html = $html."<img src='".$image->getLinkUrl()."' width='".$thumbDim['width']."' height='".$thumbDim['height']."' />";
+                        $html = $html.'</a>';
                     } else {
-                        $html = "<img class='icon' src='" . Ajde_Resource_FileIcon::_($extension) . "' />";
-                        $html = $html . " <a class='filePreview preview' href='" . $extraField['saveDir'] . $value . "' target='_blank'>" . $value . "</a>";
+                        $html = "<img class='icon' src='".Ajde_Resource_FileIcon::_($extension)."' />";
+                        $html = $html." <a class='filePreview preview' href='".$extraField['saveDir'].$value."' target='_blank'>".$value.'</a>';
                     }
                 } else {
                     if ($type == 'text') {
@@ -780,7 +778,7 @@ class _coreCrudController extends Ajde_Acl_Controller
             'operation'    => 'getMultipleRow',
             'success'      => $success,
             'displayField' => $child->get($child->getDisplayField()),
-            'data'         => $ret
+            'data'         => $ret,
         ];
     }
 
@@ -797,7 +795,7 @@ class _coreCrudController extends Ajde_Acl_Controller
         return [
             'operation' => 'purgeRevisions',
             'success'   => $success,
-            'message'   => 'Revisions purged'
+            'message'   => 'Revisions purged',
         ];
     }
 }

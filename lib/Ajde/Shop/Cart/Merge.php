@@ -6,17 +6,17 @@ class Ajde_Shop_Cart_Merge extends Ajde_Object_Singleton
     {
         static $instance;
 
-        return $instance === null ? $instance = new self : $instance;
+        return $instance === null ? $instance = new self() : $instance;
     }
 
-    static public function __bootstrap()
+    public static function __bootstrap()
     {
         self::mergeClientToUser();
 
         return true;
     }
 
-    static public function mergeClientToUser()
+    public static function mergeClientToUser()
     {
         if ($user = Ajde_User::getLoggedIn()) {
 
@@ -33,7 +33,7 @@ class Ajde_Shop_Cart_Merge extends Ajde_Object_Singleton
 
                 if ($userCart->hasItems()) {
                     // Set alert message
-                    Ajde_Session_Flash::alert(trans("Your items are still in the shopping cart"));
+                    Ajde_Session_Flash::alert(trans('Your items are still in the shopping cart'));
                 }
 
                 // Merge items
@@ -48,7 +48,7 @@ class Ajde_Shop_Cart_Merge extends Ajde_Object_Singleton
         }
     }
 
-    static public function mergeUserToClient()
+    public static function mergeUserToClient()
     {
         if ($user = Ajde_User::getLoggedIn()) {
 
@@ -59,7 +59,7 @@ class Ajde_Shop_Cart_Merge extends Ajde_Object_Singleton
                 // Do we have a saved cart for client?
                 $clientCart = new CartModel();
                 if ($clientCart->loadByClient() === false) {
-                    $clientCart->client = md5($_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
+                    $clientCart->client = md5($_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']);
                     $clientCart->insert();
                 }
 

@@ -5,7 +5,7 @@ class Ajde_Cms extends Ajde_Object_Singleton implements Ajde_BootstrapInterface
     private $_homepageSet = false;
 
     /**
-     * @var NodeModel|boolean
+     * @var NodeModel|bool
      */
     private $_detectedNode = false;
 
@@ -13,7 +13,7 @@ class Ajde_Cms extends Ajde_Object_Singleton implements Ajde_BootstrapInterface
     {
         static $instance;
 
-        return $instance === null ? $instance = new self : $instance;
+        return $instance === null ? $instance = new self() : $instance;
     }
 
     protected function __construct()
@@ -41,7 +41,7 @@ class Ajde_Cms extends Ajde_Object_Singleton implements Ajde_BootstrapInterface
         if ($homepageNodeId) {
             $node = NodeModel::fromPk($homepageNodeId);
             if ($node) {
-                Config::set("routes.homepage", $node->getUrl());
+                Config::set('routes.homepage', $node->getUrl());
             }
         }
     }
@@ -50,7 +50,7 @@ class Ajde_Cms extends Ajde_Object_Singleton implements Ajde_BootstrapInterface
     {
         $slug = $route->getRoute();
 
-        $slug      = trim($slug, '/');
+        $slug = trim($slug, '/');
         $lastSlash = strrpos($slug, '/');
         if ($lastSlash !== false) {
             $slug = substr($slug, $lastSlash + 1);
@@ -60,9 +60,9 @@ class Ajde_Cms extends Ajde_Object_Singleton implements Ajde_BootstrapInterface
         if ($node) {
             $this->_detectedNode = $node;
             $route->setRoute($slug);
-            $routes = config("routes.list");
-            array_unshift($routes, ['%^(' . preg_quote($slug) . ')$%' => ['slug']]);
-            Config::set("routes.list", $routes);
+            $routes = config('routes.list');
+            array_unshift($routes, ['%^('.preg_quote($slug).')$%' => ['slug']]);
+            Config::set('routes.list', $routes);
         }
     }
 
@@ -70,7 +70,7 @@ class Ajde_Cms extends Ajde_Object_Singleton implements Ajde_BootstrapInterface
     {
         $slug = $route->getRoute();
 
-        $slug      = trim($slug, '/');
+        $slug = trim($slug, '/');
         $lastSlash = strrpos($slug, '/');
         if ($lastSlash !== false) {
             $lastSlugPart = substr($slug, $lastSlash + 1);
@@ -78,15 +78,15 @@ class Ajde_Cms extends Ajde_Object_Singleton implements Ajde_BootstrapInterface
             $product = ProductModel::fromSlug($lastSlugPart);
             if ($product) {
                 $route->setRoute($slug);
-                $routes = config("routes.list");
-                array_unshift($routes, ['%^(shop)/(' . preg_quote($lastSlugPart) . ')$%' => ['module', 'slug']]);
-                Config::set("routes.list", $routes);
+                $routes = config('routes.list');
+                array_unshift($routes, ['%^(shop)/('.preg_quote($lastSlugPart).')$%' => ['module', 'slug']]);
+                Config::set('routes.list', $routes);
             }
         }
     }
 
     /**
-     * @return NodeModel|boolean
+     * @return NodeModel|bool
      */
     public function getRoutedNode()
     {

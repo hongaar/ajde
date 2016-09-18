@@ -1,6 +1,6 @@
 <?php
 
-require_once "Google/Client.php";
+require_once 'Google/Client.php';
 
 class Ajde_Social_Provider_Google extends Google_Client
 {
@@ -11,8 +11,8 @@ class Ajde_Social_Provider_Google extends Google_Client
     {
         parent::__construct($config);
 
-        $this->_key    = config("services.google.key");
-        $this->_secret = config("services.google.secret");
+        $this->_key = config('services.google.key');
+        $this->_secret = config('services.google.secret');
 
         $this->setClientId($this->_key);
         $this->setClientSecret($this->_secret);
@@ -20,7 +20,7 @@ class Ajde_Social_Provider_Google extends Google_Client
 
     public function getPlus()
     {
-        require_once "Google/Service/Plus.php";
+        require_once 'Google/Service/Plus.php';
 
         return new Google_Service_Plus($this);
     }

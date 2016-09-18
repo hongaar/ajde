@@ -14,15 +14,15 @@ class Ajde_Resource_Image extends Ajde_Resource
 
     public static $_thumbDir = '.thumbnails';
 
-    const ORIENTATION_PORTRAIT  = 'portrait';
+    const ORIENTATION_PORTRAIT = 'portrait';
     const ORIENTATION_LANDSCAPE = 'landscape';
 
     public function __construct($file)
     {
-        if (file_exists(LOCAL_ROOT . $file)) {
+        if (file_exists(LOCAL_ROOT.$file)) {
             $this->_source = $file;
         } else {
-            $this->_source = MEDIA_DIR . 'notfound.png';
+            $this->_source = MEDIA_DIR.'notfound.png';
         }
         $this->_type = $this->extension();
     }
@@ -40,10 +40,10 @@ class Ajde_Resource_Image extends Ajde_Resource
     {
         // Double url encoding because of mod_rewrite url decoding bug
         // @see http://www.php.net/manual/en/reserved.variables.php#84025
-        $url = '_core/component:image/' . urlencode(urlencode($this->getFingerprint())) . '.data';
+        $url = '_core/component:image/'.urlencode(urlencode($this->getFingerprint())).'.data';
 
-        if (config("app.debug") === true) {
-            $url .= '?file=' . str_replace(['%2F', '%5C'], ':', urlencode($this->_source));
+        if (config('app.debug') === true) {
+            $url .= '?file='.str_replace(['%2F', '%5C'], ':', urlencode($this->_source));
         }
 
         return $url;
@@ -53,7 +53,7 @@ class Ajde_Resource_Image extends Ajde_Resource
     {
         $array = self::decodeFingerprint($fingerprint);
         extract($array);
-        $image = new Ajde_Resource_Image($s);
+        $image = new self($s);
         $image->setWidth($w);
         $image->setHeight($h);
         $image->setCrop($c);
@@ -63,8 +63,8 @@ class Ajde_Resource_Image extends Ajde_Resource
 
     public function getFingerprint()
     {
-        $w     = $this->hasWidth() ? $this->getWidth(false) : null;
-        $h     = $this->hasHeight() ? $this->getHeight(false) : null;
+        $w = $this->hasWidth() ? $this->getWidth(false) : null;
+        $h = $this->hasHeight() ? $this->getHeight(false) : null;
         $array = ['s' => $this->_source, 'w' => $w, 'h' => $h, 'c' => $this->getCrop()];
 
         return $this->encodeFingerprint($array);
@@ -82,14 +82,14 @@ class Ajde_Resource_Image extends Ajde_Resource
         } else {
             ob_start();
             switch ($this->_type) {
-                case "jpg":
-                case "jpeg":
+                case 'jpg':
+                case 'jpeg':
                     imagejpeg($this->getImageResource());
                     break;
-                case "png":
+                case 'png':
                     imagepng($this->getImageResource());
                     break;
-                case "gif":
+                case 'gif':
                     imagegif($this->getImageResource());
                     break;
             }
@@ -119,15 +119,15 @@ class Ajde_Resource_Image extends Ajde_Resource
 
         if (!isset($this->_image)) {
             switch ($this->_type) {
-                case "jpg":
-                case "jpeg":
-                    $this->_image = imagecreatefromjpeg(LOCAL_ROOT . $this->_source);
+                case 'jpg':
+                case 'jpeg':
+                    $this->_image = imagecreatefromjpeg(LOCAL_ROOT.$this->_source);
                     break;
-                case "png":
-                    $this->_image = imagecreatefrompng(LOCAL_ROOT . $this->_source);
+                case 'png':
+                    $this->_image = imagecreatefrompng(LOCAL_ROOT.$this->_source);
                     break;
-                case "gif":
-                    $this->_image = imagecreatefromgif(LOCAL_ROOT . $this->_source);
+                case 'gif':
+                    $this->_image = imagecreatefromgif(LOCAL_ROOT.$this->_source);
                     break;
             }
         }
@@ -138,14 +138,14 @@ class Ajde_Resource_Image extends Ajde_Resource
     public function getCalculatedDim()
     {
         return [
-            'width'  => imageSX($this->getImageResource()),
-            'height' => imageSY($this->getImageResource())
+            'width'  => imagesx($this->getImageResource()),
+            'height' => imagesy($this->getImageResource()),
         ];
     }
 
     public function imageInCache($width, $height, $crop = true)
     {
-        if (is_file($cache = LOCAL_ROOT . $this->getGeneratedFilename($width, $height, $crop))) {
+        if (is_file($cache = LOCAL_ROOT.$this->getGeneratedFilename($width, $height, $crop))) {
             $this->_cache = $cache;
 
             return true;
@@ -192,15 +192,15 @@ class Ajde_Resource_Image extends Ajde_Resource
         }
 
         // see if we have a thumb folder
-        $thumbPath = $this->dir() . '/' . self::$_thumbDir;
+        $thumbPath = $this->dir().'/'.self::$_thumbDir;
         if (!is_dir($thumbPath)) {
             @mkdir($thumbPath);
         }
 
         $filename = $this->dir();
-        $filename .= '/' . self::$_thumbDir . '/';
+        $filename .= '/'.self::$_thumbDir.'/';
         $filename .= $this->filename();
-        $filename .= '_' . $width . 'x' . $height;
+        $filename .= '_'.$width.'x'.$height;
         $filename .= ($crop ? 'c' : '');
         $filename .= '.';
         $filename .= $this->extension();
@@ -219,11 +219,11 @@ class Ajde_Resource_Image extends Ajde_Resource
             return $this->get('height');
         } else {
             if ($calculate === true) {
-                $old_y = imageSY($this->getImageResource());
+                $old_y = imagesy($this->getImageResource());
                 if ($this->has('width') && !$this->isEmpty('width')) {
-                    $old_x = imageSX($this->getImageResource());
+                    $old_x = imagesx($this->getImageResource());
 
-                    return (int)(($old_y / $old_x) * $this->get('width'));
+                    return (int) (($old_y / $old_x) * $this->get('width'));
                 } else {
                     return $old_y;
                 }
@@ -239,11 +239,11 @@ class Ajde_Resource_Image extends Ajde_Resource
             return $this->get('width');
         } else {
             if ($calculate === true) {
-                $old_x = imageSX($this->getImageResource());
+                $old_x = imagesx($this->getImageResource());
                 if ($this->has('height') && !$this->isEmpty('height')) {
-                    $old_y = imageSY($this->getImageResource());
+                    $old_y = imagesy($this->getImageResource());
 
-                    return (int)(($old_x / $old_y) * $this->get('height'));
+                    return (int) (($old_x / $old_y) * $this->get('height'));
                 } else {
                     return $old_x;
                 }
@@ -259,34 +259,34 @@ class Ajde_Resource_Image extends Ajde_Resource
             return;
         }
 
-        $oldWidth  = imageSX($this->getImageResource());
-        $oldHeight = imageSY($this->getImageResource());
+        $oldWidth = imagesx($this->getImageResource());
+        $oldHeight = imagesy($this->getImageResource());
 
         if (empty($height)) {
-            $height = (int)(($oldHeight / $oldWidth) * $width);
+            $height = (int) (($oldHeight / $oldWidth) * $width);
         }
         if (empty($width)) {
-            $width = (int)(($oldWidth / $oldHeight) * $height);
+            $width = (int) (($oldWidth / $oldHeight) * $height);
         }
 
         if ($this->imageInCache($width, $height, $crop)) {
             return;
         }
 
-        $newImage = ImageCreateTrueColor($width, $height);
+        $newImage = imagecreatetruecolor($width, $height);
 
-        $newWidth  = $width;
+        $newWidth = $width;
         $newHeight = intval($oldHeight * ($width / $oldWidth));
 
         $x_offset = 0;
         $y_offset = 0;
 
         $adjustWidth = (($crop === true) ? ($newHeight < $height) : ($newHeight > $height));
-        $offsetSign  = -1;
+        $offsetSign = -1;
 
         if ($adjustWidth) {
             $newHeight = $height;
-            $newWidth  = intval($oldWidth * ($height / $oldHeight));
+            $newWidth = intval($oldWidth * ($height / $oldHeight));
 
             // Correct for cropping left / right
             $x_offset = $offsetSign * intval(($newWidth - $width) / 2);
@@ -314,15 +314,15 @@ class Ajde_Resource_Image extends Ajde_Resource
     public function save($target)
     {
         switch ($this->_type) {
-            case "jpg":
-            case "jpeg":
-                imagejpeg($this->_image, LOCAL_ROOT . $target);
+            case 'jpg':
+            case 'jpeg':
+                imagejpeg($this->_image, LOCAL_ROOT.$target);
                 break;
-            case "png":
-                imagepng($this->_image, LOCAL_ROOT . $target);
+            case 'png':
+                imagepng($this->_image, LOCAL_ROOT.$target);
                 break;
-            case "gif":
-                imagegif($this->_image, LOCAL_ROOT . $target);
+            case 'gif':
+                imagegif($this->_image, LOCAL_ROOT.$target);
                 break;
         }
     }
@@ -330,22 +330,22 @@ class Ajde_Resource_Image extends Ajde_Resource
     public function getMimeType()
     {
         switch ($this->_type) {
-            case "jpg":
-            case "jpeg":
-                return "image/jpeg";
+            case 'jpg':
+            case 'jpeg':
+                return 'image/jpeg';
                 break;
-            case "png":
-                return "image/png";
+            case 'png':
+                return 'image/png';
                 break;
-            case "gif":
-                return "image/gif";
+            case 'gif':
+                return 'image/gif';
                 break;
         }
     }
 
     public function getBase64()
     {
-        return 'data:' . $this->getMimeType() . ';base64,' . base64_encode($this->getImage());
+        return 'data:'.$this->getMimeType().';base64,'.base64_encode($this->getImage());
     }
 
     public function destroy()
@@ -408,11 +408,10 @@ class Ajde_Resource_Image extends Ajde_Resource
         // This is the resizing/resampling/transparency-preserving magic
         // https://github.com/maxim/smart_resize_image/blob/master/smart_resize_image.function.php
         if ($this->_type == 'png' || $this->_type == 'gif') {
-
             $transparency = imagecolortransparent($src_image);
             if ($transparency >= 0) {
                 $transparent_color = imagecolorsforindex($src_image, $trnprt_indx);
-                $transparency      = imagecolorallocate($dst_image, $trnprt_color['red'], $trnprt_color['green'],
+                $transparency = imagecolorallocate($dst_image, $trnprt_color['red'], $trnprt_color['green'],
                     $trnprt_color['blue']);
                 imagefill($dst_image, 0, 0, $transparency);
                 imagecolortransparent($dst_image, $transparency);
@@ -438,5 +437,4 @@ class Ajde_Resource_Image extends Ajde_Resource
 
         return true;
     }
-
 }

@@ -3,7 +3,7 @@
 class Ajde_Document_Format_Css extends Ajde_Document
 {
     protected $_cacheControl = self::CACHE_CONTROL_PUBLIC;
-    protected $_contentType  = 'text/css';
+    protected $_contentType = 'text/css';
 
     public function render()
     {

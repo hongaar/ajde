@@ -2,16 +2,14 @@
 
 class Ajde_Exception_Handler extends Ajde_Object_Static
 {
-
     const EXCEPTION_TRACE_HTML = 1;
     const EXCEPTION_TRACE_ONLY = 3;
-    const EXCEPTION_TRACE_LOG  = 2;
-
+    const EXCEPTION_TRACE_LOG = 2;
 
     public static function __bootstrap()
     {
         // making xdebug.overload_var_dump = 1 work
-        if (config("app.debug")) {
+        if (config('app.debug')) {
             ini_set('html_errors', 1);
         }
 
@@ -21,11 +19,10 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
         return true;
     }
 
-
     public static function errorHandler($errno, $errstr, $errfile, $errline)
     {
         if (error_reporting() > 0) {
-            $message = sprintf("PHP error: %s in %s on line %s", $errstr, $errfile, $errline);
+            $message = sprintf('PHP error: %s in %s on line %s', $errstr, $errfile, $errline);
             error_log($message);
             dump($message);
 
@@ -38,14 +35,13 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
         }
     }
 
-
     /**
      * @param Throwable $exception
      */
     public static function handler($exception)
     {
         try {
-            if (config("app.debug") === true) {
+            if (config('app.debug') === true) {
                 if (!((get_class($exception) == 'Ajde_Exception' || is_subclass_of($exception, 'Ajde_Exception')) && !$exception->traceOnOutput())
                 ) {
                     Ajde_Exception_Log::logException($exception);
@@ -60,14 +56,14 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
             }
         } catch (Exception $exception) {
             error_log(self::trace($exception, self::EXCEPTION_TRACE_LOG));
-            die("An uncatched exception occured within the error handler, see the server error_log for details");
+            die('An uncatched exception occured within the error handler, see the server error_log for details');
         }
     }
 
-
     /**
      * @param Throwable $exception
-     * @param int $output
+     * @param int       $output
+     *
      * @return string
      */
     public static function trace($exception, $output = self::EXCEPTION_TRACE_HTML)
@@ -111,13 +107,13 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 
                 $exceptionDocumentation = '';
                 if ($exception instanceof Ajde_Exception && $exception->getCode()) {
-                    $exceptionDocumentation = sprintf("<div style='margin-top: 4px;'><img src='" . config("app.rootUrl") . MEDIA_DIR . "_core/globe_16.png' style='vertical-align: bottom;' title='Primary key' width='16' height='16' /> <a href='%s'>Documentation on error %s</a>&nbsp;</div>",
+                    $exceptionDocumentation = sprintf("<div style='margin-top: 4px;'><img src='".config('app.rootUrl').MEDIA_DIR."_core/globe_16.png' style='vertical-align: bottom;' title='Primary key' width='16' height='16' /> <a href='%s'>Documentation on error %s</a>&nbsp;</div>",
                         Ajde_Core_Documentation::getUrl($exception->getCode()),
                         $exception->getCode()
                     );
                 }
 
-                $exceptionMessage = sprintf("<summary style='background-image: url(\"" . config("app.rootUrl") . MEDIA_DIR . "_core/warning_48.png\");'><h3 style='margin:0;'>%s:</h3><h2 style='margin:0;'>%s</h2> Exception thrown in %s%s</summary><h3>Trace:</h3>\n",
+                $exceptionMessage = sprintf("<summary style='background-image: url(\"".config('app.rootUrl').MEDIA_DIR."_core/warning_48.png\");'><h3 style='margin:0;'>%s:</h3><h2 style='margin:0;'>%s</h2> Exception thrown in %s%s</summary><h3>Trace:</h3>\n",
                     $type,
                     $exception->getMessage(),
                     self::embedScript(
@@ -143,42 +139,42 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
                                 var_dump($dump[0]);
                                 echo '</pre>';
                             }
-                            $exceptionDump .= ob_get_clean() . '<h2>Error message</h2>';
+                            $exceptionDump .= ob_get_clean().'<h2>Error message</h2>';
                         }
                     }
                 }
 
                 $style = false;
-                if (file_exists(LOCAL_ROOT . CORE_DIR . MODULE_DIR . '_core/res/css/debugger/handler.css')) {
-                    $style = file_get_contents(LOCAL_ROOT . CORE_DIR . MODULE_DIR . '_core/res/css/debugger/handler.css');
+                if (file_exists(LOCAL_ROOT.CORE_DIR.MODULE_DIR.'_core/res/css/debugger/handler.css')) {
+                    $style = file_get_contents(LOCAL_ROOT.CORE_DIR.MODULE_DIR.'_core/res/css/debugger/handler.css');
                 }
                 if ($style === false) {
                     // For shutdown() call
                     $style = 'body {font: 13px sans-serif;} a {color: #005D9A;} a:hover {color: #9A0092;} h2 {color: #005D9A;} span > a {color: #9A0092;}';
                 }
-                $style = '<style>' . $style . '</style>';
+                $style = '<style>'.$style.'</style>';
                 $script = '<script>document.getElementsByTagName("base")[0].href="";</script>';
 
                 if (Ajde::app()->getRequest()->isAjax()) {
-                    $collapsed = $exceptionDump . $exceptionMessage . $traceMessage;
+                    $collapsed = $exceptionDump.$exceptionMessage.$traceMessage;
                     $header = '';
                 } else {
-                    $collapsed = '<div id="details">' . $exceptionDump . $exceptionMessage . $traceMessage . '</div>';
-                    $header = '<header><h1><img src="' . config("app.rootUrl") . MEDIA_DIR . 'ajde-small.png">Something went wrong</h1><a href="javascript:history.go(-1);">Go back</a> <a href="#details">Show details</a></header>';
+                    $collapsed = '<div id="details">'.$exceptionDump.$exceptionMessage.$traceMessage.'</div>';
+                    $header = '<header><h1><img src="'.config('app.rootUrl').MEDIA_DIR.'ajde-small.png">Something went wrong</h1><a href="javascript:history.go(-1);">Go back</a> <a href="#details">Show details</a></header>';
                 }
 
-                $message = $style . $script . $header . $collapsed;
+                $message = $style.$script.$header.$collapsed;
                 break;
             case self::EXCEPTION_TRACE_ONLY:
                 $message = '';
                 foreach (array_reverse($exception->getTrace()) as $i => $line) {
-                    $message .= $i . '. ' . (isset($line['file']) ? $line['file'] : 'unknown file') . ' on line ' . (isset($line['line']) ? $line['line'] : 'unknown line');
+                    $message .= $i.'. '.(isset($line['file']) ? $line['file'] : 'unknown file').' on line '.(isset($line['line']) ? $line['line'] : 'unknown line');
                     $message .= PHP_EOL;
                 }
                 break;
             case self::EXCEPTION_TRACE_LOG:
-                $message = 'UNCAUGHT EXCEPTION' . PHP_EOL;
-                $message .= "\tRequest " . $_SERVER["REQUEST_URI"] . " triggered:" . PHP_EOL;
+                $message = 'UNCAUGHT EXCEPTION'.PHP_EOL;
+                $message .= "\tRequest ".$_SERVER['REQUEST_URI'].' triggered:'.PHP_EOL;
                 $message .= sprintf("\t%s: %s in %s on line %s",
                     $type,
                     $exception->getMessage(),
@@ -187,7 +183,7 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
                 );
                 foreach (array_reverse($exception->getTrace()) as $i => $line) {
                     $message .= PHP_EOL;
-                    $message .= "\t" . $i . '. ' . (isset($line['file']) ? $line['file'] : 'unknown file') . ' on line ' . (isset($line['line']) ? $line['line'] : 'unknown line');
+                    $message .= "\t".$i.'. '.(isset($line['file']) ? $line['file'] : 'unknown file').' on line '.(isset($line['line']) ? $line['line'] : 'unknown line');
                 }
                 break;
         }
@@ -195,27 +191,27 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
         return $message;
     }
 
-
     /**
      * @param Throwable $exception
+     *
      * @return string
      */
     public static function getTypeDescription($exception)
     {
         if ($exception instanceof ErrorException) {
-            $type = "PHP Error " . self::getErrorType($exception->getSeverity());
+            $type = 'PHP Error '.self::getErrorType($exception->getSeverity());
         } elseif ($exception instanceof Ajde_Exception) {
-            $type = "Application exception" . ($exception->getCode() ? ' ' . $exception->getCode() : '');
+            $type = 'Application exception'.($exception->getCode() ? ' '.$exception->getCode() : '');
         } else {
-            $type = "PHP exception " . $exception->getCode();
+            $type = 'PHP exception '.$exception->getCode();
         }
 
         return $type;
     }
 
-
     /**
      * @param Throwable $exception
+     *
      * @return string
      */
     public static function getExceptionChannelMap($exception)
@@ -233,9 +229,9 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
         }
     }
 
-
     /**
      * @param Throwable $exception
+     *
      * @return string
      */
     public static function getExceptionLevelMap($exception)
@@ -253,48 +249,45 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
         }
     }
 
-
     public static function getErrorType($type)
     {
         switch ($type) {
             case 1:
-                return "E_ERROR";
+                return 'E_ERROR';
             case 2:
-                return "E_WARNING";
+                return 'E_WARNING';
             case 4:
-                return "E_PARSE";
+                return 'E_PARSE';
             case 8:
-                return "E_NOTICE";
+                return 'E_NOTICE';
             case 16:
-                return "E_CORE_ERROR";
+                return 'E_CORE_ERROR';
             case 32:
-                return "E_CORE_WARNING";
+                return 'E_CORE_WARNING';
             case 64:
-                return "E_COMPILE_ERROR";
+                return 'E_COMPILE_ERROR';
             case 128:
-                return "E_COMPILE_WARNING";
+                return 'E_COMPILE_WARNING';
             case 256:
-                return "E_USER_ERROR";
+                return 'E_USER_ERROR';
             case 512:
-                return "E_USER_WARNING";
+                return 'E_USER_WARNING';
             case 1024:
-                return "E_USER_NOTICE";
+                return 'E_USER_NOTICE';
             case 2048:
-                return "E_STRICT";
+                return 'E_STRICT';
             case 4096:
-                return "E_RECOVERABLE_ERROR";
+                return 'E_RECOVERABLE_ERROR';
             case 8192:
-                return "E_DEPRECATED";
+                return 'E_DEPRECATED';
             case 16384:
-                return "E_USER_DEPRECATED";
+                return 'E_USER_DEPRECATED';
             case 30719:
-                return "E_ALL";
+                return 'E_ALL';
         }
     }
 
-
-    static $firstApplicationFileExpanded = false;
-
+    public static $firstApplicationFileExpanded = false;
 
     protected static function embedScript($filename = null, $line = null, $arguments = null, $expand = false)
     {
@@ -309,30 +302,30 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
         if (isset($filename) && isset($line)) {
             $lines = file($filename);
             for ($i = max(0, $line - $lineOffset - 1); $i < min($line + $lineOffset, count($lines)); $i++) {
-                $lineNumber = str_repeat(" ", 4 - strlen($i + 1)) . ($i + 1);
+                $lineNumber = str_repeat(' ', 4 - strlen($i + 1)).($i + 1);
                 if ($i == $line - 1) {
-                    $file .= "{{{}}}" . $lineNumber . ' ' . ($lines[$i]) . "{{{/}}}";
+                    $file .= '{{{}}}'.$lineNumber.' '.($lines[$i]).'{{{/}}}';
                 } else {
-                    $file .= $lineNumber . ' ' . ($lines[$i]);
+                    $file .= $lineNumber.' '.($lines[$i]);
                 }
             }
         }
 
         if (substr_count($filename, str_replace('/', DIRECTORY_SEPARATOR, APP_DIR))) {
-            $filename = '<span style="color: red;">' . $filename . '</span>';
+            $filename = '<span style="color: red;">'.$filename.'</span>';
             if (self::$firstApplicationFileExpanded === false) {
                 $expand = true;
             }
             self::$firstApplicationFileExpanded = true;
         }
-        $file = highlight_string("<?php" . $file, true);
+        $file = highlight_string('<?php'.$file, true);
         $file = str_replace('&lt;?php', '', $file);
         $file = str_replace('<code>',
             "<code style='display:block;border:1px solid silver;margin:5px 0 5px 0;background-color:#f1f1f1;'>", $file);
         $file = str_replace('{{{}}}', "<div style='background-color: #ffff9e;'>", $file);
-        $file = str_replace('{{{/}}}', "</div>", $file);
+        $file = str_replace('{{{/}}}', '</div>', $file);
 
-        $id = md5(microtime() . $filename . $line);
+        $id = md5(microtime().$filename.$line);
 
         return sprintf(
             "<a
@@ -341,10 +334,9 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 				><i>%s</i> on line <b>%s</b></a>&nbsp;<div id='$id' style='display:%s;'>%s%s</div>",
             $filename,
             $line,
-            $expand ? "block" : "none",
+            $expand ? 'block' : 'none',
             $file,
             $arguments
         );
     }
-
 }

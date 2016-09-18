@@ -4,8 +4,8 @@ class Ajde_Crud_Field_Boolean extends Ajde_Crud_Field
 {
     protected function _getHtmlAttributes()
     {
-        $attributes          = [];
-        $attributes['type']  = "hidden";
+        $attributes = [];
+        $attributes['type'] = 'hidden';
         $attributes['value'] = $this->getValue() ? '1' : '0';
 
         return $attributes;

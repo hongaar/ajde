@@ -10,20 +10,20 @@ class Ajde_Cache extends Ajde_Object_Singleton
     protected $_enabled = true;
 
     /**
-     *
      * @staticvar Ajde_Cache $instance
+     *
      * @return Ajde_Cache
      */
     public static function getInstance()
     {
         static $instance;
 
-        return $instance === null ? $instance = new self : $instance;
+        return $instance === null ? $instance = new self() : $instance;
     }
 
     protected function __construct()
     {
-        $this->_enabled = config("layout.cache.enabled");
+        $this->_enabled = config('layout.cache.enabled');
     }
 
     public function isEnabled()
@@ -44,7 +44,7 @@ class Ajde_Cache extends Ajde_Object_Singleton
     public function getHashContext()
     {
         if (!isset($this->_hashContext)) {
-            $this->_hashContext = hash_init("md5");
+            $this->_hashContext = hash_init('md5');
         }
 
         return $this->_hashContext;
@@ -60,9 +60,9 @@ class Ajde_Cache extends Ajde_Object_Singleton
     public function addFile($filename)
     {
         if (!isset($this->_hashFinal)) {
-            if (is_file(LOCAL_ROOT . $filename)) {
-                hash_update_file($this->getHashContext(), LOCAL_ROOT . $filename);
-                $this->addLastModified(filemtime(LOCAL_ROOT . $filename));
+            if (is_file(LOCAL_ROOT.$filename)) {
+                hash_update_file($this->getHashContext(), LOCAL_ROOT.$filename);
+                $this->addLastModified(filemtime(LOCAL_ROOT.$filename));
             }
         }
     }
@@ -126,10 +126,10 @@ class Ajde_Cache extends Ajde_Object_Singleton
         // Expires and Cache-Control
         if ($document->getCacheControl() == Ajde_Document::CACHE_CONTROL_NOCACHE || $this->isEnabled() == false) {
             $response->addHeader('Expires', gmdate('D, d M Y H:i:s \G\M\T', time()));
-            $response->addHeader('Cache-Control', Ajde_Document::CACHE_CONTROL_NOCACHE . ', max-age=0');
+            $response->addHeader('Cache-Control', Ajde_Document::CACHE_CONTROL_NOCACHE.', max-age=0');
         } else {
             $response->addHeader('Expires', gmdate('D, d M Y H:i:s \G\M\T', time() + $document->getMaxAge()));
-            $response->addHeader('Cache-Control', $document->getCacheControl() . ', max-age=' . $document->getMaxAge());
+            $response->addHeader('Cache-Control', $document->getCacheControl().', max-age='.$document->getMaxAge());
         }
 
         // Content
@@ -137,7 +137,7 @@ class Ajde_Cache extends Ajde_Object_Singleton
             $response->setResponseType(Ajde_Http_Response::RESPONSE_TYPE_NOT_MODIFIED);
             $response->setData(false);
         } else {
-            $response->addHeader('Last-Modified', gmdate('D, d M Y H:i:s', $this->getLastModified()) . ' GMT');
+            $response->addHeader('Last-Modified', gmdate('D, d M Y H:i:s', $this->getLastModified()).' GMT');
             $response->addHeader('Etag', $this->getHash());
             $response->addHeader('Content-Type', $document->getContentType());
             $response->setData($this->hasContents() ? $this->getContents() : false);
@@ -145,26 +145,26 @@ class Ajde_Cache extends Ajde_Object_Singleton
     }
 
     /**
-     * Remember a cached value in the cache directory as a file
+     * Remember a cached value in the cache directory as a file.
      *
      * @param string   $key
      * @param callable $callback
-     * @param int      $ttl in seconds, defaults to 3600 (one hour)
+     * @param int      $ttl      in seconds, defaults to 3600 (one hour)
+     *
      * @return mixed
      */
     public static function remember($key, Closure $callback, $ttl = 3600)
     {
-        $safeKey       = substr(preg_replace('/[^a-zA-Z0-9_-]/', '-', $key), 0, 100);
-        $cacheFilename = CACHE_DIR . 'STATIC_CACHE_' . $safeKey;
+        $safeKey = substr(preg_replace('/[^a-zA-Z0-9_-]/', '-', $key), 0, 100);
+        $cacheFilename = CACHE_DIR.'STATIC_CACHE_'.$safeKey;
 
-        if (file_exists(LOCAL_ROOT . $cacheFilename) && filemtime(LOCAL_ROOT . $cacheFilename) > (time() - $ttl)) {
-            return json_decode(file_get_contents(LOCAL_ROOT . $cacheFilename));
+        if (file_exists(LOCAL_ROOT.$cacheFilename) && filemtime(LOCAL_ROOT.$cacheFilename) > (time() - $ttl)) {
+            return json_decode(file_get_contents(LOCAL_ROOT.$cacheFilename));
         } else {
             $result = $callback->__invoke();
-            file_put_contents(LOCAL_ROOT . $cacheFilename, json_encode($result));
+            file_put_contents(LOCAL_ROOT.$cacheFilename, json_encode($result));
 
             return $result;
         }
     }
-
 }

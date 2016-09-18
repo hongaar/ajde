@@ -2,11 +2,11 @@
 
 class Ajde_Http_Request extends Ajde_Object_Standard
 {
-    const TYPE_STRING  = 1;
-    const TYPE_HTML    = 2;
+    const TYPE_STRING = 1;
+    const TYPE_HTML = 2;
     const TYPE_INTEGER = 3;
-    const TYPE_FLOAT   = 4;
-    const TYPE_RAW     = 5;
+    const TYPE_FLOAT = 4;
+    const TYPE_RAW = 5;
 
     const FORM_MIN_TIME = 0;    // minimum time to have a post form returned (seconds)
     const FORM_MAX_TIME = 3600;    // timeout of post forms (seconds)
@@ -14,25 +14,25 @@ class Ajde_Http_Request extends Ajde_Object_Standard
     /**
      * @var Ajde_Core_Route
      */
-    protected $_route    = null;
+    protected $_route = null;
     protected $_postData = [];
 
     /**
-     * @return Ajde_Http_Request
      * @throws Ajde_Core_Exception_Security
+     *
+     * @return Ajde_Http_Request
      */
     public static function fromGlobal()
     {
         $instance = new self();
-        $post     = self::globalPost();
+        $post = self::globalPost();
         if (!empty($post) && self::requirePostToken() && !self::_isWhitelisted()) {
 
             // Measures against CSRF attacks
             $session = new Ajde_Session('AC.Form');
             if (!isset($post['_token']) || !$session->has('formTime')) {
-
                 $exception = new Ajde_Core_Exception_Security('No form token received or no form time set, bailing out to prevent CSRF attack');
-                if (config("app.debug") === true) {
+                if (config('app.debug') === true) {
                     Ajde_Http_Response::setResponseType(Ajde_Http_Response::RESPONSE_TYPE_FORBIDDEN);
                     throw $exception;
                 } else {
@@ -49,11 +49,11 @@ class Ajde_Http_Request extends Ajde_Object_Standard
             if (!self::verifyFormToken($formToken) || !self::verifyFormTime()) {
                 // TODO:
                 if (!self::verifyFormToken($formToken)) {
-                    $exception = new Ajde_Core_Exception_Security('No matching form token (got ' . self::_getHashFromSession($formToken) . ', expected ' . self::_tokenHash($formToken) . '), bailing out to prevent CSRF attack');
+                    $exception = new Ajde_Core_Exception_Security('No matching form token (got '.self::_getHashFromSession($formToken).', expected '.self::_tokenHash($formToken).'), bailing out to prevent CSRF attack');
                 } else {
                     $exception = new Ajde_Core_Exception_Security('Form token timed out, bailing out to prevent CSRF attack');
                 }
-                if (config("app.debug") === true) {
+                if (config('app.debug') === true) {
                     Ajde_Http_Response::setResponseType(Ajde_Http_Response::RESPONSE_TYPE_FORBIDDEN);
                     throw $exception;
                 } else {
@@ -111,34 +111,34 @@ class Ajde_Http_Request extends Ajde_Object_Standard
     }
 
     /**
-     * Security
+     * Security.
      */
     private static function autoEscapeString()
     {
-        return config("security.autoEscapeString") == true;
+        return config('security.autoEscapeString') == true;
     }
 
     private static function autoCleanHtml()
     {
-        return config("security.autoCleanHtml") == true;
+        return config('security.autoCleanHtml') == true;
     }
 
     private static function requirePostToken()
     {
-        return config("security.csrf.requirePostToken") == true;
+        return config('security.csrf.requirePostToken') == true;
     }
 
     /**
-     * CSRF prevention token
+     * CSRF prevention token.
      */
     public static function getFormToken()
     {
         static $token;
         if (!isset($token)) {
             Ajde_Cache::getInstance()->disable();
-            $token                   = md5(uniqid(rand(), true));
-            $session                 = new Ajde_Session('AC.Form');
-            $tokenDictionary         = self::_getTokenDictionary($session);
+            $token = md5(uniqid(rand(), true));
+            $session = new Ajde_Session('AC.Form');
+            $tokenDictionary = self::_getTokenDictionary($session);
             $tokenDictionary[$token] = self::_tokenHash($token);
             $session->set('formTokens', $tokenDictionary);
         }
@@ -149,18 +149,18 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 
     public static function verifyFormToken($requestToken)
     {
-        return (self::_tokenHash($requestToken) === self::_getHashFromSession($requestToken));
+        return self::_tokenHash($requestToken) === self::_getHashFromSession($requestToken);
     }
 
     private static function _tokenHash($token)
     {
-        return md5($token . $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] . config("security.secret"));
+        return md5($token.$_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT'].config('security.secret'));
     }
 
     private static function _isWhitelisted()
     {
         $route = issetor($_GET['_route'], false);
-        foreach (config("security.csrf.postWhitelistRoutes") as $whitelist) {
+        foreach (config('security.csrf.postWhitelistRoutes') as $whitelist) {
             if (stripos($route, $whitelist) === 0) {
                 return true;
             }
@@ -186,12 +186,12 @@ class Ajde_Http_Request extends Ajde_Object_Standard
     {
         $tokenDictionary = self::_getTokenDictionary();
 
-        return (issetor($tokenDictionary[$token], ''));
+        return issetor($tokenDictionary[$token], '');
     }
 
     public static function markFormTime()
     {
-        $time    = time();
+        $time = time();
         $session = new Ajde_Session('AC.Form');
         $session->set('formTime', $time);
 
@@ -200,7 +200,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 
     public static function verifyFormTime()
     {
-        $session     = new Ajde_Session('AC.Form');
+        $session = new Ajde_Session('AC.Form');
         $sessionTime = $session->get('formTime');
         if ((time() - $sessionTime) < self::FORM_MIN_TIME ||
             (time() - $sessionTime) > self::FORM_MAX_TIME
@@ -213,7 +213,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 
     public static function isAjax()
     {
-        return (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
+        return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
     }
 
     /**
@@ -225,7 +225,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
     }
 
     /**
-     * Helpers
+     * Helpers.
      */
     public function get($key)
     {
@@ -248,10 +248,10 @@ class Ajde_Http_Request extends Ajde_Object_Standard
                     }
                     break;
                 case self::TYPE_INTEGER:
-                    return (int)$data[$key];
+                    return (int) $data[$key];
                     break;
                 case self::TYPE_FLOAT:
-                    return (float)$data[$key];
+                    return (float) $data[$key];
                     break;
                 case self::TYPE_RAW:
                     return $data[$key];
@@ -260,7 +260,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
                 default:
                     if ($this->autoEscapeString() === true) {
                         if (is_array($data[$key])) {
-                            array_walk($data[$key], ["Ajde_Component_String", "escape"]);
+                            array_walk($data[$key], ['Ajde_Component_String', 'escape']);
 
                             return $data[$key];
                         } else {
@@ -316,9 +316,8 @@ class Ajde_Http_Request extends Ajde_Object_Standard
     }
 
     /**
-     * FORM
+     * FORM.
      */
-
     public function getCheckbox($key, $post = true)
     {
         if ($this->getParam($key, false, self::TYPE_RAW, $post) === 'on') {
@@ -329,9 +328,8 @@ class Ajde_Http_Request extends Ajde_Object_Standard
     }
 
     /**
-     * POST
+     * POST.
      */
-
     public function getPostData()
     {
         return $this->_postData;
@@ -358,7 +356,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
     public function getRoute()
     {
         if (!isset($this->_route)) {
-            $route        = $this->extractRoute();
+            $route = $this->extractRoute();
             $this->_route = new Ajde_Core_Route($route);
             foreach ($this->_route->values() as $part => $value) {
                 if (!$this->hasNotEmpty($part)) {
@@ -374,7 +372,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
     {
         // Strip query string
         $URIComponents = explode('?', $_SERVER['REQUEST_URI']);
-        $requestURI    = reset($URIComponents);
+        $requestURI = reset($URIComponents);
 
         // Route is the part after our base path
         $baseURI = str_replace('index.php', '', $_SERVER['PHP_SELF']);
@@ -397,18 +395,17 @@ class Ajde_Http_Request extends Ajde_Object_Standard
     public static function getClientIP()
     {
         if (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER)) {
-            return $_SERVER["HTTP_X_FORWARDED_FOR"];
+            return $_SERVER['HTTP_X_FORWARDED_FOR'];
         } else {
             if (array_key_exists('REMOTE_ADDR', $_SERVER)) {
-                return $_SERVER["REMOTE_ADDR"];
+                return $_SERVER['REMOTE_ADDR'];
             } else {
                 if (array_key_exists('HTTP_CLIENT_IP', $_SERVER)) {
-                    return $_SERVER["HTTP_CLIENT_IP"];
+                    return $_SERVER['HTTP_CLIENT_IP'];
                 }
             }
         }
 
         return '';
     }
-
 }

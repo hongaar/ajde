@@ -19,23 +19,23 @@ class Ajde_Model_Validator_Unique extends Ajde_Model_ValidatorAbstract
 
             if ($pkValue) {
                 // Existing
-                $sql    = 'SELECT * FROM ' . $this->getModel()->getTable() . ' WHERE ' . $this->getName() . ' = ? AND ' . $pkField . ' != ? LIMIT 1';
+                $sql = 'SELECT * FROM '.$this->getModel()->getTable().' WHERE '.$this->getName().' = ? AND '.$pkField.' != ? LIMIT 1';
                 $values = [$testValue, $pkValue];
             } else {
                 // New record
-                $sql    = 'SELECT * FROM ' . $this->getModel()->getTable() . ' WHERE ' . $this->getName() . ' = ? LIMIT 1';
+                $sql = 'SELECT * FROM '.$this->getModel()->getTable().' WHERE '.$this->getName().' = ? LIMIT 1';
                 $values = [$testValue];
             }
 
             $connection = Ajde_Db::getInstance()->getConnection();
-            $statement  = $connection->prepare($sql);
+            $statement = $connection->prepare($sql);
             $statement->execute($values);
             $result = $statement->fetch(PDO::FETCH_ASSOC);
 
             if ($result === false || empty($result)) {
                 // Not found
             } else {
-                return ['valid' => false, 'error' => trans('This ' . $this->getName() . ' already exists')];
+                return ['valid' => false, 'error' => trans('This '.$this->getName().' already exists')];
             }
         }
 

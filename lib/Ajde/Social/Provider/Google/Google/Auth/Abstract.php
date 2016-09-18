@@ -14,22 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require_once "Google/Http/Request.php";
+require_once 'Google/Http/Request.php';
 
 /**
- * Abstract class for the Authentication in the API client
+ * Abstract class for the Authentication in the API client.
  *
  * @author Chris Chabot <chabotc@google.com>
- *
  */
 abstract class Google_Auth_Abstract
 {
     /**
      * An utility function that first calls $this->auth->sign($request) and then
      * executes makeRequest() on that signed request. Used for when a request
-     * should be authenticated
+     * should be authenticated.
      *
      * @param Google_Http_Request $request
+     *
      * @return Google_Http_Request $request
      */
     abstract public function authenticatedRequest(Google_Http_Request $request);

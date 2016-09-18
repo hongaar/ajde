@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-require_once "Google/Auth/OAuth2.php";
-require_once "Google/Signer/P12.php";
-require_once "Google/Utils.php";
+require_once 'Google/Auth/OAuth2.php';
+require_once 'Google/Signer/P12.php';
+require_once 'Google/Utils.php';
 
 /**
  * Credentials object used for OAuth 2.0 Signed JWT assertion grants.
@@ -38,17 +38,17 @@ class Google_Auth_AssertionCredentials
      * @deprecated
      * @link http://tools.ietf.org/html/draft-ietf-oauth-json-web-token-06
      */
-    public  $prn;
+    public $prn;
     private $useCache;
 
     /**
      * @param             $serviceAccountName
-     * @param             $scopes array List of scopes
+     * @param             $scopes             array List of scopes
      * @param             $privateKey
      * @param string      $privateKeyPassword
      * @param string      $assertionType
-     * @param bool|string $sub    The email address of the user for which the
-     *                            application is requesting delegated access.
+     * @param bool|string $sub                The email address of the user for which the
+     *                                        application is requesting delegated access.
      * @param             bool    useCache Whether to generate a cache key and allow
      *                            automatic caching of the generated token.
      */
@@ -62,13 +62,13 @@ class Google_Auth_AssertionCredentials
         $useCache = true
     ) {
         $this->serviceAccountName = $serviceAccountName;
-        $this->scopes             = is_string($scopes) ? $scopes : implode(' ', $scopes);
-        $this->privateKey         = $privateKey;
+        $this->scopes = is_string($scopes) ? $scopes : implode(' ', $scopes);
+        $this->privateKey = $privateKey;
         $this->privateKeyPassword = $privateKeyPassword;
-        $this->assertionType      = $assertionType;
-        $this->sub                = $sub;
-        $this->prn                = $sub;
-        $this->useCache           = $useCache;
+        $this->assertionType = $assertionType;
+        $this->sub = $sub;
+        $this->prn = $sub;
+        $this->useCache = $useCache;
     }
 
     /**
@@ -117,6 +117,7 @@ class Google_Auth_AssertionCredentials
      * Creates a signed JWT.
      *
      * @param array $payload
+     *
      * @return string The signed JWT.
      */
     private function makeSignedJwt($payload)
@@ -125,14 +126,14 @@ class Google_Auth_AssertionCredentials
 
         $segments = [
             Google_Utils::urlSafeB64Encode(json_encode($header)),
-            Google_Utils::urlSafeB64Encode(json_encode($payload))
+            Google_Utils::urlSafeB64Encode(json_encode($payload)),
         ];
 
         $signingInput = implode('.', $segments);
-        $signer       = new Google_Signer_P12($this->privateKey, $this->privateKeyPassword);
-        $signature    = $signer->sign($signingInput);
-        $segments[]   = Google_Utils::urlSafeB64Encode($signature);
+        $signer = new Google_Signer_P12($this->privateKey, $this->privateKeyPassword);
+        $signature = $signer->sign($signingInput);
+        $segments[] = Google_Utils::urlSafeB64Encode($signature);
 
-        return implode(".", $segments);
+        return implode('.', $segments);
     }
 }

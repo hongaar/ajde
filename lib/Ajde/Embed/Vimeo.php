@@ -5,8 +5,8 @@ class Ajde_Embed_Vimeo extends Ajde_Embed
     public function convertUrlToEmbed()
     {
         if (substr($this->_code, 0, 7) == 'http://' || substr($this->_code, 0, 8) == 'https://') {
-            $vimid       = $this->_getVimeoId();
-            $this->_code = '<iframe id="player_' . $vimid . '" src="http://player.vimeo.com/video/' . $vimid . '?title=0&amp;byline=0&amp;portrait=0&amp;api=1&amp;player_id=player_' . $vimid . '" width="400" height="225" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+            $vimid = $this->_getVimeoId();
+            $this->_code = '<iframe id="player_'.$vimid.'" src="http://player.vimeo.com/video/'.$vimid.'?title=0&amp;byline=0&amp;portrait=0&amp;api=1&amp;player_id=player_'.$vimid.'" width="400" height="225" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
         }
     }
 
@@ -40,14 +40,12 @@ class Ajde_Embed_Vimeo extends Ajde_Embed
             try {
                 $hash = unserialize($response);
             } catch (Exception $e) {
-                Ajde_Exception_Log::logException(new Ajde_Exception("Could not parse result from Vimeo"));
+                Ajde_Exception_Log::logException(new Ajde_Exception('Could not parse result from Vimeo'));
 
-                return null;
+                return;
             }
 
             return $hash[0]['thumbnail_large'];
         }
-
-        return null;
     }
 }

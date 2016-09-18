@@ -1,8 +1,9 @@
 <?php
 /**
- * Ajde - friendly CMS
+ * Ajde - friendly CMS.
  *
  * @author Joram van den Boezem, Nabble
+ *
  * @see    https://github.com/nabble/ajde
  */
 
@@ -38,49 +39,49 @@ ini_set('display_startup_errors', 0);
 // Define paths
 // --------------------
 define('DS', DIRECTORY_SEPARATOR);
-define('UP', '..' . DS);
+define('UP', '..'.DS);
 
 // Define root
-define('LOCAL_ROOT', realpath(__DIR__ . DS . UP) . DS);
+define('LOCAL_ROOT', realpath(__DIR__.DS.UP).DS);
 
 // Main directories
-define('APP_DIR', 'app' . DS);
-define('CORE_DIR', 'core' . DS);
-define('DEV_DIR', 'dev' . DS);
-define('LIB_DIR', 'lib' . DS);
-define('VENDOR_DIR', 'vendor' . DS);
-define('VAR_DIR', 'var' . DS);
-define('PUBLIC_DIR', 'public' . DS);
+define('APP_DIR', 'app'.DS);
+define('CORE_DIR', 'core'.DS);
+define('DEV_DIR', 'dev'.DS);
+define('LIB_DIR', 'lib'.DS);
+define('VENDOR_DIR', 'vendor'.DS);
+define('VAR_DIR', 'var'.DS);
+define('PUBLIC_DIR', 'public'.DS);
 
 // These paths could exist in both app or core dir
-define('CONFIG_DIR', 'config' . DS);
-define('LAYOUT_DIR', 'layout' . DS);
-define('MODULE_DIR', 'modules' . DS);
-define('TEMPLATE_DIR', 'template' . DS);
+define('CONFIG_DIR', 'config'.DS);
+define('LAYOUT_DIR', 'layout'.DS);
+define('MODULE_DIR', 'modules'.DS);
+define('TEMPLATE_DIR', 'template'.DS);
 
 // These paths only exist in app dir
-define('LANG_DIR', APP_DIR . 'lang' . DS);
+define('LANG_DIR', APP_DIR.'lang'.DS);
 
 // Var subdirectories
-define('CACHE_DIR', VAR_DIR . 'cache' . DS);
-define('LOG_DIR', VAR_DIR . 'log' . DS);
-define('TMP_DIR', VAR_DIR . 'tmp' . DS);
+define('CACHE_DIR', VAR_DIR.'cache'.DS);
+define('LOG_DIR', VAR_DIR.'log'.DS);
+define('TMP_DIR', VAR_DIR.'tmp'.DS);
 
 // Asset directories and URIs
-define('ASSETS_URI', 'assets' . DS);
-define('MEDIA_URI', ASSETS_URI . 'media' . DS);
-define('UPLOAD_URI', MEDIA_URI . 'upload' . DS);
-define('AVATAR_URI', UPLOAD_URI . 'avatar' . DS);
+define('ASSETS_URI', 'assets'.DS);
+define('MEDIA_URI', ASSETS_URI.'media'.DS);
+define('UPLOAD_URI', MEDIA_URI.'upload'.DS);
+define('AVATAR_URI', UPLOAD_URI.'avatar'.DS);
 
-define('ASSETS_DIR', PUBLIC_DIR . ASSETS_URI);
-define('MEDIA_DIR', PUBLIC_DIR . MEDIA_URI);
-define('UPLOAD_DIR', PUBLIC_DIR . UPLOAD_URI);
-define('AVATAR_DIR', PUBLIC_DIR . AVATAR_URI);
+define('ASSETS_DIR', PUBLIC_DIR.ASSETS_URI);
+define('MEDIA_DIR', PUBLIC_DIR.MEDIA_URI);
+define('UPLOAD_DIR', PUBLIC_DIR.UPLOAD_URI);
+define('AVATAR_DIR', PUBLIC_DIR.AVATAR_URI);
 
 // --------------------
 // Require composer autoloader
 // --------------------
-require_once LOCAL_ROOT . VENDOR_DIR . 'autoload.php';
+require_once LOCAL_ROOT.VENDOR_DIR.'autoload.php';
 
 // --------------------
 // Run the main application

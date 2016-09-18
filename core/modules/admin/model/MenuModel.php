@@ -3,7 +3,7 @@
 class MenuModel extends Ajde_Model_With_I18n
 {
     protected $_autoloadParents = true;
-    protected $_displayField    = 'name';
+    protected $_displayField = 'name';
 
     public function __construct()
     {
@@ -27,7 +27,7 @@ class MenuModel extends Ajde_Model_With_I18n
     public function getTreeName()
     {
         $ret = clean($this->name);
-        $ret = str_repeat('<span class="tree-spacer"></span>', $this->get('level')) . $ret;
+        $ret = str_repeat('<span class="tree-spacer"></span>', $this->get('level')).$ret;
 
         return $ret;
     }
@@ -36,13 +36,13 @@ class MenuModel extends Ajde_Model_With_I18n
     {
         Ajde::app()->getDocument()->getLayout()->getParser()->getHelper()->requireCssPublic('core/flags.css');
 
-        $lang        = Ajde_Lang::getInstance();
+        $lang = Ajde_Lang::getInstance();
         $currentLang = $this->get('lang');
         if ($currentLang) {
-            $image = '<img src="" class="flag flag-' . strtolower(substr($currentLang, 3,
-                    2)) . '" alt="' . $currentLang . '" />';
+            $image = '<img src="" class="flag flag-'.strtolower(substr($currentLang, 3,
+                    2)).'" alt="'.$currentLang.'" />';
 
-            return $image . $lang->getNiceName($currentLang);
+            return $image.$lang->getNiceName($currentLang);
         }
 
         return '';
@@ -64,7 +64,6 @@ class MenuModel extends Ajde_Model_With_I18n
     }
 
     /**
-     *
      * @return NodeCollection
      */
     public function getLinks()
@@ -92,17 +91,17 @@ class MenuModel extends Ajde_Model_With_I18n
         $items = [];
         foreach ($collection as $item) {
             /* @var $item MenuModel */
-            $name     = $item->name;
-            $target   = "";
+            $name = $item->name;
+            $target = '';
             $submenus = [];
-            $current  = '';
+            $current = '';
 
             $node = new NodeModel();
 
             if ($item->type == 'URL') {
                 $url = $item->url;
                 if (substr($url, 0, 7) === 'http://' || substr($url, 0, 8) === 'https://') {
-                    $target = "_blank";
+                    $target = '_blank';
                 }
             } else {
                 if ($item->type == 'Node link') {
@@ -111,7 +110,7 @@ class MenuModel extends Ajde_Model_With_I18n
                 } else {
                     if ($item->type == 'Submenu') {
                         $node->loadByPK($item->node);
-                        $url      = $node->getUrl();
+                        $url = $node->getUrl();
                         $submenus = $item->getItems();
                         foreach ($submenus as $submenu) {
                             if ($submenu['current']) {
@@ -142,12 +141,11 @@ class MenuModel extends Ajde_Model_With_I18n
                     'url'      => $url,
                     'target'   => $target,
                     'current'  => $current,
-                    'submenus' => $submenus
+                    'submenus' => $submenus,
                 ];
             }
         }
 
         return $items;
     }
-
 }

@@ -39,11 +39,11 @@ class Google_Http_Batch
 
     public function __construct(Google_Client $client, $boundary = false)
     {
-        $this->client           = $client;
-        $this->base_path        = $this->client->getBasePath();
+        $this->client = $client;
+        $this->base_path = $this->client->getBasePath();
         $this->expected_classes = [];
-        $boundary               = (false == $boundary) ? mt_rand() : $boundary;
-        $this->boundary         = str_replace('"', '', $boundary);
+        $boundary = (false == $boundary) ? mt_rand() : $boundary;
+        $this->boundary = str_replace('"', '', $boundary);
     }
 
     public function add(Google_Http_Request $request, $key = false)
@@ -62,17 +62,17 @@ class Google_Http_Batch
         /** @var Google_Http_Request $req */
         foreach ($this->requests as $key => $req) {
             $body .= "--{$this->boundary}\n";
-            $body .= $req->toBatchString($key) . "\n";
-            $this->expected_classes["response-" . $key] = $req->getExpectedClass();
+            $body .= $req->toBatchString($key)."\n";
+            $this->expected_classes['response-'.$key] = $req->getExpectedClass();
         }
 
         $body = rtrim($body);
         $body .= "\n--{$this->boundary}--";
 
-        $url         = $this->base_path . '/batch';
+        $url = $this->base_path.'/batch';
         $httpRequest = new Google_Http_Request($this->client, $url, 'POST');
         $httpRequest->setRequestHeaders(
-            ['Content-Type' => 'multipart/mixed; boundary=' . $this->boundary]
+            ['Content-Type' => 'multipart/mixed; boundary='.$this->boundary]
         );
 
         $httpRequest->setPostBody($body);
@@ -85,7 +85,7 @@ class Google_Http_Batch
     {
         $contentType = $response->getResponseHeader('content-type');
         $contentType = explode(';', $contentType);
-        $boundary    = false;
+        $boundary = false;
         foreach ($contentType as $part) {
             $part = (explode('=', $part, 2));
             if (isset($part[0]) && 'boundary' == trim($part[0])) {
@@ -95,8 +95,8 @@ class Google_Http_Batch
 
         $body = $response->getResponseBody();
         if ($body) {
-            $body      = str_replace("--$boundary--", "--$boundary", $body);
-            $parts     = explode("--$boundary", $body);
+            $body = str_replace("--$boundary--", "--$boundary", $body);
+            $parts = explode("--$boundary", $body);
             $responses = [];
 
             foreach ($parts as $part) {
@@ -106,11 +106,11 @@ class Google_Http_Batch
                     $metaHeaders = $this->client->getIo()->getHttpResponseHeaders($metaHeaders);
 
                     $status = substr($part, 0, strpos($part, "\n"));
-                    $status = explode(" ", $status);
+                    $status = explode(' ', $status);
                     $status = $status[1];
 
                     list($partHeaders, $partBody) = $this->client->getIo()->ParseHttpResponse($part, false);
-                    $response = new Google_Http_Request($this->client, "");
+                    $response = new Google_Http_Request($this->client, '');
                     $response->setResponseHttpCode($status);
                     $response->setResponseHeaders($partHeaders);
                     $response->setResponseBody($partBody);
@@ -125,14 +125,12 @@ class Google_Http_Batch
                         $response->setExpectedClass($class);
                     }
 
-                    $response        = Google_Http_REST::decodeHttpResponse($response);
+                    $response = Google_Http_REST::decodeHttpResponse($response);
                     $responses[$key] = $response;
                 }
             }
 
             return $responses;
         }
-
-        return null;
     }
 }

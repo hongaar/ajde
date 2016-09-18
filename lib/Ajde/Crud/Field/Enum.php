@@ -3,20 +3,18 @@
 class Ajde_Crud_Field_Enum extends Ajde_Crud_Field
 {
     /**
-     *
      * @var int
      */
     private $_chosenTreshold = 15;
 
     /**
-     *
      * @var int
      */
     private $_radioTreshold = 9;
 
     public function getValues()
     {
-        $return  = [];
+        $return = [];
         $options = explode(',', $this->getLength());
         foreach ($options as $option) {
             $option = trim($option, "'");
@@ -28,7 +26,7 @@ class Ajde_Crud_Field_Enum extends Ajde_Crud_Field
             if (substr_count($option, ':')) {
                 list($key, $value) = explode(':', $option);
             } else {
-                $key   = $option;
+                $key = $option;
                 $value = $option;
             }
             $return[$key] = $value;

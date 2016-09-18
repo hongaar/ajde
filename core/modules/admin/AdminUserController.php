@@ -4,7 +4,7 @@ class AdminUserController extends AdminController
 {
     public function view()
     {
-        Ajde::app()->getDocument()->setTitle("Users");
+        Ajde::app()->getDocument()->setTitle('Users');
 
         return $this->render();
     }
@@ -23,7 +23,7 @@ class AdminUserController extends AdminController
             $return = ['success' => true];
         } else {
             $return = [
-                'success' => false
+                'success' => false,
             ];
         }
 
@@ -39,13 +39,13 @@ class AdminUserController extends AdminController
         $return = [false];
 
         if (false !== $user->loadByPK($id)) {
-            $hash   = $user->resetUser();
+            $hash = $user->resetUser();
             $return = [
-                'success' => ($hash !== false)
+                'success' => ($hash !== false),
             ];
         } else {
             $return = [
-                'success' => false
+                'success' => false,
             ];
         }
 

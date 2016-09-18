@@ -3,19 +3,16 @@
 class Ajde_Crud_Field_Fk extends Ajde_Crud_Field_Enum
 {
     /**
-     *
      * @var Ajde_Collection
      */
     private $_collection;
 
     /**
-     *
      * @var Ajde_Model
      */
     private $_model;
 
     /**
-     *
      * @return string
      */
     public function getModelName()
@@ -24,9 +21,9 @@ class Ajde_Crud_Field_Fk extends Ajde_Crud_Field_Enum
             return $this->get('modelName');
         } else {
             $fieldName = $this->getName();
-            $model     = $this->getCrud()->getModel();
+            $model = $this->getCrud()->getModel();
 
-            return (string)$model->getParentModel($fieldName)->getTable();
+            return (string) $model->getParentModel($fieldName)->getTable();
         }
     }
 
@@ -43,14 +40,13 @@ class Ajde_Crud_Field_Fk extends Ajde_Crud_Field_Enum
     }
 
     /**
-     *
      * @return Ajde_Collection
      */
     public function getCollection()
     {
         if (!isset($this->_collection)) {
-            $collectionName    = ucfirst($this->getModelName()) . 'Collection';
-            $this->_collection = new $collectionName;
+            $collectionName = ucfirst($this->getModelName()).'Collection';
+            $this->_collection = new $collectionName();
 
             $langFilter = false;
             if ($this->hasFilterLang()) {
@@ -61,7 +57,7 @@ class Ajde_Crud_Field_Fk extends Ajde_Crud_Field_Enum
             // Filter lang by parent (model) language
             if ($langFilter == 'parent') {
                 $fieldName = $this->getName();
-                $parent    = $this->getCrud()->getModel();
+                $parent = $this->getCrud()->getModel();
                 if (method_exists($parent, 'getLanguageField')) {
                     $lang = $parent->get($parent->getLanguageField());
                 }
@@ -69,7 +65,7 @@ class Ajde_Crud_Field_Fk extends Ajde_Crud_Field_Enum
 
             // Filter lang by current (page) language
             if ($langFilter == 'page') {
-                $lang = config("i18n.default");
+                $lang = config('i18n.default');
             }
 
             if ($langFilter && $lang && method_exists($this->_collection, 'getLanguageField')) {
@@ -82,14 +78,13 @@ class Ajde_Crud_Field_Fk extends Ajde_Crud_Field_Enum
     }
 
     /**
-     *
      * @return Ajde_Model
      */
     public function getModel()
     {
         if (!isset($this->_model)) {
-            $modelName    = ucfirst($this->getModelName()) . 'Model';
-            $this->_model = new $modelName;
+            $modelName = ucfirst($this->getModelName()).'Model';
+            $this->_model = new $modelName();
         }
 
         return $this->_model;
@@ -99,7 +94,7 @@ class Ajde_Crud_Field_Fk extends Ajde_Crud_Field_Enum
     {
         if ($this->hasFilter()) {
             $filter = $this->getFilter();
-            $group  = new Ajde_Filter_WhereGroup();
+            $group = new Ajde_Filter_WhereGroup();
             foreach ($filter as $rule) {
                 $group->addFilter(new Ajde_Filter_Where($this->getModel()->getDisplayField(),
                     Ajde_Filter::FILTER_EQUALS, $rule, Ajde_Query::OP_OR));
@@ -109,7 +104,7 @@ class Ajde_Crud_Field_Fk extends Ajde_Crud_Field_Enum
 
         if ($this->hasAdvancedFilter()) {
             $filters = $this->getAdvancedFilter();
-            $group   = new Ajde_Filter_WhereGroup();
+            $group = new Ajde_Filter_WhereGroup();
             foreach ($filters as $filter) {
                 if ($filter instanceof Ajde_Filter_Where) {
                     $group->addFilter($filter);
@@ -128,8 +123,8 @@ class Ajde_Crud_Field_Fk extends Ajde_Crud_Field_Enum
         }
         $return = [];
         foreach ($this->getCollection() as $model) {
-            $fn                     = 'get' . ucfirst($model->getDisplayField());
-            $return[(string)$model] = $model->{$fn}();
+            $fn = 'get'.ucfirst($model->getDisplayField());
+            $return[(string) $model] = $model->{$fn}();
         }
 
         return $return;

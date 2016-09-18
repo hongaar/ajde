@@ -7,7 +7,7 @@
 
 class Ajde_Resource_FileIcon extends Ajde_Resource
 {
-    private $_iconCdn        = 'http://p.yusukekamiyamane.com/icons/search/fugue/icons/%s.png';
+    private $_iconCdn = 'http://p.yusukekamiyamane.com/icons/search/fugue/icons/%s.png';
     private $_iconDictionary = [
         '*'    => 'document',
         'jpg'  => 'document-image',
@@ -25,7 +25,7 @@ class Ajde_Resource_FileIcon extends Ajde_Resource
         'wav'  => 'document-music',
         'zip'  => 'folder-zipper',
         'mpg'  => 'film',
-        'avi'  => 'film'
+        'avi'  => 'film',
     ];
 
     public function __construct($fileExtension)
@@ -37,7 +37,7 @@ class Ajde_Resource_FileIcon extends Ajde_Resource
     {
         $tmp = new self($fileExtension);
 
-        return (string)$tmp;
+        return (string) $tmp;
     }
 
     public function getFilename()

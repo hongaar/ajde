@@ -9,7 +9,7 @@ class Ajde_Shop_Transaction_Provider_Mollie_Ideal extends Ajde_Shop_Transaction_
 
     public function getLogo()
     {
-        return MEDIA_DIR . 'core/shop/ideal.png';
+        return MEDIA_DIR.'core/shop/ideal.png';
     }
 
     protected function getMethod()

@@ -38,11 +38,11 @@ abstract class Ajde_Acl_Controller extends Ajde_User_Controller
 
     private function getAclConditions()
     {
-        $module     = $this->getModule();
-        $action     = $this->getAction();
-        $param      = $this->hasAclParam() ? $this->getAclParam() : '';
+        $module = $this->getModule();
+        $action = $this->getAction();
+        $param = $this->hasAclParam() ? $this->getAclParam() : '';
         $controller = $this->getRoute()->hasController() ? $this->getRoute()->getController() : '';
-        $extra      = $controller . ($controller && $param ? ':' : '') . $param;
+        $extra = $controller.($controller && $param ? ':' : '').$param;
 
         return ['module' => $module, 'action' => $action, 'extra' => $extra];
     }
@@ -59,8 +59,8 @@ abstract class Ajde_Acl_Controller extends Ajde_User_Controller
     protected function hasAccess()
     {
         if (!isset($this->_hasAccess)) {
-            $conditions       = $this->getAclConditions();
-            $aclTimer         = Ajde::app()->addTimer("<i>ACL validation for " . implode('/', $conditions) . "</i>");
+            $conditions = $this->getAclConditions();
+            $aclTimer = Ajde::app()->addTimer('<i>ACL validation for '.implode('/', $conditions).'</i>');
             $this->_hasAccess = $this->validateAccess($conditions);
             Ajde::app()->endTimer($aclTimer);
         }

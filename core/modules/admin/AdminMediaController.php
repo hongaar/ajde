@@ -2,8 +2,7 @@
 
 class AdminMediaController extends AdminController
 {
-
-    private $_extensions      = [
+    private $_extensions = [
         'mp4',
         'avi',
         'swf',
@@ -18,14 +17,14 @@ class AdminMediaController extends AdminController
         'doc',
         'xlsx',
         'docx',
-        'zip'
+        'zip',
     ];
     private $_imageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-    private $_uploaddir       = UPLOAD_DIR;
+    private $_uploaddir = UPLOAD_DIR;
 
     public function view()
     {
-        Ajde::app()->getDocument()->setTitle("Media");
+        Ajde::app()->getDocument()->setTitle('Media');
         $this->getView()->assign('extensions', $this->_extensions);
         $this->getView()->assign('uploaddir', $this->_uploaddir);
 
@@ -34,7 +33,7 @@ class AdminMediaController extends AdminController
 
     public function uploadHtml()
     {
-        Ajde::app()->getDocument()->setTitle("Upload files");
+        Ajde::app()->getDocument()->setTitle('Upload files');
         $this->getView()->assign('extensions', $this->_extensions);
         $this->getView()->assign('uploaddir', $this->_uploaddir);
 
@@ -51,7 +50,7 @@ class AdminMediaController extends AdminController
 
     public function driveButtonHtml()
     {
-        if (config("services.google.key")) {
+        if (config('services.google.key')) {
             $this->getView()->assign('extensions', $this->_extensions);
             $this->getView()->assign('uploaddir', $this->_uploaddir);
 
@@ -69,14 +68,14 @@ class AdminMediaController extends AdminController
             return ['success' => false];
         }
 
-        $mediatype  = Ajde::app()->getRequest()->getPostParam('mediatype', false);
-        $name       = Ajde::app()->getRequest()->getPostParam('name', false);
+        $mediatype = Ajde::app()->getRequest()->getPostParam('mediatype', false);
+        $name = Ajde::app()->getRequest()->getPostParam('name', false);
         $oauthToken = Ajde::app()->getRequest()->getPostParam('oauthToken', false);
 
         $media = new MediaModel();
 
         $media->mediatype = $mediatype;
-        $media->pointer   = $filename;
+        $media->pointer = $filename;
 
         // see if we can save a file from Google Drive
         $driveResult = $media->saveFileFromDrive($name, $oauthToken);
@@ -87,9 +86,9 @@ class AdminMediaController extends AdminController
                 return ['success' => false];
             } else {
                 $extension = pathinfo($filename, PATHINFO_EXTENSION);
-                $title     = pathinfo($filename, PATHINFO_FILENAME);
+                $title = pathinfo($filename, PATHINFO_FILENAME);
 
-                $media->name      = $title;
+                $media->name = $title;
                 $media->thumbnail = $filename;
             }
         }
@@ -112,7 +111,7 @@ class AdminMediaController extends AdminController
     public function typeBtnJson()
     {
         $value = Ajde::app()->getRequest()->getPostParam('type');
-        $id    = Ajde::app()->getRequest()->getPostParam('id', false);
+        $id = Ajde::app()->getRequest()->getPostParam('id', false);
 
         $model = new MediaModel();
 
@@ -128,7 +127,7 @@ class AdminMediaController extends AdminController
 
         return [
             'success' => true,
-            'message' => Ajde_Component_String::makePlural(count($id), 'media') . ' changed'
+            'message' => Ajde_Component_String::makePlural(count($id), 'media').' changed',
         ];
     }
 }

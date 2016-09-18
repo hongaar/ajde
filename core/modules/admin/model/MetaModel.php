@@ -3,7 +3,7 @@
 class MetaModel extends Ajde_Model
 {
     protected $_autoloadParents = false;
-    protected $_displayField    = 'name';
+    protected $_displayField = 'name';
 
     protected $_options = [];
 
@@ -22,7 +22,7 @@ class MetaModel extends Ajde_Model
     public function reset()
     {
         $this->_metaValues = [];
-        $this->_options    = [];
+        $this->_options = [];
         parent::reset();
     }
 
@@ -46,7 +46,7 @@ class MetaModel extends Ajde_Model
 
     public function prepareCrudSave(Ajde_Controller $controller, Ajde_Crud $crud)
     {
-        $meta    = new Ajde_Crud_Cms_Meta();
+        $meta = new Ajde_Crud_Cms_Meta();
         $options = [];
         foreach ($meta->getFieldNames() as $fieldName) {
             if ($this->has($fieldName)) {
@@ -59,7 +59,7 @@ class MetaModel extends Ajde_Model
     public function getOption($name)
     {
         if ($this->hasLoaded() && empty($this->_options)) {
-            $this->_options = (array)json_decode($this->get('options'));
+            $this->_options = (array) json_decode($this->get('options'));
         }
         if (isset($this->_options[$name])) {
             return $this->_options[$name];
@@ -72,20 +72,20 @@ class MetaModel extends Ajde_Model
     {
         $val = $this->getOption($name);
 
-        return (boolean)$val;
+        return (bool) $val;
     }
 
     public function getIntOption($name)
     {
         $val = $this->getOption($name);
 
-        return (int)$val;
+        return (int) $val;
     }
 
     public static function getNameFromId($metaId)
     {
         $meta = new self();
-        $meta->loadByPK((int)$metaId);
+        $meta->loadByPK((int) $metaId);
 
         return $meta->displayField();
     }
@@ -93,7 +93,7 @@ class MetaModel extends Ajde_Model
     public static function getIdFromName($metaName)
     {
         $metaName = str_replace('_', ' ', $metaName);
-        $meta     = new self();
+        $meta = new self();
         $meta->loadByField('name', $metaName);
         if ($meta->hasLoaded()) {
             return $meta->getPK();

@@ -42,8 +42,8 @@ abstract class Ajde_Shop_Shipping extends Ajde_Object_Standard
     }
 
     /**
-     *
      * @param string $name
+     *
      * @return Ajde_Shop_Shipping_Method
      */
     public function getMethod($name)

@@ -22,7 +22,7 @@ class Ajde_Crud_Cms_Meta_Type_Products extends Ajde_Crud_Cms_Meta_Type
         $field->setChildField('`foreign`');
         $field->setEditRoute('admin/shop:products.crud');
         $field->setListRoute('admin/shop:products.crud');
-        $field->addTableFileField('image', MEDIA_DIR . ProductModel::$imageDir);
+        $field->addTableFileField('image', MEDIA_DIR.ProductModel::$imageDir);
         $field->addTableField('unitprice');
         $field->setUsePopupSelector(true);
         $field->setThumbDim(100, 100);

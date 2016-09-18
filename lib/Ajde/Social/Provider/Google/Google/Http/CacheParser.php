@@ -32,9 +32,11 @@ class Google_Http_CacheParser
      * Check if an HTTP request can be cached by a private local cache.
      *
      * @static
+     *
      * @param Google_Http_Request $resp
+     *
      * @return bool True if the request is cacheable.
-     * False if the request is uncacheable.
+     *              False if the request is uncacheable.
      */
     public static function isRequestCacheable(Google_Http_Request $resp)
     {
@@ -47,7 +49,7 @@ class Google_Http_CacheParser
         // [rfc2616-14.8] When a shared cache receives a request containing an
         // Authorization field, it MUST NOT return the corresponding response
         // as a reply to any other request...
-        if ($resp->getRequestHeader("authorization")) {
+        if ($resp->getRequestHeader('authorization')) {
             return false;
         }
 
@@ -58,9 +60,11 @@ class Google_Http_CacheParser
      * Check if an HTTP response can be cached by a private local cache.
      *
      * @static
+     *
      * @param Google_Http_Request $resp
+     *
      * @return bool True if the response is cacheable.
-     * False if the response is un-cacheable.
+     *              False if the response is un-cacheable.
      */
     public static function isResponseCacheable(Google_Http_Request $resp)
     {
@@ -77,7 +81,7 @@ class Google_Http_CacheParser
 
         // The resource is uncacheable if the resource is already expired and
         // the resource doesn't have an ETag for revalidation.
-        $etag = $resp->getResponseHeader("etag");
+        $etag = $resp->getResponseHeader('etag');
         if (self::isExpired($resp) && $etag == false) {
             return false;
         }
@@ -110,15 +114,17 @@ class Google_Http_CacheParser
 
     /**
      * @static
+     *
      * @param Google_Http_Request $resp
+     *
      * @return bool True if the HTTP response is considered to be expired.
-     * False if it is considered to be fresh.
+     *              False if it is considered to be fresh.
      */
     public static function isExpired(Google_Http_Request $resp)
     {
         // HTTP/1.1 clients and caches MUST treat other invalid date formats,
         // especially including the value “0”, as in the past.
-        $parsedExpires   = false;
+        $parsedExpires = false;
         $responseHeaders = $resp->getResponseHeaders();
 
         if (isset($responseHeaders['expires'])) {
@@ -137,19 +143,19 @@ class Google_Http_CacheParser
 
         // Calculate the freshness of an http response.
         $freshnessLifetime = false;
-        $cacheControl      = $resp->getParsedCacheControl();
+        $cacheControl = $resp->getParsedCacheControl();
         if (isset($cacheControl['max-age'])) {
             $freshnessLifetime = $cacheControl['max-age'];
         }
 
-        $rawDate    = $resp->getResponseHeader('date');
+        $rawDate = $resp->getResponseHeader('date');
         $parsedDate = strtotime($rawDate);
 
         if (empty($rawDate) || false == $parsedDate) {
             // We can't default this to now, as that means future cache reads
             // will always pass with the logic below, so we will require a
             // date be injected if not supplied.
-            throw new Google_Exception("All cacheable requests must have creation dates.");
+            throw new Google_Exception('All cacheable requests must have creation dates.');
         }
 
         if (false == $freshnessLifetime && isset($responseHeaders['expires'])) {
@@ -173,6 +179,7 @@ class Google_Http_CacheParser
      * Determine if a cache entry should be revalidated with by the origin.
      *
      * @param Google_Http_Request $response
+     *
      * @return bool True if the entry is expired, else return false.
      */
     public static function mustRevalidate(Google_Http_Request $response)

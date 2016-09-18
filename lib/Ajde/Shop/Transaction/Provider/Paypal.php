@@ -14,7 +14,7 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
 
     public function getLogo()
     {
-        return MEDIA_DIR . 'core/shop/paypal.png';
+        return MEDIA_DIR.'core/shop/paypal.png';
     }
 
     public function usePostProxy()
@@ -34,20 +34,20 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
         $transaction = $this->getTransaction();
 
         // NOOOO.. THE UGLY HACKING
-        $return = config("app.rootUrl") . 'presale/transaction:complete';
+        $return = config('app.rootUrl').'presale/transaction:complete';
         $method = $transaction->shipment_method;
         if ($method == 'presale-remainder') {
-            $return = config("app.rootUrl") . 'presale/transaction:confirm_complete';
+            $return = config('app.rootUrl').'presale/transaction:confirm_complete';
         }
 
         return [
             'cmd'               => '_xclick',
-            'business'          => config("shop.transaction.paypal.account"),
-            'notify_url'        => config("app.rootUrl") . $this->returnRoute . 'paypal' . $this->getMethod() . '.html',
-            'bn'                => config("app.id") . '_BuyNow_WPS_' . strtoupper(Ajde_Lang::getInstance()->getShortLang()),
+            'business'          => config('shop.transaction.paypal.account'),
+            'notify_url'        => config('app.rootUrl').$this->returnRoute.'paypal'.$this->getMethod().'.html',
+            'bn'                => config('app.id').'_BuyNow_WPS_'.strtoupper(Ajde_Lang::getInstance()->getShortLang()),
             'amount'            => $transaction->payment_amount,
             'item_name'         => issetor($description,
-                config("app.title") . ': ' . Ajde_Component_String::makePlural($transaction->shipment_itemsqty,
+                config('app.title').': '.Ajde_Component_String::makePlural($transaction->shipment_itemsqty,
                     'item')),
             'quantity'          => 1,
             'address_ override' => 1,
@@ -58,14 +58,14 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
             'country'           => $transaction->shipment_country,
             'email'             => $transaction->email,
             'first_name'        => $transaction->name,
-            'currency_code'     => config("shop.currency.code"),
+            'currency_code'     => config('shop.currency.code'),
             'custom'            => $transaction->secret,
             'no_shipping'       => 1,
             // do not prompt for an address
             'no_note'           => 1,
             // hide the text box and the prompt
             'return'            => $return,
-            'rm'                => 1
+            'rm'                => 1,
             // the buyer’s browser is redirected to the return URL by using the GET method, but no payment variables are included
         ];
     }
@@ -88,39 +88,38 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
         $header = '';
         $header .= "POST /cgi-bin/webscr HTTP/1.0\r\n";
         $header .= "Content-Type: application/x-www-form-urlencoded\r\n";
-        $header .= "Content-Length: " . strlen($req) . "\r\n\r\n";
+        $header .= 'Content-Length: '.strlen($req)."\r\n\r\n";
         $fp = fsockopen($this->isSandbox() ? 'ssl://www.sandbox.paypal.com' : 'ssl://www.paypal.com', 443, $errno,
             $errstr, 30);
 
         // assign posted variables to local variables
-        $item_name        = issetor($post['item_name']);
-        $item_number      = issetor($post['item_number']);
-        $payment_status   = issetor($post['payment_status']);
-        $payment_amount   = issetor($post['mc_gross']);
+        $item_name = issetor($post['item_name']);
+        $item_number = issetor($post['item_number']);
+        $payment_status = issetor($post['payment_status']);
+        $payment_amount = issetor($post['mc_gross']);
         $payment_currency = issetor($post['mc_currency']);
-        $txn_id           = issetor($post['txn_id']);
-        $receiver_email   = issetor($post['receiver_email']);
-        $payer_email      = issetor($post['payer_email']);
+        $txn_id = issetor($post['txn_id']);
+        $receiver_email = issetor($post['receiver_email']);
+        $payer_email = issetor($post['payer_email']);
 
         $secret = issetor($post['custom']);
 
         $transaction = new TransactionModel();
-        $changed     = false;
+        $changed = false;
 
         if (!$fp) {
             // HTTP ERROR
         } else {
-            fputs($fp, $header . $req);
+            fwrite($fp, $header.$req);
             while (!feof($fp)) {
                 $res = fgets($fp, 1024);
-                if (strcmp($res, "VERIFIED") == 0) {
-
+                if (strcmp($res, 'VERIFIED') == 0) {
                     if (!$transaction->loadByField('secret', $secret)) {
-                        Ajde_Log::log('Could not find transaction for PayPal payment with txn id ' . $txn_id . ' and transaction secret ' . $secret);
+                        Ajde_Log::log('Could not find transaction for PayPal payment with txn id '.$txn_id.' and transaction secret '.$secret);
 
                         return [
                             'success'     => false,
-                            'transaction' => null
+                            'transaction' => null,
                         ];
                     }
 
@@ -129,28 +128,28 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
                     $acceptPending = true;
 
                     if ($payment_status == 'Completed' || ($acceptPending && $payment_status == 'Pending')) {
-                        $details = 'AMOUNT: ' . $payment_amount . PHP_EOL .
-                            'CURRENCY: ' . $payment_currency . PHP_EOL .
-                            'PAYER_EMAIL: ' . $payer_email . PHP_EOL .
-                            'RECEIVER_EMAIL: ' . $receiver_email . PHP_EOL .
-                            'TXN_ID: ' . $txn_id . PHP_EOL;
+                        $details = 'AMOUNT: '.$payment_amount.PHP_EOL.
+                            'CURRENCY: '.$payment_currency.PHP_EOL.
+                            'PAYER_EMAIL: '.$payer_email.PHP_EOL.
+                            'RECEIVER_EMAIL: '.$receiver_email.PHP_EOL.
+                            'TXN_ID: '.$txn_id.PHP_EOL;
                         // update transaction only once
                         if ($transaction->payment_status != 'completed') {
                             $transaction->payment_details = $details;
-                            $transaction->payment_status  = 'completed';
+                            $transaction->payment_status = 'completed';
                             $transaction->save();
                             $changed = true;
                         }
 
                         // Write pending to Log
                         if ($payment_status == 'Pending') {
-                            Ajde_Log::log('Status is Pending but accepting now. PayPal payment with txn id ' . $txn_id . ' and transaction secret ' . $secret);
+                            Ajde_Log::log('Status is Pending but accepting now. PayPal payment with txn id '.$txn_id.' and transaction secret '.$secret);
                         }
 
                         return [
                             'success'     => true,
                             'changed'     => $changed,
-                            'transaction' => $transaction
+                            'transaction' => $transaction,
                         ];
                     } else {
                         if ($transaction->payment_status != 'refused') {
@@ -158,19 +157,18 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
                             $transaction->save();
                             $changed = true;
                         }
-                        Ajde_Log::log('Status is not Completed but ' . $payment_status . ' for PayPal payment with txn id ' . $txn_id . ' and transaction secret ' . $secret);
+                        Ajde_Log::log('Status is not Completed but '.$payment_status.' for PayPal payment with txn id '.$txn_id.' and transaction secret '.$secret);
                     }
                     // check that txn_id has not been previously processed
                     // check that receiver_email is your Primary PayPal email
                     // check that payment_amount/payment_currency are correct
                     // process payment
                 } else {
-                    if (strcmp($res, "INVALID") == 0) {
-
+                    if (strcmp($res, 'INVALID') == 0) {
                         if (!$transaction->loadByField('secret', $secret)) {
                             // secret not found anyway
                             $transaction = null;
-                            Ajde_Log::log('Could not find transaction for PayPal payment with txn id ' . $txn_id . ' and transaction secret ' . $secret);
+                            Ajde_Log::log('Could not find transaction for PayPal payment with txn id '.$txn_id.' and transaction secret '.$secret);
                         } else {
                             // log for manual investigation
                             if ($transaction->payment_status != 'refused') {
@@ -178,7 +176,7 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
                                 $transaction->save();
                                 $changed = true;
                             }
-                            Ajde_Log::log('Validation failed for PayPal payment with txn id ' . $txn_id);
+                            Ajde_Log::log('Validation failed for PayPal payment with txn id '.$txn_id);
                         }
                     }
                 }
@@ -189,7 +187,7 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
         return [
             'success'     => false,
             'changed'     => $changed,
-            'transaction' => $transaction
+            'transaction' => $transaction,
         ];
     }
 }

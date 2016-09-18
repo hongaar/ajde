@@ -29,6 +29,7 @@
  *     http://www.opensource.org/licenses/bsd-license.php
  * @author      Mollie B.V. <info@mollie.nl>
  * @copyright   Mollie B.V.
+ *
  * @link        https://www.mollie.nl
  *
  * @method Mollie_API_Object_Payment[]|Mollie_API_Object_List all($offset = 0, $limit = 0)
@@ -42,6 +43,6 @@ class Mollie_API_Resource_Payments extends Mollie_API_Resource_Base
      */
     protected function getResourceObject()
     {
-        return new Mollie_API_Object_Payment;
+        return new Mollie_API_Object_Payment();
     }
 }

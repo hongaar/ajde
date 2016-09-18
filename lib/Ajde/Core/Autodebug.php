@@ -6,18 +6,18 @@ class Ajde_Core_Autodebug extends Ajde_Object_Singleton
     {
         static $instance;
 
-        return $instance === null ? $instance = new self : $instance;
+        return $instance === null ? $instance = new self() : $instance;
     }
 
-    static public function __bootstrap()
+    public static function __bootstrap()
     {
         if (($user = Ajde_User::getLoggedIn()) && $user->getDebug()) {
-            Config::set("app.debug", true);
+            Config::set('app.debug', true);
 
-            $htmlProcessors = config("layout.filters.documentProcessors.html");
+            $htmlProcessors = config('layout.filters.documentProcessors.html');
             if (is_array($htmlProcessors) && !in_array('Debugger', $htmlProcessors)) {
-                $htmlProcessors[] = "Debugger";
-                Config::set("layout.filters.documentProcessors.html", $htmlProcessors);
+                $htmlProcessors[] = 'Debugger';
+                Config::set('layout.filters.documentProcessors.html', $htmlProcessors);
             }
         }
 

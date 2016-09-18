@@ -1,4 +1,5 @@
 <?php
+
 require_once 'ShopController.php';
 
 class ShopTransactionController extends ShopController
@@ -37,18 +38,18 @@ class ShopTransactionController extends ShopController
         }
 
         /** @var Ajde_Document_Format_Generated $doc */
-        $doc      = Ajde::app()->getDocument();
-        $url      = config("app.rootUrl") . 'shop/transaction:view/' . $this->getId() . '.html';
+        $doc = Ajde::app()->getDocument();
+        $url = config('app.rootUrl').'shop/transaction:view/'.$this->getId().'.html';
         $filename = $transaction->getOrderId();
 
         if ($this->getFormat() === 'pdf') {
             $pdf = $doc->generate([
                 'url'      => $url,
-                'filename' => $filename
+                'filename' => $filename,
             ]);
             $doc->setContentType('application/pdf');
             Ajde::app()->getResponse()->addHeader('Content-Disposition',
-                'attachment; filename="' . $filename . '.pdf"');
+                'attachment; filename="'.$filename.'.pdf"');
 
             return $pdf;
         }
@@ -58,16 +59,16 @@ class ShopTransactionController extends ShopController
     {
         // Get existing transaction / user details
         $transaction = new TransactionModel();
-        $session     = new Ajde_Session('AC.Shop');
-        $user        = UserModel::getLoggedIn();
+        $session = new Ajde_Session('AC.Shop');
+        $user = UserModel::getLoggedIn();
 
         if ($session->has('currentTransaction') && $transaction->loadByPK($session->get('currentTransaction'))) {
-            $name    = $transaction->name;
-            $email   = $transaction->email;
+            $name = $transaction->name;
+            $email = $transaction->email;
             $address = $transaction->shipment_address;
             $zipcode = $transaction->shipment_zipcode;
-            $city    = $transaction->shipment_city;
-            $region  = $transaction->shipment_region;
+            $city = $transaction->shipment_city;
+            $region = $transaction->shipment_region;
             $country = $transaction->shipment_country;
             $comment = $transaction->comment;
         } elseif ($user !== false) {
@@ -75,12 +76,12 @@ class ShopTransactionController extends ShopController
             // with shipping options, ignore response
             $this->setupJson($user);
 
-            $name    = $user->fullname;
-            $email   = $user->email;
+            $name = $user->fullname;
+            $email = $user->email;
             $address = $user->address;
             $zipcode = $user->zipcode;
-            $city    = $user->city;
-            $region  = $user->region;
+            $city = $user->city;
+            $region = $user->region;
             $country = $user->country;
             $comment = '';
         } else {
@@ -88,12 +89,12 @@ class ShopTransactionController extends ShopController
             // see shipping options when country is choosen
             $this->setupJson(true);
 
-            $name    = '';
-            $email   = '';
+            $name = '';
+            $email = '';
             $address = '';
             $zipcode = '';
-            $city    = '';
-            $region  = '';
+            $city = '';
+            $region = '';
             $country = '';
             $comment = '';
         }
@@ -123,13 +124,13 @@ class ShopTransactionController extends ShopController
                 $transaction->save();
             }
             $shipment = new ShippingModel($transaction);
-            $method   = $transaction->shipment_method;
+            $method = $transaction->shipment_method;
             if (empty($method) || !$shipment->isAvailable($method)) {
                 $method = $shipment->getFirstMethod()->getName();
             }
         } else {
-            $shipment    = false;
-            $method      = false;
+            $shipment = false;
+            $method = false;
             $transaction = false;
         }
 
@@ -145,39 +146,39 @@ class ShopTransactionController extends ShopController
         $request = Ajde::app()->getRequest();
 
         // Init vars
-        $name           = null;
-        $email          = null;
-        $address        = null;
-        $zipcode        = null;
-        $city           = null;
-        $region         = null;
-        $country        = null;
+        $name = null;
+        $email = null;
+        $address = null;
+        $zipcode = null;
+        $city = null;
+        $region = null;
+        $country = null;
         $shipmentMethod = null;
-        $comment        = null;
+        $comment = null;
 
         if ($source === false) {
             // Read request
-            $name           = $request->getPostParam('name', false);
-            $email          = $request->getPostParam('email', false);
-            $address        = $request->getPostParam('shipment_address', false);
-            $zipcode        = $request->getPostParam('shipment_zipcode', false);
-            $city           = $request->getPostParam('shipment_city', false);
-            $region         = $request->getPostParam('shipment_region', false);
-            $country        = $request->getPostParam('shipment_country', false);
+            $name = $request->getPostParam('name', false);
+            $email = $request->getPostParam('email', false);
+            $address = $request->getPostParam('shipment_address', false);
+            $zipcode = $request->getPostParam('shipment_zipcode', false);
+            $city = $request->getPostParam('shipment_city', false);
+            $region = $request->getPostParam('shipment_region', false);
+            $country = $request->getPostParam('shipment_country', false);
             $shipmentMethod = $request->getPostParam('shipment_method', false);
-            $comment        = $request->getPostParam('comment', false);
+            $comment = $request->getPostParam('comment', false);
         } else {
             if ($source instanceof Ajde_User) {
                 // Read user
-                $name           = $source->fullname;
-                $email          = $source->email;
-                $address        = $source->address;
-                $zipcode        = $source->zipcode;
-                $city           = $source->city;
-                $region         = $source->region;
-                $country        = $source->country;
+                $name = $source->fullname;
+                $email = $source->email;
+                $address = $source->address;
+                $zipcode = $source->zipcode;
+                $city = $source->city;
+                $region = $source->region;
+                $country = $source->country;
                 $shipmentMethod = false;
-                $comment        = false;
+                $comment = false;
             }
         }
 
@@ -193,26 +194,26 @@ class ShopTransactionController extends ShopController
             ) {
                 return [
                     'success' => false,
-                    'message' => trans("Not all your details are filled out")
+                    'message' => trans('Not all your details are filled out'),
                 ];
             }
             if (Ajde_Component_String::validEmail($email) === false) {
                 return [
                     'success' => false,
-                    'message' => trans('Please provide a valid e-mail address')
+                    'message' => trans('Please provide a valid e-mail address'),
                 ];
             }
             if (empty($shipmentMethod)) {
                 return [
                     'success' => false,
-                    'message' => trans('Please choose a shipment method')
+                    'message' => trans('Please choose a shipment method'),
                 ];
             }
         }
 
         // Check for current transaction
         $transaction = new TransactionModel();
-        $session     = new Ajde_Session('AC.Shop');
+        $session = new Ajde_Session('AC.Shop');
         if ($session->has('currentTransaction') && $transaction->loadByPK($session->get('currentTransaction'))) {
             // Edit existing transaction
             $method = 'save';
@@ -222,23 +223,23 @@ class ShopTransactionController extends ShopController
         }
 
         // Update transaction info
-        $transaction->name             = $name;
-        $transaction->email            = $email;
+        $transaction->name = $name;
+        $transaction->email = $email;
         $transaction->shipment_address = $address;
         $transaction->shipment_zipcode = $zipcode;
-        $transaction->shipment_city    = $city;
-        $transaction->shipment_region  = $region;
+        $transaction->shipment_city = $city;
+        $transaction->shipment_region = $region;
         $transaction->shipment_country = $country;
-        $transaction->shipment_method  = $shipmentMethod;
-        $transaction->comment          = $comment;
+        $transaction->shipment_method = $shipmentMethod;
+        $transaction->comment = $comment;
 
         // Save info to user
         if ($user = $this->getLoggedInUser()) {
             if ($request->hasPostParam('save_details', false)) {
                 $user->address = $address;
                 $user->zipcode = $zipcode;
-                $user->city    = $city;
-                $user->region  = $region;
+                $user->city = $city;
+                $user->region = $region;
                 $user->country = $country;
                 $user->save();
                 $user->login();
@@ -247,7 +248,7 @@ class ShopTransactionController extends ShopController
         }
 
         // Update shipping total
-        $shipping                   = new ShippingModel($transaction);
+        $shipping = new ShippingModel($transaction);
         $transaction->shipment_cost = 0;
         if (!empty($shipmentMethod) && $shipping->isAvailable($shipmentMethod)) {
             $transaction->shipment_cost = $shipping->getMethod($shipmentMethod)->getTotal();
@@ -262,18 +263,18 @@ class ShopTransactionController extends ShopController
                 if (!$transaction->shipment_itemsqty > 0) {
                     return [
                         'success' => false,
-                        'message' => trans("No items added to current order")
+                        'message' => trans('No items added to current order'),
                     ];
                 }
 
                 return [
-                    'success' => true
+                    'success' => true,
                 ];
             }
 
             return [
                 'success' => false,
-                'message' => trans("Something went wrong")
+                'message' => trans('Something went wrong'),
             ];
         }
 
@@ -284,19 +285,19 @@ class ShopTransactionController extends ShopController
             if (!$transaction->shipment_itemsqty > 0) {
                 return [
                     'success' => false,
-                    'message' => trans("No items added to current transaction")
+                    'message' => trans('No items added to current transaction'),
                 ];
             }
 
             return [
-                'success' => true
+                'success' => true,
             ];
         }
 
         // Everything else failed
         return [
             'success' => false,
-            'message' => trans("Something went wrong")
+            'message' => trans('Something went wrong'),
         ];
     }
 
@@ -306,17 +307,17 @@ class ShopTransactionController extends ShopController
         $cart->loadCurrent();
 
         if ($cart->countItems() > 0) {
-            $transaction->shipment_description    = $cart->getHtmlSummaryTable();
-            $transaction->shipment_itemsqty       = $cart->countQty();
+            $transaction->shipment_description = $cart->getHtmlSummaryTable();
+            $transaction->shipment_itemsqty = $cart->countQty();
             $transaction->shipment_itemsvatamount = $cart->getItems()->getVATAmount();
-            $transaction->shipment_itemstotal     = $cart->getItems()->getTotal();
-            $transaction->payment_amount          = $transaction->shipment_itemstotal + $transaction->shipment_cost;
+            $transaction->shipment_itemstotal = $cart->getItems()->getTotal();
+            $transaction->payment_amount = $transaction->shipment_itemstotal + $transaction->shipment_cost;
         } else {
-            $transaction->shipment_description    = '';
-            $transaction->shipment_itemsqty       = 0;
+            $transaction->shipment_description = '';
+            $transaction->shipment_itemsqty = 0;
             $transaction->shipment_itemsvatamount = 0;
-            $transaction->shipment_itemstotal     = 0;
-            $transaction->payment_amount          = 0;
+            $transaction->shipment_itemstotal = 0;
+            $transaction->payment_amount = 0;
         }
 
         $transaction->setItemsFromCart($cart);
@@ -327,7 +328,7 @@ class ShopTransactionController extends ShopController
     {
         // Check for current transaction
         $transaction = new TransactionModel();
-        $session     = new Ajde_Session('AC.Shop');
+        $session = new Ajde_Session('AC.Shop');
         if ($session->has('currentTransaction') && $transaction->loadByPK($session->get('currentTransaction'))) {
             $this->updateFromCart($transaction);
         }
@@ -341,7 +342,7 @@ class ShopTransactionController extends ShopController
     {
         // Edit existing transaction?
         $transaction = new TransactionModel();
-        $session     = new Ajde_Session('AC.Shop');
+        $session = new Ajde_Session('AC.Shop');
         if ($session->has('currentTransaction') && $transaction->loadByPK($session->get('currentTransaction'))) {
             $transaction->payment_status = 'cancelled';
             $transaction->save();
@@ -370,7 +371,7 @@ class ShopTransactionController extends ShopController
     public function resetPayment()
     {
         $transaction = new TransactionModel();
-        $session     = new Ajde_Session('AC.Shop');
+        $session = new Ajde_Session('AC.Shop');
 
         // Get transaction from ID if available
         if ($this->hasNotEmpty('id')) {
@@ -381,9 +382,9 @@ class ShopTransactionController extends ShopController
 
         if ($session->has('currentTransaction') && $transaction->loadByPK($session->get('currentTransaction'))) {
             $transaction->payment_provider = null;
-            $transaction->payment_status   = 'pending';
-            $transaction->secret_archive   = $transaction->secret_archive . $transaction->secret . PHP_EOL;
-            $transaction->secret           = $transaction->generateSecret();
+            $transaction->payment_status = 'pending';
+            $transaction->secret_archive = $transaction->secret_archive.$transaction->secret.PHP_EOL;
+            $transaction->secret = $transaction->generateSecret();
             $transaction->save();
         }
 
@@ -392,40 +393,39 @@ class ShopTransactionController extends ShopController
 
     public function paymentJson()
     {
-        $request  = Ajde::app()->getRequest();
+        $request = Ajde::app()->getRequest();
         $provider = $request->getPostParam('provider', false);
 
         if (empty($provider)) {
             return [
                 'success' => false,
-                'message' => trans('Please choose a payment provider')
+                'message' => trans('Please choose a payment provider'),
             ];
         }
 
         // Check for current transaction
         $transaction = new TransactionModel();
-        $session     = new Ajde_Session('AC.Shop');
+        $session = new Ajde_Session('AC.Shop');
         if ($session->has('currentTransaction') && $transaction->loadByPK($session->get('currentTransaction'))) {
             if ($transaction->payment_status !== 'pending') {
                 return [
                     'success' => false,
-                    'message' => trans('Payment already initiated, please refresh this page')
+                    'message' => trans('Payment already initiated, please refresh this page'),
                 ];
             }
         } else {
             return [
                 'success' => false,
-                'message' => trans('No current order found')
+                'message' => trans('No current order found'),
             ];
         }
 
         $transaction->payment_provider = $provider;
 
-        $provider    = $transaction->getProvider();
+        $provider = $transaction->getProvider();
         $redirectUrl = $provider->getRedirectUrl();
 
         if ($redirectUrl !== false) {
-
             $transaction->payment_status = 'requested';
             $transaction->save();
 
@@ -436,19 +436,19 @@ class ShopTransactionController extends ShopController
 
                 return [
                     'success'   => true,
-                    'postproxy' => $proxy->render()
+                    'postproxy' => $proxy->render(),
                 ];
             }
 
             return [
                 'success'  => true,
-                'redirect' => $redirectUrl
+                'redirect' => $redirectUrl,
             ];
         }
 
         return [
             'success' => false,
-            'message' => 'Could not contact the payment provider, please try again'
+            'message' => 'Could not contact the payment provider, please try again',
         ];
     }
 
@@ -460,7 +460,7 @@ class ShopTransactionController extends ShopController
 
         // Get existing transaction
         $transaction = new TransactionModel();
-        $session     = new Ajde_Session('AC.Shop');
+        $session = new Ajde_Session('AC.Shop');
         if ($session->has('currentTransaction')) {
             $transaction->loadByPK($session->get('currentTransaction'));
         }
@@ -480,8 +480,8 @@ class ShopTransactionController extends ShopController
     public function callback()
     {
         $providerName = $this->getId();
-        $provider     = Ajde_Shop_Transaction_Provider::getProvider($providerName);
-        $status       = $provider->updatePayment();
+        $provider = Ajde_Shop_Transaction_Provider::getProvider($providerName);
+        $status = $provider->updatePayment();
         if ($status['success'] === true) {
             $transaction = $status['transaction'];
             if (isset($transaction)) {
@@ -508,26 +508,28 @@ class ShopTransactionController extends ShopController
 
     public function mailUpdateAdmin(TransactionModel $transaction, $subject = null)
     {
-        $recipient = config("app.email");
+        $recipient = config('app.email');
 
         $mailer = new Ajde_Mailer();
-        $mailer->SendQuickMail($recipient, $recipient, config("app.title"),
+        $mailer->SendQuickMail($recipient, $recipient, config('app.title'),
             isset($subject) ? $subject : 'Order update', $transaction->getOverviewHtml());
     }
 
     public function mailUser(TransactionModel $transaction)
     {
-        $viewLink = config("app.rootUrl") . 'shop/transaction:view/' . $transaction->secret . '.html';
+        $viewLink = config('app.rootUrl').'shop/transaction:view/'.$transaction->secret.'.html';
 
         $mailer = new Ajde_Mailer();
         $mailer->sendUsingModel('your_order', $transaction->email, $transaction->name, [
-            'viewlink' => $viewLink
+            'viewlink' => $viewLink,
         ]);
     }
 
     /**
      * @param TransactionItemModel $transaction
+     *
      * @deprecated use mailUser
+     *
      * @throws Ajde_Core_Exception_Deprecated
      * @throws Ajde_Exception
      * @throws Exception
@@ -541,17 +543,17 @@ class ShopTransactionController extends ShopController
 
         $mailer->IsMail(); // use php mail()
         $mailer->AddAddress($transaction->email, $transaction->name);
-        $mailer->From     = config("app.email");
-        $mailer->FromName = config("app.title");
-        $mailer->Subject  = 'Your order';
-        $mailer->Body     = '<h2>Your order on ' . config("app.title") . '</h2>' .
-            '<p>Thank you for shopping with us. We will ship your items as soon as possible if you chose for delivery.<br/>' .
-            'To view the status of your order, please click this link:</p>' .
-            '<p><a href=\'' . config("app.rootUrl") . 'shop/transaction:view/' . $transaction->secret . '.html\'>View your order status</a></p>' .
-            '<p>Hope to welcome you again soon on <a href=\'' . config("app.rootUrl") . '\'>' . config("app.title") . '</a></p>';
+        $mailer->From = config('app.email');
+        $mailer->FromName = config('app.title');
+        $mailer->Subject = 'Your order';
+        $mailer->Body = '<h2>Your order on '.config('app.title').'</h2>'.
+            '<p>Thank you for shopping with us. We will ship your items as soon as possible if you chose for delivery.<br/>'.
+            'To view the status of your order, please click this link:</p>'.
+            '<p><a href=\''.config('app.rootUrl').'shop/transaction:view/'.$transaction->secret.'.html\'>View your order status</a></p>'.
+            '<p>Hope to welcome you again soon on <a href=\''.config('app.rootUrl').'\'>'.config('app.title').'</a></p>';
         $mailer->IsHTML(true);
         if (!$mailer->Send()) {
-            Ajde_Log::log('Mail to ' . $transaction->email . ' failed');
+            Ajde_Log::log('Mail to '.$transaction->email.' failed');
         }
     }
 

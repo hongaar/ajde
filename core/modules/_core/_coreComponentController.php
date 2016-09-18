@@ -6,12 +6,12 @@ class _coreComponentController extends Ajde_Controller
      * Ajde_Component_Resource
      ************************/
 
-    function resourceLocalDefault()
+    public function resourceLocalDefault()
     {
         return $this->_getLocalResource();
     }
 
-    function resourceCompressedDefault()
+    public function resourceCompressedDefault()
     {
         return $this->_getCompressedResource();
     }
@@ -31,10 +31,10 @@ class _coreComponentController extends Ajde_Controller
         // get resource from request
         $fingerprint = Ajde::app()->getRequest()->getRaw('id');
         if (!class_exists($className)) {
-            throw new Ajde_Controller_Exception("Resource type could not be loaded");
+            throw new Ajde_Controller_Exception('Resource type could not be loaded');
         }
         //$resource = call_user_func_array(array($className,"fromHash"), array($hash));
-        $resource = call_user_func_array([$className, "fromFingerprint"], [$this->getFormat(), $fingerprint]);
+        $resource = call_user_func_array([$className, 'fromFingerprint'], [$this->getFormat(), $fingerprint]);
 
         return $resource->getContents();
     }
@@ -74,9 +74,9 @@ class _coreComponentController extends Ajde_Controller
 
     public function formUploadHtml()
     {
-        $options   = $this->getOptions();
+        $options = $this->getOptions();
         $optionsId = md5(serialize($options));
-        $session   = new Ajde_Session('AC.Form');
+        $session = new Ajde_Session('AC.Form');
         $session->set($optionsId, $options);
 
         $this->setAction('form/upload');
@@ -95,31 +95,31 @@ class _coreComponentController extends Ajde_Controller
             return ['error' => 'Something went wrong'];
         }
         $optionsId = Ajde::app()->getRequest()->getPostParam('optionsId');
-        $session   = new Ajde_Session('AC.Form');
-        $options   = $session->get($optionsId);
+        $session = new Ajde_Session('AC.Form');
+        $options = $session->get($optionsId);
 
         // Load UploadHelper.php
         $helper = new Ajde_Component_Form_UploadHelper();
 
-        $saveDir           = $options['saveDir'];
+        $saveDir = $options['saveDir'];
         $allowedExtensions = $options['extensions'];
-        $overwrite         = $options['overwrite'];
+        $overwrite = $options['overwrite'];
 
         // max file size in bytes
-        $max_upload   = Ajde_Component_String::toBytes(ini_get('upload_max_filesize'));
-        $max_post     = Ajde_Component_String::toBytes(ini_get('post_max_size'));
+        $max_upload = Ajde_Component_String::toBytes(ini_get('upload_max_filesize'));
+        $max_post = Ajde_Component_String::toBytes(ini_get('post_max_size'));
         $memory_limit = Ajde_Component_String::toBytes(ini_get('memory_limit'));
-        $sizeLimit    = min($max_upload, $max_post, $memory_limit);
+        $sizeLimit = min($max_upload, $max_post, $memory_limit);
 
         $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
-        $result   = $uploader->handleUpload($saveDir, $overwrite);
+        $result = $uploader->handleUpload($saveDir, $overwrite);
 
         // delete old thumbnails if overwritten
         if (isset($result['success']) && $result['success'] === true && $overwrite === true) {
-            $filename  = pathinfo($result['filename'], PATHINFO_FILENAME);
+            $filename = pathinfo($result['filename'], PATHINFO_FILENAME);
             $extension = pathinfo($result['filename'], PATHINFO_EXTENSION);
-            $filelist  = Ajde_Fs_Find::findFiles($saveDir, $filename . "_*." . $extension);
-            $thumbs    = preg_grep("/_[0-9]+x[0-9]+c?/i", $filelist);
+            $filelist = Ajde_Fs_Find::findFiles($saveDir, $filename.'_*.'.$extension);
+            $thumbs = preg_grep('/_[0-9]+x[0-9]+c?/i', $filelist);
             foreach ($thumbs as $thumb) {
                 unlink($thumb);
             }
@@ -144,7 +144,7 @@ class _coreComponentController extends Ajde_Controller
         $this->setAction('image/show');
 
         if ($this->hasAbsoluteUrl() && $this->getAbsoluteUrl()) {
-            $this->getView()->assign('href', config("app.rootUrl") . $image->getLinkUrl());
+            $this->getView()->assign('href', config('app.rootUrl').$image->getLinkUrl());
         } else {
             $this->getView()->assign('href', $image->getLinkUrl());
         }
@@ -225,13 +225,13 @@ class _coreComponentController extends Ajde_Controller
         $embed->setWidth('100%');
 
         $thumbnail = $embed->getThumbnail();
-        $code      = $embed->getCode();
+        $code = $embed->getCode();
 
         if ($embed->getProvider()) {
             return [
                 'success'   => true,
                 'code'      => $code,
-                'thumbnail' => $thumbnail
+                'thumbnail' => $thumbnail,
             ];
         } else {
             return ['success' => false];

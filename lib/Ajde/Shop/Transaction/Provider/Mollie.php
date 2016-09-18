@@ -1,5 +1,6 @@
 <?php
-require "Mollie/API/Autoloader.php";
+
+require 'Mollie/API/Autoloader.php';
 
 abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transaction_Provider
 {
@@ -12,7 +13,7 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
 
     public function getLogo()
     {
-        return MEDIA_DIR . 'core/shop/mollie.png';
+        return MEDIA_DIR.'core/shop/mollie.png';
     }
 
     public function usePostProxy()
@@ -24,18 +25,18 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
     {
         $transaction = $this->getTransaction();
 
-        $mollie = new Mollie_API_Client;
+        $mollie = new Mollie_API_Client();
         $mollie->setApiKey($this->getApiKey());
 
         $order_id = $transaction->secret;
-        $data     = [
-            "amount"      => $transaction->payment_amount,
-            "description" => isset($description) ? $description : config("app.title") . ': ' . Ajde_Component_String::makePlural($transaction->shipment_itemsqty,
+        $data = [
+            'amount'      => $transaction->payment_amount,
+            'description' => isset($description) ? $description : config('app.title').': '.Ajde_Component_String::makePlural($transaction->shipment_itemsqty,
                     'item'),
-            "redirectUrl" => config("app.rootUrl") . $this->returnRoute . 'mollie_' . $this->getMethod() . '.html?order_id=' . $order_id,
-            "method"      => $this->getMethod(),
-            "metadata"    => [
-                "order_id" => $order_id,
+            'redirectUrl' => config('app.rootUrl').$this->returnRoute.'mollie_'.$this->getMethod().'.html?order_id='.$order_id,
+            'method'      => $this->getMethod(),
+            'metadata'    => [
+                'order_id' => $order_id,
             ],
         ];
 
@@ -59,15 +60,15 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
     {
         $payment = false;
 
-        $mollie = new Mollie_API_Client;
+        $mollie = new Mollie_API_Client();
         $mollie->setApiKey($this->getApiKey());
 
         $transaction = new TransactionModel();
-        $changed     = false;
+        $changed = false;
 
         // see if we are here for the webhook or user return url
         $mollie_id = Ajde::app()->getRequest()->getPostParam('id', false); // from webhook
-        $order_id  = Ajde::app()->getRequest()->getParam('order_id', false); // from user request
+        $order_id = Ajde::app()->getRequest()->getParam('order_id', false); // from user request
 
         if (!$mollie_id && $order_id) {
             // load from order_id
@@ -83,7 +84,7 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
             if ($mollie_id) {
                 // laod from mollie transaction id
                 try {
-                    $payment  = $mollie->payments->get($mollie_id);
+                    $payment = $mollie->payments->get($mollie_id);
                     $order_id = $payment->metadata->order_id;
                     $transaction->loadByField('secret', $order_id);
                 } catch (Mollie_API_Exception $e) {
@@ -94,12 +95,12 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
         }
 
         if (!$payment || !$mollie_id || !$order_id || !$transaction->hasLoaded()) {
-            Ajde_Log::log('Could not find transaction for Mollie payment for mollie id ' . $mollie_id . ' and transaction secret ' . $order_id);
+            Ajde_Log::log('Could not find transaction for Mollie payment for mollie id '.$mollie_id.' and transaction secret '.$order_id);
 
             return [
                 'success'     => false,
                 'changed'     => $changed,
-                'transaction' => $transaction
+                'transaction' => $transaction,
             ];
         }
 
@@ -112,25 +113,25 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
         }
 
         // save details
-        $details                      =
-            'PAYMENT STATUS: ' . (string)$payment->status . PHP_EOL .
-            'PAYMENT AMOUNT: ' . (string)$payment->amount . PHP_EOL .
-            'PAYMENT AT: ' . (string)$payment->paidDatetime . PHP_EOL .
-            'CANCELLED AT: ' . (string)$payment->cancelledDatetime . PHP_EOL .
-            'EXPIRED AT: ' . (string)$payment->expiredDatetime . PHP_EOL .
-            'PAYER DETAILS: ' . (string)$payment_details;
+        $details =
+            'PAYMENT STATUS: '.(string) $payment->status.PHP_EOL.
+            'PAYMENT AMOUNT: '.(string) $payment->amount.PHP_EOL.
+            'PAYMENT AT: '.(string) $payment->paidDatetime.PHP_EOL.
+            'CANCELLED AT: '.(string) $payment->cancelledDatetime.PHP_EOL.
+            'EXPIRED AT: '.(string) $payment->expiredDatetime.PHP_EOL.
+            'PAYER DETAILS: '.(string) $payment_details;
         $transaction->payment_details = $details;
 
         switch ($payment->status) {
-            case "open":
+            case 'open':
                 if ($transaction->payment_status != 'requested') {
                     $transaction->payment_status = 'requested';
                     $transaction->save();
                     $changed = true;
                 }
                 break;
-            case "paidout":
-            case "paid":
+            case 'paidout':
+            case 'paid':
                 $paid = true;
                 // update transaction only once
                 if ($transaction->payment_status != 'completed') {
@@ -138,7 +139,7 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
                     $changed = true;
                 }
                 break;
-            case "cancelled":
+            case 'cancelled':
                 // update transaction only once
                 if ($transaction->payment_status != 'cancelled') {
                     $transaction->payment_status = 'cancelled';
@@ -146,7 +147,7 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
                     $changed = true;
                 }
                 break;
-            case "expired":
+            case 'expired':
                 // update transaction only once
                 if ($transaction->payment_status != 'refused') {
                     $transaction->payment_status = 'refused';
@@ -159,12 +160,12 @@ abstract class Ajde_Shop_Transaction_Provider_Mollie extends Ajde_Shop_Transacti
         return [
             'success'     => $paid,
             'changed'     => $changed,
-            'transaction' => $transaction
+            'transaction' => $transaction,
         ];
     }
 
     private function getApiKey()
     {
-        return $this->isSandbox() ? config("shop.transaction.mollie.testKey") : config("shop.transaction.mollie.liveKey");
+        return $this->isSandbox() ? config('shop.transaction.mollie.testKey') : config('shop.transaction.mollie.liveKey');
     }
 }

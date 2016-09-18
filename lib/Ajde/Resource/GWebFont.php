@@ -13,10 +13,10 @@ class Ajde_Resource_GWebFont extends Ajde_Object_Static
             $subset = implode(',', $subset);
         }
         $qs = [
-            'family' => $family . ':' . $weight,
-            'subset' => $subset
+            'family' => $family.':'.$weight,
+            'subset' => $subset,
         ];
 
-        return self::$base . http_build_query($qs);
+        return self::$base.http_build_query($qs);
     }
 }

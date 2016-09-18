@@ -3,13 +3,12 @@
 class ShopController extends Ajde_Acl_Controller
 {
     /**
-     *
      * @var ProductModel
      */
     protected $product;
 
     protected $_allowedActions = [
-        'view'
+        'view',
     ];
 
     protected $_allowGuestTransaction = true;
@@ -131,14 +130,14 @@ class ShopController extends Ajde_Acl_Controller
     {
         // Get existing transaction
         $transaction = new TransactionModel();
-        $session     = new Ajde_Session('AC.Shop');
+        $session = new Ajde_Session('AC.Shop');
         $session->has('currentTransaction') && $transaction->loadByPK($session->get('currentTransaction'));
 
         $cart = new CartModel();
         $cart->loadCurrent();
 
         // Can we skip this step?
-        if (!$transaction->hasLoaded() && !config("shop.offerLogin") && $cart->hasItems()) {
+        if (!$transaction->hasLoaded() && !config('shop.offerLogin') && $cart->hasItems()) {
             $this->redirect('shop/transaction:setup');
         }
 

@@ -6,8 +6,8 @@ class Ajde_Crud_Cms_Meta_Type_Publish extends Ajde_Crud_Cms_Meta_Type
     {
         if ($value == 1) {
             // we need to publish this thing
-            $stream         = $meta->getOption('stream');
-            $publisherClass = "Ajde_Publisher_" . ucfirst($stream);
+            $stream = $meta->getOption('stream');
+            $publisherClass = 'Ajde_Publisher_'.ucfirst($stream);
 
             /* @var $publisher Ajde_Publisher */
             $publisher = new $publisherClass();
@@ -17,7 +17,7 @@ class Ajde_Crud_Cms_Meta_Type_Publish extends Ajde_Crud_Cms_Meta_Type
                     'consumerKey'    => $meta->getOption('twitter_consumerkey'),
                     'consumerSecret' => $meta->getOption('twitter_consumersecret'),
                     'token'          => $meta->getOption('twitter_token'),
-                    'tokenSecret'    => $meta->getOption('twitter_tokensecret')
+                    'tokenSecret'    => $meta->getOption('twitter_tokensecret'),
                 ]);
             }
 
@@ -65,7 +65,7 @@ class Ajde_Crud_Cms_Meta_Type_Publish extends Ajde_Crud_Cms_Meta_Type
         $field = $this->fieldFactory('stream');
         $field->setLabel('Publish to');
         $field->setType('enum');
-        $field->setLength("Twitter,Facebook,Mail");
+        $field->setLength('Twitter,Facebook,Mail');
         $field->setIsRequired(true);
         $this->addField($field);
     }

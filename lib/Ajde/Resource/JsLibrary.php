@@ -18,7 +18,7 @@ class Ajde_Resource_JsLibrary extends Ajde_Object_Static
         'yui'           => 'build/yuiloader/yuiloader-min.js',
         'ext-core'      => 'ext-core.js',
         'chrome-frame'  => 'CFInstall.min.js',
-        'webfont'       => 'webfont.js'
+        'webfont'       => 'webfont.js',
     ];
 
     public static $cdnJsBase = 'https://cdnjs.cloudflare.com/ajax/libs/';
@@ -26,7 +26,7 @@ class Ajde_Resource_JsLibrary extends Ajde_Object_Static
     public static function getUrl($name, $version)
     {
         if (array_key_exists($name, $libraries = self::$libraries)) {
-            $url = self::$base . $name . '/' . $version . '/' . $libraries[$name];
+            $url = self::$base.$name.'/'.$version.'/'.$libraries[$name];
 
             return $url;
         } else {
@@ -37,6 +37,6 @@ class Ajde_Resource_JsLibrary extends Ajde_Object_Static
 
     public static function getCdnJsUrl($suffix)
     {
-        return self::$cdnJsBase . $suffix;
+        return self::$cdnJsBase.$suffix;
     }
 }

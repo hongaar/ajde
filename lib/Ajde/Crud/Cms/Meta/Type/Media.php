@@ -39,7 +39,7 @@ class Ajde_Crud_Cms_Meta_Type_Media extends Ajde_Crud_Cms_Meta_Type
         $field->setModelName('media');
         if ($meta->getOption('usemediatype')) {
             $field->setAdvancedFilter([
-                new Ajde_Filter_Where('mediatype', Ajde_Filter::FILTER_EQUALS, $meta->getOption('usemediatype'))
+                new Ajde_Filter_Where('mediatype', Ajde_Filter::FILTER_EQUALS, $meta->getOption('usemediatype')),
             ]);
         }
         if ($meta->getOption('popup')) {

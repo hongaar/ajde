@@ -22,6 +22,6 @@ class Ajde_Db_Function
      */
     public function __toString()
     {
-        return (string)$this->_function;
+        return (string) $this->_function;
     }
 }

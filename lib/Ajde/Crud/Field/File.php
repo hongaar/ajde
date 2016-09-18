@@ -4,8 +4,8 @@ class Ajde_Crud_Field_File extends Ajde_Crud_Field
 {
     protected function _getHtmlAttributes()
     {
-        $attributes          = [];
-        $attributes['type']  = "hidden";
+        $attributes = [];
+        $attributes['type'] = 'hidden';
         $attributes['value'] = Ajde_Component_String::escape($this->getValue());
 
         return $attributes;

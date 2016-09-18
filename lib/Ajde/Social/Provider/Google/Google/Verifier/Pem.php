@@ -33,6 +33,7 @@ class Google_Verifier_Pem extends Google_Verifier_Abstract
      * $pem: a PEM encoded certificate (not a file).
      *
      * @param $pem
+     *
      * @throws Google_Auth_Exception
      * @throws Google_Exception
      */
@@ -61,14 +62,16 @@ class Google_Verifier_Pem extends Google_Verifier_Abstract
      *
      * @param $data
      * @param $signature
+     *
      * @throws Google_Auth_Exception
+     *
      * @return bool
      */
     public function verify($data, $signature)
     {
-        $status = openssl_verify($data, $signature, $this->publicKey, "sha256");
+        $status = openssl_verify($data, $signature, $this->publicKey, 'sha256');
         if ($status === -1) {
-            throw new Google_Auth_Exception('Signature verification error: ' . openssl_error_string());
+            throw new Google_Auth_Exception('Signature verification error: '.openssl_error_string());
         }
 
         return $status === 1;

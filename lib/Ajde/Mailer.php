@@ -1,16 +1,17 @@
 <?php
-require_once "Mailer" . DS . "class.phpmailer.php";
-require_once "Mailer" . DS . "class.smtp.php";
-require_once "Mailer" . DS . "class.pop3.php";
+
+require_once 'Mailer'.DS.'class.phpmailer.php';
+require_once 'Mailer'.DS.'class.smtp.php';
+require_once 'Mailer'.DS.'class.pop3.php';
 
 class Ajde_Mailer extends PHPMailer
 {
     public function __construct($exceptions = false)
     {
         parent::__construct($exceptions);
-        if (config("mail.mailer") == 'smtp') {
+        if (config('mail.mailer') == 'smtp') {
             $this->isSMTP();
-            $configs = config("mail.config");
+            $configs = config('mail.config');
             foreach ($configs as $k => $v) {
                 $this->$k = $v;
             }
@@ -23,15 +24,14 @@ class Ajde_Mailer extends PHPMailer
     {
         $email = new EmailModel();
         if ($email->loadByField('identifier', $identifier)) {
-
             $template = $email->getTemplate();
 
-            $fromName  = $email->getFromName();
+            $fromName = $email->getFromName();
             $fromEmail = $email->getFromEmail();
-            $subject   = $this->replaceData($template->getSubject(), $data);
+            $subject = $this->replaceData($template->getSubject(), $data);
 
             $markup = $this->rel2abs($this->replaceData($template->getMarkup(), $data));
-            $body   = PHP_EOL . $this->rel2abs($this->replaceData($template->getContent($markup), $data));
+            $body = PHP_EOL.$this->rel2abs($this->replaceData($template->getContent($markup), $data));
 
             // reset recipients
             $this->clearAllRecipients();
@@ -49,7 +49,7 @@ class Ajde_Mailer extends PHPMailer
             $this->Subject = $subject;
 
             // utf8 please
-            $this->CharSet = "utf-8";
+            $this->CharSet = 'utf-8';
 
             // body
             $this->msgHTML($body);
@@ -64,22 +64,22 @@ class Ajde_Mailer extends PHPMailer
 
             return $status;
         } else {
-            throw new Ajde_Exception('Email with identifier ' . $identifier . ' not found');
+            throw new Ajde_Exception('Email with identifier '.$identifier.' not found');
         }
     }
 
     private function rel2abs($text)
     {
-        $base    = config("app.rootUrl");
-        $replace = '$1' . $base . '$2$3';
+        $base = config('app.rootUrl');
+        $replace = '$1'.$base.'$2$3';
 
         // Look for images
         $pattern = "#(<\s*?img\s*?[^>]*src\s*?=[\"'])(?!http)([^\"'>]+)([\"'>]+)#";
-        $text    = preg_replace($pattern, $replace, $text);
+        $text = preg_replace($pattern, $replace, $text);
 
         // Look for links
         $pattern = "#(<\s*?a\s*?[^>]*href\s*?=[\"'])(?!http)([^\"'>]+)([\"'>]+)#";
-        $text    = preg_replace($pattern, $replace, $text);
+        $text = preg_replace($pattern, $replace, $text);
 
         return $text;
     }
@@ -87,7 +87,7 @@ class Ajde_Mailer extends PHPMailer
     private function mergeData($data)
     {
         $defaultData = [
-            'sitename' => config("app.title")
+            'sitename' => config('app.title'),
         ];
 
         return array_merge($defaultData, $data);
@@ -98,7 +98,7 @@ class Ajde_Mailer extends PHPMailer
         $data = $this->mergeData($data);
 
         foreach ($data as $key => $value) {
-            $string = str_replace('%' . $key . '%', $value, $string);
+            $string = str_replace('%'.$key.'%', $value, $string);
         }
 
         return $string;
@@ -146,8 +146,8 @@ class Ajde_Mailer extends PHPMailer
 
     public function addAddress($address, $name = '')
     {
-        if (config("mail.debug") === true) {
-            $address = config("app.email");
+        if (config('mail.debug') === true) {
+            $address = config('app.email');
         }
 
         return parent::addAnAddress('to', $address, $name);

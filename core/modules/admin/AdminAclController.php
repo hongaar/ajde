@@ -10,93 +10,93 @@ class AdminAclController extends AdminController
             'all pages'     => [
                 'module' => '*',
                 'action' => '*',
-                'extra'  => '*'
+                'extra'  => '*',
             ],
             'core'          => [
                 'module' => '_core',
                 'action' => '*',
-                'extra'  => '*'
+                'extra'  => '*',
             ],
             'administrator' => [
                 'module' => 'admin',
                 'action' => '*',
-                'extra'  => '*'
-            ]
+                'extra'  => '*',
+            ],
         ],
         'Content'         => [
             'nodes' => [
                 'module' => 'admin',
                 'action' => '*',
-                'extra'  => 'node'
+                'extra'  => 'node',
             ],
             'media' => [
                 'module' => 'admin',
                 'action' => '*',
-                'extra'  => 'media'
+                'extra'  => 'media',
             ],
             'menus' => [
                 'module' => 'admin',
                 'action' => '*',
-                'extra'  => 'menu'
+                'extra'  => 'menu',
             ],
             'tags'  => [
                 'module' => 'admin',
                 'action' => '*',
-                'extra'  => 'tag'
+                'extra'  => 'tag',
             ],
             'email' => [
                 'module' => 'admin',
                 'action' => '*',
-                'extra'  => 'email'
+                'extra'  => 'email',
             ],
             'forms' => [
                 'module' => 'admin',
                 'action' => '*',
-                'extra'  => 'form'
-            ]
+                'extra'  => 'form',
+            ],
         ],
         'Admin functions' => [
             'shop'           => [
                 'module' => 'admin',
                 'action' => '*',
-                'extra'  => 'shop'
+                'extra'  => 'shop',
             ],
             'settings'       => [
                 'module' => 'admin',
                 'action' => 'settings',
-                'extra'  => 'cms'
+                'extra'  => 'cms',
             ],
             'users'          => [
                 'module' => 'admin',
                 'action' => '*',
-                'extra'  => 'user'
+                'extra'  => 'user',
             ],
             'access control' => [
                 'module' => 'admin',
                 'action' => '*',
-                'extra'  => 'acl'
+                'extra'  => 'acl',
             ],
             'setup'          => [
                 'module' => 'admin',
                 'action' => '*',
-                'extra'  => 'setup'
-            ]
-        ]
+                'extra'  => 'setup',
+            ],
+        ],
     ];
 
     public $_modelPermissions = [
         'General'    => [
             'all models' => [
                 'model' => '*',
-                'extra' => '*'
-            ]
+                'extra' => '*',
+            ],
         ],
         'Node types' => [
             'all' => [
                 'model' => 'node',
-                'extra' => '*'
-            ]
-        ]
+                'extra' => '*',
+            ],
+        ],
     ];
 
     public function __construct($action = null, $format = null)
@@ -106,7 +106,7 @@ class AdminAclController extends AdminController
         foreach ($nodetypes as $type) {
             $this->_modelPermissions['Node types'][$type->name] = [
                 'model' => 'node',
-                'extra' => $type->id
+                'extra' => $type->id,
             ];
         }
 
@@ -122,7 +122,7 @@ class AdminAclController extends AdminController
 
     public function view()
     {
-        Ajde::app()->getDocument()->setTitle("Access control manager");
+        Ajde::app()->getDocument()->setTitle('Access control manager');
 
         $this->getView()->assign('pagePermissions', $this->_pagePermissions);
         $this->getView()->assign('modelPermissions', $this->_modelPermissions);
@@ -140,10 +140,10 @@ class AdminAclController extends AdminController
 
     public function page()
     {
-        Ajde::app()->getDocument()->setTitle("Page access");
+        Ajde::app()->getDocument()->setTitle('Page access');
 
-        $page    = Ajde::app()->getRequest()->getParam('page');
-        $preset  = Ajde::app()->getRequest()->getParam('preset');
+        $page = Ajde::app()->getRequest()->getParam('page');
+        $preset = Ajde::app()->getRequest()->getParam('preset');
         $options = $this->_pagePermissions[$page][$preset];
 
         $usergroups = new UsergroupCollection();
@@ -161,8 +161,8 @@ class AdminAclController extends AdminController
     {
         $usergroup = Ajde::app()->getRequest()->getPostParam('usergroup', []);
 
-        $page    = Ajde::app()->getRequest()->getPostParam('page');
-        $preset  = Ajde::app()->getRequest()->getPostParam('preset');
+        $page = Ajde::app()->getRequest()->getPostParam('page');
+        $preset = Ajde::app()->getRequest()->getPostParam('preset');
         $options = $this->_pagePermissions[$page][$preset];
 
         foreach ($usergroup as $ugId => $permission) {
@@ -173,19 +173,19 @@ class AdminAclController extends AdminController
             }
         }
 
-        Ajde_Session_Flash::alert('Access updated for ' . $page . ': ' . $preset);
+        Ajde_Session_Flash::alert('Access updated for '.$page.': '.$preset);
 
         return [
-            'success' => true
+            'success' => true,
         ];
     }
 
     public function model()
     {
-        Ajde::app()->getDocument()->setTitle("Model access");
+        Ajde::app()->getDocument()->setTitle('Model access');
 
-        $model   = Ajde::app()->getRequest()->getParam('model');
-        $preset  = Ajde::app()->getRequest()->getParam('preset');
+        $model = Ajde::app()->getRequest()->getParam('model');
+        $preset = Ajde::app()->getRequest()->getParam('preset');
         $options = $this->_modelPermissions[$model][$preset];
 
         $usergroups = new UsergroupCollection();
@@ -203,14 +203,14 @@ class AdminAclController extends AdminController
     {
         $usergroup = Ajde::app()->getRequest()->getPostParam('usergroup', []);
 
-        $model   = Ajde::app()->getRequest()->getPostParam('model');
-        $preset  = Ajde::app()->getRequest()->getPostParam('preset');
+        $model = Ajde::app()->getRequest()->getPostParam('model');
+        $preset = Ajde::app()->getRequest()->getPostParam('preset');
         $options = $this->_modelPermissions[$model][$preset];
 
         foreach ($usergroup as $ugId => $acl) {
             AclModel::removeModelPermissions($ugId, $options['model'], $options['extra']);
             foreach ($acl as $permission => $actions) {
-                foreach (explode("|", $actions) as $action) {
+                foreach (explode('|', $actions) as $action) {
                     if ($action) {
                         AclModel::addPermission($permission, 'model', $ugId, $options['model'], $action,
                             $options['extra']);
@@ -219,10 +219,10 @@ class AdminAclController extends AdminController
             }
         }
 
-        Ajde_Session_Flash::alert('Access updated for ' . $model . ': ' . $preset);
+        Ajde_Session_Flash::alert('Access updated for '.$model.': '.$preset);
 
         return [
-            'success' => true
+            'success' => true,
         ];
     }
 }

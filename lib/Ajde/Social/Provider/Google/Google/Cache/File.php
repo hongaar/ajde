@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-require_once "Google/Cache/Abstract.php";
-require_once "Google/Cache/Exception.php";
+require_once 'Google/Cache/Abstract.php';
+require_once 'Google/Cache/Exception.php';
 
 /*
  * This class implements a basic on disk storage. While that does
@@ -41,7 +41,7 @@ class Google_Cache_File extends Google_Cache_Abstract
     public function get($key, $expiration = false)
     {
         $storageFile = $this->getCacheFile($key);
-        $data        = false;
+        $data = false;
 
         if (!file_exists($storageFile)) {
             return false;
@@ -71,7 +71,7 @@ class Google_Cache_File extends Google_Cache_Abstract
         if ($this->acquireWriteLock($storageFile)) {
             // We serialize the whole request object, since we don't only want the
             // responseContent but also the postBody used, headers, size, etc.
-            $data   = serialize($value);
+            $data = serialize($value);
             $result = file_put_contents($storageFile, $data);
             $this->unlock($storageFile);
         }
@@ -81,7 +81,7 @@ class Google_Cache_File extends Google_Cache_Abstract
     {
         $file = $this->getCacheFile($key);
         if (file_exists($file) && !unlink($file)) {
-            throw new Google_Cache_Exception("Cache file could not be deleted");
+            throw new Google_Cache_Exception('Cache file could not be deleted');
         }
     }
 
@@ -92,7 +92,7 @@ class Google_Cache_File extends Google_Cache_Abstract
 
     private function getCacheFile($file, $forWrite = false)
     {
-        return $this->getCacheDir($file, $forWrite) . '/' . md5($file);
+        return $this->getCacheDir($file, $forWrite).'/'.md5($file);
     }
 
     private function getCacheDir($file, $forWrite)
@@ -100,7 +100,7 @@ class Google_Cache_File extends Google_Cache_Abstract
         // use the first 2 characters of the hash as a directory prefix
         // this should prevent slowdowns due to huge directory listings
         // and thus give some basic amount of scalability
-        $storageDir = $this->path . '/' . substr(md5($file), 0, 2);
+        $storageDir = $this->path.'/'.substr(md5($file), 0, 2);
         if ($forWrite && !is_dir($storageDir)) {
             if (!mkdir($storageDir, 0755, true)) {
                 throw new Google_Cache_Exception("Could not create storage directory: $storageDir");
@@ -127,9 +127,9 @@ class Google_Cache_File extends Google_Cache_Abstract
 
     private function acquireLock($type, $storageFile)
     {
-        $mode     = $type == LOCK_EX ? "w" : "r";
+        $mode = $type == LOCK_EX ? 'w' : 'r';
         $this->fh = fopen($storageFile, $mode);
-        $count    = 0;
+        $count = 0;
         while (!flock($this->fh, $type | LOCK_NB)) {
             // Sleep for 10ms.
             usleep(10000);

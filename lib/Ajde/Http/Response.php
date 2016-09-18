@@ -4,13 +4,13 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 {
     const REDIRECT_HOMEPAGE = 1;
     const REDIRECT_REFFERER = 2;
-    const REDIRECT_SELF     = 3;
+    const REDIRECT_SELF = 3;
 
     const RESPONSE_TYPE_NOT_MODIFIED = 304;
     const RESPONSE_TYPE_UNAUTHORIZED = 401;
-    const RESPONSE_TYPE_FORBIDDEN    = 403;
-    const RESPONSE_TYPE_NOTFOUND     = 404;
-    const RESPONSE_TYPE_SERVERERROR  = 500;
+    const RESPONSE_TYPE_FORBIDDEN = 403;
+    const RESPONSE_TYPE_NOTFOUND = 404;
+    const RESPONSE_TYPE_SERVERERROR = 500;
 
     public static function redirectNotFound()
     {
@@ -23,7 +23,7 @@ class Ajde_Http_Response extends Ajde_Object_Standard
     }
 
     /**
-     * Use only when user is not logged in, or for failed logon attempts
+     * Use only when user is not logged in, or for failed logon attempts.
      */
     public static function redirectUnauthorized()
     {
@@ -31,7 +31,7 @@ class Ajde_Http_Response extends Ajde_Object_Standard
     }
 
     /**
-     * Use for ACL declines / requests with no permission granted for the current user
+     * Use for ACL declines / requests with no permission granted for the current user.
      */
     public static function redirectForbidden()
     {
@@ -42,11 +42,11 @@ class Ajde_Http_Response extends Ajde_Object_Standard
     {
         self::setResponseType($code);
 
-        header("Content-type: text/html; charset=UTF-8");
+        header('Content-type: text/html; charset=UTF-8');
 
         $_SERVER['REDIRECT_STATUS'] = $code;
 
-        $errorRoutes = config("routes.errors");
+        $errorRoutes = config('routes.errors');
         if (isset($errorRoutes[$code])) {
             try {
                 self::dieOnRoute($errorRoutes[$code]);
@@ -57,7 +57,7 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 
         // fallback
         ob_get_clean();
-        include(LOCAL_ROOT . PUBLIC_DIR . 'error.php');
+        include LOCAL_ROOT.PUBLIC_DIR.'error.php';
         die();
     }
 
@@ -66,7 +66,7 @@ class Ajde_Http_Response extends Ajde_Object_Standard
         ob_get_clean();
         // We start a mini app here to display the route
         // Copied from Ajde_Application
-        $route    = new Ajde_Core_Route($route);
+        $route = new Ajde_Core_Route($route);
         $document = Ajde_Document::fromRoute($route);
 
         // replace document in Ajde_Application
@@ -75,11 +75,11 @@ class Ajde_Http_Response extends Ajde_Object_Standard
         // replace route in Ajde_Application
         Ajde::app()->setRoute($route);
 
-        $controller   = Ajde_Controller::fromRoute($route);
+        $controller = Ajde_Controller::fromRoute($route);
         $actionResult = $controller->invoke();
         $document->setBody($actionResult);
         if (!$document->hasLayout()) {
-            $layout = new Ajde_Layout(config("layout.frontend"));
+            $layout = new Ajde_Layout(config('layout.frontend'));
             $document->setLayout($layout);
         }
         echo $document->render();
@@ -88,50 +88,50 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 
     public static function setResponseType($code)
     {
-        header("HTTP/1.1 " . $code . " " . self::getResponseType($code));
+        header('HTTP/1.1 '.$code.' '.self::getResponseType($code));
         ob_get_clean();
-        header("Status: " . $code . " " . self::getResponseType($code));
+        header('Status: '.$code.' '.self::getResponseType($code));
     }
 
     protected static function getResponseType($code)
     {
         switch ($code) {
             case 304:
-                return "Not Modified";
+                return 'Not Modified';
             case 400:
-                return "Bad Request";
+                return 'Bad Request';
             case 401:
-                return "Unauthorized";
+                return 'Unauthorized';
             case 403:
-                return "Forbidden";
+                return 'Forbidden';
             case 404:
-                return "Not Found";
+                return 'Not Found';
             case 500:
-                return "Internal Server Error";
+                return 'Internal Server Error';
             case 501:
-                return "Not Implemented";
+                return 'Not Implemented';
             case 502:
-                return "Bad Gateway";
+                return 'Bad Gateway';
             case 503:
-                return "Service Unavailable";
+                return 'Service Unavailable';
             case 504:
-                return "Bad Timeout";
+                return 'Bad Timeout';
         }
     }
 
     public function setRedirect($url = self::REDIRECT_SELF)
     {
         if ($url === true || $url === self::REDIRECT_HOMEPAGE) {
-            $this->addHeader("Location", config("app.rootUrl"));
+            $this->addHeader('Location', config('app.rootUrl'));
         } elseif ($url === self::REDIRECT_REFFERER) {
-            $this->addHeader("Location", Ajde_Http_Request::getRefferer());
+            $this->addHeader('Location', Ajde_Http_Request::getRefferer());
         } elseif ($url === self::REDIRECT_SELF || empty($url)) {
-            $route = (string)Ajde::app()->getRoute();
-            $this->addHeader("Location", config("app.rootUrl") . $route);
-        } elseif (substr($url, 0, 7) == "http://" || substr($url, 0, 8) == "https://") {
-            $this->addHeader("Location", $url);
+            $route = (string) Ajde::app()->getRoute();
+            $this->addHeader('Location', config('app.rootUrl').$route);
+        } elseif (substr($url, 0, 7) == 'http://' || substr($url, 0, 8) == 'https://') {
+            $this->addHeader('Location', $url);
         } elseif ($url) {
-            $this->addHeader("Location", config("app.rootUrl") . $url);
+            $this->addHeader('Location', config('app.rootUrl').$url);
         }
         // Don't load any content after Location header is set
         Ajde::app()->getDocument()->setLayout(new Ajde_Layout('empty'));
@@ -144,7 +144,7 @@ class Ajde_Http_Response extends Ajde_Object_Standard
             $headers = $this->get('headers');
         }
         $headers[$name] = $value;
-        $this->set("headers", $headers);
+        $this->set('headers', $headers);
     }
 
     public function removeHeader($name)
@@ -158,18 +158,18 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 
     public function setData($data)
     {
-        $this->set("data", $data);
+        $this->set('data', $data);
     }
 
     public function send()
     {
-        if ($this->has("headers")) {
-            foreach ($this->get("headers") as $name => $value) {
+        if ($this->has('headers')) {
+            foreach ($this->get('headers') as $name => $value) {
                 header("$name: $value");
             }
         }
 
-        if (!array_key_exists('Location', $this->get("headers"))) {
+        if (!array_key_exists('Location', $this->get('headers'))) {
             echo $this->getData();
         }
     }

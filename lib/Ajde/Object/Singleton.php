@@ -1,9 +1,7 @@
 <?php
 
-abstract class Ajde_Object_Singleton extends Ajde_Object_Magic
-    implements Ajde_Object_SingletonInterface
+abstract class Ajde_Object_Singleton extends Ajde_Object_Magic implements Ajde_Object_SingletonInterface
 {
-
     protected static $__pattern = self::OBJECT_PATTERN_SINGLETON;
 
     public static function __getPattern()
@@ -17,8 +15,7 @@ abstract class Ajde_Object_Singleton extends Ajde_Object_Magic
     }
 
     // Do not allow the clone operation
-    private final function __clone()
+    final private function __clone()
     {
     }
 }
-

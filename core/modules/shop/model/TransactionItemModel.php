@@ -3,14 +3,13 @@
 class TransactionItemModel extends Ajde_Model
 {
     /**
-     *
      * @return Ajde_Model
      */
     public function getEntity()
     {
         $entity = $this->get('entity_id');
         if (!$entity instanceof Ajde_Model) {
-            $id     = $entity;
+            $id = $entity;
             $entity = $this->_getEntityModel($this->get('entity'));
             $entity->loadByPK($id);
         }
@@ -19,13 +18,13 @@ class TransactionItemModel extends Ajde_Model
     }
 
     /**
-     *
      * @param string $entityName
+     *
      * @return Ajde_Model
      */
     protected function _getEntityModel($entityName)
     {
-        $entityModelName = ucfirst((string)$entityName) . 'Model';
+        $entityModelName = ucfirst((string) $entityName).'Model';
 
         return new $entityModelName();
     }

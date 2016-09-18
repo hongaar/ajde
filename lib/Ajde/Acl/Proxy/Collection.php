@@ -3,7 +3,7 @@
 class Ajde_Acl_Proxy_Collection extends Ajde_Collection
 {
     public $ignoreAccessControl = false;
-    public $autoRedirect        = true;
+    public $autoRedirect = true;
 
     public function getAclParam()
     {
@@ -12,6 +12,7 @@ class Ajde_Acl_Proxy_Collection extends Ajde_Collection
 
     /**
      * @param Ajde_Acl_Proxy_Model $model
+     *
      * @return bool
      */
     private function canSkipModelValidation(Ajde_Acl_Proxy_Model $model)
@@ -21,6 +22,7 @@ class Ajde_Acl_Proxy_Collection extends Ajde_Collection
 
     /**
      * @param bool $clean
+     *
      * @return bool
      */
     private function validateModels($clean = true)
@@ -62,7 +64,7 @@ class Ajde_Acl_Proxy_Collection extends Ajde_Collection
     {
         parent::load();
         if ($this->count()) {
-            $aclTimer = Ajde::app()->addTimer("<i>ACL validation for collection</i>");
+            $aclTimer = Ajde::app()->addTimer('<i>ACL validation for collection</i>');
             $this->validateModels();
             Ajde::app()->endTimer($aclTimer);
         }
